@@ -76,6 +76,7 @@ export default function Step1() {
         <h3 className="text-lg font-semibold text-gold">誓導 QR Code 掃描</h3>
 
         <div className="flex flex-col items-center justify-center py-8 border-2 border-dashed border-gold-dim rounded-lg">
+<<<<<<< Updated upstream
         {state.qrScanned ? (
   <div className="text-center">
     <div className="text-4xl mb-2">✅</div>
@@ -110,6 +111,33 @@ export default function Step1() {
     </Button>
   </div>
 )}
+=======
+          {state.qrScanned ? (
+            <div className="text-center">
+              <div className="text-4xl mb-2">✓</div>
+              <p className="text-green-ok font-semibold">QR Code 掃描完成</p>
+              <p className="text-xs text-muted-foreground mt-2">
+                {state.scannedQRCode}
+              </p>
+            </div>
+          ) : (
+            <div className="text-center space-y-4">
+              <img
+                src="/qr-code.png"
+                alt="誓導 QR Code"
+                className="w-48 h-48 mx-auto border-2 border-gold rounded-lg"
+              />
+              <p className="text-muted-foreground text-sm">請使用手機相機掃描此 QR Code</p>
+              <Button
+                onClick={handleQRScan}
+                disabled={isScanning}
+                className="btn-gold-glow"
+              >
+                {isScanning ? '掃描中...' : '確認掃描完成'}
+              </Button>
+            </div>
+          )}
+>>>>>>> Stashed changes
         </div>
       </div>
 
