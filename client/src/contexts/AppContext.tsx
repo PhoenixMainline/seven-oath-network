@@ -13,46 +13,44 @@ interface AppContextType {
   setLanguage: (lang: Language) => void;
 }
 
-  const getInitialState = (): AppState => {
-    const savedState = localStorage.getItem('sevenOathAppState');
-    if (savedState) {
-      return JSON.parse(savedState);
-    }
-    return {
-      currentStep: 1,
-      conditions: {
-        purchaseCodeVerified: false,
-        networkStable: false,
-      },
-      qrScanned: false,
-      scannedQRCode: '',
-      oathRecited: false,
-      verificationResult: null,
-      purchaseNumber: '',
-      seals: {
-        1: 'inactive',
-        2: 'inactive',
-        3: 'inactive',
-        4: 'inactive',
-        5: 'inactive',
-        6: 'inactive',
-        7: 'inactive',
-      },
-      language: (localStorage.getItem('sevenOathLanguage') as Language) || 'zh', // Default language
-    };
+const getInitialState = (): AppState => {
+  const savedState = localStorage.getItem('sevenOathAppState');
+  if (savedState) {
+    return JSON.parse(savedState);
+  }
+  return {
+    currentStep: 1,
+    conditions: {
+      purchaseCodeVerified: false,
+      networkStable: false,
+    },
+    qrScanned: false,
+    scannedQRCode: '',
+    oathRecited: false,
+    verificationResult: null,
+    purchaseNumber: '',
+    seals: {
+      1: 'inactive',
+      2: 'inactive',
+      3: 'inactive',
+      4: 'inactive',
+      5: 'inactive',
+      6: 'inactive',
+      7: 'inactive',
+    },
+    language: (localStorage.getItem('sevenOathLanguage') as Language) || 'zh', // Default language
   };
+};
 
+const AppContext = createContext<AppContextType | undefined>(undefined);
+
+export function AppProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AppState>(getInitialState());
 
   React.useEffect(() => {
     localStorage.setItem('sevenOathAppState', JSON.stringify(state));
     localStorage.setItem('sevenOathLanguage', state.language);
   }, [state]);
-
-const AppContext = createContext<AppContextType | undefined>(undefined);
-
-export function AppProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<AppState>(getInitialState());
 
   const setCurrentStep = (step: StepType) => {
     setState((prev) => ({ ...prev, currentStep: step }));

@@ -3,25 +3,22 @@ import { useAppState } from '@/contexts/AppContext';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { content } from '@/locales/content';
+import QRScanner from '@/components/QRScanner';
 
 export default function Step1() {
   const { state, updateConditions, setQRScanned, setCurrentStep } = useAppState();
   const { language } = state;
   const t = content[language];
-  const [isScanning, setIsScanning] = useState(false);
+  const [showScanner, setShowScanner] = useState(false);
 
   const canProceed =
     state.conditions.purchaseCodeVerified &&
     state.conditions.networkStable &&
     state.qrScanned;
 
-  const handleQRScan = () => {
-    setIsScanning(true);
-    // Simulate QR code scanning
-    setTimeout(() => {
-      setQRScanned(true, 'QR_CODE_12345');
-      setIsScanning(false);
-    }, 1500);
+  const handleScanComplete = (result: string) => {
+    setQRScanned(true, result);
+    setShowScanner(false);
   };
 
   const handleNext = () => {
@@ -96,11 +93,10 @@ export default function Step1() {
               />
               <p className="text-muted-foreground text-sm">{t.step1.qrScanInstruction}</p>
               <Button
-                onClick={handleQRScan}
-                disabled={isScanning}
+                onClick={() => setShowScanner(true)}
                 className="btn-gold-glow"
               >
-                {isScanning ? '掃描中...' : t.step1.qrScanButton}
+                {t.step1.qrScanButton}
               </Button>
             </div>
           )}
@@ -126,6 +122,14 @@ export default function Step1() {
           </p>
         )}
       </div>
+
+      {/* QR Scanner Modal */}
+      {showScanner && (
+        <QRScanner
+          onScanComplete={handleScanComplete}
+          onCancel={() => setShowScanner(false)}
+        />
+      )}
     </div>
   );
 }
