@@ -9,14 +9,15 @@ import { useServiceWorker } from "./hooks/useServiceWorker";
 import ActivationFlow from "./pages/ActivationFlow";
 import MainDashboard from "./pages/MainDashboard";
 import Home from "./pages/Home";
+import LanguageSwitcher from "./components/LanguageSwitcher";
 
 
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={ActivationFlow} />
-      <Route path="/main" component={MainDashboard} />
-      <Route path="/home" component={Home} />
+      <Route path="/" component={Home} />
+      <Route path="/activation" component={ActivationFlow} />
+      <Route path="/dashboard" component={MainDashboard} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
@@ -40,8 +41,13 @@ function App() {
       >
         <AppProvider>
           <TooltipProvider>
-            <Toaster />
-            <Router />
+            <div className="relative min-h-screen flex flex-col">
+              <div className="absolute top-4 right-4 z-10">
+                <LanguageSwitcher />
+              </div>
+              <Toaster />
+              <Router />
+            </div>
           </TooltipProvider>
         </AppProvider>
       </ThemeProvider>

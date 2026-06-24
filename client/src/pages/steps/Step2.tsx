@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useAppState } from '@/contexts/AppContext';
 import { Button } from '@/components/ui/button';
+import { content } from '@/locales/content';
 
-const OATH_TEXT = `吾以誠心，立此誓言。
-願以光輝之印，守護靈性之路。
-誓印啟動，覺醒開始。
-七印相連，通往圓滿。`;
+
 
 const MEDITATION_TIME = 10; // seconds
 
 export default function Step2() {
   const { state, setOathRecited, setCurrentStep } = useAppState();
+  const { language } = state;
+  const t = content[language];
   const [timeLeft, setTimeLeft] = useState(MEDITATION_TIME);
   const [isReciting, setIsReciting] = useState(false);
 
@@ -49,18 +49,22 @@ export default function Step2() {
     <div className="space-y-8">
       {/* Title */}
       <div>
-        <h2 className="text-2xl font-bold text-gold mb-2">全球啟動流程 · 步驟二</h2>
-        <p className="text-muted-foreground">授權誓讀</p>
+        <h2 className="text-2xl font-bold text-gold mb-2">{t.step2.title}</h2>
+        <p className="text-muted-foreground">{t.step2.subtitle}</p>
       </div>
 
       {/* Oath Text */}
       <div className="sacred-card p-8 space-y-6">
-        <h3 className="text-lg font-semibold text-gold text-center">主頻啟令誓文</h3>
-
-        <div className="bg-purple-mid/50 rounded-lg p-6 border border-gold-dim/30">
-          <p className="text-center text-lg leading-relaxed whitespace-pre-line font-serif text-gold">
-            {OATH_TEXT}
-          </p>
+        <div className="space-y-4">
+          <p className="text-muted-foreground text-center">{t.step2.instruction1}</p>
+          <h3 className="text-lg font-semibold text-gold text-center">{t.step2.oathProclamationTitle}</h3>
+          <div className="bg-purple-mid/50 rounded-lg p-6 border border-gold-dim/30">
+            <p className="text-center text-lg leading-relaxed whitespace-pre-line font-serif text-gold">
+              {t.step2.oathProclamation}
+            </p>
+          </div>
+          <p className="text-muted-foreground text-center">{t.step2.instruction2}</p>
+          <p className="text-muted-foreground text-center">{t.step2.instruction3}</p>
         </div>
 
         {/* Meditation Timer */}
@@ -70,7 +74,7 @@ export default function Step2() {
               onClick={handleStartReciting}
               className="w-full btn-gold-glow"
             >
-              開始靜心誦讀
+              {t.step2.reciteButton}
             </Button>
           ) : (
             <div className="flex flex-col items-center gap-4">
@@ -78,7 +82,7 @@ export default function Step2() {
                 {timeLeft}
               </div>
               <p className="text-center text-muted-foreground">
-                靜心誦讀 {MEDITATION_TIME} 秒
+                {t.step2.countdownText.replace('{countdown}', String(timeLeft))}
               </p>
 
               {/* Progress Bar */}
@@ -93,9 +97,9 @@ export default function Step2() {
 
               {state.oathRecited && (
                 <div className="text-center">
-                  <p className="text-green-ok font-semibold mb-2">✓ 誦讀完成</p>
+                  <p className="text-green-ok font-semibold mb-2">✓ {t.step2.recitationComplete}</p>
                   <p className="text-xs text-muted-foreground">
-                    誓文已銘刻於心
+                    {t.step2.recitationCompleteHint}
                   </p>
                 </div>
               )}
@@ -106,7 +110,7 @@ export default function Step2() {
                   variant="outline"
                   className="w-full"
                 >
-                  取消
+                  {t.step2.cancelButton}
                 </Button>
               )}
             </div>
@@ -121,14 +125,14 @@ export default function Step2() {
           disabled={!state.oathRecited}
           className="flex-1 btn-gold-glow"
         >
-          進入下一步驟
+          {t.step2.proceedButton}
         </Button>
       </div>
 
       {/* Status Info */}
       <div className="text-xs text-muted-foreground text-center">
         {!state.oathRecited && (
-          <p>請完成靜心誦讀後才能繼續</p>
+          <p>{t.step2.instruction2}</p>
         )}
       </div>
     </div>

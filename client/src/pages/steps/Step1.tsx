@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { useAppState } from '@/contexts/AppContext';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { content } from '@/locales/content';
 
 export default function Step1() {
   const { state, updateConditions, setQRScanned, setCurrentStep } = useAppState();
+  const { language } = state;
+  const t = content[language];
   const [isScanning, setIsScanning] = useState(false);
 
   const canProceed =
@@ -31,13 +34,13 @@ export default function Step1() {
     <div className="space-y-8">
       {/* Title */}
       <div>
-        <h2 className="text-2xl font-bold text-gold mb-2">全球啟動流程 · 步驟一</h2>
-        <p className="text-muted-foreground">啟動條件</p>
+        <h2 className="text-2xl font-bold text-gold mb-2">{t.step1.title}</h2>
+        <p className="text-muted-foreground">{t.step1.subtitle}</p>
       </div>
 
       {/* Prerequisites */}
       <div className="sacred-card p-6 space-y-4">
-        <h3 className="text-lg font-semibold text-gold">前置條件</h3>
+        <h3 className="text-lg font-semibold text-gold">{t.step1.prerequisitesTitle}</h3>
 
         <div className="space-y-3">
           <div className="flex items-center gap-3">
@@ -52,7 +55,7 @@ export default function Step1() {
               htmlFor="purchase-code"
               className="text-sm cursor-pointer flex-1"
             >
-              已完成驗證之購書序號誓導碼
+              {t.step1.purchaseCodeVerified}
             </label>
           </div>
 
@@ -65,7 +68,7 @@ export default function Step1() {
               }
             />
             <label htmlFor="network" className="text-sm cursor-pointer flex-1">
-              穩定網路環境
+              {t.step1.networkStable}
             </label>
           </div>
         </div>
@@ -73,7 +76,7 @@ export default function Step1() {
 
       {/* QR Code Scanning */}
       <div className="sacred-card p-6 space-y-4">
-        <h3 className="text-lg font-semibold text-gold">誓導 QR Code 掃描</h3>
+        <h3 className="text-lg font-semibold text-gold">{t.step1.qrScanTitle}</h3>
 
         <div className="flex flex-col items-center justify-center py-8 border-2 border-dashed border-gold-dim rounded-lg">
           {state.qrScanned ? (
@@ -91,13 +94,13 @@ export default function Step1() {
                 alt="誓導 QR Code"
                 className="w-48 h-48 mx-auto border-2 border-gold rounded-lg"
               />
-              <p className="text-muted-foreground text-sm">請使用手機相機掃描此 QR Code</p>
+              <p className="text-muted-foreground text-sm">{t.step1.qrScanInstruction}</p>
               <Button
                 onClick={handleQRScan}
                 disabled={isScanning}
                 className="btn-gold-glow"
               >
-                {isScanning ? '掃描中...' : '確認掃描完成'}
+                {isScanning ? '掃描中...' : t.step1.qrScanButton}
               </Button>
             </div>
           )}
@@ -111,7 +114,7 @@ export default function Step1() {
           disabled={!canProceed}
           className="flex-1 btn-gold-glow"
         >
-          進入下一步驟
+          {t.step1.proceedButton}
         </Button>
       </div>
 
@@ -119,7 +122,7 @@ export default function Step1() {
       <div className="text-xs text-muted-foreground text-center">
         {!canProceed && (
           <p>
-            請完成所有條件並掃描 QR Code 後才能繼續
+            {t.step1.statusInfo}
           </p>
         )}
       </div>

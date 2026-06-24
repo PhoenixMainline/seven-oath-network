@@ -7,6 +7,8 @@ export type StepType = 1 | 2 | 3 | 4 | 5;
 
 export type SealStatus = 'inactive' | 'active' | 'completed';
 
+export type Language = 'zh' | 'en';
+
 export interface AppState {
   currentStep: StepType;
   conditions: {
@@ -21,6 +23,7 @@ export interface AppState {
   seals: {
     [key: number]: SealStatus;
   };
+  language: Language;
 }
 
 export interface Seal {

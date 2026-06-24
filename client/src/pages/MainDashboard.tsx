@@ -2,8 +2,13 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SEALS } from '@/types';
+import { content } from '@/locales/content';
+import { useAppState } from '@/contexts/AppContext';
 
 export default function MainDashboard() {
+  const { state } = useAppState();
+  const { language } = state;
+  const t = content[language];
   const [activeTab, setActiveTab] = useState('seals');
 
   const completedSeals = SEALS.filter((s) => s.status === 'completed').length;
@@ -17,10 +22,10 @@ export default function MainDashboard() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-gold">七印誓網</h1>
-              <p className="text-sm text-muted-foreground">印階進度</p>
+              <p className="text-sm text-muted-foreground">{t.mainDashboard.overallProgress}</p>
             </div>
             <Button variant="outline" className="text-xs">
-              個人頁面
+              {t.mainDashboard.personalPage}
             </Button>
           </div>
         </div>
@@ -31,11 +36,11 @@ export default function MainDashboard() {
         <div className="container max-w-4xl">
           {/* Progress Overview */}
           <div className="sacred-card p-8 mb-8">
-            <h2 className="text-xl font-bold text-gold mb-6">整體進度</h2>
+            <h2 className="text-xl font-bold text-gold mb-6">{t.mainDashboard.overallProgress}</h2>
 
             <div className="mb-6">
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm text-muted-foreground">完成進度</span>
+                <span className="text-sm text-muted-foreground">{t.mainDashboard.completionProgress}</span>
                 <span className="text-lg font-bold text-cyan">{progressPercentage.toFixed(0)}%</span>
               </div>
               <div className="progress-gold">
@@ -49,15 +54,15 @@ export default function MainDashboard() {
             <div className="grid grid-cols-3 gap-4">
               <div className="text-center">
                 <p className="text-3xl font-bold text-green-ok">{completedSeals}</p>
-                <p className="text-xs text-muted-foreground">已完成</p>
+                <p className="text-xs text-muted-foreground">{t.mainDashboard.completed}</p>
               </div>
               <div className="text-center">
                 <p className="text-3xl font-bold text-cyan">{SEALS.length - completedSeals}</p>
-                <p className="text-xs text-muted-foreground">進行中</p>
+                <p className="text-xs text-muted-foreground">{t.mainDashboard.inProgress}</p>
               </div>
               <div className="text-center">
                 <p className="text-3xl font-bold text-gold">{SEALS.length}</p>
-                <p className="text-xs text-muted-foreground">總計</p>
+                <p className="text-xs text-muted-foreground">{t.mainDashboard.total}</p>
               </div>
             </div>
           </div>
@@ -65,9 +70,9 @@ export default function MainDashboard() {
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="grid w-full grid-cols-3 mb-8">
-              <TabsTrigger value="seals">七印進度</TabsTrigger>
-              <TabsTrigger value="resources">天庫資糧</TabsTrigger>
-              <TabsTrigger value="oaths">誓文資料庫</TabsTrigger>
+              <TabsTrigger value="seals">{t.mainDashboard.sevenSealsProgress}</TabsTrigger>
+              <TabsTrigger value="resources">{t.mainDashboard.heavenlyTreasury}</TabsTrigger>
+              <TabsTrigger value="oaths">{t.mainDashboard.oathDatabase}</TabsTrigger>
             </TabsList>
 
             {/* Seven Seals Tab */}
@@ -90,9 +95,9 @@ export default function MainDashboard() {
                         </div>
                         <div>
                           <h3 className="text-lg font-semibold text-gold">
-                            {seal.chineseName}
+                            {t.seals[seal.id - 1].name}
                           </h3>
-                          <p className="text-xs text-muted-foreground">{seal.name}</p>
+                          <p className="text-xs text-muted-foreground">{t.seals[seal.id - 1].description}</p>
                         </div>
                       </div>
                       <p className="text-sm text-muted-foreground">
@@ -110,9 +115,9 @@ export default function MainDashboard() {
                         }`}
                       >
                         {seal.status === 'completed'
-                          ? '已通過'
+                          ? t.mainDashboard.completed
                           : seal.status === 'active'
-                          ? '進行中'
+                          ? t.mainDashboard.inProgress
                           : '未啟動'}
                       </span>
                     </div>
@@ -124,9 +129,9 @@ export default function MainDashboard() {
             {/* Resources Tab */}
             <TabsContent value="resources">
               <div className="sacred-card p-8 text-center space-y-6">
-                <h3 className="text-xl font-bold text-gold">天庫資糧 · 誓資狀態</h3>
+                <h3 className="text-xl font-bold text-gold">{t.mainDashboard.heavenlyTreasury}</h3>
                 <div className="text-6xl font-bold text-cyan">78%</div>
-                <p className="text-muted-foreground">誓資能量值</p>
+                <p className="text-muted-foreground">{t.mainDashboard.heavenlyTreasuryEnergy}</p>
                 <div className="space-y-2">
                   <p className="text-sm text-green-ok">✓ 撥補通道已開啟</p>
                   <p className="text-xs text-muted-foreground">
@@ -139,7 +144,8 @@ export default function MainDashboard() {
             {/* Oaths Tab */}
             <TabsContent value="oaths">
               <div className="sacred-card p-8">
-                <h3 className="text-xl font-bold text-gold mb-6">誓文資料庫</h3>
+                <h3 className="text-xl font-bold text-gold mb-6">{t.mainDashboard.oathDatabaseTitle}</h3>
+                <p className="text-muted-foreground mb-6">{t.mainDashboard.oathDatabaseDescription}</p>
                 <div className="space-y-4">
                   {SEALS.map((seal) => (
                     <div
@@ -147,12 +153,12 @@ export default function MainDashboard() {
                       className="border border-gold-dim/30 rounded-lg p-4 hover:border-gold transition-colors"
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-gold">{seal.chineseName}</h4>
+                        <h4 className="font-semibold text-gold">{t.seals[seal.id - 1].name}</h4>
                         <Button variant="ghost" size="sm" className="text-xs">
-                          已誦讀
+                          {t.mainDashboard.completed}
                         </Button>
                       </div>
-                      <p className="text-xs text-muted-foreground">{seal.description}</p>
+                      <p className="text-xs text-muted-foreground">{t.seals[seal.id - 1].description}</p>
                     </div>
                   ))}
                 </div>
