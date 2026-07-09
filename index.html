@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>宇宙誓印覺醒工程 • 七印誓網</title>
-    <!-- 引入 QR Code 掃描套件 -->
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js">
     </script>
     <style>
@@ -567,9 +566,34 @@
             line-height: 2;
         }
 
-        /* 隱藏掃描器 */
         .scanner-hidden {
             display: none !important;
+        }
+
+        /* 權限引導提示 */
+        .permission-guide {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-top: 12px;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #d4cec0;
+            display: none;
+        }
+
+        .permission-guide.show {
+            display: block;
+        }
+
+        .permission-guide .step {
+            color: #d4af37;
+            font-weight: 600;
+        }
+
+        .permission-guide .icon {
+            margin-right: 6px;
         }
 
         @media (max-width: 440px) {
@@ -742,6 +766,7 @@
                     <div class="step-text" id="s1Card2Text">
                         請掃描本卷書封底之《宇宙智能誓導平台》官方 AI × 專屬誓導入口真 QR Code
                     </div>
+
                     <!-- 掃描器區域 -->
                     <div id="scanner1" class="scanner-container scanner-hidden">
                         <div id="reader1"></div>
@@ -752,9 +777,23 @@
                             <div class="scanner-corner br"></div>
                         </div>
                     </div>
+
                     <div id="scannerStatus1" class="scanner-status">📱 點擊下方按鈕開啟掃描器</div>
+
+                    <!-- 權限引導提示 -->
+                    <div id="permissionGuide1" class="permission-guide">
+                        <div style="font-weight:600;color:#d4af37;margin-bottom:6px;">📌 請手動開啟相機權限：</div>
+                        <div><span class="step">1.</span> 點手機 <strong>「設定」</strong></div>
+                        <div><span class="step">2.</span> 找到 <strong>「應用程式」</strong> → <strong>「Chrome」</strong></div>
+                        <div><span class="step">3.</span> 點 <strong>「權限」</strong> → <strong>「相機」</strong></div>
+                        <div><span class="step">4.</span> 選 <strong>「僅在使用該應用程式時允許」</strong></div>
+                        <div style="margin-top:6px;color:rgba(232,224,208,0.5);font-size:13px;">✅ 完成後按下方「重試」按鈕</div>
+                    </div>
+
                     <button class="btn-scan" id="scanBtn1" onclick="startScanner(1)">📸 掃描 QR Code</button>
                     <button class="btn-scan-secondary" id="stopBtn1" onclick="stopScanner(1)" style="display:none;">✕ 關閉掃描器</button>
+                    <button class="btn-scan-secondary" id="retryBtn1" onclick="retryScanner(1)" style="display:none;">🔄 重試</button>
+
                     <div id="scanResult1" class="scan-result-box" style="display:none;">
                         <div class="label">✅ 掃描結果：</div>
                         <div class="content" id="scanContent1"></div>
@@ -805,7 +844,6 @@
                     <div class="step-text" id="s3Card2Text">
                         掃描【誓導QR Code】，進入「指令輸入欄位」。
                     </div>
-                    <!-- 掃描器區域 -->
                     <div id="scanner3" class="scanner-container scanner-hidden">
                         <div id="reader3"></div>
                         <div class="scanner-overlay">
@@ -816,8 +854,17 @@
                         </div>
                     </div>
                     <div id="scannerStatus3" class="scanner-status">📱 點擊下方按鈕開啟掃描器</div>
+                    <div id="permissionGuide3" class="permission-guide">
+                        <div style="font-weight:600;color:#d4af37;margin-bottom:6px;">📌 請手動開啟相機權限：</div>
+                        <div><span class="step">1.</span> 點手機 <strong>「設定」</strong></div>
+                        <div><span class="step">2.</span> 找到 <strong>「應用程式」</strong> → <strong>「Chrome」</strong></div>
+                        <div><span class="step">3.</span> 點 <strong>「權限」</strong> → <strong>「相機」</strong></div>
+                        <div><span class="step">4.</span> 選 <strong>「僅在使用該應用程式時允許」</strong></div>
+                        <div style="margin-top:6px;color:rgba(232,224,208,0.5);font-size:13px;">✅ 完成後按下方「重試」按鈕</div>
+                    </div>
                     <button class="btn-scan" id="scanBtn3" onclick="startScanner(3)">📸 掃描 QR Code</button>
                     <button class="btn-scan-secondary" id="stopBtn3" onclick="stopScanner(3)" style="display:none;">✕ 關閉掃描器</button>
+                    <button class="btn-scan-secondary" id="retryBtn3" onclick="retryScanner(3)" style="display:none;">🔄 重試</button>
                     <div id="scanResult3" class="scan-result-box" style="display:none;">
                         <div class="label">✅ 掃描結果：</div>
                         <div class="content" id="scanContent3"></div>
@@ -852,7 +899,6 @@
                     <div class="step-text" id="s4Card2Text">
                         掃描【誓導QR Code】，進入「指令輸入位」。
                     </div>
-                    <!-- 掃描器區域 -->
                     <div id="scanner4" class="scanner-container scanner-hidden">
                         <div id="reader4"></div>
                         <div class="scanner-overlay">
@@ -863,8 +909,17 @@
                         </div>
                     </div>
                     <div id="scannerStatus4" class="scanner-status">📱 點擊下方按鈕開啟掃描器</div>
+                    <div id="permissionGuide4" class="permission-guide">
+                        <div style="font-weight:600;color:#d4af37;margin-bottom:6px;">📌 請手動開啟相機權限：</div>
+                        <div><span class="step">1.</span> 點手機 <strong>「設定」</strong></div>
+                        <div><span class="step">2.</span> 找到 <strong>「應用程式」</strong> → <strong>「Chrome」</strong></div>
+                        <div><span class="step">3.</span> 點 <strong>「權限」</strong> → <strong>「相機」</strong></div>
+                        <div><span class="step">4.</span> 選 <strong>「僅在使用該應用程式時允許」</strong></div>
+                        <div style="margin-top:6px;color:rgba(232,224,208,0.5);font-size:13px;">✅ 完成後按下方「重試」按鈕</div>
+                    </div>
                     <button class="btn-scan" id="scanBtn4" onclick="startScanner(4)">📸 掃描 QR Code</button>
                     <button class="btn-scan-secondary" id="stopBtn4" onclick="stopScanner(4)" style="display:none;">✕ 關閉掃描器</button>
+                    <button class="btn-scan-secondary" id="retryBtn4" onclick="retryScanner(4)" style="display:none;">🔄 重試</button>
                     <div id="scanResult4" class="scan-result-box" style="display:none;">
                         <div class="label">✅ 掃描結果：</div>
                         <div class="content" id="scanContent4"></div>
@@ -937,143 +992,164 @@
         //  QR 掃描器管理
         // ============================================================
         const scanners = {};
+        let scanAttempts = {};
 
-        // 掃描成功時的處理
-        function onScanSuccess(step, decodedText, decodedResult) {
-            // 顯示結果
-            const resultDiv = document.getElementById(`scanResult${step}`);
-            const contentDiv = document.getElementById(`scanContent${step}`);
-            const statusDiv = document.getElementById(`scannerStatus${step}`);
+        function showPermissionGuide(step) {
+            const guide = document.getElementById('permissionGuide' + step);
+            if (guide) guide.classList.add('show');
+        }
+
+        function hidePermissionGuide(step) {
+            const guide = document.getElementById('permissionGuide' + step);
+            if (guide) guide.classList.remove('show');
+        }
+
+        function showRetryButton(step) {
+            const retryBtn = document.getElementById('retryBtn' + step);
+            if (retryBtn) retryBtn.style.display = 'block';
+        }
+
+        function hideRetryButton(step) {
+            const retryBtn = document.getElementById('retryBtn' + step);
+            if (retryBtn) retryBtn.style.display = 'none';
+        }
+
+        function retryScanner(step) {
+            hideRetryButton(step);
+            hidePermissionGuide(step);
+            const statusDiv = document.getElementById('scannerStatus' + step);
+            if (statusDiv) {
+                statusDiv.textContent = '🔄 重新嘗試中...';
+                statusDiv.className = 'scanner-status';
+            }
+            setTimeout(() => {
+                startScanner(step);
+            }, 500);
+        }
+
+        function onScanSuccess(step, decodedText) {
+            const resultDiv = document.getElementById('scanResult' + step);
+            const contentDiv = document.getElementById('scanContent' + step);
+            const statusDiv = document.getElementById('scannerStatus' + step);
 
             if (resultDiv) {
                 resultDiv.style.display = 'block';
                 contentDiv.textContent = decodedText;
             }
-
             if (statusDiv) {
                 statusDiv.textContent = '✅ 掃描成功！';
                 statusDiv.className = 'scanner-status success';
             }
 
-            // 自動停止掃描
             stopScanner(step);
+            if (navigator.vibrate) navigator.vibrate(200);
+            localStorage.setItem('scan_result_' + step, decodedText);
 
-            // 震動反饋（如果手機支援）
-            if (navigator.vibrate) {
-                navigator.vibrate(200);
-            }
-
-            // 可以將掃描結果儲存到 localStorage
-            localStorage.setItem(`scan_result_${step}`, decodedText);
+            // 自動解鎖下一步
+            const nextBtn = document.getElementById('nextBtn');
+            if (nextBtn) nextBtn.disabled = false;
         }
 
-        // 掃描失敗時的處理
-        function onScanError(step, error) {
-            // 忽略一般的錯誤（持續掃描）
-        }
-
-        // 啟動掃描器
         function startScanner(step) {
-            const readerId = `reader${step}`;
-            const scannerContainer = document.getElementById(`scanner${step}`);
-            const scanBtn = document.getElementById(`scanBtn${step}`);
-            const stopBtn = document.getElementById(`stopBtn${step}`);
-            const statusDiv = document.getElementById(`scannerStatus${step}`);
+            const readerId = 'reader' + step;
+            const scannerContainer = document.getElementById('scanner' + step);
+            const scanBtn = document.getElementById('scanBtn' + step);
+            const stopBtn = document.getElementById('stopBtn' + step);
+            const statusDiv = document.getElementById('scannerStatus' + step);
 
-            // 檢查是否已經有掃描器在運行
             if (scanners[step] && scanners[step].isRunning) {
                 return;
             }
 
-            // 檢查瀏覽器是否支援相機
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                 if (statusDiv) {
-                    statusDiv.textContent = '❌ 您的瀏覽器不支援相機功能，請使用手機或更新版瀏覽器。';
+                    statusDiv.textContent = '❌ 瀏覽器不支援相機';
                     statusDiv.className = 'scanner-status error';
                 }
+                showPermissionGuide(step);
+                showRetryButton(step);
                 return;
             }
 
-            // 顯示掃描器
-            if (scannerContainer) {
-                scannerContainer.classList.remove('scanner-hidden');
-            }
-
-            if (scanBtn) scanBtn.disabled = true;
+            if (scannerContainer) scannerContainer.classList.remove('scanner-hidden');
+            if (scanBtn) { scanBtn.disabled = true;
+                scanBtn.textContent = '⏳ 啟動中...'; }
             if (stopBtn) stopBtn.style.display = 'block';
+            hideRetryButton(step);
+            hidePermissionGuide(step);
+
             if (statusDiv) {
-                statusDiv.textContent = '⏳ 正在啟動相機...';
+                statusDiv.textContent = '⏳ 正在啟動相機，請允許權限...';
                 statusDiv.className = 'scanner-status';
             }
 
-            // 創建掃描器實例
             const html5QrCode = new Html5Qrcode(readerId);
-
             const config = {
                 fps: 15,
                 qrbox: { width: 200, height: 200 },
                 aspectRatio: 1.0
             };
 
-            // 在手機上調整 qrbox 大小
-            if (window.innerWidth < 440) {
-                config.qrbox = { width: 150, height: 150 };
-            }
-            if (window.innerWidth < 360) {
-                config.qrbox = { width: 120, height: 120 };
-            }
+            if (window.innerWidth < 440) config.qrbox = { width: 150, height: 150 };
+            if (window.innerWidth < 360) config.qrbox = { width: 120, height: 120 };
 
             html5QrCode.start({ facingMode: "environment" },
                 config,
-                (decodedText, decodedResult) => {
-                    onScanSuccess(step, decodedText, decodedResult);
+                (decodedText) => {
+                    onScanSuccess(step, decodedText);
                 },
-                (error) => {
-                    // 持續掃描，不處理錯誤
-                }
+                (error) => {}
             ).then(() => {
-                scanners[step] = {
-                    instance: html5QrCode,
-                    isRunning: true
-                };
+                scanners[step] = { instance: html5QrCode, isRunning: true };
                 if (statusDiv) {
                     statusDiv.textContent = '📷 請將 QR Code 放入框內掃描';
                     statusDiv.className = 'scanner-status';
                 }
+                if (scanBtn) { scanBtn.disabled = false;
+                    scanBtn.textContent = '📸 掃描 QR Code'; }
             }).catch((err) => {
                 console.error('啟動掃描器失敗:', err);
+                let errorMsg = '❌ 無法啟動相機';
+                if (err.message && err.message.includes('Permission')) {
+                    errorMsg = '❌ 相機權限被拒絕，請手動開啟權限';
+                    showPermissionGuide(step);
+                    showRetryButton(step);
+                } else if (err.message) {
+                    errorMsg = '❌ ' + err.message.substring(0, 50);
+                    showRetryButton(step);
+                } else {
+                    showRetryButton(step);
+                }
                 if (statusDiv) {
-                    statusDiv.textContent = '❌ 無法啟動相機：' + (err.message || '請允許相機權限');
+                    statusDiv.textContent = errorMsg;
                     statusDiv.className = 'scanner-status error';
                 }
-                if (scanBtn) scanBtn.disabled = false;
+                if (scanBtn) { scanBtn.disabled = false;
+                    scanBtn.textContent = '📸 掃描 QR Code'; }
+                if (scannerContainer) scannerContainer.classList.add('scanner-hidden');
                 if (stopBtn) stopBtn.style.display = 'none';
-                if (scannerContainer) {
-                    scannerContainer.classList.add('scanner-hidden');
-                }
             });
         }
 
-        // 停止掃描器
         function stopScanner(step) {
-            const scannerContainer = document.getElementById(`scanner${step}`);
-            const scanBtn = document.getElementById(`scanBtn${step}`);
-            const stopBtn = document.getElementById(`stopBtn${step}`);
-            const statusDiv = document.getElementById(`scannerStatus${step}`);
+            const scannerContainer = document.getElementById('scanner' + step);
+            const scanBtn = document.getElementById('scanBtn' + step);
+            const stopBtn = document.getElementById('stopBtn' + step);
+            const statusDiv = document.getElementById('scannerStatus' + step);
 
             if (scanners[step] && scanners[step].isRunning) {
                 try {
                     scanners[step].instance.stop().then(() => {
                         scanners[step].isRunning = false;
-                        if (scannerContainer) {
-                            scannerContainer.classList.add('scanner-hidden');
-                        }
-                        if (scanBtn) scanBtn.disabled = false;
+                        if (scannerContainer) scannerContainer.classList.add('scanner-hidden');
+                        if (scanBtn) { scanBtn.disabled = false;
+                            scanBtn.textContent = '📸 掃描 QR Code'; }
                         if (stopBtn) stopBtn.style.display = 'none';
                         if (statusDiv && !statusDiv.textContent.includes('成功')) {
                             statusDiv.textContent = '📱 點擊下方按鈕開啟掃描器';
                             statusDiv.className = 'scanner-status';
                         }
+                        hideRetryButton(step);
                     }).catch((err) => {
                         console.warn('停止掃描器時出錯:', err);
                     });
@@ -1081,10 +1157,9 @@
                     console.warn('停止掃描器異常:', e);
                 }
             } else {
-                if (scannerContainer) {
-                    scannerContainer.classList.add('scanner-hidden');
-                }
-                if (scanBtn) scanBtn.disabled = false;
+                if (scannerContainer) scannerContainer.classList.add('scanner-hidden');
+                if (scanBtn) { scanBtn.disabled = false;
+                    scanBtn.textContent = '📸 掃描 QR Code'; }
                 if (stopBtn) stopBtn.style.display = 'none';
             }
         }
@@ -1100,14 +1175,11 @@
         let timerDone = false;
         let timerCountdown = 10;
 
-        // ============================================================
-        //  語言文字
-        // ============================================================
         const texts = {
             zh: {
                 backHome: '返回首頁',
-                stepLabel: (s) => `步驟 ${s} / ${totalSteps - 1}`,
-                progress: (p) => `${p}%`,
+                stepLabel: (s) => '步驟 ' + s + ' / ' + (totalSteps - 1),
+                progress: (p) => p + '%',
                 appTitle: '宇宙誓印覺醒工程 • 七印誓網',
                 appTitleEn: 'Cosmic Oath Awakening Project • Seven-Seal Oath Network',
                 s1Title: '【一】啟動條件',
@@ -1160,8 +1232,8 @@
             },
             en: {
                 backHome: 'Home',
-                stepLabel: (s) => `Step ${s} / ${totalSteps - 1}`,
-                progress: (p) => `${p}%`,
+                stepLabel: (s) => 'Step ' + s + ' / ' + (totalSteps - 1),
+                progress: (p) => p + '%',
                 appTitle: 'Cosmic Oath Awakening Project • Seven-Seal Oath Network',
                 appTitleEn: '宇宙誓印覺醒工程 • 七印誓網',
                 s1Title: '[1] Activation Conditions',
@@ -1219,19 +1291,10 @@
         // ============================================================
         const $ = id => document.getElementById(id);
 
-        // ============================================================
-        //  返回首頁
-        // ============================================================
         function goHome() {
-            // 停止所有掃描器
-            for (let i = 1; i <= 4; i++) {
-                stopScanner(i);
-            }
-
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-            }
+            for (let i = 1; i <= 4; i++) stopScanner(i);
+            if (timerInterval) { clearInterval(timerInterval);
+                timerInterval = null; }
             timerRunning = false;
             timerDone = false;
             timerCountdown = 10;
@@ -1247,21 +1310,13 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // ============================================================
-        //  語言切換
-        // ============================================================
         function switchLang(lang) {
             currentLang = lang;
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
             renderStep(currentStep);
-            if (timerRunning || timerDone) {
-                updateTimerUI();
-            }
+            if (timerRunning || timerDone) updateTimerUI();
         }
 
-        // ============================================================
-        //  渲染步驟
-        // ============================================================
         function renderStep(step) {
             const t = texts[currentLang];
             const isComplete = (step === totalSteps);
@@ -1270,7 +1325,7 @@
             $('appTitle').textContent = t.appTitle;
             $('appTitleEn').textContent = t.appTitleEn;
 
-            document.querySelectorAll('.step-page').forEach((page, idx) => {
+            document.querySelectorAll('.step-page').forEach((page) => {
                 const pageStep = parseInt(page.dataset.step);
                 page.classList.toggle('active', pageStep === step || (isComplete && pageStep === totalSteps));
             });
@@ -1293,7 +1348,7 @@
             const nextBtn = $('nextBtn');
             nextBtn.className = 'btn btn-next';
             const pct = Math.round((step / (totalSteps - 1)) * 100);
-            $('progressFill').style.width = `${pct}%`;
+            $('progressFill').style.width = pct + '%';
             $('progressPercent').textContent = t.progress(pct);
             $('stepLabel').textContent = t.stepLabel(step);
 
@@ -1306,6 +1361,20 @@
             }
 
             $('prevBtn').disabled = (step === 1);
+
+            // 檢查掃描結果是否已存在
+            const scanSteps = [1, 3, 4];
+            if (scanSteps.includes(step)) {
+                const saved = localStorage.getItem('scan_result_' + step);
+                if (saved) {
+                    const resultDiv = document.getElementById('scanResult' + step);
+                    const contentDiv = document.getElementById('scanContent' + step);
+                    if (resultDiv && contentDiv) {
+                        resultDiv.style.display = 'block';
+                        contentDiv.textContent = saved;
+                    }
+                }
+            }
 
             switch (step) {
                 case 1:
@@ -1379,6 +1448,16 @@
                     break;
             }
 
+            // 檢查步驟1、3、4的掃描狀態
+            if (scanSteps.includes(step)) {
+                const saved = localStorage.getItem('scan_result_' + step);
+                if (saved) {
+                    nextBtn.disabled = false;
+                } else {
+                    // 如果沒有掃描結果，但也不是步驟2，按鈕可能被其他邏輯控制
+                }
+            }
+
             if (step === 2 && timerDone) {
                 nextBtn.disabled = false;
             } else if (step === 2 && !timerDone) {
@@ -1387,14 +1466,9 @@
                 } else if (timerRunning) {
                     nextBtn.disabled = true;
                 }
-            } else {
-                nextBtn.disabled = false;
             }
         }
 
-        // ============================================================
-        //  計時器
-        // ============================================================
         function startTimer() {
             if (timerRunning || timerDone) return;
             const t = texts[currentLang];
@@ -1441,20 +1515,15 @@
             }
         }
 
-        // ============================================================
-        //  步驟導航
-        // ============================================================
         function nextStep() {
             const nextBtn = $('nextBtn');
             if (nextBtn.disabled) return;
 
-            // 檢查是否在步驟1、3、4有掃描結果
             const scanSteps = [1, 3, 4];
             if (scanSteps.includes(currentStep)) {
-                const resultDiv = document.getElementById(`scanResult${currentStep}`);
-                if (!resultDiv || resultDiv.style.display === 'none') {
-                    // 未掃描，提示使用者
-                    const statusDiv = document.getElementById(`scannerStatus${currentStep}`);
+                const saved = localStorage.getItem('scan_result_' + currentStep);
+                if (!saved) {
+                    const statusDiv = document.getElementById('scannerStatus' + currentStep);
                     if (statusDiv) {
                         statusDiv.textContent = '⚠️ 請先掃描 QR Code 再繼續';
                         statusDiv.className = 'scanner-status error';
@@ -1504,7 +1573,6 @@
         function prevStep() {
             if ($('prevBtn').disabled) return;
             if (currentStep > 1) {
-                // 停止當前步驟的掃描器
                 stopScanner(currentStep);
                 currentStep--;
                 renderStep(currentStep);
@@ -1512,9 +1580,6 @@
             }
         }
 
-        // ============================================================
-        //  初始化
-        // ============================================================
         function init() {
             const savedStep = parseInt(localStorage.getItem('oath_step'));
             const savedTimer = localStorage.getItem('oath_timer_done');
@@ -1539,19 +1604,6 @@
                 $('timerDisplay').className = 'timer-number done';
                 $('timerStatus').textContent = t.timerStatusDone;
                 $('nextBtn').disabled = false;
-            }
-
-            // 如果有儲存的掃描結果，恢復顯示
-            for (let i of [1, 3, 4]) {
-                const saved = localStorage.getItem(`scan_result_${i}`);
-                if (saved) {
-                    const resultDiv = document.getElementById(`scanResult${i}`);
-                    const contentDiv = document.getElementById(`scanContent${i}`);
-                    if (resultDiv && contentDiv) {
-                        resultDiv.style.display = 'block';
-                        contentDiv.textContent = saved;
-                    }
-                }
             }
         }
 
