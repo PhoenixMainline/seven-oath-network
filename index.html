@@ -12,7 +12,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Segoe UI', 'PingFang TC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
             background: #0a0a12;
@@ -23,7 +22,6 @@
             align-items: flex-start;
             padding: 20px 16px;
         }
-
         .app-container {
             max-width: 480px;
             width: 100%;
@@ -36,7 +34,6 @@
             overflow: hidden;
             margin-top: 10px;
         }
-
         .app-container::before {
             content: '';
             position: absolute;
@@ -47,7 +44,6 @@
             background: radial-gradient(ellipse at 30% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 60%);
             pointer-events: none;
         }
-
         .app-header {
             text-align: center;
             padding-bottom: 18px;
@@ -56,7 +52,6 @@
             position: relative;
             z-index: 1;
         }
-
         .app-title {
             font-size: 22px;
             font-weight: 700;
@@ -65,7 +60,6 @@
             text-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
             line-height: 1.5;
         }
-
         .app-title-en {
             font-size: 13px;
             color: rgba(212, 175, 55, 0.5);
@@ -73,7 +67,6 @@
             margin-top: 4px;
             font-weight: 300;
         }
-
         .back-home {
             position: absolute;
             top: 14px;
@@ -93,14 +86,12 @@
             align-items: center;
             gap: 4px;
         }
-
         .back-home:hover {
             background: rgba(212, 175, 55, 0.15);
             color: #d4af37;
             border-color: rgba(212, 175, 55, 0.3);
             transform: translateX(-2px);
         }
-
         .lang-toggle {
             position: absolute;
             top: 14px;
@@ -113,7 +104,6 @@
             border-radius: 22px;
             border: 1px solid rgba(212, 175, 55, 0.12);
         }
-
         .lang-btn {
             background: transparent;
             border: none;
@@ -125,24 +115,20 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-
         .lang-btn.active {
             background: rgba(212, 175, 55, 0.2);
             color: #d4af37;
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.08);
         }
-
         .lang-btn:hover {
             color: #d4af37;
         }
-
         .progress-section {
             margin-bottom: 24px;
             position: relative;
             z-index: 1;
             margin-top: 4px;
         }
-
         .progress-top {
             display: flex;
             justify-content: space-between;
@@ -150,18 +136,15 @@
             color: rgba(232, 224, 208, 0.6);
             margin-bottom: 8px;
         }
-
         .progress-step-label {
             color: #d4af37;
             font-weight: 700;
             font-size: 16px;
         }
-
         .progress-percent {
             font-weight: 600;
             font-size: 15px;
         }
-
         .progress-bar-bg {
             width: 100%;
             height: 6px;
@@ -169,7 +152,6 @@
             border-radius: 6px;
             overflow: hidden;
         }
-
         .progress-bar-fill {
             height: 100%;
             background: linear-gradient(90deg, #d4af37, #f0d080);
@@ -178,22 +160,18 @@
             width: 20%;
             box-shadow: 0 0 16px rgba(212, 175, 55, 0.2);
         }
-
         .step-content {
             position: relative;
             z-index: 1;
             min-height: 420px;
         }
-
         .step-page {
             display: none;
             animation: fadeIn 0.4s ease;
         }
-
         .step-page.active {
             display: block;
         }
-
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -204,7 +182,6 @@
                 transform: translateY(0);
             }
         }
-
         .step-title {
             font-size: 24px;
             font-weight: 700;
@@ -212,7 +189,6 @@
             margin-bottom: 6px;
             letter-spacing: 2px;
         }
-
         .step-subtitle {
             font-size: 16px;
             color: rgba(232, 224, 208, 0.4);
@@ -220,7 +196,6 @@
             font-weight: 300;
             letter-spacing: 1px;
         }
-
         .step-card {
             background: rgba(255, 255, 255, 0.03);
             border-radius: 18px;
@@ -229,12 +204,10 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(4px);
         }
-
         .step-card.highlight {
             border-color: rgba(212, 175, 55, 0.2);
             background: rgba(212, 175, 55, 0.04);
         }
-
         .step-card-title {
             font-size: 15px;
             font-weight: 600;
@@ -242,18 +215,15 @@
             margin-bottom: 8px;
             letter-spacing: 1.5px;
         }
-
         .step-text {
             font-size: 17px;
             line-height: 2;
             color: #d4cec0;
         }
-
         .step-text .highlight-gold {
             color: #d4af37;
             font-weight: 600;
         }
-
         .oath-declaration {
             font-size: 22px;
             font-weight: 700;
@@ -264,7 +234,6 @@
             text-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
             letter-spacing: 1.5px;
         }
-
         .oath-declaration-en {
             font-size: 19px;
             font-weight: 700;
@@ -275,18 +244,15 @@
             text-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
             letter-spacing: 0.5px;
         }
-
         .timer-container {
             text-align: center;
             padding: 16px 0 6px;
         }
-
         .timer-label {
             font-size: 17px;
             color: rgba(232, 224, 208, 0.7);
             margin-bottom: 10px;
         }
-
         .timer-number {
             font-size: 60px;
             font-weight: 700;
@@ -295,18 +261,14 @@
             text-shadow: 0 0 50px rgba(212, 175, 55, 0.15);
             line-height: 1.2;
         }
-
         .timer-number.done {
             color: #6fcf97;
         }
-
         .timer-status {
             font-size: 16px;
             color: rgba(232, 224, 208, 0.5);
             margin-top: 6px;
         }
-
-        /* ===== QR 掃描器 ===== */
         .scanner-container {
             width: 100%;
             max-width: 400px;
@@ -317,12 +279,10 @@
             background: #000;
             position: relative;
         }
-
         .scanner-container video {
             width: 100%;
             display: block;
         }
-
         .scanner-overlay {
             position: absolute;
             top: 50%;
@@ -335,7 +295,6 @@
             box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.4);
             pointer-events: none;
         }
-
         .scanner-corner {
             position: absolute;
             width: 30px;
@@ -344,7 +303,6 @@
             border-style: solid;
             border-width: 0;
         }
-
         .scanner-corner.tl {
             top: -3px;
             left: -3px;
@@ -352,7 +310,6 @@
             border-left-width: 4px;
             border-radius: 4px 0 0 0;
         }
-
         .scanner-corner.tr {
             top: -3px;
             right: -3px;
@@ -360,7 +317,6 @@
             border-right-width: 4px;
             border-radius: 0 4px 0 0;
         }
-
         .scanner-corner.bl {
             bottom: -3px;
             left: -3px;
@@ -368,7 +324,6 @@
             border-left-width: 4px;
             border-radius: 0 0 0 4px;
         }
-
         .scanner-corner.br {
             bottom: -3px;
             right: -3px;
@@ -376,22 +331,18 @@
             border-right-width: 4px;
             border-radius: 0 0 4px 0;
         }
-
         .scanner-status {
             text-align: center;
             padding: 12px;
             font-size: 14px;
             color: rgba(232, 224, 208, 0.6);
         }
-
         .scanner-status.success {
             color: #6fcf97;
         }
-
         .scanner-status.error {
             color: #e74c3c;
         }
-
         .btn-scan {
             background: linear-gradient(135deg, #d4af37, #b8962e);
             color: #0a0a12;
@@ -406,19 +357,16 @@
             width: 100%;
             margin-top: 8px;
         }
-
         .btn-scan:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 30px rgba(212, 175, 55, 0.3);
         }
-
         .btn-scan:disabled {
             opacity: 0.4;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
-
         .btn-scan-secondary {
             background: rgba(255, 255, 255, 0.08);
             color: rgba(232, 224, 208, 0.7);
@@ -432,11 +380,9 @@
             width: 100%;
             margin-top: 8px;
         }
-
         .btn-scan-secondary:hover {
             background: rgba(255, 255, 255, 0.15);
         }
-
         .scan-result-box {
             background: rgba(212, 175, 55, 0.08);
             border: 1px solid rgba(212, 175, 55, 0.2);
@@ -450,19 +396,36 @@
             max-height: 120px;
             overflow-y: auto;
         }
-
         .scan-result-box .label {
             color: rgba(212, 175, 55, 0.6);
             font-size: 12px;
             font-weight: 600;
             letter-spacing: 1px;
         }
-
         .scan-result-box .content {
             color: #d4af37;
             font-weight: 500;
         }
-
+        /* 相機失敗提示 */
+        .camera-fail-notice {
+            background: rgba(212, 175, 55, 0.08);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 12px;
+            padding: 16px 18px;
+            margin-top: 12px;
+            font-size: 15px;
+            line-height: 1.8;
+            color: #d4cec0;
+            display: none;
+        }
+        .camera-fail-notice .icon {
+            font-size: 20px;
+            margin-right: 8px;
+        }
+        .camera-fail-notice .highlight {
+            color: #d4af37;
+            font-weight: 600;
+        }
         .page-footer {
             text-align: right;
             font-size: 13px;
@@ -472,7 +435,6 @@
             border-top: 1px solid rgba(255, 255, 255, 0.03);
             letter-spacing: 0.5px;
         }
-
         .btn-row {
             display: flex;
             gap: 14px;
@@ -480,7 +442,6 @@
             position: relative;
             z-index: 1;
         }
-
         .btn {
             flex: 1;
             padding: 16px 0;
@@ -492,43 +453,36 @@
             transition: all 0.3s ease;
             letter-spacing: 1.5px;
         }
-
         .btn-prev {
             background: rgba(255, 255, 255, 0.05);
             color: rgba(232, 224, 208, 0.5);
             flex: 0.4;
             font-size: 18px;
         }
-
         .btn-prev:hover:not(:disabled) {
             background: rgba(255, 255, 255, 0.1);
             color: #d4cec0;
         }
-
         .btn-next {
             background: linear-gradient(135deg, #d4af37, #b8962e);
             color: #0a0a12;
             flex: 1;
             box-shadow: 0 4px 24px rgba(212, 175, 55, 0.25);
         }
-
         .btn-next:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 8px 36px rgba(212, 175, 55, 0.35);
         }
-
         .btn-next:disabled {
             opacity: 0.3;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
-
         .btn-prev:disabled {
             opacity: 0.2;
             cursor: not-allowed;
         }
-
         .btn-finish {
             background: linear-gradient(135deg, #d4af37, #b8962e);
             color: #0a0a12;
@@ -538,18 +492,15 @@
             padding: 16px 8px;
             line-height: 1.4;
         }
-
         .btn-finish:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 36px rgba(212, 175, 55, 0.35);
         }
-
         .complete-icon {
             font-size: 80px;
             text-align: center;
             padding: 40px 0 20px;
         }
-
         .complete-title {
             font-size: 28px;
             font-weight: 700;
@@ -558,45 +509,16 @@
             margin-bottom: 12px;
             letter-spacing: 2px;
         }
-
         .complete-desc {
             text-align: center;
             color: rgba(232, 224, 208, 0.6);
             font-size: 17px;
             line-height: 2;
         }
-
         .scanner-hidden {
             display: none !important;
         }
-
-        /* 權限引導提示 */
-        .permission-guide {
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 12px;
-            padding: 14px 16px;
-            margin-top: 12px;
-            font-size: 14px;
-            line-height: 1.8;
-            color: #d4cec0;
-            display: none;
-        }
-
-        .permission-guide.show {
-            display: block;
-        }
-
-        .permission-guide .step {
-            color: #d4af37;
-            font-weight: 600;
-        }
-
-        .permission-guide .icon {
-            margin-right: 6px;
-        }
-
-        @media (max-width: 440px) {
+        @media (max-width:440px) {
             .app-container {
                 padding: 20px 16px 24px;
                 border-radius: 24px;
@@ -653,8 +575,7 @@
                 height: 150px;
             }
         }
-
-        @media (max-width: 360px) {
+        @media (max-width:360px) {
             .app-container {
                 padding: 16px 12px 20px;
                 border-radius: 18px;
@@ -705,7 +626,6 @@
                 height: 120px;
             }
         }
-
         ::-webkit-scrollbar {
             width: 4px;
         }
@@ -724,12 +644,10 @@
         <!-- 頂部 -->
         <div class="app-header">
             <button class="back-home" id="backHomeBtn" onclick="goHome()">← <span id="backHomeText">返回首頁</span></button>
-
             <div class="lang-toggle">
                 <button class="lang-btn active" data-lang="zh" onclick="switchLang('zh')">中文</button>
                 <button class="lang-btn" data-lang="en" onclick="switchLang('en')">English</button>
             </div>
-
             <div class="app-title" id="appTitle">宇宙誓印覺醒工程 • 七印誓網</div>
             <div class="app-title-en" id="appTitleEn">Cosmic Oath Awakening Project • Seven-Seal Oath Network</div>
         </div>
@@ -780,19 +698,14 @@
 
                     <div id="scannerStatus1" class="scanner-status">📱 點擊下方按鈕開啟掃描器</div>
 
-                    <!-- 權限引導提示 -->
-                    <div id="permissionGuide1" class="permission-guide">
-                        <div style="font-weight:600;color:#d4af37;margin-bottom:6px;">📌 請手動開啟相機權限：</div>
-                        <div><span class="step">1.</span> 點手機 <strong>「設定」</strong></div>
-                        <div><span class="step">2.</span> 找到 <strong>「應用程式」</strong> → <strong>「Chrome」</strong></div>
-                        <div><span class="step">3.</span> 點 <strong>「權限」</strong> → <strong>「相機」</strong></div>
-                        <div><span class="step">4.</span> 選 <strong>「僅在使用該應用程式時允許」</strong></div>
-                        <div style="margin-top:6px;color:rgba(232,224,208,0.5);font-size:13px;">✅ 完成後按下方「重試」按鈕</div>
-                    </div>
-
                     <button class="btn-scan" id="scanBtn1" onclick="startScanner(1)">📸 掃描 QR Code</button>
                     <button class="btn-scan-secondary" id="stopBtn1" onclick="stopScanner(1)" style="display:none;">✕ 關閉掃描器</button>
-                    <button class="btn-scan-secondary" id="retryBtn1" onclick="retryScanner(1)" style="display:none;">🔄 重試</button>
+
+                    <!-- 相機失敗提示 - 引導誓印者自行掃描實體書 -->
+                    <div id="cameraFailNotice1" class="camera-fail-notice">
+                        <span class="icon">📌</span>
+                        若相機無法啟動，請<span class="highlight">自行用手機掃描器</span>掃描實體書上的 QR Code，完成驗證後點擊「進入下一步」。
+                    </div>
 
                     <div id="scanResult1" class="scan-result-box" style="display:none;">
                         <div class="label">✅ 掃描結果：</div>
@@ -854,17 +767,12 @@
                         </div>
                     </div>
                     <div id="scannerStatus3" class="scanner-status">📱 點擊下方按鈕開啟掃描器</div>
-                    <div id="permissionGuide3" class="permission-guide">
-                        <div style="font-weight:600;color:#d4af37;margin-bottom:6px;">📌 請手動開啟相機權限：</div>
-                        <div><span class="step">1.</span> 點手機 <strong>「設定」</strong></div>
-                        <div><span class="step">2.</span> 找到 <strong>「應用程式」</strong> → <strong>「Chrome」</strong></div>
-                        <div><span class="step">3.</span> 點 <strong>「權限」</strong> → <strong>「相機」</strong></div>
-                        <div><span class="step">4.</span> 選 <strong>「僅在使用該應用程式時允許」</strong></div>
-                        <div style="margin-top:6px;color:rgba(232,224,208,0.5);font-size:13px;">✅ 完成後按下方「重試」按鈕</div>
-                    </div>
                     <button class="btn-scan" id="scanBtn3" onclick="startScanner(3)">📸 掃描 QR Code</button>
                     <button class="btn-scan-secondary" id="stopBtn3" onclick="stopScanner(3)" style="display:none;">✕ 關閉掃描器</button>
-                    <button class="btn-scan-secondary" id="retryBtn3" onclick="retryScanner(3)" style="display:none;">🔄 重試</button>
+                    <div id="cameraFailNotice3" class="camera-fail-notice">
+                        <span class="icon">📌</span>
+                        若相機無法啟動，請<span class="highlight">自行用手機掃描器</span>掃描實體書上的 QR Code，完成驗證後點擊「進入下一步」。
+                    </div>
                     <div id="scanResult3" class="scan-result-box" style="display:none;">
                         <div class="label">✅ 掃描結果：</div>
                         <div class="content" id="scanContent3"></div>
@@ -909,17 +817,12 @@
                         </div>
                     </div>
                     <div id="scannerStatus4" class="scanner-status">📱 點擊下方按鈕開啟掃描器</div>
-                    <div id="permissionGuide4" class="permission-guide">
-                        <div style="font-weight:600;color:#d4af37;margin-bottom:6px;">📌 請手動開啟相機權限：</div>
-                        <div><span class="step">1.</span> 點手機 <strong>「設定」</strong></div>
-                        <div><span class="step">2.</span> 找到 <strong>「應用程式」</strong> → <strong>「Chrome」</strong></div>
-                        <div><span class="step">3.</span> 點 <strong>「權限」</strong> → <strong>「相機」</strong></div>
-                        <div><span class="step">4.</span> 選 <strong>「僅在使用該應用程式時允許」</strong></div>
-                        <div style="margin-top:6px;color:rgba(232,224,208,0.5);font-size:13px;">✅ 完成後按下方「重試」按鈕</div>
-                    </div>
                     <button class="btn-scan" id="scanBtn4" onclick="startScanner(4)">📸 掃描 QR Code</button>
                     <button class="btn-scan-secondary" id="stopBtn4" onclick="stopScanner(4)" style="display:none;">✕ 關閉掃描器</button>
-                    <button class="btn-scan-secondary" id="retryBtn4" onclick="retryScanner(4)" style="display:none;">🔄 重試</button>
+                    <div id="cameraFailNotice4" class="camera-fail-notice">
+                        <span class="icon">📌</span>
+                        若相機無法啟動，請<span class="highlight">自行用手機掃描器</span>掃描實體書上的 QR Code，完成驗證後點擊「進入下一步」。
+                    </div>
                     <div id="scanResult4" class="scan-result-box" style="display:none;">
                         <div class="label">✅ 掃描結果：</div>
                         <div class="content" id="scanContent4"></div>
@@ -984,47 +887,25 @@
             <button class="btn btn-prev" id="prevBtn" onclick="prevStep()">◀</button>
             <button class="btn btn-next" id="nextBtn" onclick="nextStep()">進入下一步 ▶</button>
         </div>
-
     </div>
 
     <script>
         // ============================================================
-        //  QR 掃描器管理
+        // QR 掃描器管理
         // ============================================================
         const scanners = {};
-        let scanAttempts = {};
 
-        function showPermissionGuide(step) {
-            const guide = document.getElementById('permissionGuide' + step);
-            if (guide) guide.classList.add('show');
+        function showCameraFailNotice(step) {
+            const notice = document.getElementById('cameraFailNotice' + step);
+            if (notice) notice.style.display = 'block';
+            // 自動啟用「進入下一步」按鈕（不鎖住）
+            const nextBtn = document.getElementById('nextBtn');
+            if (nextBtn) nextBtn.disabled = false;
         }
 
-        function hidePermissionGuide(step) {
-            const guide = document.getElementById('permissionGuide' + step);
-            if (guide) guide.classList.remove('show');
-        }
-
-        function showRetryButton(step) {
-            const retryBtn = document.getElementById('retryBtn' + step);
-            if (retryBtn) retryBtn.style.display = 'block';
-        }
-
-        function hideRetryButton(step) {
-            const retryBtn = document.getElementById('retryBtn' + step);
-            if (retryBtn) retryBtn.style.display = 'none';
-        }
-
-        function retryScanner(step) {
-            hideRetryButton(step);
-            hidePermissionGuide(step);
-            const statusDiv = document.getElementById('scannerStatus' + step);
-            if (statusDiv) {
-                statusDiv.textContent = '🔄 重新嘗試中...';
-                statusDiv.className = 'scanner-status';
-            }
-            setTimeout(() => {
-                startScanner(step);
-            }, 500);
+        function hideCameraFailNotice(step) {
+            const notice = document.getElementById('cameraFailNotice' + step);
+            if (notice) notice.style.display = 'none';
         }
 
         function onScanSuccess(step, decodedText) {
@@ -1044,8 +925,9 @@
             stopScanner(step);
             if (navigator.vibrate) navigator.vibrate(200);
             localStorage.setItem('scan_result_' + step, decodedText);
+            hideCameraFailNotice(step);
 
-            // 自動解鎖下一步
+            // 啟用下一步
             const nextBtn = document.getElementById('nextBtn');
             if (nextBtn) nextBtn.disabled = false;
         }
@@ -1057,17 +939,14 @@
             const stopBtn = document.getElementById('stopBtn' + step);
             const statusDiv = document.getElementById('scannerStatus' + step);
 
-            if (scanners[step] && scanners[step].isRunning) {
-                return;
-            }
+            if (scanners[step] && scanners[step].isRunning) return;
 
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                 if (statusDiv) {
-                    statusDiv.textContent = '❌ 瀏覽器不支援相機';
+                    statusDiv.textContent = '❌ 瀏覽器不支援相機，請自行用手機掃描器掃描實體書 QR Code';
                     statusDiv.className = 'scanner-status error';
                 }
-                showPermissionGuide(step);
-                showRetryButton(step);
+                showCameraFailNotice(step);
                 return;
             }
 
@@ -1075,8 +954,7 @@
             if (scanBtn) { scanBtn.disabled = true;
                 scanBtn.textContent = '⏳ 啟動中...'; }
             if (stopBtn) stopBtn.style.display = 'block';
-            hideRetryButton(step);
-            hidePermissionGuide(step);
+            hideCameraFailNotice(step);
 
             if (statusDiv) {
                 statusDiv.textContent = '⏳ 正在啟動相機，請允許權限...';
@@ -1089,15 +967,12 @@
                 qrbox: { width: 200, height: 200 },
                 aspectRatio: 1.0
             };
-
             if (window.innerWidth < 440) config.qrbox = { width: 150, height: 150 };
             if (window.innerWidth < 360) config.qrbox = { width: 120, height: 120 };
 
             html5QrCode.start({ facingMode: "environment" },
                 config,
-                (decodedText) => {
-                    onScanSuccess(step, decodedText);
-                },
+                (decodedText) => { onScanSuccess(step, decodedText); },
                 (error) => {}
             ).then(() => {
                 scanners[step] = { instance: html5QrCode, isRunning: true };
@@ -1111,14 +986,9 @@
                 console.error('啟動掃描器失敗:', err);
                 let errorMsg = '❌ 無法啟動相機';
                 if (err.message && err.message.includes('Permission')) {
-                    errorMsg = '❌ 相機權限被拒絕，請手動開啟權限';
-                    showPermissionGuide(step);
-                    showRetryButton(step);
+                    errorMsg = '❌ 相機權限被拒絕，請自行用手機掃描器掃描實體書 QR Code';
                 } else if (err.message) {
                     errorMsg = '❌ ' + err.message.substring(0, 50);
-                    showRetryButton(step);
-                } else {
-                    showRetryButton(step);
                 }
                 if (statusDiv) {
                     statusDiv.textContent = errorMsg;
@@ -1128,6 +998,8 @@
                     scanBtn.textContent = '📸 掃描 QR Code'; }
                 if (scannerContainer) scannerContainer.classList.add('scanner-hidden');
                 if (stopBtn) stopBtn.style.display = 'none';
+                // 顯示相機失敗提示，並啟用下一步
+                showCameraFailNotice(step);
             });
         }
 
@@ -1149,13 +1021,8 @@
                             statusDiv.textContent = '📱 點擊下方按鈕開啟掃描器';
                             statusDiv.className = 'scanner-status';
                         }
-                        hideRetryButton(step);
-                    }).catch((err) => {
-                        console.warn('停止掃描器時出錯:', err);
-                    });
-                } catch (e) {
-                    console.warn('停止掃描器異常:', e);
-                }
+                    }).catch((err) => { console.warn('停止掃描器時出錯:', err); });
+                } catch (e) { console.warn('停止掃描器異常:', e); }
             } else {
                 if (scannerContainer) scannerContainer.classList.add('scanner-hidden');
                 if (scanBtn) { scanBtn.disabled = false;
@@ -1165,7 +1032,7 @@
         }
 
         // ============================================================
-        //  全域變數
+        // 全域變數
         // ============================================================
         const totalSteps = 6;
         let currentStep = 1;
@@ -1286,9 +1153,6 @@
             }
         };
 
-        // ============================================================
-        //  DOM 工具
-        // ============================================================
         const $ = id => document.getElementById(id);
 
         function goHome() {
@@ -1362,7 +1226,6 @@
 
             $('prevBtn').disabled = (step === 1);
 
-            // 檢查掃描結果是否已存在
             const scanSteps = [1, 3, 4];
             if (scanSteps.includes(step)) {
                 const saved = localStorage.getItem('scan_result_' + step);
@@ -1373,6 +1236,10 @@
                         resultDiv.style.display = 'block';
                         contentDiv.textContent = saved;
                     }
+                }
+                // 如果有掃描結果，隱藏相機失敗提示
+                if (saved) {
+                    hideCameraFailNotice(step);
                 }
             }
 
@@ -1448,16 +1315,6 @@
                     break;
             }
 
-            // 檢查步驟1、3、4的掃描狀態
-            if (scanSteps.includes(step)) {
-                const saved = localStorage.getItem('scan_result_' + step);
-                if (saved) {
-                    nextBtn.disabled = false;
-                } else {
-                    // 如果沒有掃描結果，但也不是步驟2，按鈕可能被其他邏輯控制
-                }
-            }
-
             if (step === 2 && timerDone) {
                 nextBtn.disabled = false;
             } else if (step === 2 && !timerDone) {
@@ -1465,6 +1322,11 @@
                     nextBtn.disabled = true;
                 } else if (timerRunning) {
                     nextBtn.disabled = true;
+                }
+            } else {
+                // 步驟1、3、4：按鈕永遠啟用（不鎖住）
+                if (scanSteps.includes(step)) {
+                    nextBtn.disabled = false;
                 }
             }
         }
@@ -1518,35 +1380,13 @@
         function nextStep() {
             const nextBtn = $('nextBtn');
             if (nextBtn.disabled) return;
-
-            const scanSteps = [1, 3, 4];
-            if (scanSteps.includes(currentStep)) {
-                const saved = localStorage.getItem('scan_result_' + currentStep);
-                if (!saved) {
-                    const statusDiv = document.getElementById('scannerStatus' + currentStep);
-                    if (statusDiv) {
-                        statusDiv.textContent = '⚠️ 請先掃描 QR Code 再繼續';
-                        statusDiv.className = 'scanner-status error';
-                        setTimeout(() => {
-                            if (statusDiv) {
-                                statusDiv.textContent = '📱 點擊下方按鈕開啟掃描器';
-                                statusDiv.className = 'scanner-status';
-                            }
-                        }, 3000);
-                    }
-                    return;
-                }
-            }
-
             if (currentStep === 2 && !timerDone) return;
-
             if (currentStep === totalSteps - 1) {
                 currentStep = totalSteps;
                 renderStep(currentStep);
                 localStorage.setItem('oath_step', currentStep);
                 return;
             }
-
             if (currentStep < totalSteps - 1) {
                 currentStep++;
                 renderStep(currentStep);
