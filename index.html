@@ -15,33 +15,19 @@
 
         body {
             font-family: 'PingFang TC', 'Noto Sans TC', 'Georgia', serif;
-            background: #0a060e;
             color: #e8e0d0;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             padding: 20px 16px;
-            /* ===== 背景圖：填滿整個畫面 ===== */
+            /* ===== 全版面宇宙星圖背景 ===== */
             background-image: url('background.png');
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
             background-attachment: fixed;
             position: relative;
-        }
-
-        /* ===== 背景圖的深色疊加層（讓文字更好閱讀） ===== */
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 6, 14, 0.6);
-            pointer-events: none;
-            z-index: 0;
         }
 
         /* ===== 浮水印 ===== */
@@ -65,55 +51,14 @@
         .app-container {
             max-width: 520px;
             width: 100%;
-            background: radial-gradient(ellipse at 50% 0%, rgba(26, 14, 26, 0.85) 0%, rgba(10, 6, 14, 0.9) 70%);
-            border-radius: 32px;
-            padding: 28px 24px 32px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 60px rgba(200, 70, 50, 0.03);
-            border: 1px solid rgba(212, 175, 55, 0.06);
+            background: transparent;
+            border-radius: 0;
+            padding: 10px 0 20px;
+            box-shadow: none;
+            border: none;
             position: relative;
-            overflow: hidden;
+            overflow: visible;
             z-index: 1;
-            backdrop-filter: blur(2px);
-        }
-
-        /* ===== 背景光網（保留原有動畫） ===== */
-        .app-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background:
-                radial-gradient(ellipse at 20% 30%, rgba(200, 70, 50, 0.02) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 70%, rgba(212, 175, 55, 0.015) 0%, transparent 40%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .app-container::after {
-            content: '';
-            position: absolute;
-            bottom: -20%;
-            right: -20%;
-            width: 60%;
-            height: 60%;
-            background: radial-gradient(ellipse, rgba(200, 70, 50, 0.03) 0%, rgba(212, 175, 55, 0.01) 30%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 0;
-            animation: flameGlow 8s ease-in-out infinite alternate;
-        }
-
-        @keyframes flameGlow {
-            0% {
-                transform: scale(1) translate(0, 0);
-                opacity: 0.3;
-            }
-            100% {
-                transform: scale(1.4) translate(-30px, -20px);
-                opacity: 0.7;
-            }
         }
 
         /* ===== 頂部標題 ===== */
@@ -281,7 +226,7 @@
             transform: translate(-50%, -50%);
             color: rgba(212, 175, 55, 0.04);
             font-size: 10px;
-            background: rgba(10, 6, 14, 0.5);
+            background: transparent;
             padding: 0 10px;
         }
 
@@ -357,6 +302,7 @@
             border: 1px solid rgba(255, 255, 255, 0.02);
             transition: all 0.3s ease;
             cursor: pointer;
+            backdrop-filter: blur(6px);
         }
 
         .step-item:hover {
@@ -466,6 +412,7 @@
             padding: 20px 18px;
             margin-bottom: 14px;
             border: 1px solid rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(4px);
         }
 
         .step-card.highlight {
@@ -979,9 +926,11 @@
 
         /* ===== RWD ===== */
         @media (max-width: 440px) {
+            body {
+                padding: 10px 12px;
+            }
             .app-container {
-                padding: 20px 16px 24px;
-                border-radius: 24px;
+                padding: 10px 4px 16px;
             }
             .app-title {
                 font-size: 17px;
@@ -1064,12 +1013,22 @@
                 font-size: 15px;
                 padding: 14px 0;
             }
+            .step-item {
+                padding: 10px 12px;
+                backdrop-filter: blur(4px);
+            }
+            .step-card {
+                padding: 16px 14px;
+                backdrop-filter: blur(4px);
+            }
         }
 
         @media (max-width: 360px) {
+            body {
+                padding: 8px 8px;
+            }
             .app-container {
-                padding: 16px 12px 20px;
-                border-radius: 18px;
+                padding: 8px 2px 12px;
             }
             .app-title {
                 font-size: 15px;
@@ -1148,6 +1107,14 @@
             .complete-page .btn-finish {
                 font-size: 13px;
                 padding: 12px 0;
+            }
+            .step-item {
+                padding: 8px 10px;
+                backdrop-filter: blur(2px);
+            }
+            .step-card {
+                padding: 12px 10px;
+                backdrop-filter: blur(2px);
             }
         }
 
