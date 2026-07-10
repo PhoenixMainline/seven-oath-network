@@ -1510,8 +1510,7 @@
                         </div>
                         <div class="divider"></div>
                         <button class="btn-complete" onclick="goHome()">
-                            <span class="line1">啟動【宇宙誓印覺醒工程</span>
-                            <span class="line2">· 七印誓網】▶</span>
+                            <span class="line1"> ▶ 啟動【宇宙誓印覺醒工程】</span>
                         </button>
                     </div>
                     <div class="page-footer" style="margin-top:16px;">📄 【宇宙誓印覺醒工程 · 覺醒卷】：完成</div>
@@ -1581,7 +1580,7 @@
 
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                 if (statusDiv) {
-                    statusDiv.textContent = '❌ 瀏覽器不支援相機，請自行手動掃描器掃描實體書 QR Code';
+                    statusDiv.textContent = '❌ 無法啟動相機，請自行手動掃描器掃描實體書 QR Code';
                     statusDiv.className = 'scanner-status error';
                 }
                 showCameraFailNotice(step);
