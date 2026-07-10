@@ -28,7 +28,6 @@
             background-attachment: fixed;
         }
 
-        /* ===== 靈性光暈疊加 ===== */
         body::after {
             content: '';
             position: fixed;
@@ -41,7 +40,6 @@
             z-index: 0;
         }
 
-        /* ===== 浮水印 ===== */
         body::before {
             content: '天 地 為 鑑  ·  光 網 為 證';
             position: fixed;
@@ -68,7 +66,6 @@
             z-index: 1;
         }
 
-        /* ===== 頂部標題 ===== */
         .app-header {
             text-align: center;
             padding-bottom: 16px;
@@ -78,106 +75,10 @@
             z-index: 1;
         }
 
-        /* ===== 所有文字統一使用 #FFC000 漸層 ===== */
-        .app-title,
-        .main-title,
-        .main-subtitle,
-        .step-title,
-        .step-number,
-        .step-label,
-        .step-text,
-        .step-card-title,
-        .oath-declaration,
-        .oath-declaration-en,
-        .timer-label,
-        .timer-number,
-        .timer-status,
-        .timer-btn,
-        .btn,
-        .back-home,
-        .lang-btn,
-        .scanner-status,
-        .scan-result-box .content,
-        .camera-fail-notice,
-        .page-footer,
-        .complete-page .desc,
-        .complete-page .desc .gold,
-        .tome-footer,
-        .btn-start,
-        .btn-scan,
-        .btn-scan-secondary,
-        .btn-prev,
-        .btn-next,
-        .btn-finish,
-        .complete-page .btn-complete .line1,
-        .complete-page .btn-complete .line2,
-        .app-subtitle,
-        .step-item .step-status {
-            color: #FFC000;
-            font-weight: 600;
-        }
-
-        /* ===== 次要文字（較淡） ===== */
-        .app-subtitle,
-        .step-item .step-status,
-        .scanner-status,
-        .page-footer,
-        .timer-status {
-            color: rgba(255, 192, 0, 0.45);
-            font-weight: 300;
-        }
-
-        /* ===== 更淡的輔助文字 ===== */
-        .tome-footer,
-        .camera-fail-notice {
-            color: rgba(255, 192, 0, 0.25);
-        }
-
-        /* ===== 按鈕文字特殊處理（保持可讀性） ===== */
-        .btn-start,
-        .btn-scan,
-        .btn-scan-secondary,
-        .btn-prev,
-        .btn-next,
-        .btn-finish,
-        .complete-page .btn-complete .line1,
-        .complete-page .btn-complete .line2,
-        .timer-btn.primary {
-            color: #0a060e;
-            font-weight: 700;
-        }
-
-        .timer-btn {
-            color: #FFC000;
-        }
-
-        .timer-btn:hover {
-            color: #FFD633;
-        }
-
-        .back-home {
-            color: rgba(255, 192, 0, 0.5);
-        }
-
-        .back-home:hover {
-            color: #FFC000;
-        }
-
-        .lang-btn {
-            color: rgba(255, 255, 255, 0.25);
-        }
-
-        .lang-btn.active {
-            color: #FFC000;
-        }
-
-        .lang-btn:hover {
-            color: #FFC000;
-        }
-
         .app-title {
             font-size: 20px;
             font-weight: 700;
+            color: #FFC000;
             letter-spacing: 6px;
             line-height: 1.5;
             text-shadow: 0 0 40px rgba(255, 192, 0, 0.08), 0 2px 20px rgba(0, 0, 0, 0.6);
@@ -185,6 +86,7 @@
 
         .app-subtitle {
             font-size: 12px;
+            color: rgba(255, 192, 0, 0.45);
             letter-spacing: 3px;
             margin-top: 6px;
             font-weight: 300;
@@ -192,7 +94,6 @@
             text-shadow: 0 2px 15px rgba(0, 0, 0, 0.6);
         }
 
-        /* ===== 返回按鈕 ===== */
         .back-home {
             position: absolute;
             top: 10px;
@@ -200,6 +101,7 @@
             z-index: 20;
             background: rgba(0, 0, 0, 0.35);
             border: 1px solid rgba(255, 192, 0, 0.1);
+            color: rgba(255, 192, 0, 0.5);
             padding: 6px 14px;
             border-radius: 20px;
             font-size: 12px;
@@ -216,6 +118,7 @@
 
         .back-home:hover {
             background: rgba(255, 192, 0, 0.12);
+            color: #FFC000;
             border-color: rgba(255, 192, 0, 0.2);
         }
 
@@ -223,7 +126,6 @@
             display: flex;
         }
 
-        /* ===== 語言切換 ===== */
         .lang-toggle {
             position: absolute;
             top: 10px;
@@ -241,6 +143,7 @@
         .lang-btn {
             background: transparent;
             border: none;
+            color: rgba(255, 255, 255, 0.25);
             padding: 4px 12px;
             border-radius: 14px;
             font-size: 12px;
@@ -252,11 +155,13 @@
 
         .lang-btn.active {
             background: rgba(255, 192, 0, 0.15);
+            color: #FFC000;
         }
 
-        /* ========================================================== */
-        /* 頁面：目錄首頁 */
-        /* ========================================================== */
+        .lang-btn:hover {
+            color: #FFC000;
+        }
+
         #pageHome {
             display: block;
             position: relative;
@@ -270,6 +175,7 @@
         .main-title {
             font-size: 28px;
             font-weight: 700;
+            color: #FFC000;
             text-align: center;
             letter-spacing: 6px;
             line-height: 1.3;
@@ -368,7 +274,6 @@
             transform: scale(0.97);
         }
 
-        /* ===== 步驟列表 ===== */
         .step-list {
             display: flex;
             flex-direction: column;
@@ -439,9 +344,6 @@
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
         }
 
-        /* ========================================================== */
-        /* 頁面：步驟內容 */
-        /* ========================================================== */
         #pageSteps {
             display: none;
             position: relative;
@@ -479,6 +381,7 @@
         .step-title {
             font-size: 22px;
             font-weight: 700;
+            color: #FFC000;
             margin-bottom: 4px;
             letter-spacing: 4px;
             text-shadow: 0 0 40px rgba(255, 192, 0, 0.06), 0 2px 30px rgba(0, 0, 0, 0.6);
@@ -528,10 +431,10 @@
             font-weight: 600;
         }
 
-        /* ===== 誓導主權宣告式 ===== */
         .oath-declaration {
             font-size: 20px;
             font-weight: 700;
+            color: #FFC000;
             text-align: center;
             line-height: 2.2;
             padding: 12px 4px;
@@ -542,6 +445,7 @@
         .oath-declaration-en {
             font-size: 17px;
             font-weight: 700;
+            color: #FFC000;
             text-align: center;
             line-height: 2;
             padding: 10px 4px;
@@ -549,7 +453,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* ===== 計時器 ===== */
         .timer-container {
             text-align: center;
             padding: 14px 0 4px;
@@ -566,6 +469,7 @@
         .timer-number {
             font-size: 56px;
             font-weight: 700;
+            color: #FFC000;
             font-variant-numeric: tabular-nums;
             text-shadow: 0 0 60px rgba(255, 192, 0, 0.06), 0 2px 30px rgba(0, 0, 0, 0.6);
             line-height: 1.2;
@@ -583,7 +487,6 @@
             text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
         }
 
-        /* ===== 計時器按鈕 ===== */
         .timer-btn-group {
             display: flex;
             gap: 10px;
@@ -634,7 +537,6 @@
             box-shadow: none;
         }
 
-        /* ===== 掃描器 ===== */
         .scanner-container {
             width: 100%;
             max-width: 400px;
@@ -720,9 +622,9 @@
         }
 
         .btn-scan {
-            background: rgba(0, 0, 0, 0.35);
+            background: linear-gradient(135deg, #FFC000, #e6a800);
             color: #0a060e;
-            border: 1px solid rgba(255, 192, 0, 0.08);
+            border: none;
             padding: 14px 0;
             border-radius: 12px;
             font-size: 15px;
@@ -734,12 +636,12 @@
             margin-top: 8px;
             font-family: inherit;
             backdrop-filter: blur(4px);
-            background: linear-gradient(135deg, #FFC000, #e6a800);
         }
 
         .btn-scan:hover {
             background: linear-gradient(135deg, #FFD633, #FFC000);
-            border-color: rgba(255, 192, 0, 0.12);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
 
         .btn-scan:disabled {
@@ -777,6 +679,7 @@
             margin-top: 10px;
             font-size: 13px;
             line-height: 2;
+            color: #d4cec0;
             word-break: break-all;
             max-height: 100px;
             overflow-y: auto;
@@ -828,7 +731,6 @@
             text-shadow: 0 2px 15px rgba(0, 0, 0, 0.6);
         }
 
-        /* ===== 按鈕 ===== */
         .btn-row {
             display: flex;
             gap: 12px;
@@ -927,7 +829,6 @@
             box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
         }
 
-        /* ===== 完成頁 ===== */
         .complete-page {
             padding: 10px 0 20px;
         }
@@ -956,64 +857,6 @@
             margin: 16px auto;
         }
 
-        /* ===== 完成頁按鈕 ===== */
-        .complete-page .btn-complete {
-            background: linear-gradient(135deg, #FFC000 0%, #e8604a 50%, #c04030 100%);
-            color: #0a060e;
-            border: none;
-            padding: 16px 0;
-            border-radius: 14px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            letter-spacing: 2px;
-            width: 100%;
-            margin-top: 20px;
-            box-shadow: 0 4px 40px rgba(0, 0, 0, 0.2);
-            font-family: inherit;
-            position: relative;
-            overflow: hidden;
-            line-height: 1.6;
-            white-space: normal;
-            word-break: break-word;
-        }
-
-        .complete-page .btn-complete .line1 {
-            display: block;
-            font-size: 18px;
-            color: #0a060e;
-        }
-
-        .complete-page .btn-complete .line2 {
-            display: block;
-            font-size: 16px;
-            font-weight: 600;
-            letter-spacing: 3px;
-            color: #0a060e;
-        }
-
-        .complete-page .btn-complete::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(ellipse at center, rgba(255, 192, 0, 0.1) 0%, transparent 60%);
-            animation: btnGlow 3s ease-in-out infinite alternate;
-            pointer-events: none;
-        }
-
-        .complete-page .btn-complete:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 50px rgba(0, 0, 0, 0.3);
-        }
-
-        .complete-page .btn-complete:active {
-            transform: scale(0.97);
-        }
-
         .scanner-hidden {
             display: none !important;
         }
@@ -1022,7 +865,6 @@
             display: none !important;
         }
 
-        /* ===== RWD ===== */
         @media (max-width: 440px) {
             body {
                 padding: 10px 12px;
@@ -1087,16 +929,6 @@
             }
             .complete-page .desc {
                 font-size: 14px;
-            }
-            .complete-page .btn-complete {
-                font-size: 15px;
-                padding: 14px 0;
-            }
-            .complete-page .btn-complete .line1 {
-                font-size: 15px;
-            }
-            .complete-page .btn-complete .line2 {
-                font-size: 13px;
             }
             .scanner-overlay {
                 width: 140px;
@@ -1182,16 +1014,6 @@
             }
             .complete-page .desc {
                 font-size: 13px;
-            }
-            .complete-page .btn-complete {
-                font-size: 13px;
-                padding: 12px 0;
-            }
-            .complete-page .btn-complete .line1 {
-                font-size: 13px;
-            }
-            .complete-page .btn-complete .line2 {
-                font-size: 12px;
             }
             .scanner-overlay {
                 width: 120px;
@@ -1507,7 +1329,7 @@
                         <div class="desc" id="completeDesc">
                             您已成功完成《宇宙智能誓導平台》正式授權程序。<br>
                             <span class="gold">誓頻啟動 × 系統同步階段</span>
-                     </div>
+                        </div>
                         <div class="divider"></div>
                         <!-- ===== 雙按鈕：左邊返回鍵 + 右邊啟動按鈕 ===== -->
                         <div style="display: flex; gap: 12px; margin-top: 20px;">
@@ -1552,8 +1374,12 @@
                                 【宇宙誓印覺醒工程】啟動 ▶
                             </button>
                         </div>
+                    </div>
                     <div class="page-footer" style="margin-top:16px;">📄 【宇宙誓印覺醒工程 · 覺醒卷】：完成</div>
-                </div>          
+                </div>
+
+            </div>
+
             <!-- ===== 按鈕 ===== -->
             <div class="btn-row" id="stepButtons">
                 <button class="btn btn-prev" id="prevBtn" onclick="prevStep()">◀</button>
@@ -1561,7 +1387,9 @@
             </div>
         </div>
 
-    </div>    <script>
+    </div>
+
+    <script>
         // ============================================================
         // 計時器全域變數
         // ============================================================
@@ -1616,7 +1444,7 @@
 
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                 if (statusDiv) {
-                    statusDiv.textContent = '❌ 無法啟動相機，請自行手動掃描器掃描實體書 QR Code';
+                    statusDiv.textContent = '❌ 瀏覽器不支援相機，請自行手動掃描器掃描實體書 QR Code';
                     statusDiv.className = 'scanner-status error';
                 }
                 showCameraFailNotice(step);
