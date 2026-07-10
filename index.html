@@ -1324,6 +1324,14 @@
 
     <script>
         // ============================================================
+        // 計時器全域變數
+        // ============================================================
+        let timerInterval = null;
+        let timerRunning = false;
+        let timerDone = false;
+        let timerCountdown = 10;
+
+        // ============================================================
         // QR 掃描器管理
         // ============================================================
         const scanners = {};
@@ -1457,24 +1465,30 @@
         }
 
         // ============================================================
-        // 計時器
+        // 計時器函數
         // ============================================================
-        let timerInterval = null;
-        let timerRunning = false;
-        let timerDone = false;
-        let timerCountdown = 10;
-
         function startTimer() {
             if (timerRunning || timerDone) return;
-            const t = texts[currentLang];
+
+            // 取得當前語言
+            const lang = currentLang || 'zh';
+            const t = texts[lang];
+
             timerRunning = true;
             timerDone = false;
             timerCountdown = 10;
-            document.getElementById('timerDisplay').textContent = '10';
-            document.getElementById('timerDisplay').className = 'timer-number';
-            document.getElementById('timerStatus').textContent = t.timerStatusRunning;
-            document.getElementById('nextBtn').disabled = true;
+
+            const displayEl = document.getElementById('timerDisplay');
+            const statusEl = document.getElementById('timerStatus');
+            const nextBtn = document.getElementById('nextBtn');
+
+            if (displayEl) displayEl.textContent = '10';
+            if (displayEl) displayEl.className = 'timer-number';
+            if (statusEl) statusEl.textContent = t.timerStatusRunning || '⏳ 誦讀中...';
+            if (nextBtn) nextBtn.disabled = true;
+
             if (timerInterval) clearInterval(timerInterval);
+
             timerInterval = setInterval(() => {
                 timerCountdown -= 1;
                 if (timerCountdown <= 0) {
@@ -1482,16 +1496,43 @@
                     timerInterval = null;
                     timerRunning = false;
                     timerDone = true;
-                    document.getElementById('timerDisplay').textContent = '0';
-                    document.getElementById('timerDisplay').className = 'timer-number done';
-                    document.getElementById('timerStatus').textContent = t.timerStatusDone;
-                    document.getElementById('nextBtn').disabled = false;
+                    if (displayEl) {
+                        displayEl.textContent = '0';
+                        displayEl.className = 'timer-number done';
+                    }
+                    if (statusEl) statusEl.textContent = t.timerStatusDone || '✅ 已完成誦讀';
+                    if (nextBtn) nextBtn.disabled = false;
                     localStorage.setItem('oath_timer_done', 'true');
                     localStorage.setItem('step_completed_2', 'true');
                 } else {
-                    document.getElementById('timerDisplay').textContent = timerCountdown;
+                    if (displayEl) displayEl.textContent = timerCountdown;
                 }
             }, 1000);
+        }
+
+        function resetTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            timerRunning = false;
+            timerDone = false;
+            timerCountdown = 10;
+
+            const displayEl = document.getElementById('timerDisplay');
+            const statusEl = document.getElementById('timerStatus');
+            const nextBtn = document.getElementById('nextBtn');
+
+            if (displayEl) {
+                displayEl.textContent = '10';
+                displayEl.className = 'timer-number';
+            }
+            if (statusEl) {
+                const lang = currentLang || 'zh';
+                statusEl.textContent = texts[lang].timerStatusReady || '⏳ 準備開始';
+            }
+            if (nextBtn) nextBtn.disabled = true;
+            localStorage.removeItem('oath_timer_done');
         }
 
         // ============================================================
@@ -1502,12 +1543,10 @@
             document.getElementById('pageSteps').classList.remove('show');
             document.getElementById('pageSteps').style.display = 'none';
             document.getElementById('backHomeBtn').classList.remove('show');
+
             // 重置計時器
-            if (timerInterval) { clearInterval(timerInterval);
-                timerInterval = null; }
-            timerRunning = false;
-            timerDone = false;
-            timerCountdown = 10;
+            resetTimer();
+
             updateStepStatus();
         }
 
@@ -1516,21 +1555,35 @@
             document.getElementById('pageSteps').style.display = 'block';
             document.getElementById('pageSteps').classList.add('show');
             document.getElementById('backHomeBtn').classList.add('show');
+
+            // 重置計時器
+            resetTimer();
+
             currentStep = step;
             renderStep(currentStep);
+
             // 如果進入步驟二，啟動計時器
             if (currentStep === 2) {
                 const saved = localStorage.getItem('oath_timer_done');
                 if (saved === 'true') {
                     timerDone = true;
                     timerRunning = false;
-                    const t = texts[currentLang];
-                    document.getElementById('timerDisplay').textContent = '0';
-                    document.getElementById('timerDisplay').className = 'timer-number done';
-                    document.getElementById('timerStatus').textContent = t.timerStatusDone;
-                    document.getElementById('nextBtn').disabled = false;
+                    const lang = currentLang || 'zh';
+                    const t = texts[lang];
+                    const displayEl = document.getElementById('timerDisplay');
+                    const statusEl = document.getElementById('timerStatus');
+                    const nextBtn = document.getElementById('nextBtn');
+                    if (displayEl) {
+                        displayEl.textContent = '0';
+                        displayEl.className = 'timer-number done';
+                    }
+                    if (statusEl) statusEl.textContent = t.timerStatusDone || '✅ 已完成誦讀';
+                    if (nextBtn) nextBtn.disabled = false;
                 } else {
-                    setTimeout(() => startTimer(), 500);
+                    // 延遲啟動計時器，確保 DOM 已渲染
+                    setTimeout(() => {
+                        startTimer();
+                    }, 500);
                 }
             }
         }
@@ -1688,24 +1741,25 @@
                 renderHome();
             } else {
                 renderStep(currentStep);
-                if (timerRunning || timerDone) updateTimerUI();
+                // 更新計時器文字（如果計時器正在運行或已完成）
+                updateTimerText();
             }
         }
 
-        function updateTimerUI() {
-            const t = texts[currentLang];
+        function updateTimerText() {
+            const lang = currentLang || 'zh';
+            const t = texts[lang];
+            const statusEl = document.getElementById('timerStatus');
+            const labelEl = document.getElementById('timerLabel');
+
+            if (labelEl) labelEl.textContent = t.timerLabel || '請靜心誦讀 10 秒';
+
             if (timerDone) {
-                document.getElementById('timerStatus').textContent = t.timerStatusDone;
-                document.getElementById('timerDisplay').textContent = '0';
-                document.getElementById('timerDisplay').className = 'timer-number done';
+                if (statusEl) statusEl.textContent = t.timerStatusDone || '✅ 已完成誦讀';
             } else if (timerRunning) {
-                document.getElementById('timerStatus').textContent = t.timerStatusRunning;
-                document.getElementById('timerDisplay').textContent = timerCountdown;
-                document.getElementById('timerDisplay').className = 'timer-number';
+                if (statusEl) statusEl.textContent = t.timerStatusRunning || '⏳ 誦讀中...';
             } else {
-                document.getElementById('timerStatus').textContent = t.timerStatusReady;
-                document.getElementById('timerDisplay').textContent = '10';
-                document.getElementById('timerDisplay').className = 'timer-number';
+                if (statusEl) statusEl.textContent = t.timerStatusReady || '⏳ 準備開始';
             }
         }
 
@@ -1815,6 +1869,7 @@
                     document.getElementById('s2CardTitle').textContent = t.s2CardTitle;
                     document.getElementById('s2CardText').textContent = t.s2CardText;
                     document.getElementById('s2Footer').textContent = t.s2Footer;
+
                     // 計時器狀態
                     if (!timerDone) {
                         if (!timerRunning && timerCountdown === 10) {
@@ -1906,13 +1961,16 @@
                         if (saved === 'true') {
                             timerDone = true;
                             timerRunning = false;
-                            const t = texts[currentLang];
+                            const lang = currentLang || 'zh';
+                            const t = texts[lang];
                             document.getElementById('timerDisplay').textContent = '0';
                             document.getElementById('timerDisplay').className = 'timer-number done';
-                            document.getElementById('timerStatus').textContent = t.timerStatusDone;
+                            document.getElementById('timerStatus').textContent = t.timerStatusDone || '✅ 已完成誦讀';
                             document.getElementById('nextBtn').disabled = false;
                         } else {
-                            setTimeout(() => startTimer(), 300);
+                            setTimeout(() => {
+                                startTimer();
+                            }, 300);
                         }
                     }
                 }
@@ -1922,6 +1980,10 @@
         function prevStep() {
             if (document.getElementById('prevBtn').disabled) return;
             if (currentStep > 1) {
+                // 如果離開步驟二，重置計時器（但保留完成狀態）
+                if (currentStep === 2) {
+                    // 不重置計時器狀態，讓它保持
+                }
                 currentStep--;
                 renderStep(currentStep);
             }
@@ -1950,6 +2012,14 @@
             if (savedStep && savedStep > 1) {
                 updateStepStatus();
             }
+
+            // 初始化計時器顯示
+            const lang = currentLang || 'zh';
+            const t = texts[lang];
+            const statusEl = document.getElementById('timerStatus');
+            const labelEl = document.getElementById('timerLabel');
+            if (labelEl) labelEl.textContent = t.timerLabel || '請靜心誦讀 10 秒';
+            if (statusEl) statusEl.textContent = t.timerStatusReady || '⏳ 準備開始';
         }
 
         document.addEventListener('DOMContentLoaded', init);
