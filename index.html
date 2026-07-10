@@ -1229,7 +1229,7 @@
 
                         <div id="cameraFailNotice1" class="camera-fail-notice">
                             <span class="icon">📌</span>
-                            相機權限被拒絕，請自行手動掃描器掃描實體書 QR Code
+                            無法啟動相機，請自行手動掃描器掃描實體書 QR Code
                         </div>
 
                         <div id="scanResult1" class="scan-result-box" style="display:none;">
@@ -1302,7 +1302,7 @@
                         <button class="btn-scan-secondary" id="stopBtn3" onclick="stopScanner(3)" style="display:none;">✕ 關閉掃描器</button>
                         <div id="cameraFailNotice3" class="camera-fail-notice">
                             <span class="icon">📌</span>
-                            相機權限被拒絕，請自行手動掃描器掃描實體書 QR Code
+                             無法啟動相機，請自行手動掃描器掃描實體書 QR Code
                         </div>
                         <div id="scanResult3" class="scan-result-box" style="display:none;">
                             <div class="label">✅ 掃描結果：</div>
@@ -1352,7 +1352,7 @@
                         <button class="btn-scan-secondary" id="stopBtn4" onclick="stopScanner(4)" style="display:none;">✕ 關閉掃描器</button>
                         <div id="cameraFailNotice4" class="camera-fail-notice">
                             <span class="icon">📌</span>
-                            相機權限被拒絕，請自行手動掃描器掃描實體書 QR Code
+                             無法啟動相機，請自行手動掃描器掃描實體書 QR Code
                         </div>
                         <div id="scanResult4" class="scan-result-box" style="display:none;">
                             <div class="label">✅ 掃描結果：</div>
@@ -1407,7 +1407,7 @@
                             <span class="gold">誓頻啟動 × 系統同步階段</span>
                         </div>
                         <div class="divider"></div>
-                        <button class="btn-complete" onclick="goHome()">正式啟動【宇宙誓印覺醒工程 · 七印誓網】</button>
+                        <button class="btn-complete" onclick="goHome()">啟動【宇宙誓印覺醒工程 · 七印誓網】▶</button>
                     </div>
                     <div class="page-footer" style="margin-top:16px;">📄 【宇宙誓印覺醒工程 · 覺醒卷】：完成</div>
                 </div>
@@ -1521,7 +1521,7 @@
                 console.error('啟動掃描器失敗:', err);
                 let errorMsg = '❌ 無法啟動相機';
                 if (err.message && err.message.includes('Permission')) {
-                    errorMsg = '相機權限被拒絕，請自行手動掃描器掃描實體書 QR Code';
+                    errorMsg = '無法啟動相機，請自行手動掃描器掃描實體書 QR Code';
                 } else if (err.message) {
                     errorMsg = '❌ ' + err.message.substring(0, 50);
                 }
