@@ -1331,10 +1331,10 @@
                             <span class="gold">誓頻啟動 × 系統同步階段</span>
                         </div>
                         <div class="divider"></div>
-                       <!-- ===== 雙按鈕：左邊返回鍵 + 右邊啟動按鈕 ===== -->
+                   <!-- ===== 雙按鈕：左邊返回鍵 + 右邊啟動按鈕 ===== -->
 <div style="display: flex; gap: 12px; margin-top: 20px;">
-    <!-- 左邊返回鍵 -->
-    <button onclick="goHome()" style="
+    <!-- 左邊返回鍵 → 回到步驟五 -->
+    <button onclick="goToStep(5)" style="
         background: rgba(255,255,255,0.05);
         border: 1px solid rgba(255,192,0,0.15);
         color: rgba(255,192,0,0.5);
@@ -1352,8 +1352,8 @@
         ◀
     </button>
 
-    <!-- 右邊啟動按鈕 -->
-    <button onclick="goHome()" style="
+    <!-- 右邊啟動按鈕 → 下一層（你先告訴我要去哪） -->
+    <button onclick="alert('即將進入下一層')" style="
         background: linear-gradient(135deg, #FFC000 0%, #e8604a 50%, #c04030 100%);
         color: #0a060e;
         border: none;
