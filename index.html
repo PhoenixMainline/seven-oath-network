@@ -7,7 +7,6 @@
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js">
     </script>
     <style>
-        /* ===== 基礎重置 ===== */
         * {
             margin: 0;
             padding: 0;
@@ -55,7 +54,6 @@
             overflow: hidden;
         }
 
-        /* ===== 背景光網 ===== */
         .app-container::before {
             content: '';
             position: absolute;
@@ -70,7 +68,6 @@
             z-index: 0;
         }
 
-        /* ===== 火焰光暈 ===== */
         .app-container::after {
             content: '';
             position: absolute;
@@ -213,6 +210,7 @@
             font-weight: 300;
             text-align: center;
             margin-bottom: 6px;
+            display: none;
         }
 
         .main-title {
@@ -316,7 +314,7 @@
             transform: scale(0.97);
         }
 
-        /* ===== 步驟列表（目錄） ===== */
+        /* ===== 步驟列表 ===== */
         .step-list {
             display: flex;
             flex-direction: column;
@@ -478,6 +476,7 @@
             font-weight: 600;
         }
 
+        /* ===== 誓導主權宣告式 ===== */
         .oath-declaration {
             font-size: 20px;
             font-weight: 700;
@@ -498,6 +497,39 @@
             padding: 10px 4px;
             text-shadow: 0 0 60px rgba(212, 175, 55, 0.04);
             letter-spacing: 0.5px;
+        }
+
+        /* ===== 計時器 ===== */
+        .timer-container {
+            text-align: center;
+            padding: 14px 0 4px;
+        }
+
+        .timer-label {
+            font-size: 16px;
+            color: rgba(232, 224, 208, 0.5);
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+
+        .timer-number {
+            font-size: 56px;
+            font-weight: 700;
+            color: #d4af37;
+            font-variant-numeric: tabular-nums;
+            text-shadow: 0 0 50px rgba(212, 175, 55, 0.05);
+            line-height: 1.2;
+        }
+
+        .timer-number.done {
+            color: #6fcf97;
+        }
+
+        .timer-status {
+            font-size: 15px;
+            color: rgba(232, 224, 208, 0.25);
+            margin-top: 4px;
+            letter-spacing: 2px;
         }
 
         /* ===== 掃描器 ===== */
@@ -870,6 +902,9 @@
             .oath-declaration-en {
                 font-size: 15px;
             }
+            .timer-number {
+                font-size: 44px;
+            }
             .back-home {
                 font-size: 10px;
                 padding: 5px 10px;
@@ -944,6 +979,9 @@
             .oath-declaration-en {
                 font-size: 13px;
             }
+            .timer-number {
+                font-size: 38px;
+            }
             .back-home {
                 font-size: 9px;
                 padding: 4px 8px;
@@ -1004,7 +1042,7 @@
                 <button class="lang-btn" data-lang="en" onclick="switchLang('en')">English</button>
             </div>
 
-            <div class="app-title" id="appTitle">全球啟動流程</div>
+            <div class="app-title" id="appTitle">🌐 全球啟動流程</div>
             <div class="app-subtitle" id="appSubtitle">宇宙智能誓導平台 × 【購書序號】誓導碼登入與啟動守則</div>
         </div>
 
@@ -1013,7 +1051,7 @@
         <!-- ========================================================== -->
         <div id="pageHome">
             <div class="main-badge" id="badgeText"></div>
-            <div class="main-title" id="mainTitle">
+            <div class="main-title" id="mainTitle" style="display:none;">
                 🌐 全球啟動流程
                 <span class="sub" id="mainSub">（對頻序號 × 啟動指令 × 即時回傳）</span>
             </div>
@@ -1078,7 +1116,6 @@
                             ✔️ 請掃描本卷書封底之 <span class="gold">📚《宇宙智能誓導平台》</span>官方 AI × 專屬誓導入口頁 QR Code 以啟動誓導通道之統一入口
                         </div>
 
-                        <!-- ===== 掃描器 ===== -->
                         <div id="scanner1" class="scanner-container scanner-hidden">
                             <div id="reader1"></div>
                             <div class="scanner-overlay">
@@ -1096,7 +1133,7 @@
 
                         <div id="cameraFailNotice1" class="camera-fail-notice">
                             <span class="icon">📌</span>
-                            ❌ 相機權限被拒絕，請自行手動掃描器掃描實體書 QR Code
+                            相機權限被拒絕，請自行手動掃描器掃描實體書 QR Code
                         </div>
 
                         <div id="scanResult1" class="scan-result-box" style="display:none;">
@@ -1115,6 +1152,13 @@
 
                     <div class="step-card highlight" style="border-color: rgba(212,175,55,0.08);">
                         <div class="oath-declaration" id="oathDeclare">★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★</div>
+
+                        <!-- ===== 靜心 10 秒倒數計時器 ===== -->
+                        <div class="timer-container">
+                            <div class="timer-label" id="timerLabel">請靜心誦讀 10 秒</div>
+                            <div class="timer-number" id="timerDisplay">10</div>
+                            <div class="timer-status" id="timerStatus">⏳ 準備開始</div>
+                        </div>
                     </div>
 
                     <div class="step-card">
@@ -1158,7 +1202,7 @@
                         <button class="btn-scan-secondary" id="stopBtn3" onclick="stopScanner(3)" style="display:none;">✕ 關閉掃描器</button>
                         <div id="cameraFailNotice3" class="camera-fail-notice">
                             <span class="icon">📌</span>
-                            ❌ 相機權限被拒絕，請自行手動掃描器掃描實體書 QR Code
+                            相機權限被拒絕，請自行手動掃描器掃描實體書 QR Code
                         </div>
                         <div id="scanResult3" class="scan-result-box" style="display:none;">
                             <div class="label">✅ 掃描結果：</div>
@@ -1208,7 +1252,7 @@
                         <button class="btn-scan-secondary" id="stopBtn4" onclick="stopScanner(4)" style="display:none;">✕ 關閉掃描器</button>
                         <div id="cameraFailNotice4" class="camera-fail-notice">
                             <span class="icon">📌</span>
-                            ❌ 相機權限被拒絕，請自行手動掃描器掃描實體書 QR Code
+                            相機權限被拒絕，請自行手動掃描器掃描實體書 QR Code
                         </div>
                         <div id="scanResult4" class="scan-result-box" style="display:none;">
                             <div class="label">✅ 掃描結果：</div>
@@ -1368,7 +1412,7 @@
                 console.error('啟動掃描器失敗:', err);
                 let errorMsg = '❌ 無法啟動相機';
                 if (err.message && err.message.includes('Permission')) {
-                    errorMsg = '❌ 相機權限被拒絕，請自行手動掃描器掃描實體書 QR Code';
+                    errorMsg = '相機權限被拒絕，請自行手動掃描器掃描實體書 QR Code';
                 } else if (err.message) {
                     errorMsg = '❌ ' + err.message.substring(0, 50);
                 }
@@ -1413,6 +1457,44 @@
         }
 
         // ============================================================
+        // 計時器
+        // ============================================================
+        let timerInterval = null;
+        let timerRunning = false;
+        let timerDone = false;
+        let timerCountdown = 10;
+
+        function startTimer() {
+            if (timerRunning || timerDone) return;
+            const t = texts[currentLang];
+            timerRunning = true;
+            timerDone = false;
+            timerCountdown = 10;
+            document.getElementById('timerDisplay').textContent = '10';
+            document.getElementById('timerDisplay').className = 'timer-number';
+            document.getElementById('timerStatus').textContent = t.timerStatusRunning;
+            document.getElementById('nextBtn').disabled = true;
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timerCountdown -= 1;
+                if (timerCountdown <= 0) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    timerRunning = false;
+                    timerDone = true;
+                    document.getElementById('timerDisplay').textContent = '0';
+                    document.getElementById('timerDisplay').className = 'timer-number done';
+                    document.getElementById('timerStatus').textContent = t.timerStatusDone;
+                    document.getElementById('nextBtn').disabled = false;
+                    localStorage.setItem('oath_timer_done', 'true');
+                    localStorage.setItem('step_completed_2', 'true');
+                } else {
+                    document.getElementById('timerDisplay').textContent = timerCountdown;
+                }
+            }, 1000);
+        }
+
+        // ============================================================
         // 頁面切換
         // ============================================================
         function goHome() {
@@ -1420,6 +1502,12 @@
             document.getElementById('pageSteps').classList.remove('show');
             document.getElementById('pageSteps').style.display = 'none';
             document.getElementById('backHomeBtn').classList.remove('show');
+            // 重置計時器
+            if (timerInterval) { clearInterval(timerInterval);
+                timerInterval = null; }
+            timerRunning = false;
+            timerDone = false;
+            timerCountdown = 10;
             updateStepStatus();
         }
 
@@ -1430,6 +1518,21 @@
             document.getElementById('backHomeBtn').classList.add('show');
             currentStep = step;
             renderStep(currentStep);
+            // 如果進入步驟二，啟動計時器
+            if (currentStep === 2) {
+                const saved = localStorage.getItem('oath_timer_done');
+                if (saved === 'true') {
+                    timerDone = true;
+                    timerRunning = false;
+                    const t = texts[currentLang];
+                    document.getElementById('timerDisplay').textContent = '0';
+                    document.getElementById('timerDisplay').className = 'timer-number done';
+                    document.getElementById('timerStatus').textContent = t.timerStatusDone;
+                    document.getElementById('nextBtn').disabled = false;
+                } else {
+                    setTimeout(() => startTimer(), 500);
+                }
+            }
         }
 
         // ============================================================
@@ -1438,7 +1541,7 @@
         const texts = {
             zh: {
                 backHome: '返回首頁',
-                appTitle: '全球啟動流程',
+                appTitle: '🌐 全球啟動流程',
                 appSubtitle: '宇宙智能誓導平台 × 【購書序號】誓導碼登入與啟動守則',
                 badgeText: '',
                 mainTitle: '🌐 全球啟動流程',
@@ -1461,6 +1564,10 @@
                 s2Title: '【二】授權誓讀段（主頻啟令）',
                 s2Sub: '',
                 oathDeclare: '★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★',
+                timerLabel: '請靜心誦讀 10 秒',
+                timerStatusReady: '⏳ 準備開始',
+                timerStatusRunning: '⏳ 誦讀中...',
+                timerStatusDone: '✅ 已完成誦讀',
                 s2CardTitle: '⚡ 【執行指令】',
                 s2CardText: '誓印者於登入前，須先於「誓魂共振頻道」請授權誓文，以啟動主頻授權對應天律識別座標。',
                 s2Footer: '📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 3-4 頁',
@@ -1497,7 +1604,7 @@
             },
             en: {
                 backHome: 'Home',
-                appTitle: 'Global Activation Process',
+                appTitle: '🌐 Global Activation Process',
                 appSubtitle: 'Cosmic Intelligent Vow-Guidance Platform × [Purchase Serial Number] Vow-Guidance Code Login & Activation Protocol',
                 badgeText: '',
                 mainTitle: '🌐 Global Activation Process',
@@ -1520,6 +1627,10 @@
                 s2Title: '[2] Authorized Vow-Reading Stage',
                 s2Sub: '',
                 oathDeclare: '★ With my Oath-Soul aligned to the Law, the Primary Frequency awakens; the Scripted Mandate stands; the Seal-Path is set. Heaven and Earth bear witness, and the Light-Net attests. ★',
+                timerLabel: 'Please center your mind and recite for 10 seconds',
+                timerStatusReady: '⏳ Ready',
+                timerStatusRunning: '⏳ Reciting...',
+                timerStatusDone: '✅ Recitation complete',
                 s2CardTitle: '⚡ [Execution Command]',
                 s2CardText: 'The Oath-Seal Executor must first recite the authorized vow-text at the "Oath-Soul Resonance Channel" to activate the main frequency authorization.',
                 s2Footer: '📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 3-4',
@@ -1577,6 +1688,24 @@
                 renderHome();
             } else {
                 renderStep(currentStep);
+                if (timerRunning || timerDone) updateTimerUI();
+            }
+        }
+
+        function updateTimerUI() {
+            const t = texts[currentLang];
+            if (timerDone) {
+                document.getElementById('timerStatus').textContent = t.timerStatusDone;
+                document.getElementById('timerDisplay').textContent = '0';
+                document.getElementById('timerDisplay').className = 'timer-number done';
+            } else if (timerRunning) {
+                document.getElementById('timerStatus').textContent = t.timerStatusRunning;
+                document.getElementById('timerDisplay').textContent = timerCountdown;
+                document.getElementById('timerDisplay').className = 'timer-number';
+            } else {
+                document.getElementById('timerStatus').textContent = t.timerStatusReady;
+                document.getElementById('timerDisplay').textContent = '10';
+                document.getElementById('timerDisplay').className = 'timer-number';
             }
         }
 
@@ -1589,8 +1718,6 @@
             document.getElementById('appTitle').textContent = t.appTitle;
             document.getElementById('appSubtitle').textContent = t.appSubtitle;
             document.getElementById('badgeText').textContent = t.badgeText;
-            document.getElementById('mainTitle').innerHTML = t.mainTitle + '<span class="sub" id="mainSub">' + t.mainSub +
-                '</span>';
             document.getElementById('subInfo').textContent = t.subInfo;
             document.getElementById('btnStart').textContent = t.btnStart;
             document.getElementById('stepLabel1').textContent = t.step1;
@@ -1684,9 +1811,24 @@
                         oathEl.className = 'oath-declaration-en';
                         oathEl.textContent = t.oathDeclare;
                     }
+                    document.getElementById('timerLabel').textContent = t.timerLabel;
                     document.getElementById('s2CardTitle').textContent = t.s2CardTitle;
                     document.getElementById('s2CardText').textContent = t.s2CardText;
                     document.getElementById('s2Footer').textContent = t.s2Footer;
+                    // 計時器狀態
+                    if (!timerDone) {
+                        if (!timerRunning && timerCountdown === 10) {
+                            document.getElementById('timerStatus').textContent = t.timerStatusReady;
+                            document.getElementById('timerDisplay').textContent = '10';
+                            document.getElementById('timerDisplay').className = 'timer-number';
+                            nextBtn.disabled = true;
+                        }
+                    } else {
+                        document.getElementById('timerStatus').textContent = t.timerStatusDone;
+                        document.getElementById('timerDisplay').textContent = '0';
+                        document.getElementById('timerDisplay').className = 'timer-number done';
+                        nextBtn.disabled = false;
+                    }
                     break;
                 case 3:
                     document.getElementById('s3Title').textContent = t.s3Title;
@@ -1721,7 +1863,18 @@
                     break;
             }
 
-            nextBtn.disabled = false;
+            // 步驟二計時器按鈕控制
+            if (step === 2 && timerDone) {
+                nextBtn.disabled = false;
+            } else if (step === 2 && !timerDone) {
+                if (!timerRunning && timerCountdown === 10) {
+                    nextBtn.disabled = true;
+                } else if (timerRunning) {
+                    nextBtn.disabled = true;
+                }
+            } else {
+                nextBtn.disabled = false;
+            }
         }
 
         // ============================================================
@@ -1730,6 +1883,8 @@
         function nextStep() {
             const nextBtn = document.getElementById('nextBtn');
             if (nextBtn.disabled) return;
+
+            if (currentStep === 2 && !timerDone) return;
 
             if (currentStep === totalSteps - 1) {
                 currentStep = totalSteps;
@@ -1743,6 +1898,23 @@
                 renderStep(currentStep);
                 if (currentStep >= 1 && currentStep <= 4) {
                     localStorage.setItem('step_completed_' + currentStep, 'true');
+                }
+                // 如果進入步驟二，啟動計時器
+                if (currentStep === 2) {
+                    if (!timerDone && !timerRunning) {
+                        const saved = localStorage.getItem('oath_timer_done');
+                        if (saved === 'true') {
+                            timerDone = true;
+                            timerRunning = false;
+                            const t = texts[currentLang];
+                            document.getElementById('timerDisplay').textContent = '0';
+                            document.getElementById('timerDisplay').className = 'timer-number done';
+                            document.getElementById('timerStatus').textContent = t.timerStatusDone;
+                            document.getElementById('nextBtn').disabled = false;
+                        } else {
+                            setTimeout(() => startTimer(), 300);
+                        }
+                    }
                 }
             }
         }
@@ -1764,7 +1936,20 @@
             document.getElementById('pageSteps').classList.remove('show');
             document.getElementById('backHomeBtn').classList.remove('show');
 
+            // 檢查計時器完成狀態
+            const savedTimer = localStorage.getItem('oath_timer_done');
+            if (savedTimer === 'true') {
+                timerDone = true;
+                timerRunning = false;
+            }
+
             renderHome();
+
+            // 如果有儲存的步驟進度
+            const savedStep = parseInt(localStorage.getItem('oath_step'));
+            if (savedStep && savedStep > 1) {
+                updateStepStatus();
+            }
         }
 
         document.addEventListener('DOMContentLoaded', init);
