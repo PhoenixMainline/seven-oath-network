@@ -1331,49 +1331,49 @@
                             <span class="gold">誓頻啟動 × 系統同步階段</span>
                         </div>
                         <div class="divider"></div>
-                        <!-- ===== 雙按鈕：左邊返回鍵 + 右邊啟動按鈕 ===== -->
-                        <div style="display: flex; gap: 12px; margin-top: 20px;">
-                            <!-- 左邊返回鍵 -->
-                            <button onclick="goHome()" style="
-                                background: rgba(255,255,255,0.05);
-                                border: 1px solid rgba(255,192,0,0.15);
-                                color: rgba(255,192,0,0.5);
-                                padding: 14px 0;
-                                border-radius: 12px;
-                                font-size: 20px;
-                                font-weight: 500;
-                                cursor: pointer;
-                                transition: all 0.3s ease;
-                                font-family: inherit;
-                                flex: 0.3;
-                                backdrop-filter: blur(4px);
-                            " onmouseover="this.style.background='rgba(255,192,0,0.1)'; this.style.color='#FFC000'; this.style.borderColor='rgba(255,192,0,0.3)'" 
-                            onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.color='rgba(255,192,0,0.5)'; this.style.borderColor='rgba(255,192,0,0.15)'">
-                                ◀
-                            </button>
+                       <!-- ===== 雙按鈕：左邊返回鍵 + 右邊啟動按鈕 ===== -->
+<div style="display: flex; gap: 12px; margin-top: 20px;">
+    <!-- 左邊返回鍵 -->
+    <button onclick="goHome()" style="
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,192,0,0.15);
+        color: rgba(255,192,0,0.5);
+        padding: 14px 0;
+        border-radius: 12px;
+        font-size: 20px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: inherit;
+        flex: 0.3;
+        backdrop-filter: blur(4px);
+    " onmouseover="this.style.background='rgba(255,192,0,0.1)'; this.style.color='#FFC000'; this.style.borderColor='rgba(255,192,0,0.3)'" 
+    onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.color='rgba(255,192,0,0.5)'; this.style.borderColor='rgba(255,192,0,0.15)'">
+        ◀
+    </button>
 
-                            <!-- 右邊啟動按鈕 -->
-                            <button onclick="goHome()" style="
-                                background: linear-gradient(135deg, #FFC000 0%, #e8604a 50%, #c04030 100%);
-                                color: #0a060e;
-                                border: none;
-                                padding: 14px 0;
-                                border-radius: 12px;
-                                font-size: 16px;
-                                font-weight: 700;
-                                cursor: pointer;
-                                transition: all 0.4s ease;
-                                font-family: inherit;
-                                letter-spacing: 2px;
-                                flex: 1;
-                                position: relative;
-                                overflow: hidden;
-                                line-height: 1.4;
-                            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.3)'" 
-                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                                【宇宙誓印覺醒工程】啟動 ▶
-                            </button>
-                        </div>
+    <!-- 右邊啟動按鈕 -->
+    <button onclick="goHome()" style="
+        background: linear-gradient(135deg, #FFC000 0%, #e8604a 50%, #c04030 100%);
+        color: #0a060e;
+        border: none;
+        padding: 14px 0;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.4s ease;
+        font-family: inherit;
+        letter-spacing: 2px;
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+        line-height: 1.4;
+    " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.3)'" 
+    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+        【宇宙誓印覺醒工程】啟動 ▶
+    </button>
+</div>
                     </div>
                     <div class="page-footer" style="margin-top:16px;">📄 【宇宙誓印覺醒工程 · 覺醒卷】：完成</div>
                 </div>
@@ -1444,7 +1444,7 @@
 
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                 if (statusDiv) {
-                    statusDiv.textContent = '❌ 瀏覽器不支援相機，請自行手動掃描器掃描實體書 QR Code';
+                    statusDiv.textContent = '❌ 無法啟動相機，請自行手動掃描器掃描實體書 QR Code';
                     statusDiv.className = 'scanner-status error';
                 }
                 showCameraFailNotice(step);
@@ -1721,7 +1721,7 @@
                 s5Sub: '',
                 s5Card1Title: '⚡ 系統自動執行',
                 s5Card1Text: '【購書序號】驗證成功後，平台自動執行：',
-                s5Card2Text: '✅ 主頻定位 × 光網鎖定<br>✅ 七印同步 × 覺醒模組展開<br>✅ 九界冊記 × 誓資紀錄歸檔',
+                s5Card2Text: '✅ 主頻定位 × 光網鎖定<br>✅ 七印誓網 × 覺醒模組展開<br>✅ 九界冊記 × 誓資紀錄歸檔',
                 s5Card3Text: '「 天 地 為 鑑 ， 光 網 為 證 。 」',
                 s5Footer: '📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 9-10 頁',
                 completeDesc: '您已成功完成《宇宙智能誓導平台》正式授權程序。<br><span class="gold">誓頻啟動 × 系統同步階段</span>',
