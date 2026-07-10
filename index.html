@@ -532,6 +532,55 @@
             letter-spacing: 2px;
         }
 
+        /* ===== 計時器按鈕 ===== */
+        .timer-btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .timer-btn {
+            background: rgba(212, 175, 55, 0.08);
+            color: #d4af37;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            padding: 8px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            letter-spacing: 2px;
+        }
+
+        .timer-btn:hover {
+            background: rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.2);
+        }
+
+        .timer-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .timer-btn.primary {
+            background: linear-gradient(135deg, #d4af37, #b8962e);
+            color: #0a060e;
+            border: none;
+        }
+
+        .timer-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
+        }
+
+        .timer-btn.primary:disabled {
+            opacity: 0.3;
+            transform: none;
+            box-shadow: none;
+        }
+
         /* ===== 掃描器 ===== */
         .scanner-container {
             width: 100%;
@@ -938,6 +987,10 @@
                 font-size: 16px;
                 letter-spacing: 8px;
             }
+            .timer-btn {
+                font-size: 12px;
+                padding: 6px 16px;
+            }
         }
 
         @media (max-width: 360px) {
@@ -1014,6 +1067,10 @@
             body::before {
                 font-size: 12px;
                 letter-spacing: 6px;
+            }
+            .timer-btn {
+                font-size: 11px;
+                padding: 5px 12px;
             }
         }
 
@@ -1158,6 +1215,12 @@
                             <div class="timer-label" id="timerLabel">請靜心誦讀 10 秒</div>
                             <div class="timer-number" id="timerDisplay">10</div>
                             <div class="timer-status" id="timerStatus">⏳ 準備開始</div>
+                        </div>
+
+                        <!-- ===== 計時器按鈕 ===== -->
+                        <div class="timer-btn-group">
+                            <button class="timer-btn primary" id="timerStartBtn" onclick="startTimer()">開始靜心</button>
+                            <button class="timer-btn" id="timerResetBtn" onclick="resetTimer()" style="display:none;">重新開始</button>
                         </div>
                     </div>
 
@@ -1470,7 +1533,6 @@
         function startTimer() {
             if (timerRunning || timerDone) return;
 
-            // 取得當前語言
             const lang = currentLang || 'zh';
             const t = texts[lang];
 
@@ -1480,11 +1542,16 @@
 
             const displayEl = document.getElementById('timerDisplay');
             const statusEl = document.getElementById('timerStatus');
+            const startBtn = document.getElementById('timerStartBtn');
+            const resetBtn = document.getElementById('timerResetBtn');
             const nextBtn = document.getElementById('nextBtn');
 
             if (displayEl) displayEl.textContent = '10';
             if (displayEl) displayEl.className = 'timer-number';
-            if (statusEl) statusEl.textContent = t.timerStatusRunning || '⏳ 誦讀中...';
+            if (statusEl) statusEl.textContent = '請靜心誦讀或默念誓文...';
+            if (startBtn) { startBtn.disabled = true;
+                startBtn.textContent = '誦讀中...'; }
+            if (resetBtn) resetBtn.style.display = 'none';
             if (nextBtn) nextBtn.disabled = true;
 
             if (timerInterval) clearInterval(timerInterval);
@@ -1500,7 +1567,10 @@
                         displayEl.textContent = '0';
                         displayEl.className = 'timer-number done';
                     }
-                    if (statusEl) statusEl.textContent = t.timerStatusDone || '✅ 已完成誦讀';
+                    if (statusEl) statusEl.textContent = '✅ 已完成誦讀';
+                    if (startBtn) { startBtn.disabled = false;
+                        startBtn.textContent = '開始靜心'; }
+                    if (resetBtn) resetBtn.style.display = 'inline-block';
                     if (nextBtn) nextBtn.disabled = false;
                     localStorage.setItem('oath_timer_done', 'true');
                     localStorage.setItem('step_completed_2', 'true');
@@ -1521,6 +1591,8 @@
 
             const displayEl = document.getElementById('timerDisplay');
             const statusEl = document.getElementById('timerStatus');
+            const startBtn = document.getElementById('timerStartBtn');
+            const resetBtn = document.getElementById('timerResetBtn');
             const nextBtn = document.getElementById('nextBtn');
 
             if (displayEl) {
@@ -1531,6 +1603,9 @@
                 const lang = currentLang || 'zh';
                 statusEl.textContent = texts[lang].timerStatusReady || '⏳ 準備開始';
             }
+            if (startBtn) { startBtn.disabled = false;
+                startBtn.textContent = '開始靜心'; }
+            if (resetBtn) resetBtn.style.display = 'none';
             if (nextBtn) nextBtn.disabled = true;
             localStorage.removeItem('oath_timer_done');
         }
@@ -1544,9 +1619,7 @@
             document.getElementById('pageSteps').style.display = 'none';
             document.getElementById('backHomeBtn').classList.remove('show');
 
-            // 重置計時器
             resetTimer();
-
             updateStepStatus();
         }
 
@@ -1556,13 +1629,11 @@
             document.getElementById('pageSteps').classList.add('show');
             document.getElementById('backHomeBtn').classList.add('show');
 
-            // 重置計時器
             resetTimer();
 
             currentStep = step;
             renderStep(currentStep);
 
-            // 如果進入步驟二，啟動計時器
             if (currentStep === 2) {
                 const saved = localStorage.getItem('oath_timer_done');
                 if (saved === 'true') {
@@ -1572,18 +1643,18 @@
                     const t = texts[lang];
                     const displayEl = document.getElementById('timerDisplay');
                     const statusEl = document.getElementById('timerStatus');
+                    const startBtn = document.getElementById('timerStartBtn');
+                    const resetBtn = document.getElementById('timerResetBtn');
                     const nextBtn = document.getElementById('nextBtn');
                     if (displayEl) {
                         displayEl.textContent = '0';
                         displayEl.className = 'timer-number done';
                     }
-                    if (statusEl) statusEl.textContent = t.timerStatusDone || '✅ 已完成誦讀';
+                    if (statusEl) statusEl.textContent = '✅ 已完成誦讀';
+                    if (startBtn) { startBtn.disabled = false;
+                        startBtn.textContent = '開始靜心'; }
+                    if (resetBtn) resetBtn.style.display = 'inline-block';
                     if (nextBtn) nextBtn.disabled = false;
-                } else {
-                    // 延遲啟動計時器，確保 DOM 已渲染
-                    setTimeout(() => {
-                        startTimer();
-                    }, 500);
                 }
             }
         }
@@ -1619,7 +1690,7 @@
                 oathDeclare: '★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★',
                 timerLabel: '請靜心誦讀 10 秒',
                 timerStatusReady: '⏳ 準備開始',
-                timerStatusRunning: '⏳ 誦讀中...',
+                timerStatusRunning: '請靜心誦讀或默念誓文...',
                 timerStatusDone: '✅ 已完成誦讀',
                 s2CardTitle: '⚡ 【執行指令】',
                 s2CardText: '誓印者於登入前，須先於「誓魂共振頻道」請授權誓文，以啟動主頻授權對應天律識別座標。',
@@ -1682,7 +1753,7 @@
                 oathDeclare: '★ With my Oath-Soul aligned to the Law, the Primary Frequency awakens; the Scripted Mandate stands; the Seal-Path is set. Heaven and Earth bear witness, and the Light-Net attests. ★',
                 timerLabel: 'Please center your mind and recite for 10 seconds',
                 timerStatusReady: '⏳ Ready',
-                timerStatusRunning: '⏳ Reciting...',
+                timerStatusRunning: 'Please center your mind and recite the vow...',
                 timerStatusDone: '✅ Recitation complete',
                 s2CardTitle: '⚡ [Execution Command]',
                 s2CardText: 'The Oath-Seal Executor must first recite the authorized vow-text at the "Oath-Soul Resonance Channel" to activate the main frequency authorization.',
@@ -1741,7 +1812,6 @@
                 renderHome();
             } else {
                 renderStep(currentStep);
-                // 更新計時器文字（如果計時器正在運行或已完成）
                 updateTimerText();
             }
         }
@@ -1751,15 +1821,19 @@
             const t = texts[lang];
             const statusEl = document.getElementById('timerStatus');
             const labelEl = document.getElementById('timerLabel');
+            const startBtn = document.getElementById('timerStartBtn');
 
             if (labelEl) labelEl.textContent = t.timerLabel || '請靜心誦讀 10 秒';
 
             if (timerDone) {
                 if (statusEl) statusEl.textContent = t.timerStatusDone || '✅ 已完成誦讀';
+                if (startBtn) startBtn.textContent = '開始靜心';
             } else if (timerRunning) {
-                if (statusEl) statusEl.textContent = t.timerStatusRunning || '⏳ 誦讀中...';
+                if (statusEl) statusEl.textContent = t.timerStatusRunning || '請靜心誦讀或默念誓文...';
+                if (startBtn) startBtn.textContent = '誦讀中...';
             } else {
                 if (statusEl) statusEl.textContent = t.timerStatusReady || '⏳ 準備開始';
+                if (startBtn) startBtn.textContent = '開始靜心';
             }
         }
 
@@ -1870,18 +1944,34 @@
                     document.getElementById('s2CardText').textContent = t.s2CardText;
                     document.getElementById('s2Footer').textContent = t.s2Footer;
 
-                    // 計時器狀態
+                    const startBtn = document.getElementById('timerStartBtn');
+                    const resetBtn = document.getElementById('timerResetBtn');
+
                     if (!timerDone) {
                         if (!timerRunning && timerCountdown === 10) {
                             document.getElementById('timerStatus').textContent = t.timerStatusReady;
                             document.getElementById('timerDisplay').textContent = '10';
                             document.getElementById('timerDisplay').className = 'timer-number';
+                            if (startBtn) { startBtn.disabled = false;
+                                startBtn.textContent = '開始靜心'; }
+                            if (resetBtn) resetBtn.style.display = 'none';
+                            nextBtn.disabled = true;
+                        } else if (timerRunning) {
+                            document.getElementById('timerStatus').textContent = t.timerStatusRunning;
+                            document.getElementById('timerDisplay').textContent = timerCountdown;
+                            document.getElementById('timerDisplay').className = 'timer-number';
+                            if (startBtn) { startBtn.disabled = true;
+                                startBtn.textContent = '誦讀中...'; }
+                            if (resetBtn) resetBtn.style.display = 'none';
                             nextBtn.disabled = true;
                         }
                     } else {
                         document.getElementById('timerStatus').textContent = t.timerStatusDone;
                         document.getElementById('timerDisplay').textContent = '0';
                         document.getElementById('timerDisplay').className = 'timer-number done';
+                        if (startBtn) { startBtn.disabled = false;
+                            startBtn.textContent = '開始靜心'; }
+                        if (resetBtn) resetBtn.style.display = 'inline-block';
                         nextBtn.disabled = false;
                     }
                     break;
@@ -1918,7 +2008,6 @@
                     break;
             }
 
-            // 步驟二計時器按鈕控制
             if (step === 2 && timerDone) {
                 nextBtn.disabled = false;
             } else if (step === 2 && !timerDone) {
@@ -1954,7 +2043,6 @@
                 if (currentStep >= 1 && currentStep <= 4) {
                     localStorage.setItem('step_completed_' + currentStep, 'true');
                 }
-                // 如果進入步驟二，啟動計時器
                 if (currentStep === 2) {
                     if (!timerDone && !timerRunning) {
                         const saved = localStorage.getItem('oath_timer_done');
@@ -1967,10 +2055,11 @@
                             document.getElementById('timerDisplay').className = 'timer-number done';
                             document.getElementById('timerStatus').textContent = t.timerStatusDone || '✅ 已完成誦讀';
                             document.getElementById('nextBtn').disabled = false;
-                        } else {
-                            setTimeout(() => {
-                                startTimer();
-                            }, 300);
+                            const startBtn = document.getElementById('timerStartBtn');
+                            const resetBtn = document.getElementById('timerResetBtn');
+                            if (startBtn) { startBtn.disabled = false;
+                                startBtn.textContent = '開始靜心'; }
+                            if (resetBtn) resetBtn.style.display = 'inline-block';
                         }
                     }
                 }
@@ -1980,10 +2069,6 @@
         function prevStep() {
             if (document.getElementById('prevBtn').disabled) return;
             if (currentStep > 1) {
-                // 如果離開步驟二，重置計時器（但保留完成狀態）
-                if (currentStep === 2) {
-                    // 不重置計時器狀態，讓它保持
-                }
                 currentStep--;
                 renderStep(currentStep);
             }
@@ -1998,7 +2083,6 @@
             document.getElementById('pageSteps').classList.remove('show');
             document.getElementById('backHomeBtn').classList.remove('show');
 
-            // 檢查計時器完成狀態
             const savedTimer = localStorage.getItem('oath_timer_done');
             if (savedTimer === 'true') {
                 timerDone = true;
@@ -2007,19 +2091,22 @@
 
             renderHome();
 
-            // 如果有儲存的步驟進度
             const savedStep = parseInt(localStorage.getItem('oath_step'));
             if (savedStep && savedStep > 1) {
                 updateStepStatus();
             }
 
-            // 初始化計時器顯示
             const lang = currentLang || 'zh';
             const t = texts[lang];
             const statusEl = document.getElementById('timerStatus');
             const labelEl = document.getElementById('timerLabel');
+            const startBtn = document.getElementById('timerStartBtn');
+            const resetBtn = document.getElementById('timerResetBtn');
+
             if (labelEl) labelEl.textContent = t.timerLabel || '請靜心誦讀 10 秒';
             if (statusEl) statusEl.textContent = t.timerStatusReady || '⏳ 準備開始';
+            if (startBtn) startBtn.textContent = '開始靜心';
+            if (resetBtn) resetBtn.style.display = 'none';
         }
 
         document.addEventListener('DOMContentLoaded', init);
