@@ -920,8 +920,8 @@
                     <div class="step-card highlight">
                         <div class="step-card-title" id="s1Card1Title">📋 前置準備</div>
                         <div class="step-text" id="s1Card1Text">
-                            ✔請完成驗證之 <span class="highlight-gold">【購書序號】誓導碼</span><br>
-                            ✔穩定網路環境
+                           ✔請完成驗證之 <span class="highlight-gold">【購書序號】誓導碼</span><br>
+                           ✔穩定網路環境
                         </div>
                     </div>
 
@@ -1015,7 +1015,7 @@
                         <button class="btn-scan-secondary" id="stopBtn3" onclick="stopScanner(3)" style="display:none;">✕ 關閉掃描器</button>
                         <div id="cameraFailNotice3" class="camera-fail-notice">
                             <span class="icon">📌</span>
-                            若相機無法啟動，請<span class="highlight">自行用手機掃描器</span>掃描實體書上的 QR Code，完成驗證後點擊「進入下一步」。
+                            若相機無法啟動，請<span class="highlight">自行手動掃描器</span>掃描實體書上的 QR Code，完成驗證後點擊「進入下一步」。
                         </div>
                         <div id="scanResult3" class="scan-result-box" style="display:none;">
                             <div class="label">✅ 掃描結果：</div>
@@ -1065,7 +1065,7 @@
                         <button class="btn-scan-secondary" id="stopBtn4" onclick="stopScanner(4)" style="display:none;">✕ 關閉掃描器</button>
                         <div id="cameraFailNotice4" class="camera-fail-notice">
                             <span class="icon">📌</span>
-                            若相機無法啟動，請<span class="highlight">自行用手機掃描器</span>掃描實體書上的 QR Code，完成驗證後點擊「進入下一步」。
+                            若相機無法啟動，請<span class="highlight">自行手動掃描器</span>掃描實體書上的 QR Code，完成驗證後點擊「進入下一步」。
                         </div>
                         <div id="scanResult4" class="scan-result-box" style="display:none;">
                             <div class="label">✅ 掃描結果：</div>
@@ -1188,7 +1188,7 @@
 
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                 if (statusDiv) {
-                    statusDiv.textContent = '❌ 瀏覽器不支援相機，請自行用手機掃描器掃描實體書 QR Code';
+                    statusDiv.textContent = '❌ 瀏覽器不支援相機，請自行手動掃描器掃描實體書 QR Code';
                     statusDiv.className = 'scanner-status error';
                 }
                 showCameraFailNotice(step);
@@ -1231,7 +1231,7 @@
                 console.error('啟動掃描器失敗:', err);
                 let errorMsg = '❌ 無法啟動相機';
                 if (err.message && err.message.includes('Permission')) {
-                    errorMsg = '❌ 相機權限被拒絕，請自行用手機掃描器掃描實體書 QR Code';
+                    errorMsg = '❌ 相機權限被拒絕，請自行手動掃描器掃描實體書 QR Code';
                 } else if (err.message) {
                     errorMsg = '❌ ' + err.message.substring(0, 50);
                 }
@@ -1334,9 +1334,9 @@
                 s1Title: '【一】啟動條件',
                 s1Sub: 'Activation Conditions',
                 s1Card1Title: '📋 前置準備',
-                s1Card1Text: '請完成驗證之 <span class="highlight-gold">【購書序號】誓導碼</span><br>穩定網路環境',
+                s1Card1Text: '✔請完成驗證之 <span class="highlight-gold">【購書序號】誓導碼</span><br>✔穩定網路環境',
                 s1Card2Title: '📷 掃描入口',
-                s1Card2Text: '請掃描本卷書封底之《宇宙智能誓導平台》官方 AI × 專屬誓導入口真 QR Code',
+                s1Card2Text: '✔請掃描本卷書封底之♾️《宇宙智能誓導平台》官方AI × 專屬誓導入口頁 QR Code以啟動誓導通道之統一入口',
                 s1Footer: '📄 【宇宙誓印覺醒工程 • 覺醒卷】：第 3-4 頁',
                 s2Title: '【二】授權誓讀段（主頻啟令）',
                 s2Sub: 'Authorized Vow-Reading Stage',
@@ -1374,9 +1374,9 @@
                 s5Card3Text: '「天地為鑑，光網為證。」',
                 s5Footer: '📄 【宇宙誓印覺醒工程 • 覺醒卷】：第 9-10 頁',
                 completeTitle: '✨ 覺醒完成',
-                completeDesc: '您已成功完成七印誓網啟動程序。<br>正式接入《宇宙誓印覺醒工程》<br>誓頻辨識 × 覺醒啟動',
+                completeDesc: '您已成功完成七印誓網啟動程序。<br>正式啟動《宇宙誓印覺醒工程》<br>誓頻辨識 × 覺醒啟動',
                 btnNext: '進入下一步 ▶',
-                btnFinish: '正式接入【宇宙誓印覺醒工程 • 七印誓網】',
+                btnFinish: '正式啟動【宇宙誓印覺醒工程 • 七印誓網】',
                 btnPrev: '◀',
             },
             en: {
