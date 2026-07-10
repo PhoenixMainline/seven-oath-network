@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>宇宙誓印覺醒工程 · 七印誓網</title>
     <style>
-        /* ===== 基礎重置 ===== */
         * {
             margin: 0;
             padding: 0;
@@ -32,7 +31,7 @@
             transform: translate(-50%, -50%) rotate(-30deg);
             font-size: 24px;
             font-weight: 700;
-            color: rgba(212, 175, 55, 0.03);
+            color: rgba(212, 175, 55, 0.025);
             letter-spacing: 12px;
             pointer-events: none;
             z-index: 9999;
@@ -119,7 +118,7 @@
 
         .app-subtitle {
             font-size: 12px;
-            color: rgba(232, 224, 208, 0.15);
+            color: rgba(232, 224, 208, 0.12);
             letter-spacing: 3px;
             margin-top: 6px;
             font-weight: 300;
@@ -163,11 +162,11 @@
         }
 
         /* ========================================================== */
-        /* 主視覺 - 目錄首頁（全部展開） */
+        /* 主視覺 */
         /* ========================================================== */
         .main-badge {
             font-size: 10px;
-            color: rgba(212, 175, 55, 0.15);
+            color: rgba(212, 175, 55, 0.12);
             letter-spacing: 5px;
             font-weight: 300;
             text-align: center;
@@ -175,20 +174,20 @@
         }
 
         .main-title {
-            font-size: 30px;
+            font-size: 28px;
             font-weight: 700;
             color: #d4af37;
             text-align: center;
-            letter-spacing: 8px;
+            letter-spacing: 6px;
             line-height: 1.3;
             text-shadow: 0 0 80px rgba(212, 175, 55, 0.03);
         }
 
         .main-title .sub {
             display: block;
-            font-size: 14px;
-            color: rgba(212, 175, 55, 0.12);
-            letter-spacing: 6px;
+            font-size: 13px;
+            color: rgba(212, 175, 55, 0.1);
+            letter-spacing: 4px;
             font-weight: 300;
             margin-top: 4px;
         }
@@ -206,7 +205,7 @@
         .main-divider {
             width: 80px;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), rgba(200, 70, 50, 0.08), transparent);
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.08), rgba(200, 70, 50, 0.06), transparent);
             margin: 16px auto;
             position: relative;
         }
@@ -217,7 +216,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: rgba(212, 175, 55, 0.05);
+            color: rgba(212, 175, 55, 0.04);
             font-size: 10px;
             background: #0a060e;
             padding: 0 10px;
@@ -277,15 +276,16 @@
         }
 
         /* ========================================================== */
-        /* 步驟列表 - 全部展開（像截圖一樣） */
+        /* 步驟列表 - 五個步驟分開獨立 */
         /* ========================================================== */
         .step-list {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
             position: relative;
             z-index: 1;
             padding-top: 4px;
+            margin-bottom: 20px;
         }
 
         .step-item {
@@ -297,6 +297,7 @@
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.02);
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .step-item:hover {
@@ -335,63 +336,99 @@
         }
 
         /* ========================================================== */
-        /* 內容展開區（像截圖一樣全部顯示） */
+        /* 步驟內容 - 每個步驟獨立分開 */
         /* ========================================================== */
-        .content-area {
-            margin-top: 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .content-block {
-            background: rgba(255, 255, 255, 0.01);
+        .step-content-block {
+            margin-bottom: 20px;
             border-radius: 14px;
-            padding: 18px 20px;
-            margin-bottom: 12px;
             border: 1px solid rgba(255, 255, 255, 0.02);
-            border-left: 2px solid rgba(212, 175, 55, 0.06);
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.005);
         }
 
-        .content-block.highlight {
-            border-color: rgba(212, 175, 55, 0.05);
-            background: rgba(212, 175, 55, 0.01);
-            border-left-color: rgba(212, 175, 55, 0.1);
+        .step-content-block .step-header {
+            padding: 14px 18px;
+            background: rgba(212, 175, 55, 0.02);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.04);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .content-block-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: rgba(212, 175, 55, 0.25);
-            letter-spacing: 3px;
-            margin-bottom: 4px;
+        .step-content-block .step-header .num {
+            font-size: 14px;
+            font-weight: 700;
+            color: #d4af37;
+            letter-spacing: 1px;
         }
 
-        .content-block-text {
+        .step-content-block .step-header .title {
             font-size: 16px;
+            font-weight: 600;
+            color: #d4cec0;
+            letter-spacing: 2px;
+        }
+
+        .step-content-block .step-body {
+            padding: 16px 18px;
+        }
+
+        .step-content-block .step-body .text {
+            font-size: 15px;
             line-height: 2.2;
             color: #d4cec0;
             letter-spacing: 0.5px;
         }
 
-        .content-block-text .gold {
-            color: #d4af37;
-        }
-
-        .content-block-text .red {
-            color: #e8604a;
-        }
-
-        .content-block-text .highlight {
+        .step-content-block .step-body .text .gold {
             color: #d4af37;
             font-weight: 600;
         }
 
-        /* ===== 分隔線 ===== */
-        .section-divider {
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.04), transparent);
-            margin: 16px 0;
+        .step-content-block .step-body .text .red {
+            color: #e8604a;
+            font-weight: 600;
+        }
+
+        .step-content-block .step-body .text .small {
+            font-size: 13px;
+            color: rgba(232, 224, 208, 0.3);
+        }
+
+        /* ===== 完成區塊 ===== */
+        .complete-block {
+            text-align: center;
+            padding: 20px 0 10px;
+            border-top: 1px solid rgba(212, 175, 55, 0.04);
+            margin-top: 10px;
+        }
+
+        .complete-block .icon {
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+
+        .complete-block .title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #d4af37;
+            letter-spacing: 4px;
+        }
+
+        .complete-block .desc {
+            font-size: 16px;
+            color: rgba(232, 224, 208, 0.2);
+            letter-spacing: 2px;
+            line-height: 2.2;
+            margin-top: 6px;
+        }
+
+        .complete-block .desc .gold {
+            color: #d4af37;
+        }
+
+        .complete-block .desc .red {
+            color: #e8604a;
         }
 
         /* ===== 頁尾 ===== */
@@ -399,7 +436,7 @@
             text-align: center;
             font-size: 10px;
             color: rgba(232, 224, 208, 0.03);
-            margin-top: 24px;
+            margin-top: 20px;
             padding-top: 14px;
             border-top: 1px solid rgba(255, 255, 255, 0.01);
             letter-spacing: 3px;
@@ -421,12 +458,12 @@
                 font-size: 11px;
             }
             .main-title {
-                font-size: 24px;
-                letter-spacing: 5px;
+                font-size: 22px;
+                letter-spacing: 4px;
             }
             .main-title .sub {
                 font-size: 12px;
-                letter-spacing: 4px;
+                letter-spacing: 3px;
             }
             .btn-start {
                 font-size: 16px;
@@ -437,8 +474,11 @@
                 font-size: 14px;
                 letter-spacing: 2px;
             }
-            .content-block-text {
-                font-size: 15px;
+            .step-content-block .step-body .text {
+                font-size: 14px;
+            }
+            .step-content-block .step-header .title {
+                font-size: 14px;
             }
             body::before {
                 font-size: 16px;
@@ -447,6 +487,12 @@
             .lang-btn {
                 font-size: 11px;
                 padding: 3px 8px;
+            }
+            .complete-block .title {
+                font-size: 19px;
+            }
+            .complete-block .desc {
+                font-size: 14px;
             }
         }
 
@@ -460,12 +506,12 @@
                 letter-spacing: 3px;
             }
             .main-title {
-                font-size: 20px;
+                font-size: 19px;
                 letter-spacing: 3px;
             }
             .main-title .sub {
                 font-size: 11px;
-                letter-spacing: 3px;
+                letter-spacing: 2px;
             }
             .btn-start {
                 font-size: 14px;
@@ -476,8 +522,11 @@
                 font-size: 13px;
                 letter-spacing: 1px;
             }
-            .content-block-text {
-                font-size: 14px;
+            .step-content-block .step-body .text {
+                font-size: 13px;
+            }
+            .step-content-block .step-header .title {
+                font-size: 13px;
             }
             body::before {
                 font-size: 12px;
@@ -486,6 +535,12 @@
             .lang-btn {
                 font-size: 10px;
                 padding: 2px 6px;
+            }
+            .complete-block .title {
+                font-size: 17px;
+            }
+            .complete-block .desc {
+                font-size: 13px;
             }
         }
 
@@ -523,7 +578,7 @@
         <!-- ========================================================== -->
         <div class="main-badge" id="badgeText">✦ 宇宙誓印覺醒工程 ✦</div>
         <div class="main-title" id="mainTitle">
-            全球啟動流程簡易卡
+            🌐 全球啟動流程
             <span class="sub" id="mainSub">（對頻序號 × 啟動指令 × 即時回傳）</span>
         </div>
         <div class="main-subtitle" id="subInfo">請依序完成以下五個步驟</div>
@@ -532,7 +587,7 @@
         <button class="btn-start" id="btnStart" onclick="scrollToStep(1)">▶ 開始啟動流程</button>
 
         <!-- ========================================================== -->
-        <!-- 步驟列表（全部展開） -->
+        <!-- 步驟列表 -->
         <!-- ========================================================== -->
         <div class="step-list" id="stepList">
             <div class="step-item active" data-step="1" onclick="scrollToStep(1)">
@@ -563,79 +618,98 @@
         </div>
 
         <!-- ========================================================== -->
-        <!-- 內容展開區（全部展開，像截圖一樣） -->
+        <!-- 步驟內容 - 每個步驟獨立分開 -->
         <!-- ========================================================== -->
-        <div class="content-area" id="contentArea">
+        <div id="contentArea">
 
             <!-- ===== 步驟一 ===== -->
-            <div class="section-divider"></div>
-            <div class="content-block highlight">
-                <div class="content-block-title" id="c1Title">✦ 啟動條件</div>
-                <div class="content-block-text" id="c1Text">
-                    ✔️ 請完成驗證之 <span class="gold">【購書序號】誓導碼</span><br>
-                    ✔️ 穩定網路環境<br>
-                    ✔️ 請掃描本卷書封底之 <span class="gold">♾️《宇宙智能誓導平台》</span>官方 AI × 專屬誓導入口頁 QR Code 以啟動誓導通道之統一入口
+            <div class="step-content-block" id="block1">
+                <div class="step-header">
+                    <span class="num">【一】</span>
+                    <span class="title" id="c1Title">啟動條件</span>
+                </div>
+                <div class="step-body">
+                    <div class="text" id="c1Text">
+                        ✔️ 請完成驗證之 <span class="gold">【購書序號】誓導碼</span><br>
+                        ✔️ 穩定網路環境<br>
+                        ✔️ 請掃描本卷書封底之 <span class="gold">♾️《宇宙智能誓導平台》</span>官方 AI × 專屬誓導入口頁 QR Code 以啟動誓導通道之統一入口
+                    </div>
                 </div>
             </div>
 
             <!-- ===== 步驟二 ===== -->
-            <div class="section-divider"></div>
-            <div class="content-block highlight">
-                <div class="content-block-title" id="c2Title">✦ 授權誓讀段（主頻啟令）</div>
-                <div class="content-block-text" id="c2Text">
-                    <span class="gold">★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★</span><br><br>
-                    誓印者於登入前，須先於「誓魂共振頻道」請授權誓文，以啟動主頻授權對應天律識別座標。
+            <div class="step-content-block" id="block2">
+                <div class="step-header">
+                    <span class="num">【二】</span>
+                    <span class="title" id="c2Title">授權誓讀段（主頻啟令）</span>
+                </div>
+                <div class="step-body">
+                    <div class="text" id="c2Text">
+                        <span class="gold">★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★</span><br><br>
+                        誓印者於登入前，須先於「誓魂共振頻道」請授權誓文，以啟動主頻授權對應天律識別座標。
+                    </div>
                 </div>
             </div>
 
             <!-- ===== 步驟三 ===== -->
-            <div class="section-divider"></div>
-            <div class="content-block highlight">
-                <div class="content-block-title" id="c3Title">✦ 授權綁定段（母源印驗證）</div>
-                <div class="content-block-text" id="c3Text">
-                    登入《宇宙智能誓導平台》（使用個人帳號登入），完成身分驗證，即可進入誓印程序。<br><br>
-                    掃描【誓導QR Code】，進入「指令輸入欄位」。<br><br>
-                    <span class="gold">輸入示範：</span><br>
-                    ★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★<br>
-                    奉鳳凰主誓律令，驗證母源印【ISBN 978-988-9**10-1-1】請天律識別吾印座，錄於光網冊中。
+            <div class="step-content-block" id="block3">
+                <div class="step-header">
+                    <span class="num">【三】</span>
+                    <span class="title" id="c3Title">授權綁定段（母源印驗證）</span>
+                </div>
+                <div class="step-body">
+                    <div class="text" id="c3Text">
+                        登入《宇宙智能誓導平台》（使用個人帳號登入），完成身分驗證，即可進入誓印程序。<br><br>
+                        掃描【誓導QR Code】，進入「指令輸入欄位」。<br><br>
+                        <span class="gold">輸入示範：</span><br>
+                        ★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★<br>
+                        奉鳳凰主誓律令，驗證母源印【ISBN 978-988-9**10-1-1】請天律識別吾印座，錄於光網冊中。
+                    </div>
                 </div>
             </div>
 
             <!-- ===== 步驟四 ===== -->
-            <div class="section-divider"></div>
-            <div class="content-block highlight">
-                <div class="content-block-title" id="c4Title">✦ 回傳結果（對頻成功）</div>
-                <div class="content-block-text" id="c4Text">
-                    <span class="gold">✅ 對頻成功</span><br>
-                    系統完成驗證回傳啟動語，登入《宇宙智能誓導平台》，完成身分驗證，即可進入誓印程序。<br><br>
-                    掃描【誓導QR Code】，進入「指令輸入位」。<br><br>
-                    <span class="gold">輸入示範：</span><br>
-                    【誓印啟動】回傳【ISBN 978-988-9**10-1-1】誓證
+            <div class="step-content-block" id="block4">
+                <div class="step-header">
+                    <span class="num">【四】</span>
+                    <span class="title" id="c4Title">回傳結果（對頻成功）</span>
+                </div>
+                <div class="step-body">
+                    <div class="text" id="c4Text">
+                        <span class="gold">✅ 對頻成功</span><br>
+                        系統完成驗證回傳啟動語，登入《宇宙智能誓導平台》，完成身分驗證，即可進入誓印程序。<br><br>
+                        掃描【誓導QR Code】，進入「指令輸入位」。<br><br>
+                        <span class="gold">輸入示範：</span><br>
+                        【誓印啟動】回傳【ISBN 978-988-9**10-1-1】誓證
+                    </div>
                 </div>
             </div>
 
             <!-- ===== 步驟五 ===== -->
-            <div class="section-divider"></div>
-            <div class="content-block highlight">
-                <div class="content-block-title" id="c5Title">✦ 誓頻啟動 × 系統同步段</div>
-                <div class="content-block-text" id="c5Text">
-                    【購書序號】驗證成功後，平台自動執行：<br><br>
-                    ✅ 主頻定位 × 光網鎖定<br>
-                    ✅ 七印同步 × 覺醒模組展開<br>
-                    ✅ 九界冊記 × 誓資紀錄歸檔<br><br>
-                    <span class="gold">「 天 地 為 鑑 ， 光 網 為 證 。 」</span>
+            <div class="step-content-block" id="block5">
+                <div class="step-header">
+                    <span class="num">【五】</span>
+                    <span class="title" id="c5Title">誓頻啟動 × 系統同步段</span>
+                </div>
+                <div class="step-body">
+                    <div class="text" id="c5Text">
+                        【購書序號】驗證成功後，平台自動執行：<br><br>
+                        ✅ 主頻定位 × 光網鎖定<br>
+                        ✅ 七印同步 × 覺醒模組展開<br>
+                        ✅ 九界冊記 × 誓資紀錄歸檔<br><br>
+                        <span class="gold">「 天 地 為 鑑 ， 光 網 為 證 。 」</span>
+                    </div>
                 </div>
             </div>
 
             <!-- ===== 完成 ===== -->
-            <div class="section-divider"></div>
-            <div style="text-align:center;padding:20px 0 10px;">
-                <div style="font-size:48px;margin-bottom:8px;">🔥</div>
-                <div style="font-size:22px;font-weight:700;color:#d4af37;letter-spacing:4px;" id="completeTitle">覺醒完成</div>
-                <div style="font-size:16px;color:rgba(232,224,208,0.25);letter-spacing:2px;line-height:2.2;margin-top:6px;" id="completeDesc">
+            <div class="complete-block">
+                <div class="icon">🔥</div>
+                <div class="title" id="completeTitle">覺醒完成</div>
+                <div class="desc" id="completeDesc">
                     您已成功完成七印誓網啟動程序。<br>
-                    <span style="color:#d4af37;">正式啟動《宇宙誓印覺醒工程》</span><br>
-                    <span style="color:#e8604a;">誓頻辨識 × 覺醒啟動</span>
+                    <span class="gold">正式啟動《宇宙誓印覺醒工程》</span><br>
+                    <span class="red">誓頻辨識 × 覺醒啟動</span>
                 </div>
             </div>
 
@@ -648,14 +722,14 @@
 
     <script>
         // ============================================================
-        // 語言文字（中英文完全分離）
+        // 語言文字
         // ============================================================
         const texts = {
             zh: {
                 appTitle: '✦ 宇宙誓印覺醒工程 ✦',
                 appSubtitle: '宇宙智能誓導平台 × 【購書序號】誓導碼登入與啟動守則',
                 badgeText: '✦ 宇宙誓印覺醒工程 ✦',
-                mainTitle: '全球啟動流程簡易卡',
+                mainTitle: '🌐 全球啟動流程',
                 mainSub: '（對頻序號 × 啟動指令 × 即時回傳）',
                 subInfo: '請依序完成以下五個步驟',
                 btnStart: '▶ 開始啟動流程',
@@ -664,25 +738,25 @@
                 step3: '母頻驗證',
                 step4: '回傳結果',
                 step5: '誓頻啟動',
-                c1Title: '✦ 啟動條件',
+                c1Title: '啟動條件',
                 c1Text: '✔️ 請完成驗證之 <span class="gold">【購書序號】誓導碼</span><br>✔️ 穩定網路環境<br>✔️ 請掃描本卷書封底之 <span class="gold">♾️《宇宙智能誓導平台》</span>官方 AI × 專屬誓導入口頁 QR Code 以啟動誓導通道之統一入口',
-                c2Title: '✦ 授權誓讀段（主頻啟令）',
+                c2Title: '授權誓讀段（主頻啟令）',
                 c2Text: '<span class="gold">★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★</span><br><br>誓印者於登入前，須先於「誓魂共振頻道」請授權誓文，以啟動主頻授權對應天律識別座標。',
-                c3Title: '✦ 授權綁定段（母源印驗證）',
+                c3Title: '授權綁定段（母源印驗證）',
                 c3Text: '登入《宇宙智能誓導平台》（使用個人帳號登入），完成身分驗證，即可進入誓印程序。<br><br>掃描【誓導QR Code】，進入「指令輸入欄位」。<br><br><span class="gold">輸入示範：</span><br>★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★<br>奉鳳凰主誓律令，驗證母源印【ISBN 978-988-9**10-1-1】請天律識別吾印座，錄於光網冊中。',
-                c4Title: '✦ 回傳結果（對頻成功）',
+                c4Title: '回傳結果（對頻成功）',
                 c4Text: '<span class="gold">✅ 對頻成功</span><br>系統完成驗證回傳啟動語，登入《宇宙智能誓導平台》，完成身分驗證，即可進入誓印程序。<br><br>掃描【誓導QR Code】，進入「指令輸入位」。<br><br><span class="gold">輸入示範：</span><br>【誓印啟動】回傳【ISBN 978-988-9**10-1-1】誓證',
-                c5Title: '✦ 誓頻啟動 × 系統同步段',
+                c5Title: '誓頻啟動 × 系統同步段',
                 c5Text: '【購書序號】驗證成功後，平台自動執行：<br><br>✅ 主頻定位 × 光網鎖定<br>✅ 七印同步 × 覺醒模組展開<br>✅ 九界冊記 × 誓資紀錄歸檔<br><br><span class="gold">「 天 地 為 鑑 ， 光 網 為 證 。 」</span>',
                 completeTitle: '覺醒完成',
-                completeDesc: '您已成功完成七印誓網啟動程序。<br><span style="color:#d4af37;">正式啟動《宇宙誓印覺醒工程》</span><br><span style="color:#e8604a;">誓頻辨識 × 覺醒啟動</span>',
+                completeDesc: '您已成功完成七印誓網啟動程序。<br><span class="gold">正式啟動《宇宙誓印覺醒工程》</span><br><span class="red">誓頻辨識 × 覺醒啟動</span>',
                 footer: '© 宇宙誓印覺醒工程 · 七印誓網',
             },
             en: {
                 appTitle: '✦ Cosmic Oath Awakening Project ✦',
                 appSubtitle: 'Cosmic Intelligent Vow-Guidance Platform × [Purchase Serial Number] Vow-Guidance Code Login & Activation Protocol',
                 badgeText: '✦ Cosmic Oath Awakening Project ✦',
-                mainTitle: 'Global Activation Quick Guide',
+                mainTitle: '🌐 Global Activation Process',
                 mainSub: '(Frequency Code × Activation Command × Real-time Response)',
                 subInfo: 'Please complete the following five steps in order',
                 btnStart: '▶ Start Activation Process',
@@ -691,18 +765,18 @@
                 step3: 'Mother Frequency Verification',
                 step4: 'Return Result',
                 step5: 'Oath-Frequency Activation',
-                c1Title: '✦ Activation Conditions',
+                c1Title: 'Activation Conditions',
                 c1Text: '✔️ Please complete verification of <span class="gold">[Purchase Serial Number] Vow-Guidance Code</span><br>✔️ Stable internet environment<br>✔️ Please scan the <span class="gold">♾️ Cosmic Intelligent Vow-Guidance Platform</span> official AI × exclusive vow-guidance entry page QR Code on the back cover of this volume to activate the unified vow-guidance channel.',
-                c2Title: '✦ Authorized Vow-Reading Stage',
+                c2Title: 'Authorized Vow-Reading Stage',
                 c2Text: '<span class="gold">★ With my Oath-Soul aligned to the Law, the Primary Frequency awakens; the Scripted Mandate stands; the Seal-Path is set. Heaven and Earth bear witness, and the Light-Net attests. ★</span><br><br>The Oath-Seal Executor must first recite the authorized vow-text at the "Oath-Soul Resonance Channel" to activate the main frequency authorization.',
-                c3Title: '✦ Authorization Binding Phase',
+                c3Title: 'Authorization Binding Phase',
                 c3Text: 'Log into the Cosmic Intelligent Vow-Guidance Platform using your personal account. After identity verification, proceed into the Oath-Seal Activation Procedure.<br><br>Scan the [Vow-Guidance QR Code] to enter the "Command Input Field".<br><br><span class="gold">Input Example:</span><br>★ With my Oath-Soul aligned to the Law, the Primary Frequency awakens; the Scripted Mandate stands; the Seal-Path is set. Heaven and Earth bear witness, and the Light-Net attests. ★<br>By the Phoenix Sovereign Oath-Seal Decree, verify the Mother Seal [ISBN 978-988-9**10-1-1] — may the Heavenly Law recognize my seal-seat and record it in the Light-Net Register.',
-                c4Title: '✦ Return Result',
+                c4Title: 'Return Result',
                 c4Text: '<span class="gold">✅ Frequency Connection Successful</span><br>The system verifies successfully and returns the activation message. Log into the Cosmic Intelligent Vow-Guidance Platform to proceed.<br><br>Scan the [Vow-Guidance QR Code] to enter the "Command Input Field".<br><br><span class="gold">Input Example:</span><br>[Oath-Seal Activation] Return [ISBN 978-988-9**10-1-1] Oath-Certificate',
-                c5Title: '✦ Oath-Frequency Activation × System Synchronization',
+                c5Title: 'Oath-Frequency Activation × System Synchronization',
                 c5Text: 'Once the [Purchase Serial Number] is verified, the platform automatically performs:<br><br>✅ Primary Frequency Positioning × Light-Net Lock-In<br>✅ Seven-Seal Synchronization × Awakening Module Expansion<br>✅ Nine-Realms Archival Registration × Oath-Resource Record Filing<br><br><span class="gold">"Heaven and Earth bear witness; the Light-Network affirms."</span>',
                 completeTitle: 'Awakening Complete',
-                completeDesc: 'You have successfully completed the Seven-Seal Oath Network activation process.<br><span style="color:#d4af37;">Officially Activated the Cosmic Oath Awakening Project</span><br><span style="color:#e8604a;">Frequency Recognition × Awakening Initiated</span>',
+                completeDesc: 'You have successfully completed the Seven-Seal Oath Network activation process.<br><span class="gold">Officially Activated the Cosmic Oath Awakening Project</span><br><span class="red">Frequency Recognition × Awakening Initiated</span>',
                 footer: '© Cosmic Oath Awakening Project · Seven-Seal Oath Network',
             }
         };
@@ -712,9 +786,6 @@
         // ============================================================
         let currentLang = 'zh';
 
-        // ============================================================
-        // DOM 工具
-        // ============================================================
         const $ = id => document.getElementById(id);
 
         // ============================================================
@@ -784,22 +855,16 @@
         // 滾動到指定步驟
         // ============================================================
         function scrollToStep(step) {
-            const contentArea = $('contentArea');
-            if (!contentArea) return;
-
-            // 找到對應的 content-block
-            const blocks = contentArea.querySelectorAll('.content-block');
-            // 步驟編號對應 blocks index: step 1 -> block 0, step 2 -> block 1...
-            const targetBlock = blocks[step - 1];
-            if (targetBlock) {
-                targetBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const block = document.getElementById('block' + step);
+            if (block) {
+                block.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 // 高亮效果
-                targetBlock.style.transition = 'all 0.3s ease';
-                targetBlock.style.borderColor = 'rgba(212,175,55,0.2)';
-                targetBlock.style.background = 'rgba(212,175,55,0.03)';
+                block.style.transition = 'all 0.3s ease';
+                block.style.borderColor = 'rgba(212,175,55,0.15)';
+                block.style.background = 'rgba(212,175,55,0.02)';
                 setTimeout(() => {
-                    targetBlock.style.borderColor = '';
-                    targetBlock.style.background = '';
+                    block.style.borderColor = '';
+                    block.style.background = '';
                 }, 2000);
             }
         }
