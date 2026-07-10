@@ -22,6 +22,26 @@
             justify-content: center;
             align-items: flex-start;
             padding: 20px 16px;
+            /* ===== 背景圖：填滿整個畫面 ===== */
+            background-image: url('background.png');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            position: relative;
+        }
+
+        /* ===== 背景圖的深色疊加層（讓文字更好閱讀） ===== */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 6, 14, 0.6);
+            pointer-events: none;
+            z-index: 0;
         }
 
         /* ===== 浮水印 ===== */
@@ -45,15 +65,18 @@
         .app-container {
             max-width: 520px;
             width: 100%;
-            background: radial-gradient(ellipse at 50% 0%, #1a0e1a 0%, #0a060e 70%);
+            background: radial-gradient(ellipse at 50% 0%, rgba(26, 14, 26, 0.85) 0%, rgba(10, 6, 14, 0.9) 70%);
             border-radius: 32px;
             padding: 28px 24px 32px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 60px rgba(200, 70, 50, 0.03);
             border: 1px solid rgba(212, 175, 55, 0.06);
             position: relative;
             overflow: hidden;
+            z-index: 1;
+            backdrop-filter: blur(2px);
         }
 
+        /* ===== 背景光網（保留原有動畫） ===== */
         .app-container::before {
             content: '';
             position: absolute;
@@ -258,7 +281,7 @@
             transform: translate(-50%, -50%);
             color: rgba(212, 175, 55, 0.04);
             font-size: 10px;
-            background: #0a060e;
+            background: rgba(10, 6, 14, 0.5);
             padding: 0 10px;
         }
 
@@ -869,7 +892,7 @@
             box-shadow: 0 8px 40px rgba(200, 70, 50, 0.08);
         }
 
-        /* ===== 完成頁（全部展開） ===== */
+        /* ===== 完成頁 ===== */
         .complete-page {
             padding: 10px 0 20px;
         }
@@ -1416,7 +1439,7 @@
                     <div class="page-footer" id="s5Footer">📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 9-10 頁</div>
                 </div>
 
-                <!-- ====== 完成頁（全部展開，無🔥圖示） ====== -->
+                <!-- ====== 完成頁 ====== -->
                 <div class="step-page" data-step="6">
                     <div class="complete-page">
                         <div class="title" id="completeTitle">覺醒完成</div>
@@ -1677,9 +1700,7 @@
             document.getElementById('pageSteps').style.display = 'none';
             document.getElementById('backHomeBtn').classList.remove('show');
 
-            // 重置計時器
             resetTimer();
-
             updateStepStatus();
         }
 
@@ -1689,13 +1710,11 @@
             document.getElementById('pageSteps').classList.add('show');
             document.getElementById('backHomeBtn').classList.add('show');
 
-            // 重置計時器
             resetTimer();
 
             currentStep = step;
             renderStep(currentStep);
 
-            // 如果進入步驟二，啟動計時器
             if (currentStep === 2) {
                 const saved = localStorage.getItem('oath_timer_done');
                 if (saved === 'true') {
@@ -1953,7 +1972,6 @@
                 page.classList.toggle('active', pageStep === step || (isComplete && pageStep === totalSteps));
             });
 
-            // 完成頁隱藏按鈕
             const stepButtons = document.getElementById('stepButtons');
             if (isComplete) {
                 document.getElementById('completeTitle').textContent = t.completeTitle;
