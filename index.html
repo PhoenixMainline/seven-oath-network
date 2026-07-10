@@ -869,35 +869,81 @@
             box-shadow: 0 8px 40px rgba(200, 70, 50, 0.08);
         }
 
-        .complete-icon {
-            font-size: 72px;
-            text-align: center;
-            padding: 30px 0 16px;
+        /* ===== 完成頁（全部展開） ===== */
+        .complete-page {
+            padding: 10px 0 20px;
         }
 
-        .complete-title {
-            font-size: 26px;
+        .complete-page .title {
+            font-size: 24px;
             font-weight: 700;
             color: #d4af37;
             text-align: center;
-            margin-bottom: 8px;
-            letter-spacing: 6px;
+            margin-bottom: 12px;
+            letter-spacing: 4px;
         }
 
-        .complete-desc {
+        .complete-page .desc {
             text-align: center;
-            color: rgba(232, 224, 208, 0.2);
-            font-size: 16px;
-            line-height: 2.2;
-            letter-spacing: 2px;
+            color: rgba(232, 224, 208, 0.25);
+            font-size: 15px;
+            line-height: 2.4;
+            letter-spacing: 1.5px;
         }
 
-        .complete-desc .gold {
+        .complete-page .desc .gold {
             color: #d4af37;
         }
 
-        .complete-desc .red {
+        .complete-page .desc .red {
             color: #e8604a;
+        }
+
+        .complete-page .divider {
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.08), transparent);
+            margin: 16px auto;
+        }
+
+        .complete-page .btn-finish {
+            background: linear-gradient(135deg, #d4af37 0%, #e8604a 50%, #c04030 100%);
+            color: #0a060e;
+            border: none;
+            padding: 16px 0;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            letter-spacing: 4px;
+            width: 100%;
+            margin-top: 16px;
+            box-shadow: 0 4px 30px rgba(200, 70, 50, 0.04);
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .complete-page .btn-finish::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.1) 0%, transparent 60%);
+            animation: btnGlow 3s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        .complete-page .btn-finish:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 40px rgba(200, 70, 50, 0.08);
+        }
+
+        .complete-page .btn-finish:active {
+            transform: scale(0.97);
         }
 
         .scanner-hidden {
@@ -970,14 +1016,14 @@
                 letter-spacing: 2px;
             }
             .btn-finish {
-                font-size: 12px;
+                font-size: 14px;
+                padding: 12px 0;
             }
-            .complete-title {
-                font-size: 22px;
-                letter-spacing: 4px;
+            .complete-page .title {
+                font-size: 20px;
             }
-            .complete-icon {
-                font-size: 56px;
+            .complete-page .desc {
+                font-size: 14px;
             }
             .scanner-overlay {
                 width: 140px;
@@ -990,6 +1036,10 @@
             .timer-btn {
                 font-size: 12px;
                 padding: 6px 16px;
+            }
+            .complete-page .btn-finish {
+                font-size: 15px;
+                padding: 14px 0;
             }
         }
 
@@ -1051,14 +1101,14 @@
                 letter-spacing: 1px;
             }
             .btn-finish {
-                font-size: 11px;
+                font-size: 13px;
+                padding: 10px 0;
             }
-            .complete-title {
-                font-size: 19px;
-                letter-spacing: 3px;
+            .complete-page .title {
+                font-size: 18px;
             }
-            .complete-icon {
-                font-size: 44px;
+            .complete-page .desc {
+                font-size: 13px;
             }
             .scanner-overlay {
                 width: 120px;
@@ -1071,6 +1121,10 @@
             .timer-btn {
                 font-size: 11px;
                 padding: 5px 12px;
+            }
+            .complete-page .btn-finish {
+                font-size: 13px;
+                padding: 12px 0;
             }
         }
 
@@ -1362,22 +1416,26 @@
                     <div class="page-footer" id="s5Footer">📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 9-10 頁</div>
                 </div>
 
-                <!-- ====== 完成頁 ====== -->
+                <!-- ====== 完成頁（全部展開，無🔥圖示） ====== -->
                 <div class="step-page" data-step="6">
-                    <div class="complete-icon">🔥</div>
-                    <div class="complete-title" id="completeTitle">覺醒完成</div>
-                    <div class="complete-desc" id="completeDesc">
-                        您已成功完成《宇宙智能誓導平台》正式授權程序。<br>
-                        <span class="gold">正式啟動【宇宙誓印覺醒工程 · 七印誓網】</span><br>
-                        <span class="red">誓頻啟動 × 系統同步階段</span>
+                    <div class="complete-page">
+                        <div class="title" id="completeTitle">覺醒完成</div>
+                        <div class="divider"></div>
+                        <div class="desc" id="completeDesc">
+                            您已成功完成《宇宙智能誓導平台》正式授權程序。<br>
+                            <span class="gold">正式啟動【宇宙誓印覺醒工程 · 七印誓網】</span><br>
+                            <span class="red">誓頻啟動 × 系統同步階段</span>
+                        </div>
+                        <div class="divider"></div>
+                        <button class="btn-finish" onclick="goHome()">◀ 返回首頁</button>
                     </div>
-                    <div class="page-footer" style="margin-top:24px;">📄 【宇宙誓印覺醒工程 · 覺醒卷】：完成</div>
+                    <div class="page-footer" style="margin-top:16px;">📄 【宇宙誓印覺醒工程 · 覺醒卷】：完成</div>
                 </div>
 
             </div>
 
-            <!-- ===== 按鈕 ===== -->
-            <div class="btn-row">
+            <!-- ===== 按鈕（步驟1~5使用，完成頁隱藏） ===== -->
+            <div class="btn-row" id="stepButtons">
                 <button class="btn btn-prev" id="prevBtn" onclick="prevStep()">◀</button>
                 <button class="btn btn-next" id="nextBtn" onclick="nextStep()">進入下一步 ▶</button>
             </div>
@@ -1619,7 +1677,9 @@
             document.getElementById('pageSteps').style.display = 'none';
             document.getElementById('backHomeBtn').classList.remove('show');
 
+            // 重置計時器
             resetTimer();
+
             updateStepStatus();
         }
 
@@ -1629,11 +1689,13 @@
             document.getElementById('pageSteps').classList.add('show');
             document.getElementById('backHomeBtn').classList.add('show');
 
+            // 重置計時器
             resetTimer();
 
             currentStep = step;
             renderStep(currentStep);
 
+            // 如果進入步驟二，啟動計時器
             if (currentStep === 2) {
                 const saved = localStorage.getItem('oath_timer_done');
                 if (saved === 'true') {
@@ -1723,7 +1785,6 @@
                 completeTitle: '覺醒完成',
                 completeDesc: '您已成功完成《宇宙智能誓導平台》正式授權程序。<br><span class="gold">正式啟動【宇宙誓印覺醒工程 · 七印誓網】</span><br><span class="red">誓頻啟動 × 系統同步階段</span>',
                 btnNext: '進入下一步 ▶',
-                btnFinish: '🔥 正式啟動 🔥',
                 btnPrev: '◀',
             },
             en: {
@@ -1786,7 +1847,6 @@
                 completeTitle: '✨ Awakening Complete',
                 completeDesc: 'You have successfully completed the official authorization process of the Cosmic Intelligent Vow-Guidance Platform.<br><span class="gold">Officially Activated 【Cosmic Oath Awakening Project • Seven-Seal Oath Network】</span><br><span class="red">Oath-Frequency Activation × System Synchronization Phase</span>',
                 btnNext: 'Next Step ▶',
-                btnFinish: '🔥 Officially Activate 🔥',
                 btnPrev: '◀',
             }
         };
@@ -1893,15 +1953,15 @@
                 page.classList.toggle('active', pageStep === step || (isComplete && pageStep === totalSteps));
             });
 
+            // 完成頁隱藏按鈕
+            const stepButtons = document.getElementById('stepButtons');
             if (isComplete) {
                 document.getElementById('completeTitle').textContent = t.completeTitle;
                 document.getElementById('completeDesc').innerHTML = t.completeDesc;
-                document.getElementById('prevBtn').style.display = 'none';
-                const nextBtn = document.getElementById('nextBtn');
-                nextBtn.textContent = t.btnFinish;
-                nextBtn.disabled = false;
-                nextBtn.className = 'btn btn-finish';
+                if (stepButtons) stepButtons.style.display = 'none';
                 return;
+            } else {
+                if (stepButtons) stepButtons.style.display = 'flex';
             }
 
             document.getElementById('prevBtn').style.display = 'inline-block';
@@ -1909,7 +1969,7 @@
             nextBtn.className = 'btn btn-next';
 
             if (step === totalSteps - 1) {
-                nextBtn.textContent = t.btnFinish;
+                nextBtn.textContent = '🔥 正式啟動 🔥';
                 nextBtn.className = 'btn btn-finish';
             } else {
                 nextBtn.textContent = t.btnNext;
