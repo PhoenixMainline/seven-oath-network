@@ -21,12 +21,24 @@
             justify-content: center;
             align-items: flex-start;
             padding: 16px;
-            /* ===== 全版面宇宙星圖背景（深色版） ===== */
             background-image: url('background-dark.png');
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
             background-attachment: fixed;
+        }
+
+        /* ===== 靈性光暈疊加 ===== */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 50% 30%, rgba(212, 175, 55, 0.04) 0%, rgba(10, 6, 14, 0.3) 60%, rgba(0, 0, 0, 0.5) 100%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         /* ===== 浮水印 ===== */
@@ -38,7 +50,7 @@
             transform: translate(-50%, -50%) rotate(-30deg);
             font-size: 24px;
             font-weight: 700;
-            color: rgba(212, 175, 55, 0.03);
+            color: rgba(212, 175, 55, 0.025);
             letter-spacing: 12px;
             pointer-events: none;
             z-index: 9999;
@@ -60,7 +72,7 @@
         .app-header {
             text-align: center;
             padding-bottom: 16px;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.08);
             margin-bottom: 18px;
             position: relative;
             z-index: 1;
@@ -69,20 +81,20 @@
         .app-title {
             font-size: 20px;
             font-weight: 700;
-            color: #f0d080;
+            color: #e8d5a0;
             letter-spacing: 6px;
             line-height: 1.5;
-            text-shadow: 0 0 30px rgba(0, 0, 0, 0.5), 0 0 60px rgba(212, 175, 55, 0.05);
+            text-shadow: 0 0 40px rgba(212, 175, 55, 0.08), 0 2px 20px rgba(0, 0, 0, 0.6);
         }
 
         .app-subtitle {
             font-size: 12px;
-            color: rgba(232, 224, 208, 0.35);
+            color: rgba(232, 224, 208, 0.3);
             letter-spacing: 3px;
             margin-top: 6px;
             font-weight: 300;
             line-height: 1.8;
-            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.6);
         }
 
         /* ===== 返回按鈕 ===== */
@@ -91,16 +103,16 @@
             top: 10px;
             left: 0px;
             z-index: 20;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(212, 175, 55, 0.15);
-            color: rgba(232, 224, 208, 0.6);
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            color: rgba(232, 224, 208, 0.5);
             padding: 6px 14px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(6px);
             display: none;
             align-items: center;
             gap: 4px;
@@ -109,9 +121,9 @@
         }
 
         .back-home:hover {
-            background: rgba(212, 175, 55, 0.15);
-            color: #f0d080;
-            border-color: rgba(212, 175, 55, 0.25);
+            background: rgba(212, 175, 55, 0.12);
+            color: #e8d5a0;
+            border-color: rgba(212, 175, 55, 0.2);
         }
 
         .back-home.show {
@@ -129,14 +141,14 @@
             background: rgba(0, 0, 0, 0.3);
             padding: 3px;
             border-radius: 18px;
-            border: 1px solid rgba(212, 175, 55, 0.08);
-            backdrop-filter: blur(4px);
+            border: 1px solid rgba(212, 175, 55, 0.06);
+            backdrop-filter: blur(6px);
         }
 
         .lang-btn {
             background: transparent;
             border: none;
-            color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.25);
             padding: 4px 12px;
             border-radius: 14px;
             font-size: 12px;
@@ -147,12 +159,12 @@
         }
 
         .lang-btn.active {
-            background: rgba(212, 175, 55, 0.2);
-            color: #f0d080;
+            background: rgba(212, 175, 55, 0.15);
+            color: #e8d5a0;
         }
 
         .lang-btn:hover {
-            color: #f0d080;
+            color: #e8d5a0;
         }
 
         /* ========================================================== */
@@ -171,17 +183,17 @@
         .main-title {
             font-size: 28px;
             font-weight: 700;
-            color: #f0d080;
+            color: #e8d5a0;
             text-align: center;
             letter-spacing: 6px;
             line-height: 1.3;
-            text-shadow: 0 0 40px rgba(0, 0, 0, 0.5), 0 0 80px rgba(212, 175, 55, 0.05);
+            text-shadow: 0 0 60px rgba(212, 175, 55, 0.06), 0 2px 30px rgba(0, 0, 0, 0.6);
         }
 
         .main-title .sub {
             display: block;
             font-size: 13px;
-            color: rgba(212, 175, 55, 0.25);
+            color: rgba(212, 175, 55, 0.2);
             letter-spacing: 4px;
             font-weight: 300;
             margin-top: 4px;
@@ -190,18 +202,18 @@
         .main-subtitle {
             text-align: center;
             font-size: 13px;
-            color: rgba(232, 224, 208, 0.3);
+            color: rgba(232, 224, 208, 0.25);
             letter-spacing: 4px;
             margin-top: 8px;
             font-weight: 300;
             line-height: 1.8;
-            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
         }
 
         .main-divider {
             width: 80px;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.15), rgba(200, 70, 50, 0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.12), rgba(200, 70, 50, 0.08), transparent);
             margin: 16px auto;
             position: relative;
         }
@@ -212,7 +224,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: rgba(212, 175, 55, 0.08);
+            color: rgba(212, 175, 55, 0.06);
             font-size: 10px;
             background: transparent;
             padding: 0 10px;
@@ -285,36 +297,36 @@
             align-items: center;
             gap: 12px;
             padding: 12px 16px;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.25);
             border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.03);
             transition: all 0.3s ease;
             cursor: pointer;
-            backdrop-filter: blur(6px);
+            backdrop-filter: blur(8px);
         }
 
         .step-item:hover {
-            background: rgba(0, 0, 0, 0.4);
-            border-color: rgba(212, 175, 55, 0.08);
+            background: rgba(0, 0, 0, 0.35);
+            border-color: rgba(212, 175, 55, 0.06);
         }
 
         .step-number {
             font-size: 14px;
             font-weight: 700;
-            color: rgba(212, 175, 55, 0.35);
+            color: rgba(212, 175, 55, 0.3);
             min-width: 38px;
             letter-spacing: 1px;
         }
 
         .step-label {
             font-size: 16px;
-            color: rgba(232, 224, 208, 0.5);
+            color: rgba(232, 224, 208, 0.45);
             letter-spacing: 3px;
             font-weight: 300;
         }
 
         .step-item.active .step-number {
-            color: #f0d080;
+            color: #e8d5a0;
         }
 
         .step-item.active .step-label {
@@ -324,21 +336,21 @@
         .step-item .step-status {
             margin-left: auto;
             font-size: 12px;
-            color: rgba(212, 175, 55, 0.15);
+            color: rgba(212, 175, 55, 0.12);
             letter-spacing: 1px;
         }
 
         .tome-footer {
             text-align: center;
             font-size: 10px;
-            color: rgba(232, 224, 208, 0.08);
+            color: rgba(232, 224, 208, 0.06);
             margin-top: 20px;
             padding-top: 14px;
-            border-top: 1px solid rgba(255, 255, 255, 0.02);
+            border-top: 1px solid rgba(255, 255, 255, 0.015);
             letter-spacing: 3px;
             position: relative;
             z-index: 1;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
         }
 
         /* ========================================================== */
@@ -381,10 +393,10 @@
         .step-title {
             font-size: 22px;
             font-weight: 700;
-            color: #f0d080;
+            color: #e8d5a0;
             margin-bottom: 4px;
             letter-spacing: 4px;
-            text-shadow: 0 0 30px rgba(0, 0, 0, 0.5), 0 0 60px rgba(212, 175, 55, 0.05);
+            text-shadow: 0 0 40px rgba(212, 175, 55, 0.06), 0 2px 30px rgba(0, 0, 0, 0.6);
         }
 
         .step-subtitle {
@@ -392,24 +404,24 @@
         }
 
         .step-card {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.25);
             border-radius: 14px;
             padding: 20px 18px;
             margin-bottom: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(8px);
         }
 
         .step-card.highlight {
-            border-color: rgba(212, 175, 55, 0.1);
-            background: rgba(0, 0, 0, 0.35);
-            border-left: 2px solid rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.08);
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 2px solid rgba(212, 175, 55, 0.12);
         }
 
         .step-card-title {
             font-size: 14px;
             font-weight: 600;
-            color: rgba(212, 175, 55, 0.4);
+            color: rgba(212, 175, 55, 0.35);
             margin-bottom: 6px;
             letter-spacing: 3px;
         }
@@ -422,7 +434,7 @@
         }
 
         .step-text .gold {
-            color: #f0d080;
+            color: #e8d5a0;
             font-weight: 600;
         }
 
@@ -435,22 +447,22 @@
         .oath-declaration {
             font-size: 20px;
             font-weight: 700;
-            color: #f0d080;
+            color: #e8d5a0;
             text-align: center;
             line-height: 2.2;
             padding: 12px 4px;
-            text-shadow: 0 0 40px rgba(0, 0, 0, 0.5), 0 0 80px rgba(212, 175, 55, 0.05);
+            text-shadow: 0 0 50px rgba(212, 175, 55, 0.06), 0 2px 30px rgba(0, 0, 0, 0.6);
             letter-spacing: 2px;
         }
 
         .oath-declaration-en {
             font-size: 17px;
             font-weight: 700;
-            color: #f0d080;
+            color: #e8d5a0;
             text-align: center;
             line-height: 2;
             padding: 10px 4px;
-            text-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 50px rgba(212, 175, 55, 0.06), 0 2px 30px rgba(0, 0, 0, 0.6);
             letter-spacing: 0.5px;
         }
 
@@ -462,31 +474,31 @@
 
         .timer-label {
             font-size: 16px;
-            color: rgba(232, 224, 208, 0.6);
+            color: rgba(232, 224, 208, 0.55);
             margin-bottom: 8px;
             letter-spacing: 2px;
-            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
         }
 
         .timer-number {
             font-size: 56px;
             font-weight: 700;
-            color: #f0d080;
+            color: #e8d5a0;
             font-variant-numeric: tabular-nums;
-            text-shadow: 0 0 50px rgba(0, 0, 0, 0.5), 0 0 80px rgba(212, 175, 55, 0.05);
+            text-shadow: 0 0 60px rgba(212, 175, 55, 0.06), 0 2px 30px rgba(0, 0, 0, 0.6);
             line-height: 1.2;
         }
 
         .timer-number.done {
-            color: #6fcf97;
+            color: #8fcfb0;
         }
 
         .timer-status {
             font-size: 15px;
-            color: rgba(232, 224, 208, 0.5);
+            color: rgba(232, 224, 208, 0.45);
             margin-top: 4px;
             letter-spacing: 2px;
-            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
         }
 
         /* ===== 計時器按鈕 ===== */
@@ -498,9 +510,9 @@
         }
 
         .timer-btn {
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.35);
             color: #d4af37;
-            border: 1px solid rgba(212, 175, 55, 0.12);
+            border: 1px solid rgba(212, 175, 55, 0.1);
             padding: 8px 24px;
             border-radius: 10px;
             font-size: 14px;
@@ -514,7 +526,7 @@
 
         .timer-btn:hover {
             background: rgba(0, 0, 0, 0.5);
-            border-color: rgba(212, 175, 55, 0.2);
+            border-color: rgba(212, 175, 55, 0.18);
         }
 
         .timer-btn:disabled {
@@ -546,7 +558,7 @@
             margin: 0 auto;
             border-radius: 14px;
             overflow: hidden;
-            border: 1px solid rgba(212, 175, 55, 0.08);
+            border: 1px solid rgba(212, 175, 55, 0.06);
             background: #000;
             position: relative;
         }
@@ -563,7 +575,7 @@
             transform: translate(-50%, -50%);
             width: 180px;
             height: 180px;
-            border: 2px solid rgba(212, 175, 55, 0.25);
+            border: 2px solid rgba(212, 175, 55, 0.2);
             border-radius: 14px;
             box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
             pointer-events: none;
@@ -611,13 +623,13 @@
             text-align: center;
             padding: 10px;
             font-size: 13px;
-            color: rgba(232, 224, 208, 0.4);
+            color: rgba(232, 224, 208, 0.35);
             letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.6);
         }
 
         .scanner-status.success {
-            color: #6fcf97;
+            color: #8fcfb0;
         }
 
         .scanner-status.error {
@@ -625,9 +637,9 @@
         }
 
         .btn-scan {
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.35);
             color: #d4af37;
-            border: 1px solid rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.08);
             padding: 14px 0;
             border-radius: 12px;
             font-size: 15px;
@@ -643,7 +655,7 @@
 
         .btn-scan:hover {
             background: rgba(0, 0, 0, 0.5);
-            border-color: rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.12);
         }
 
         .btn-scan:disabled {
@@ -652,9 +664,9 @@
         }
 
         .btn-scan-secondary {
-            background: rgba(0, 0, 0, 0.25);
-            color: rgba(232, 224, 208, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.04);
+            background: rgba(0, 0, 0, 0.2);
+            color: rgba(232, 224, 208, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.03);
             padding: 10px 0;
             border-radius: 12px;
             font-size: 13px;
@@ -673,8 +685,8 @@
         }
 
         .scan-result-box {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(212, 175, 55, 0.06);
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(212, 175, 55, 0.04);
             border-radius: 10px;
             padding: 12px 14px;
             margin-top: 10px;
@@ -688,26 +700,26 @@
         }
 
         .scan-result-box .label {
-            color: rgba(212, 175, 55, 0.3);
+            color: rgba(212, 175, 55, 0.25);
             font-size: 11px;
             font-weight: 600;
             letter-spacing: 2px;
         }
 
         .scan-result-box .content {
-            color: #f0d080;
+            color: #e8d5a0;
             font-weight: 500;
         }
 
         .camera-fail-notice {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(200, 70, 50, 0.08);
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(200, 70, 50, 0.06);
             border-radius: 10px;
             padding: 14px 16px;
             margin-top: 10px;
             font-size: 14px;
             line-height: 2;
-            color: rgba(232, 224, 208, 0.5);
+            color: rgba(232, 224, 208, 0.45);
             display: none;
             letter-spacing: 1px;
             backdrop-filter: blur(4px);
@@ -724,12 +736,12 @@
         .page-footer {
             text-align: right;
             font-size: 11px;
-            color: rgba(232, 224, 208, 0.12);
+            color: rgba(232, 224, 208, 0.1);
             margin-top: 14px;
             padding-top: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.02);
+            border-top: 1px solid rgba(255, 255, 255, 0.015);
             letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.6);
         }
 
         /* ===== 按鈕 ===== */
@@ -757,8 +769,8 @@
         }
 
         .btn-prev {
-            background: rgba(0, 0, 0, 0.3);
-            color: rgba(232, 224, 208, 0.3);
+            background: rgba(0, 0, 0, 0.25);
+            color: rgba(232, 224, 208, 0.25);
             flex: 0.4;
             font-size: 16px;
             backdrop-filter: blur(4px);
@@ -838,15 +850,15 @@
 
         .complete-page .desc {
             text-align: center;
-            color: rgba(232, 224, 208, 0.5);
+            color: rgba(232, 224, 208, 0.45);
             font-size: 15px;
             line-height: 2.4;
             letter-spacing: 1.5px;
-            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
         }
 
         .complete-page .desc .gold {
-            color: #f0d080;
+            color: #e8d5a0;
         }
 
         .complete-page .desc .red {
@@ -856,7 +868,7 @@
         .complete-page .divider {
             width: 60px;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.08), transparent);
             margin: 16px auto;
         }
 
@@ -1097,7 +1109,7 @@
             background: transparent;
         }
         ::-webkit-scrollbar-thumb {
-            background: rgba(212, 175, 55, 0.06);
+            background: rgba(212, 175, 55, 0.05);
             border-radius: 4px;
         }
     </style>
@@ -1222,7 +1234,7 @@
                     <div class="step-title" id="s2Title">【二】授權誓讀階段（主頻啟令）</div>
                     <div class="step-subtitle" id="s2Sub"></div>
 
-                    <div class="step-card highlight" style="border-color: rgba(212,175,55,0.1);">
+                    <div class="step-card highlight" style="border-color: rgba(212,175,55,0.08);">
                         <div class="oath-declaration" id="oathDeclare">★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★</div>
 
                         <div class="timer-container">
@@ -1366,8 +1378,8 @@
                         </div>
                     </div>
 
-                    <div class="step-card" style="border-color: rgba(212,175,55,0.06);">
-                        <div class="step-text" style="text-align:center; font-style:italic; color: rgba(212,175,55,0.25); font-size:18px; letter-spacing:4px;" id="s5Card3Text">
+                    <div class="step-card" style="border-color: rgba(212,175,55,0.04);">
+                        <div class="step-text" style="text-align:center; font-style:italic; color: rgba(212,175,55,0.2); font-size:18px; letter-spacing:4px;" id="s5Card3Text">
                             「 天 地 為 鑑 ， 光 網 為 證 。 」
                         </div>
                     </div>
