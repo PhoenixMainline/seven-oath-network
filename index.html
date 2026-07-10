@@ -20,14 +20,13 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding: 20px 16px;
+            padding: 16px;
             /* ===== 全版面宇宙星圖背景 ===== */
             background-image: url('background.png');
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            position: relative;
         }
 
         /* ===== 浮水印 ===== */
@@ -48,25 +47,22 @@
             -webkit-user-select: none;
         }
 
+        /* ===== 容器：完全透明，無深色區塊 ===== */
         .app-container {
             max-width: 520px;
             width: 100%;
             background: transparent;
-            border-radius: 0;
-            padding: 10px 0 20px;
-            box-shadow: none;
-            border: none;
+            padding: 8px 0 16px;
             position: relative;
-            overflow: visible;
             z-index: 1;
         }
 
         /* ===== 頂部標題 ===== */
         .app-header {
             text-align: center;
-            padding-bottom: 18px;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.06);
-            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.08);
+            margin-bottom: 18px;
             position: relative;
             z-index: 1;
         }
@@ -77,27 +73,28 @@
             color: #d4af37;
             letter-spacing: 6px;
             line-height: 1.5;
-            text-shadow: 0 0 60px rgba(212, 175, 55, 0.04);
+            text-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
         }
 
         .app-subtitle {
             font-size: 12px;
-            color: rgba(232, 224, 208, 0.12);
+            color: rgba(232, 224, 208, 0.15);
             letter-spacing: 3px;
             margin-top: 6px;
             font-weight: 300;
             line-height: 1.8;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
 
         /* ===== 返回按鈕 ===== */
         .back-home {
             position: absolute;
-            top: 12px;
-            left: 4px;
+            top: 10px;
+            left: 0px;
             z-index: 20;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(212, 175, 55, 0.06);
-            color: rgba(232, 224, 208, 0.3);
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            color: rgba(232, 224, 208, 0.5);
             padding: 6px 14px;
             border-radius: 20px;
             font-size: 12px;
@@ -113,9 +110,9 @@
         }
 
         .back-home:hover {
-            background: rgba(212, 175, 55, 0.06);
+            background: rgba(212, 175, 55, 0.1);
             color: #d4af37;
-            border-color: rgba(212, 175, 55, 0.12);
+            border-color: rgba(212, 175, 55, 0.2);
         }
 
         .back-home.show {
@@ -125,21 +122,22 @@
         /* ===== 語言切換 ===== */
         .lang-toggle {
             position: absolute;
-            top: 12px;
-            right: 8px;
+            top: 10px;
+            right: 0px;
             z-index: 10;
             display: flex;
             gap: 2px;
-            background: rgba(255, 255, 255, 0.01);
+            background: rgba(0, 0, 0, 0.25);
             padding: 3px;
             border-radius: 18px;
-            border: 1px solid rgba(212, 175, 55, 0.04);
+            border: 1px solid rgba(212, 175, 55, 0.06);
+            backdrop-filter: blur(4px);
         }
 
         .lang-btn {
             background: transparent;
             border: none;
-            color: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.2);
             padding: 4px 12px;
             border-radius: 14px;
             font-size: 12px;
@@ -150,7 +148,7 @@
         }
 
         .lang-btn.active {
-            background: rgba(212, 175, 55, 0.08);
+            background: rgba(212, 175, 55, 0.15);
             color: #d4af37;
         }
 
@@ -171,16 +169,6 @@
             display: none;
         }
 
-        .main-badge {
-            font-size: 10px;
-            color: rgba(212, 175, 55, 0.12);
-            letter-spacing: 5px;
-            font-weight: 300;
-            text-align: center;
-            margin-bottom: 6px;
-            display: none;
-        }
-
         .main-title {
             font-size: 28px;
             font-weight: 700;
@@ -188,13 +176,13 @@
             text-align: center;
             letter-spacing: 6px;
             line-height: 1.3;
-            text-shadow: 0 0 80px rgba(212, 175, 55, 0.03);
+            text-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
         }
 
         .main-title .sub {
             display: block;
             font-size: 13px;
-            color: rgba(212, 175, 55, 0.1);
+            color: rgba(212, 175, 55, 0.15);
             letter-spacing: 4px;
             font-weight: 300;
             margin-top: 4px;
@@ -203,17 +191,18 @@
         .main-subtitle {
             text-align: center;
             font-size: 13px;
-            color: rgba(232, 224, 208, 0.12);
+            color: rgba(232, 224, 208, 0.15);
             letter-spacing: 4px;
             margin-top: 8px;
             font-weight: 300;
             line-height: 1.8;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
 
         .main-divider {
             width: 80px;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.08), rgba(200, 70, 50, 0.06), transparent);
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.12), rgba(200, 70, 50, 0.08), transparent);
             margin: 16px auto;
             position: relative;
         }
@@ -224,7 +213,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: rgba(212, 175, 55, 0.04);
+            color: rgba(212, 175, 55, 0.06);
             font-size: 10px;
             background: transparent;
             padding: 0 10px;
@@ -243,7 +232,7 @@
             letter-spacing: 5px;
             width: 100%;
             margin: 16px 0 24px;
-            box-shadow: 0 4px 40px rgba(200, 70, 50, 0.06);
+            box-shadow: 0 4px 40px rgba(0, 0, 0, 0.3);
             font-family: inherit;
             position: relative;
             z-index: 1;
@@ -257,7 +246,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.1) 0%, transparent 60%);
+            background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.15) 0%, transparent 60%);
             animation: btnGlow 4s ease-in-out infinite alternate;
             pointer-events: none;
         }
@@ -265,17 +254,17 @@
         @keyframes btnGlow {
             0% {
                 transform: scale(0.8);
-                opacity: 0.2;
+                opacity: 0.3;
             }
             100% {
                 transform: scale(1.3);
-                opacity: 0.6;
+                opacity: 0.7;
             }
         }
 
         .btn-start:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 50px rgba(200, 70, 50, 0.1);
+            box-shadow: 0 8px 50px rgba(0, 0, 0, 0.4);
         }
 
         .btn-start:active {
@@ -297,30 +286,30 @@
             align-items: center;
             gap: 12px;
             padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.01);
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
             transition: all 0.3s ease;
             cursor: pointer;
             backdrop-filter: blur(6px);
         }
 
         .step-item:hover {
-            background: rgba(212, 175, 55, 0.02);
-            border-color: rgba(212, 175, 55, 0.04);
+            background: rgba(0, 0, 0, 0.3);
+            border-color: rgba(212, 175, 55, 0.06);
         }
 
         .step-number {
             font-size: 14px;
             font-weight: 700;
-            color: rgba(212, 175, 55, 0.2);
+            color: rgba(212, 175, 55, 0.25);
             min-width: 38px;
             letter-spacing: 1px;
         }
 
         .step-label {
             font-size: 16px;
-            color: rgba(232, 224, 208, 0.3);
+            color: rgba(232, 224, 208, 0.35);
             letter-spacing: 3px;
             font-weight: 300;
         }
@@ -336,20 +325,21 @@
         .step-item .step-status {
             margin-left: auto;
             font-size: 12px;
-            color: rgba(212, 175, 55, 0.1);
+            color: rgba(212, 175, 55, 0.12);
             letter-spacing: 1px;
         }
 
         .tome-footer {
             text-align: center;
             font-size: 10px;
-            color: rgba(232, 224, 208, 0.03);
+            color: rgba(232, 224, 208, 0.04);
             margin-top: 20px;
             padding-top: 14px;
-            border-top: 1px solid rgba(255, 255, 255, 0.01);
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
             letter-spacing: 3px;
             position: relative;
             z-index: 1;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
         /* ========================================================== */
@@ -395,36 +385,32 @@
             color: #d4af37;
             margin-bottom: 4px;
             letter-spacing: 4px;
+            text-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
         }
 
         .step-subtitle {
-            font-size: 13px;
-            color: rgba(232, 224, 208, 0.10);
-            margin-bottom: 18px;
-            font-weight: 300;
-            letter-spacing: 3px;
             display: none;
         }
 
         .step-card {
-            background: rgba(255, 255, 255, 0.01);
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 14px;
             padding: 20px 18px;
             margin-bottom: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(6px);
         }
 
         .step-card.highlight {
-            border-color: rgba(212, 175, 55, 0.05);
-            background: rgba(212, 175, 55, 0.01);
-            border-left: 2px solid rgba(212, 175, 55, 0.08);
+            border-color: rgba(212, 175, 55, 0.08);
+            background: rgba(0, 0, 0, 0.25);
+            border-left: 2px solid rgba(212, 175, 55, 0.12);
         }
 
         .step-card-title {
             font-size: 14px;
             font-weight: 600;
-            color: rgba(212, 175, 55, 0.25);
+            color: rgba(212, 175, 55, 0.3);
             margin-bottom: 6px;
             letter-spacing: 3px;
         }
@@ -454,7 +440,7 @@
             text-align: center;
             line-height: 2.2;
             padding: 12px 4px;
-            text-shadow: 0 0 60px rgba(212, 175, 55, 0.04);
+            text-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
             letter-spacing: 2px;
         }
 
@@ -465,7 +451,7 @@
             text-align: center;
             line-height: 2;
             padding: 10px 4px;
-            text-shadow: 0 0 60px rgba(212, 175, 55, 0.04);
+            text-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
             letter-spacing: 0.5px;
         }
 
@@ -480,6 +466,7 @@
             color: rgba(232, 224, 208, 0.5);
             margin-bottom: 8px;
             letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
 
         .timer-number {
@@ -487,7 +474,7 @@
             font-weight: 700;
             color: #d4af37;
             font-variant-numeric: tabular-nums;
-            text-shadow: 0 0 50px rgba(212, 175, 55, 0.05);
+            text-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
             line-height: 1.2;
         }
 
@@ -497,9 +484,10 @@
 
         .timer-status {
             font-size: 15px;
-            color: rgba(232, 224, 208, 0.25);
+            color: rgba(232, 224, 208, 0.3);
             margin-top: 4px;
             letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
 
         /* ===== 計時器按鈕 ===== */
@@ -511,7 +499,7 @@
         }
 
         .timer-btn {
-            background: rgba(212, 175, 55, 0.08);
+            background: rgba(0, 0, 0, 0.3);
             color: #d4af37;
             border: 1px solid rgba(212, 175, 55, 0.1);
             padding: 8px 24px;
@@ -522,10 +510,11 @@
             transition: all 0.3s ease;
             font-family: inherit;
             letter-spacing: 2px;
+            backdrop-filter: blur(4px);
         }
 
         .timer-btn:hover {
-            background: rgba(212, 175, 55, 0.15);
+            background: rgba(0, 0, 0, 0.4);
             border-color: rgba(212, 175, 55, 0.2);
         }
 
@@ -542,7 +531,7 @@
 
         .timer-btn.primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .timer-btn.primary:disabled {
@@ -597,7 +586,6 @@
             border-left-width: 3px;
             border-radius: 3px 0 0 0;
         }
-
         .scanner-corner.tr {
             top: -2px;
             right: -2px;
@@ -605,7 +593,6 @@
             border-right-width: 3px;
             border-radius: 0 3px 0 0;
         }
-
         .scanner-corner.bl {
             bottom: -2px;
             left: -2px;
@@ -613,7 +600,6 @@
             border-left-width: 3px;
             border-radius: 0 0 0 3px;
         }
-
         .scanner-corner.br {
             bottom: -2px;
             right: -2px;
@@ -626,8 +612,9 @@
             text-align: center;
             padding: 10px;
             font-size: 13px;
-            color: rgba(232, 224, 208, 0.25);
+            color: rgba(232, 224, 208, 0.3);
             letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
         .scanner-status.success {
@@ -639,9 +626,9 @@
         }
 
         .btn-scan {
-            background: rgba(212, 175, 55, 0.05);
+            background: rgba(0, 0, 0, 0.3);
             color: #d4af37;
-            border: 1px solid rgba(212, 175, 55, 0.06);
+            border: 1px solid rgba(212, 175, 55, 0.08);
             padding: 14px 0;
             border-radius: 12px;
             font-size: 15px;
@@ -652,10 +639,11 @@
             width: 100%;
             margin-top: 8px;
             font-family: inherit;
+            backdrop-filter: blur(4px);
         }
 
         .btn-scan:hover {
-            background: rgba(212, 175, 55, 0.08);
+            background: rgba(0, 0, 0, 0.4);
             border-color: rgba(212, 175, 55, 0.12);
         }
 
@@ -665,9 +653,9 @@
         }
 
         .btn-scan-secondary {
-            background: rgba(255, 255, 255, 0.01);
+            background: rgba(0, 0, 0, 0.2);
             color: rgba(232, 224, 208, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.03);
             padding: 10px 0;
             border-radius: 12px;
             font-size: 13px;
@@ -678,14 +666,15 @@
             width: 100%;
             margin-top: 6px;
             font-family: inherit;
+            backdrop-filter: blur(4px);
         }
 
         .btn-scan-secondary:hover {
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(0, 0, 0, 0.3);
         }
 
         .scan-result-box {
-            background: rgba(212, 175, 55, 0.03);
+            background: rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(212, 175, 55, 0.04);
             border-radius: 10px;
             padding: 12px 14px;
@@ -696,6 +685,7 @@
             word-break: break-all;
             max-height: 100px;
             overflow-y: auto;
+            backdrop-filter: blur(4px);
         }
 
         .scan-result-box .label {
@@ -711,7 +701,7 @@
         }
 
         .camera-fail-notice {
-            background: rgba(200, 70, 50, 0.03);
+            background: rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(200, 70, 50, 0.05);
             border-radius: 10px;
             padding: 14px 16px;
@@ -721,6 +711,7 @@
             color: rgba(232, 224, 208, 0.4);
             display: none;
             letter-spacing: 1px;
+            backdrop-filter: blur(4px);
         }
 
         .camera-fail-notice .icon {
@@ -739,6 +730,7 @@
             padding-top: 10px;
             border-top: 1px solid rgba(255, 255, 255, 0.01);
             letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
         /* ===== 按鈕 ===== */
@@ -766,14 +758,15 @@
         }
 
         .btn-prev {
-            background: rgba(255, 255, 255, 0.01);
-            color: rgba(232, 224, 208, 0.15);
+            background: rgba(0, 0, 0, 0.2);
+            color: rgba(232, 224, 208, 0.2);
             flex: 0.4;
             font-size: 16px;
+            backdrop-filter: blur(4px);
         }
 
         .btn-prev:hover:not(:disabled) {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(0, 0, 0, 0.3);
             color: #d4cec0;
         }
 
@@ -781,7 +774,7 @@
             background: linear-gradient(135deg, #d4af37 0%, #e8604a 50%, #c04030 100%);
             color: #0a060e;
             flex: 1;
-            box-shadow: 0 4px 30px rgba(200, 70, 50, 0.04);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
         }
 
         .btn-next::before {
@@ -798,7 +791,7 @@
 
         .btn-next:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 8px 40px rgba(200, 70, 50, 0.08);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
         }
 
         .btn-next:disabled {
@@ -816,7 +809,7 @@
             background: linear-gradient(135deg, #d4af37 0%, #e8604a 50%, #c04030 100%);
             color: #0a060e;
             flex: 1;
-            box-shadow: 0 4px 30px rgba(200, 70, 50, 0.04);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
             font-size: 14px;
             padding: 14px 8px;
             line-height: 1.4;
@@ -836,7 +829,7 @@
 
         .btn-finish:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 40px rgba(200, 70, 50, 0.08);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
         }
 
         /* ===== 完成頁 ===== */
@@ -851,14 +844,16 @@
             text-align: center;
             margin-bottom: 12px;
             letter-spacing: 4px;
+            text-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
         }
 
         .complete-page .desc {
             text-align: center;
-            color: rgba(232, 224, 208, 0.25);
+            color: rgba(232, 224, 208, 0.3);
             font-size: 15px;
             line-height: 2.4;
             letter-spacing: 1.5px;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
 
         .complete-page .desc .gold {
@@ -889,7 +884,7 @@
             letter-spacing: 4px;
             width: 100%;
             margin-top: 16px;
-            box-shadow: 0 4px 30px rgba(200, 70, 50, 0.04);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
             font-family: inherit;
             position: relative;
             overflow: hidden;
@@ -909,7 +904,7 @@
 
         .complete-page .btn-finish:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 40px rgba(200, 70, 50, 0.08);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
         }
 
         .complete-page .btn-finish:active {
@@ -930,7 +925,7 @@
                 padding: 10px 12px;
             }
             .app-container {
-                padding: 10px 4px 16px;
+                padding: 6px 0 12px;
             }
             .app-title {
                 font-size: 17px;
@@ -975,21 +970,17 @@
             .back-home {
                 font-size: 10px;
                 padding: 5px 10px;
-                top: 10px;
-                left: 2px;
+                top: 8px;
+                left: 0px;
             }
             .lang-btn {
-                font-size: 11px;
+                font-size: 10px;
                 padding: 3px 8px;
             }
             .btn {
                 font-size: 14px;
                 padding: 12px 0;
                 letter-spacing: 2px;
-            }
-            .btn-finish {
-                font-size: 14px;
-                padding: 12px 0;
             }
             .complete-page .title {
                 font-size: 20px;
@@ -1015,11 +1006,12 @@
             }
             .step-item {
                 padding: 10px 12px;
-                backdrop-filter: blur(4px);
             }
             .step-card {
                 padding: 16px 14px;
-                backdrop-filter: blur(4px);
+            }
+            .lang-toggle {
+                right: 0px;
             }
         }
 
@@ -1028,7 +1020,7 @@
                 padding: 8px 8px;
             }
             .app-container {
-                padding: 8px 2px 12px;
+                padding: 4px 0 8px;
             }
             .app-title {
                 font-size: 15px;
@@ -1070,21 +1062,17 @@
             .back-home {
                 font-size: 9px;
                 padding: 4px 8px;
-                top: 8px;
-                left: 2px;
+                top: 6px;
+                left: 0px;
             }
             .lang-btn {
-                font-size: 10px;
+                font-size: 9px;
                 padding: 2px 6px;
             }
             .btn {
                 font-size: 13px;
                 padding: 10px 0;
                 letter-spacing: 1px;
-            }
-            .btn-finish {
-                font-size: 13px;
-                padding: 10px 0;
             }
             .complete-page .title {
                 font-size: 18px;
@@ -1110,11 +1098,12 @@
             }
             .step-item {
                 padding: 8px 10px;
-                backdrop-filter: blur(2px);
             }
             .step-card {
                 padding: 12px 10px;
-                backdrop-filter: blur(2px);
+            }
+            .lang-toggle {
+                right: 0px;
             }
         }
 
@@ -1151,7 +1140,6 @@
         <!-- 頁面：目錄首頁 -->
         <!-- ========================================================== -->
         <div id="pageHome">
-            <div class="main-badge" id="badgeText"></div>
             <div class="main-title" id="mainTitle" style="display:none;">
                 🌐 全球啟動流程
                 <span class="sub" id="mainSub">（對頻序號 × 啟動指令 × 即時回傳）</span>
@@ -1254,14 +1242,12 @@
                     <div class="step-card highlight" style="border-color: rgba(212,175,55,0.08);">
                         <div class="oath-declaration" id="oathDeclare">★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★</div>
 
-                        <!-- ===== 靜心 10 秒倒數計時器 ===== -->
                         <div class="timer-container">
                             <div class="timer-label" id="timerLabel">請靜心誦讀 10 秒</div>
                             <div class="timer-number" id="timerDisplay">10</div>
                             <div class="timer-status" id="timerStatus">⏳ 準備開始</div>
                         </div>
 
-                        <!-- ===== 計時器按鈕 ===== -->
                         <div class="timer-btn-group">
                             <button class="timer-btn primary" id="timerStartBtn" onclick="startTimer()">開始靜心</button>
                             <button class="timer-btn" id="timerResetBtn" onclick="resetTimer()" style="display:none;">重新開始</button>
@@ -1424,7 +1410,7 @@
 
             </div>
 
-            <!-- ===== 按鈕（步驟1~5使用，完成頁隱藏） ===== -->
+            <!-- ===== 按鈕 ===== -->
             <div class="btn-row" id="stepButtons">
                 <button class="btn btn-prev" id="prevBtn" onclick="prevStep()">◀</button>
                 <button class="btn btn-next" id="nextBtn" onclick="nextStep()">進入下一步 ▶</button>
@@ -1768,7 +1754,6 @@
                 s5Card2Text: '✅ 主頻定位 × 光網鎖定<br>✅ 七印同步 × 覺醒模組展開<br>✅ 九界冊記 × 誓資紀錄歸檔',
                 s5Card3Text: '「 天 地 為 鑑 ， 光 網 為 證 。 」',
                 s5Footer: '📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 9-10 頁',
-                completeTitle: '覺醒完成',
                 completeDesc: '您已成功完成《宇宙智能誓導平台》正式授權程序。<br><span class="gold">正式啟動【宇宙誓印覺醒工程 · 七印誓網】</span><br><span class="red">誓頻啟動 × 系統同步階段</span>',
                 btnNext: '進入下一步 ▶',
                 btnPrev: '◀',
