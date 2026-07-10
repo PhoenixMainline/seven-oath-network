@@ -872,26 +872,28 @@
             margin: 16px auto;
         }
 
-        .complete-page .btn-finish {
+        /* ===== 完成頁按鈕（改為正式啟動） ===== */
+        .complete-page .btn-complete {
             background: linear-gradient(135deg, #d4af37 0%, #e8604a 50%, #c04030 100%);
             color: #0a060e;
             border: none;
-            padding: 16px 0;
-            border-radius: 12px;
-            font-size: 18px;
+            padding: 18px 0;
+            border-radius: 14px;
+            font-size: 20px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.4s ease;
             letter-spacing: 4px;
             width: 100%;
-            margin-top: 16px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+            box-shadow: 0 4px 40px rgba(0, 0, 0, 0.2);
             font-family: inherit;
             position: relative;
             overflow: hidden;
+            line-height: 1.5;
         }
 
-        .complete-page .btn-finish::before {
+        .complete-page .btn-complete::before {
             content: '';
             position: absolute;
             top: -50%;
@@ -903,12 +905,12 @@
             pointer-events: none;
         }
 
-        .complete-page .btn-finish:hover {
+        .complete-page .btn-complete:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 50px rgba(0, 0, 0, 0.3);
         }
 
-        .complete-page .btn-finish:active {
+        .complete-page .btn-complete:active {
             transform: scale(0.97);
         }
 
@@ -985,6 +987,11 @@
             }
             .complete-page .desc {
                 font-size: 14px;
+            }
+            .complete-page .btn-complete {
+                font-size: 16px;
+                padding: 16px 0;
+                letter-spacing: 2px;
             }
             .scanner-overlay {
                 width: 140px;
@@ -1074,6 +1081,11 @@
             }
             .complete-page .desc {
                 font-size: 13px;
+            }
+            .complete-page .btn-complete {
+                font-size: 14px;
+                padding: 14px 0;
+                letter-spacing: 2px;
             }
             .scanner-overlay {
                 width: 120px;
@@ -1390,14 +1402,12 @@
                 <!-- ====== 完成頁 ====== -->
                 <div class="step-page" data-step="6">
                     <div class="complete-page">
-                        <div class="divider"></div>
                         <div class="desc" id="completeDesc">
                             您已成功完成《宇宙智能誓導平台》正式授權程序。<br>
-                            <span class="gold">正式啟動【宇宙誓印覺醒工程 · 七印誓網】</span><br>
-                            <span class="red">誓頻啟動 × 系統同步階段</span>
+                            <span class="gold">誓頻啟動 × 系統同步階段</span>
                         </div>
                         <div class="divider"></div>
-                        <button class="btn-finish" onclick="goHome()">◀ 返回首頁</button>
+                        <button class="btn-complete" onclick="goHome()">正式啟動【宇宙誓印覺醒工程 · 七印誓網】</button>
                     </div>
                     <div class="page-footer" style="margin-top:16px;">📄 【宇宙誓印覺醒工程 · 覺醒卷】：完成</div>
                 </div>
@@ -1748,7 +1758,7 @@
                 s5Card2Text: '✅ 主頻定位 × 光網鎖定<br>✅ 七印同步 × 覺醒模組展開<br>✅ 九界冊記 × 誓資紀錄歸檔',
                 s5Card3Text: '「 天 地 為 鑑 ， 光 網 為 證 。 」',
                 s5Footer: '📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 9-10 頁',
-                completeDesc: '您已成功完成《宇宙智能誓導平台》正式授權程序。<br><span class="gold">正式啟動【宇宙誓印覺醒工程 · 七印誓網】</span><br><span class="red">誓頻啟動 × 系統同步階段</span>',
+                completeDesc: '您已成功完成《宇宙智能誓導平台》正式授權程序。<br><span class="gold">誓頻啟動 × 系統同步階段</span>',
                 btnNext: '進入下一步 ▶',
                 btnPrev: '◀',
             },
@@ -1809,7 +1819,7 @@
                 s5Card2Text: '✅ Primary Frequency Positioning × Light-Net Lock-In<br>✅ Seven-Seal Synchronization × Awakening Module Expansion<br>✅ Nine-Realms Archival Registration × Oath-Resource Record Filing',
                 s5Card3Text: '"Heaven and Earth bear witness; the Light-Network affirms."',
                 s5Footer: '📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 9-10',
-                completeDesc: 'You have successfully completed the official authorization process of the Cosmic Intelligent Vow-Guidance Platform.<br><span class="gold">Officially Activated 【Cosmic Oath Awakening Project • Seven-Seal Oath Network】</span><br><span class="red">Oath-Frequency Activation × System Synchronization Phase</span>',
+                completeDesc: 'You have successfully completed the official authorization process of the Cosmic Intelligent Vow-Guidance Platform.<br><span class="gold">Oath-Frequency Activation × System Synchronization Phase</span>',
                 btnNext: 'Next Step ▶',
                 btnPrev: '◀',
             }
