@@ -21,8 +21,8 @@
             justify-content: center;
             align-items: flex-start;
             padding: 16px;
-            /* ===== 全版面宇宙星圖背景 ===== */
-            background-image: url('background.png');
+            /* ===== 全版面宇宙星圖背景（深色版） ===== */
+            background-image: url('background-dark.png');
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
@@ -47,7 +47,6 @@
             -webkit-user-select: none;
         }
 
-        /* ===== 容器：完全透明，無深色區塊 ===== */
         .app-container {
             max-width: 520px;
             width: 100%;
@@ -73,7 +72,7 @@
             color: #d4af37;
             letter-spacing: 6px;
             line-height: 1.5;
-            text-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
         }
 
         .app-subtitle {
@@ -83,7 +82,7 @@
             margin-top: 6px;
             font-weight: 300;
             line-height: 1.8;
-            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
         }
 
         /* ===== 返回按鈕 ===== */
@@ -196,7 +195,7 @@
             margin-top: 8px;
             font-weight: 300;
             line-height: 1.8;
-            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
         }
 
         .main-divider {
@@ -385,7 +384,7 @@
             color: #d4af37;
             margin-bottom: 4px;
             letter-spacing: 4px;
-            text-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
         }
 
         .step-subtitle {
@@ -440,7 +439,7 @@
             text-align: center;
             line-height: 2.2;
             padding: 12px 4px;
-            text-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
             letter-spacing: 2px;
         }
 
@@ -451,7 +450,7 @@
             text-align: center;
             line-height: 2;
             padding: 10px 4px;
-            text-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
             letter-spacing: 0.5px;
         }
 
@@ -466,7 +465,7 @@
             color: rgba(232, 224, 208, 0.5);
             margin-bottom: 8px;
             letter-spacing: 2px;
-            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
         }
 
         .timer-number {
@@ -474,7 +473,7 @@
             font-weight: 700;
             color: #d4af37;
             font-variant-numeric: tabular-nums;
-            text-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 50px rgba(0, 0, 0, 0.6);
             line-height: 1.2;
         }
 
@@ -487,7 +486,7 @@
             color: rgba(232, 224, 208, 0.3);
             margin-top: 4px;
             letter-spacing: 2px;
-            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
         }
 
         /* ===== 計時器按鈕 ===== */
@@ -614,7 +613,7 @@
             font-size: 13px;
             color: rgba(232, 224, 208, 0.3);
             letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
         }
 
         .scanner-status.success {
@@ -730,7 +729,7 @@
             padding-top: 10px;
             border-top: 1px solid rgba(255, 255, 255, 0.01);
             letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
         }
 
         /* ===== 按鈕 ===== */
@@ -837,23 +836,13 @@
             padding: 10px 0 20px;
         }
 
-        .complete-page .title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #d4af37;
-            text-align: center;
-            margin-bottom: 12px;
-            letter-spacing: 4px;
-            text-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
-        }
-
         .complete-page .desc {
             text-align: center;
             color: rgba(232, 224, 208, 0.3);
             font-size: 15px;
             line-height: 2.4;
             letter-spacing: 1.5px;
-            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
         }
 
         .complete-page .desc .gold {
@@ -982,9 +971,6 @@
                 padding: 12px 0;
                 letter-spacing: 2px;
             }
-            .complete-page .title {
-                font-size: 20px;
-            }
             .complete-page .desc {
                 font-size: 14px;
             }
@@ -1073,9 +1059,6 @@
                 font-size: 13px;
                 padding: 10px 0;
                 letter-spacing: 1px;
-            }
-            .complete-page .title {
-                font-size: 18px;
             }
             .complete-page .desc {
                 font-size: 13px;
@@ -1395,7 +1378,6 @@
                 <!-- ====== 完成頁 ====== -->
                 <div class="step-page" data-step="6">
                     <div class="complete-page">
-                        <div class="title" id="completeTitle">覺醒完成</div>
                         <div class="divider"></div>
                         <div class="desc" id="completeDesc">
                             您已成功完成《宇宙智能誓導平台》正式授權程序。<br>
@@ -1815,7 +1797,6 @@
                 s5Card2Text: '✅ Primary Frequency Positioning × Light-Net Lock-In<br>✅ Seven-Seal Synchronization × Awakening Module Expansion<br>✅ Nine-Realms Archival Registration × Oath-Resource Record Filing',
                 s5Card3Text: '"Heaven and Earth bear witness; the Light-Network affirms."',
                 s5Footer: '📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 9-10',
-                completeTitle: '✨ Awakening Complete',
                 completeDesc: 'You have successfully completed the official authorization process of the Cosmic Intelligent Vow-Guidance Platform.<br><span class="gold">Officially Activated 【Cosmic Oath Awakening Project • Seven-Seal Oath Network】</span><br><span class="red">Oath-Frequency Activation × System Synchronization Phase</span>',
                 btnNext: 'Next Step ▶',
                 btnPrev: '◀',
@@ -1876,7 +1857,6 @@
             document.getElementById('backHomeText').textContent = t.backHome;
             document.getElementById('appTitle').textContent = t.appTitle;
             document.getElementById('appSubtitle').textContent = t.appSubtitle;
-            document.getElementById('badgeText').textContent = t.badgeText;
             document.getElementById('subInfo').textContent = t.subInfo;
             document.getElementById('btnStart').textContent = t.btnStart;
             document.getElementById('stepLabel1').textContent = t.step1;
@@ -1926,7 +1906,6 @@
 
             const stepButtons = document.getElementById('stepButtons');
             if (isComplete) {
-                document.getElementById('completeTitle').textContent = t.completeTitle;
                 document.getElementById('completeDesc').innerHTML = t.completeDesc;
                 if (stepButtons) stepButtons.style.display = 'none';
                 return;
