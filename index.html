@@ -1687,7 +1687,7 @@
         }
 
         // ============================================================
-        // 計時器函數（內建中英文按鈕文字）
+        // 計時器函數
         // ============================================================
         function startTimer() {
             if (timerRunning || timerDone) return;
@@ -1707,7 +1707,6 @@
             if (displayEl) displayEl.textContent = '10';
             if (displayEl) displayEl.className = 'timer-number';
 
-            // 根據語言顯示不同文字
             if (lang === 'en') {
                 if (statusEl) statusEl.textContent = 'Reciting...';
                 if (startBtn) { startBtn.disabled = true;
@@ -1735,7 +1734,6 @@
                         displayEl.textContent = '0';
                         displayEl.className = 'timer-number done';
                     }
-                    // 完成後根據語言顯示
                     if (lang === 'en') {
                         if (statusEl) statusEl.textContent = '✅ Recitation complete';
                         if (startBtn) { startBtn.disabled = false;
