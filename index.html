@@ -1599,7 +1599,7 @@
 
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                 if (statusDiv) {
-                    statusDiv.textContent = '❌ 瀏覽器不支援相機，請自行手動掃描器掃描實體書 QR Code';
+                    statusDiv.textContent = '❌ Browser does not support camera. Please manually scan the QR Code from the physical book.';
                     statusDiv.className = 'scanner-status error';
                 }
                 showCameraFailNotice(step);
@@ -1608,12 +1608,12 @@
 
             if (scannerContainer) scannerContainer.classList.remove('scanner-hidden');
             if (scanBtn) { scanBtn.disabled = true;
-                scanBtn.textContent = '⏳ 啟動中...'; }
+                scanBtn.textContent = '⏳ Starting...'; }
             if (stopBtn) stopBtn.style.display = 'block';
             hideCameraFailNotice(step);
 
             if (statusDiv) {
-                statusDiv.textContent = '⏳ 正在啟動相機，請允許權限...';
+                statusDiv.textContent = '⏳ Starting camera, please allow permission...';
                 statusDiv.className = 'scanner-status';
             }
 
@@ -1633,16 +1633,16 @@
             ).then(() => {
                 scanners[step] = { instance: html5QrCode, isRunning: true };
                 if (statusDiv) {
-                    statusDiv.textContent = '📷 請將 QR Code 放入框內掃描';
+                    statusDiv.textContent = '📷 Please place QR Code in the frame';
                     statusDiv.className = 'scanner-status';
                 }
                 if (scanBtn) { scanBtn.disabled = false;
-                    scanBtn.textContent = '📸 掃描 QR Code'; }
+                    scanBtn.textContent = '📸 Scan QR Code'; }
             }).catch((err) => {
                 console.error('啟動掃描器失敗:', err);
-                let errorMsg = '❌ 無法啟動相機';
+                let errorMsg = '❌ Unable to start camera';
                 if (err.message && err.message.includes('Permission')) {
-                    errorMsg = '無法啟動相機，請自行手動掃描器掃描實體書 QR Code';
+                    errorMsg = 'Unable to start camera. Please manually scan the QR Code from the physical book.';
                 } else if (err.message) {
                     errorMsg = '❌ ' + err.message.substring(0, 50);
                 }
@@ -1651,7 +1651,7 @@
                     statusDiv.className = 'scanner-status error';
                 }
                 if (scanBtn) { scanBtn.disabled = false;
-                    scanBtn.textContent = '📸 掃描 QR Code'; }
+                    scanBtn.textContent = '📸 Scan QR Code'; }
                 if (scannerContainer) scannerContainer.classList.add('scanner-hidden');
                 if (stopBtn) stopBtn.style.display = 'none';
                 showCameraFailNotice(step);
@@ -1670,10 +1670,10 @@
                         scanners[step].isRunning = false;
                         if (scannerContainer) scannerContainer.classList.add('scanner-hidden');
                         if (scanBtn) { scanBtn.disabled = false;
-                            scanBtn.textContent = '📸 掃描 QR Code'; }
+                            scanBtn.textContent = '📸 Scan QR Code'; }
                         if (stopBtn) stopBtn.style.display = 'none';
                         if (statusDiv && !statusDiv.textContent.includes('成功')) {
-                            statusDiv.textContent = '📱 點擊下方按鈕開啟掃描器';
+                            statusDiv.textContent = '📱 Click the button below to start scanner';
                             statusDiv.className = 'scanner-status';
                         }
                     }).catch((err) => { console.warn('停止掃描器時出錯:', err); });
@@ -1681,7 +1681,7 @@
             } else {
                 if (scannerContainer) scannerContainer.classList.add('scanner-hidden');
                 if (scanBtn) { scanBtn.disabled = false;
-                    scanBtn.textContent = '📸 掃描 QR Code'; }
+                    scanBtn.textContent = '📸 Scan QR Code'; }
                 if (stopBtn) stopBtn.style.display = 'none';
             }
         }
@@ -1693,7 +1693,6 @@
             if (timerRunning || timerDone) return;
 
             const lang = currentLang || 'zh';
-            const t = texts[lang];
 
             timerRunning = true;
             timerDone = false;
