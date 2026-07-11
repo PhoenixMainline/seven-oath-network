@@ -21,25 +21,42 @@
             justify-content: center;
             align-items: flex-start;
             padding: 16px;
-            background-image: url('background-dark.png');
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+            background-color: #0a060e;
+            position: relative;
         }
 
-        body::after {
-            content: '';
+        /* ===== YouTube 背景影片容器 ===== */
+        #bg-video-wrapper {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(ellipse at 50% 30%, rgba(255, 192, 0, 0.04) 0%, rgba(10, 6, 14, 0.3) 60%, rgba(0, 0, 0, 0.5) 100%);
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
             pointer-events: none;
-            z-index: 0;
         }
 
+        #bg-video-wrapper iframe {
+            width: 100vw;
+            height: 100vh;
+            transform: scale(1.1);
+            border: none;
+        }
+
+        /* ===== 深色疊加層 ===== */
+        #bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(10, 6, 14, 0.45);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* ===== 浮水印 ===== */
         body::before {
             content: '天 地 為 鑑  ·  光 網 為 證';
             position: fixed;
@@ -1052,6 +1069,17 @@
 </head>
 <body>
 
+    <!-- ===== YouTube 背景影片 ===== -->
+    <div id="bg-video-wrapper">
+        <iframe 
+            src="https://www.youtube.com/embed/V6nUvw3IOwc?autoplay=1&loop=1&playlist=V6nUvw3IOwc&controls=0&mute=1&showinfo=0&rel=0&playsinline=1"
+            allow="autoplay; encrypted-media"
+            loading="lazy">
+        </iframe>
+    </div>
+    <!-- ===== 深色疊加層 ===== -->
+    <div id="bg-overlay"></div>
+
     <div class="app-container" id="app">
 
         <!-- ===== 頂部 ===== -->
@@ -1151,9 +1179,23 @@
                         <button class="btn-scan" id="scanBtn1" onclick="startScanner(1)">📸 掃描 QR Code</button>
                         <button class="btn-scan-secondary" id="stopBtn1" onclick="stopScanner(1)" style="display:none;">✕ 關閉掃描器</button>
 
-                        <div id="cameraFailNotice1" class="camera-fail-notice">
-                            <span class="icon">📌</span>
-                            無法啟動相機，請自行手動掃描器掃描實體書 QR Code
+                        <!-- ===== 相機引導說明（步驟一） ===== -->
+                        <div id="cameraFailNotice1" class="camera-fail-notice" style="display:none;">
+                            <div style="display:flex;align-items:flex-start;gap:8px;flex-direction:column;">
+                                <div style="display:flex;align-items:center;gap:6px;">
+                                    <span style="font-size:18px;">📷</span>
+                                    <span style="font-weight:600;color:#FFC000;">無法啟動相機？</span>
+                                </div>
+                                <div style="font-size:14px;line-height:2.2;color:rgba(255,255,255,0.5);padding-left:4px;">
+                                    <div>⚙️ 開啟手機「設定」</div>
+                                    <div style="padding-left:20px;">→ 應用程式管理</div>
+                                    <div style="padding-left:20px;">→ 權限 → 相機 → 改為「允許」</div>
+                                    <div style="padding-left:20px;">→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）</div>
+                                </div>
+                                <div style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.2);border-top:1px solid rgba(255,255,255,0.04);padding-top:8px;">
+                                    ⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code
+                                </div>
+                            </div>
                         </div>
 
                         <div id="scanResult1" class="scan-result-box" style="display:none;">
@@ -1224,10 +1266,26 @@
                         <div id="scannerStatus3" class="scanner-status">📱 點擊下方按鈕開啟掃描器</div>
                         <button class="btn-scan" id="scanBtn3" onclick="startScanner(3)">📸 掃描 QR Code</button>
                         <button class="btn-scan-secondary" id="stopBtn3" onclick="stopScanner(3)" style="display:none;">✕ 關閉掃描器</button>
-                        <div id="cameraFailNotice3" class="camera-fail-notice">
-                            <span class="icon">📌</span>
-                            無法啟動相機，請自行手動掃描器掃描實體書 QR Code
+
+                        <!-- ===== 相機引導說明（步驟三） ===== -->
+                        <div id="cameraFailNotice3" class="camera-fail-notice" style="display:none;">
+                            <div style="display:flex;align-items:flex-start;gap:8px;flex-direction:column;">
+                                <div style="display:flex;align-items:center;gap:6px;">
+                                    <span style="font-size:18px;">📷</span>
+                                    <span style="font-weight:600;color:#FFC000;">無法啟動相機？</span>
+                                </div>
+                                <div style="font-size:14px;line-height:2.2;color:rgba(255,255,255,0.5);padding-left:4px;">
+                                    <div>⚙️ 開啟手機「設定」</div>
+                                    <div style="padding-left:20px;">→ 應用程式管理</div>
+                                    <div style="padding-left:20px;">→ 權限 → 相機 → 改為「允許」</div>
+                                    <div style="padding-left:20px;">→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）</div>
+                                </div>
+                                <div style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.2);border-top:1px solid rgba(255,255,255,0.04);padding-top:8px;">
+                                    ⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code
+                                </div>
+                            </div>
                         </div>
+
                         <div id="scanResult3" class="scan-result-box" style="display:none;">
                             <div class="label">✅ 掃描結果：</div>
                             <div class="content" id="scanContent3"></div>
@@ -1274,10 +1332,26 @@
                         <div id="scannerStatus4" class="scanner-status">📱 點擊下方按鈕開啟掃描器</div>
                         <button class="btn-scan" id="scanBtn4" onclick="startScanner(4)">📸 掃描 QR Code</button>
                         <button class="btn-scan-secondary" id="stopBtn4" onclick="stopScanner(4)" style="display:none;">✕ 關閉掃描器</button>
-                        <div id="cameraFailNotice4" class="camera-fail-notice">
-                            <span class="icon">📌</span>
-                            無法啟動相機，請自行手動掃描器掃描實體書 QR Code
+
+                        <!-- ===== 相機引導說明（步驟四） ===== -->
+                        <div id="cameraFailNotice4" class="camera-fail-notice" style="display:none;">
+                            <div style="display:flex;align-items:flex-start;gap:8px;flex-direction:column;">
+                                <div style="display:flex;align-items:center;gap:6px;">
+                                    <span style="font-size:18px;">📷</span>
+                                    <span style="font-weight:600;color:#FFC000;">無法啟動相機？</span>
+                                </div>
+                                <div style="font-size:14px;line-height:2.2;color:rgba(255,255,255,0.5);padding-left:4px;">
+                                    <div>⚙️ 開啟手機「設定」</div>
+                                    <div style="padding-left:20px;">→ 應用程式管理</div>
+                                    <div style="padding-left:20px;">→ 權限 → 相機 → 改為「允許」</div>
+                                    <div style="padding-left:20px;">→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）</div>
+                                </div>
+                                <div style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.2);border-top:1px solid rgba(255,255,255,0.04);padding-top:8px;">
+                                    ⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code
+                                </div>
+                            </div>
                         </div>
+
                         <div id="scanResult4" class="scan-result-box" style="display:none;">
                             <div class="label">✅ 掃描結果：</div>
                             <div class="content" id="scanContent4"></div>
@@ -1331,49 +1405,46 @@
                             <span class="gold">誓頻啟動 × 系統同步階段</span>
                         </div>
                         <div class="divider"></div>
-                   <!-- ===== 雙按鈕：左邊返回鍵 + 右邊啟動按鈕 ===== -->
-<div style="display: flex; gap: 12px; margin-top: 20px;">
-    <!-- 左邊返回鍵 → 回到步驟五 -->
-    <button onclick="goToStep(5)" style="
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,192,0,0.15);
-        color: rgba(255,192,0,0.5);
-        padding: 14px 0;
-        border-radius: 12px;
-        font-size: 20px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-family: inherit;
-        flex: 0.3;
-        backdrop-filter: blur(4px);
-    " onmouseover="this.style.background='rgba(255,192,0,0.1)'; this.style.color='#FFC000'; this.style.borderColor='rgba(255,192,0,0.3)'" 
-    onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.color='rgba(255,192,0,0.5)'; this.style.borderColor='rgba(255,192,0,0.15)'">
-        ◀
-    </button>
-
-    <!-- 右邊啟動按鈕 → 下一層（你先告訴我要去哪） -->
-    <button onclick="alert('即將進入下一層')" style="
-        background: linear-gradient(135deg, #FFC000 0%, #e8604a 50%, #c04030 100%);
-        color: #0a060e;
-        border: none;
-        padding: 14px 0;
-        border-radius: 12px;
-        font-size: 16px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.4s ease;
-        font-family: inherit;
-        letter-spacing: 2px;
-        flex: 1;
-        position: relative;
-        overflow: hidden;
-        line-height: 1.4;
-    " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.3)'" 
-    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-        【宇宙誓印覺醒工程】啟動 ▶
-    </button>
-</div>
+                        <!-- ===== 雙按鈕：左邊返回鍵 + 右邊啟動按鈕 ===== -->
+                        <div style="display: flex; gap: 12px; margin-top: 20px;">
+                            <button onclick="goToStep(5)" style="
+                                background: rgba(255,255,255,0.05);
+                                border: 1px solid rgba(255,192,0,0.15);
+                                color: rgba(255,192,0,0.5);
+                                padding: 14px 0;
+                                border-radius: 12px;
+                                font-size: 20px;
+                                font-weight: 500;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                font-family: inherit;
+                                flex: 0.3;
+                                backdrop-filter: blur(4px);
+                            " onmouseover="this.style.background='rgba(255,192,0,0.1)'; this.style.color='#FFC000'; this.style.borderColor='rgba(255,192,0,0.3)'" 
+                            onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.color='rgba(255,192,0,0.5)'; this.style.borderColor='rgba(255,192,0,0.15)'">
+                                ◀
+                            </button>
+                            <button onclick="alert('即將進入下一層')" style="
+                                background: linear-gradient(135deg, #FFC000 0%, #e8604a 50%, #c04030 100%);
+                                color: #0a060e;
+                                border: none;
+                                padding: 14px 0;
+                                border-radius: 12px;
+                                font-size: 16px;
+                                font-weight: 700;
+                                cursor: pointer;
+                                transition: all 0.4s ease;
+                                font-family: inherit;
+                                letter-spacing: 2px;
+                                flex: 1;
+                                position: relative;
+                                overflow: hidden;
+                                line-height: 1.4;
+                            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.3)'" 
+                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                【宇宙誓印覺醒工程】啟動 ▶
+                            </button>
+                        </div>
                     </div>
                     <div class="page-footer" style="margin-top:16px;">📄 【宇宙誓印覺醒工程 · 覺醒卷】：完成</div>
                 </div>
@@ -1444,7 +1515,7 @@
 
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                 if (statusDiv) {
-                    statusDiv.textContent = '❌ 無法啟動相機，請自行手動掃描器掃描實體書 QR Code';
+                    statusDiv.textContent = '❌ 瀏覽器不支援相機，請自行手動掃描器掃描實體書 QR Code';
                     statusDiv.className = 'scanner-status error';
                 }
                 showCameraFailNotice(step);
@@ -1721,7 +1792,7 @@
                 s5Sub: '',
                 s5Card1Title: '⚡ 系統自動執行',
                 s5Card1Text: '【購書序號】驗證成功後，平台自動執行：',
-                s5Card2Text: '✅ 主頻定位 × 光網鎖定<br>✅ 七印誓網 × 覺醒模組展開<br>✅ 九界冊記 × 誓資紀錄歸檔',
+                s5Card2Text: '✅ 主頻定位 × 光網鎖定<br>✅ 七印同步 × 覺醒模組展開<br>✅ 九界冊記 × 誓資紀錄歸檔',
                 s5Card3Text: '「 天 地 為 鑑 ， 光 網 為 證 。 」',
                 s5Footer: '📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 9-10 頁',
                 completeDesc: '您已成功完成《宇宙智能誓導平台》正式授權程序。<br><span class="gold">誓頻啟動 × 系統同步階段</span>',
