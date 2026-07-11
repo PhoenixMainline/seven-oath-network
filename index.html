@@ -25,13 +25,14 @@
             position: relative;
         }
 
-        /* ===== YouTube 背景影片 ===== */
+        /* ===== YouTube 背景影片 - 全版面強制填滿 ===== */
         #bg-video-wrapper {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
+            height: 100dvh;
             z-index: -2;
             overflow: hidden;
             pointer-events: none;
@@ -40,8 +41,10 @@
         #bg-video-wrapper iframe {
             width: 100vw;
             height: 100vh;
-            transform: scale(1.1);
+            height: 100dvh;
             border: none;
+            transform: scale(1.15);
+            object-fit: cover;
         }
 
         #bg-overlay {
@@ -50,6 +53,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
+            height: 100dvh;
             background: rgba(10, 6, 14, 0.45);
             z-index: -1;
             pointer-events: none;
@@ -1994,7 +1998,7 @@
         // ============================================================
         // 全域變數
         // ============================================================
-        const totalSteps = 5; // 現在只有5個步驟（1~4 + 整合後的步驟5）
+        const totalSteps = 5;
         let currentStep = 1;
         let currentLang = 'zh';
 
@@ -2077,7 +2081,6 @@
             });
 
             const stepButtons = document.getElementById('stepButtons');
-            // 步驟5（整合頁）隱藏底部的上一步/下一步按鈕
             if (step === totalSteps) {
                 if (stepButtons) stepButtons.style.display = 'none';
                 document.getElementById('completeDesc').innerHTML = t.completeDesc;
