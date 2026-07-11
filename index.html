@@ -844,33 +844,6 @@
             cursor: not-allowed;
         }
 
-        .btn-finish {
-            background: linear-gradient(135deg, #FFC000 0%, #e8604a 50%, #c04030 100%);
-            color: #0a060e;
-            flex: 1;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-            font-size: 14px;
-            padding: 14px 8px;
-            line-height: 1.4;
-        }
-
-        .btn-finish::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(ellipse at center, rgba(255, 192, 0, 0.1) 0%, transparent 60%);
-            animation: btnGlow 3s ease-in-out infinite alternate;
-            pointer-events: none;
-        }
-
-        .btn-finish:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
-        }
-
         /* ===== 步驟五＋完成頁整合 ===== */
         .final-page {
             padding: 10px 0 20px;
@@ -1169,7 +1142,7 @@
 </head>
 <body>
 
-    <!-- ===== YouTube 背景影片 ===== -->
+    <!-- ===== YouTube 背景影片（全版面強制填滿） ===== -->
     <div id="bg-video-wrapper">
         <iframe 
             src="https://www.youtube.com/embed/V6nUvw3IOwc?autoplay=1&loop=1&playlist=V6nUvw3IOwc&controls=0&mute=1&showinfo=0&rel=0&playsinline=1"
@@ -2094,7 +2067,7 @@
             nextBtn.className = 'btn btn-next';
 
             if (step === totalSteps - 1) {
-                nextBtn.textContent = '🔥 正式啟動 🔥';
+                nextBtn.textContent = '進入下一步 ▶';
                 nextBtn.className = 'btn btn-finish';
             } else {
                 nextBtn.textContent = t.btnNext;
