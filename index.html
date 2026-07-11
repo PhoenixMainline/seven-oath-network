@@ -1687,7 +1687,7 @@
         }
 
         // ============================================================
-        // 計時器函數
+        // 計時器函數（內建中英文按鈕文字）
         // ============================================================
         function startTimer() {
             if (timerRunning || timerDone) return;
@@ -1707,10 +1707,20 @@
 
             if (displayEl) displayEl.textContent = '10';
             if (displayEl) displayEl.className = 'timer-number';
-            if (statusEl) statusEl.textContent = t.timerStatusRunning || '請靜心誦讀或默念誓文...';
-            if (startBtn) { startBtn.disabled = true;
-                startBtn.textContent = '誦讀中...'; }
-            if (resetBtn) resetBtn.style.display = 'none';
+
+            // 根據語言顯示不同文字
+            if (lang === 'en') {
+                if (statusEl) statusEl.textContent = 'Reciting...';
+                if (startBtn) { startBtn.disabled = true;
+                    startBtn.textContent = 'Reciting...'; }
+                if (resetBtn) resetBtn.style.display = 'none';
+            } else {
+                if (statusEl) statusEl.textContent = '請靜心誦讀或默念誓文...';
+                if (startBtn) { startBtn.disabled = true;
+                    startBtn.textContent = '誦讀中...'; }
+                if (resetBtn) resetBtn.style.display = 'none';
+            }
+
             if (nextBtn) nextBtn.disabled = true;
 
             if (timerInterval) clearInterval(timerInterval);
@@ -1726,10 +1736,18 @@
                         displayEl.textContent = '0';
                         displayEl.className = 'timer-number done';
                     }
-                    if (statusEl) statusEl.textContent = t.timerStatusDone || '✅ 已完成誦讀';
-                    if (startBtn) { startBtn.disabled = false;
-                        startBtn.textContent = '開始靜心'; }
-                    if (resetBtn) resetBtn.style.display = 'inline-block';
+                    // 完成後根據語言顯示
+                    if (lang === 'en') {
+                        if (statusEl) statusEl.textContent = '✅ Recitation complete';
+                        if (startBtn) { startBtn.disabled = false;
+                            startBtn.textContent = 'Start Meditation'; }
+                        if (resetBtn) resetBtn.style.display = 'inline-block';
+                    } else {
+                        if (statusEl) statusEl.textContent = '✅ 已完成誦讀';
+                        if (startBtn) { startBtn.disabled = false;
+                            startBtn.textContent = '開始靜心'; }
+                        if (resetBtn) resetBtn.style.display = 'inline-block';
+                    }
                     if (nextBtn) nextBtn.disabled = false;
                     localStorage.setItem('oath_timer_done', 'true');
                     localStorage.setItem('step_completed_2', 'true');
@@ -1754,16 +1772,27 @@
             const resetBtn = document.getElementById('timerResetBtn');
             const nextBtn = document.getElementById('nextBtn');
 
+            const lang = currentLang || 'zh';
+
             if (displayEl) {
                 displayEl.textContent = '10';
                 displayEl.className = 'timer-number';
             }
             if (statusEl) {
-                const lang = currentLang || 'zh';
-                statusEl.textContent = texts[lang].timerStatusReady || '⏳ 準備開始';
+                if (lang === 'en') {
+                    statusEl.textContent = '⏳ Ready';
+                } else {
+                    statusEl.textContent = '⏳ 準備開始';
+                }
             }
-            if (startBtn) { startBtn.disabled = false;
-                startBtn.textContent = '開始靜心'; }
+            if (startBtn) {
+                startBtn.disabled = false;
+                if (lang === 'en') {
+                    startBtn.textContent = 'Start Meditation';
+                } else {
+                    startBtn.textContent = '開始靜心';
+                }
+            }
             if (resetBtn) resetBtn.style.display = 'none';
             if (nextBtn) nextBtn.disabled = true;
             localStorage.removeItem('oath_timer_done');
@@ -1788,6 +1817,58 @@
             } else {
                 renderStep(currentStep);
                 updateTimerText();
+                updateTimerButtons();
+            }
+        }
+
+        function updateTimerText() {
+            const lang = currentLang || 'zh';
+            const t = texts[lang];
+            const statusEl = document.getElementById('timerStatus');
+            const labelEl = document.getElementById('timerLabel');
+
+            if (labelEl) labelEl.textContent = t.timerLabel || '請靜心誦讀 10 秒';
+
+            if (timerDone) {
+                if (statusEl) statusEl.textContent = t.timerStatusDone || '✅ 已完成誦讀';
+            } else if (timerRunning) {
+                if (statusEl) statusEl.textContent = t.timerStatusRunning || '請靜心誦讀或默念誓文...';
+            } else {
+                if (statusEl) statusEl.textContent = t.timerStatusReady || '⏳ 準備開始';
+            }
+        }
+
+        function updateTimerButtons() {
+            const lang = currentLang || 'zh';
+            const startBtn = document.getElementById('timerStartBtn');
+            const resetBtn = document.getElementById('timerResetBtn');
+
+            if (!startBtn) return;
+
+            if (timerRunning) {
+                if (lang === 'en') {
+                    startBtn.textContent = 'Reciting...';
+                } else {
+                    startBtn.textContent = '誦讀中...';
+                }
+                startBtn.disabled = true;
+                if (resetBtn) resetBtn.style.display = 'none';
+            } else if (timerDone) {
+                if (lang === 'en') {
+                    startBtn.textContent = 'Start Meditation';
+                } else {
+                    startBtn.textContent = '開始靜心';
+                }
+                startBtn.disabled = false;
+                if (resetBtn) resetBtn.style.display = 'inline-block';
+            } else {
+                if (lang === 'en') {
+                    startBtn.textContent = 'Start Meditation';
+                } else {
+                    startBtn.textContent = '開始靜心';
+                }
+                startBtn.disabled = false;
+                if (resetBtn) resetBtn.style.display = 'none';
             }
         }
 
@@ -1832,8 +1913,14 @@
                         displayEl.className = 'timer-number done';
                     }
                     if (statusEl) statusEl.textContent = t.timerStatusDone || '✅ 已完成誦讀';
-                    if (startBtn) { startBtn.disabled = false;
-                        startBtn.textContent = '開始靜心'; }
+                    if (startBtn) {
+                        startBtn.disabled = false;
+                        if (lang === 'en') {
+                            startBtn.textContent = 'Start Meditation';
+                        } else {
+                            startBtn.textContent = '開始靜心';
+                        }
+                    }
                     if (resetBtn) resetBtn.style.display = 'inline-block';
                     if (nextBtn) nextBtn.disabled = false;
                 }
@@ -1977,27 +2064,6 @@
 
         const $ = id => document.getElementById(id);
 
-        function updateTimerText() {
-            const lang = currentLang || 'zh';
-            const t = texts[lang];
-            const statusEl = document.getElementById('timerStatus');
-            const labelEl = document.getElementById('timerLabel');
-            const startBtn = document.getElementById('timerStartBtn');
-
-            if (labelEl) labelEl.textContent = t.timerLabel || '請靜心誦讀 10 秒';
-
-            if (timerDone) {
-                if (statusEl) statusEl.textContent = t.timerStatusDone || '✅ 已完成誦讀';
-                if (startBtn) startBtn.textContent = '開始靜心';
-            } else if (timerRunning) {
-                if (statusEl) statusEl.textContent = t.timerStatusRunning || '請靜心誦讀或默念誓文...';
-                if (startBtn) startBtn.textContent = '誦讀中...';
-            } else {
-                if (statusEl) statusEl.textContent = t.timerStatusReady || '⏳ 準備開始';
-                if (startBtn) startBtn.textContent = '開始靜心';
-            }
-        }
-
         // ============================================================
         // 渲染目錄首頁
         // ============================================================
@@ -2110,16 +2176,28 @@
                             document.getElementById('timerStatus').textContent = t.timerStatusReady;
                             document.getElementById('timerDisplay').textContent = '10';
                             document.getElementById('timerDisplay').className = 'timer-number';
-                            if (startBtn) { startBtn.disabled = false;
-                                startBtn.textContent = '開始靜心'; }
+                            if (startBtn) {
+                                startBtn.disabled = false;
+                                if (currentLang === 'en') {
+                                    startBtn.textContent = 'Start Meditation';
+                                } else {
+                                    startBtn.textContent = '開始靜心';
+                                }
+                            }
                             if (resetBtn) resetBtn.style.display = 'none';
                             nextBtn.disabled = true;
                         } else if (timerRunning) {
                             document.getElementById('timerStatus').textContent = t.timerStatusRunning;
                             document.getElementById('timerDisplay').textContent = timerCountdown;
                             document.getElementById('timerDisplay').className = 'timer-number';
-                            if (startBtn) { startBtn.disabled = true;
-                                startBtn.textContent = '誦讀中...'; }
+                            if (startBtn) {
+                                startBtn.disabled = true;
+                                if (currentLang === 'en') {
+                                    startBtn.textContent = 'Reciting...';
+                                } else {
+                                    startBtn.textContent = '誦讀中...';
+                                }
+                            }
                             if (resetBtn) resetBtn.style.display = 'none';
                             nextBtn.disabled = true;
                         }
@@ -2127,8 +2205,14 @@
                         document.getElementById('timerStatus').textContent = t.timerStatusDone;
                         document.getElementById('timerDisplay').textContent = '0';
                         document.getElementById('timerDisplay').className = 'timer-number done';
-                        if (startBtn) { startBtn.disabled = false;
-                            startBtn.textContent = '開始靜心'; }
+                        if (startBtn) {
+                            startBtn.disabled = false;
+                            if (currentLang === 'en') {
+                                startBtn.textContent = 'Start Meditation';
+                            } else {
+                                startBtn.textContent = '開始靜心';
+                            }
+                        }
                         if (resetBtn) resetBtn.style.display = 'inline-block';
                         nextBtn.disabled = false;
                     }
@@ -2215,8 +2299,14 @@
                             document.getElementById('nextBtn').disabled = false;
                             const startBtn = document.getElementById('timerStartBtn');
                             const resetBtn = document.getElementById('timerResetBtn');
-                            if (startBtn) { startBtn.disabled = false;
-                                startBtn.textContent = '開始靜心'; }
+                            if (startBtn) {
+                                startBtn.disabled = false;
+                                if (lang === 'en') {
+                                    startBtn.textContent = 'Start Meditation';
+                                } else {
+                                    startBtn.textContent = '開始靜心';
+                                }
+                            }
                             if (resetBtn) resetBtn.style.display = 'inline-block';
                         }
                     }
@@ -2263,7 +2353,13 @@
 
             if (labelEl) labelEl.textContent = t.timerLabel || '請靜心誦讀 10 秒';
             if (statusEl) statusEl.textContent = t.timerStatusReady || '⏳ 準備開始';
-            if (startBtn) startBtn.textContent = '開始靜心';
+            if (startBtn) {
+                if (lang === 'en') {
+                    startBtn.textContent = 'Start Meditation';
+                } else {
+                    startBtn.textContent = '開始靜心';
+                }
+            }
             if (resetBtn) resetBtn.style.display = 'none';
         }
 
