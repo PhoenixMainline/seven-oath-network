@@ -26,17 +26,16 @@
         }
 
         /* ===== YouTube 背景影片 - 全版面強制填滿 ===== */
-        #bg-video-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            height: 100dvh;
-            z-index: -2;
-            overflow: hidden;
-            pointer-events: none;
-        }
+     #bg-video-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -999;
+    overflow: hidden;
+    pointer-events: none !important;
+}
 
         #bg-video-wrapper iframe {
             width: 100vw;
@@ -2264,16 +2263,17 @@
     // ============================================================
     // 步驟導航
     // ============================================================
-    function nextStep() {
-        const nextBtn = document.getElementById('nextBtn');
-        if (nextBtn.disabled) return;
-        
-        if (currentStep === totalSteps - 1) {
-            currentStep = totalSteps;
-            renderStep(currentStep);
-            localStorage.setItem('step_completed_5', 'true');
-            return;
-        }
+   function nextStep() {
+    const nextBtn = document.getElementById('nextBtn');
+    if (nextBtn.disabled) return;
+
+    localStorage.setItem('step_completed_' + currentStep, 'true');
+
+    if (currentStep < totalSteps) {
+        currentStep++;
+        renderStep(currentStep);
+    }
+}
 
         if (currentStep < totalSteps - 1) {
             localStorage.setItem('step_completed_' + currentStep, 'true');
