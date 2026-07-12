@@ -2273,8 +2273,10 @@ completeDesc: 'You have successfully completed the official authorization proces
             const nextBtn = document.getElementById('nextBtn');
             if (nextBtn.disabled) return;
 
-            if (currentStep === 2 && !timerDone) return;
-
+         if (currentStep === 2 && !timerDone) {
+    alert('請先完成靜心誦讀！');
+    return;
+}
             if (currentStep === totalSteps - 1) {
                 currentStep = totalSteps;
                 renderStep(currentStep);
