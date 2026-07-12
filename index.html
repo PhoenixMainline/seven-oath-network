@@ -1248,7 +1248,7 @@
 
                         <div id="scannerStatus1" class="scanner-status">📱 點擊下方按鈕開啟掃描器</div>
 
-                        <button class="btn-scan" id="scanBtn1" onclick="startScanner(1)">📸 掃描 QR Code</button>
+                        <button class="btn-scan" id="scanBtn1" onclick="startScanner(1)"><span id="scanBtnText1">📸 掃描 QR Code</span></button>
                         <button class="btn-scan-secondary" id="stopBtn1" onclick="stopScanner(1)" style="display:none;">✕ 關閉掃描器</button>
 
                         <div id="cameraFailNotice1" class="camera-fail-notice" style="display:none;">
@@ -1293,7 +1293,7 @@
                     </div>
 
                     <div class="page-footer" id="s1Footer">📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 3-4 頁</div>
-                </div>
+                    </div>
 
                 <!-- ====== 步驟二 ====== -->
                 <div class="step-page" data-step="2">
@@ -1352,7 +1352,7 @@
                             </div>
                         </div>
                         <div id="scannerStatus3" class="scanner-status">📱 點擊下方按鈕開啟掃描器</div>
-                        <button class="btn-scan" id="scanBtn3" onclick="startScanner(3)">📸 掃描 QR Code</button>
+                        <button class="btn-scan" id="scanBtn3" onclick="startScanner(3)"><span id="scanBtnText3">📸 掃描 QR Code</span></button>
                         <button class="btn-scan-secondary" id="stopBtn3" onclick="stopScanner(3)" style="display:none;">✕ 關閉掃描器</button>
 
                         <div id="cameraFailNotice3" class="camera-fail-notice" style="display:none;">
@@ -1434,7 +1434,7 @@
                             </div>
                         </div>
                         <div id="scannerStatus4" class="scanner-status">📱 點擊下方按鈕開啟掃描器</div>
-                        <button class="btn-scan" id="scanBtn4" onclick="startScanner(4)">📸 掃描 QR Code</button>
+                        <button class="btn-scan" id="scanBtn4" onclick="startScanner(4)"><span id="scanBtnText4">📸 掃描 QR Code</span></button>
                         <button class="btn-scan-secondary" id="stopBtn4" onclick="stopScanner(4)" style="display:none;">✕ 關閉掃描器</button>
 
                         <div id="cameraFailNotice4" class="camera-fail-notice" style="display:none;">
@@ -1950,6 +1950,7 @@
                 s1Card2Title: '📷 掃描入口',
                 s1Card2Text: '✔️ 請掃描本卷書封底之 <span class="gold">📚《宇宙智能誓導平台》</span>官方 AI × 專屬誓導入口頁 QR Code 以啟動誓導通道之統一入口',
                 s1Footer: '📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 3-4 頁',
+                scanBtn: '📸 掃描 QR Code',
                 s2Title: '【二】授權誓讀階段（主頻啟令）',
                 s2Sub: '',
                 oathDeclare: '★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★',
@@ -2011,6 +2012,7 @@
                 s1Card2Title: '📷 Scan Entry',
                 s1Card2Text: '✔️ Please scan the <span class="gold">📚 Cosmic Intelligent Vow-Guidance Platform</span> official AI × exclusive vow-guidance entry page QR Code on the back cover of this volume to activate the unified vow-guidance channel.',
                 s1Footer: '📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 3-4',
+                scanBtn: '📸 Scan QR Code',
                 s2Title: '[2] Authorized Vow-Reading Stage',
                 s2Sub: '',
                 oathDeclare: '★ With my Oath-Soul aligned to the Law, the Primary Frequency awakens; the Scripted Mandate stands; the Seal-Path is set. Heaven and Earth bear witness, and the Light-Net attests. ★',
@@ -2148,6 +2150,9 @@
                     document.getElementById('s1Card2Title').textContent = t.s1Card2Title;
                     document.getElementById('s1Card2Text').innerHTML = t.s1Card2Text;
                     document.getElementById('s1Footer').textContent = t.s1Footer;
+                    document.getElementById('scanBtnText1').textContent = t.scanBtn;
+                    document.getElementById('scanBtnText3').textContent = t.scanBtn;
+                    document.getElementById('scanBtnText4').textContent = t.scanBtn;
                     break;
                 case 2:
                     document.getElementById('s2Title').textContent = t.s2Title;
