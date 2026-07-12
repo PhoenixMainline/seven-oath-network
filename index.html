@@ -1881,7 +1881,7 @@
             updateStepStatus();
         }
 
-       function goToStep(step) {
+     function goToStep(step) {
     document.getElementById('pageHome').classList.add('hidden');
     document.getElementById('pageSteps').style.display = 'block';
     document.getElementById('pageSteps').classList.add('show');
@@ -1918,7 +1918,6 @@
         }
     }
 }
-
         // ============================================================
         // 語言文字
         // ============================================================
@@ -2275,27 +2274,21 @@ document.getElementById('prevBtn').disabled = (step === 1);
         // ============================================================
         // 步驟導航
         // ============================================================
-      function nextStep() {
+    function nextStep() {
     const nextBtn = document.getElementById('nextBtn');
     if (nextBtn.disabled) return;
     
-    localStorage.setItem('step_completed_' + currentStep, 'true');
-
     if (currentStep === totalSteps - 1) {
         currentStep = totalSteps;
-        localStorage.setItem('step_completed_' + currentStep, 'true');
         renderStep(currentStep);
+        localStorage.setItem('step_completed_5', 'true');
         return;
     }
 
     if (currentStep < totalSteps - 1) {
-        currentStep++;
+        localStorage.setItem('step_completed_' + currentStep, 'true');
         
-        document.querySelectorAll('.step-page').forEach((page) => {
-            const pageStep = parseInt(page.dataset.step);
-            page.classList.toggle('active', pageStep === currentStep);
-        });
-
+        currentStep++;
         renderStep(currentStep);
         
         if (currentStep === 2) {
