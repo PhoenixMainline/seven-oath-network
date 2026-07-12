@@ -2280,6 +2280,12 @@ completeDesc: 'You have successfully completed the official authorization proces
         localStorage.setItem('step_completed_' + currentStep, 'true');
         
         currentStep++;
+        
+        document.querySelectorAll('.step-page').forEach((page) => {
+            const pageStep = parseInt(page.dataset.step);
+            page.classList.toggle('active', pageStep === currentStep);
+        });
+
         renderStep(currentStep);
         
         if (currentStep === 2) {
@@ -2307,7 +2313,6 @@ completeDesc: 'You have successfully completed the official authorization proces
         }
     }
 }
-
         function prevStep() {
             if (document.getElementById('prevBtn').disabled) return;
             if (currentStep > 1) {
