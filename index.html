@@ -1892,7 +1892,9 @@
             currentStep = step;
             renderStep(currentStep);
 
-            if (currentStep === 2) {
+          if (currentStep === 2) {
+    return;
+}
                 const saved = localStorage.getItem('oath_timer_done');
                 if (saved === 'true') {
                     timerDone = true;
