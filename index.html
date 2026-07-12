@@ -809,29 +809,31 @@
             color: #FFC000;
         }
 
-        .btn-next {
-            background: linear-gradient(135deg, #FFC000 0%, #e8604a 50%, #c04030 100%);
-            color: #0a060e;
-            flex: 1;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-        }
+.btn-next {
+    background: linear-gradient(145deg, #f9d976, #f39c12);
+    color: #1e2a4a;
+    flex: 1;
+    box-shadow: 0 8px 24px rgba(243, 156, 18, 0.35);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
 
-        .btn-next::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(ellipse at center, rgba(255, 192, 0, 0.1) 0%, transparent 60%);
-            animation: btnGlow 3s ease-in-out infinite alternate;
-            pointer-events: none;
-        }
+.btn-next::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at center, rgba(255, 192, 0, 0.1) 0%, transparent 60%);
+    animation: btnGlow 3s ease-in-out infinite alternate;
+    pointer-events: none;
+}
 
-        .btn-next:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
-        }
+.btn-next:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(243, 156, 18, 0.45);
+    background: linear-gradient(145deg, #f7d06a, #e08e0b);
+}
 
         .btn-next:disabled {
             opacity: 0.15;
@@ -1309,8 +1311,7 @@
                         </div>
 
                         <div class="timer-btn-group">
-                            <button class="timer-btn primary" id="timerStartBtn" onclick="startTimer()">開始靜心</button>
-                           <button class="timer-btn" id="timerResetBtn" onclick="resetTimer()" style="display:none;">Restart</button>
+                      <button class="timer-btn" id="timerResetBtn" onclick="resetTimer()" style="display:none;"><span id="timerResetBtnText">重新開始</span></button>
                         </div>
                     </div>
 
@@ -1536,7 +1537,7 @@
             <!-- ===== 按鈕（步驟1~4使用，步驟5隱藏） ===== -->
             <div class="btn-row" id="stepButtons">
                 <button class="btn btn-prev" id="prevBtn" onclick="prevStep()">◀</button>
-                <button class="btn btn-next" id="nextBtn" onclick="nextStep()">進入下一步 ▶</button>
+                <button class="btn btn-next" id="nextBtn" onclick="nextStep()">Next Step ▶</button>
             </div>
         </div>
 
