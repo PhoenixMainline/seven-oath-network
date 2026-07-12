@@ -1881,49 +1881,43 @@
             updateStepStatus();
         }
 
-        function goToStep(step) {
-            document.getElementById('pageHome').classList.add('hidden');
-            document.getElementById('pageSteps').style.display = 'block';
-            document.getElementById('pageSteps').classList.add('show');
-            document.getElementById('backHomeBtn').classList.add('show');
+       function goToStep(step) {
+    document.getElementById('pageHome').classList.add('hidden');
+    document.getElementById('pageSteps').style.display = 'block';
+    document.getElementById('pageSteps').classList.add('show');
+    document.getElementById('backHomeBtn').classList.add('show');
 
-            resetTimer();
+    resetTimer();
 
-            currentStep = step;
-            renderStep(currentStep);
+    currentStep = step;
+    renderStep(currentStep);
 
-          if (currentStep === 2) {
-    return;
-}
-                const saved = localStorage.getItem('oath_timer_done');
-                if (saved === 'true') {
-                    timerDone = true;
-                    timerRunning = false;
-                    const lang = currentLang || 'zh';
-                    const t = texts[lang];
-                    const displayEl = document.getElementById('timerDisplay');
-                    const statusEl = document.getElementById('timerStatus');
-                    const startBtn = document.getElementById('timerStartBtn');
-                    const resetBtn = document.getElementById('timerResetBtn');
-                    const nextBtn = document.getElementById('nextBtn');
-                    if (displayEl) {
-                        displayEl.textContent = '0';
-                        displayEl.className = 'timer-number done';
-                    }
-                    if (statusEl) statusEl.textContent = t.timerStatusDone || '✅ 已完成誦讀';
-                    if (startBtn) {
-                        startBtn.disabled = false;
-                        if (lang === 'en') {
-                            startBtn.textContent = 'Start Meditation';
-                        } else {
-                            startBtn.textContent = '開始靜心';
-                        }
-                    }
-                    if (resetBtn) resetBtn.style.display = 'inline-block';
-                    if (nextBtn) nextBtn.disabled = false;
-                }
+    if (currentStep !== 2) {
+        const saved = localStorage.getItem('oath_timer_done');
+        if (saved === 'true') {
+            timerDone = true;
+            timerRunning = false;
+            const lang = currentLang || 'zh';
+            const t = texts[lang];
+            const displayEl = document.getElementById('timerDisplay');
+            const statusEl = document.getElementById('timerStatus');
+            const startBtn = document.getElementById('timerStartBtn');
+            const resetBtn = document.getElementById('timerResetBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            if (displayEl) {
+                displayEl.textContent = '0';
+                displayEl.className = 'timer-number done';
             }
+            if (statusEl) statusEl.textContent = t.timerStatusDone || '✅ 已完成誦讀';
+            if (startBtn) {
+                startBtn.disabled = false;
+                startBtn.textContent = (lang === 'en' ? 'Start Meditation' : '開始靜心');
+            }
+            if (resetBtn) resetBtn.style.display = 'inline-block';
+            if (nextBtn) nextBtn.disabled = false;
         }
+    }
+}
 
         // ============================================================
         // 語言文字
@@ -2271,51 +2265,48 @@ completeDesc: 'You have successfully completed the official authorization proces
         // ============================================================
         // 步驟導航
         // ============================================================
-        function nextStep() {
-            const nextBtn = document.getElementById('nextBtn');
-            if (nextBtn.disabled) return;
-            if (currentStep === totalSteps - 1) {
-                currentStep = totalSteps;
-                renderStep(currentStep);
-                localStorage.setItem('step_completed_5', 'true');
-                return;
-            }
+       function nextStep() {
+    const nextBtn = document.getElementById('nextBtn');
+    if (nextBtn.disabled) return;
+    
+    if (currentStep === totalSteps - 1) {
+        currentStep = totalSteps;
+        renderStep(currentStep);
+        localStorage.setItem('step_completed_5', 'true');
+        return;
+    }
 
-            if (currentStep < totalSteps - 1) {
-                currentStep++;
-                renderStep(currentStep);
-                if (currentStep >= 1 && currentStep <= 4) {
-                    localStorage.setItem('step_completed_' + currentStep, 'true');
+    if (currentStep < totalSteps - 1) {
+        localStorage.setItem('step_completed_' + currentStep, 'true');
+        
+        currentStep++;
+        renderStep(currentStep);
+        
+        if (currentStep === 2) {
+            const saved = localStorage.getItem('oath_timer_done');
+            if (saved === 'true') {
+                timerDone = true;
+                timerRunning = false;
+                const lang = currentLang || 'zh';
+                const t = texts[lang];
+                document.getElementById('timerDisplay').textContent = '0';
+                document.getElementById('timerDisplay').className = 'timer-number done';
+                document.getElementById('timerStatus').textContent = t.timerStatusDone || '✅ 已完成誦讀';
+                document.getElementById('nextBtn').disabled = false;
+                const startBtn = document.getElementById('timerStartBtn');
+                const resetBtn = document.getElementById('timerResetBtn');
+                if (startBtn) {
+                    startBtn.disabled = false;
+                    startBtn.textContent = (lang === 'en' ? 'Start Meditation' : '開始靜心');
                 }
-                if (currentStep === 2) {
-                    if (!timerDone && !timerRunning) {
-                        const saved = localStorage.getItem('oath_timer_done');
-                        if (saved === 'true') {
-                            timerDone = true;
-                            timerRunning = false;
-                            const lang = currentLang || 'zh';
-                            const t = texts[lang];
-                            document.getElementById('timerDisplay').textContent = '0';
-                            document.getElementById('timerDisplay').className = 'timer-number done';
-                            document.getElementById('timerStatus').textContent = t.timerStatusDone || '✅ 已完成誦讀';
-                            document.getElementById('nextBtn').disabled = false;
-                            const startBtn = document.getElementById('timerStartBtn');
-                            const resetBtn = document.getElementById('timerResetBtn');
-                            if (startBtn) {
-                                startBtn.disabled = false;
-                                if (lang === 'en') {
-                                    startBtn.textContent = 'Start Meditation';
-                                } else {
-                                    startBtn.textContent = '開始靜心';
-                                }
-                            }
-                            if (resetBtn) resetBtn.textContent = lang === 'en' ? 'Restart' : '重新開始';
-                            if (resetBtn) resetBtn.style.display = 'inline-block';
-                        }
-                    }
+                if (resetBtn) {
+                    resetBtn.textContent = (lang === 'en' ? 'Restart' : '重新開始');
+                    resetBtn.style.display = 'inline-block';
                 }
             }
         }
+    }
+}
 
         function prevStep() {
             if (document.getElementById('prevBtn').disabled) return;
