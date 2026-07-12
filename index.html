@@ -2119,7 +2119,7 @@
             });
 
             const stepButtons = document.getElementById('stepButtons');
-            if (step === totalSteps) {
+          if (step > totalSteps) {
                 if (stepButtons) stepButtons.style.display = 'none';
                 document.getElementById('completeDesc').innerHTML = t.completeDesc;
                 return;
