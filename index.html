@@ -2115,15 +2115,25 @@ completeDesc: 'You have successfully completed the official authorization proces
                 page.classList.toggle('active', pageStep === step || (isComplete && pageStep === totalSteps));
             });
 
-            const stepButtons = document.getElementById('stepButtons');
-          if (step > totalSteps) {
-                if (stepButtons) stepButtons.style.display = 'none';
-                document.getElementById('completeDesc').innerHTML = t.completeDesc;
-                return;
-            } else {
-                if (stepButtons) stepButtons.style.display = 'flex';
-            }
+          const stepButtons = document.getElementById('stepButtons');
+if (step === totalSteps) {
+    if (stepButtons) stepButtons.style.display = 'none';
+    document.getElementById('completeDesc').innerHTML = t.completeDesc;
+} else {
+    if (stepButtons) stepButtons.style.display = 'flex';
+}
 
+document.getElementById('prevBtn').style.display = 'inline-block';
+const nextBtn = document.getElementById('nextBtn');
+
+if (step === totalSteps - 1) {
+    nextBtn.textContent = '進入下一步 ▶';
+    nextBtn.className = 'btn btn-next btn-finish';
+} else {
+    nextBtn.textContent = t.btnNext;
+    nextBtn.className = 'btn btn-next';
+}
+document.getElementById('prevBtn').disabled = (step === 1);
             document.getElementById('prevBtn').style.display = 'inline-block';
             const nextBtn = document.getElementById('nextBtn');
             nextBtn.className = 'btn btn-next';
@@ -2265,20 +2275,20 @@ completeDesc: 'You have successfully completed the official authorization proces
         // ============================================================
         // 步驟導航
         // ============================================================
-       function nextStep() {
+      function nextStep() {
     const nextBtn = document.getElementById('nextBtn');
     if (nextBtn.disabled) return;
     
+    localStorage.setItem('step_completed_' + currentStep, 'true');
+
     if (currentStep === totalSteps - 1) {
         currentStep = totalSteps;
+        localStorage.setItem('step_completed_' + currentStep, 'true');
         renderStep(currentStep);
-        localStorage.setItem('step_completed_5', 'true');
         return;
     }
 
     if (currentStep < totalSteps - 1) {
-        localStorage.setItem('step_completed_' + currentStep, 'true');
-        
         currentStep++;
         
         document.querySelectorAll('.step-page').forEach((page) => {
