@@ -2215,7 +2215,7 @@
                             }
                         }
                         if (resetBtn) resetBtn.style.display = 'inline-block';
-                        if (resetBtn) resetBtn.textContent = t.timerResetBtn || '重新開始';
+                        document.getElementById('timerResetBtnText').textContent = t.timerResetBtn || '重新開始';
                         nextBtn.disabled = false;
                     }
                     break;
