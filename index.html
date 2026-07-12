@@ -2131,14 +2131,13 @@
             const nextBtn = document.getElementById('nextBtn');
             nextBtn.className = 'btn btn-next';
 
-            if (step === totalSteps - 1) {
-                nextBtn.textContent = '進入下一步 ▶';
-                nextBtn.className = 'btn btn-finish';
-            } else {
-                nextBtn.textContent = t.btnNext;
-                nextBtn.className = 'btn btn-next ▶';
-            }
-
+          if (step === totalSteps - 1) {
+    nextBtn.textContent = '進入下一步 ▶';
+    nextBtn.className = 'btn btn-finish';
+} else {
+    nextBtn.textContent = t.btnNext;
+    nextBtn.className = 'btn btn-next';
+}
             document.getElementById('prevBtn').disabled = (step === 1);
 
             switch (step) {
