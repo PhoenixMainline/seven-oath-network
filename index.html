@@ -2011,6 +2011,7 @@
                 s1Card2Text: '✔️ Please scan the <span class="gold">📚 Cosmic Intelligent Vow-Guidance Platform</span> official AI × exclusive vow-guidance entry page QR Code on the back cover of this volume to activate the unified vow-guidance channel.',
                 s1Footer: '📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 3-4',
                 scanBtn: '📸 Scan QR Code',
+                timerResetBtn: 'Restart',
                 s2Title: '[2] Authorized Vow-Reading Stage',
                 s2Sub: '',
                 oathDeclare: '★ With my Oath-Soul aligned to the Law, the Primary Frequency awakens; the Scripted Mandate stands; the Seal-Path is set. Heaven and Earth bear witness, and the Light-Net attests. ★',
@@ -2214,6 +2215,7 @@
                             }
                         }
                         if (resetBtn) resetBtn.style.display = 'inline-block';
+                        if (resetBtn) resetBtn.textContent = t.timerResetBtn || '重新開始';
                         nextBtn.disabled = false;
                     }
                     break;
@@ -2307,6 +2309,7 @@
                                     startBtn.textContent = '開始靜心';
                                 }
                             }
+                            if (resetBtn) resetBtn.textContent = lang === 'en' ? 'Restart' : '重新開始';
                             if (resetBtn) resetBtn.style.display = 'inline-block';
                         }
                     }
