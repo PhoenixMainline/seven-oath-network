@@ -33,19 +33,31 @@
             pointer-events: none;
         }
 
-        /* 🔒 安全滿版浮水印：高於卡片，且絕對不破壞結構 */
-        .watermark {
+        /* 🔒 100% 安全的純 CSS 網格浮水印，絕不破壞 HTML 結構 */
+        .watermark-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 12; /* 高於卡片的 z-index，全螢幕覆蓋 */
-            pointer-events: none; /* 穿透點擊，不影響按鈕點擊 */
-            opacity: 0.05; /* 剛剛好的防偽透明度 */
-            /* 瀏覽器完美相容的 SVG 自動平鋪背景 */
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='350' height='220'%3E%3Ctext x='30' y='120' fill='%23FFC000' font-family='sans-serif' font-size='22' font-weight='900' transform='rotate(-25 30 120)'%3E天地為鑑，光網為證%3C/text%3E%3C/svg%3E");
-            background-repeat: repeat;
+            z-index: 999; /* 覆蓋在最上層 */
+            pointer-events: none; /* 穿透點擊，不影響按鈕 */
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-gap: 80px 40px;
+            padding: 40px;
+            overflow: hidden;
+            opacity: 0.05; /* 防偽透明度，可依需求調整 */
+        }
+
+        .watermark-text {
+            color: #FFC000;
+            font-size: 1.5rem;
+            font-weight: 900;
+            white-space: nowrap;
+            transform: rotate(-25deg);
+            user-select: none;
+            text-align: center;
         }
 
         .app-container {
@@ -53,7 +65,7 @@
             z-index: 10;
             width: 100%;
             max-width: 680px;
-            background: #156082; /* 與背景融為一體 */
+            background: #156082;
             border-radius: 48px;
             border: 1px solid rgba(255, 192, 0, 0.25);
             box-shadow: 0 20px 60px rgba(10, 30, 50, 0.4);
@@ -246,13 +258,22 @@
     </style>
 </head>
 <body>
-    <!-- 粒子畫布 -->
+    <!-- 1. 星空背景畫布 -->
     <canvas id="particles-canvas"></canvas>
     
-    <!-- 乾淨的浮水印節點（背景會自動平鋪，絕不卡死版面） -->
-    <div class="watermark"></div>
+    <!-- 2. 全螢幕防偽浮水印（獨立容器，絕不與主版面衝突） -->
+    <div class="watermark-container">
+        <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
+        <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
+        <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
+        <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
+        <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑', 光網為證</div>
+        <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
+        <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
+        <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
+    </div>
 
-    <!-- 主卡片版面 -->
+    <!-- 3. 中央主卡片版面 -->
     <div class="app-container">
         <div class="app-header">
             <div class="app-title" id="appTitle">宇宙誓印覺醒工程</div>
