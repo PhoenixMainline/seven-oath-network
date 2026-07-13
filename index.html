@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>全球啟動流程 · 宇宙誓印覺醒</title>
-    <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
         * {
             margin: 0;
@@ -147,20 +146,16 @@
         }
 
         .btn-start {
-            background: linear-gradient(135deg, #FFC000, #d4a000);
+            background: #827717;
             border: none;
-            color: #0A060E;
+            color: #fff;
             font-weight: 800;
             padding: 16px 48px;
             border-radius: 60px;
             font-size: 1.4rem;
             cursor: pointer;
-            box-shadow: 0 6px 30px rgba(255, 192, 0, 0.3);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
             letter-spacing: 3px;
-        }
-        .btn-start:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
         }
 
         .step-list {
@@ -177,7 +172,6 @@
             padding: 14px 20px;
             border-radius: 20px;
             border-left: 4px solid rgba(255, 192, 0, 0.20);
-            transition: 0.25s;
         }
 
         .step-item.active {
@@ -216,28 +210,33 @@
             background: rgba(10, 30, 50, 0.3);
             border: 1px solid rgba(255, 192, 0, 0.25);
             border-radius: 24px;
-            padding: 20px;
+            padding: 24px;
             margin: 15px 0;
-        }
-        #reader {
-            width: 100%;
-            max-width: 260px;
-            margin: 15px auto;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 2px solid rgba(255, 192, 0, 0.4) !important;
-        }
-        #scanResult {
-            color: #00e5ff;
-            font-weight: bold;
-            margin-top: 10px;
             text-align: center;
         }
+        
+        .scan-title {
+            color: #FFC000;
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .scan-error-msg {
+            color: #00e5ff;
+            font-weight: bold;
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+
         .status-msg {
             color: #FFC000;
             font-weight: 600;
             text-align: center;
-            margin: 10px 0;
+            margin: 18px 0 10px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
         }
 
         .footer-note {
@@ -250,8 +249,6 @@
             border-top: 1px solid rgba(255,192,0,0.08);
             padding-top: 16px;
         }
-
-        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -280,111 +277,59 @@
         <div class="main-title">全球啟動流程</div>
 
         <div class="start-btn-wrapper">
-            <button class="btn-start" id="startBtn">▶ 開始啟動</button>
+            <button class="btn-start">⚡ 啟動中 ...</button>
         </div>
 
-        <div id="scanner" class="hidden">
-            <h3 style="color: #FFC000; text-align: center;">📷 請對準母頻 QR Code 驗證</h3>
-            <div id="reader"></div>
-            <p id="scanResult"></p>
+        <div id="scanner">
+            <div class="scan-title">📷 請對準母頻 QR Code 驗證</div>
+            <div class="scan-error-msg">相機開啟失敗，請確認授權權限。</div>
         </div>
 
-        <div class="step-list" id="stepList"></div>
+        <div class="step-list">
+            <div class="step-item">
+                <div class="step-number">[1]</div>
+                <div class="step-content">
+                    <div class="step-label">啟動條件</div>
+                    <div class="step-desc">啟動前置準備完成</div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">[2]</div>
+                <div class="step-content">
+                    <div class="step-label">授權誓讀階段</div>
+                    <div class="step-desc">誓印者讀誓文，啟動主頻</div>
+                </div>
+            </div>
+            <div class="step-item active">
+                <div class="step-number">[3]</div>
+                <div class="step-content">
+                    <div class="step-label">母頻驗證（掃碼）</div>
+                    <div class="step-desc">輸入購書序號，觸發母頻對接</div>
+                </div>
+            </div>
+            <div class="step-item locked">
+                <div class="step-number">[4]</div>
+                <div class="step-content">
+                    <div class="step-label">回傳結果</div>
+                    <div class="step-desc">系統完成驗證回傳啟動語</div>
+                </div>
+            </div>
+            <div class="step-item locked">
+                <div class="step-number">[5]</div>
+                <div class="step-content">
+                    <div class="step-label">誓頻啟動 × 系統同步</div>
+                    <div class="step-desc">主頻定位 × 對接同步完成</div>
+                </div>
+            </div>
+        </div>
 
-        <p class="status-msg" id="statusMsg"></p>
+        <p class="status-msg">請掃描 QR Code 驗證</p>
 
         <div class="footer-note">📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 1-2 頁</div>
     </div>
 
     <script>
         (function() {
-            const stepsData = [
-                { label: '啟動條件', desc: '啟動前置準備完成' },
-                { label: '授權誓讀階段', desc: '誓印者讀誓文，啟動主頻' },
-                { label: '母頻驗證（掃碼）', desc: '輸入購書序號，觸發母頻對接' },
-                { label: '回傳結果', desc: '系統完成驗證回傳啟動語' },
-                { label: '誓頻啟動 × 系統同步', desc: '主頻定位 × 對接同步完成' }
-            ];
-
-            let current = -1;
-            const stepList = document.getElementById('stepList');
-            const startBtn = document.getElementById('startBtn');
-            const statusMsg = document.getElementById('statusMsg');
-
-            function render() {
-                let html = '';
-                stepsData.forEach((step, idx) => {
-                    let stateClass = '';
-                    if (idx === current) stateClass = 'active';
-                    else if (idx > current) stateClass = 'locked';
-
-                    html += `
-                        <div class="step-item ${stateClass}">
-                            <div class="step-number">[${idx+1}]</div>
-                            <div class="step-content">
-                                <div class="step-label">${step.label}</div>
-                                <div class="step-desc">${step.desc}</div>
-                            </div>
-                        </div>
-                    `;
-                });
-                stepList.innerHTML = html;
-            }
-
-            startBtn.addEventListener('click', () => {
-                startBtn.disabled = true;
-                startBtn.textContent = '⚡ 啟動中 ...';
-                current = 0;
-                render();
-                runWorkflow();
-            });
-
-            function runWorkflow() {
-                if (current === 0 || current === 1) {
-                    statusMsg.textContent = '核心數據對接中...';
-                    setTimeout(() => {
-                        current++;
-                        render();
-                        runWorkflow();
-                    }, 1200);
-                } else if (current === 2) {
-                    statusMsg.textContent = '請掃描 QR Code 驗證';
-                    startScanner();
-                } else if (current === 3) {
-                    statusMsg.textContent = '系統完成驗證，正在同步主頻...';
-                    setTimeout(() => {
-                        current++;
-                        render();
-                        runWorkflow();
-                    }, 1500);
-                } else if (current >= 4) {
-                    statusMsg.textContent = '✅ 全球宇宙誓頻 · 最終啟動完成';
-                    startBtn.textContent = '✅ 啟動成功';
-                }
-            }
-
-            function startScanner() {
-                document.getElementById("scanner").classList.remove("hidden");
-                const html5QrcodeScanner = new Html5Qrcode("reader");
-
-                html5QrcodeScanner.start(
-                    { facingMode: "environment" },
-                    { fps: 12, qrbox: 220 },
-                    (decodedText) => {
-                        document.getElementById("scanResult").textContent = "✨ 驗證成功: " + decodedText;
-                        html5QrcodeScanner.stop().then(() => {
-                            document.getElementById("scanner").classList.add("hidden");
-                            current++;
-                            render();
-                            runWorkflow();
-                        }).catch(err => console.error(err));
-                    },
-                    (err) => {}
-                ).catch(err => {
-                    document.getElementById("scanResult").textContent = "相機開啟失敗，請確認授權權限。";
-                });
-            }
-
             function initParticles() {
                 const canvas = document.getElementById('particles-canvas');
                 const ctx = canvas.getContext('2d');
@@ -438,9 +383,7 @@
                 }
                 animate();
             }
-
             initParticles();
-            render();
         })();
     </script>
 </body>
