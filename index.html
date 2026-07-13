@@ -3,214 +3,267 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>全球啟動流程</title>
+<title>宇宙誓印覺醒工程 • 七印誓網</title>
 
-<!-- 掃碼套件 -->
 <script src="https://unpkg.com/html5-qrcode"></script>
 
 <style>
 body{
     margin:0;
-    font-family: sans-serif;
-    color:#fff;
-    overflow:hidden;
+    font-family:sans-serif;
+    background: radial-gradient(circle,#0A060E,#000);
+    color:#FFC000;
+    overflow-x:hidden;
 }
 
-/* 背景動畫 */
-canvas{
+/* 浮水印 */
+body::after{
+    content:"天地為鑑，光網為證";
     position:fixed;
-    top:0;
-    left:0;
-    z-index:-1;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:40px;
+    color:rgba(255,255,255,0.05);
+    pointer-events:none;
 }
 
-/* UI */
-.container{
-    max-width:600px;
-    margin:auto;
-    padding:20px;
+/* header */
+.header{
     text-align:center;
+    padding:15px;
+    font-weight:bold;
 }
 
-h1{color:#ffd54f;}
+/* 語言 */
+.lang{
+    position:absolute;
+    right:10px;
+    top:10px;
+}
 
+/* 卡片 */
+.card{
+    background:rgba(255,255,255,0.05);
+    margin:15px;
+    padding:15px;
+    border-radius:10px;
+}
+
+/* 宣告式 */
+.oath{
+    font-size:21px;
+    color:#D4AF37;
+    font-weight:bold;
+    text-align:center;
+    margin-bottom:15px;
+}
+
+/* 按鈕 */
 button{
-    padding:12px;
-    margin:10px;
+    background:#E8604A;
     border:none;
-    border-radius:8px;
-    cursor:pointer;
-}
-
-.start{
-    background:linear-gradient(90deg,#ff9800,#ff5722);
+    padding:12px;
+    color:#fff;
+    border-radius:6px;
+    margin:5px;
     width:100%;
 }
 
-.step{
-    background:rgba(255,255,255,0.08);
-    margin:8px;
-    padding:12px;
-    border-radius:8px;
+button:disabled{
+    opacity:0.4;
 }
 
-.active{background:#ffc107;color:#000;}
-.locked{opacity:0.3;}
+/* QR */
+#reader{width:250px;margin:auto;}
 
-.hidden{display:none;}
-
-#reader{
-    width:250px;
-    margin:auto;
+.page{
+    display:none;
 }
 
-.status{
-    margin-top:10px;
-    font-size:14px;
+.active{
+    display:block;
+}
+
+/* 頁碼 */
+.pageNum{
+    text-align:right;
+    margin:10px;
+    font-size:12px;
+    color:#aaa;
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="bg"></canvas>
+<div class="header" id="appTitle"></div>
 
-<div class="container">
-
-<h1 id="title">全球啟動流程</h1>
-
-<button class="start" id="startBtn">開始啟動</button>
-
-<div id="steps"></div>
-
-<!-- 掃碼 -->
-<div id="scanner" class="hidden">
-    <h3>QR 驗證</h3>
-    <div id="reader"></div>
-    <p id="scanResult"></p>
+<div class="lang">
+    <button onclick="setLang('zh')">中文</button>
+    <button onclick="setLang('en')">English</button>
 </div>
 
-<p class="status" id="status"></p>
-
-</div>
+<!-- STEP -->
+<div id="app"></div>
 
 <script>
-/* ===== 粒子背景 ===== */
-const canvas = document.getElementById("bg");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let particles = [];
-
-for(let i=0;i<100;i++){
-    particles.push({
-        x:Math.random()*canvas.width,
-        y:Math.random()*canvas.height,
-        vx:Math.random()*0.5,
-        vy:Math.random()*0.5
-    });
-}
-
-function animate(){
-    ctx.fillStyle="rgba(0,0,20,0.3)";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-
-    ctx.fillStyle="#00e5ff";
-
-    particles.forEach(p=>{
-        p.x+=p.vx;
-        p.y+=p.vy;
-
-        if(p.x>canvas.width) p.x=0;
-        if(p.y>canvas.height) p.y=0;
-
-        ctx.fillRect(p.x,p.y,2,2);
-    });
-
-    requestAnimationFrame(animate);
-}
-animate();
-
-/* ===== 流程 ===== */
-const stepsData = [
-    "啟動條件",
-    "授權誓讀",
-    "母頻驗證（掃碼）",
-    "回傳結果",
-    "最終啟動"
-];
-
-let current = -1;
-
-const stepsDiv = document.getElementById("steps");
-
-function renderSteps(){
-    stepsDiv.innerHTML="";
-    stepsData.forEach((s,i)=>{
-        const div=document.createElement("div");
-        div.className="step";
-
-        if(i===current) div.classList.add("active");
-        if(i>current) div.classList.add("locked");
-
-        div.innerText=`[${i+1}] ${s}`;
-        stepsDiv.appendChild(div);
-    });
-}
-
-/* 開始 */
-document.getElementById("startBtn").onclick=()=>{
-    current=0;
-    renderSteps();
-    updateStatus();
+const APP_NAME = {
+    zh:"宇宙誓印覺醒工程 • 七印誓網",
+    en:"Cosmic Oath Awakening Project · Seven-Seal Oath Network"
 };
 
-/* 下一步 */
-function nextStep(){
-    current++;
-    renderSteps();
-    updateStatus();
+const pages = [
+    {p:"3-4"}, {p:"3-4"}, {p:"5-6"}, {p:"7-8"}, {p:"9-10"}
+];
+
+const text = {
+zh:{
+start:"開始啟動",
+next:"進入下一步",
+scan:"掃描 QR Code",
+done:"已完成誦讀",
+count:"請靜心誦讀",
+cameraErr:`📷 無法啟動相機
+
+⚙️ 開啟手機「設定」
+→ 應用程式管理
+→ 權限 → 相機 → 改為「允許」
+→ 使用 🌐 瀏覽器開啟
+
+⚠️ 若仍無法使用，請手動掃描`,
+oath:"★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★"
+},
+en:{
+start:"Start",
+next:"Next",
+scan:"Scan QR Code",
+done:"Recitation complete",
+count:"Please center your mind and recite",
+cameraErr:`📷 Unable to start camera
+
+⚙️ Open phone Settings
+→ App Management
+→ Permissions → Camera → Allow
+→ Open in browser
+
+⚠️ If still not working, scan manually`,
+oath:"★ With my Oath-Soul aligned to the Law..."
+}
+};
+
+let lang="zh";
+let step=0;
+
+function setLang(l){
+    lang=l;
+    render();
 }
 
-/* 狀態 */
-function updateStatus(){
-    const status=document.getElementById("status");
-
-    if(current===2){
-        startScanner();
-        status.innerText="請掃描 QR Code 驗證";
-    }else if(current>=stepsData.length){
-        status.innerText="✅ 啟動完成";
+/* 頁碼 */
+function pageLabel(i){
+    if(lang==="zh"){
+        return `📄 【宇宙誓印覺醒工程 • 覺醒卷】：第 ${pages[i].p} 頁`;
     }else{
-        status.innerText="處理中...";
-        setTimeout(()=>nextStep(),1000);
+        return `📄 【Cosmic Oath Awakening Project • Awakening Scroll】: Pages ${pages[i].p}`;
     }
 }
 
-/* ===== 掃碼 ===== */
-function startScanner(){
-    document.getElementById("scanner").classList.remove("hidden");
+/* 主 render */
+function render(){
+    document.getElementById("appTitle").innerText=APP_NAME[lang];
 
-    const qr = new Html5Qrcode("reader");
+    const app=document.getElementById("app");
+    app.innerHTML="";
 
-    qr.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: 200 },
-        (decodedText)=>{
-            document.getElementById("scanResult").innerText =
-                "驗證成功: " + decodedText;
+    let html="";
 
-            qr.stop();
-            document.getElementById("scanner").classList.add("hidden");
+    /* STEP 2 特殊 */
+    if(step===1){
+        html+=`
+        <div class="card">
+            <div class="oath">${text[lang].oath}</div>
+            <div id="timer">${text[lang].count} 10</div>
+        </div>
+        <div class="card">
+            <button id="nextBtn" disabled>${text[lang].next}</button>
+        </div>
+        `;
+    }
+    /* QR 步驟 */
+    else if(step===0||step===2||step===3){
+        html+=`
+        <div class="card">
+            <button onclick="startQR()">${text[lang].scan}</button>
+            <div id="reader"></div>
+            <div id="result"></div>
+        </div>
+        <button id="nextBtn" disabled>${text[lang].next}</button>
+        `;
+    }
+    else{
+        html+=`
+        <button onclick="nextStep()">${text[lang].next}</button>
+        `;
+    }
 
-            nextStep();
+    html+=`<div class="pageNum">${pageLabel(step)}</div>`;
+
+    app.innerHTML=html;
+
+    /* step2 timer */
+    if(step===1) startTimer();
+}
+
+/* 倒數 */
+function startTimer(){
+    let t=10;
+    const el=document.getElementById("timer");
+    const btn=document.getElementById("nextBtn");
+
+    const interval=setInterval(()=>{
+        t--;
+        el.innerText=text[lang].count+" "+t;
+
+        if(t<=0){
+            clearInterval(interval);
+            el.innerText=text[lang].done;
+            btn.disabled=false;
+            btn.onclick=nextStep;
         }
-    );
+    },1000);
+}
+
+/* QR */
+function startQR(){
+    try{
+        const qr=new Html5Qrcode("reader");
+
+        qr.start(
+            {facingMode:"environment"},
+            {fps:10,qrbox:200},
+            txt=>{
+                document.getElementById("result").innerText=txt;
+                localStorage.setItem("step"+step,txt);
+                document.getElementById("nextBtn").disabled=false;
+                qr.stop();
+            }
+        );
+    }catch(e){
+        alert(text[lang].cameraErr);
+    }
+}
+
+/* 下一步 */
+function nextStep(){
+    step++;
+    localStorage.setItem("progress",step);
+    render();
 }
 
 /* 初始化 */
-renderSteps();
+step=parseInt(localStorage.getItem("progress"))||0;
+render();
 </script>
 
 </body>
