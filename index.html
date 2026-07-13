@@ -197,15 +197,15 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            background: rgba(10, 20, 40, 0.72);
+            background: transparent; 
             padding: 14px 20px;
             border-radius: 20px;
             border-left: 4px solid rgba(255, 192, 0, 0.18);
             transition: 0.25s;
             cursor: default;
         }
-        .step-item:hover {
-            background: rgba(10, 20, 40, 0.85);
+       .step-item:hover {
+            background: rgba(255, 192, 0, 0.05);
             border-left-color: #FFC000;
         }
         .step-number {
@@ -359,7 +359,7 @@
                 stepList.innerHTML = html;
             }
 
-            function startActivation() {
+           function startActivation() {
                 startBtn.disabled = true;
                 startBtn.textContent = currentLang === 'zh' ? '⚡ 啟動中 ...' : '⚡ Activating ...';
                 const items = document.querySelectorAll('.step-item');
@@ -367,7 +367,7 @@
                 items.forEach((item) => {
                     setTimeout(() => {
                         item.style.borderLeftColor = '#FFC000';
-                        item.style.background = 'rgba(10, 20, 40, 0.85)';
+                        item.style.background = 'rgba(255, 192, 0, 0.05)'; 
                         item.style.transition = '0.4s';
                         const num = item.querySelector('.step-number');
                         if (num) num.style.textShadow = '0 0 20px #FFC000';
@@ -380,7 +380,7 @@
                     setTimeout(() => {
                         items.forEach(item => {
                             item.style.borderLeftColor = 'rgba(255, 192, 0, 0.18)';
-                            item.style.background = 'rgba(10, 20, 40, 0.72)';
+                            item.style.background = 'transparent'; 
                             const num = item.querySelector('.step-number');
                             if (num) num.style.textShadow = 'none';
                         });
@@ -388,7 +388,7 @@
                 }, delay + 300);
             }
 
-            function goHome() {
+          function goHome() {
                 homeBtn.style.transform = 'scale(0.92)';
                 setTimeout(() => { homeBtn.style.transform = 'scale(1)'; }, 150);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -398,7 +398,7 @@
                 }, 600);
                 document.querySelectorAll('.step-item').forEach(item => {
                     item.style.borderLeftColor = 'rgba(255, 192, 0, 0.18)';
-                    item.style.background = 'rgba(10, 20, 40, 0.72)';
+                    item.style.background = 'transparent';
                     const num = item.querySelector('.step-number');
                     if (num) num.style.textShadow = 'none';
                 });
