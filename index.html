@@ -13,7 +13,7 @@
         }
 
         body {
-            background: #e8e0d8;  /* 淡色基底 */
+            background: #14101a;  /* 比純黑稍亮，保留宇宙深色感 */
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -23,7 +23,7 @@
             overflow-x: hidden;
         }
 
-        /* 動態粒子背景 (淡色版本) */
+        /* 動態粒子背景 (科技感宇宙流動) */
         #particles-canvas {
             position: fixed;
             top: 0;
@@ -32,10 +32,9 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
-            opacity: 0.5;
         }
 
-        /* 浮水印 (淡色) */
+        /* 浮水印：天地為鑑，光網為證 */
         .watermark {
             position: fixed;
             top: 0;
@@ -47,11 +46,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            opacity: 0.06;
+            opacity: 0.04;
             font-size: 3.5rem;
             font-weight: 900;
-            color: #8a7a6a;
+            color: #FFC000;
             letter-spacing: 12px;
+            text-shadow: 0 0 30px #FFC00022;
             transform: rotate(-12deg) scale(1.1);
             white-space: nowrap;
             font-family: 'Times New Roman', serif;
@@ -69,12 +69,12 @@
             z-index: 10;
             width: 100%;
             max-width: 680px;
-            background: rgba(245, 240, 235, 0.85);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            background: rgba(18, 14, 24, 0.78);  /* 半透明深色，比之前亮一點 */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 48px;
-            border: 1px solid rgba(180, 160, 140, 0.25);
-            box-shadow: 0 20px 60px rgba(120, 100, 80, 0.12);
+            border: 1px solid rgba(255, 192, 0, 0.15);
+            box-shadow: 0 20px 60px rgba(255, 192, 0, 0.05), inset 0 0 80px rgba(255, 192, 0, 0.02);
             padding: 28px 24px 32px;
             transition: all 0.2s;
         }
@@ -84,7 +84,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(160, 140, 120, 0.2);
+            border-bottom: 1px solid rgba(255, 192, 0, 0.12);
             padding-bottom: 14px;
             margin-bottom: 20px;
             flex-wrap: wrap;
@@ -94,8 +94,9 @@
         .app-title {
             font-size: 1.2rem;
             font-weight: 700;
-            color: #4a3a2a;
+            color: #FFC000;
             letter-spacing: 1.5px;
+            text-shadow: 0 0 12px #FFC00033;
             line-height: 1.3;
         }
         .app-title small {
@@ -104,7 +105,7 @@
             display: block;
             font-weight: 300;
             letter-spacing: 1px;
-            color: #6a5a4a;
+            color: #d4b080;
         }
 
         .header-actions {
@@ -116,10 +117,10 @@
         .lang-toggle {
             display: flex;
             gap: 4px;
-            background: rgba(200, 180, 160, 0.2);
+            background: rgba(255, 255, 255, 0.04);
             padding: 4px;
             border-radius: 40px;
-            border: 1px solid rgba(160, 140, 120, 0.2);
+            border: 1px solid rgba(255, 192, 0, 0.12);
         }
         .lang-btn {
             background: transparent;
@@ -128,23 +129,23 @@
             border-radius: 30px;
             font-size: 0.75rem;
             font-weight: 600;
-            color: #6a5a4a;
+            color: #a09080;
             cursor: pointer;
             transition: 0.2s;
         }
         .lang-btn.active {
-            background: #c8b8a8;
-            color: #2a1a0a;
-            box-shadow: 0 0 12px rgba(160, 140, 120, 0.2);
+            background: #FFC000;
+            color: #0A060E;
+            box-shadow: 0 0 20px #FFC00044;
         }
         .lang-btn:not(.active):hover {
-            color: #4a3a2a;
+            color: #FFC000;
         }
 
         .btn-home {
-            background: rgba(200, 180, 160, 0.15);
-            border: 1px solid rgba(160, 140, 120, 0.2);
-            color: #4a3a2a;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 192, 0, 0.15);
+            color: #FFC000;
             padding: 6px 16px;
             border-radius: 30px;
             font-size: 0.8rem;
@@ -154,26 +155,28 @@
             white-space: nowrap;
         }
         .btn-home:hover {
-            background: rgba(200, 180, 160, 0.3);
+            background: rgba(255, 192, 0, 0.08);
+            box-shadow: 0 0 20px #FFC00022;
         }
 
         /* 主標題 */
         .main-title {
             text-align: center;
-            color: #4a3a2a;
+            color: #FFC000;
             font-size: 1.8rem;
             font-weight: 800;
             letter-spacing: 4px;
+            text-shadow: 0 0 30px #FFC00033;
             margin-bottom: 8px;
         }
         .main-title .sub-en {
             display: block;
             font-size: 1rem;
             font-weight: 300;
-            opacity: 0.6;
+            opacity: 0.5;
             letter-spacing: 6px;
             margin-top: 2px;
-            color: #6a5a4a;
+            color: #d4b080;
         }
 
         .start-btn-wrapper {
@@ -182,21 +185,21 @@
         }
 
         .btn-start {
-            background: linear-gradient(135deg, #c8b8a8, #b0a090);
+            background: linear-gradient(135deg, #FFC000, #d4a000);
             border: none;
-            color: #2a1a0a;
+            color: #0A060E;
             font-weight: 800;
             padding: 16px 48px;
             border-radius: 60px;
             font-size: 1.4rem;
             cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 4px 20px rgba(120, 100, 80, 0.15);
+            box-shadow: 0 6px 30px #FFC00033;
             letter-spacing: 3px;
         }
         .btn-start:hover {
             transform: scale(1.02);
-            box-shadow: 0 6px 30px rgba(120, 100, 80, 0.2);
+            box-shadow: 0 8px 40px #FFC00055;
         }
         .btn-start:disabled {
             opacity: 0.5;
@@ -216,21 +219,21 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            background: rgba(240, 235, 230, 0.5);
+            background: rgba(255, 255, 255, 0.02);
             padding: 14px 20px;
             border-radius: 20px;
-            border-left: 4px solid rgba(160, 140, 120, 0.3);
+            border-left: 4px solid rgba(255, 192, 0, 0.2);
             transition: 0.25s;
             cursor: default;
         }
         .step-item:hover {
-            background: rgba(230, 220, 210, 0.6);
-            border-left-color: #8a7a6a;
+            background: rgba(255, 255, 255, 0.04);
+            border-left-color: #FFC000;
         }
         .step-number {
             font-size: 1.3rem;
             font-weight: 900;
-            color: #6a5a4a;
+            color: #FFC000;
             min-width: 44px;
             text-align: center;
             opacity: 0.8;
@@ -239,39 +242,27 @@
             flex: 1;
         }
         .step-label {
-            color: #3a2a1a;
+            color: #f0e8d8;
             font-size: 1rem;
             font-weight: 600;
             letter-spacing: 0.3px;
         }
-        .step-label .en {
-            font-weight: 300;
-            opacity: 0.5;
-            margin-left: 8px;
-            font-size: 0.8rem;
-            color: #5a4a3a;
-        }
         .step-desc {
-            color: #6a5a4a;
+            color: #b0a898;
             font-size: 0.85rem;
             margin-top: 2px;
             opacity: 0.7;
-        }
-        .step-desc .en {
-            opacity: 0.5;
-            margin-left: 6px;
-            font-size: 0.75rem;
         }
 
         /* 頁碼 */
         .footer-note {
             margin-top: 28px;
             text-align: right;
-            color: #7a6a5a;
+            color: #FFC000;
             font-size: 0.8rem;
-            opacity: 0.5;
+            opacity: 0.35;
             letter-spacing: 1px;
-            border-top: 1px solid rgba(160, 140, 120, 0.1);
+            border-top: 1px solid rgba(255,192,0,0.06);
             padding-top: 16px;
             font-weight: 400;
         }
@@ -293,7 +284,7 @@
     </style>
 </head>
 <body>
-    <!-- 粒子畫布 (淡色) -->
+    <!-- 粒子畫布 -->
     <canvas id="particles-canvas"></canvas>
     <!-- 浮水印 -->
     <div class="watermark">天地為鑑 · 光網為證</div>
@@ -334,7 +325,7 @@
 
     <script>
         (function() {
-            // ---------- 多語言資料 ----------
+            // ---------- 多語言資料 (只顯示當前語言，不混雜英文) ----------
             const DATA = {
                 zh: {
                     appTitle: '宇宙誓印覺醒工程',
@@ -343,11 +334,11 @@
                     mainSub: 'GLOBAL ACTIVATION PROCESS',
                     startBtn: '▶ 開始啟動',
                     steps: [
-                        { label: '啟動條件', enLabel: 'Activation Conditions', desc: '啟動前置準備完成', enDesc: 'Initial setup completed' },
-                        { label: '授權督讀階段', enLabel: 'Authorized Vow-Reading', desc: '督印者讀督文，啟動主頻', enDesc: 'The vow-seal executor recites the vow-text to activate the main frequency' },
-                        { label: '授權綁定階段', enLabel: 'Mother-Frequency Seal', desc: '輸入購書序號，觸發母頻對接', enDesc: 'Input the Purchase Serial Number to initiate the Mother Frequency Link' },
-                        { label: '回傳結果', enLabel: 'Frequency Connection', desc: '系統完成驗證回傳啟動語', enDesc: 'The system verifies successfully and returns the activation message' },
-                        { label: '督頻啟動 × 系統同步', enLabel: 'Final Activation', desc: '主頻定位 × 對接同步完成', enDesc: 'Primary Frequency Positioning × Interface Synchronization Completed' }
+                        { label: '啟動條件', desc: '啟動前置準備完成' },
+                        { label: '授權督讀階段', desc: '督印者讀督文，啟動主頻' },
+                        { label: '授權綁定階段', desc: '輸入購書序號，觸發母頻對接' },
+                        { label: '回傳結果', desc: '系統完成驗證回傳啟動語' },
+                        { label: '督頻啟動 × 系統同步', desc: '主頻定位 × 對接同步完成' }
                     ],
                     footer: '📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 1-2 頁'
                 },
@@ -358,11 +349,11 @@
                     mainSub: '全球啟動流程',
                     startBtn: '▶ Start Activation',
                     steps: [
-                        { label: 'Activation Conditions', enLabel: '啟動條件', desc: 'Initial setup completed', enDesc: '啟動前置準備完成' },
-                        { label: 'Authorized Vow-Reading', enLabel: '授權督讀階段', desc: 'The vow-seal executor recites the vow-text to activate the main frequency', enDesc: '督印者讀督文，啟動主頻' },
-                        { label: 'Mother-Frequency Seal', enLabel: '授權綁定階段', desc: 'Input the Purchase Serial Number to initiate the Mother Frequency Link', enDesc: '輸入購書序號，觸發母頻對接' },
-                        { label: 'Frequency Connection', enLabel: '回傳結果', desc: 'The system verifies successfully and returns the activation message', enDesc: '系統完成驗證回傳啟動語' },
-                        { label: 'Final Activation', enLabel: '督頻啟動 × 系統同步', desc: 'Primary Frequency Positioning × Interface Synchronization Completed', enDesc: '主頻定位 × 對接同步完成' }
+                        { label: 'Activation Conditions', desc: 'Initial setup completed' },
+                        { label: 'Authorized Vow-Reading', desc: 'The vow-seal executor recites the vow-text to activate the main frequency' },
+                        { label: 'Mother-Frequency Seal', desc: 'Input the Purchase Serial Number to initiate the Mother Frequency Link' },
+                        { label: 'Frequency Connection', desc: 'The system verifies successfully and returns the activation message' },
+                        { label: 'Final Activation', desc: 'Primary Frequency Positioning × Interface Synchronization Completed' }
                     ],
                     footer: '📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 1-2'
                 }
@@ -400,8 +391,8 @@
                         <div class="step-item" data-index="${idx}">
                             <div class="step-number">${num}</div>
                             <div class="step-content">
-                                <div class="step-label">${step.label} <span class="en">${step.enLabel}</span></div>
-                                <div class="step-desc">${step.desc} <span class="en">${step.enDesc}</span></div>
+                                <div class="step-label">${step.label}</div>
+                                <div class="step-desc">${step.desc}</div>
                             </div>
                         </div>
                     `;
@@ -417,11 +408,11 @@
                 let delay = 0;
                 items.forEach((item, idx) => {
                     setTimeout(() => {
-                        item.style.borderLeftColor = '#8a7a6a';
-                        item.style.background = 'rgba(200, 180, 160, 0.25)';
+                        item.style.borderLeftColor = '#FFC000';
+                        item.style.background = 'rgba(255, 192, 0, 0.08)';
                         item.style.transition = '0.4s';
                         const num = item.querySelector('.step-number');
-                        if (num) num.style.textShadow = '0 0 12px rgba(100,80,60,0.3)';
+                        if (num) num.style.textShadow = '0 0 20px #FFC000';
                     }, delay);
                     delay += 300;
                 });
@@ -430,8 +421,8 @@
                     startBtn.textContent = DATA[currentLang].startBtn;
                     setTimeout(() => {
                         items.forEach(item => {
-                            item.style.borderLeftColor = 'rgba(160, 140, 120, 0.3)';
-                            item.style.background = 'rgba(240, 235, 230, 0.5)';
+                            item.style.borderLeftColor = 'rgba(255, 192, 0, 0.2)';
+                            item.style.background = 'rgba(255, 255, 255, 0.02)';
                             const num = item.querySelector('.step-number');
                             if (num) num.style.textShadow = 'none';
                         });
@@ -443,25 +434,25 @@
                 homeBtn.style.transform = 'scale(0.92)';
                 setTimeout(() => { homeBtn.style.transform = 'scale(1)'; }, 150);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                startBtn.style.boxShadow = '0 4px 30px rgba(120,100,80,0.25)';
+                startBtn.style.boxShadow = '0 6px 40px #FFC00055';
                 setTimeout(() => {
-                    startBtn.style.boxShadow = '0 4px 20px rgba(120,100,80,0.15)';
+                    startBtn.style.boxShadow = '0 6px 30px #FFC00033';
                 }, 600);
                 document.querySelectorAll('.step-item').forEach(item => {
-                    item.style.borderLeftColor = 'rgba(160, 140, 120, 0.3)';
-                    item.style.background = 'rgba(240, 235, 230, 0.5)';
+                    item.style.borderLeftColor = 'rgba(255, 192, 0, 0.2)';
+                    item.style.background = 'rgba(255, 255, 255, 0.02)';
                     const num = item.querySelector('.step-number');
                     if (num) num.style.textShadow = 'none';
                 });
             }
 
-            // ---------- 粒子背景 (淡色流動) ----------
+            // ---------- 粒子背景 (宇宙流動) ----------
             function initParticles() {
                 const canvas = document.getElementById('particles-canvas');
                 const ctx = canvas.getContext('2d');
                 let w, h;
                 const particles = [];
-                const count = 100;
+                const count = 130;
 
                 function resize() {
                     w = canvas.width = window.innerWidth;
@@ -475,11 +466,11 @@
                     reset() {
                         this.x = Math.random() * w;
                         this.y = Math.random() * h;
-                        this.size = Math.random() * 2.0 + 0.5;
-                        this.speedX = (Math.random() - 0.5) * 0.25;
-                        this.speedY = (Math.random() - 0.5) * 0.25;
-                        this.opacity = Math.random() * 0.3 + 0.1;
-                        this.color = `rgba(140, 120, 100, ${this.opacity})`;
+                        this.size = Math.random() * 2.4 + 0.6;
+                        this.speedX = (Math.random() - 0.5) * 0.3;
+                        this.speedY = (Math.random() - 0.5) * 0.3;
+                        this.opacity = Math.random() * 0.5 + 0.2;
+                        this.color = `rgba(255, 192, 0, ${this.opacity})`;
                     }
                     update() {
                         this.x += this.speedX;
@@ -491,8 +482,8 @@
                         ctx.beginPath();
                         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                         ctx.fillStyle = this.color;
-                        ctx.shadowColor = 'rgba(140,120,100,0.2)';
-                        ctx.shadowBlur = 10;
+                        ctx.shadowColor = '#FFC00044';
+                        ctx.shadowBlur = 14;
                         ctx.fill();
                     }
                 }
@@ -510,12 +501,12 @@
                             const dx = particles[i].x - particles[j].x;
                             const dy = particles[i].y - particles[j].y;
                             const dist = Math.sqrt(dx*dx + dy*dy);
-                            if (dist < 150) {
+                            if (dist < 160) {
                                 ctx.beginPath();
                                 ctx.moveTo(particles[i].x, particles[i].y);
                                 ctx.lineTo(particles[j].x, particles[j].y);
-                                ctx.strokeStyle = `rgba(140, 120, 100, ${0.04 * (1 - dist/150)})`;
-                                ctx.lineWidth = 0.6;
+                                ctx.strokeStyle = `rgba(255, 192, 0, ${0.06 * (1 - dist/160)})`;
+                                ctx.lineWidth = 0.7;
                                 ctx.stroke();
                             }
                         }
