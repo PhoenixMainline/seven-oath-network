@@ -114,34 +114,6 @@
             gap: 10px;
         }
 
-        .lang-toggle {
-            display: flex;
-            gap: 4px;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 4px;
-            border-radius: 40px;
-            border: 1px solid rgba(255, 192, 0, 0.10);
-        }
-        .lang-btn {
-            background: transparent;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #a09080;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .lang-btn.active {
-            background: #FFC000;
-            color: #0A060E;
-            box-shadow: 0 0 20px #FFC00044;
-        }
-        .lang-btn:not(.active):hover {
-            color: #FFC000;
-        }
-
         .btn-home {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 192, 0, 0.12);
@@ -168,15 +140,6 @@
             letter-spacing: 4px;
             text-shadow: 0 0 30px #FFC00033;
             margin-bottom: 8px;
-        }
-        .main-title .sub-en {
-            display: block;
-            font-size: 1rem;
-            font-weight: 300;
-            opacity: 0.45;
-            letter-spacing: 6px;
-            margin-top: 2px;
-            color: #c8b088;
         }
 
         .start-btn-wrapper {
@@ -278,7 +241,6 @@
             .step-desc { font-size: 0.75rem; }
             .header-actions { gap: 6px; }
             .btn-home { font-size: 0.7rem; padding: 4px 12px; }
-            .lang-btn { font-size: 0.65rem; padding: 4px 10px; }
             .footer-note { font-size: 0.7rem; }
         }
     </style>
@@ -292,23 +254,18 @@
     <div class="app-container">
         <!-- 頁首 -->
         <div class="app-header">
-            <div class="app-title" id="appTitle">
+            <div class="app-title">
                 宇宙誓印覺醒工程
-                <small id="appSub">Cosmic Oath Awakening Project</small>
+                <small>Cosmic Oath Awakening Project</small>
             </div>
             <div class="header-actions">
                 <button class="btn-home" id="homeBtn">🏠 回到首頁</button>
-                <div class="lang-toggle">
-                    <button class="lang-btn active" data-lang="zh" id="langZh">中文</button>
-                    <button class="lang-btn" data-lang="en" id="langEn">English</button>
-                </div>
             </div>
         </div>
 
         <!-- 主標題 -->
-        <div class="main-title" id="mainTitle">
+        <div class="main-title">
             全球啟動流程
-            <span class="sub-en" id="mainSub">GLOBAL ACTIVATION PROCESS</span>
         </div>
 
         <!-- 開始按鈕 -->
@@ -317,7 +274,9 @@
         </div>
 
         <!-- 步驟列表 -->
-        <div class="step-list" id="stepList"></div>
+        <div class="step-list" id="stepList">
+            <!-- 由 JS 動態生成 -->
+        </div>
 
         <!-- 頁碼 -->
         <div class="footer-note" id="footerNote">📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 1-2 頁</div>
@@ -325,67 +284,27 @@
 
     <script>
         (function() {
-            // ---------- 多語言資料 (只顯示當前語言，無混雜英文) ----------
+            // ---------- 資料 (僅中文) ----------
             const DATA = {
-                zh: {
-                    appTitle: '宇宙誓印覺醒工程',
-                    appSub: 'Cosmic Oath Awakening Project',
-                    mainTitle: '全球啟動流程',
-                    mainSub: 'GLOBAL ACTIVATION PROCESS',
-                    startBtn: '▶ 開始啟動',
-                    steps: [
-                        { label: '啟動條件', desc: '啟動前置準備完成' },
-                        { label: '授權誓讀階段', desc: '誓印者讀誓文，啟動主頻' },
-                        { label: '授權綁定階段', desc: '輸入購書序號，觸發母頻對接' },
-                        { label: '回傳結果', desc: '系統完成驗證回傳啟動語' },
-                        { label: '誓頻啟動 × 系統同步', desc: '主頻定位 × 對接同步完成' }
-                    ],
-                    footer: '📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 1-2 頁'
-                },
-                en: {
-                    appTitle: 'Cosmic Oath Awakening Project',
-                    appSub: '宇宙誓印覺醒工程',
-                    mainTitle: 'GLOBAL ACTIVATION PROCESS',
-                    mainSub: '全球啟動流程',
-                    startBtn: '▶ Start Activation',
-                    steps: [
-                        { label: 'Activation Conditions', desc: 'Initial setup completed' },
-                        { label: 'Authorized Vow-Reading', desc: 'The vow-seal executor recites the vow-text to activate the main frequency' },
-                        { label: 'Mother-Frequency Seal', desc: 'Input the Purchase Serial Number to initiate the Mother Frequency Link' },
-                        { label: 'Frequency Connection', desc: 'The system verifies successfully and returns the activation message' },
-                        { label: 'Vow-Frequency Activation × System Sync', desc: 'Primary Frequency Positioning × Interface Synchronization Completed' }
-                    ],
-                    footer: '📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 1-2'
-                }
+                steps: [
+                    { label: '啟動條件', desc: '啟動前置準備完成' },
+                    { label: '授權誓讀階段', desc: '誓印者讀誓文，啟動主頻' },
+                    { label: '授權綁定階段', desc: '輸入購書序號，觸發母頻對接' },
+                    { label: '回傳結果', desc: '系統完成驗證回傳啟動語' },
+                    { label: '誓頻啟動 × 系統同步', desc: '主頻定位 × 對接同步完成' }
+                ],
+                footer: '📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 1-2 頁'
             };
-
-            let currentLang = 'zh';
 
             const stepList = document.getElementById('stepList');
             const startBtn = document.getElementById('startBtn');
             const homeBtn = document.getElementById('homeBtn');
             const footerNote = document.getElementById('footerNote');
-            const appTitle = document.getElementById('appTitle');
-            const appSub = document.getElementById('appSub');
-            const mainTitle = document.getElementById('mainTitle');
-            const mainSub = document.getElementById('mainSub');
 
-            function setLang(lang) {
-                currentLang = lang;
-                document.getElementById('langZh').classList.toggle('active', lang === 'zh');
-                document.getElementById('langEn').classList.toggle('active', lang === 'en');
-                render(lang);
-            }
-
-            function render(lang) {
-                const data = DATA[lang];
-                appTitle.innerHTML = data.appTitle + `<small id="appSub">${data.appSub}</small>`;
-                mainTitle.innerHTML = data.mainTitle + `<span class="sub-en" id="mainSub">${data.mainSub}</span>`;
-                startBtn.textContent = data.startBtn;
-                footerNote.textContent = data.footer;
-
+            function render() {
+                footerNote.textContent = DATA.footer;
                 let html = '';
-                data.steps.forEach((step, idx) => {
+                DATA.steps.forEach((step, idx) => {
                     const num = `[${idx+1}]`;
                     html += `
                         <div class="step-item" data-index="${idx}">
@@ -403,7 +322,7 @@
             // 開始啟動動畫
             function startActivation() {
                 startBtn.disabled = true;
-                startBtn.textContent = currentLang === 'zh' ? '⚡ 啟動中 ...' : '⚡ Activating ...';
+                startBtn.textContent = '⚡ 啟動中 ...';
                 const items = document.querySelectorAll('.step-item');
                 let delay = 0;
                 items.forEach((item, idx) => {
@@ -418,7 +337,7 @@
                 });
                 setTimeout(() => {
                     startBtn.disabled = false;
-                    startBtn.textContent = DATA[currentLang].startBtn;
+                    startBtn.textContent = '▶ 開始啟動';
                     setTimeout(() => {
                         items.forEach(item => {
                             item.style.borderLeftColor = 'rgba(255, 192, 0, 0.18)';
@@ -517,13 +436,11 @@
             }
 
             // ---------- 事件綁定 ----------
-            document.getElementById('langZh').addEventListener('click', () => setLang('zh'));
-            document.getElementById('langEn').addEventListener('click', () => setLang('en'));
             startBtn.addEventListener('click', startActivation);
             homeBtn.addEventListener('click', goHome);
 
             initParticles();
-            setLang('zh');
+            render();
         })();
     </script>
 </body>
