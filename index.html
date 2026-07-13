@@ -197,7 +197,7 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(10, 20, 40, 0.72);
             padding: 14px 20px;
             border-radius: 20px;
             border-left: 4px solid rgba(255, 192, 0, 0.18);
@@ -205,7 +205,7 @@
             cursor: default;
         }
         .step-item:hover {
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(10, 20, 40, 0.85);
             border-left-color: #FFC000;
         }
         .step-number {
@@ -367,7 +367,7 @@
                 items.forEach((item) => {
                     setTimeout(() => {
                         item.style.borderLeftColor = '#FFC000';
-                        item.style.background = 'rgba(255, 192, 0, 0.06)';
+                        item.style.background = 'rgba(10, 20, 40, 0.85)';
                         item.style.transition = '0.4s';
                         const num = item.querySelector('.step-number');
                         if (num) num.style.textShadow = '0 0 20px #FFC000';
@@ -380,7 +380,7 @@
                     setTimeout(() => {
                         items.forEach(item => {
                             item.style.borderLeftColor = 'rgba(255, 192, 0, 0.18)';
-                            item.style.background = 'rgba(255, 255, 255, 0.02)';
+                            item.style.background = 'rgba(10, 20, 40, 0.72)';
                             const num = item.querySelector('.step-number');
                             if (num) num.style.textShadow = 'none';
                         });
@@ -398,7 +398,7 @@
                 }, 600);
                 document.querySelectorAll('.step-item').forEach(item => {
                     item.style.borderLeftColor = 'rgba(255, 192, 0, 0.18)';
-                    item.style.background = 'rgba(255, 255, 255, 0.02)';
+                    item.style.background = 'rgba(10, 20, 40, 0.72)';
                     const num = item.querySelector('.step-number');
                     if (num) num.style.textShadow = 'none';
                 });
