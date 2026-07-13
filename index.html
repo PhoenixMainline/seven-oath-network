@@ -1,295 +1,465 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>全球啟動流程</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>全球啟動流程 · 宇宙誓印覺醒</title>
 
-<!-- 掃碼套件 -->
-<script src="https://unpkg.com/html5-qrcode"></script>
+    <!-- 掃碼套件 -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
 
-<style>
-body{
-    margin:0;
-    font-family: sans-serif;
-    color:#fff;
-    overflow:hidden;
-    background: #156082; /* 🌌 修改：調成與主卡片一致的深藍綠色背景 */
-    position: relative;
-}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'PingFang TC', 'Microsoft YaHei', sans-serif;
+        }
 
-/* 🌌 修改：宇宙流動粒子畫布樣式 */
-#particles-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-}
+        body {
+            background: #156082; /* 🌌 與卡片一致的深藍綠色背景 */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-/* 🔒 修改：全網頁安全防偽浮水印（不破壞結構、不吃字） */
-.watermark-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 999;
-    pointer-events: none;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-gap: 80px 40px;
-    padding: 40px;
-    overflow: hidden;
-    opacity: 0.05; /* 質感防偽透明度 */
-}
+        /* 🌌 宇宙流動連線粒子畫布 */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
 
-.watermark-text {
-    color: #FFC000;
-    font-size: 1.5rem;
-    font-weight: 900;
-    white-space: nowrap;
-    transform: rotate(-25deg);
-    user-select: none;
-    text-align: center;
-}
+        /* 🔒 全網頁安全防偽浮水印 */
+        .watermark-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            pointer-events: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-gap: 80px 40px;
+            padding: 40px;
+            overflow: hidden;
+            opacity: 0.05;
+        }
 
-/* UI */
-.container{
-    max-width:600px;
-    margin:auto;
-    padding:20px;
-    text-align:center;
-    position: relative;
-    z-index: 10;
-}
+        .watermark-text {
+            color: #FFC000;
+            font-size: 1.5rem;
+            font-weight: 900;
+            white-space: nowrap;
+            transform: rotate(-25deg);
+            user-select: none;
+            text-align: center;
+        }
 
-h1{color:#ffd54f;}
+        /* 🛸 完美復刻右圖：中央主卡片容器 */
+        .app-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 680px;
+            background: #156082;
+            border-radius: 48px;
+            border: 1px solid rgba(255, 192, 0, 0.25);
+            box-shadow: 0 20px 60px rgba(10, 30, 50, 0.4);
+            padding: 28px 24px 32px;
+        }
 
-button{
-    padding:12px;
-    margin:10px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-}
+        /* 完美復刻右圖：頁首標頭欄 */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 192, 0, 0.15);
+            padding-bottom: 14px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
 
-.start{
-    background:linear-gradient(90deg,#ff9800,#ff5722);
-    width:100%;
-}
+        .app-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #FFC000;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 12px #FFC00033;
+        }
 
-.step{
-    background:rgba(255,255,255,0.08);
-    margin:8px;
-    padding:12px;
-    border-radius:8px;
-}
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-.active{background:#ffc107;color:#000;}
-.locked{opacity:0.3;}
+        .lang-toggle {
+            display: flex;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 192, 0, 0.15);
+        }
+        .lang-btn {
+            background: transparent;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+        .lang-btn.active {
+            background: #FFC000;
+            color: #0A060E;
+        }
 
-.hidden{display:none;}
+        .btn-home {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 192, 0, 0.15);
+            color: #FFC000;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
 
-#reader{
-    width:250px;
-    margin:auto;
-}
+        .main-title {
+            text-align: center;
+            color: #FFC000;
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            text-shadow: 0 0 30px #FFC00033;
+            margin-bottom: 8px;
+        }
 
-.status{
-    margin-top:10px;
-    font-size:14px;
-}
-</style>
+        .start-btn-wrapper {
+            text-align: center;
+            margin: 16px 0 28px;
+        }
+
+        /* 完美復刻右圖：亮黃金圓角啟動鈕 */
+        .btn-start {
+            background: linear-gradient(135deg, #FFC000, #d4a000);
+            border: none;
+            color: #0A060E;
+            font-weight: 800;
+            padding: 16px 48px;
+            border-radius: 60px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 6px 30px rgba(255, 192, 0, 0.3);
+            letter-spacing: 3px;
+        }
+        .btn-start:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* 📋 完美復刻右圖：高質感左側帶寬線的流程清單 */
+        .step-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: transparent;
+            padding: 14px 20px;
+            border-radius: 20px;
+            border-left: 4px solid rgba(255, 192, 0, 0.20);
+            transition: 0.25s;
+        }
+
+        .step-item.active {
+            background: rgba(255, 192, 0, 0.08);
+            border-left-color: #FFC000;
+        }
+
+        .step-item.locked {
+            opacity: 0.3;
+        }
+
+        .step-number {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #FFC000;
+            min-width: 44px;
+            text-align: center;
+        }
+        .step-content {
+            flex: 1;
+            text-align: left;
+        }
+        .step-label {
+            color: #f0e8d8;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .step-desc {
+            color: #b0a898;
+            font-size: 0.85rem;
+            margin-top: 2px;
+            opacity: 0.7;
+        }
+
+        /* 🔍 掃碼內嵌框架 */
+        #scanner {
+            background: rgba(10, 30, 50, 0.3);
+            border: 1px solid rgba(255, 192, 0, 0.25);
+            border-radius: 24px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        #reader {
+            width: 100%;
+            max-width: 260px;
+            margin: 15px auto;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid rgba(255, 192, 0, 0.4) !important;
+        }
+        #scanResult {
+            color: #00e5ff;
+            font-weight: bold;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .status-msg {
+            color: #FFC000;
+            font-weight: 600;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        /* 完美復刻右圖：頁尾小字 */
+        .footer-note {
+            margin-top: 28px;
+            text-align: right;
+            color: #FFC000;
+            font-size: 0.8rem;
+            opacity: 0.3;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(255,192,0,0.08);
+            padding-top: 16px;
+        }
+
+        .hidden { display: none !important; }
+    </style>
 </head>
-
 <body>
 
-<!-- 🌌 修改：引入星空宇宙粒子畫布 -->
-<canvas id="particles-canvas"></canvas>
+    <!-- 🌌 背景 -->
+    <canvas id="particles-canvas"></canvas>
+    
+    <!-- 🔒 浮水印 -->
+    <div class="watermark-container">
+        <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
+        <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
+        <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
+        <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
+    </div>
 
-<!-- 🔒 修改：引入全網頁防偽浮水印 -->
-<div class="watermark-container">
-    <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
-    <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
-    <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
-    <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
-</div>
+    <!-- 🛸 完美右圖外觀 -->
+    <div class="app-container">
+        <div class="app-header">
+            <div class="app-title">宇宙誓印覺醒工程</div>
+            <div class="header-actions">
+                <button class="btn-home">🏠 回到首頁</button>
+                <div class="lang-toggle">
+                    <button class="lang-btn active">中文</button>
+                    <button class="lang-btn">English</button>
+                </div>
+            </div>
+        </div>
 
-<div class="container">
+        <div class="main-title">全球啟動流程</div>
 
-<h1 id="title">全球啟動流程</h1>
+        <div class="start-btn-wrapper">
+            <button class="btn-start" id="startBtn">▶ 開始啟動</button>
+        </div>
 
-<button class="start" id="startBtn">開始啟動</button>
+        <!-- 📷 動態內嵌掃碼區 -->
+        <div id="scanner" class="hidden">
+            <h3 style="color: #FFC000; text-align: center;">📷 請對準母頻 QR Code 驗證</h3>
+            <div id="reader"></div>
+            <p id="scanResult"></p>
+        </div>
 
-<div id="steps"></div>
+        <!-- 📋 5大步驟清單 -->
+        <div class="step-list" id="stepList"></div>
 
-<!-- 掃碼 -->
-<div id="scanner" class="hidden">
-    <h3>QR 驗證</h3>
-    <div id="reader"></div>
-    <p id="scanResult"></p>
-</div>
+        <p class="status-msg" id="statusMsg"></p>
 
-<p class="status" id="status"></p>
+        <div class="footer-note">📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 1-2 頁</div>
+    </div>
 
-</div>
+    <script>
+        (function() {
+            // 完美揉合：右圖文字規格 + 掃碼功能步驟
+            const stepsData = [
+                { label: '啟動條件', desc: '啟動前置準備完成' },
+                { label: '授權誓讀階段', desc: '誓印者讀誓文，啟動主頻' },
+                { label: '母頻驗證（掃碼）', desc: '輸入購書序號，觸發母頻對接' },
+                { label: '回傳結果', desc: '系統完成驗證回傳啟動語' },
+                { label: '誓頻啟動 × 系統同步', desc: '主頻定位 × 對接同步完成' }
+            ];
 
-<script>
-/* ===== 🌌 修改：高質感宇宙流動粒子連線引擎 ===== */
-function initParticles() {
-    const canvas = document.getElementById('particles-canvas');
-    const ctx = canvas.getContext('2d');
-    let w, h;
-    const particles = [];
-    const count = 110; // 粒子密度
+            let current = -1;
+            const stepList = document.getElementById('stepList');
+            const startBtn = document.getElementById('startBtn');
+            const statusMsg = document.getElementById('statusMsg');
 
-    function resize() {
-        w = canvas.width = window.innerWidth;
-        h = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
+            function render() {
+                let html = '';
+                stepsData.forEach((step, idx) => {
+                    let stateClass = '';
+                    if (idx === current) stateClass = 'active';
+                    else if (idx > current) stateClass = 'locked';
 
-    class Particle {
-        constructor() { this.reset(); }
-        reset() {
-            this.x = Math.random() * w;
-            this.y = Math.random() * h;
-            this.size = Math.random() * 2.2 + 0.6;
-            this.speedX = (Math.random() - 0.5) * 0.3;
-            this.speedY = (Math.random() - 0.5) * 0.3;
-            this.opacity = Math.random() * 0.5 + 0.2;
-            this.color = `rgba(255, 192, 0, ${this.opacity})`; // 質感金黃色粒子
-        }
-        update() {
-            this.x += this.speedX;
-            this.y += this.speedY;
-            if (this.x < 0 || this.x > w) this.speedX *= -1;
-            if (this.y < 0 || this.y > h) this.speedY *= -1;
-        }
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = this.color;
-            ctx.fill();
-        }
-    }
+                    html += `
+                        <div class="step-item ${stateClass}">
+                            <div class="step-number">[${idx+1}]</div>
+                            <div class="step-content">
+                                <div class="step-label">${step.label}</div>
+                                <div class="step-desc">${step.desc}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                stepList.innerHTML = html;
+            }
 
-    for (let i = 0; i < count; i++) particles.push(new Particle());
+            startBtn.addEventListener('click', () => {
+                startBtn.disabled = true;
+                startBtn.textContent = '⚡ 啟動中 ...';
+                current = 0;
+                render();
+                runWorkflow();
+            });
 
-    function animate() {
-        ctx.clearRect(0, 0, w, h);
-        particles.forEach(p => {
-            p.update();
-            p.draw();
-        });
-        
-        // 繪製神祕的宇宙星網連線
-        for (let i = 0; i < particles.length; i++) {
-            for (let j = i + 1; j < particles.length; j++) {
-                const dx = particles[i].x - particles[j].x;
-                const dy = particles[i].y - particles[j].y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 150) {
-                    ctx.beginPath();
-                    ctx.moveTo(particles[i].x, particles[i].y);
-                    ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.strokeStyle = `rgba(255, 192, 0, ${0.04 * (1 - dist / 150)})`;
-                    ctx.lineWidth = 0.6;
-                    ctx.stroke();
+            function runWorkflow() {
+                if (current === 0 || current === 1) {
+                    statusMsg.textContent = '核心數據對接中...';
+                    setTimeout(() => {
+                        current++;
+                        render();
+                        runWorkflow();
+                    }, 1200);
+                } else if (current === 2) {
+                    statusMsg.textContent = '請掃描 QR Code 驗證';
+                    startScanner();
+                } else if (current === 3) {
+                    statusMsg.textContent = '系統完成驗證，正在同步主頻...';
+                    setTimeout(() => {
+                        current++;
+                        render();
+                        runWorkflow();
+                    }, 1500);
+                } else if (current >= 4) {
+                    statusMsg.textContent = '✅ 全球宇宙誓頻 · 最終啟動完成';
+                    startBtn.textContent = '✅ 啟動成功';
                 }
             }
-        }
-        requestAnimationFrame(animate);
-    }
-    animate();
-}
-initParticles();
 
+            function startScanner() {
+                document.getElementById("scanner").classList.remove("hidden");
+                const html5QrcodeScanner = new Html5Qrcode("reader");
 
-/* ===== 📋 原版流程與掃碼邏輯 (完全保留) ===== */
-const stepsData = [
-    "啟動條件",
-    "授權誓讀",
-    "母頻驗證（掃碼）",
-    "回傳結果",
-    "最終啟動"
-];
+                html5QrcodeScanner.start(
+                    { facingMode: "environment" },
+                    { fps: 12, qrbox: 220 },
+                    (decodedText) => {
+                        document.getElementById("scanResult").textContent = "✨ 驗證成功: " + decodedText;
+                        html5QrcodeScanner.stop().then(() => {
+                            document.getElementById("scanner").classList.add("hidden");
+                            current++;
+                            render();
+                            runWorkflow();
+                        }).catch(err => console.error(err));
+                    },
+                    (err) => {}
+                ).catch(err => {
+                    document.getElementById("scanResult").textContent = "相機開啟失敗，請確認授權權限。";
+                });
+            }
 
-let current = -1;
+            /* 🌌 宇宙流動連線粒子背景引擎 */
+            function initParticles() {
+                const canvas = document.getElementById('particles-canvas');
+                const ctx = canvas.getContext('2d');
+                let w, h;
+                const particles = [];
 
-const stepsDiv = document.getElementById("steps");
+                function resize() {
+                    w = canvas.width = window.innerWidth;
+                    h = canvas.height = window.innerHeight;
+                }
+                window.addEventListener('resize', resize);
+                resize();
 
-function renderSteps(){
-    stepsDiv.innerHTML="";
-    stepsData.forEach((s,i)=>{
-        const div=document.createElement("div");
-        div.className="step";
+                for (let i = 0; i < 110; i++) {
+                    particles.push({
+                        x: Math.random() * window.innerWidth,
+                        y: Math.random() * window.innerHeight,
+                        size: Math.random() * 2.2 + 0.6,
+                        speedX: (Math.random() - 0.5) * 0.3,
+                        speedY: (Math.random() - 0.5) * 0.3,
+                        color: `rgba(255, 192, 0, ${Math.random() * 0.5 + 0.2})`
+                    });
+                }
 
-        if(i===current) div.classList.add("active");
-        if(i>current) div.classList.add("locked");
+                function animate() {
+                    ctx.clearRect(0, 0, w, h);
+                    particles.forEach(p => {
+                        p.x += p.speedX; p.y += p.speedY;
+                        if (p.x < 0 || p.x > w) p.speedX *= -1;
+                        if (p.y < 0 || p.y > h) p.speedY *= -1;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctx.fillStyle = p.color;
+                        ctx.fill();
+                    });
 
-        div.innerText=`[${i+1}] ${s}`;
-        stepsDiv.appendChild(div);
-    });
-}
+                    for (let i = 0; i < particles.length; i++) {
+                        for (let j = i + 1; j < particles.length; j++) {
+                            const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
+                            if (dist < 150) {
+                                ctx.beginPath();
+                                ctx.moveTo(particles[i].x, particles[i].y);
+                                ctx.lineTo(particles[j].x, particles[j].y);
+                                ctx.strokeStyle = `rgba(255, 192, 0, ${0.04 * (1 - dist / 150)})`;
+                                ctx.lineWidth = 0.6;
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                    requestAnimationFrame(animate);
+                }
+                animate();
+            }
 
-/* 開始 */
-document.getElementById("startBtn").onclick=()=>{
-    current=0;
-    renderSteps();
-    updateStatus();
-};
-
-/* 下一步 */
-function nextStep(){
-    current++;
-    renderSteps();
-    updateStatus();
-}
-
-/* 狀態 */
-function updateStatus(){
-    const status=document.getElementById("status");
-
-    if(current===2){
-        startScanner();
-        status.innerText="請掃描 QR Code 驗證";
-    }else if(current>=stepsData.length){
-        status.innerText="✅ 啟動完成";
-    }else{
-        status.innerText="處理中...";
-        setTimeout(()=>nextStep(),1000);
-    }
-}
-
-/* ===== 掃碼 ===== */
-function startScanner(){
-    document.getElementById("scanner").classList.remove("hidden");
-
-    const qr = new Html5Qrcode("reader");
-
-    qr.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: 200 },
-        (decodedText)=>{
-            document.getElementById("scanResult").innerText =
-                "驗證成功: " + decodedText;
-
-            qr.stop();
-            document.getElementById("scanner").classList.add("hidden");
-
-            nextStep();
-        }
-    );
-}
-
-/* 初始化 */
-renderSteps();
-</script>
-
+            initParticles();
+            render();
+        })();
+    </script>
 </body>
 </html>
