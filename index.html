@@ -13,7 +13,7 @@
         }
 
         body {
-            background: #0A060E;
+            background: #e8e0d8;  /* 淡色基底 */
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -23,7 +23,7 @@
             overflow-x: hidden;
         }
 
-        /* 動態粒子背景 (宇宙流動) */
+        /* 動態粒子背景 (淡色版本) */
         #particles-canvas {
             position: fixed;
             top: 0;
@@ -32,9 +32,10 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
+            opacity: 0.5;
         }
 
-        /* 浮水印：天地為鑑，光網為證 */
+        /* 浮水印 (淡色) */
         .watermark {
             position: fixed;
             top: 0;
@@ -46,12 +47,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            opacity: 0.04;
+            opacity: 0.06;
             font-size: 3.5rem;
             font-weight: 900;
-            color: #FFC000;
+            color: #8a7a6a;
             letter-spacing: 12px;
-            text-shadow: 0 0 30px #FFC00033;
             transform: rotate(-12deg) scale(1.1);
             white-space: nowrap;
             font-family: 'Times New Roman', serif;
@@ -69,12 +69,12 @@
             z-index: 10;
             width: 100%;
             max-width: 680px;
-            background: rgba(16, 12, 24, 0.72);  /* 稍微亮一點的深色 */
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(245, 240, 235, 0.85);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             border-radius: 48px;
-            border: 1px solid rgba(255, 192, 0, 0.2);
-            box-shadow: 0 20px 60px rgba(255, 192, 0, 0.08), inset 0 0 80px rgba(255, 192, 0, 0.02);
+            border: 1px solid rgba(180, 160, 140, 0.25);
+            box-shadow: 0 20px 60px rgba(120, 100, 80, 0.12);
             padding: 28px 24px 32px;
             transition: all 0.2s;
         }
@@ -84,7 +84,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255, 192, 0, 0.15);
+            border-bottom: 1px solid rgba(160, 140, 120, 0.2);
             padding-bottom: 14px;
             margin-bottom: 20px;
             flex-wrap: wrap;
@@ -94,17 +94,17 @@
         .app-title {
             font-size: 1.2rem;
             font-weight: 700;
-            color: #FFC000;
+            color: #4a3a2a;
             letter-spacing: 1.5px;
-            text-shadow: 0 0 12px #FFC00044;
             line-height: 1.3;
         }
         .app-title small {
             font-size: 0.7rem;
-            opacity: 0.7;
+            opacity: 0.6;
             display: block;
             font-weight: 300;
             letter-spacing: 1px;
+            color: #6a5a4a;
         }
 
         .header-actions {
@@ -116,10 +116,10 @@
         .lang-toggle {
             display: flex;
             gap: 4px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(200, 180, 160, 0.2);
             padding: 4px;
             border-radius: 40px;
-            border: 1px solid rgba(255, 192, 0, 0.15);
+            border: 1px solid rgba(160, 140, 120, 0.2);
         }
         .lang-btn {
             background: transparent;
@@ -128,23 +128,23 @@
             border-radius: 30px;
             font-size: 0.75rem;
             font-weight: 600;
-            color: #aaa;
+            color: #6a5a4a;
             cursor: pointer;
             transition: 0.2s;
         }
         .lang-btn.active {
-            background: #FFC000;
-            color: #0A060E;
-            box-shadow: 0 0 20px #FFC00055;
+            background: #c8b8a8;
+            color: #2a1a0a;
+            box-shadow: 0 0 12px rgba(160, 140, 120, 0.2);
         }
         .lang-btn:not(.active):hover {
-            color: #FFC000;
+            color: #4a3a2a;
         }
 
         .btn-home {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 192, 0, 0.2);
-            color: #FFC000;
+            background: rgba(200, 180, 160, 0.15);
+            border: 1px solid rgba(160, 140, 120, 0.2);
+            color: #4a3a2a;
             padding: 6px 16px;
             border-radius: 30px;
             font-size: 0.8rem;
@@ -154,18 +154,16 @@
             white-space: nowrap;
         }
         .btn-home:hover {
-            background: rgba(255, 192, 0, 0.10);
-            box-shadow: 0 0 20px #FFC00022;
+            background: rgba(200, 180, 160, 0.3);
         }
 
         /* 主標題 */
         .main-title {
             text-align: center;
-            color: #FFC000;
+            color: #4a3a2a;
             font-size: 1.8rem;
             font-weight: 800;
             letter-spacing: 4px;
-            text-shadow: 0 0 30px #FFC00044;
             margin-bottom: 8px;
         }
         .main-title .sub-en {
@@ -175,6 +173,7 @@
             opacity: 0.6;
             letter-spacing: 6px;
             margin-top: 2px;
+            color: #6a5a4a;
         }
 
         .start-btn-wrapper {
@@ -183,24 +182,24 @@
         }
 
         .btn-start {
-            background: linear-gradient(135deg, #FFC000, #E8A800);
+            background: linear-gradient(135deg, #c8b8a8, #b0a090);
             border: none;
-            color: #0A060E;
+            color: #2a1a0a;
             font-weight: 800;
             padding: 16px 48px;
             border-radius: 60px;
             font-size: 1.4rem;
             cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 6px 30px #FFC00033;
+            box-shadow: 0 4px 20px rgba(120, 100, 80, 0.15);
             letter-spacing: 3px;
         }
         .btn-start:hover {
             transform: scale(1.02);
-            box-shadow: 0 8px 40px #FFC00055;
+            box-shadow: 0 6px 30px rgba(120, 100, 80, 0.2);
         }
         .btn-start:disabled {
-            opacity: 0.6;
+            opacity: 0.5;
             transform: scale(0.98);
             cursor: not-allowed;
         }
@@ -217,21 +216,21 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(240, 235, 230, 0.5);
             padding: 14px 20px;
             border-radius: 20px;
-            border-left: 4px solid rgba(255, 192, 0, 0.25);
+            border-left: 4px solid rgba(160, 140, 120, 0.3);
             transition: 0.25s;
             cursor: default;
         }
         .step-item:hover {
-            background: rgba(255, 255, 255, 0.04);
-            border-left-color: #FFC000;
+            background: rgba(230, 220, 210, 0.6);
+            border-left-color: #8a7a6a;
         }
         .step-number {
             font-size: 1.3rem;
             font-weight: 900;
-            color: #FFC000;
+            color: #6a5a4a;
             min-width: 44px;
             text-align: center;
             opacity: 0.8;
@@ -240,7 +239,7 @@
             flex: 1;
         }
         .step-label {
-            color: #e8e0d0;
+            color: #3a2a1a;
             font-size: 1rem;
             font-weight: 600;
             letter-spacing: 0.3px;
@@ -250,9 +249,10 @@
             opacity: 0.5;
             margin-left: 8px;
             font-size: 0.8rem;
+            color: #5a4a3a;
         }
         .step-desc {
-            color: #b0a8a0;
+            color: #6a5a4a;
             font-size: 0.85rem;
             margin-top: 2px;
             opacity: 0.7;
@@ -263,15 +263,17 @@
             font-size: 0.75rem;
         }
 
+        /* 頁碼 */
         .footer-note {
             margin-top: 28px;
-            text-align: center;
-            color: #FFC000;
+            text-align: right;
+            color: #7a6a5a;
             font-size: 0.8rem;
-            opacity: 0.35;
-            letter-spacing: 2px;
-            border-top: 1px solid rgba(255,192,0,0.06);
-            padding-top: 18px;
+            opacity: 0.5;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(160, 140, 120, 0.1);
+            padding-top: 16px;
+            font-weight: 400;
         }
 
         /* 響應 */
@@ -286,16 +288,17 @@
             .header-actions { gap: 6px; }
             .btn-home { font-size: 0.7rem; padding: 4px 12px; }
             .lang-btn { font-size: 0.65rem; padding: 4px 10px; }
+            .footer-note { font-size: 0.7rem; }
         }
     </style>
 </head>
 <body>
-    <!-- 粒子畫布 -->
+    <!-- 粒子畫布 (淡色) -->
     <canvas id="particles-canvas"></canvas>
     <!-- 浮水印 -->
     <div class="watermark">天地為鑑 · 光網為證</div>
 
-    <div class="app-container" id="appContainer">
+    <div class="app-container">
         <!-- 頁首 -->
         <div class="app-header">
             <div class="app-title" id="appTitle">
@@ -323,11 +326,10 @@
         </div>
 
         <!-- 步驟列表 -->
-        <div class="step-list" id="stepList">
-            <!-- 由 JS 動態生成 -->
-        </div>
+        <div class="step-list" id="stepList"></div>
 
-        <div class="footer-note" id="footerNote">📄 【宇宙誓印覺醒工程 · 覺醒卷】</div>
+        <!-- 頁碼 -->
+        <div class="footer-note" id="footerNote">📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 1-2 頁</div>
     </div>
 
     <script>
@@ -347,7 +349,7 @@
                         { label: '回傳結果', enLabel: 'Frequency Connection', desc: '系統完成驗證回傳啟動語', enDesc: 'The system verifies successfully and returns the activation message' },
                         { label: '督頻啟動 × 系統同步', enLabel: 'Final Activation', desc: '主頻定位 × 對接同步完成', enDesc: 'Primary Frequency Positioning × Interface Synchronization Completed' }
                     ],
-                    footer: '📄 【宇宙誓印覺醒工程 · 覺醒卷】'
+                    footer: '📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 1-2 頁'
                 },
                 en: {
                     appTitle: 'Cosmic Oath Awakening Project',
@@ -362,13 +364,12 @@
                         { label: 'Frequency Connection', enLabel: '回傳結果', desc: 'The system verifies successfully and returns the activation message', enDesc: '系統完成驗證回傳啟動語' },
                         { label: 'Final Activation', enLabel: '督頻啟動 × 系統同步', desc: 'Primary Frequency Positioning × Interface Synchronization Completed', enDesc: '主頻定位 × 對接同步完成' }
                     ],
-                    footer: '📄 【Cosmic Oath Awakening Project · Awakening Scroll】'
+                    footer: '📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 1-2'
                 }
             };
 
             let currentLang = 'zh';
 
-            // DOM 參考
             const stepList = document.getElementById('stepList');
             const startBtn = document.getElementById('startBtn');
             const homeBtn = document.getElementById('homeBtn');
@@ -378,7 +379,6 @@
             const mainTitle = document.getElementById('mainTitle');
             const mainSub = document.getElementById('mainSub');
 
-            // 語言切換
             function setLang(lang) {
                 currentLang = lang;
                 document.getElementById('langZh').classList.toggle('active', lang === 'zh');
@@ -393,7 +393,6 @@
                 startBtn.textContent = data.startBtn;
                 footerNote.textContent = data.footer;
 
-                // 步驟
                 let html = '';
                 data.steps.forEach((step, idx) => {
                     const num = `[${idx+1}]`;
@@ -418,22 +417,21 @@
                 let delay = 0;
                 items.forEach((item, idx) => {
                     setTimeout(() => {
-                        item.style.borderLeftColor = '#FFC000';
-                        item.style.background = 'rgba(255, 192, 0, 0.08)';
+                        item.style.borderLeftColor = '#8a7a6a';
+                        item.style.background = 'rgba(200, 180, 160, 0.25)';
                         item.style.transition = '0.4s';
                         const num = item.querySelector('.step-number');
-                        if (num) num.style.textShadow = '0 0 20px #FFC000';
+                        if (num) num.style.textShadow = '0 0 12px rgba(100,80,60,0.3)';
                     }, delay);
                     delay += 300;
                 });
                 setTimeout(() => {
                     startBtn.disabled = false;
                     startBtn.textContent = DATA[currentLang].startBtn;
-                    // 重置樣式 (展示後復原)
                     setTimeout(() => {
                         items.forEach(item => {
-                            item.style.borderLeftColor = 'rgba(255, 192, 0, 0.25)';
-                            item.style.background = 'rgba(255, 255, 255, 0.02)';
+                            item.style.borderLeftColor = 'rgba(160, 140, 120, 0.3)';
+                            item.style.background = 'rgba(240, 235, 230, 0.5)';
                             const num = item.querySelector('.step-number');
                             if (num) num.style.textShadow = 'none';
                         });
@@ -441,32 +439,29 @@
                 }, delay + 300);
             }
 
-            // 回到首頁 (視覺效果)
             function goHome() {
                 homeBtn.style.transform = 'scale(0.92)';
                 setTimeout(() => { homeBtn.style.transform = 'scale(1)'; }, 150);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                // 閃爍提示
-                startBtn.style.boxShadow = '0 0 40px #FFC00088';
+                startBtn.style.boxShadow = '0 4px 30px rgba(120,100,80,0.25)';
                 setTimeout(() => {
-                    startBtn.style.boxShadow = '0 6px 30px #FFC00033';
+                    startBtn.style.boxShadow = '0 4px 20px rgba(120,100,80,0.15)';
                 }, 600);
-                // 重置步驟樣式
                 document.querySelectorAll('.step-item').forEach(item => {
-                    item.style.borderLeftColor = 'rgba(255, 192, 0, 0.25)';
-                    item.style.background = 'rgba(255, 255, 255, 0.02)';
+                    item.style.borderLeftColor = 'rgba(160, 140, 120, 0.3)';
+                    item.style.background = 'rgba(240, 235, 230, 0.5)';
                     const num = item.querySelector('.step-number');
                     if (num) num.style.textShadow = 'none';
                 });
             }
 
-            // ---------- 粒子背景 (宇宙流動) ----------
+            // ---------- 粒子背景 (淡色流動) ----------
             function initParticles() {
                 const canvas = document.getElementById('particles-canvas');
                 const ctx = canvas.getContext('2d');
                 let w, h;
                 const particles = [];
-                const count = 130;
+                const count = 100;
 
                 function resize() {
                     w = canvas.width = window.innerWidth;
@@ -480,11 +475,11 @@
                     reset() {
                         this.x = Math.random() * w;
                         this.y = Math.random() * h;
-                        this.size = Math.random() * 2.4 + 0.6;
-                        this.speedX = (Math.random() - 0.5) * 0.3;
-                        this.speedY = (Math.random() - 0.5) * 0.3;
-                        this.opacity = Math.random() * 0.5 + 0.2;
-                        this.color = `rgba(255, 192, 0, ${this.opacity})`;
+                        this.size = Math.random() * 2.0 + 0.5;
+                        this.speedX = (Math.random() - 0.5) * 0.25;
+                        this.speedY = (Math.random() - 0.5) * 0.25;
+                        this.opacity = Math.random() * 0.3 + 0.1;
+                        this.color = `rgba(140, 120, 100, ${this.opacity})`;
                     }
                     update() {
                         this.x += this.speedX;
@@ -496,8 +491,8 @@
                         ctx.beginPath();
                         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                         ctx.fillStyle = this.color;
-                        ctx.shadowColor = '#FFC00044';
-                        ctx.shadowBlur = 14;
+                        ctx.shadowColor = 'rgba(140,120,100,0.2)';
+                        ctx.shadowBlur = 10;
                         ctx.fill();
                     }
                 }
@@ -510,18 +505,17 @@
                         p.update();
                         p.draw();
                     });
-                    // 連線
                     for (let i=0; i<particles.length; i++) {
                         for (let j=i+1; j<particles.length; j++) {
                             const dx = particles[i].x - particles[j].x;
                             const dy = particles[i].y - particles[j].y;
                             const dist = Math.sqrt(dx*dx + dy*dy);
-                            if (dist < 160) {
+                            if (dist < 150) {
                                 ctx.beginPath();
                                 ctx.moveTo(particles[i].x, particles[i].y);
                                 ctx.lineTo(particles[j].x, particles[j].y);
-                                ctx.strokeStyle = `rgba(255, 192, 0, ${0.06 * (1 - dist/160)})`;
-                                ctx.lineWidth = 0.7;
+                                ctx.strokeStyle = `rgba(140, 120, 100, ${0.04 * (1 - dist/150)})`;
+                                ctx.lineWidth = 0.6;
                                 ctx.stroke();
                             }
                         }
@@ -537,7 +531,6 @@
             startBtn.addEventListener('click', startActivation);
             homeBtn.addEventListener('click', goHome);
 
-            // 初始化
             initParticles();
             setLang('zh');
         })();
