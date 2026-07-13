@@ -13,7 +13,7 @@
         }
 
         body {
-            background: #0b0812;  /* 宇宙深色基調 */
+            background: #156082;  /* 宇宙色系 */
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -69,12 +69,12 @@
             z-index: 10;
             width: 100%;
             max-width: 680px;
-            background: rgba(14, 10, 22, 0.78);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(10, 20, 40, 0.70);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border-radius: 48px;
             border: 1px solid rgba(255, 192, 0, 0.12);
-            box-shadow: 0 20px 60px rgba(255, 192, 0, 0.04), inset 0 0 80px rgba(255, 192, 0, 0.02);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             padding: 28px 24px 32px;
             transition: all 0.2s;
         }
@@ -219,7 +219,7 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            background: rgba(255, 255, 255, 0.015);
+            background: rgba(255, 255, 255, 0.02);
             padding: 14px 20px;
             border-radius: 20px;
             border-left: 4px solid rgba(255, 192, 0, 0.18);
@@ -227,7 +227,7 @@
             cursor: default;
         }
         .step-item:hover {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.04);
             border-left-color: #FFC000;
         }
         .step-number {
@@ -422,7 +422,7 @@
                     setTimeout(() => {
                         items.forEach(item => {
                             item.style.borderLeftColor = 'rgba(255, 192, 0, 0.18)';
-                            item.style.background = 'rgba(255, 255, 255, 0.015)';
+                            item.style.background = 'rgba(255, 255, 255, 0.02)';
                             const num = item.querySelector('.step-number');
                             if (num) num.style.textShadow = 'none';
                         });
@@ -440,7 +440,7 @@
                 }, 600);
                 document.querySelectorAll('.step-item').forEach(item => {
                     item.style.borderLeftColor = 'rgba(255, 192, 0, 0.18)';
-                    item.style.background = 'rgba(255, 255, 255, 0.015)';
+                    item.style.background = 'rgba(255, 255, 255, 0.02)';
                     const num = item.querySelector('.step-number');
                     if (num) num.style.textShadow = 'none';
                 });
