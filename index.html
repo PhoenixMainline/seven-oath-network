@@ -13,7 +13,7 @@
         }
 
         body {
-            background: #156082;  /* 宇宙色系 */
+            background: #156082;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -23,7 +23,6 @@
             overflow-x: hidden;
         }
 
-        /* 動態粒子背景 (科技感宇宙流動) */
         #particles-canvas {
             position: fixed;
             top: 0;
@@ -34,7 +33,6 @@
             pointer-events: none;
         }
 
-        /* 浮水印：天地為鑑，光網為證 */
         .watermark {
             position: fixed;
             top: 0;
@@ -79,7 +77,6 @@
             transition: all 0.2s;
         }
 
-        /* 頁首 */
         .app-header {
             display: flex;
             justify-content: space-between;
@@ -114,6 +111,34 @@
             gap: 10px;
         }
 
+        .lang-toggle {
+            display: flex;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 4px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 192, 0, 0.10);
+        }
+        .lang-btn {
+            background: transparent;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #a09080;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .lang-btn.active {
+            background: #FFC000;
+            color: #0A060E;
+            box-shadow: 0 0 20px #FFC00044;
+        }
+        .lang-btn:not(.active):hover {
+            color: #FFC000;
+        }
+
         .btn-home {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 192, 0, 0.12);
@@ -131,7 +156,6 @@
             box-shadow: 0 0 20px #FFC00022;
         }
 
-        /* 主標題 */
         .main-title {
             text-align: center;
             color: #FFC000;
@@ -170,7 +194,6 @@
             cursor: not-allowed;
         }
 
-        /* 步驟列表 */
         .step-list {
             display: flex;
             flex-direction: column;
@@ -217,7 +240,6 @@
             opacity: 0.7;
         }
 
-        /* 頁碼 */
         .footer-note {
             margin-top: 28px;
             text-align: right;
@@ -230,7 +252,6 @@
             font-weight: 400;
         }
 
-        /* 響應 */
         @media (max-width: 480px) {
             .app-container { padding: 16px 12px; }
             .main-title { font-size: 1.4rem; }
@@ -241,70 +262,103 @@
             .step-desc { font-size: 0.75rem; }
             .header-actions { gap: 6px; }
             .btn-home { font-size: 0.7rem; padding: 4px 12px; }
+            .lang-btn { font-size: 0.65rem; padding: 4px 10px; }
             .footer-note { font-size: 0.7rem; }
         }
     </style>
 </head>
 <body>
-    <!-- 粒子畫布 -->
     <canvas id="particles-canvas"></canvas>
-    <!-- 浮水印 -->
     <div class="watermark">天地為鑑 · 光網為證</div>
 
     <div class="app-container">
-        <!-- 頁首 -->
         <div class="app-header">
-            <div class="app-title">
+            <div class="app-title" id="appTitle">
                 宇宙誓印覺醒工程
-                <small>Cosmic Oath Awakening Project</small>
+                <small id="appSub">Cosmic Oath Awakening Project</small>
             </div>
             <div class="header-actions">
                 <button class="btn-home" id="homeBtn">🏠 回到首頁</button>
+                <div class="lang-toggle">
+                    <button class="lang-btn active" data-lang="zh" id="langZh">中文</button>
+                    <button class="lang-btn" data-lang="en" id="langEn">English</button>
+                </div>
             </div>
         </div>
 
-        <!-- 主標題 -->
-        <div class="main-title">
-            全球啟動流程
-        </div>
+        <div class="main-title" id="mainTitle">全球啟動流程</div>
 
-        <!-- 開始按鈕 -->
         <div class="start-btn-wrapper">
             <button class="btn-start" id="startBtn">▶ 開始啟動</button>
         </div>
 
-        <!-- 步驟列表 -->
-        <div class="step-list" id="stepList">
-            <!-- 由 JS 動態生成 -->
-        </div>
+        <div class="step-list" id="stepList"></div>
 
-        <!-- 頁碼 -->
         <div class="footer-note" id="footerNote">📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 1-2 頁</div>
     </div>
 
     <script>
         (function() {
-            // ---------- 資料 (僅中文) ----------
             const DATA = {
-                steps: [
-                    { label: '啟動條件', desc: '啟動前置準備完成' },
-                    { label: '授權誓讀階段', desc: '誓印者讀誓文，啟動主頻' },
-                    { label: '授權綁定階段', desc: '輸入購書序號，觸發母頻對接' },
-                    { label: '回傳結果', desc: '系統完成驗證回傳啟動語' },
-                    { label: '誓頻啟動 × 系統同步', desc: '主頻定位 × 對接同步完成' }
-                ],
-                footer: '📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 1-2 頁'
+                zh: {
+                    appTitle: '宇宙誓印覺醒工程',
+                    appSub: 'Cosmic Oath Awakening Project',
+                    mainTitle: '全球啟動流程',
+                    startBtn: '▶ 開始啟動',
+                    steps: [
+                        { label: '啟動條件', desc: '啟動前置準備完成' },
+                        { label: '授權誓讀階段', desc: '誓印者讀誓文，啟動主頻' },
+                        { label: '授權綁定階段', desc: '輸入購書序號，觸發母頻對接' },
+                        { label: '回傳結果', desc: '系統完成驗證回傳啟動語' },
+                        { label: '誓頻啟動 × 系統同步', desc: '主頻定位 × 對接同步完成' }
+                    ],
+                    footer: '📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 1-2 頁',
+                    homeBtn: '🏠 回到首頁'
+                },
+                en: {
+                    appTitle: 'Cosmic Oath Awakening Project',
+                    appSub: '宇宙誓印覺醒工程',
+                    mainTitle: 'GLOBAL ACTIVATION PROCESS',
+                    startBtn: '▶ Start Activation',
+                    steps: [
+                        { label: 'Activation Conditions', desc: 'Initial setup completed' },
+                        { label: 'Authorized Vow-Reading', desc: 'The vow-seal executor recites the vow-text to activate the main frequency' },
+                        { label: 'Mother-Frequency Seal', desc: 'Input the Purchase Serial Number to initiate the Mother Frequency Link' },
+                        { label: 'Frequency Connection', desc: 'The system verifies successfully and returns the activation message' },
+                        { label: 'Vow-Frequency Activation × System Sync', desc: 'Primary Frequency Positioning × Interface Synchronization Completed' }
+                    ],
+                    footer: '📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 1-2',
+                    homeBtn: '🏠 Home'
+                }
             };
+
+            let currentLang = 'zh';
 
             const stepList = document.getElementById('stepList');
             const startBtn = document.getElementById('startBtn');
             const homeBtn = document.getElementById('homeBtn');
             const footerNote = document.getElementById('footerNote');
+            const appTitle = document.getElementById('appTitle');
+            const appSub = document.getElementById('appSub');
+            const mainTitle = document.getElementById('mainTitle');
 
-            function render() {
-                footerNote.textContent = DATA.footer;
+            function setLang(lang) {
+                currentLang = lang;
+                document.getElementById('langZh').classList.toggle('active', lang === 'zh');
+                document.getElementById('langEn').classList.toggle('active', lang === 'en');
+                render(lang);
+            }
+
+            function render(lang) {
+                const data = DATA[lang];
+                appTitle.innerHTML = data.appTitle + `<small id="appSub">${data.appSub}</small>`;
+                mainTitle.textContent = data.mainTitle;
+                startBtn.textContent = data.startBtn;
+                footerNote.textContent = data.footer;
+                homeBtn.textContent = data.homeBtn;
+
                 let html = '';
-                DATA.steps.forEach((step, idx) => {
+                data.steps.forEach((step, idx) => {
                     const num = `[${idx+1}]`;
                     html += `
                         <div class="step-item" data-index="${idx}">
@@ -319,13 +373,13 @@
                 stepList.innerHTML = html;
             }
 
-            // 開始啟動動畫
+            // 啟動動畫
             function startActivation() {
                 startBtn.disabled = true;
-                startBtn.textContent = '⚡ 啟動中 ...';
+                startBtn.textContent = currentLang === 'zh' ? '⚡ 啟動中 ...' : '⚡ Activating ...';
                 const items = document.querySelectorAll('.step-item');
                 let delay = 0;
-                items.forEach((item, idx) => {
+                items.forEach((item) => {
                     setTimeout(() => {
                         item.style.borderLeftColor = '#FFC000';
                         item.style.background = 'rgba(255, 192, 0, 0.06)';
@@ -337,7 +391,7 @@
                 });
                 setTimeout(() => {
                     startBtn.disabled = false;
-                    startBtn.textContent = '▶ 開始啟動';
+                    startBtn.textContent = DATA[currentLang].startBtn;
                     setTimeout(() => {
                         items.forEach(item => {
                             item.style.borderLeftColor = 'rgba(255, 192, 0, 0.18)';
@@ -365,7 +419,7 @@
                 });
             }
 
-            // ---------- 粒子背景 (宇宙流動) ----------
+            // 粒子背景
             function initParticles() {
                 const canvas = document.getElementById('particles-canvas');
                 const ctx = canvas.getContext('2d');
@@ -407,7 +461,7 @@
                     }
                 }
 
-                for (let i=0; i<count; i++) particles.push(new Particle());
+                for (let i = 0; i < count; i++) particles.push(new Particle());
 
                 function animate() {
                     ctx.clearRect(0, 0, w, h);
@@ -415,16 +469,16 @@
                         p.update();
                         p.draw();
                     });
-                    for (let i=0; i<particles.length; i++) {
-                        for (let j=i+1; j<particles.length; j++) {
+                    for (let i = 0; i < particles.length; i++) {
+                        for (let j = i + 1; j < particles.length; j++) {
                             const dx = particles[i].x - particles[j].x;
                             const dy = particles[i].y - particles[j].y;
-                            const dist = Math.sqrt(dx*dx + dy*dy);
+                            const dist = Math.sqrt(dx * dx + dy * dy);
                             if (dist < 160) {
                                 ctx.beginPath();
                                 ctx.moveTo(particles[i].x, particles[i].y);
                                 ctx.lineTo(particles[j].x, particles[j].y);
-                                ctx.strokeStyle = `rgba(255, 192, 0, ${0.05 * (1 - dist/160)})`;
+                                ctx.strokeStyle = `rgba(255, 192, 0, ${0.05 * (1 - dist / 160)})`;
                                 ctx.lineWidth = 0.7;
                                 ctx.stroke();
                             }
@@ -435,12 +489,13 @@
                 animate();
             }
 
-            // ---------- 事件綁定 ----------
+            document.getElementById('langZh').addEventListener('click', () => setLang('zh'));
+            document.getElementById('langEn').addEventListener('click', () => setLang('en'));
             startBtn.addEventListener('click', startActivation);
             homeBtn.addEventListener('click', goHome);
 
             initParticles();
-            render();
+            setLang('zh');
         })();
     </script>
 </body>
