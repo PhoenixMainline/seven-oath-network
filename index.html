@@ -39,46 +39,31 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0;
+            z-index: 1;
             pointer-events: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             opacity: 0.04;
-            font-size: 3.5rem;
-            font-weight: 900;
-            color: #FFC000;
-            letter-spacing: 12px;
-            text-shadow: 0 0 30px #FFC00022;
-            transform: rotate(-12deg) scale(1.1);
-            white-space: nowrap;
-            font-family: 'Times New Roman', serif;
-        }
-        @media (max-width: 600px) {
-            .watermark {
-                font-size: 2rem;
-                letter-spacing: 6px;
-                transform: rotate(-8deg) scale(0.9);
-            }
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='250'><text x='30' y='150' fill='%23FFC000' font-family='Microsoft YaHei, sans-serif' font-size='26' font-weight='900' transform='rotate(-20 30 150)'>天地為鑑，光網為證</text></svg>");
+            background-repeat: repeat;
         }
 
-            .app-container {
+        .app-container {
             position: relative;
             z-index: 10;
             width: 100%;
             max-width: 680px;
             background: #156082;
             border-radius: 48px;
-            border: 1px solid rgba(255, 192, 0, 0.25); 
+            border: 1px solid rgba(255, 192, 0, 0.25);
             box-shadow: 0 20px 60px rgba(10, 30, 50, 0.4);
             padding: 28px 24px 32px;
             transition: all 0.2s;
         }
+
         .app-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255, 192, 0, 0.10);
+            border-bottom: 1px solid rgba(255, 192, 0, 0.15);
             padding-bottom: 14px;
             margin-bottom: 20px;
             flex-wrap: wrap;
@@ -103,10 +88,10 @@
         .lang-toggle {
             display: flex;
             gap: 4px;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.05);
             padding: 4px;
             border-radius: 40px;
-            border: 1px solid rgba(255, 192, 0, 0.10);
+            border: 1px solid rgba(255, 192, 0, 0.15);
         }
         .lang-btn {
             background: transparent;
@@ -115,7 +100,7 @@
             border-radius: 30px;
             font-size: 0.75rem;
             font-weight: 600;
-            color: #a09080;
+            color: rgba(255, 255, 255, 0.5);
             cursor: pointer;
             transition: 0.2s;
         }
@@ -129,8 +114,8 @@
         }
 
         .btn-home {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 192, 0, 0.12);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 192, 0, 0.15);
             color: #FFC000;
             padding: 6px 16px;
             border-radius: 30px;
@@ -141,7 +126,7 @@
             white-space: nowrap;
         }
         .btn-home:hover {
-            background: rgba(255, 192, 0, 0.06);
+            background: rgba(255, 192, 0, 0.10);
             box-shadow: 0 0 20px #FFC00022;
         }
 
@@ -170,12 +155,12 @@
             font-size: 1.4rem;
             cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 6px 30px #FFC00033;
+            box-shadow: 0 6px 30px rgba(255, 192, 0, 0.3);
             letter-spacing: 3px;
         }
         .btn-start:hover {
             transform: scale(1.02);
-            box-shadow: 0 8px 40px #FFC00055;
+            box-shadow: 0 8px 40px rgba(255, 192, 0, 0.5);
         }
         .btn-start:disabled {
             opacity: 0.5;
@@ -197,13 +182,13 @@
             background: transparent;
             padding: 14px 20px;
             border-radius: 20px;
-            border-left: 4px solid rgba(255, 192, 0, 0.18);
+            border-left: 4px solid rgba(255, 192, 0, 0.20);
             transition: 0.25s;
             cursor: default;
         }
 
         .step-item:hover {
-            background: rgba(255, 192, 0, 0.05);
+            background: rgba(255, 192, 0, 0.06);
             border-left-color: #FFC000;
         }
 
@@ -238,7 +223,7 @@
             font-size: 0.8rem;
             opacity: 0.3;
             letter-spacing: 1px;
-            border-top: 1px solid rgba(255,192,0,0.05);
+            border-top: 1px solid rgba(255,192,0,0.08);
             padding-top: 16px;
             font-weight: 400;
         }
@@ -260,7 +245,7 @@
 </head>
 <body>
     <canvas id="particles-canvas"></canvas>
-    <div class="watermark">天地為鑑 · 光網為證</div>
+    <div class="watermark"></div>
 
     <div class="app-container">
         <div class="app-header">
@@ -366,7 +351,7 @@
                 items.forEach((item) => {
                     setTimeout(() => {
                         item.style.borderLeftColor = '#FFC000';
-                        item.style.background = 'rgba(255, 192, 0, 0.05)';
+                        item.style.background = 'rgba(255, 192, 0, 0.08)';
                         item.style.transition = '0.4s';
                         const num = item.querySelector('.step-number');
                         if (num) num.style.textShadow = '0 0 20px #FFC000';
@@ -378,7 +363,7 @@
                     startBtn.textContent = DATA[currentLang].startBtn;
                     setTimeout(() => {
                         items.forEach(item => {
-                            item.style.borderLeftColor = 'rgba(255, 192, 0, 0.18)';
+                            item.style.borderLeftColor = 'rgba(255, 192, 0, 0.20)';
                             item.style.background = 'transparent';
                             const num = item.querySelector('.step-number');
                             if (num) num.style.textShadow = 'none';
@@ -391,12 +376,12 @@
                 homeBtn.style.transform = 'scale(0.92)';
                 setTimeout(() => { homeBtn.style.transform = 'scale(1)'; }, 150);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                startBtn.style.boxShadow = '0 6px 40px #FFC00055';
+                startBtn.style.boxShadow = '0 6px 40px rgba(255, 192, 0, 0.5)';
                 setTimeout(() => {
-                    startBtn.style.boxShadow = '0 6px 30px #FFC00033';
+                    startBtn.style.boxShadow = '0 6px 30px rgba(255, 192, 0, 0.3)';
                 }, 600);
                 document.querySelectorAll('.step-item').forEach(item => {
-                    item.style.borderLeftColor = 'rgba(255, 192, 0, 0.18)';
+                    item.style.borderLeftColor = 'rgba(255, 192, 0, 0.20)';
                     item.style.background = 'transparent';
                     const num = item.querySelector('.step-number');
                     if (num) num.style.textShadow = 'none';
