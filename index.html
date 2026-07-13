@@ -13,7 +13,7 @@
         }
 
         body {
-            background: #14101a;  /* 比純黑稍亮，保留宇宙深色感 */
+            background: #0b0812;  /* 宇宙深色基調 */
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -69,12 +69,12 @@
             z-index: 10;
             width: 100%;
             max-width: 680px;
-            background: rgba(18, 14, 24, 0.78);  /* 半透明深色，比之前亮一點 */
+            background: rgba(14, 10, 22, 0.78);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-radius: 48px;
-            border: 1px solid rgba(255, 192, 0, 0.15);
-            box-shadow: 0 20px 60px rgba(255, 192, 0, 0.05), inset 0 0 80px rgba(255, 192, 0, 0.02);
+            border: 1px solid rgba(255, 192, 0, 0.12);
+            box-shadow: 0 20px 60px rgba(255, 192, 0, 0.04), inset 0 0 80px rgba(255, 192, 0, 0.02);
             padding: 28px 24px 32px;
             transition: all 0.2s;
         }
@@ -84,7 +84,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255, 192, 0, 0.12);
+            border-bottom: 1px solid rgba(255, 192, 0, 0.10);
             padding-bottom: 14px;
             margin-bottom: 20px;
             flex-wrap: wrap;
@@ -101,11 +101,11 @@
         }
         .app-title small {
             font-size: 0.7rem;
-            opacity: 0.6;
+            opacity: 0.5;
             display: block;
             font-weight: 300;
             letter-spacing: 1px;
-            color: #d4b080;
+            color: #c8b088;
         }
 
         .header-actions {
@@ -117,10 +117,10 @@
         .lang-toggle {
             display: flex;
             gap: 4px;
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.03);
             padding: 4px;
             border-radius: 40px;
-            border: 1px solid rgba(255, 192, 0, 0.12);
+            border: 1px solid rgba(255, 192, 0, 0.10);
         }
         .lang-btn {
             background: transparent;
@@ -143,8 +143,8 @@
         }
 
         .btn-home {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 192, 0, 0.15);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 192, 0, 0.12);
             color: #FFC000;
             padding: 6px 16px;
             border-radius: 30px;
@@ -155,7 +155,7 @@
             white-space: nowrap;
         }
         .btn-home:hover {
-            background: rgba(255, 192, 0, 0.08);
+            background: rgba(255, 192, 0, 0.06);
             box-shadow: 0 0 20px #FFC00022;
         }
 
@@ -173,10 +173,10 @@
             display: block;
             font-size: 1rem;
             font-weight: 300;
-            opacity: 0.5;
+            opacity: 0.45;
             letter-spacing: 6px;
             margin-top: 2px;
-            color: #d4b080;
+            color: #c8b088;
         }
 
         .start-btn-wrapper {
@@ -219,15 +219,15 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(255, 255, 255, 0.015);
             padding: 14px 20px;
             border-radius: 20px;
-            border-left: 4px solid rgba(255, 192, 0, 0.2);
+            border-left: 4px solid rgba(255, 192, 0, 0.18);
             transition: 0.25s;
             cursor: default;
         }
         .step-item:hover {
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.03);
             border-left-color: #FFC000;
         }
         .step-number {
@@ -260,9 +260,9 @@
             text-align: right;
             color: #FFC000;
             font-size: 0.8rem;
-            opacity: 0.35;
+            opacity: 0.3;
             letter-spacing: 1px;
-            border-top: 1px solid rgba(255,192,0,0.06);
+            border-top: 1px solid rgba(255,192,0,0.05);
             padding-top: 16px;
             font-weight: 400;
         }
@@ -325,7 +325,7 @@
 
     <script>
         (function() {
-            // ---------- 多語言資料 (只顯示當前語言，不混雜英文) ----------
+            // ---------- 多語言資料 (只顯示當前語言) ----------
             const DATA = {
                 zh: {
                     appTitle: '宇宙誓印覺醒工程',
@@ -409,7 +409,7 @@
                 items.forEach((item, idx) => {
                     setTimeout(() => {
                         item.style.borderLeftColor = '#FFC000';
-                        item.style.background = 'rgba(255, 192, 0, 0.08)';
+                        item.style.background = 'rgba(255, 192, 0, 0.06)';
                         item.style.transition = '0.4s';
                         const num = item.querySelector('.step-number');
                         if (num) num.style.textShadow = '0 0 20px #FFC000';
@@ -421,8 +421,8 @@
                     startBtn.textContent = DATA[currentLang].startBtn;
                     setTimeout(() => {
                         items.forEach(item => {
-                            item.style.borderLeftColor = 'rgba(255, 192, 0, 0.2)';
-                            item.style.background = 'rgba(255, 255, 255, 0.02)';
+                            item.style.borderLeftColor = 'rgba(255, 192, 0, 0.18)';
+                            item.style.background = 'rgba(255, 255, 255, 0.015)';
                             const num = item.querySelector('.step-number');
                             if (num) num.style.textShadow = 'none';
                         });
@@ -439,8 +439,8 @@
                     startBtn.style.boxShadow = '0 6px 30px #FFC00033';
                 }, 600);
                 document.querySelectorAll('.step-item').forEach(item => {
-                    item.style.borderLeftColor = 'rgba(255, 192, 0, 0.2)';
-                    item.style.background = 'rgba(255, 255, 255, 0.02)';
+                    item.style.borderLeftColor = 'rgba(255, 192, 0, 0.18)';
+                    item.style.background = 'rgba(255, 255, 255, 0.015)';
                     const num = item.querySelector('.step-number');
                     if (num) num.style.textShadow = 'none';
                 });
@@ -505,7 +505,7 @@
                                 ctx.beginPath();
                                 ctx.moveTo(particles[i].x, particles[i].y);
                                 ctx.lineTo(particles[j].x, particles[j].y);
-                                ctx.strokeStyle = `rgba(255, 192, 0, ${0.06 * (1 - dist/160)})`;
+                                ctx.strokeStyle = `rgba(255, 192, 0, ${0.05 * (1 - dist/160)})`;
                                 ctx.lineWidth = 0.7;
                                 ctx.stroke();
                             }
