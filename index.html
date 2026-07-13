@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>全球啟動流程 · 宇宙誓印覺醒</title>
-
-    <!-- 掃碼套件 -->
     <script src="https://unpkg.com/html5-qrcode"></script>
-
     <style>
         * {
             margin: 0;
@@ -17,7 +14,7 @@
         }
 
         body {
-            background: #156082; /* 🌌 與卡片一致的深藍綠色背景 */
+            background: #156082;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -27,7 +24,6 @@
             overflow-x: hidden;
         }
 
-        /* 🌌 宇宙流動連線粒子畫布 */
         #particles-canvas {
             position: fixed;
             top: 0;
@@ -38,7 +34,6 @@
             pointer-events: none;
         }
 
-        /* 🔒 全網頁安全防偽浮水印 */
         .watermark-container {
             position: fixed;
             top: 0;
@@ -65,7 +60,6 @@
             text-align: center;
         }
 
-        /* 🛸 完美復刻右圖：中央主卡片容器 */
         .app-container {
             position: relative;
             z-index: 10;
@@ -78,7 +72,6 @@
             padding: 28px 24px 32px;
         }
 
-        /* 完美復刻右圖：頁首標頭欄 */
         .app-header {
             display: flex;
             justify-content: space-between;
@@ -153,7 +146,6 @@
             margin: 16px 0 28px;
         }
 
-        /* 完美復刻右圖：亮黃金圓角啟動鈕 */
         .btn-start {
             background: linear-gradient(135deg, #FFC000, #d4a000);
             border: none;
@@ -171,7 +163,6 @@
             cursor: not-allowed;
         }
 
-        /* 📋 完美復刻右圖：高質感左側帶寬線的流程清單 */
         .step-list {
             display: flex;
             flex-direction: column;
@@ -221,7 +212,6 @@
             opacity: 0.7;
         }
 
-        /* 🔍 掃碼內嵌框架 */
         #scanner {
             background: rgba(10, 30, 50, 0.3);
             border: 1px solid rgba(255, 192, 0, 0.25);
@@ -250,7 +240,6 @@
             margin: 10px 0;
         }
 
-        /* 完美復刻右圖：頁尾小字 */
         .footer-note {
             margin-top: 28px;
             text-align: right;
@@ -267,10 +256,8 @@
 </head>
 <body>
 
-    <!-- 🌌 背景 -->
     <canvas id="particles-canvas"></canvas>
     
-    <!-- 🔒 浮水印 -->
     <div class="watermark-container">
         <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
         <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
@@ -278,7 +265,6 @@
         <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
     </div>
 
-    <!-- 🛸 完美右圖外觀 -->
     <div class="app-container">
         <div class="app-header">
             <div class="app-title">宇宙誓印覺醒工程</div>
@@ -297,14 +283,12 @@
             <button class="btn-start" id="startBtn">▶ 開始啟動</button>
         </div>
 
-        <!-- 📷 動態內嵌掃碼區 -->
         <div id="scanner" class="hidden">
             <h3 style="color: #FFC000; text-align: center;">📷 請對準母頻 QR Code 驗證</h3>
             <div id="reader"></div>
             <p id="scanResult"></p>
         </div>
 
-        <!-- 📋 5大步驟清單 -->
         <div class="step-list" id="stepList"></div>
 
         <p class="status-msg" id="statusMsg"></p>
@@ -314,7 +298,6 @@
 
     <script>
         (function() {
-            // 完美揉合：右圖文字規格 + 掃碼功能步驟
             const stepsData = [
                 { label: '啟動條件', desc: '啟動前置準備完成' },
                 { label: '授權誓讀階段', desc: '誓印者讀誓文，啟動主頻' },
@@ -402,7 +385,6 @@
                 });
             }
 
-            /* 🌌 宇宙流動連線粒子背景引擎 */
             function initParticles() {
                 const canvas = document.getElementById('particles-canvas');
                 const ctx = canvas.getContext('2d');
