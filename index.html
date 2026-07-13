@@ -1,10 +1,11 @@
-```html
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>全球啟動流程 · 宇宙誓印覺醒</title>
+    <title>全球啟動流程 · 宇宙誓印覺醒工程</title>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js">
+    </script>
     <style>
         * {
             margin: 0;
@@ -14,7 +15,7 @@
         }
 
         body {
-            background: #156082;
+            background: #0A060E;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -43,11 +44,11 @@
             z-index: 999;
             pointer-events: none;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            grid-gap: 80px 40px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-gap: 60px 40px;
             padding: 40px;
             overflow: hidden;
-            opacity: 0.05;
+            opacity: 0.04;
         }
 
         .watermark-text {
@@ -58,6 +59,7 @@
             transform: rotate(-25deg);
             user-select: none;
             text-align: center;
+            font-family: 'PingFang TC', 'Microsoft YaHei', sans-serif;
         }
 
         .app-container {
@@ -65,10 +67,12 @@
             z-index: 10;
             width: 100%;
             max-width: 680px;
-            background: #156082;
+            background: rgba(10, 6, 14, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-radius: 48px;
-            border: 1px solid rgba(255, 192, 0, 0.25);
-            box-shadow: 0 20px 60px rgba(10, 30, 50, 0.4);
+            border: 1px solid rgba(255, 192, 0, 0.20);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), inset 0 0 80px rgba(255, 192, 0, 0.03);
             padding: 28px 24px 32px;
         }
 
@@ -76,7 +80,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255, 192, 0, 0.15);
+            border-bottom: 1px solid rgba(255, 192, 0, 0.12);
             padding-bottom: 14px;
             margin-bottom: 20px;
             flex-wrap: wrap;
@@ -84,11 +88,12 @@
         }
 
         .app-title {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: #FFC000;
-            letter-spacing: 1.5px;
-            text-shadow: 0 0 12px #FFC00033;
+            letter-spacing: 1px;
+            text-shadow: 0 0 12px #FFC00044;
+            line-height: 1.3;
         }
 
         .header-actions {
@@ -100,11 +105,12 @@
         .lang-toggle {
             display: flex;
             gap: 4px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.04);
             padding: 4px;
             border-radius: 40px;
-            border: 1px solid rgba(255, 192, 0, 0.15);
+            border: 1px solid rgba(255, 192, 0, 0.12);
         }
+
         .lang-btn {
             background: transparent;
             border: none;
@@ -112,230 +118,319 @@
             border-radius: 30px;
             font-size: 0.75rem;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.4);
             cursor: pointer;
+            transition: 0.2s;
         }
+
         .lang-btn.active {
             background: #FFC000;
             color: #0A060E;
+            box-shadow: 0 0 20px #FFC00044;
+        }
+
+        .lang-btn:not(.active):hover {
+            color: #FFC000;
         }
 
         .btn-home {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 192, 0, 0.15);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 192, 0, 0.12);
             color: #FFC000;
             padding: 6px 16px;
             border-radius: 30px;
             font-size: 0.8rem;
             font-weight: 600;
             cursor: pointer;
+            transition: 0.2s;
+            white-space: nowrap;
         }
 
-        .main-title {
-            text-align: center;
+        .btn-home:hover {
+            background: rgba(255, 192, 0, 0.08);
+        }
+
+        .step-title {
             color: #FFC000;
-            font-size: 1.8rem;
-            font-weight: 800;
-            letter-spacing: 4px;
-            text-shadow: 0 0 30px #FFC00033;
-            margin-bottom: 8px;
-        }
-
-        .start-btn-wrapper {
-            text-align: center;
-            margin: 16px 0 28px;
-        }
-
-        .btn-start {
-            background: #827717;
-            border: none;
-            color: #fff;
-            font-weight: 800;
-            padding: 16px 48px;
-            border-radius: 60px;
-            font-size: 1.4rem;
-            cursor: pointer;
-            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
-            letter-spacing: 3px;
-        }
-
-        .step-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .step-item {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
-            gap: 16px;
-            background: transparent;
-            padding: 14px 20px;
-            border-radius: 20px;
-            border-left: 4px solid rgba(255, 192, 0, 0.20);
+            gap: 10px;
+            text-shadow: 0 0 20px #FFC00033;
         }
 
-        .step-item.active {
-            background: rgba(255, 192, 0, 0.08);
-            border-left-color: #FFC000;
+        .step-title .step-num {
+            opacity: 0.5;
+            font-weight: 300;
+            font-size: 0.9rem;
         }
 
-        .step-item.locked {
-            opacity: 0.3;
+        .card {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 24px;
+            padding: 20px 18px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255, 192, 0, 0.06);
         }
 
-        .step-number {
-            font-size: 1.3rem;
+        .proclamation {
+            color: #D4AF37;
+            font-size: 21px;
+            font-weight: 700;
+            text-align: center;
+            padding: 12px 6px;
+            letter-spacing: 1px;
+            line-height: 1.6;
+            border-bottom: 1px solid rgba(255, 192, 0, 0.08);
+            margin-bottom: 14px;
+        }
+
+        .timer-box {
+            text-align: center;
+            padding: 10px 0 4px;
+        }
+
+        .timer-label {
+            color: #ccc;
+            font-size: 0.95rem;
+            opacity: 0.8;
+            margin-bottom: 6px;
+        }
+
+        .timer-number {
+            font-size: 3.2rem;
             font-weight: 900;
             color: #FFC000;
-            min-width: 44px;
-            text-align: center;
-        }
-        .step-content {
-            flex: 1;
-            text-align: left;
-        }
-        .step-label {
-            color: #f0e8d8;
-            font-size: 1rem;
-            font-weight: 600;
-        }
-        .step-desc {
-            color: #b0a898;
-            font-size: 0.85rem;
-            margin-top: 2px;
-            opacity: 0.7;
+            text-shadow: 0 0 30px #FFC00066;
+            letter-spacing: 4px;
+            line-height: 1.2;
         }
 
-        #scanner {
-            background: rgba(10, 30, 50, 0.3);
-            border: 1px solid rgba(255, 192, 0, 0.25);
-            border-radius: 24px;
-            padding: 24px;
-            margin: 15px 0;
-            text-align: center;
+        .content-text {
+            color: #e0dcc8;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            opacity: 0.9;
         }
-        
-        .scan-title {
+
+        .content-text strong {
             color: #FFC000;
-            font-size: 1.15rem;
             font-weight: 700;
-            letter-spacing: 1px;
-            margin-bottom: 16px;
         }
 
-        .scan-error-msg {
-            color: #00e5ff;
-            font-weight: bold;
-            font-size: 1rem;
-            margin: 10px 0;
-        }
-
-        .status-msg {
-            color: #FFC000;
-            font-weight: 600;
+        .qr-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 16px;
+            margin: 12px 0 6px;
+            border: 1px dashed rgba(255, 192, 0, 0.15);
             text-align: center;
-            margin: 18px 0 10px;
-            font-size: 1.1rem;
+        }
+
+        .qr-box .scan-btn {
+            background: rgba(255, 192, 0, 0.10);
+            border: 1px solid rgba(255, 192, 0, 0.20);
+            color: #FFC000;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .qr-box .scan-btn:hover {
+            background: rgba(255, 192, 0, 0.18);
+        }
+
+        .qr-box .scan-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .qr-result {
+            color: #FFC000;
+            font-size: 0.8rem;
+            background: rgba(255, 192, 0, 0.06);
+            padding: 6px 14px;
+            border-radius: 30px;
+            margin-top: 8px;
+            word-break: break-all;
+        }
+
+        #qr-reader-container {
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        #qr-reader-container video {
+            border-radius: 16px;
+            width: 100%;
+        }
+
+        .camera-guide {
+            background: rgba(232, 96, 74, 0.08);
+            border-left: 4px solid #E8604A;
+            padding: 14px 16px;
+            border-radius: 12px;
+            color: #e0dcc8;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            text-align: left;
+            margin-top: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FFC000, #d4a000);
+            border: none;
+            color: #0A060E;
+            font-weight: 800;
+            padding: 14px 28px;
+            border-radius: 60px;
+            font-size: 1rem;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 20px #FFC00033;
             letter-spacing: 1px;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: scale(0.97);
+        }
+
+        .btn-primary:not(:disabled):hover {
+            transform: scale(1.01);
+            box-shadow: 0 6px 30px #FFC00055;
+        }
+
+        .flex-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .flex-row .btn-primary {
+            flex: 1;
+            min-width: 120px;
         }
 
         .footer-note {
-            margin-top: 28px;
+            margin-top: 24px;
             text-align: right;
             color: #FFC000;
-            font-size: 0.8rem;
-            opacity: 0.3;
+            font-size: 0.75rem;
+            opacity: 0.35;
             letter-spacing: 1px;
-            border-top: 1px solid rgba(255,192,0,0.08);
-            padding-top: 16px;
+            border-top: 1px solid rgba(255, 192, 0, 0.05);
+            padding-top: 14px;
+        }
+
+        .card-proclamation {
+            border-color: rgba(212, 175, 55, 0.15);
+        }
+
+        @media (max-width: 480px) {
+            .app-container {
+                padding: 16px 12px;
+            }
+            .step-title {
+                font-size: 1.1rem;
+            }
+            .proclamation {
+                font-size: 18px;
+                padding: 8px 4px;
+            }
+            .timer-number {
+                font-size: 2.6rem;
+            }
+            .content-text {
+                font-size: 0.88rem;
+            }
+            .header-actions {
+                gap: 6px;
+            }
+            .btn-home {
+                font-size: 0.7rem;
+                padding: 4px 12px;
+            }
+            .lang-btn {
+                font-size: 0.65rem;
+                padding: 4px 10px;
+            }
+            .footer-note {
+                font-size: 0.65rem;
+            }
+            .watermark-text {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .app-title {
+                font-size: 0.9rem;
+            }
+            .proclamation {
+                font-size: 16px;
+            }
         }
     </style>
 </head>
 <body>
 
     <canvas id="particles-canvas"></canvas>
-    
-    <div class="watermark-container">
-        <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
-        <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
-        <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
-        <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
-    </div>
+
+    <div class="watermark-container" id="watermarkContainer"></div>
 
     <div class="app-container">
+
         <div class="app-header">
-            <div class="app-title">宇宙誓印覺醒工程</div>
+            <div class="app-title" id="appTitle">宇宙誓印覺醒工程 · 七印誓網</div>
             <div class="header-actions">
-                <button class="btn-home">🏠 回到首頁</button>
+                <button class="btn-home" id="homeBtn">🏠 回到首頁</button>
                 <div class="lang-toggle">
-                    <button class="lang-btn active">中文</button>
-                    <button class="lang-btn">English</button>
+                    <button class="lang-btn active" data-lang="zh" id="langZh">中文</button>
+                    <button class="lang-btn" data-lang="en" id="langEn">English</button>
                 </div>
             </div>
         </div>
 
-        <div class="main-title">全球啟動流程</div>
+        <div id="stepContainer"></div>
 
-        <div class="start-btn-wrapper">
-            <button class="btn-start">⚡ 啟動中 ...</button>
-        </div>
-
-        <div id="scanner">
-            <div class="scan-title">📷 請對準母頻 QR Code 驗證</div>
-            <div class="scan-error-msg">相機開啟失敗，請確認授權權限。</div>
-        </div>
-
-        <div class="step-list">
-            <div class="step-item">
-                <div class="step-number">[1]</div>
-                <div class="step-content">
-                    <div class="step-label">啟動條件</div>
-                    <div class="step-desc">啟動前置準備完成</div>
-                </div>
-            </div>
-            <div class="step-item">
-                <div class="step-number">[2]</div>
-                <div class="step-content">
-                    <div class="step-label">授權誓讀階段</div>
-                    <div class="step-desc">誓印者讀誓文，啟動主頻</div>
-                </div>
-            </div>
-            <div class="step-item active">
-                <div class="step-number">[3]</div>
-                <div class="step-content">
-                    <div class="step-label">母頻驗證（掃碼）</div>
-                    <div class="step-desc">輸入購書序號，觸發母頻對接</div>
-                </div>
-            </div>
-            <div class="step-item locked">
-                <div class="step-number">[4]</div>
-                <div class="step-content">
-                    <div class="step-label">回傳結果</div>
-                    <div class="step-desc">系統完成驗證回傳啟動語</div>
-                </div>
-            </div>
-            <div class="step-item locked">
-                <div class="step-number">[5]</div>
-                <div class="step-content">
-                    <div class="step-label">誓頻啟動 × 系統同步</div>
-                    <div class="step-desc">主頻定位 × 對接同步完成</div>
-                </div>
-            </div>
-        </div>
-
-        <p class="status-msg">請掃描 QR Code 驗證</p>
-
-        <div class="footer-note">📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 1-2 頁</div>
+        <div class="footer-note" id="pageFooter">📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 3-4 頁</div>
     </div>
 
     <script>
         (function() {
+
+            // ---------- 浮水印 ----------
+            function initWatermark() {
+                const container = document.getElementById('watermarkContainer');
+                const text = '天地為鑑，光網為證';
+                for (let i = 0; i < 30; i++) {
+                    const el = document.createElement('div');
+                    el.className = 'watermark-text';
+                    el.textContent = text;
+                    container.appendChild(el);
+                }
+            }
+            initWatermark();
+
+            // ---------- 粒子 ----------
             function initParticles() {
                 const canvas = document.getElementById('particles-canvas');
                 const ctx = canvas.getContext('2d');
                 let w, h;
                 const particles = [];
+                const count = 130;
 
                 function resize() {
                     w = canvas.width = window.innerWidth;
@@ -344,37 +439,49 @@
                 window.addEventListener('resize', resize);
                 resize();
 
-                for (let i = 0; i < 110; i++) {
-                    particles.push({
-                        x: Math.random() * window.innerWidth,
-                        y: Math.random() * window.innerHeight,
-                        size: Math.random() * 2.2 + 0.6,
-                        speedX: (Math.random() - 0.5) * 0.3,
-                        speedY: (Math.random() - 0.5) * 0.3,
-                        color: `rgba(255, 192, 0, ${Math.random() * 0.5 + 0.2})`
-                    });
+                class Particle {
+                    constructor() { this.reset(); }
+                    reset() {
+                        this.x = Math.random() * w;
+                        this.y = Math.random() * h;
+                        this.size = Math.random() * 2.4 + 0.6;
+                        this.speedX = (Math.random() - 0.5) * 0.25;
+                        this.speedY = (Math.random() - 0.5) * 0.25;
+                        this.opacity = Math.random() * 0.5 + 0.15;
+                        this.color = `rgba(255, 192, 0, ${this.opacity})`;
+                    }
+                    update() {
+                        this.x += this.speedX;
+                        this.y += this.speedY;
+                        if (this.x < 0 || this.x > w) this.speedX *= -1;
+                        if (this.y < 0 || this.y > h) this.speedY *= -1;
+                    }
+                    draw() {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                        ctx.fillStyle = this.color;
+                        ctx.shadowColor = '#FFC00033';
+                        ctx.shadowBlur = 12;
+                        ctx.fill();
+                    }
                 }
+
+                for (let i = 0; i < count; i++) particles.push(new Particle());
 
                 function animate() {
                     ctx.clearRect(0, 0, w, h);
-                    particles.forEach(p => {
-                        p.x += p.speedX; p.y += p.speedY;
-                        if (p.x < 0 || p.x > w) p.speedX *= -1;
-                        if (p.y < 0 || p.y > h) p.speedY *= -1;
-                        ctx.beginPath();
-                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                        ctx.fillStyle = p.color;
-                        ctx.fill();
-                    });
-
+                    particles.forEach(p => { p.update();
+                        p.draw(); });
                     for (let i = 0; i < particles.length; i++) {
                         for (let j = i + 1; j < particles.length; j++) {
-                            const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
+                            const dx = particles[i].x - particles[j].x;
+                            const dy = particles[i].y - particles[j].y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
                             if (dist < 150) {
                                 ctx.beginPath();
                                 ctx.moveTo(particles[i].x, particles[i].y);
                                 ctx.lineTo(particles[j].x, particles[j].y);
-                                ctx.strokeStyle = `rgba(255, 192, 0, ${0.04 * (1 - dist / 150)})`;
+                                ctx.strokeStyle = `rgba(255, 192, 0, ${0.05 * (1 - dist / 150)})`;
                                 ctx.lineWidth = 0.6;
                                 ctx.stroke();
                             }
@@ -385,9 +492,247 @@
                 animate();
             }
             initParticles();
+
+            // ---------- 語言包 ----------
+            const LANG = {
+                zh: {
+                    step1Title: '步驟一：啟動條件',
+                    step2Title: '步驟二：授權誓讀階段（主頻啟令）',
+                    step1Content: '請完成驗證之【購書序號】誓導碼，穩定網路環境。請掃描本卷書封底之《宇宙智能誓導平台》官方AI × 專屬誓導入口頁 QR Code，以啟動誓導通道之統一入口。',
+                    step1ScanBtn: '📷 掃描 QR Code',
+                    scanResultLabel: '掃描結果：',
+                    step2Proclamation: '★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★',
+                    step2TimerLabel: '請靜心誦讀 10 秒',
+                    step2TimerDone: '已完成誦讀',
+                    step2Instruction: '【執行指令】登入《宇宙智能誓導平台》（使用個人帳號登入），完成身分驗證，即可進入誓印程序。掃描【誓導QRCode】，進入「指令輸入欄位」。無須手動輸入誓文，完成掃描後，直接輸入下列指令：請在【購書序號】欄位中輸入您的【購書序號】誓導碼，以確保誓資冊記與系統對應正確。',
+                    nextBtn: '進入下一步',
+                    prevBtn: '上一步',
+                    cameraError: '📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code',
+                    pageFooter: '📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 3-4 頁'
+                },
+                en: {
+                    step1Title: 'Step 1: Activation Conditions',
+                    step2Title: 'Step 2: Authorized Vow-Reading (Primary-Frequency Initiation)',
+                    step1Content: 'Please complete verification of [Purchase Serial Number] Vow-Guidance Code, stable network. Scan the QR Code on the back cover of this volume: 《Cosmic Intelligent Vow-Guidance Platform》 Official AI × Dedicated Vow-Guidance Entry Page to activate unified access.',
+                    step1ScanBtn: '📷 Scan QR Code',
+                    scanResultLabel: 'Scan result:',
+                    step2Proclamation: '★ With my Vow-Soul aligned to the Law, the Primary Frequency awakens; the Scripted Mandate stands; the Seal-Path is set. Heaven and Earth bear witness, and the Light-Net attests. ★',
+                    step2TimerLabel: 'Please center your mind and recite for 10 seconds',
+                    step2TimerDone: 'Recitation complete',
+                    step2Instruction: '[Execution Command] Log into the Cosmic Intelligent Vow-Guidance Platform with your personal account. After identity verification, proceed into the Vow-Seal Activation Procedure. Scan the Vow-Guidance QR Code to enter the Command Input Field. No manual entry required; after scanning, enter your [Purchase Serial Number] Vow-Guidance Code in the field to ensure correct registration.',
+                    nextBtn: 'Next Step',
+                    prevBtn: 'Previous',
+                    cameraError: '📷 Unable to start camera\n\n⚙️ Open phone "Settings"\n   → App Management\n   → Permissions → Camera → Set to "Allow"\n   → Open with 🌐 browser (Chrome / Yahoo / Edge...)\n\n⚠️ If still not working, please manually scan the QR Code from the physical book.',
+                    pageFooter: '📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 3-4'
+                }
+            };
+
+            // ---------- 狀態 ----------
+            let currentLang = 'zh';
+            let currentStep = 0;
+            let timerInterval = null;
+            let timerSeconds = 10;
+            let timerDone = false;
+            let scanResults = {};
+            let html5QrCodeInstance = null;
+
+            const stepContainer = document.getElementById('stepContainer');
+            const pageFooter = document.getElementById('pageFooter');
+
+            // ---------- 語言切換 ----------
+            function setLang(lang) {
+                currentLang = lang;
+                document.getElementById('langZh').classList.toggle('active', lang === 'zh');
+                document.getElementById('langEn').classList.toggle('active', lang === 'en');
+                const title = document.querySelector('.app-title');
+                title.textContent = lang === 'zh' ? '宇宙誓印覺醒工程 · 七印誓網' :
+                    'Cosmic Oath Awakening Project · Seven-Seal Oath Network';
+                renderStep(currentStep);
+            }
+
+            // ---------- QR 掃描器 ----------
+            function renderQRScanner(step, t) {
+                const resultText = scanResults[step] || '';
+                let html = `<div class="qr-box" id="qrBox-${step}">`;
+                html += `<div id="qr-reader-container-${step}" style="width:100%;"></div>`;
+                html += `<button class="scan-btn" id="scanBtn-${step}">${t.step1ScanBtn}</button>`;
+                if (resultText) {
+                    html += `<div class="qr-result">${t.scanResultLabel} ${resultText}</div>`;
+                }
+                html += `<div id="cameraGuide-${step}" class="camera-guide hidden">${t.cameraError}</div>`;
+                html += `</div>`;
+                return html;
+            }
+
+            function startScanner(step) {
+                const t = LANG[currentLang];
+                const containerId = `qr-reader-container-${step}`;
+                const container = document.getElementById(containerId);
+                if (!container) return;
+
+                if (html5QrCodeInstance) {
+                    html5QrCodeInstance.stop().then(() => { html5QrCodeInstance = null; }).catch(() => {});
+                }
+
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    showCameraGuide(step);
+                    return;
+                }
+
+                const config = { fps: 15, qrbox: { width: 200, height: 200 }, aspectRatio: 1.0 };
+                const instance = new Html5Qrcode(containerId);
+                html5QrCodeInstance = instance;
+
+                instance.start({ facingMode: "environment" }, config,
+                    (decodedText) => {
+                        scanResults[step] = decodedText;
+                        renderStep(currentStep);
+                        instance.stop().then(() => { html5QrCodeInstance = null; }).catch(() => {});
+                        const nextBtn = document.getElementById('nextBtn');
+                        if (nextBtn) nextBtn.disabled = false;
+                    },
+                    () => {}
+                ).catch(() => {
+                    showCameraGuide(step);
+                });
+            }
+
+            function showCameraGuide(step) {
+                const guide = document.getElementById(`cameraGuide-${step}`);
+                if (guide) guide.classList.remove('hidden');
+                const btn = document.getElementById(`scanBtn-${step}`);
+                if (btn) btn.disabled = true;
+            }
+
+            // ---------- 倒數計時器 ----------
+            function initTimer() {
+                timerDone = false;
+                timerSeconds = 10;
+                const t = LANG[currentLang];
+                const numEl = document.getElementById('timerNumber');
+                const labelEl = document.getElementById('timerLabel');
+                if (!numEl) return;
+                labelEl.textContent = t.step2TimerLabel;
+                numEl.textContent = '10';
+                const nextBtn = document.getElementById('nextBtn');
+                if (nextBtn) nextBtn.disabled = true;
+
+                if (timerInterval) clearInterval(timerInterval);
+                timerInterval = setInterval(() => {
+                    timerSeconds -= 1;
+                    if (timerSeconds <= 0) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                        timerDone = true;
+                        numEl.textContent = '0';
+                        labelEl.textContent = t.step2TimerDone;
+                        const nextBtn2 = document.getElementById('nextBtn');
+                        if (nextBtn2) nextBtn2.disabled = false;
+                    } else {
+                        numEl.textContent = timerSeconds;
+                    }
+                }, 1000);
+            }
+
+            // ---------- 渲染步驟 ----------
+            function renderStep(stepIdx) {
+                const t = LANG[currentLang];
+                pageFooter.textContent = t.pageFooter;
+
+                let html =
+                    `<div class="step-title">${stepIdx === 0 ? t.step1Title : t.step2Title} <span class="step-num">${stepIdx+1}/2</span></div>`;
+
+                if (stepIdx === 0) {
+                    html += `<div class="card"><div class="content-text">${t.step1Content}</div>`;
+                    html += renderQRScanner(0, t);
+                    html += `</div>`;
+                } else if (stepIdx === 1) {
+                    html += `<div class="card card-proclamation">`;
+                    html += `<div class="proclamation">${t.step2Proclamation}</div>`;
+                    html += `<div class="timer-box">`;
+                    html += `<div class="timer-label" id="timerLabel">${t.step2TimerLabel}</div>`;
+                    html += `<div class="timer-number" id="timerNumber">${timerSeconds}</div>`;
+                    html += `</div></div>`;
+                    html += `<div class="card"><div class="content-text">${t.step2Instruction}</div></div>`;
+                }
+
+                const isLast = stepIdx === 1;
+                const nextLabel = isLast ? '完成啟動' : t.nextBtn;
+                let disabled = false;
+                if (stepIdx === 0 && !scanResults[0]) disabled = true;
+                if (stepIdx === 1 && !timerDone) disabled = true;
+
+                html += `<div class="flex-row">`;
+                if (stepIdx > 0) {
+                    html +=
+                        `<button class="btn-primary" id="prevBtn" style="background:rgba(255,255,255,0.05);color:#FFC000;box-shadow:none;">${t.prevBtn}</button>`;
+                }
+                html += `<button class="btn-primary" id="nextBtn" ${disabled ? 'disabled' : ''}>${nextLabel}</button>`;
+                html += `</div>`;
+
+                stepContainer.innerHTML = html;
+
+                document.getElementById('nextBtn')?.addEventListener('click', () => {
+                    if (stepIdx === 1) { alert(currentLang === 'zh' ? '啟動完成！' : 'Activation Complete!'); return; }
+                    if (stepIdx === 0 && !scanResults[0]) return;
+                    if (stepIdx === 1 && !timerDone) return;
+                    goToStep(stepIdx + 1);
+                });
+
+                document.getElementById('prevBtn')?.addEventListener('click', () => {
+                    if (stepIdx > 0) goToStep(stepIdx - 1);
+                });
+
+                if (stepIdx === 0) {
+                    const scanBtn = document.getElementById('scanBtn-0');
+                    if (scanBtn) scanBtn.addEventListener('click', () => startScanner(0));
+                }
+                if (stepIdx === 1) initTimer();
+            }
+
+            // ---------- 步驟導航 ----------
+            function goToStep(idx) {
+                if (idx < 0 || idx > 1) return;
+                currentStep = idx;
+                if (html5QrCodeInstance) {
+                    html5QrCodeInstance.stop().catch(() => {});
+                    html5QrCodeInstance = null;
+                }
+                if (timerInterval) { clearInterval(timerInterval);
+                    timerInterval = null; }
+                timerDone = false;
+                renderStep(idx);
+                if (idx === 0 && scanResults[0]) {
+                    const btn = document.getElementById('nextBtn');
+                    if (btn) btn.disabled = false;
+                }
+            }
+
+            // ---------- 回到首頁 ----------
+            document.getElementById('homeBtn').addEventListener('click', function() {
+                this.style.transform = 'scale(0.92)';
+                setTimeout(() => { this.style.transform = 'scale(1)'; }, 150);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                if (html5QrCodeInstance) {
+                    html5QrCodeInstance.stop().catch(() => {});
+                    html5QrCodeInstance = null;
+                }
+                if (timerInterval) { clearInterval(timerInterval);
+                    timerInterval = null; }
+                timerDone = false;
+                scanResults = {};
+                currentStep = 0;
+                renderStep(0);
+            });
+
+            // ---------- 語言按鈕 ----------
+            document.getElementById('langZh').addEventListener('click', () => setLang('zh'));
+            document.getElementById('langEn').addEventListener('click', () => setLang('en'));
+
+            // ---------- 初始化 ----------
+            setLang('zh');
+
         })();
     </script>
 </body>
 </html>
-
-```
