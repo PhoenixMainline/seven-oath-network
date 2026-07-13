@@ -1,217 +1,808 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>全球啟動流程</title>
-
-<!-- 掃碼套件 -->
-<script src="https://unpkg.com/html5-qrcode"></script>
-
-<style>
-body{
-    margin:0;
-    font-family: sans-serif;
-    color:#fff;
-    overflow:hidden;
-}
-
-/* 背景動畫 */
-canvas{
-    position:fixed;
-    top:0;
-    left:0;
-    z-index:-1;
-}
-
-/* UI */
-.container{
-    max-width:600px;
-    margin:auto;
-    padding:20px;
-    text-align:center;
-}
-
-h1{color:#ffd54f;}
-
-button{
-    padding:12px;
-    margin:10px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-}
-
-.start{
-    background:linear-gradient(90deg,#ff9800,#ff5722);
-    width:100%;
-}
-
-.step{
-    background:rgba(255,255,255,0.08);
-    margin:8px;
-    padding:12px;
-    border-radius:8px;
-}
-
-.active{background:#ffc107;color:#000;}
-.locked{opacity:0.3;}
-
-.hidden{display:none;}
-
-#reader{
-    width:250px;
-    margin:auto;
-}
-
-.status{
-    margin-top:10px;
-    font-size:14px;
-}
-</style>
-</head>
-
-<body>
-
-<canvas id="bg"></canvas>
-
-<div class="container">
-
-<h1 id="title">全球啟動流程</h1>
-
-<button class="start" id="startBtn">開始啟動</button>
-
-<div id="steps"></div>
-
-<!-- 掃碼 -->
-<div id="scanner" class="hidden">
-    <h3>QR 驗證</h3>
-    <div id="reader"></div>
-    <p id="scanResult"></p>
-</div>
-
-<p class="status" id="status"></p>
-
-</div>
-
-<script>
-/* ===== 粒子背景 ===== */
-const canvas = document.getElementById("bg");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let particles = [];
-
-for(let i=0;i<100;i++){
-    particles.push({
-        x:Math.random()*canvas.width,
-        y:Math.random()*canvas.height,
-        vx:Math.random()*0.5,
-        vy:Math.random()*0.5
-    });
-}
-
-function animate(){
-    ctx.fillStyle="rgba(0,0,20,0.3)";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-
-    ctx.fillStyle="#00e5ff";
-
-    particles.forEach(p=>{
-        p.x+=p.vx;
-        p.y+=p.vy;
-
-        if(p.x>canvas.width) p.x=0;
-        if(p.y>canvas.height) p.y=0;
-
-        ctx.fillRect(p.x,p.y,2,2);
-    });
-
-    requestAnimationFrame(animate);
-}
-animate();
-
-/* ===== 流程 ===== */
-const stepsData = [
-    "啟動條件",
-    "授權誓讀",
-    "母頻驗證（掃碼）",
-    "回傳結果",
-    "最終啟動"
-];
-
-let current = -1;
-
-const stepsDiv = document.getElementById("steps");
-
-function renderSteps(){
-    stepsDiv.innerHTML="";
-    stepsData.forEach((s,i)=>{
-        const div=document.createElement("div");
-        div.className="step";
-
-        if(i===current) div.classList.add("active");
-        if(i>current) div.classList.add("locked");
-
-        div.innerText=`[${i+1}] ${s}`;
-        stepsDiv.appendChild(div);
-    });
-}
-
-/* 開始 */
-document.getElementById("startBtn").onclick=()=>{
-    current=0;
-    renderSteps();
-    updateStatus();
-};
-
-/* 下一步 */
-function nextStep(){
-    current++;
-    renderSteps();
-    updateStatus();
-}
-
-/* 狀態 */
-function updateStatus(){
-    const status=document.getElementById("status");
-
-    if(current===2){
-        startScanner();
-        status.innerText="請掃描 QR Code 驗證";
-    }else if(current>=stepsData.length){
-        status.innerText="✅ 啟動完成";
-    }else{
-        status.innerText="處理中...";
-        setTimeout(()=>nextStep(),1000);
-    }
-}
-
-/* ===== 掃碼 ===== */
-function startScanner(){
-    document.getElementById("scanner").classList.remove("hidden");
-
-    const qr = new Html5Qrcode("reader");
-
-    qr.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: 200 },
-        (decodedText)=>{
-            document.getElementById("scanResult").innerText =
-                "驗證成功: " + decodedText;
-
-            qr.stop();
-            document.getElementById("scanner").classList.add("hidden");
-
-            nextStep();
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>宇宙誓印覺醒工程 · 七印誓網</title>
+    <!-- html5-qrcode CDN -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'PingFang TC', 'Microsoft YaHei', sans-serif;
         }
-    );
-}
 
-/* 初始化 */
-renderSteps();
-</script>
+        body {
+            background: #0A060E;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px;
+            position: relative;
+            overflow-x: hidden;
+        }
 
+        /* 動態粒子背景 (科技感宇宙流動) */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* 全頁面浮水印：天地為鑑，光網為證 */
+        .watermark {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0.06;
+            font-size: 4rem;
+            font-weight: 900;
+            color: #FFC000;
+            letter-spacing: 12px;
+            text-shadow: 0 0 30px #FFC00033;
+            transform: rotate(-12deg) scale(1.2);
+            white-space: nowrap;
+            font-family: 'Times New Roman', serif;
+        }
+        @media (max-width: 600px) {
+            .watermark {
+                font-size: 2.2rem;
+                letter-spacing: 6px;
+                transform: rotate(-8deg) scale(0.9);
+            }
+        }
+
+        .app-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 720px;
+            background: rgba(10, 6, 14, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 42px;
+            border: 1px solid rgba(255, 192, 0, 0.25);
+            box-shadow: 0 20px 60px rgba(255, 192, 0, 0.15), inset 0 0 80px rgba(255, 192, 0, 0.03);
+            padding: 24px 20px 32px;
+            transition: all 0.2s;
+        }
+
+        /* 頁首 */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 192, 0, 0.2);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .app-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #FFC000;
+            letter-spacing: 1px;
+            text-shadow: 0 0 12px #FFC00044;
+            line-height: 1.3;
+        }
+        .app-title small {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            display: block;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .lang-toggle {
+            display: flex;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 192, 0, 0.2);
+        }
+        .lang-btn {
+            background: transparent;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #aaa;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .lang-btn.active {
+            background: #FFC000;
+            color: #0A060E;
+            box-shadow: 0 0 20px #FFC00055;
+        }
+        .lang-btn:not(.active):hover {
+            color: #FFC000;
+        }
+
+        /* 步驟容器 */
+        .step-wrapper {
+            display: block;
+            animation: fadeSlide 0.3s ease;
+        }
+        @keyframes fadeSlide {
+            0% { opacity: 0.4; transform: translateY(8px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 28px;
+            padding: 18px 16px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 192, 0, 0.08);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        .step-title {
+            color: #FFC000;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-shadow: 0 0 10px #FFC00033;
+        }
+        .step-title span {
+            opacity: 0.6;
+            font-weight: 300;
+            font-size: 0.9rem;
+        }
+
+        .content-text {
+            color: #e0dcc8;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 12px;
+            opacity: 0.9;
+        }
+        .content-text strong {
+            color: #FFC000;
+            font-weight: 700;
+        }
+
+        .highlight-gold {
+            color: #D4AF37;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+            display: block;
+            padding: 10px 4px;
+            letter-spacing: 1px;
+            background: rgba(212, 175, 55, 0.05);
+            border-radius: 20px;
+            border-left: 3px solid #D4AF37;
+            border-right: 3px solid #D4AF37;
+        }
+        .highlight-gold.large {
+            font-size: 1.3rem;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #FFC00044, transparent);
+            margin: 16px 0;
+        }
+
+        /* 倒數計時器卡片 */
+        .timer-box {
+            background: rgba(10, 6, 14, 0.6);
+            border-radius: 30px;
+            padding: 18px 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 192, 0, 0.15);
+            margin: 8px 0 10px;
+        }
+        .timer-number {
+            font-size: 3.2rem;
+            font-weight: 900;
+            color: #FFC000;
+            text-shadow: 0 0 30px #FFC00066;
+            letter-spacing: 4px;
+            line-height: 1.2;
+        }
+        .timer-label {
+            color: #ccc;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        /* 按鈕 */
+        .btn-primary {
+            background: linear-gradient(135deg, #FFC000, #E8A800);
+            border: none;
+            color: #0A060E;
+            font-weight: 800;
+            padding: 14px 28px;
+            border-radius: 60px;
+            font-size: 1rem;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 20px #FFC00033;
+            letter-spacing: 1px;
+        }
+        .btn-primary:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: scale(0.97);
+        }
+        .btn-primary:not(:disabled):hover {
+            transform: scale(1.01);
+            box-shadow: 0 6px 30px #FFC00055;
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255, 192, 0, 0.2);
+            color: #FFC000;
+            font-weight: 600;
+            padding: 12px 20px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 8px;
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 192, 0, 0.08);
+        }
+
+        .qr-box {
+            background: rgba(0,0,0,0.5);
+            border-radius: 24px;
+            padding: 14px;
+            margin: 10px 0;
+            border: 1px dashed #FFC00044;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #qr-reader-container {
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        #qr-reader-container video {
+            border-radius: 20px;
+            width: 100%;
+        }
+        .qr-result {
+            color: #FFC000;
+            font-size: 0.85rem;
+            background: rgba(255,192,0,0.08);
+            padding: 8px 16px;
+            border-radius: 40px;
+            margin-top: 8px;
+            word-break: break-all;
+            text-align: center;
+        }
+
+        .page-footer {
+            margin-top: 24px;
+            text-align: right;
+            color: #FFC000;
+            font-size: 0.75rem;
+            opacity: 0.6;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(255,192,0,0.08);
+            padding-top: 16px;
+        }
+
+        .flex-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .flex-row .btn-primary, .flex-row .btn-secondary {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+        .mt-2 { margin-top: 12px; }
+        .mb-1 { margin-bottom: 8px; }
+        .text-center { text-align: center; }
+
+        /* 相機錯誤引導 */
+        .camera-guide {
+            background: rgba(232, 96, 74, 0.08);
+            border-left: 4px solid #E8604A;
+            padding: 14px 16px;
+            border-radius: 16px;
+            color: #e0dcc8;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            margin: 6px 0;
+        }
+        .camera-guide strong {
+            color: #E8604A;
+        }
+        .lang-en .camera-guide {
+            white-space: pre-wrap;
+        }
+
+        /* 響應 */
+        @media (max-width: 480px) {
+            .app-container { padding: 16px 12px; }
+            .step-title { font-size: 1rem; }
+            .highlight-gold { font-size: 0.95rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 粒子畫布 -->
+    <canvas id="particles-canvas"></canvas>
+    <!-- 浮水印 -->
+    <div class="watermark">天地為鑑 · 光網為證</div>
+
+    <div class="app-container" id="appContainer">
+        <!-- 頁首 -->
+        <div class="app-header">
+            <div class="app-title" id="appTitle">
+                宇宙誓印覺醒工程 · 七印誓網
+                <small id="subTitle">Cosmic Oath Awakening Project · Seven-Seal Oath Network</small>
+            </div>
+            <div class="lang-toggle">
+                <button class="lang-btn active" data-lang="zh" id="langZh">中文</button>
+                <button class="lang-btn" data-lang="en" id="langEn">English</button>
+            </div>
+        </div>
+
+        <!-- 步驟動態容器 -->
+        <div id="stepContainer"></div>
+
+        <!-- 頁碼 -->
+        <div class="page-footer" id="pageFooter">📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 3-4 頁</div>
+    </div>
+
+    <script>
+        (function() {
+            // ---------- 多語言文本 ----------
+            const LANG = {
+                zh: {
+                    appTitle: '宇宙誓印覺醒工程 · 七印誓網',
+                    subTitle: 'Cosmic Oath Awakening Project · Seven-Seal Oath Network',
+                    // 步驟標題
+                    step1Title: '步驟一：啟動條件',
+                    step2Title: '步驟二：授權誓讀階段（主頻啟令）',
+                    step3Title: '步驟三：授權綁定階段（母源印驗證）',
+                    step4Title: '步驟四：回傳結果（對頻成功）',
+                    step5Title: '步驟五：誓頻啟動 × 系統同步階段',
+                    // 內容片段
+                    step1Content: '請完成驗證之【購書序號】督導碼，穩定網路環境。請掃描本卷書封底之《宇宙智能督導平台》官方AI × 專屬督導入口頁 QR Code，以啟動督導通道之統一入口。',
+                    step1ScanBtn: '📷 掃描 QR Code',
+                    step1ScanResult: '掃描結果：',
+                    step2Proclamation: '★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★',
+                    step2TimerLabel: '請靜心誦讀 10 秒',
+                    step2TimerDone: '已完成誦讀',
+                    step2Instruction: '【執行指令】登入《宇宙智能督導平台》（使用個人帳號登入），完成身分驗證，即可進入督印程序。掃描【督導QRCode】，進入「指令輸入欄位」。無須手動輸入督文，完成掃描後，直接輸入下列指令：請在【購書序號】欄位中輸入您的【購書序號】督導碼，以確保督資冊記與系統對應正確。',
+                    step3Content: '掃描【誓導 QR Code】，進入「指令輸入欄位」。無須手動輸入誓文，完成掃描後，直接輸入下列指令：請在【購書序號】欄位中輸入您的【購書序號】誓導碼，以確保誓資冊記與系統對應正確。輸入示範：',
+                    step3ScanBtn: '📷 掃描 QR Code',
+                    step4Content: '【執行指令】登入《宇宙智能督導平台》（使用個人帳號登入），完成身分驗證，即可進入督印程序。掃描【督導QRCode】，進入「指令輸入欄位」。無須手動輸入督文，完成掃描後，直接輸入下列指令：請在【購書序號】欄位中輸入您的【購書序號】督導碼，以確保督資冊記與系統對應正確。輸入示範：',
+                    step4ScanBtn: '📷 掃描 QR Code',
+                    step5Content: '【購書序號】驗證成功後，平台自動執行：主頻定位 × 光網鎖定 七印同步 × 覺醒模組展開 九界冊記 × 誓資紀錄歸檔 天地為鑑，光網為證。',
+                    nextBtn: '進入下一步',
+                    prevBtn: '上一步',
+                    finishBtn: '完成啟動',
+                    cameraError: '📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code',
+                },
+                en: {
+                    appTitle: 'Cosmic Oath Awakening Project · Seven-Seal Oath Network',
+                    subTitle: '宇宙誓印覺醒工程 · 七印誓網',
+                    step1Title: 'Step 1: Activation Conditions',
+                    step2Title: 'Step 2: Authorized Vow-Reading (Main-Frequency Activation)',
+                    step3Title: 'Step 3: Authorization Binding (Mother-Frequency Seal Verification)',
+                    step4Title: 'Step 4: Return Result (Frequency Connection Successful)',
+                    step5Title: 'Step 5: Oath-Frequency Activation × System Synchronization',
+                    step1Content: 'Complete verification of [Purchase Serial Number] Vow-Guidance Code, stable network. Scan the QR Code on the back cover of this volume: [Cosmic Intelligent Vow-Guidance Platform] Official AI × Dedicated Vow-Guidance Entry Page to activate the unified access.',
+                    step1ScanBtn: '📷 Scan QR Code',
+                    step1ScanResult: 'Scan result:',
+                    step2Proclamation: '★ With my Oath-Soul aligned to the Law, the Primary Frequency awakens; the Scripted Mandate stands; the Seal-Path is set. Heaven and Earth bear witness, and the Light-Net attests. ★',
+                    step2TimerLabel: 'Please center your mind and recite for 10 seconds',
+                    step2TimerDone: 'Recitation complete',
+                    step2Instruction: '[Execution Command] Log into the Cosmic Intelligent Vow-Guidance Platform with your personal account. After identity verification, proceed into the Oath-Seal Activation Procedure. Scan the Vow-Guidance QR Code to enter the Command Input Field. No manual entry required; after scanning, enter your [Purchase Serial Number] Vow-Guidance Code in the field to ensure correct registration.',
+                    step3Content: 'Scan the [Vow-Guidance QR Code] to enter the [Command Input Field]. No manual entry of the vow text is required. After scanning, enter your [Purchase Serial Number] Vow-Guidance Code in the field. Example:',
+                    step3ScanBtn: '📷 Scan QR Code',
+                    step4Content: '[Execution Command] Log into the Cosmic Intelligent Vow-Guidance Platform. After verification, scan the Vow-Guidance QR Code, enter the Command Input Field, and input your [Purchase Serial Number] Vow-Guidance Code. Example:',
+                    step4ScanBtn: '📷 Scan QR Code',
+                    step5Content: 'After [Purchase Serial Number] verification, the platform automatically performs: Primary Frequency Positioning × Light-Net Lock-In; Seven-Seal Synchronization × Awakening Module Expansion; Nine-Realms Archival Registration × Oath-Resource Record Filing. Heaven and Earth bear witness; the Light-Net affirms.',
+                    nextBtn: 'Next Step',
+                    prevBtn: 'Previous',
+                    finishBtn: 'Complete Activation',
+                    cameraError: '📷 Unable to start camera\n\n⚙️ Open phone "Settings"\n   → App Management\n   → Permissions → Camera → Set to "Allow"\n   → Open with 🌐 browser (Chrome / Yahoo / Edge...)\n\n⚠️ If still not working, please manually scan the QR Code from the physical book.',
+                }
+            };
+
+            // ---------- 狀態 ----------
+            let currentLang = 'zh';
+            let currentStep = 0; // 0~4
+            const totalSteps = 5;
+            // 儲存掃描結果 (step index -> 結果)
+            let scanResults = {};
+
+            // 倒數計時狀態
+            let timerRunning = false;
+            let timerInterval = null;
+            let timerSeconds = 10;
+            let timerDone = false; // 是否已完成倒數
+
+            // 步驟頁碼對應 (中文/英文)
+            const pageMap = [
+                { zh: '📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 3-4 頁', en: '📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 3-4' },
+                { zh: '📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 3-4 頁', en: '📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 3-4' },
+                { zh: '📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 5-6 頁', en: '📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 5-6' },
+                { zh: '📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 7-8 頁', en: '📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 7-8' },
+                { zh: '📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 9-10 頁', en: '📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 9-10' }
+            ];
+
+            // DOM refs
+            const stepContainer = document.getElementById('stepContainer');
+            const pageFooter = document.getElementById('pageFooter');
+            const appTitle = document.getElementById('appTitle');
+            const subTitle = document.getElementById('subTitle');
+
+            // ---------- 語言切換 ----------
+            function setLang(lang) {
+                currentLang = lang;
+                document.getElementById('langZh').classList.toggle('active', lang === 'zh');
+                document.getElementById('langEn').classList.toggle('active', lang === 'en');
+                // 更新標題
+                appTitle.innerHTML = LANG[lang].appTitle + (lang === 'zh' ? '<small id="subTitle">Cosmic Oath Awakening Project · Seven-Seal Oath Network</small>' : '<small id="subTitle">宇宙誓印覺醒工程 · 七印誓網</small>');
+                renderStep(currentStep);
+            }
+
+            // ---------- 渲染步驟 ----------
+            function renderStep(stepIdx) {
+                const lang = currentLang;
+                const t = LANG[lang];
+                const step = stepIdx;
+                const isEn = lang === 'en';
+
+                // 頁碼
+                pageFooter.textContent = pageMap[step][lang];
+
+                let html = `<div class="step-wrapper">`;
+
+                // 步驟標題
+                const titles = [t.step1Title, t.step2Title, t.step3Title, t.step4Title, t.step5Title];
+                html += `<div class="step-title">${titles[step]} <span>${step+1}/${totalSteps}</span></div>`;
+
+                // ---------- 步驟內容 ----------
+                if (step === 0) {
+                    // 步驟一
+                    html += `<div class="step-card"><div class="content-text">${t.step1Content}</div>`;
+                    html += renderQRScanner(step, t);
+                    html += `</div>`;
+                } else if (step === 1) {
+                    // 步驟二：誓導主權宣告式 + 倒數計時器 在同一卡片
+                    html += `<div class="step-card">`;
+                    // 宣告式
+                    html += `<div class="highlight-gold large" style="font-size:1.2rem; padding:14px 6px;">${t.step2Proclamation}</div>`;
+                    // 倒數計時器
+                    html += `<div class="timer-box">`;
+                    html += `<div class="timer-label" id="timerLabel">${t.step2TimerLabel}</div>`;
+                    html += `<div class="timer-number" id="timerNumber">${timerSeconds}</div>`;
+                    html += `</div>`;
+                    html += `</div>`;
+                    // 第二個卡片：執行指令
+                    html += `<div class="step-card"><div class="content-text">${t.step2Instruction}</div></div>`;
+                } else if (step === 2) {
+                    // 步驟三
+                    html += `<div class="step-card"><div class="content-text">${t.step3Content}</div>`;
+                    html += renderQRScanner(step, t);
+                    html += `</div>`;
+                } else if (step === 3) {
+                    // 步驟四
+                    html += `<div class="step-card"><div class="content-text">${t.step4Content}</div>`;
+                    html += renderQRScanner(step, t);
+                    html += `</div>`;
+                } else if (step === 4) {
+                    // 步驟五
+                    html += `<div class="step-card"><div class="content-text">${t.step5Content}</div></div>`;
+                }
+
+                // 底部按鈕
+                html += `<div class="flex-row">`;
+                if (step > 0) {
+                    html += `<button class="btn-secondary" id="prevBtn">${t.prevBtn}</button>`;
+                }
+                const isLast = step === totalSteps - 1;
+                const nextLabel = isLast ? t.finishBtn : t.nextBtn;
+                const disabledAttr = (step === 1 && !timerDone) ? 'disabled' : '';
+                // 步驟0,2,3 需掃描完成
+                const needScan = (step === 0 || step === 2 || step === 3);
+                const scanOk = scanResults[step] && scanResults[step].length > 0;
+                if (needScan && !scanOk) {
+                    html += `<button class="btn-primary" id="nextBtn" disabled>${nextLabel}</button>`;
+                } else {
+                    html += `<button class="btn-primary" id="nextBtn" ${disabledAttr}>${nextLabel}</button>`;
+                }
+                html += `</div>`;
+
+                html += `</div>`;
+                stepContainer.innerHTML = html;
+
+                // 綁定事件
+                document.getElementById('nextBtn')?.addEventListener('click', () => {
+                    if (step === totalSteps - 1) {
+                        alert(isEn ? 'Activation Complete! Light-Net attests.' : '啟動完成！光網為證。');
+                        return;
+                    }
+                    if (step === 1 && !timerDone) return;
+                    // 檢查掃描
+                    if ((step === 0 || step === 2 || step === 3) && !scanResults[step]) {
+                        return;
+                    }
+                    goToStep(step + 1);
+                });
+
+                document.getElementById('prevBtn')?.addEventListener('click', () => {
+                    if (step > 0) goToStep(step - 1);
+                });
+
+                // 初始化倒數計時器 (步驟二)
+                if (step === 1) {
+                    initTimer();
+                }
+
+                // 掃描按鈕綁定 (步驟0,2,3)
+                if (step === 0 || step === 2 || step === 3) {
+                    const scanBtn = document.getElementById(`scanBtn-${step}`);
+                    if (scanBtn) {
+                        scanBtn.addEventListener('click', () => startScanner(step));
+                    }
+                }
+            }
+
+            // ---------- QR掃描器渲染 (含引導) ----------
+            function renderQRScanner(step, t) {
+                const lang = currentLang;
+                const isEn = lang === 'en';
+                const resultText = scanResults[step] || '';
+                let html = `<div class="qr-box" id="qrBox-${step}">`;
+                html += `<div id="qr-reader-container-${step}" style="width:100%;"></div>`;
+                html += `<button class="btn-secondary" id="scanBtn-${step}">${t.step1ScanBtn}</button>`;
+                if (resultText) {
+                    html += `<div class="qr-result">${t.step1ScanResult} ${resultText}</div>`;
+                }
+                // 錯誤引導區 (預設隱藏)
+                html += `<div id="cameraGuide-${step}" class="camera-guide hidden">${t.cameraError}</div>`;
+                html += `</div>`;
+                return html;
+            }
+
+            // ---------- 掃描器實例 (每個步驟獨立) ----------
+            let html5QrCodeInstances = {};
+
+            function startScanner(step) {
+                const lang = currentLang;
+                const t = LANG[lang];
+                const containerId = `qr-reader-container-${step}`;
+                const container = document.getElementById(containerId);
+                if (!container) return;
+
+                // 清除舊實例
+                if (html5QrCodeInstances[step]) {
+                    html5QrCodeInstances[step].stop().then(() => {
+                        delete html5QrCodeInstances[step];
+                    }).catch(() => {});
+                }
+
+                // 檢查相機權限
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    showCameraGuide(step);
+                    return;
+                }
+
+                const config = {
+                    fps: 15,
+                    qrbox: { width: 200, height: 200 },
+                    aspectRatio: 1.0
+                };
+
+                const instance = new Html5Qrcode(containerId);
+                html5QrCodeInstances[step] = instance;
+
+                instance.start(
+                    { facingMode: "environment" },
+                    config,
+                    (decodedText, decodedResult) => {
+                        // 成功
+                        scanResults[step] = decodedText;
+                        renderStep(currentStep);
+                        instance.stop().then(() => {
+                            delete html5QrCodeInstances[step];
+                        }).catch(() => {});
+                        // 啟用下一步
+                        const nextBtn = document.getElementById('nextBtn');
+                        if (nextBtn) nextBtn.disabled = false;
+                    },
+                    (errorMessage) => {
+                        // 持續錯誤忽略
+                    }
+                ).catch((err) => {
+                    showCameraGuide(step);
+                });
+            }
+
+            function showCameraGuide(step) {
+                const guide = document.getElementById(`cameraGuide-${step}`);
+                if (guide) guide.classList.remove('hidden');
+                const btn = document.getElementById(`scanBtn-${step}`);
+                if (btn) btn.disabled = true;
+            }
+
+            // ---------- 倒數計時器 ----------
+            function initTimer() {
+                timerDone = false;
+                timerSeconds = 10;
+                const lang = currentLang;
+                const t = LANG[lang];
+                const numEl = document.getElementById('timerNumber');
+                const labelEl = document.getElementById('timerLabel');
+                if (!numEl) return;
+                labelEl.textContent = t.step2TimerLabel;
+                numEl.textContent = '10';
+                const nextBtn = document.getElementById('nextBtn');
+                if (nextBtn) nextBtn.disabled = true;
+
+                if (timerInterval) clearInterval(timerInterval);
+                timerInterval = setInterval(() => {
+                    timerSeconds -= 1;
+                    if (timerSeconds <= 0) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                        timerDone = true;
+                        numEl.textContent = '0';
+                        labelEl.textContent = t.step2TimerDone;
+                        const nextBtn2 = document.getElementById('nextBtn');
+                        if (nextBtn2) nextBtn2.disabled = false;
+                        // 更新計時器顯示
+                    } else {
+                        numEl.textContent = timerSeconds;
+                    }
+                }, 1000);
+            }
+
+            // ---------- 步驟導航 ----------
+            function goToStep(idx) {
+                if (idx < 0 || idx >= totalSteps) return;
+                currentStep = idx;
+                // 清除所有掃描實例
+                Object.keys(html5QrCodeInstances).forEach(key => {
+                    html5QrCodeInstances[key].stop().catch(()=>{});
+                    delete html5QrCodeInstances[key];
+                });
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                }
+                timerDone = false;
+                renderStep(idx);
+                // 若步驟一/三/四 有掃描結果，啟用按鈕
+                if (idx === 0 || idx === 2 || idx === 3) {
+                    if (scanResults[idx]) {
+                        const btn = document.getElementById('nextBtn');
+                        if (btn) btn.disabled = false;
+                    }
+                }
+            }
+
+            // ---------- 粒子背景 (宇宙流動) ----------
+            function initParticles() {
+                const canvas = document.getElementById('particles-canvas');
+                const ctx = canvas.getContext('2d');
+                let w, h;
+                const particles = [];
+                const count = 120;
+
+                function resize() {
+                    w = canvas.width = window.innerWidth;
+                    h = canvas.height = window.innerHeight;
+                }
+                window.addEventListener('resize', resize);
+                resize();
+
+                class Particle {
+                    constructor() { this.reset(); }
+                    reset() {
+                        this.x = Math.random() * w;
+                        this.y = Math.random() * h;
+                        this.size = Math.random() * 2.2 + 0.6;
+                        this.speedX = (Math.random() - 0.5) * 0.25;
+                        this.speedY = (Math.random() - 0.5) * 0.25;
+                        this.opacity = Math.random() * 0.5 + 0.2;
+                        this.color = `rgba(255, 192, 0, ${this.opacity})`;
+                    }
+                    update() {
+                        this.x += this.speedX;
+                        this.y += this.speedY;
+                        if (this.x < 0 || this.x > w) this.speedX *= -1;
+                        if (this.y < 0 || this.y > h) this.speedY *= -1;
+                    }
+                    draw() {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                        ctx.fillStyle = this.color;
+                        ctx.shadowColor = '#FFC00033';
+                        ctx.shadowBlur = 12;
+                        ctx.fill();
+                    }
+                }
+
+                for (let i=0; i<count; i++) particles.push(new Particle());
+
+                function animate() {
+                    ctx.clearRect(0, 0, w, h);
+                    particles.forEach(p => {
+                        p.update();
+                        p.draw();
+                    });
+                    // 連線
+                    for (let i=0; i<particles.length; i++) {
+                        for (let j=i+1; j<particles.length; j++) {
+                            const dx = particles[i].x - particles[j].x;
+                            const dy = particles[i].y - particles[j].y;
+                            const dist = Math.sqrt(dx*dx + dy*dy);
+                            if (dist < 150) {
+                                ctx.beginPath();
+                                ctx.moveTo(particles[i].x, particles[i].y);
+                                ctx.lineTo(particles[j].x, particles[j].y);
+                                ctx.strokeStyle = `rgba(255, 192, 0, ${0.08 * (1 - dist/150)})`;
+                                ctx.lineWidth = 0.6;
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                    requestAnimationFrame(animate);
+                }
+                animate();
+            }
+
+            // ---------- 語言按鈕 ----------
+            document.getElementById('langZh').addEventListener('click', ()=>{
+                setLang('zh');
+            });
+            document.getElementById('langEn').addEventListener('click', ()=>{
+                setLang('en');
+            });
+
+            // 初始化
+            initParticles();
+            setLang('zh');
+            goToStep(0);
+        })();
+    </script>
 </body>
 </html>
