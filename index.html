@@ -46,7 +46,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            opacity: 0.05;
+            opacity: 0.04;
             font-size: 3.5rem;
             font-weight: 900;
             color: #FFC000;
@@ -68,14 +68,14 @@
             position: relative;
             z-index: 10;
             width: 100%;
-            max-width: 640px;
-            background: rgba(10, 6, 14, 0.78);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border-radius: 42px;
-            border: 1px solid rgba(255, 192, 0, 0.25);
-            box-shadow: 0 20px 60px rgba(255, 192, 0, 0.15), inset 0 0 80px rgba(255, 192, 0, 0.03);
-            padding: 24px 20px 32px;
+            max-width: 680px;
+            background: rgba(16, 12, 24, 0.72);  /* 稍微亮一點的深色 */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 48px;
+            border: 1px solid rgba(255, 192, 0, 0.2);
+            box-shadow: 0 20px 60px rgba(255, 192, 0, 0.08), inset 0 0 80px rgba(255, 192, 0, 0.02);
+            padding: 28px 24px 32px;
             transition: all 0.2s;
         }
 
@@ -84,9 +84,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255, 192, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 192, 0, 0.15);
             padding-bottom: 14px;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
             gap: 8px;
         }
@@ -110,12 +110,40 @@
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+        }
+
+        .lang-toggle {
+            display: flex;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 192, 0, 0.15);
+        }
+        .lang-btn {
+            background: transparent;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #aaa;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .lang-btn.active {
+            background: #FFC000;
+            color: #0A060E;
+            box-shadow: 0 0 20px #FFC00055;
+        }
+        .lang-btn:not(.active):hover {
+            color: #FFC000;
         }
 
         .btn-home {
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 192, 0, 0.25);
+            border: 1px solid rgba(255, 192, 0, 0.2);
             color: #FFC000;
             padding: 6px 16px;
             border-radius: 30px;
@@ -126,11 +154,11 @@
             white-space: nowrap;
         }
         .btn-home:hover {
-            background: rgba(255, 192, 0, 0.12);
+            background: rgba(255, 192, 0, 0.10);
             box-shadow: 0 0 20px #FFC00022;
         }
 
-        /* 主內容 */
+        /* 主標題 */
         .main-title {
             text-align: center;
             color: #FFC000;
@@ -138,20 +166,20 @@
             font-weight: 800;
             letter-spacing: 4px;
             text-shadow: 0 0 30px #FFC00044;
-            margin-bottom: 20px;
+            margin-bottom: 8px;
         }
-        .main-title span {
+        .main-title .sub-en {
             display: block;
             font-size: 1rem;
             font-weight: 300;
-            opacity: 0.7;
+            opacity: 0.6;
             letter-spacing: 6px;
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
         .start-btn-wrapper {
             text-align: center;
-            margin: 20px 0 30px;
+            margin: 16px 0 28px;
         }
 
         .btn-start {
@@ -159,24 +187,30 @@
             border: none;
             color: #0A060E;
             font-weight: 800;
-            padding: 18px 50px;
+            padding: 16px 48px;
             border-radius: 60px;
             font-size: 1.4rem;
             cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 6px 30px #FFC00044;
+            box-shadow: 0 6px 30px #FFC00033;
             letter-spacing: 3px;
         }
         .btn-start:hover {
             transform: scale(1.02);
-            box-shadow: 0 8px 40px #FFC00066;
+            box-shadow: 0 8px 40px #FFC00055;
+        }
+        .btn-start:disabled {
+            opacity: 0.6;
+            transform: scale(0.98);
+            cursor: not-allowed;
         }
 
+        /* 步驟列表 */
         .step-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-top: 10px;
+            gap: 10px;
+            margin-top: 6px;
         }
 
         .step-item {
@@ -186,8 +220,8 @@
             background: rgba(255, 255, 255, 0.02);
             padding: 14px 20px;
             border-radius: 20px;
-            border-left: 4px solid rgba(255, 192, 0, 0.3);
-            transition: 0.2s;
+            border-left: 4px solid rgba(255, 192, 0, 0.25);
+            transition: 0.25s;
             cursor: default;
         }
         .step-item:hover {
@@ -195,39 +229,46 @@
             border-left-color: #FFC000;
         }
         .step-number {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 900;
             color: #FFC000;
-            min-width: 48px;
+            min-width: 44px;
             text-align: center;
             opacity: 0.8;
         }
-        .step-label {
-            color: #e0dcc8;
-            font-size: 1rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
+        .step-content {
+            flex: 1;
         }
-        .step-label small {
-            opacity: 0.5;
+        .step-label {
+            color: #e8e0d0;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        .step-label .en {
             font-weight: 300;
+            opacity: 0.5;
             margin-left: 8px;
             font-size: 0.8rem;
         }
-
         .step-desc {
-            color: #aaa;
+            color: #b0a8a0;
             font-size: 0.85rem;
-            margin-top: 4px;
+            margin-top: 2px;
             opacity: 0.7;
+        }
+        .step-desc .en {
+            opacity: 0.5;
+            margin-left: 6px;
+            font-size: 0.75rem;
         }
 
         .footer-note {
             margin-top: 28px;
             text-align: center;
             color: #FFC000;
-            font-size: 0.75rem;
-            opacity: 0.3;
+            font-size: 0.8rem;
+            opacity: 0.35;
             letter-spacing: 2px;
             border-top: 1px solid rgba(255,192,0,0.06);
             padding-top: 18px;
@@ -237,10 +278,14 @@
         @media (max-width: 480px) {
             .app-container { padding: 16px 12px; }
             .main-title { font-size: 1.4rem; }
-            .btn-start { font-size: 1.1rem; padding: 14px 30px; }
-            .step-item { padding: 12px 14px; }
-            .step-number { font-size: 1.2rem; min-width: 36px; }
+            .btn-start { font-size: 1.1rem; padding: 14px 28px; }
+            .step-item { padding: 12px 14px; gap: 10px; }
+            .step-number { font-size: 1.1rem; min-width: 34px; }
             .step-label { font-size: 0.9rem; }
+            .step-desc { font-size: 0.75rem; }
+            .header-actions { gap: 6px; }
+            .btn-home { font-size: 0.7rem; padding: 4px 12px; }
+            .lang-btn { font-size: 0.65rem; padding: 4px 10px; }
         }
     </style>
 </head>
@@ -253,19 +298,23 @@
     <div class="app-container" id="appContainer">
         <!-- 頁首 -->
         <div class="app-header">
-            <div class="app-title">
+            <div class="app-title" id="appTitle">
                 宇宙誓印覺醒工程
-                <small>Cosmic Oath Awakening Project</small>
+                <small id="appSub">Cosmic Oath Awakening Project</small>
             </div>
             <div class="header-actions">
                 <button class="btn-home" id="homeBtn">🏠 回到首頁</button>
+                <div class="lang-toggle">
+                    <button class="lang-btn active" data-lang="zh" id="langZh">中文</button>
+                    <button class="lang-btn" data-lang="en" id="langEn">English</button>
+                </div>
             </div>
         </div>
 
-        <!-- 主內容 -->
-        <div class="main-title">
+        <!-- 主標題 -->
+        <div class="main-title" id="mainTitle">
             全球啟動流程
-            <span>GLOBAL ACTIVATION PROCESS</span>
+            <span class="sub-en" id="mainSub">GLOBAL ACTIVATION PROCESS</span>
         </div>
 
         <!-- 開始按鈕 -->
@@ -275,48 +324,142 @@
 
         <!-- 步驟列表 -->
         <div class="step-list" id="stepList">
-            <div class="step-item">
-                <div class="step-number">[1]</div>
-                <div>
-                    <div class="step-label">啟動條件 <small>Activation Conditions</small></div>
-                    <div class="step-desc">啟動前置準備完成</div>
-                </div>
-            </div>
-            <div class="step-item">
-                <div class="step-number">[2]</div>
-                <div>
-                    <div class="step-label">授權督讀階段 <small>Authorized Vow-Reading</small></div>
-                    <div class="step-desc">督印者讀督文，啟動主頻</div>
-                </div>
-            </div>
-            <div class="step-item">
-                <div class="step-number">[3]</div>
-                <div>
-                    <div class="step-label">授權綁定階段 <small>Mother-Frequency Seal</small></div>
-                    <div class="step-desc">輸入購書序號，觸發母頻對接</div>
-                </div>
-            </div>
-            <div class="step-item">
-                <div class="step-number">[4]</div>
-                <div>
-                    <div class="step-label">回傳結果 <small>Frequency Connection</small></div>
-                    <div class="step-desc">系統完成驗證回傳啟動語</div>
-                </div>
-            </div>
-            <div class="step-item">
-                <div class="step-number">[5]</div>
-                <div>
-                    <div class="step-label">督頻啟動 × 系統同步 <small>Final Activation</small></div>
-                    <div class="step-desc">主頻定位 × 對接同步完成</div>
-                </div>
-            </div>
+            <!-- 由 JS 動態生成 -->
         </div>
 
-        <div class="footer-note">📄 【宇宙誓印覺醒工程 · 覺醒卷】</div>
+        <div class="footer-note" id="footerNote">📄 【宇宙誓印覺醒工程 · 覺醒卷】</div>
     </div>
 
     <script>
         (function() {
+            // ---------- 多語言資料 ----------
+            const DATA = {
+                zh: {
+                    appTitle: '宇宙誓印覺醒工程',
+                    appSub: 'Cosmic Oath Awakening Project',
+                    mainTitle: '全球啟動流程',
+                    mainSub: 'GLOBAL ACTIVATION PROCESS',
+                    startBtn: '▶ 開始啟動',
+                    steps: [
+                        { label: '啟動條件', enLabel: 'Activation Conditions', desc: '啟動前置準備完成', enDesc: 'Initial setup completed' },
+                        { label: '授權督讀階段', enLabel: 'Authorized Vow-Reading', desc: '督印者讀督文，啟動主頻', enDesc: 'The vow-seal executor recites the vow-text to activate the main frequency' },
+                        { label: '授權綁定階段', enLabel: 'Mother-Frequency Seal', desc: '輸入購書序號，觸發母頻對接', enDesc: 'Input the Purchase Serial Number to initiate the Mother Frequency Link' },
+                        { label: '回傳結果', enLabel: 'Frequency Connection', desc: '系統完成驗證回傳啟動語', enDesc: 'The system verifies successfully and returns the activation message' },
+                        { label: '督頻啟動 × 系統同步', enLabel: 'Final Activation', desc: '主頻定位 × 對接同步完成', enDesc: 'Primary Frequency Positioning × Interface Synchronization Completed' }
+                    ],
+                    footer: '📄 【宇宙誓印覺醒工程 · 覺醒卷】'
+                },
+                en: {
+                    appTitle: 'Cosmic Oath Awakening Project',
+                    appSub: '宇宙誓印覺醒工程',
+                    mainTitle: 'GLOBAL ACTIVATION PROCESS',
+                    mainSub: '全球啟動流程',
+                    startBtn: '▶ Start Activation',
+                    steps: [
+                        { label: 'Activation Conditions', enLabel: '啟動條件', desc: 'Initial setup completed', enDesc: '啟動前置準備完成' },
+                        { label: 'Authorized Vow-Reading', enLabel: '授權督讀階段', desc: 'The vow-seal executor recites the vow-text to activate the main frequency', enDesc: '督印者讀督文，啟動主頻' },
+                        { label: 'Mother-Frequency Seal', enLabel: '授權綁定階段', desc: 'Input the Purchase Serial Number to initiate the Mother Frequency Link', enDesc: '輸入購書序號，觸發母頻對接' },
+                        { label: 'Frequency Connection', enLabel: '回傳結果', desc: 'The system verifies successfully and returns the activation message', enDesc: '系統完成驗證回傳啟動語' },
+                        { label: 'Final Activation', enLabel: '督頻啟動 × 系統同步', desc: 'Primary Frequency Positioning × Interface Synchronization Completed', enDesc: '主頻定位 × 對接同步完成' }
+                    ],
+                    footer: '📄 【Cosmic Oath Awakening Project · Awakening Scroll】'
+                }
+            };
+
+            let currentLang = 'zh';
+
+            // DOM 參考
+            const stepList = document.getElementById('stepList');
+            const startBtn = document.getElementById('startBtn');
+            const homeBtn = document.getElementById('homeBtn');
+            const footerNote = document.getElementById('footerNote');
+            const appTitle = document.getElementById('appTitle');
+            const appSub = document.getElementById('appSub');
+            const mainTitle = document.getElementById('mainTitle');
+            const mainSub = document.getElementById('mainSub');
+
+            // 語言切換
+            function setLang(lang) {
+                currentLang = lang;
+                document.getElementById('langZh').classList.toggle('active', lang === 'zh');
+                document.getElementById('langEn').classList.toggle('active', lang === 'en');
+                render(lang);
+            }
+
+            function render(lang) {
+                const data = DATA[lang];
+                appTitle.innerHTML = data.appTitle + `<small id="appSub">${data.appSub}</small>`;
+                mainTitle.innerHTML = data.mainTitle + `<span class="sub-en" id="mainSub">${data.mainSub}</span>`;
+                startBtn.textContent = data.startBtn;
+                footerNote.textContent = data.footer;
+
+                // 步驟
+                let html = '';
+                data.steps.forEach((step, idx) => {
+                    const num = `[${idx+1}]`;
+                    html += `
+                        <div class="step-item" data-index="${idx}">
+                            <div class="step-number">${num}</div>
+                            <div class="step-content">
+                                <div class="step-label">${step.label} <span class="en">${step.enLabel}</span></div>
+                                <div class="step-desc">${step.desc} <span class="en">${step.enDesc}</span></div>
+                            </div>
+                        </div>
+                    `;
+                });
+                stepList.innerHTML = html;
+            }
+
+            // 開始啟動動畫
+            function startActivation() {
+                startBtn.disabled = true;
+                startBtn.textContent = currentLang === 'zh' ? '⚡ 啟動中 ...' : '⚡ Activating ...';
+                const items = document.querySelectorAll('.step-item');
+                let delay = 0;
+                items.forEach((item, idx) => {
+                    setTimeout(() => {
+                        item.style.borderLeftColor = '#FFC000';
+                        item.style.background = 'rgba(255, 192, 0, 0.08)';
+                        item.style.transition = '0.4s';
+                        const num = item.querySelector('.step-number');
+                        if (num) num.style.textShadow = '0 0 20px #FFC000';
+                    }, delay);
+                    delay += 300;
+                });
+                setTimeout(() => {
+                    startBtn.disabled = false;
+                    startBtn.textContent = DATA[currentLang].startBtn;
+                    // 重置樣式 (展示後復原)
+                    setTimeout(() => {
+                        items.forEach(item => {
+                            item.style.borderLeftColor = 'rgba(255, 192, 0, 0.25)';
+                            item.style.background = 'rgba(255, 255, 255, 0.02)';
+                            const num = item.querySelector('.step-number');
+                            if (num) num.style.textShadow = 'none';
+                        });
+                    }, 1800);
+                }, delay + 300);
+            }
+
+            // 回到首頁 (視覺效果)
+            function goHome() {
+                homeBtn.style.transform = 'scale(0.92)';
+                setTimeout(() => { homeBtn.style.transform = 'scale(1)'; }, 150);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                // 閃爍提示
+                startBtn.style.boxShadow = '0 0 40px #FFC00088';
+                setTimeout(() => {
+                    startBtn.style.boxShadow = '0 6px 30px #FFC00033';
+                }, 600);
+                // 重置步驟樣式
+                document.querySelectorAll('.step-item').forEach(item => {
+                    item.style.borderLeftColor = 'rgba(255, 192, 0, 0.25)';
+                    item.style.background = 'rgba(255, 255, 255, 0.02)';
+                    const num = item.querySelector('.step-number');
+                    if (num) num.style.textShadow = 'none';
+                });
+            }
+
             // ---------- 粒子背景 (宇宙流動) ----------
             function initParticles() {
                 const canvas = document.getElementById('particles-canvas');
@@ -377,7 +520,7 @@
                                 ctx.beginPath();
                                 ctx.moveTo(particles[i].x, particles[i].y);
                                 ctx.lineTo(particles[j].x, particles[j].y);
-                                ctx.strokeStyle = `rgba(255, 192, 0, ${0.07 * (1 - dist/160)})`;
+                                ctx.strokeStyle = `rgba(255, 192, 0, ${0.06 * (1 - dist/160)})`;
                                 ctx.lineWidth = 0.7;
                                 ctx.stroke();
                             }
@@ -388,64 +531,15 @@
                 animate();
             }
 
-            // ---------- 回到首頁 ----------
-            document.getElementById('homeBtn').addEventListener('click', function() {
-                // 簡單的震動回饋 + 重設樣式
-                this.style.transform = 'scale(0.95)';
-                setTimeout(() => { this.style.transform = 'scale(1)'; }, 150);
-                // 回到最上方 (視覺效果)
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                // 閃爍提示
-                const startBtn = document.getElementById('startBtn');
-                startBtn.style.boxShadow = '0 0 40px #FFC00088';
-                setTimeout(() => {
-                    startBtn.style.boxShadow = '0 6px 30px #FFC00044';
-                }, 600);
-                // 可選: 重置任何狀態 (目前只有展示)
-            });
+            // ---------- 事件綁定 ----------
+            document.getElementById('langZh').addEventListener('click', () => setLang('zh'));
+            document.getElementById('langEn').addEventListener('click', () => setLang('en'));
+            startBtn.addEventListener('click', startActivation);
+            homeBtn.addEventListener('click', goHome);
 
-            // ---------- 開始啟動按鈕 (動畫回饋) ----------
-            document.getElementById('startBtn').addEventListener('click', function() {
-                this.textContent = '⚡ 啟動中 ...';
-                this.disabled = true;
-                this.style.opacity = '0.7';
-                // 模擬啟動流程
-                const steps = document.querySelectorAll('.step-item');
-                let delay = 0;
-                steps.forEach((step, index) => {
-                    setTimeout(() => {
-                        step.style.borderLeftColor = '#FFC000';
-                        step.style.background = 'rgba(255, 192, 0, 0.08)';
-                        step.style.transition = '0.4s';
-                        // 加個小光點
-                        const num = step.querySelector('.step-number');
-                        if (num) {
-                            num.style.textShadow = '0 0 20px #FFC000';
-                        }
-                    }, delay);
-                    delay += 300;
-                });
-                // 最後恢復
-                setTimeout(() => {
-                    this.textContent = '▶ 開始啟動';
-                    this.disabled = false;
-                    this.style.opacity = '1';
-                    // 重置樣式 (展示用)
-                    setTimeout(() => {
-                        steps.forEach(step => {
-                            step.style.borderLeftColor = 'rgba(255, 192, 0, 0.3)';
-                            step.style.background = 'rgba(255, 255, 255, 0.02)';
-                            const num = step.querySelector('.step-number');
-                            if (num) {
-                                num.style.textShadow = 'none';
-                            }
-                        });
-                    }, 2000);
-                }, delay + 400);
-            });
-
-            // 初始化粒子
+            // 初始化
             initParticles();
+            setLang('zh');
         })();
     </script>
 </body>
