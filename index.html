@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>全球啟動流程 · 宇宙誓印覺醒</title>
+    <title>全球啟動流程 · 宇宙誓印覺醒工程</title>
+    <!-- 引入 QR Code 掃描核心套件 -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
         * {
             margin: 0;
@@ -18,7 +20,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 12px;
+            padding: 16px;
             position: relative;
             overflow-x: hidden;
         }
@@ -33,6 +35,7 @@
             pointer-events: none;
         }
 
+        /* 全網頁防偽浮水印 */
         .watermark-container {
             position: fixed;
             top: 0;
@@ -59,27 +62,28 @@
             text-align: center;
         }
 
+        /* 主主體容器 */
         .app-container {
             position: relative;
             z-index: 10;
             width: 100%;
             max-width: 680px;
-            background: #156082;
-            border-radius: 48px;
-            border: 1px solid rgba(255, 192, 0, 0.25);
+            background: rgba(21, 96, 130, 0.85);
+            border-radius: 36px;
+            border: 2px solid rgba(255, 192, 0, 0.25);
             box-shadow: 0 20px 60px rgba(10, 30, 50, 0.4);
             padding: 28px 24px 32px;
+            backdrop-filter: blur(10px);
         }
 
         .app-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255, 192, 0, 0.15);
+            border-bottom: 1px solid rgba(255, 192, 0, 0.2);
             padding-bottom: 14px;
             margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 8px;
+            gap: 12px;
         }
 
         .app-title {
@@ -87,7 +91,7 @@
             font-weight: 700;
             color: #FFC000;
             letter-spacing: 1.5px;
-            text-shadow: 0 0 12px #FFC00033;
+            text-shadow: 0 0 12px rgba(255, 192, 0, 0.2);
         }
 
         .header-actions {
@@ -104,6 +108,7 @@
             border-radius: 40px;
             border: 1px solid rgba(255, 192, 0, 0.15);
         }
+
         .lang-btn {
             background: transparent;
             border: none;
@@ -113,130 +118,216 @@
             font-weight: 600;
             color: rgba(255, 255, 255, 0.5);
             cursor: pointer;
+            transition: all 0.3s;
         }
+
         .lang-btn.active {
             background: #FFC000;
             color: #0A060E;
-        }
-
-        .btn-home {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 192, 0, 0.15);
-            color: #FFC000;
-            padding: 6px 16px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
+            font-weight: 700;
         }
 
         .main-title {
             text-align: center;
             color: #FFC000;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 800;
-            letter-spacing: 4px;
-            text-shadow: 0 0 30px #FFC00033;
-            margin-bottom: 8px;
-        }
-
-        .start-btn-wrapper {
-            text-align: center;
-            margin: 16px 0 28px;
-        }
-
-        .btn-start {
-            background: #827717;
-            border: none;
-            color: #fff;
-            font-weight: 800;
-            padding: 16px 48px;
-            border-radius: 60px;
-            font-size: 1.4rem;
-            cursor: pointer;
-            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
             letter-spacing: 3px;
+            text-shadow: 0 0 30px rgba(255, 192, 0, 0.2);
+            margin-bottom: 20px;
+            line-height: 1.4;
         }
 
+        /* 模組化步驟清單 */
         .step-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 16px;
         }
 
         .step-item {
             display: flex;
-            align-items: center;
-            gap: 16px;
-            background: transparent;
-            padding: 14px 20px;
-            border-radius: 20px;
-            border-left: 4px solid rgba(255, 192, 0, 0.20);
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 20px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 5px solid rgba(255, 192, 0, 0.2);
+            transition: all 0.4s ease;
         }
 
         .step-item.active {
-            background: rgba(255, 192, 0, 0.08);
+            background: rgba(255, 192, 0, 0.06);
             border-left-color: #FFC000;
+            border-color: rgba(255, 192, 0, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         }
 
         .step-item.locked {
-            opacity: 0.3;
+            opacity: 0.35;
+            pointer-events: none;
+        }
+
+        .step-top-line {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 12px;
         }
 
         .step-number {
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             font-weight: 900;
             color: #FFC000;
-            min-width: 44px;
-            text-align: center;
+            min-width: 40px;
         }
-        .step-content {
-            flex: 1;
-            text-align: left;
-        }
+
         .step-label {
             color: #f0e8d8;
-            font-size: 1rem;
-            font-weight: 600;
-        }
-        .step-desc {
-            color: #b0a898;
-            font-size: 0.85rem;
-            margin-top: 2px;
-            opacity: 0.7;
-        }
-
-        #scanner {
-            background: rgba(10, 30, 50, 0.3);
-            border: 1px solid rgba(255, 192, 0, 0.25);
-            border-radius: 24px;
-            padding: 24px;
-            margin: 15px 0;
-            text-align: center;
-        }
-        
-        .scan-title {
-            color: #FFC000;
-            font-size: 1.15rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            margin-bottom: 16px;
-        }
-
-        .scan-error-msg {
-            color: #00e5ff;
-            font-weight: bold;
-            font-size: 1rem;
-            margin: 10px 0;
-        }
-
-        .status-msg {
-            color: #FFC000;
-            font-weight: 600;
-            text-align: center;
-            margin: 18px 0 10px;
             font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        /* 內嵌區塊樣式 */
+        .step-sub-content {
+            padding-left: 40px;
+        }
+
+        .text-ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .text-ul li {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            position: relative;
+            padding-left: 18px;
+        }
+
+        .text-ul li::before {
+            content: "✦";
+            position: absolute;
+            left: 0;
+            color: #FFC000;
+        }
+
+        /* 按鈕樣式 */
+        .btn-action {
+            background: #827717;
+            border: none;
+            color: #fff;
+            font-weight: 700;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-action:hover {
+            background: #9a8c1f;
+        }
+
+        .btn-action:disabled {
+            background: #4a4535 !important;
+            color: rgba(255,255,255,0.3) !important;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* 相機與宣告卡片 */
+        .scanner-viewport {
+            background: #000;
+            border: 2px solid rgba(255, 192, 0, 0.3);
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+
+        #reader { width: 100%; }
+
+        .fallback-box {
+            background: rgba(232, 96, 74, 0.1);
+            border: 1px solid rgba(232, 96, 74, 0.3);
+            border-radius: 16px;
+            padding: 16px;
+            margin: 12px 0;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+
+        .scan-success-msg {
+            color: #00e5ff;
+            background: rgba(0, 229, 255, 0.08);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            padding: 10px;
+            border-radius: 10px;
+            margin: 12px 0;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .proclamation-card {
+            background: rgba(212, 175, 55, 0.08);
+            border: 2px dashed rgba(212, 175, 55, 0.4);
+            border-radius: 16px;
+            padding: 20px 16px;
+            margin: 12px 0;
+            text-align: center;
+        }
+
+        .proc-title { color: rgba(255, 255, 255, 0.6); font-size: 0.85rem; margin-bottom: 8px; }
+        .proc-text { color: #D4AF37; font-size: 1.15rem; font-weight: bold; line-height: 1.6; margin-bottom: 12px; }
+        
+        .timer-box {
+            font-size: 0.95rem;
+            color: #FFC000;
+            font-weight: 700;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 16px;
+            border-radius: 30px;
+            display: inline-block;
+            border: 1px solid rgba(255, 192, 0, 0.2);
+        }
+
+        /* 全域控制按鈕 */
+        .global-control-wrapper {
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        .btn-global-next {
+            background: linear-gradient(135deg, #FFC000, #E8604A);
+            border: none;
+            color: #0A060E;
+            font-weight: 800;
+            padding: 14px 48px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 25px rgba(232, 96, 74, 0.25);
+            transition: all 0.3s ease;
             letter-spacing: 1px;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .btn-global-next:disabled {
+            background: #4a4a4a;
+            color: rgba(255, 255, 255, 0.3);
+            box-shadow: none;
+            cursor: not-allowed;
         }
 
         .footer-note {
@@ -249,6 +340,8 @@
             border-top: 1px solid rgba(255,192,0,0.08);
             padding-top: 16px;
         }
+
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -259,77 +352,277 @@
         <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
         <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
         <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
-        <div class="watermark-text">天地為鑑，光網為證</div><div class="watermark-text">天地為鑑，光網為證</div>
     </div>
 
     <div class="app-container">
         <div class="app-header">
-            <div class="app-title">宇宙誓印覺醒工程</div>
+            <div class="app-title" id="appTitle">宇宙誓印覺醒工程</div>
             <div class="header-actions">
-                <button class="btn-home">🏠 回到首頁</button>
                 <div class="lang-toggle">
-                    <button class="lang-btn active">中文</button>
-                    <button class="lang-btn">English</button>
+                    <button class="lang-btn active" id="btnZh">中文</button>
+                    <button class="lang-btn" id="btnEn">English</button>
                 </div>
             </div>
         </div>
 
-        <div class="main-title">全球啟動流程</div>
+        <div class="main-title" id="mainTitle">全球啟動流程簡易卡（對頻序號 × 啟動指令）</div>
 
-        <div class="start-btn-wrapper">
-            <button class="btn-start">⚡ 啟動中 ...</button>
-        </div>
-
-        <div id="scanner">
-            <div class="scan-title">📷 請對準母頻 QR Code 驗證</div>
-            <div class="scan-error-msg">相機開啟失敗，請確認授權權限。</div>
-        </div>
-
+        <!-- 模組化步驟清單大容器 -->
         <div class="step-list">
-            <div class="step-item">
-                <div class="step-number">[1]</div>
-                <div class="step-content">
-                    <div class="step-label">啟動條件</div>
-                    <div class="step-desc">啟動前置準備完成</div>
+
+            <!-- 步驟一：驗證與掃碼 -->
+            <div id="itemStep1" class="step-item active">
+                <div class="step-top-line">
+                    <div class="step-number">[1]</div>
+                    <div class="step-label" id="lblStep1">啟動條件與母頻驗證</div>
+                </div>
+                <div class="step-sub-content">
+                    <ul class="text-ul" id="ulStep1">
+                        <li>請完成驗證之【購書序號】督導碼並維持穩定網路。</li>
+                        <li>請掃描本卷書封底之《宇宙智能督導平台》專屬入口 QR Code。</li>
+                    </ul>
+                    
+                    <button class="btn-action" id="btnStartScan">📷 啟動 QR Code 掃描</button>
+
+                    <div id="scannerWrapper" class="scanner-viewport hidden">
+                        <div id="reader"></div>
+                    </div>
+
+                    <div id="scanFallback" class="fallback-box hidden">
+                        <span id="fbText">⚙️ 請開啟手機「設定」 → 應用程式管理 → 權限 → 允許「相機」權限，並使用標準瀏覽器（Chrome/Safari）開啟。若仍支援失敗，請使用手動掃描器掃描。</span>
+                    </div>
+
+                    <div id="scanSuccess" class="scan-success-msg hidden"></div>
                 </div>
             </div>
-            <div class="step-item">
-                <div class="step-number">[2]</div>
-                <div class="step-content">
-                    <div class="step-label">授權誓讀階段</div>
-                    <div class="step-desc">誓印者讀誓文，啟動主頻</div>
+
+            <!-- 步驟二：授權誓讀與倒數 -->
+            <div id="itemStep2" class="step-item locked">
+                <div class="step-top-line">
+                    <div class="step-number">[2]</div>
+                    <div class="step-label" id="lblStep2">授權誓讀階段（主頻啟令）</div>
+                </div>
+                <div class="step-sub-content">
+                    <ul class="text-ul" id="ulStep2">
+                        <li>誓印者於登入前，須先於「指令輸入欄位」讀讀授權誓文，以啟動主頻授權。</li>
+                    </ul>
+
+                    <div class="proclamation-card">
+                        <div class="proc-title" id="procTitle">督導主權宣告式：</div>
+                        <div class="proc-text" id="procText">★ 吾以督號應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★</div>
+                        <div class="timer-box" id="timerBox">請靜心誦讀 10 秒</div>
+                    </div>
                 </div>
             </div>
-            <div class="step-item active">
-                <div class="step-number">[3]</div>
-                <div class="step-content">
-                    <div class="step-label">母頻驗證（掃碼）</div>
-                    <div class="step-desc">輸入購書序號，觸發母頻對接</div>
-                </div>
-            </div>
-            <div class="step-item locked">
-                <div class="step-number">[4]</div>
-                <div class="step-content">
-                    <div class="step-label">回傳結果</div>
-                    <div class="step-desc">系統完成驗證回傳啟動語</div>
-                </div>
-            </div>
-            <div class="step-item locked">
-                <div class="step-number">[5]</div>
-                <div class="step-content">
-                    <div class="step-label">誓頻啟動 × 系統同步</div>
-                    <div class="step-desc">主頻定位 × 對接同步完成</div>
-                </div>
-            </div>
+
+            <!-- ==========================================
+                 未來如果您有【步驟三】、【步驟四】，可以直接複製上方的結構，
+                 修改其 id (例如 itemStep3) 依序往下貼即可。
+                 ========================================== -->
+
         </div>
 
-        <p class="status-msg">請掃描 QR Code 驗證</p>
+        <!-- 底部全域下一步控制按鈕 -->
+        <div class="global-control-wrapper">
+            <button class="btn-global-next" id="btnGlobalNext" disabled>進入下一步</button>
+        </div>
 
-        <div class="footer-note">📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 1-2 頁</div>
+        <div class="footer-note" id="pageNote">📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 3-4 頁</div>
     </div>
 
     <script>
         (function() {
+            let currentLang = 'zh';
+            let currentStep = 1; 
+            let scanData = '';
+            let timerInterval = null;
+            let timeLeft = 10;
+            let html5Qrcode = null;
+
+            // 多語系資料字典
+            const i18n = {
+                zh: {
+                    appTitle: "宇宙誓印覺醒工程",
+                    mainTitle: "全球啟動流程簡易卡（對頻序號 × 啟動指令）",
+                    lblStep1: "啟動條件與母頻驗證",
+                    ulStep1: "<li>請完成驗證之【購書序號】督導碼並維持穩定網路。</li><li>請掃描本卷書封底之《宇宙智能督導平台》專屬入口 QR Code。</li>",
+                    btnStartScan: "📷 啟動 QR Code 掃描",
+                    fbText: "⚙️ 請開啟手機「設定」 → 應用程式管理 → 權限 → 允許「相機」權限，並使用標準瀏覽器（Chrome/Safari）開啟。若仍支援失敗，請使用手動掃描器掃描。",
+                    scanSuccess: "✨ 驗證成功: ",
+                    lblStep2: "授權誓讀階段（主頻啟令）",
+                    ulStep2: "<li>誓印者於登入前，須先於「指令輸入欄位」讀讀授權誓文，以啟動主頻授權。</li>",
+                    procTitle: "督導主權宣告式：",
+                    procText: "★ 吾以督號應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★",
+                    timerRecite: "請靜心誦讀 ",
+                    timerSec: " 秒",
+                    timerDone: "已完成誦讀",
+                    btnNext: "進入下一步",
+                    btnFinish: "最終啟動完成",
+                    pageNote: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 3-4 頁"
+                },
+                en: {
+                    appTitle: "Cosmic Oath Awakening Project",
+                    mainTitle: "Global Quick-Start Card (Frequency Code × Activation Command)",
+                    lblStep1: "Activation Conditions & Core Verification",
+                    ulStep1: "<li>Please complete verification of the [Purchase Serial Number] and maintain connection.</li><li>Scan the exclusive entry QR Code on the back cover.</li>",
+                    btnStartScan: "📷 Start QR Code Scan",
+                    fbText: "⚙️ Please open phone \"Settings\" → App Management → Permissions → Allow \"Camera\" permission, and open with standard browsers. If it still fails, use a manual scanner.",
+                    scanSuccess: "✨ Verification Successful: ",
+                    lblStep2: "[II] Authorized Vow-Recitation Phase (Primary Frequency)",
+                    ulStep2: "<li>Prior to login, the Oath-Bearer must recite the authorized oath-script in the command input field.</li>",
+                    procTitle: "Oath-Sovereignty Proclamation:",
+                    procText: "★ With my Oath-Soul aligned to the Law, the Primary Frequency awaken; the Scripted Mandate stands. Heaven and Earth bear witness. ★",
+                    timerRecite: "Please focus and recite for ",
+                    timerSec: "s",
+                    timerDone: "Recitation Completed",
+                    btnNext: "Proceed to Next Step",
+                    btnFinish: "Activation Finished",
+                    pageNote: "📄 【Cosmic Oath Awakening Project】: Pages 3-4"
+                }
+            };
+
+            const dom = {
+                appTitle: document.getElementById('appTitle'),
+                mainTitle: document.getElementById('mainTitle'),
+                lblStep1: document.getElementById('lblStep1'),
+                ulStep1: document.getElementById('ulStep1'),
+                btnStartScan: document.getElementById('btnStartScan'),
+                fbText: document.getElementById('fbText'),
+                scanSuccess: document.getElementById('scanSuccess'),
+                lblStep2: document.getElementById('lblStep2'),
+                ulStep2: document.getElementById('ulStep2'),
+                procTitle: document.getElementById('procTitle'),
+                procText: document.getElementById('procText'),
+                timerBox: document.getElementById('timerBox'),
+                btnGlobalNext: document.getElementById('btnGlobalNext'),
+                pageNote: document.getElementById('pageNote'),
+                itemStep1: document.getElementById('itemStep1'),
+                itemStep2: document.getElementById('itemStep2'),
+                scannerWrapper: document.getElementById('scannerWrapper'),
+                scanFallback: document.getElementById('scanFallback'),
+                btnZh: document.getElementById('btnZh'),
+                btnEn: document.getElementById('btnEn')
+            };
+
+            function renderUI() {
+                const lang = i18n[currentLang];
+                dom.appTitle.textContent = lang.appTitle;
+                dom.mainTitle.textContent = lang.mainTitle;
+                dom.lblStep1.textContent = lang.lblStep1;
+                dom.ulStep1.innerHTML = lang.ulStep1;
+                dom.btnStartScan.textContent = lang.btnStartScan;
+                dom.fbText.textContent = lang.fbText;
+                dom.lblStep2.textContent = lang.lblStep2;
+                dom.ulStep2.innerHTML = lang.ulStep2;
+                dom.procTitle.textContent = lang.procTitle;
+                dom.procText.textContent = lang.procText;
+                dom.pageNote.textContent = lang.pageNote;
+
+                if (scanData) {
+                    dom.scanSuccess.textContent = lang.scanSuccess + scanData;
+                }
+
+                // 根據當前大步驟渲染狀態
+                if (currentStep === 1) {
+                    dom.itemStep1.className = "step-item active";
+                    dom.itemStep2.className = "step-item locked";
+                    dom.btnGlobalNext.textContent = lang.btnNext;
+                    dom.btnGlobalNext.disabled = !scanData;
+                } else if (currentStep === 2) {
+                    dom.itemStep1.className = "step-item";
+                    dom.itemStep2.className = "step-item active";
+                    dom.btnGlobalNext.textContent = lang.btnFinish;
+                    updateTimerUI();
+                }
+            }
+
+            function updateTimerUI() {
+                const lang = i18n[currentLang];
+                if (timeLeft <= 0) {
+                    dom.timerBox.textContent = lang.timerDone;
+                } else {
+                    dom.timerBox.textContent = lang.timerRecite + timeLeft + lang.timerSec;
+                }
+            }
+
+            function startStep2Timer() {
+                clearInterval(timerInterval);
+                timeLeft = 10;
+                dom.btnGlobalNext.disabled = true;
+                updateTimerUI();
+
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    updateTimerUI();
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        dom.btnGlobalNext.disabled = false;
+                    }
+                }, 1000);
+            }
+
+            // QR Code 掃描器控制
+            dom.btnStartScan.addEventListener('click', () => {
+                dom.scannerWrapper.classList.remove('hidden');
+                dom.scanFallback.classList.add('hidden');
+                
+                if (!html5Qrcode) {
+                    html5Qrcode = new Html5Qrcode("reader");
+                }
+
+                html5Qrcode.start(
+                    { facingMode: "environment" },
+                    { fps: 10, qrbox: { width: 250, height: 250 } },
+                    (decodedText) => {
+                        scanData = decodedText;
+                        dom.scanSuccess.classList.remove('hidden');
+                        dom.scanSuccess.textContent = i18n[currentLang].scanSuccess + decodedText;
+                        dom.btnGlobalNext.disabled = false;
+                        dom.scannerWrapper.classList.add('hidden');
+                        html5Qrcode.stop();
+                    },
+                    (err) => {}
+                ).catch(() => {
+                    dom.scannerWrapper.classList.add('hidden');
+                    dom.scanFallback.classList.remove('hidden');
+                });
+            });
+
+            // 全域下一步按鈕控制
+            dom.btnGlobalNext.addEventListener('click', () => {
+                if (currentStep === 1) {
+                    currentStep = 2;
+                    renderUI();
+                    startStep2Timer();
+                } else if (currentStep === 2) {
+                    // ==========================================
+                    // 未來如果您貼上【步驟三】，可以把這裡的邏輯改為：
+                    // currentStep = 3; renderUI();
+                    // 下方為目前步驟二完結的提示
+                    // ==========================================
+                    alert(currentLang === 'zh' ? '系統對接同步完成！' : 'System synchronization completed!');
+                    currentStep = 1;
+                    scanData = '';
+                    dom.scanSuccess.classList.add('hidden');
+                    renderUI();
+                }
+            });
+
+            // 語系切換監聽
+            dom.btnZh.addEventListener('click', () => {
+                currentLang = 'zh';
+                dom.btnZh.classList.add('active');
+                dom.btnEn.classList.remove('active');
+                renderUI();
+            });
+            dom.btnEn.addEventListener('click', () => {
+                currentLang = 'en';
+                dom.btnEn.classList.add('active');
+                dom.btnZh.classList.remove('active');
+                renderUI();
+            });
+
+            // 星穹背景動態效果粒子
             function initParticles() {
                 const canvas = document.getElementById('particles-canvas');
                 const ctx = canvas.getContext('2d');
@@ -343,14 +636,14 @@
                 window.addEventListener('resize', resize);
                 resize();
 
-                for (let i = 0; i < 110; i++) {
+                for (let i = 0; i < 80; i++) {
                     particles.push({
                         x: Math.random() * window.innerWidth,
                         y: Math.random() * window.innerHeight,
-                        size: Math.random() * 2.2 + 0.6,
-                        speedX: (Math.random() - 0.5) * 0.3,
-                        speedY: (Math.random() - 0.5) * 0.3,
-                        color: `rgba(255, 192, 0, ${Math.random() * 0.5 + 0.2})`
+                        size: Math.random() * 2 + 0.5,
+                        speedX: (Math.random() - 0.5) * 0.2,
+                        speedY: (Math.random() - 0.5) * 0.2,
+                        color: `rgba(255, 192, 0, ${Math.random() * 0.4 + 0.2})`
                     });
                 }
 
@@ -365,24 +658,13 @@
                         ctx.fillStyle = p.color;
                         ctx.fill();
                     });
-
-                    for (let i = 0; i < particles.length; i++) {
-                        for (let j = i + 1; j < particles.length; j++) {
-                            const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
-                            if (dist < 150) {
-                                ctx.beginPath();
-                                ctx.moveTo(particles[i].x, particles[i].y);
-                                ctx.lineTo(particles[j].x, particles[j].y);
-                                ctx.strokeStyle = `rgba(255, 192, 0, ${0.04 * (1 - dist / 150)})`;
-                                ctx.lineWidth = 0.6;
-                                ctx.stroke();
-                            }
-                        }
-                    }
                     requestAnimationFrame(animate);
                 }
                 animate();
             }
+
+            // 初始化網頁
+            renderUI();
             initParticles();
         })();
     </script>
