@@ -1,217 +1,452 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>全球啟動流程</title>
-
-<!-- 掃碼套件 -->
-<script src="https://unpkg.com/html5-qrcode"></script>
-
-<style>
-body{
-    margin:0;
-    font-family: sans-serif;
-    color:#fff;
-    overflow:hidden;
-}
-
-/* 背景動畫 */
-canvas{
-    position:fixed;
-    top:0;
-    left:0;
-    z-index:-1;
-}
-
-/* UI */
-.container{
-    max-width:600px;
-    margin:auto;
-    padding:20px;
-    text-align:center;
-}
-
-h1{color:#ffd54f;}
-
-button{
-    padding:12px;
-    margin:10px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-}
-
-.start{
-    background:linear-gradient(90deg,#ff9800,#ff5722);
-    width:100%;
-}
-
-.step{
-    background:rgba(255,255,255,0.08);
-    margin:8px;
-    padding:12px;
-    border-radius:8px;
-}
-
-.active{background:#ffc107;color:#000;}
-.locked{opacity:0.3;}
-
-.hidden{display:none;}
-
-#reader{
-    width:250px;
-    margin:auto;
-}
-
-.status{
-    margin-top:10px;
-    font-size:14px;
-}
-</style>
-</head>
-
-<body>
-
-<canvas id="bg"></canvas>
-
-<div class="container">
-
-<h1 id="title">全球啟動流程</h1>
-
-<button class="start" id="startBtn">開始啟動</button>
-
-<div id="steps"></div>
-
-<!-- 掃碼 -->
-<div id="scanner" class="hidden">
-    <h3>QR 驗證</h3>
-    <div id="reader"></div>
-    <p id="scanResult"></p>
-</div>
-
-<p class="status" id="status"></p>
-
-</div>
-
-<script>
-/* ===== 粒子背景 ===== */
-const canvas = document.getElementById("bg");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let particles = [];
-
-for(let i=0;i<100;i++){
-    particles.push({
-        x:Math.random()*canvas.width,
-        y:Math.random()*canvas.height,
-        vx:Math.random()*0.5,
-        vy:Math.random()*0.5
-    });
-}
-
-function animate(){
-    ctx.fillStyle="rgba(0,0,20,0.3)";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-
-    ctx.fillStyle="#00e5ff";
-
-    particles.forEach(p=>{
-        p.x+=p.vx;
-        p.y+=p.vy;
-
-        if(p.x>canvas.width) p.x=0;
-        if(p.y>canvas.height) p.y=0;
-
-        ctx.fillRect(p.x,p.y,2,2);
-    });
-
-    requestAnimationFrame(animate);
-}
-animate();
-
-/* ===== 流程 ===== */
-const stepsData = [
-    "啟動條件",
-    "授權誓讀",
-    "母頻驗證（掃碼）",
-    "回傳結果",
-    "最終啟動"
-];
-
-let current = -1;
-
-const stepsDiv = document.getElementById("steps");
-
-function renderSteps(){
-    stepsDiv.innerHTML="";
-    stepsData.forEach((s,i)=>{
-        const div=document.createElement("div");
-        div.className="step";
-
-        if(i===current) div.classList.add("active");
-        if(i>current) div.classList.add("locked");
-
-        div.innerText=`[${i+1}] ${s}`;
-        stepsDiv.appendChild(div);
-    });
-}
-
-/* 開始 */
-document.getElementById("startBtn").onclick=()=>{
-    current=0;
-    renderSteps();
-    updateStatus();
-};
-
-/* 下一步 */
-function nextStep(){
-    current++;
-    renderSteps();
-    updateStatus();
-}
-
-/* 狀態 */
-function updateStatus(){
-    const status=document.getElementById("status");
-
-    if(current===2){
-        startScanner();
-        status.innerText="請掃描 QR Code 驗證";
-    }else if(current>=stepsData.length){
-        status.innerText="✅ 啟動完成";
-    }else{
-        status.innerText="處理中...";
-        setTimeout(()=>nextStep(),1000);
-    }
-}
-
-/* ===== 掃碼 ===== */
-function startScanner(){
-    document.getElementById("scanner").classList.remove("hidden");
-
-    const qr = new Html5Qrcode("reader");
-
-    qr.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: 200 },
-        (decodedText)=>{
-            document.getElementById("scanResult").innerText =
-                "驗證成功: " + decodedText;
-
-            qr.stop();
-            document.getElementById("scanner").classList.add("hidden");
-
-            nextStep();
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>全球啟動流程 · 宇宙誓印覺醒</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'PingFang TC', 'Microsoft YaHei', sans-serif;
         }
-    );
-}
 
-/* 初始化 */
-renderSteps();
-</script>
+        body {
+            background: #0A060E;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px;
+            position: relative;
+            overflow-x: hidden;
+        }
 
+        /* 動態粒子背景 (宇宙流動) */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* 浮水印：天地為鑑，光網為證 */
+        .watermark {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0.05;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #FFC000;
+            letter-spacing: 12px;
+            text-shadow: 0 0 30px #FFC00033;
+            transform: rotate(-12deg) scale(1.1);
+            white-space: nowrap;
+            font-family: 'Times New Roman', serif;
+        }
+        @media (max-width: 600px) {
+            .watermark {
+                font-size: 2rem;
+                letter-spacing: 6px;
+                transform: rotate(-8deg) scale(0.9);
+            }
+        }
+
+        .app-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 640px;
+            background: rgba(10, 6, 14, 0.78);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 42px;
+            border: 1px solid rgba(255, 192, 0, 0.25);
+            box-shadow: 0 20px 60px rgba(255, 192, 0, 0.15), inset 0 0 80px rgba(255, 192, 0, 0.03);
+            padding: 24px 20px 32px;
+            transition: all 0.2s;
+        }
+
+        /* 頁首 */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 192, 0, 0.2);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .app-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #FFC000;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 12px #FFC00044;
+            line-height: 1.3;
+        }
+        .app-title small {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            display: block;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-home {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 192, 0, 0.25);
+            color: #FFC000;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+        .btn-home:hover {
+            background: rgba(255, 192, 0, 0.12);
+            box-shadow: 0 0 20px #FFC00022;
+        }
+
+        /* 主內容 */
+        .main-title {
+            text-align: center;
+            color: #FFC000;
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            text-shadow: 0 0 30px #FFC00044;
+            margin-bottom: 20px;
+        }
+        .main-title span {
+            display: block;
+            font-size: 1rem;
+            font-weight: 300;
+            opacity: 0.7;
+            letter-spacing: 6px;
+            margin-top: 4px;
+        }
+
+        .start-btn-wrapper {
+            text-align: center;
+            margin: 20px 0 30px;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #FFC000, #E8A800);
+            border: none;
+            color: #0A060E;
+            font-weight: 800;
+            padding: 18px 50px;
+            border-radius: 60px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 6px 30px #FFC00044;
+            letter-spacing: 3px;
+        }
+        .btn-start:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 40px #FFC00066;
+        }
+
+        .step-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 14px 20px;
+            border-radius: 20px;
+            border-left: 4px solid rgba(255, 192, 0, 0.3);
+            transition: 0.2s;
+            cursor: default;
+        }
+        .step-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-left-color: #FFC000;
+        }
+        .step-number {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #FFC000;
+            min-width: 48px;
+            text-align: center;
+            opacity: 0.8;
+        }
+        .step-label {
+            color: #e0dcc8;
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .step-label small {
+            opacity: 0.5;
+            font-weight: 300;
+            margin-left: 8px;
+            font-size: 0.8rem;
+        }
+
+        .step-desc {
+            color: #aaa;
+            font-size: 0.85rem;
+            margin-top: 4px;
+            opacity: 0.7;
+        }
+
+        .footer-note {
+            margin-top: 28px;
+            text-align: center;
+            color: #FFC000;
+            font-size: 0.75rem;
+            opacity: 0.3;
+            letter-spacing: 2px;
+            border-top: 1px solid rgba(255,192,0,0.06);
+            padding-top: 18px;
+        }
+
+        /* 響應 */
+        @media (max-width: 480px) {
+            .app-container { padding: 16px 12px; }
+            .main-title { font-size: 1.4rem; }
+            .btn-start { font-size: 1.1rem; padding: 14px 30px; }
+            .step-item { padding: 12px 14px; }
+            .step-number { font-size: 1.2rem; min-width: 36px; }
+            .step-label { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 粒子畫布 -->
+    <canvas id="particles-canvas"></canvas>
+    <!-- 浮水印 -->
+    <div class="watermark">天地為鑑 · 光網為證</div>
+
+    <div class="app-container" id="appContainer">
+        <!-- 頁首 -->
+        <div class="app-header">
+            <div class="app-title">
+                宇宙誓印覺醒工程
+                <small>Cosmic Oath Awakening Project</small>
+            </div>
+            <div class="header-actions">
+                <button class="btn-home" id="homeBtn">🏠 回到首頁</button>
+            </div>
+        </div>
+
+        <!-- 主內容 -->
+        <div class="main-title">
+            全球啟動流程
+            <span>GLOBAL ACTIVATION PROCESS</span>
+        </div>
+
+        <!-- 開始按鈕 -->
+        <div class="start-btn-wrapper">
+            <button class="btn-start" id="startBtn">▶ 開始啟動</button>
+        </div>
+
+        <!-- 步驟列表 -->
+        <div class="step-list" id="stepList">
+            <div class="step-item">
+                <div class="step-number">[1]</div>
+                <div>
+                    <div class="step-label">啟動條件 <small>Activation Conditions</small></div>
+                    <div class="step-desc">啟動前置準備完成</div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">[2]</div>
+                <div>
+                    <div class="step-label">授權督讀階段 <small>Authorized Vow-Reading</small></div>
+                    <div class="step-desc">督印者讀督文，啟動主頻</div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">[3]</div>
+                <div>
+                    <div class="step-label">授權綁定階段 <small>Mother-Frequency Seal</small></div>
+                    <div class="step-desc">輸入購書序號，觸發母頻對接</div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">[4]</div>
+                <div>
+                    <div class="step-label">回傳結果 <small>Frequency Connection</small></div>
+                    <div class="step-desc">系統完成驗證回傳啟動語</div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">[5]</div>
+                <div>
+                    <div class="step-label">督頻啟動 × 系統同步 <small>Final Activation</small></div>
+                    <div class="step-desc">主頻定位 × 對接同步完成</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-note">📄 【宇宙誓印覺醒工程 · 覺醒卷】</div>
+    </div>
+
+    <script>
+        (function() {
+            // ---------- 粒子背景 (宇宙流動) ----------
+            function initParticles() {
+                const canvas = document.getElementById('particles-canvas');
+                const ctx = canvas.getContext('2d');
+                let w, h;
+                const particles = [];
+                const count = 130;
+
+                function resize() {
+                    w = canvas.width = window.innerWidth;
+                    h = canvas.height = window.innerHeight;
+                }
+                window.addEventListener('resize', resize);
+                resize();
+
+                class Particle {
+                    constructor() { this.reset(); }
+                    reset() {
+                        this.x = Math.random() * w;
+                        this.y = Math.random() * h;
+                        this.size = Math.random() * 2.4 + 0.6;
+                        this.speedX = (Math.random() - 0.5) * 0.3;
+                        this.speedY = (Math.random() - 0.5) * 0.3;
+                        this.opacity = Math.random() * 0.5 + 0.2;
+                        this.color = `rgba(255, 192, 0, ${this.opacity})`;
+                    }
+                    update() {
+                        this.x += this.speedX;
+                        this.y += this.speedY;
+                        if (this.x < 0 || this.x > w) this.speedX *= -1;
+                        if (this.y < 0 || this.y > h) this.speedY *= -1;
+                    }
+                    draw() {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                        ctx.fillStyle = this.color;
+                        ctx.shadowColor = '#FFC00044';
+                        ctx.shadowBlur = 14;
+                        ctx.fill();
+                    }
+                }
+
+                for (let i=0; i<count; i++) particles.push(new Particle());
+
+                function animate() {
+                    ctx.clearRect(0, 0, w, h);
+                    particles.forEach(p => {
+                        p.update();
+                        p.draw();
+                    });
+                    // 連線
+                    for (let i=0; i<particles.length; i++) {
+                        for (let j=i+1; j<particles.length; j++) {
+                            const dx = particles[i].x - particles[j].x;
+                            const dy = particles[i].y - particles[j].y;
+                            const dist = Math.sqrt(dx*dx + dy*dy);
+                            if (dist < 160) {
+                                ctx.beginPath();
+                                ctx.moveTo(particles[i].x, particles[i].y);
+                                ctx.lineTo(particles[j].x, particles[j].y);
+                                ctx.strokeStyle = `rgba(255, 192, 0, ${0.07 * (1 - dist/160)})`;
+                                ctx.lineWidth = 0.7;
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                    requestAnimationFrame(animate);
+                }
+                animate();
+            }
+
+            // ---------- 回到首頁 ----------
+            document.getElementById('homeBtn').addEventListener('click', function() {
+                // 簡單的震動回饋 + 重設樣式
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => { this.style.transform = 'scale(1)'; }, 150);
+                // 回到最上方 (視覺效果)
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                // 閃爍提示
+                const startBtn = document.getElementById('startBtn');
+                startBtn.style.boxShadow = '0 0 40px #FFC00088';
+                setTimeout(() => {
+                    startBtn.style.boxShadow = '0 6px 30px #FFC00044';
+                }, 600);
+                // 可選: 重置任何狀態 (目前只有展示)
+            });
+
+            // ---------- 開始啟動按鈕 (動畫回饋) ----------
+            document.getElementById('startBtn').addEventListener('click', function() {
+                this.textContent = '⚡ 啟動中 ...';
+                this.disabled = true;
+                this.style.opacity = '0.7';
+                // 模擬啟動流程
+                const steps = document.querySelectorAll('.step-item');
+                let delay = 0;
+                steps.forEach((step, index) => {
+                    setTimeout(() => {
+                        step.style.borderLeftColor = '#FFC000';
+                        step.style.background = 'rgba(255, 192, 0, 0.08)';
+                        step.style.transition = '0.4s';
+                        // 加個小光點
+                        const num = step.querySelector('.step-number');
+                        if (num) {
+                            num.style.textShadow = '0 0 20px #FFC000';
+                        }
+                    }, delay);
+                    delay += 300;
+                });
+                // 最後恢復
+                setTimeout(() => {
+                    this.textContent = '▶ 開始啟動';
+                    this.disabled = false;
+                    this.style.opacity = '1';
+                    // 重置樣式 (展示用)
+                    setTimeout(() => {
+                        steps.forEach(step => {
+                            step.style.borderLeftColor = 'rgba(255, 192, 0, 0.3)';
+                            step.style.background = 'rgba(255, 255, 255, 0.02)';
+                            const num = step.querySelector('.step-number');
+                            if (num) {
+                                num.style.textShadow = 'none';
+                            }
+                        });
+                    }, 2000);
+                }, delay + 400);
+            });
+
+            // 初始化粒子
+            initParticles();
+        })();
+    </script>
 </body>
 </html>
