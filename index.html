@@ -1,18 +1,14 @@
-```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>【宇宙誓印覺醒工程 • 七印誓網】</title>
-    <!-- 引入 FontAwesome 圖標庫 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
-    <!-- html5-qrcode CDN -->
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js">
     </script>
     <style>
-        /* STREAMING_CHUNK: Styling the deep space layout and particle flows... */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -31,13 +27,15 @@
             position: relative;
         }
 
-        /* 🌌 金黃動態星芒粒子流動層：完全穿透內外框 */
         .particle-container {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                radial-gradient(#d4af37, rgba(212,175,55,.3) 1px, transparent 30px),
-                radial-gradient(#d4af37, rgba(212,175,55,.2) 2px, transparent 40px);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(#d4af37, rgba(212, 175, 55, .3) 1px, transparent 30px),
+                radial-gradient(#d4af37, rgba(212, 175, 55, .2) 2px, transparent 40px);
             background-size: 350px 350px, 450px 450px;
             background-position: 0 0, 90px 150px;
             animation: starMove 90s linear infinite;
@@ -47,14 +45,20 @@
         }
 
         @keyframes starMove {
-            from { transform: translateY(0px) rotate(0deg); }
-            to { transform: translateY(-1000px) rotate(360deg); }
+            from {
+                transform: translateY(0px) rotate(0deg);
+            }
+            to {
+                transform: translateY(-1000px) rotate(360deg);
+            }
         }
 
-        /* 📜 「天地為鑑・光網為證」純CSS防偽浮水印層 */
         .watermark-layer {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: 1;
             pointer-events: none;
             opacity: 0.04;
@@ -73,7 +77,6 @@
             user-select: none;
         }
 
-        /* STREAMING_CHUNK: Implementing the HUD container and panels... */
         .hud-container {
             width: 100%;
             max-width: 660px;
@@ -92,13 +95,15 @@
         .hud-container::after {
             content: "";
             position: absolute;
-            top: 18px; right: 18px; width: 14px; height: 14px;
+            top: 18px;
+            right: 18px;
+            width: 14px;
+            height: 14px;
             border-top: 3px solid #00bfff;
             border-right: 3px solid #00bfff;
             pointer-events: none;
         }
 
-        /* 🏠 左上角 "首頁 ->" 點選鍵樣式 */
         .home-breadcrumb {
             font-size: 0.85rem;
             color: #00bfff;
@@ -121,7 +126,6 @@
             transform: translateX(-2px);
         }
 
-        /* 頁首 */
         .hud-header {
             display: flex;
             justify-content: space-between;
@@ -167,7 +171,6 @@
             box-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
         }
 
-        /* 全球流程導航欄 */
         .flow-nav {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -213,8 +216,14 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .hud-card {
@@ -233,7 +242,6 @@
             gap: 10px;
         }
 
-        /* 步驟一條件清單 */
         .condition-list {
             list-style: none;
             display: flex;
@@ -256,7 +264,6 @@
             text-shadow: 0 0 8px rgba(0, 230, 118, 0.3);
         }
 
-        /* 步驟二 */
         .proclamation-text {
             font-size: 21px;
             color: #D4AF37;
@@ -316,7 +323,6 @@
             margin-top: 5px;
         }
 
-        /* QR Code 掃描區 */
         .qr-result {
             color: #00e676;
             font-size: 0.9rem;
@@ -339,7 +345,6 @@
             text-align: left;
         }
 
-        /* 重新開始按鈕 */
         .btn-restart {
             background: transparent;
             border: 1px solid rgba(255, 192, 0, 0.2);
@@ -361,7 +366,6 @@
             box-shadow: 0 0 15px rgba(255, 192, 0, 0.1);
         }
 
-        /* 頁尾按鈕 */
         .hud-footer {
             margin-top: 35px;
             padding-top: 18px;
@@ -418,11 +422,13 @@
             gap: 6px;
         }
 
-        /* 宇宙科技感提示對話框 */
         .hud-dialog {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(2, 6, 17, 0.85);
             z-index: 1000;
             justify-content: center;
@@ -480,10 +486,8 @@
 </head>
 <body>
 
-    <!-- 🌌 金黃動態星芒粒子層 -->
     <div class="particle-container"></div>
 
-    <!-- 📜 純CSS防偽浮水印背景 -->
     <div class="watermark-layer">
         <div class="watermark-text">天地為鑑・光網為證</div>
         <div class="watermark-text">天地為鑑・光網為證</div>
@@ -496,13 +500,11 @@
     </div>
 
     <div class="hud-container">
-        <!-- 🏠 左上角 "首頁 ->" 點選鍵 -->
         <a class="home-breadcrumb" id="homeBtn" onclick="returnToHome()">
             <i class="fa-solid fa-house"></i>
             <span id="homeBtnText">首頁 -></span>
         </a>
 
-        <!-- 頁首 -->
         <header class="hud-header">
             <div class="app-title" id="appTitle">【宇宙誓印覺醒工程 • 七印誓網】</div>
             <div class="lang-switch-group">
@@ -511,7 +513,6 @@
             </div>
         </header>
 
-        <!-- 全球流程導航欄 -->
         <nav class="flow-nav">
             <div class="flow-node active" id="node1">[1] 啟動條件</div>
             <div class="flow-node" id="node2">[2] 授權誓讀</div>
@@ -520,9 +521,8 @@
             <div class="flow-node" id="node5">[5] 系統同步</div>
         </nav>
 
-        <!-- 步驟主內容區 -->
         <main class="step-content">
-            
+
             <!-- 【步驟一：啟動條件】主面板 -->
             <div class="step-panel active" id="panelStep1">
                 <div class="hud-card">
@@ -609,7 +609,6 @@
                     </div>
                 </div>
 
-                <!-- QR Code 掃描區 -->
                 <div class="hud-card" id="qrScanCard">
                     <div style="text-align:center; padding:10px 0;">
                         <div style="color:#d4af37; font-size:1rem; font-weight:bold; margin-bottom:12px;">
@@ -631,7 +630,6 @@
                     </div>
                 </div>
 
-                <!-- 輸入示範 -->
                 <div class="hud-card">
                     <div class="card-title">
                         <i class="fa-solid fa-pen-to-square"></i>
@@ -674,7 +672,6 @@
         </footer>
     </div>
 
-    <!-- 🌌 自訂 HUD 科技感提示框 -->
     <div id="hudDialog" class="hud-dialog">
         <div class="hud-dialog-content">
             <div class="hud-dialog-text" id="hudDialogText">提示訊息</div>
@@ -683,17 +680,12 @@
     </div>
 
     <script>
-        /* STREAMING_CHUNK: 語系與狀態管理 */
         let currentLang = 'zh';
-        let currentStep = 1;          // 1=步驟一, 2=步驟二, 3=步驟三
-
-        // 倒數計時器狀態變數（步驟二專用）
+        let currentStep = 1;
         let countdownTimer = null;
         let startTimeout = null;
         let countdownSeconds = 10;
-        let timerState = 'initial';   // 'initial' | 'counting' | 'complete'
-
-        // QR Code 掃描實例
+        let timerState = 'initial';
         let html5QrCodeInstance = null;
 
         const langPack = {
@@ -718,13 +710,12 @@
                 inst2: "於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。",
                 btnBack: "返回",
                 btnNext: "進入下一步",
-                pageMarkerStep1: "📄 【宇宙誓印覺醒工程 • 覺醒卷】：第 3-4 頁",
-                pageMarkerStep2: "📄 【宇宙誓印覺醒工程 • 覺醒卷】：第 3-4 頁",
-                pageMarkerStep3: "📄 【宇宙誓印覺醒工程 • 覺醒卷】：第 5-6 頁",
+                pageMarkerStep1: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 3-4 頁",
+                pageMarkerStep2: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 3-4 頁",
+                pageMarkerStep3: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 5-6 頁",
                 btnRestart: "↺ 重新開始",
                 dialogStep3: "✅ 步驟二已解鎖！等待步驟三綁定通道與掃描代碼整合。",
                 dialogStep4: "✅ 步驟三已完成！等待步驟四（回傳結果）。",
-                // 步驟三
                 cardTitle3: "【三】授權綁定階段（母源印驗證）",
                 inst3_1: "掃描【誓導QRCode】，進入「指令輸入欄位」。",
                 inst3_2: "無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
@@ -758,13 +749,12 @@
                 inst2: "Within The 'Oath-Soul Resonance Channel', Center The Mind For 10 Seconds And Recite Or Silently Read The Text To Ensure Frequency Precision And Successful Execution.",
                 btnBack: "Back",
                 btnNext: "Next Step",
-                pageMarkerStep1: "📄 【Cosmic Oath Awakening Project • Awakening Scroll】: Pages 3-4",
-                pageMarkerStep2: "📄 【Cosmic Oath Awakening Project • Awakening Scroll】: Pages 3-4",
-                pageMarkerStep3: "📄 【Cosmic Oath Awakening Project • Awakening Scroll】: Pages 5-6",
+                pageMarkerStep1: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 3-4",
+                pageMarkerStep2: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 3-4",
+                pageMarkerStep3: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 5-6",
                 btnRestart: "↺ Restart",
                 dialogStep3: "✅ Step 2 successfully unlocked! Awaiting Step 3 connection and scanning integration.",
                 dialogStep4: "✅ Step 3 completed! Awaiting Step 4 (Return Result).",
-                // Step 3
                 cardTitle3: "[III] Authorization Binding Phase (Mother-Frequency Seal Verification)",
                 inst3_1: "Scan the 【Vow-Guidance QR Code】 to enter the 「Command Input Field」.",
                 inst3_2: "No manual entry of the vow text is required. After completing the scan, directly enter the following:",
@@ -779,11 +769,6 @@
             }
         };
 
-        /* ============================================================
-           核心函式
-           ============================================================ */
-
-        // 語系切換
         function switchLanguage(lang) {
             currentLang = lang;
             document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -801,20 +786,17 @@
             document.getElementById('node4').textContent = p.node4;
             document.getElementById('node5').textContent = p.node5;
 
-            // 步驟一
             document.getElementById('cardTitleText1').textContent = p.cardTitle1;
             document.getElementById('cond1').textContent = p.cond1;
             document.getElementById('cond2').textContent = p.cond2;
             document.getElementById('cond3').textContent = p.cond3;
 
-            // 步驟二
             document.getElementById('proclamationText').textContent = p.proclamation;
             document.getElementById('cardTitleText2').textContent = p.cardTitle2;
             document.getElementById('inst1').textContent = p.inst1;
             document.getElementById('inst2').textContent = p.inst2;
             document.getElementById('btnRestartText').textContent = p.btnRestart;
 
-            // 步驟三
             document.getElementById('cardTitleText3').textContent = p.cardTitle3;
             document.getElementById('inst3_1').textContent = p.inst3_1;
             document.getElementById('inst3_2').textContent = p.inst3_2;
@@ -827,7 +809,6 @@
             document.getElementById('qrResultText').textContent = p.qrResultText;
             document.getElementById('cameraGuideText').textContent = p.cameraGuideText;
 
-            // 計時器文字
             updateTimerTextDisplay();
 
             document.getElementById('btnBackText').textContent = p.btnBack;
@@ -843,7 +824,6 @@
             }
         }
 
-        // 更新倒數文字（步驟二專用）
         function updateTimerTextDisplay() {
             const textEl = document.getElementById('timerTitleText');
             if (!textEl) return;
@@ -857,7 +837,6 @@
             }
         }
 
-        // 對話框
         function openHudDialog(msg) {
             document.getElementById('hudDialogText').textContent = msg;
             document.getElementById('hudDialog').classList.add('active');
@@ -867,7 +846,6 @@
             document.getElementById('hudDialog').classList.remove('active');
         }
 
-        // 返回首頁（步驟一）
         function returnToHome() {
             clearInterval(countdownTimer);
             clearTimeout(startTimeout);
@@ -888,30 +866,23 @@
             document.getElementById('panelStep2').classList.remove('active');
             document.getElementById('panelStep3').classList.remove('active');
 
-            const backBtn = document.getElementById('btnBack');
-            backBtn.classList.remove('enabled');
-
-            const nextBtn = document.getElementById('btnNext');
-            nextBtn.classList.add('enabled');
-
+            document.getElementById('btnBack').classList.remove('enabled');
+            document.getElementById('btnNext').classList.add('enabled');
             document.getElementById('timerNumber').textContent = countdownSeconds;
 
             switchLanguage(currentLang);
         }
 
-        // 返回按鈕
         function handleBackClick() {
             if (currentStep === 2) {
                 clearInterval(countdownTimer);
                 clearTimeout(startTimeout);
                 returnToHome();
             } else if (currentStep === 3) {
-                // 從步驟三返回步驟二
                 if (html5QrCodeInstance) {
                     html5QrCodeInstance.stop().catch(() => {});
                     html5QrCodeInstance = null;
                 }
-                // 隱藏掃描結果與錯誤訊息
                 document.getElementById('qrScanResult').style.display = 'none';
                 document.getElementById('cameraGuide').style.display = 'none';
 
@@ -921,7 +892,6 @@
                 document.getElementById('panelStep2').classList.add('active');
                 currentStep = 2;
 
-                // 重啟步驟二的計時器
                 clearInterval(countdownTimer);
                 clearTimeout(startTimeout);
                 timerState = 'initial';
@@ -955,7 +925,6 @@
             }
         }
 
-        // 下一步按鈕
         function handleNextClick() {
             if (currentStep === 1) {
                 goToStep2();
@@ -968,19 +937,12 @@
             }
         }
 
-        /* ============================================================
-           步驟二專用：倒數計時器
-           ============================================================ */
-
         function goToStep2() {
             currentStep = 2;
-
             document.getElementById('node1').classList.remove('active');
             document.getElementById('node2').classList.add('active');
-
             document.getElementById('panelStep1').classList.remove('active');
             document.getElementById('panelStep2').classList.add('active');
-
             document.getElementById('btnBack').classList.add('enabled');
 
             const nextBtn = document.getElementById('btnNext');
@@ -1055,28 +1017,16 @@
             }, 500);
         }
 
-        /* ============================================================
-           步驟三：QR Code 掃描
-           ============================================================ */
-
         function goToStep3() {
             currentStep = 3;
-
             document.getElementById('node2').classList.remove('active');
             document.getElementById('node3').classList.add('active');
-
             document.getElementById('panelStep2').classList.remove('active');
             document.getElementById('panelStep3').classList.add('active');
-
             document.getElementById('btnBack').classList.add('enabled');
-
-            const nextBtn = document.getElementById('btnNext');
-            nextBtn.classList.remove('enabled');
-
-            // 重置掃描狀態
+            document.getElementById('btnNext').classList.remove('enabled');
             document.getElementById('qrScanResult').style.display = 'none';
             document.getElementById('cameraGuide').style.display = 'none';
-
             switchLanguage(currentLang);
         }
 
@@ -1113,17 +1063,11 @@
             });
         }
 
-        // 初始化
         window.onload = function() {
-            const backBtn = document.getElementById('btnBack');
-            backBtn.classList.remove('enabled');
-
-            const nextBtn = document.getElementById('btnNext');
-            nextBtn.classList.add('enabled');
-
+            document.getElementById('btnBack').classList.remove('enabled');
+            document.getElementById('btnNext').classList.add('enabled');
             switchLanguage('zh');
         };
     </script>
 </body>
 </html>
-```
