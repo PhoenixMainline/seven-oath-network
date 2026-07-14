@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -10,9 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* ==========================================================================
-           1. 宇宙深邃背景、金黃星芒粒子與防偽浮水印（原設定調回）
-           ========================================================================== */
+        /* STREAMING_CHUNK: Styling the deep space layout and particle flows... */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -73,13 +70,11 @@
             user-select: none;
         }
 
-        /* ==========================================================================
-           2. HUD 科技內框（調回通透原設定，允許粒子穿透）
-           ========================================================================== */
+        /* STREAMING_CHUNK: Implementing the HUD container and panels... */
         .hud-container {
             width: 100%;
             max-width: 660px;
-            background: rgba(4, 13, 33, 0.4); /* 調回通透的原設定，不遮擋粒子 */
+            background: rgba(4, 13, 33, 0.4);
             border: 1.5px solid rgba(0, 191, 255, 0.3);
             box-shadow: 0 0 40px rgba(0, 191, 255, 0.15), inset 0 0 20px rgba(0, 191, 255, 0.05);
             border-radius: 28px;
@@ -91,7 +86,6 @@
             margin: 20px;
         }
 
-        /* 右上角 HUD 光標細節 */
         .hud-container::after {
             content: "";
             position: absolute;
@@ -101,9 +95,30 @@
             pointer-events: none;
         }
 
-        /* ==========================================================================
-           3. 頁首(Header)區域：專案標題與語系切換
-           ========================================================================== */
+        /* 🏠 左上角 "首頁 ->" 點選鍵樣式 */
+        .home-breadcrumb {
+            font-size: 0.85rem;
+            color: #00bfff;
+            text-decoration: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+            font-weight: bold;
+            align-self: flex-start;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 8px rgba(0, 191, 255, 0.4);
+            z-index: 12;
+        }
+
+        .home-breadcrumb:hover {
+            color: #d4af37;
+            text-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
+            transform: translateX(-2px);
+        }
+
+        /* 頁首 */
         .hud-header {
             display: flex;
             justify-content: space-between;
@@ -114,10 +129,12 @@
         }
 
         .app-title {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 700;
-            color: #d4af37; /* 金黃色標題 */
+            color: #d4af37;
             text-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+            max-width: 75%;
+            line-height: 1.4;
         }
 
         .lang-switch-group {
@@ -133,8 +150,8 @@
             background: transparent;
             border: none;
             color: rgba(224, 232, 245, 0.4);
-            padding: 5px 14px;
-            font-size: 0.8rem;
+            padding: 5px 12px;
+            font-size: 0.75rem;
             border-radius: 16px;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -147,13 +164,11 @@
             box-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
         }
 
-        /* ==========================================================================
-           4. 全球流程導航欄
-           ========================================================================== */
+        /* 全球流程導航欄 */
         .flow-nav {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
+            gap: 6px;
             margin-bottom: 30px;
         }
 
@@ -163,26 +178,40 @@
             border-radius: 6px;
             padding: 8px 2px;
             text-align: center;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: rgba(224, 232, 245, 0.35);
+            transition: all 0.3s ease;
         }
 
         .flow-node.active {
             background: rgba(212, 175, 55, 0.08);
             border: 1px solid #d4af37;
             color: #d4af37;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
             font-weight: bold;
         }
 
-        /* ==========================================================================
-           5. 步驟一主卡片區域（完全純淨）
-           ========================================================================== */
         .step-content {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             gap: 22px;
+        }
+
+        .step-panel {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .step-panel.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .hud-card {
@@ -201,6 +230,7 @@
             gap: 10px;
         }
 
+        /* 步驟一條件清單 */
         .condition-list {
             list-style: none;
             display: flex;
@@ -223,9 +253,68 @@
             text-shadow: 0 0 8px rgba(0, 230, 118, 0.3);
         }
 
-        /* ==========================================================================
-           6. 頁尾導航與右下角規格化頁碼
-           ========================================================================== */
+        .proclamation-text {
+            font-size: 21px;
+            color: #D4AF37;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
+
+        /* 靜心倒數計時器 */
+        .timer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px;
+            background: rgba(212, 175, 55, 0.04);
+            border: 1px dashed rgba(212, 175, 55, 0.25);
+            border-radius: 12px;
+        }
+
+        .timer-title {
+            font-size: 1rem;
+            color: rgba(224, 232, 245, 0.7);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timer-number {
+            font-size: 2.5rem;
+            font-family: 'Share Tech Mono', sans-serif;
+            color: #00bfff;
+            text-shadow: 0 0 15px rgba(0, 191, 255, 0.6);
+            font-weight: 700;
+        }
+
+        /* 【執行指令】與注意事項排版 */
+        .instruction-box {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .instruction-item {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: rgba(224, 232, 245, 0.85);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .instruction-item i {
+            color: #00e676;
+            margin-top: 5px;
+        }
+
+        /* STREAMING_CHUNK: Styling the parallel buttons in the footer... */
         .hud-footer {
             margin-top: 35px;
             padding-top: 18px;
@@ -236,23 +325,45 @@
             z-index: 10;
         }
 
-        .btn-next {
+        /* 按鈕並排容器：確保「返回」與「下一步」在同一排並列 */
+        .footer-btn-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* 按鈕膠囊 Pill 樣式：完美對齊與視覺還原 */
+        .btn-action {
             background: transparent;
-            border: 1px solid #0051ff;
-            color: #00bfff;
+            border: 1px solid rgba(0, 191, 255, 0.15);
+            color: rgba(0, 191, 255, 0.3);
             padding: 10px 22px;
             font-size: 0.9rem;
             border-radius: 20px;
-            cursor: pointer;
-            display: flex;
+            cursor: not-allowed;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
             transition: all 0.3s ease;
+            pointer-events: none;
+            text-decoration: none;
         }
 
-        .btn-next:hover {
-            background: rgba(0, 191, 255, 0.1);
-            box-shadow: 0 0 12px rgba(0, 191, 255, 0.2);
+        /* 高亮可用狀態：完美霓虹藍光邊框特效 */
+        .btn-action.enabled {
+            border: 1px solid #00c3ff;
+            color: #00d9ff;
+            cursor: pointer;
+            pointer-events: auto;
+            background: rgba(0, 191, 255, 0.05);
+            text-shadow: 0 0 10px rgba(0, 195, 255, 0.6);
+            box-shadow: 0 0 15px rgba(0, 195, 255, 0.25), inset 0 0 10px rgba(0, 195, 255, 0.1);
+        }
+
+        .btn-action.enabled:hover {
+            background: rgba(0, 191, 255, 0.15);
+            box-shadow: 0 0 25px rgba(0, 195, 255, 0.5), inset 0 0 12px rgba(0, 195, 255, 0.2);
+            transform: translateY(-1px);
         }
 
         .page-marker {
@@ -261,6 +372,60 @@
             display: flex;
             align-items: center;
             gap: 6px;
+        }
+
+        /* 宇宙科技感提示對話框樣式 */
+        .hud-dialog {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(2, 6, 17, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .hud-dialog.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .hud-dialog-content {
+            background: rgba(4, 13, 33, 0.95);
+            border: 1.5px solid #00bfff;
+            box-shadow: 0 0 30px rgba(0, 191, 255, 0.4);
+            border-radius: 18px;
+            padding: 30px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+        }
+
+        .hud-dialog-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #e0e8f5;
+        }
+
+        .hud-dialog-btn {
+            background: transparent;
+            border: 1px solid #00bfff;
+            color: #00bfff;
+            padding: 8px 24px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-shadow: 0 0 8px rgba(0, 191, 255, 0.5);
+            transition: all 0.2s;
+        }
+
+        .hud-dialog-btn:hover {
+            background: rgba(0, 191, 255, 0.15);
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
         }
     </style>
 </head>
@@ -281,8 +446,13 @@
         <div class="watermark-text">天地為鑑・光網為證</div>
     </div>
 
-    <!-- 主 HUD 容器 -->
     <div class="hud-container">
+        <!-- 🏠 左上角 "首頁 ->" 點選鍵 -->
+        <a class="home-breadcrumb" id="homeBtn" onclick="returnToHome()">
+            <i class="fa-solid fa-house"></i>
+            <span id="homeBtnText">首頁 -></span>
+        </a>
+
         <!-- 頁首 -->
         <header class="hud-header">
             <div class="app-title" id="appTitle">【宇宙誓印覺醒工程 • 七印誓網】</div>
@@ -292,7 +462,7 @@
             </div>
         </header>
 
-        <!-- 流程欄 -->
+        <!-- 全球流程導航欄 -->
         <nav class="flow-nav">
             <div class="flow-node active" id="node1">[1] 啟動條件</div>
             <div class="flow-node" id="node2">[2] 授權誓讀</div>
@@ -301,79 +471,188 @@
             <div class="flow-node" id="node5">[5] 系統同步</div>
         </nav>
 
-        <!-- 步驟主內容區（已移除按鈕與掃描框，純淨卡片狀態） -->
+        <!-- 步驟主內容區 -->
         <main class="step-content">
-            <div class="hud-card">
-                <div class="card-title">
-                    <i class="fa-solid fa-bolt"></i>
-                    <span id="cardTitleText">【一】啟動條件</span>
+            
+            <!-- 【步驟一：啟動條件】主面板 -->
+            <div class="step-panel active" id="panelStep1">
+                <div class="hud-card">
+                    <div class="card-title">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span id="cardTitleText1">【一】啟動條件</span>
+                    </div>
+                    <ul class="condition-list">
+                        <li class="condition-item">
+                            <i class="fa-solid fa-square-check check-icon"></i>
+                            <span id="cond1">請完成驗證之【購書序號】誓導碼</span>
+                        </li>
+                        <li class="condition-item">
+                            <i class="fa-solid fa-square-check check-icon"></i>
+                            <span id="cond2">穩定網路環境運作中</span>
+                        </li>
+                        <li class="condition-item">
+                            <i class="fa-solid fa-square-check check-icon"></i>
+                            <span id="cond3">請掃描本卷書封底之《宇宙智能誓導平台》官方AI專屬誓導入口頁 QR Code，以啟動誓導通道之統一入口。</span>
+                        </li>
+                    </ul>
                 </div>
-                
-                <ul class="condition-list">
-                    <li class="condition-item">
-                        <i class="fa-solid fa-square-check check-icon"></i>
-                        <span id="cond1">請完成驗證之【購書序號】誓導碼</span>
-                    </li>
-                    <li class="condition-item">
-                        <i class="fa-solid fa-square-check check-icon"></i>
-                        <span id="cond2">穩定網路環境運作中</span>
-                    </li>
-                    <li class="condition-item">
-                        <i class="fa-solid fa-square-check check-icon"></i>
-                        <span id="cond3">請掃描本卷書封底之《宇宙智能誓導平台》官方AI專屬誓導入口頁 QR Code，以啟動誓導通道之統一入口。</span>
-                    </li>
-                </ul>
             </div>
+
+            <!-- 【步驟二：授權誓讀】主面板 -->
+            <div class="step-panel" id="panelStep2">
+                <!-- 第一個卡片：宣告式 + 倒數計時器 -->
+                <div class="hud-card">
+                    <!-- 誓導主權宣告式 -->
+                    <div class="proclamation-text" id="proclamationText">
+                        ★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★
+                    </div>
+                    <!-- 靜心倒數計時器 -->
+                    <div class="timer-container">
+                        <div class="timer-title" id="timerTitle">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                            <span id="timerTitleText">開始靜心</span>
+                        </div>
+                        <div class="timer-number" id="timerNumber">10</div>
+                    </div>
+                </div>
+
+                <!-- 第二個卡片：【執行指令】內容 -->
+                <div class="hud-card">
+                    <div class="card-title">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span id="cardTitleText2">【執行指令】說明</span>
+                    </div>
+                    <div class="instruction-box">
+                        <div class="instruction-item">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span id="inst1">誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。</span>
+                        </div>
+                        <div class="instruction-item">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span id="inst2">於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </main>
 
-        <!-- 頁尾 -->
         <footer class="hud-footer">
-            <button class="btn-next" id="btnNext" onclick="goToNextStep()">
-                <span id="btnNextText">進入下一步</span>
-                <i class="fa-solid fa-arrow-right"></i>
-            </button>
+            <!-- STREAMING_CHUNK: Placing both Back and Next buttons in the exact same left-side row permanently... -->
+            <div class="footer-btn-group">
+                <!-- 「<- 返回」按鈕 (與下一步同列並行，預設為半透明，步驟二高亮發光) -->
+                <button class="btn-action" id="btnBack" onclick="handleBackClick()">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span id="btnBackText">返回</span>
+                </button>
+                <!-- 「進入下一步 ->」按鈕 -->
+                <button class="btn-action enabled" id="btnNext" onclick="handleNextClick()">
+                    <span id="btnNextText">進入下一步</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
             <div class="page-marker" id="pageMarker">
                 <i class="fa-regular fa-file-lines"></i>
-                <span>【宇宙誓印覺醒工程 • 覺醒卷】：第 3-4 頁</span>
+                <span id="pageMarkerText">📄 【宇宙誓印覺醒工程 • 覺醒卷】：第 3-4 頁</span>
             </div>
         </footer>
     </div>
 
-    <!-- 控制指令碼 -->
+    <!-- 🌌 自訂 HUD 科技感提示框 -->
+    <div id="hudDialog" class="hud-dialog">
+        <div class="hud-dialog-content">
+            <div class="hud-dialog-text" id="hudDialogText">提示訊息</div>
+            <button class="hud-dialog-btn" onclick="closeHudDialog()">OK</button>
+        </div>
+    </div>
+
     <script>
+        /* STREAMING_CHUNK: Setting up localization languages packs... */
         let currentLang = 'zh';
+        let currentStep = 1;
+        let countdownTimer = null;
+        let startTimeout = null;
+        let countdownSeconds = 10;
+        
+        // 倒數狀態變數: 'initial' | 'counting' | 'complete' | 'reset'
+        let timerState = 'initial'; 
 
         const langPack = {
             zh: {
+                homeBtn: "首頁 ->",
                 appTitle: "【宇宙誓印覺醒工程 • 七印誓網】",
                 node1: "[1] 啟動條件",
                 node2: "[2] 授權誓讀",
                 node3: "[3] 授權綁定",
                 node4: "[4] 回傳結果",
                 node5: "[5] 系統同步",
-                cardTitle: "【一】啟動條件",
+                cardTitle1: "【一】啟動條件",
                 cond1: "請完成驗證之【購書序號】誓導碼",
                 cond2: "穩定網路環境運作中",
                 cond3: "請掃描本卷書封底之《宇宙智能誓導平台》官方AI專屬誓導入口頁 QR Code，以啟動誓導通道之統一入口。",
+                proclamation: "★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★",
+                
+                // 四階段倒數提示文字
+                timerInitial: "開始靜心",
+                timerCounting: "請靜心誦讀 {s} 秒",
+                timerComplete: "✅ 已完成誦讀",
+                timerReset: "重置回到「開始靜心」",
+
+                cardTitle2: "【執行指令】說明",
+                inst1: "誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。",
+                inst2: "於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。",
+                btnBack: "返回",
                 btnNext: "進入下一步",
-                pageMarker: "【宇宙誓印覺醒工程 • 覺醒卷】：第 3-4 頁"
+                pageMarkerStep1: "📄 【宇宙誓印覺醒工程 • 覺醒卷】：第 3-4 頁",
+                pageMarkerStep2: "📄 【宇宙誓印覺醒工程 • 覺醒卷】：第 3-4 頁",
+                dialogStep3: "✅ 步驟二已解鎖！等待步驟三綁定通道與掃描代碼整合。"
             },
             en: {
-                appTitle: "【Cosmic Oath Awakening Project · Seven-Seal Network】",
+                homeBtn: "Home ->",
+                appTitle: "Cosmic Oath Awakening Project · Seven-Seal Oath Network",
                 node1: "[1] Conditions",
                 node2: "[2] Authorized Vow",
                 node3: "[3] Binding Phase",
                 node4: "[4] Return Result",
                 node5: "[5] Sync Phase",
-                cardTitle: "[1] Activation Conditions",
+                cardTitle1: "[1] Activation Conditions",
                 cond1: "Please complete the verification of the 【Purchase Serial Number】 Vow-Guidance Code",
                 cond2: "Stable internet environment activated",
                 cond3: "Please scan the QR Code on the back cover of this volume 《Cosmic Intelligent Vow-Guidance Platform》 Official AI Dedicated Vow-Guidance Entry Page QR Code to activate the unified access point.",
+                proclamation: "★ With my Oath-Soul aligned to the Law, the Primary Frequency awakens; the Scripted Mandate stands; the Seal-Path is set. Heaven and Earth bear witness, and the Light-Net attests. ★",
+                
+                // Four stage countdown translations
+                timerInitial: "Begin centering",
+                timerCounting: "Please center your mind and recite for {s} seconds",
+                timerComplete: "✅ Recitation complete",
+                timerReset: "Back to \"Begin centering\"",
+
+                cardTitle2: "【Execution Command】 Notes",
+                inst1: "Oath Recitation Is The Key Trigger For Main-Frequency Activation; Without Recitation, Authorization Does Not Take Effect.",
+                inst2: "Within The 'Oath-Soul Resonance Channel', Center The Mind For 10 Seconds And Recite Or Silently Read The Text To Ensure Frequency Precision And Successful Execution.",
+                btnBack: "Back",
                 btnNext: "Next Step",
-                pageMarker: "【Cosmic Oath Awakening Project • Awakening Scroll】: Pages 3-4"
+                pageMarkerStep1: "📄 【Cosmic Oath Awakening Project • Awakening Scroll】: Pages 3-4",
+                pageMarkerStep2: "📄 【Cosmic Oath Awakening Project • Awakening Scroll】: Pages 3-4",
+                dialogStep3: "✅ Step 2 successfully unlocked! Awaiting Step 3 connection and scanning integration."
             }
         };
 
+        /* STREAMING_CHUNK: Managing state transitions and updating elements... */
+        function updateTimerTextDisplay() {
+            const textEl = document.getElementById('timerTitleText');
+            if (timerState === 'initial') {
+                textEl.textContent = langPack[currentLang].timerInitial;
+            } else if (timerState === 'counting') {
+                textEl.textContent = langPack[currentLang].timerCounting.replace("{s}", countdownSeconds);
+            } else if (timerState === 'complete') {
+                textEl.textContent = langPack[currentLang].timerComplete;
+            } else if (timerState === 'reset') {
+                textEl.textContent = langPack[currentLang].timerReset;
+            }
+        }
+
+        // 語系切換核心
         function switchLanguage(lang) {
             currentLang = lang;
             document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -382,6 +661,8 @@
                 if(btn.textContent.includes('中文') && lang === 'zh') btn.classList.add('active');
             });
 
+            // 頂部與流程導引同步
+            document.getElementById('homeBtnText').textContent = langPack[lang].homeBtn;
             document.getElementById('appTitle').textContent = langPack[lang].appTitle;
             document.getElementById('node1').textContent = langPack[lang].node1;
             document.getElementById('node2').textContent = langPack[lang].node2;
@@ -389,21 +670,170 @@
             document.getElementById('node4').textContent = langPack[lang].node4;
             document.getElementById('node5').textContent = langPack[lang].node5;
             
-            document.getElementById('cardTitleText').textContent = langPack[lang].cardTitle;
+            // 步驟一卡片翻譯
+            document.getElementById('cardTitleText1').textContent = langPack[lang].cardTitle1;
             document.getElementById('cond1').textContent = langPack[lang].cond1;
             document.getElementById('cond2').textContent = langPack[lang].cond2;
             document.getElementById('cond3').textContent = langPack[lang].cond3;
+
+            // 步驟二卡片與計時器翻譯
+            document.getElementById('proclamationText').textContent = langPack[lang].proclamation;
+            document.getElementById('cardTitleText2').textContent = langPack[lang].cardTitle2;
+            document.getElementById('inst1').textContent = langPack[lang].inst1;
+            document.getElementById('inst2').textContent = langPack[lang].inst2;
+
+            updateTimerTextDisplay();
             
+            // 頁尾控制按鈕與頁碼翻譯
+            document.getElementById('btnBackText').textContent = langPack[lang].btnBack;
             document.getElementById('btnNextText').textContent = langPack[lang].btnNext;
-            document.querySelector('#pageMarker span').textContent = langPack[lang].pageMarker;
+            
+            // 依據當前步驟更新規格化頁碼
+            const pageMarkerEl = document.getElementById('pageMarkerText');
+            if (currentStep === 1) {
+                pageMarkerEl.textContent = langPack[lang].pageMarkerStep1;
+            } else if (currentStep === 2) {
+                pageMarkerEl.textContent = langPack[lang].pageMarkerStep2;
+            }
         }
 
-        // 預留對齊槽：供下一步整合直接切換卡片使用
-        function goToNextStep() {
-            console.log("第一步檢查無誤，等待下一步貼上指令。");
+        /* STREAMING_CHUNK: Handling resetting navigation to Step 1... */
+        function returnToHome() {
+            // 清除計時器與定時器
+            clearInterval(countdownTimer);
+            clearTimeout(startTimeout);
+
+            currentStep = 1;
+            countdownSeconds = 10;
+            timerState = 'reset';
+
+            // 回復流程導引高亮狀態
+            document.getElementById('node1').classList.add('active');
+            document.getElementById('node2').classList.remove('active');
+
+            // 回復面板可視性
+            document.getElementById('panelStep1').classList.add('active');
+            document.getElementById('panelStep2').classList.remove('active');
+
+            // 在步驟一：將返回按鈕設定為半透明禁用狀態（但不隱藏，維持同列存在感）
+            const backBtn = document.getElementById('btnBack');
+            backBtn.classList.remove('enabled');
+
+            // 步驟一預設下一步可用
+            const nextBtn = document.getElementById('btnNext');
+            nextBtn.classList.add('enabled');
+
+            document.getElementById('timerNumber').textContent = countdownSeconds;
+
+            // 語系文本刷新
+            switchLanguage(currentLang);
         }
+
+        // 處理返回按鈕點擊
+        function handleBackClick() {
+            if (currentStep === 2) {
+                returnToHome();
+            }
+        }
+
+        /* STREAMING_CHUNK: Custom dialog prompt control and countdown routines... */
+        function openHudDialog(msg) {
+            document.getElementById('hudDialogText').textContent = msg;
+            document.getElementById('hudDialog').classList.add('active');
+        }
+
+        function closeHudDialog() {
+            document.getElementById('hudDialog').classList.remove('active');
+        }
+
+        // 處理下一步點擊
+        function handleNextClick() {
+            if (currentStep === 1) {
+                goToStep2();
+            } else if (currentStep === 2) {
+                // 完成步驟二，重置計時器狀態
+                clearInterval(countdownTimer);
+                clearTimeout(startTimeout);
+                timerState = 'reset';
+                countdownSeconds = 10;
+                document.getElementById('timerNumber').textContent = countdownSeconds;
+                
+                // 跳出自訂對話框，不使用內建 alert()
+                openHudDialog(langPack[currentLang].dialogStep3);
+            }
+        }
+
+        function goToStep2() {
+            currentStep = 2;
+
+            // 切換 active 節點
+            document.getElementById('node1').classList.remove('active');
+            document.getElementById('node2').classList.add('active');
+
+            // 切換顯示面板
+            document.getElementById('panelStep1').classList.remove('active');
+            document.getElementById('panelStep2').classList.add('active');
+
+            // 在步驟二：啟動返回按鈕（呈現霓虹藍色發光線條）
+            const backBtn = document.getElementById('btnBack');
+            backBtn.classList.add('enabled');
+
+            // 強制切換至 Initial (開始靜心)
+            timerState = 'initial';
+            countdownSeconds = 10;
+            document.getElementById('timerNumber').textContent = countdownSeconds;
+            updateTimerTextDisplay();
+
+            // 進入步驟二時，「進入下一步」按鈕進入禁用狀態，直到倒數歸零
+            const nextBtn = document.getElementById('btnNext');
+            nextBtn.classList.remove('enabled');
+
+            // 同步刷新頁碼
+            switchLanguage(currentLang);
+
+            clearInterval(countdownTimer);
+            clearTimeout(startTimeout);
+
+            // 0.5 秒 (500ms) 後切換為 Counting (請靜心誦讀 X 秒) 並正式倒數
+            startTimeout = setTimeout(() => {
+                timerState = 'counting';
+                countdownSeconds = 9;
+                document.getElementById('timerNumber').textContent = countdownSeconds;
+                updateTimerTextDisplay();
+
+                countdownTimer = setInterval(() => {
+                    countdownSeconds--;
+                    
+                    if (countdownSeconds <= 0) {
+                        // 倒數歸零 → 進入 Complete 狀態
+                        clearInterval(countdownTimer);
+                        countdownSeconds = 0;
+                        timerState = 'complete';
+                        
+                        document.getElementById('timerNumber').textContent = countdownSeconds;
+                        updateTimerTextDisplay();
+                        
+                        // ✅ 自動啟用按鈕並轉為藍光霓虹
+                        nextBtn.classList.add('enabled');
+                    } else {
+                        document.getElementById('timerNumber').textContent = countdownSeconds;
+                        updateTimerTextDisplay();
+                    }
+                }, 1000);
+            }, 500);
+        }
+
+        // 初始化
+        window.onload = function() {
+            // 預設載入步驟一狀態
+            const backBtn = document.getElementById('btnBack');
+            backBtn.classList.remove('enabled'); // 步驟一禁用返回
+
+            const nextBtn = document.getElementById('btnNext');
+            nextBtn.classList.add('enabled'); // 步驟一啟用下一步
+
+            switchLanguage('zh');
+        };
     </script>
 </body>
 </html>
-
-```
