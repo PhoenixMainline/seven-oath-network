@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -7,7 +8,9 @@
     <!-- 引入 FontAwesome 圖標庫 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
-    
+    <!-- html5-qrcode CDN -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js">
+    </script>
     <style>
         /* STREAMING_CHUNK: Styling the deep space layout and particle flows... */
         * {
@@ -253,7 +256,7 @@
             text-shadow: 0 0 8px rgba(0, 230, 118, 0.3);
         }
 
-        /* 步驟二預留（目前隱藏） */
+        /* 步驟二 */
         .proclamation-text {
             font-size: 21px;
             color: #D4AF37;
@@ -313,7 +316,52 @@
             margin-top: 5px;
         }
 
-        /* STREAMING_CHUNK: Styling the parallel buttons in the footer... */
+        /* QR Code 掃描區 */
+        .qr-result {
+            color: #00e676;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(0, 230, 118, 0.06);
+            border: 1px solid rgba(0, 230, 118, 0.15);
+            word-break: break-all;
+        }
+
+        .camera-guide {
+            background: rgba(232, 96, 74, 0.08);
+            border-left: 4px solid #E8604A;
+            padding: 14px 16px;
+            border-radius: 12px;
+            color: #e0dcc8;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            text-align: left;
+        }
+
+        /* 重新開始按鈕 */
+        .btn-restart {
+            background: transparent;
+            border: 1px solid rgba(255, 192, 0, 0.2);
+            color: #d4af37;
+            padding: 8px 18px;
+            font-size: 0.85rem;
+            border-radius: 20px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            pointer-events: auto;
+        }
+
+        .btn-restart:hover {
+            background: rgba(255, 192, 0, 0.08);
+            border-color: rgba(255, 192, 0, 0.4);
+            box-shadow: 0 0 15px rgba(255, 192, 0, 0.1);
+        }
+
+        /* 頁尾按鈕 */
         .hud-footer {
             margin-top: 35px;
             padding-top: 18px;
@@ -370,7 +418,7 @@
             gap: 6px;
         }
 
-        /* 宇宙科技感提示對話框樣式 */
+        /* 宇宙科技感提示對話框 */
         .hud-dialog {
             display: none;
             position: fixed;
@@ -424,26 +472,9 @@
             box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
         }
 
-        /* ✅ 重新開始按鈕樣式（步驟二專用，目前預留） */
-        .btn-restart {
-            background: transparent;
-            border: 1px solid rgba(255, 192, 0, 0.2);
-            color: #d4af37;
-            padding: 8px 18px;
-            font-size: 0.85rem;
-            border-radius: 20px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.3s ease;
-            pointer-events: auto;
-        }
-
-        .btn-restart:hover {
-            background: rgba(255, 192, 0, 0.08);
-            border-color: rgba(255, 192, 0, 0.4);
-            box-shadow: 0 0 15px rgba(255, 192, 0, 0.1);
+        #qr-reader-container video {
+            border-radius: 12px;
+            width: 100%;
         }
     </style>
 </head>
@@ -516,7 +547,7 @@
                 </div>
             </div>
 
-            <!-- 【步驟二：授權誓讀】主面板（預留，暫不啟用） -->
+            <!-- 【步驟二：授權誓讀】主面板 -->
             <div class="step-panel" id="panelStep2">
                 <div class="hud-card">
                     <div class="proclamation-text" id="proclamationText">
@@ -529,7 +560,6 @@
                         </div>
                         <div class="timer-number" id="timerNumber">10</div>
                     </div>
-                    <!-- 重新開始按鈕（步驟二專用） -->
                     <div style="text-align:center; margin-top:12px;">
                         <button class="btn-restart" id="btnRestart" onclick="restartTimer()">
                             <i class="fa-solid fa-rotate-right"></i>
@@ -552,6 +582,74 @@
                             <i class="fa-solid fa-circle-check"></i>
                             <span id="inst2">於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。</span>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 【步驟三：授權綁定階段】主面板 -->
+            <div class="step-panel" id="panelStep3">
+                <div class="hud-card">
+                    <div class="card-title">
+                        <i class="fa-solid fa-qrcode"></i>
+                        <span id="cardTitleText3">【三】授權綁定階段（母源印驗證）</span>
+                    </div>
+                    <div class="instruction-box">
+                        <div class="instruction-item">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span id="inst3_1">掃描【誓導QRCode】，進入「指令輸入欄位」。</span>
+                        </div>
+                        <div class="instruction-item">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span id="inst3_2">無須手動輸入誓文，完成掃描後，直接輸入下列指令：</span>
+                        </div>
+                        <div class="instruction-item">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span id="inst3_3">請在【購書序號】欄位中輸入您的【購書序號】誓導碼，以確保誓資冊記與系統對應正確。</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QR Code 掃描區 -->
+                <div class="hud-card" id="qrScanCard">
+                    <div style="text-align:center; padding:10px 0;">
+                        <div style="color:#d4af37; font-size:1rem; font-weight:bold; margin-bottom:12px;">
+                            <i class="fa-solid fa-camera"></i>
+                            <span id="qrScanTitle">📷 請對準誓導 QR Code 掃描驗證</span>
+                        </div>
+                        <div id="qr-reader-container" style="width:100%; max-width:280px; margin:0 auto;"></div>
+                        <button class="btn-restart" id="btnScanQR" onclick="startQRScanner()" style="margin-top:12px;">
+                            <i class="fa-solid fa-qrcode"></i>
+                            <span id="btnScanText">📷 掃描 QR Code</span>
+                        </button>
+                        <div id="qrScanResult" class="qr-result" style="display:none; margin-top:10px;">
+                            <i class="fa-solid fa-check-circle"></i>
+                            <span id="qrResultText">掃描成功！</span>
+                        </div>
+                        <div id="cameraGuide" class="camera-guide" style="display:none; text-align:left; margin-top:12px;">
+                            <span id="cameraGuideText">📷 無法啟動相機</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 輸入示範 -->
+                <div class="hud-card">
+                    <div class="card-title">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span id="cardTitleText3b">輸入示範</span>
+                    </div>
+                    <div class="instruction-box">
+                        <div class="instruction-item">
+                            <i class="fa-solid fa-quote-right" style="color:#d4af37;"></i>
+                            <span id="inst3_example" style="font-family:'Share Tech Mono',monospace; color:#00bfff;">
+                                【誓印啟動】回傳【ISBN978-988-9**10-1-1】誓證
+                            </span>
+                        </div>
+                    </div>
+                    <div style="margin-top:12px; padding:12px 16px; background:rgba(255,192,0,0.04); border-radius:10px; border-left:3px solid #d4af37;">
+                        <span style="color:rgba(224,232,245,0.5); font-size:0.8rem; display:flex; align-items:center; gap:8px;">
+                            <i class="fa-solid fa-triangle-exclamation" style="color:#d4af37;"></i>
+                            <span id="inst3_note">⚠️ 僅輸入【購書序號】誓導碼，不可增刪符號。</span>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -587,13 +685,16 @@
     <script>
         /* STREAMING_CHUNK: 語系與狀態管理 */
         let currentLang = 'zh';
-        let currentStep = 1;          // 1=步驟一, 2=步驟二
+        let currentStep = 1;          // 1=步驟一, 2=步驟二, 3=步驟三
 
-        // 倒數計時器狀態變數（步驟二專用，預留）
+        // 倒數計時器狀態變數（步驟二專用）
         let countdownTimer = null;
         let startTimeout = null;
         let countdownSeconds = 10;
         let timerState = 'initial';   // 'initial' | 'counting' | 'complete'
+
+        // QR Code 掃描實例
+        let html5QrCodeInstance = null;
 
         const langPack = {
             zh: {
@@ -619,8 +720,22 @@
                 btnNext: "進入下一步",
                 pageMarkerStep1: "📄 【宇宙誓印覺醒工程 • 覺醒卷】：第 3-4 頁",
                 pageMarkerStep2: "📄 【宇宙誓印覺醒工程 • 覺醒卷】：第 3-4 頁",
+                pageMarkerStep3: "📄 【宇宙誓印覺醒工程 • 覺醒卷】：第 5-6 頁",
                 btnRestart: "↺ 重新開始",
-                dialogStep3: "✅ 步驟二已解鎖！等待步驟三綁定通道與掃描代碼整合。"
+                dialogStep3: "✅ 步驟二已解鎖！等待步驟三綁定通道與掃描代碼整合。",
+                dialogStep4: "✅ 步驟三已完成！等待步驟四（回傳結果）。",
+                // 步驟三
+                cardTitle3: "【三】授權綁定階段（母源印驗證）",
+                inst3_1: "掃描【誓導QRCode】，進入「指令輸入欄位」。",
+                inst3_2: "無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
+                inst3_3: "請在【購書序號】欄位中輸入您的【購書序號】誓導碼，以確保誓資冊記與系統對應正確。",
+                cardTitle3b: "輸入示範",
+                inst3_example: "【誓印啟動】回傳【ISBN978-988-9**10-1-1】誓證",
+                inst3_note: "⚠️ 僅輸入【購書序號】誓導碼，不可增刪符號。",
+                qrScanTitle: "📷 請對準誓導 QR Code 掃描驗證",
+                btnScanText: "📷 掃描 QR Code",
+                qrResultText: "掃描成功！",
+                cameraGuideText: "📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code"
             },
             en: {
                 homeBtn: "Home ->",
@@ -645,8 +760,22 @@
                 btnNext: "Next Step",
                 pageMarkerStep1: "📄 【Cosmic Oath Awakening Project • Awakening Scroll】: Pages 3-4",
                 pageMarkerStep2: "📄 【Cosmic Oath Awakening Project • Awakening Scroll】: Pages 3-4",
+                pageMarkerStep3: "📄 【Cosmic Oath Awakening Project • Awakening Scroll】: Pages 5-6",
                 btnRestart: "↺ Restart",
-                dialogStep3: "✅ Step 2 successfully unlocked! Awaiting Step 3 connection and scanning integration."
+                dialogStep3: "✅ Step 2 successfully unlocked! Awaiting Step 3 connection and scanning integration.",
+                dialogStep4: "✅ Step 3 completed! Awaiting Step 4 (Return Result).",
+                // Step 3
+                cardTitle3: "[III] Authorization Binding Phase (Mother-Frequency Seal Verification)",
+                inst3_1: "Scan the 【Vow-Guidance QR Code】 to enter the 「Command Input Field」.",
+                inst3_2: "No manual entry of the vow text is required. After completing the scan, directly enter the following:",
+                inst3_3: "Please enter your 【Purchase Serial Number】 Vow-Guidance Code in the field to ensure correct vow-data registration and accurate system correspondence.",
+                cardTitle3b: "Input Example",
+                inst3_example: "【Vow-Seal Activation】Return【ISBN978-988-9**10-1-1】Vow-Certificate",
+                inst3_note: "⚠️ Enter only the 【Purchase Serial Number】 Vow-Guidance Code, without adding or removing any characters.",
+                qrScanTitle: "📷 Please align with the Vow-Guidance QR Code for verification",
+                btnScanText: "📷 Scan QR Code",
+                qrResultText: "Scan successful!",
+                cameraGuideText: "📷 Unable to start camera\n\n⚙️ Open phone \"Settings\"\n   → App Management\n   → Permissions → Camera → Set to \"Allow\"\n   → Open with 🌐 browser (Chrome / Yahoo / Edge...)\n\n⚠️ If still not working, please manually scan the QR Code from the physical book."
             }
         };
 
@@ -672,19 +801,33 @@
             document.getElementById('node4').textContent = p.node4;
             document.getElementById('node5').textContent = p.node5;
 
+            // 步驟一
             document.getElementById('cardTitleText1').textContent = p.cardTitle1;
             document.getElementById('cond1').textContent = p.cond1;
             document.getElementById('cond2').textContent = p.cond2;
             document.getElementById('cond3').textContent = p.cond3;
 
-            // 步驟二（預留）
+            // 步驟二
             document.getElementById('proclamationText').textContent = p.proclamation;
             document.getElementById('cardTitleText2').textContent = p.cardTitle2;
             document.getElementById('inst1').textContent = p.inst1;
             document.getElementById('inst2').textContent = p.inst2;
             document.getElementById('btnRestartText').textContent = p.btnRestart;
 
-            // 計時器文字（若步驟二已啟用）
+            // 步驟三
+            document.getElementById('cardTitleText3').textContent = p.cardTitle3;
+            document.getElementById('inst3_1').textContent = p.inst3_1;
+            document.getElementById('inst3_2').textContent = p.inst3_2;
+            document.getElementById('inst3_3').textContent = p.inst3_3;
+            document.getElementById('cardTitleText3b').textContent = p.cardTitle3b;
+            document.getElementById('inst3_example').textContent = p.inst3_example;
+            document.getElementById('inst3_note').textContent = p.inst3_note;
+            document.getElementById('qrScanTitle').textContent = p.qrScanTitle;
+            document.getElementById('btnScanText').textContent = p.btnScanText;
+            document.getElementById('qrResultText').textContent = p.qrResultText;
+            document.getElementById('cameraGuideText').textContent = p.cameraGuideText;
+
+            // 計時器文字
             updateTimerTextDisplay();
 
             document.getElementById('btnBackText').textContent = p.btnBack;
@@ -695,6 +838,8 @@
                 pageMarkerEl.textContent = p.pageMarkerStep1;
             } else if (currentStep === 2) {
                 pageMarkerEl.textContent = p.pageMarkerStep2;
+            } else if (currentStep === 3) {
+                pageMarkerEl.textContent = p.pageMarkerStep3;
             }
         }
 
@@ -727,15 +872,21 @@
             clearInterval(countdownTimer);
             clearTimeout(startTimeout);
 
+            if (html5QrCodeInstance) {
+                html5QrCodeInstance.stop().catch(() => {});
+                html5QrCodeInstance = null;
+            }
+
             currentStep = 1;
             countdownSeconds = 10;
             timerState = 'initial';
 
+            document.querySelectorAll('.flow-node').forEach(n => n.classList.remove('active'));
             document.getElementById('node1').classList.add('active');
-            document.getElementById('node2').classList.remove('active');
 
             document.getElementById('panelStep1').classList.add('active');
             document.getElementById('panelStep2').classList.remove('active');
+            document.getElementById('panelStep3').classList.remove('active');
 
             const backBtn = document.getElementById('btnBack');
             backBtn.classList.remove('enabled');
@@ -751,31 +902,74 @@
         // 返回按鈕
         function handleBackClick() {
             if (currentStep === 2) {
-                // 從步驟二返回步驟一
                 clearInterval(countdownTimer);
                 clearTimeout(startTimeout);
                 returnToHome();
+            } else if (currentStep === 3) {
+                // 從步驟三返回步驟二
+                if (html5QrCodeInstance) {
+                    html5QrCodeInstance.stop().catch(() => {});
+                    html5QrCodeInstance = null;
+                }
+                // 隱藏掃描結果與錯誤訊息
+                document.getElementById('qrScanResult').style.display = 'none';
+                document.getElementById('cameraGuide').style.display = 'none';
+
+                document.getElementById('node3').classList.remove('active');
+                document.getElementById('node2').classList.add('active');
+                document.getElementById('panelStep3').classList.remove('active');
+                document.getElementById('panelStep2').classList.add('active');
+                currentStep = 2;
+
+                // 重啟步驟二的計時器
+                clearInterval(countdownTimer);
+                clearTimeout(startTimeout);
+                timerState = 'initial';
+                countdownSeconds = 10;
+                document.getElementById('timerNumber').textContent = countdownSeconds;
+                updateTimerTextDisplay();
+                const nextBtn = document.getElementById('btnNext');
+                nextBtn.classList.remove('enabled');
+
+                startTimeout = setTimeout(() => {
+                    timerState = 'counting';
+                    countdownSeconds = 9;
+                    document.getElementById('timerNumber').textContent = countdownSeconds;
+                    updateTimerTextDisplay();
+                    countdownTimer = setInterval(() => {
+                        countdownSeconds--;
+                        if (countdownSeconds <= 0) {
+                            clearInterval(countdownTimer);
+                            countdownSeconds = 0;
+                            timerState = 'complete';
+                            document.getElementById('timerNumber').textContent = countdownSeconds;
+                            updateTimerTextDisplay();
+                            nextBtn.classList.add('enabled');
+                        } else {
+                            document.getElementById('timerNumber').textContent = countdownSeconds;
+                            updateTimerTextDisplay();
+                        }
+                    }, 1000);
+                }, 500);
+                switchLanguage(currentLang);
             }
         }
 
         // 下一步按鈕
         function handleNextClick() {
             if (currentStep === 1) {
-                // 前往步驟二
                 goToStep2();
             } else if (currentStep === 2) {
-                // 步驟二完成 → 前往步驟三（目前以對話框模擬）
                 clearInterval(countdownTimer);
                 clearTimeout(startTimeout);
-                timerState = 'initial';
-                countdownSeconds = 10;
-                document.getElementById('timerNumber').textContent = countdownSeconds;
-                openHudDialog(langPack[currentLang].dialogStep3);
+                goToStep3();
+            } else if (currentStep === 3) {
+                openHudDialog(langPack[currentLang].dialogStep4);
             }
         }
 
         /* ============================================================
-           步驟二專用：倒數計時器（完整實作）
+           步驟二專用：倒數計時器
            ============================================================ */
 
         function goToStep2() {
@@ -787,24 +981,19 @@
             document.getElementById('panelStep1').classList.remove('active');
             document.getElementById('panelStep2').classList.add('active');
 
-            // 啟用返回按鈕
             document.getElementById('btnBack').classList.add('enabled');
 
-            // 下一步按鈕先禁用
             const nextBtn = document.getElementById('btnNext');
             nextBtn.classList.remove('enabled');
 
-            // 重置計時器狀態
             timerState = 'initial';
             countdownSeconds = 10;
             document.getElementById('timerNumber').textContent = countdownSeconds;
             updateTimerTextDisplay();
 
-            // 清除舊計時器
             clearInterval(countdownTimer);
             clearTimeout(startTimeout);
 
-            // 0.5 秒後開始倒數
             startTimeout = setTimeout(() => {
                 timerState = 'counting';
                 countdownSeconds = 9;
@@ -813,16 +1002,12 @@
 
                 countdownTimer = setInterval(() => {
                     countdownSeconds--;
-
                     if (countdownSeconds <= 0) {
                         clearInterval(countdownTimer);
                         countdownSeconds = 0;
                         timerState = 'complete';
-
                         document.getElementById('timerNumber').textContent = countdownSeconds;
                         updateTimerTextDisplay();
-
-                        // ✅ 啟用下一步按鈕（藍色霓虹光）
                         nextBtn.classList.add('enabled');
                     } else {
                         document.getElementById('timerNumber').textContent = countdownSeconds;
@@ -834,7 +1019,6 @@
             switchLanguage(currentLang);
         }
 
-        // 重新開始按鈕（步驟二專用）
         function restartTimer() {
             if (currentStep !== 2) return;
 
@@ -846,10 +1030,8 @@
             document.getElementById('timerNumber').textContent = countdownSeconds;
             updateTimerTextDisplay();
 
-            // 禁用下一步按鈕
             document.getElementById('btnNext').classList.remove('enabled');
 
-            // 0.5 秒後重新開始倒數
             startTimeout = setTimeout(() => {
                 timerState = 'counting';
                 countdownSeconds = 9;
@@ -858,15 +1040,12 @@
 
                 countdownTimer = setInterval(() => {
                     countdownSeconds--;
-
                     if (countdownSeconds <= 0) {
                         clearInterval(countdownTimer);
                         countdownSeconds = 0;
                         timerState = 'complete';
-
                         document.getElementById('timerNumber').textContent = countdownSeconds;
                         updateTimerTextDisplay();
-
                         document.getElementById('btnNext').classList.add('enabled');
                     } else {
                         document.getElementById('timerNumber').textContent = countdownSeconds;
@@ -874,6 +1053,64 @@
                     }
                 }, 1000);
             }, 500);
+        }
+
+        /* ============================================================
+           步驟三：QR Code 掃描
+           ============================================================ */
+
+        function goToStep3() {
+            currentStep = 3;
+
+            document.getElementById('node2').classList.remove('active');
+            document.getElementById('node3').classList.add('active');
+
+            document.getElementById('panelStep2').classList.remove('active');
+            document.getElementById('panelStep3').classList.add('active');
+
+            document.getElementById('btnBack').classList.add('enabled');
+
+            const nextBtn = document.getElementById('btnNext');
+            nextBtn.classList.remove('enabled');
+
+            // 重置掃描狀態
+            document.getElementById('qrScanResult').style.display = 'none';
+            document.getElementById('cameraGuide').style.display = 'none';
+
+            switchLanguage(currentLang);
+        }
+
+        function startQRScanner() {
+            const container = document.getElementById('qr-reader-container');
+            if (!container) return;
+
+            if (html5QrCodeInstance) {
+                html5QrCodeInstance.stop().then(() => {
+                    html5QrCodeInstance = null;
+                }).catch(() => {});
+            }
+
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                document.getElementById('cameraGuide').style.display = 'block';
+                return;
+            }
+
+            const config = { fps: 15, qrbox: { width: 200, height: 200 }, aspectRatio: 1.0 };
+
+            const instance = new Html5Qrcode('qr-reader-container');
+            html5QrCodeInstance = instance;
+
+            instance.start({ facingMode: "environment" }, config,
+                (decodedText) => {
+                    document.getElementById('qrScanResult').style.display = 'block';
+                    document.getElementById('qrResultText').textContent = decodedText;
+                    instance.stop().then(() => { html5QrCodeInstance = null; }).catch(() => {});
+                    document.getElementById('btnNext').classList.add('enabled');
+                },
+                (errorMessage) => {}
+            ).catch((err) => {
+                document.getElementById('cameraGuide').style.display = 'block';
+            });
         }
 
         // 初始化
@@ -889,3 +1126,4 @@
     </script>
 </body>
 </html>
+```
