@@ -39,7 +39,7 @@
             background-position: 0 0, 90px 150px;
             animation: starMove 90s linear infinite;
             opacity: 0.65;
-            z-index: 5; /* 提高層級，使其自由穿透文字與內框 */
+            z-index: 5;
             pointer-events: none;
         }
 
@@ -253,6 +253,7 @@
             text-shadow: 0 0 8px rgba(0, 230, 118, 0.3);
         }
 
+        /* 步驟二預留（目前隱藏） */
         .proclamation-text {
             font-size: 21px;
             color: #D4AF37;
@@ -263,7 +264,6 @@
             text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
         }
 
-        /* 靜心倒數計時器 */
         .timer-container {
             display: flex;
             flex-direction: column;
@@ -293,7 +293,6 @@
             font-weight: 700;
         }
 
-        /* 【執行指令】與注意事項排版 */
         .instruction-box {
             display: flex;
             flex-direction: column;
@@ -325,14 +324,12 @@
             z-index: 10;
         }
 
-        /* 按鈕並排容器：確保「返回」與「下一步」在同一排並列 */
         .footer-btn-group {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        /* 按鈕膠囊 Pill 樣式：完美對齊與視覺還原 */
         .btn-action {
             background: transparent;
             border: 1px solid rgba(0, 191, 255, 0.15);
@@ -349,7 +346,6 @@
             text-decoration: none;
         }
 
-        /* 高亮可用狀態：完美霓虹藍光邊框特效 */
         .btn-action.enabled {
             border: 1px solid #00c3ff;
             color: #00d9ff;
@@ -427,6 +423,28 @@
             background: rgba(0, 191, 255, 0.15);
             box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
         }
+
+        /* ✅ 重新開始按鈕樣式（步驟二專用，目前預留） */
+        .btn-restart {
+            background: transparent;
+            border: 1px solid rgba(255, 192, 0, 0.2);
+            color: #d4af37;
+            padding: 8px 18px;
+            font-size: 0.85rem;
+            border-radius: 20px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            pointer-events: auto;
+        }
+
+        .btn-restart:hover {
+            background: rgba(255, 192, 0, 0.08);
+            border-color: rgba(255, 192, 0, 0.4);
+            box-shadow: 0 0 15px rgba(255, 192, 0, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -498,15 +516,12 @@
                 </div>
             </div>
 
-            <!-- 【步驟二：授權誓讀】主面板 -->
+            <!-- 【步驟二：授權誓讀】主面板（預留，暫不啟用） -->
             <div class="step-panel" id="panelStep2">
-                <!-- 第一個卡片：宣告式 + 倒數計時器 -->
                 <div class="hud-card">
-                    <!-- 誓導主權宣告式 -->
                     <div class="proclamation-text" id="proclamationText">
                         ★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★
                     </div>
-                    <!-- 靜心倒數計時器 -->
                     <div class="timer-container">
                         <div class="timer-title" id="timerTitle">
                             <i class="fa-solid fa-hourglass-half"></i>
@@ -514,9 +529,15 @@
                         </div>
                         <div class="timer-number" id="timerNumber">10</div>
                     </div>
+                    <!-- 重新開始按鈕（步驟二專用） -->
+                    <div style="text-align:center; margin-top:12px;">
+                        <button class="btn-restart" id="btnRestart" onclick="restartTimer()">
+                            <i class="fa-solid fa-rotate-right"></i>
+                            <span id="btnRestartText">↺ 重新開始</span>
+                        </button>
+                    </div>
                 </div>
 
-                <!-- 第二個卡片：【執行指令】內容 -->
                 <div class="hud-card">
                     <div class="card-title">
                         <i class="fa-solid fa-shield-halved"></i>
@@ -538,14 +559,11 @@
         </main>
 
         <footer class="hud-footer">
-            <!-- STREAMING_CHUNK: Placing both Back and Next buttons in the exact same left-side row permanently... -->
             <div class="footer-btn-group">
-                <!-- 「<- 返回」按鈕 (與下一步同列並行，預設為半透明，步驟二高亮發光) -->
                 <button class="btn-action" id="btnBack" onclick="handleBackClick()">
                     <i class="fa-solid fa-arrow-left"></i>
                     <span id="btnBackText">返回</span>
                 </button>
-                <!-- 「進入下一步 ->」按鈕 -->
                 <button class="btn-action enabled" id="btnNext" onclick="handleNextClick()">
                     <span id="btnNextText">進入下一步</span>
                     <i class="fa-solid fa-arrow-right"></i>
@@ -567,15 +585,15 @@
     </div>
 
     <script>
-        /* STREAMING_CHUNK: Setting up localization languages packs... */
+        /* STREAMING_CHUNK: 語系與狀態管理 */
         let currentLang = 'zh';
-        let currentStep = 1;
+        let currentStep = 1;          // 1=步驟一, 2=步驟二
+
+        // 倒數計時器狀態變數（步驟二專用，預留）
         let countdownTimer = null;
         let startTimeout = null;
         let countdownSeconds = 10;
-        
-        // 倒數狀態變數: 'initial' | 'counting' | 'complete' | 'reset'
-        let timerState = 'initial'; 
+        let timerState = 'initial';   // 'initial' | 'counting' | 'complete'
 
         const langPack = {
             zh: {
@@ -591,13 +609,9 @@
                 cond2: "穩定網路環境運作中",
                 cond3: "請掃描本卷書封底之《宇宙智能誓導平台》官方AI專屬誓導入口頁 QR Code，以啟動誓導通道之統一入口。",
                 proclamation: "★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★",
-                
-                // 四階段倒數提示文字
                 timerInitial: "開始靜心",
                 timerCounting: "請靜心誦讀 {s} 秒",
                 timerComplete: "✅ 已完成誦讀",
-                timerReset: "重置回到「開始靜心」",
-
                 cardTitle2: "【執行指令】說明",
                 inst1: "誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。",
                 inst2: "於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。",
@@ -605,6 +619,7 @@
                 btnNext: "進入下一步",
                 pageMarkerStep1: "📄 【宇宙誓印覺醒工程 • 覺醒卷】：第 3-4 頁",
                 pageMarkerStep2: "📄 【宇宙誓印覺醒工程 • 覺醒卷】：第 3-4 頁",
+                btnRestart: "↺ 重新開始",
                 dialogStep3: "✅ 步驟二已解鎖！等待步驟三綁定通道與掃描代碼整合。"
             },
             en: {
@@ -620,13 +635,9 @@
                 cond2: "Stable internet environment activated",
                 cond3: "Please scan the QR Code on the back cover of this volume 《Cosmic Intelligent Vow-Guidance Platform》 Official AI Dedicated Vow-Guidance Entry Page QR Code to activate the unified access point.",
                 proclamation: "★ With my Oath-Soul aligned to the Law, the Primary Frequency awakens; the Scripted Mandate stands; the Seal-Path is set. Heaven and Earth bear witness, and the Light-Net attests. ★",
-                
-                // Four stage countdown translations
                 timerInitial: "Begin centering",
                 timerCounting: "Please center your mind and recite for {s} seconds",
                 timerComplete: "✅ Recitation complete",
-                timerReset: "Back to \"Begin centering\"",
-
                 cardTitle2: "【Execution Command】 Notes",
                 inst1: "Oath Recitation Is The Key Trigger For Main-Frequency Activation; Without Recitation, Authorization Does Not Take Effect.",
                 inst2: "Within The 'Oath-Soul Resonance Channel', Center The Mind For 10 Seconds And Recite Or Silently Read The Text To Ensure Frequency Precision And Successful Execution.",
@@ -634,109 +645,74 @@
                 btnNext: "Next Step",
                 pageMarkerStep1: "📄 【Cosmic Oath Awakening Project • Awakening Scroll】: Pages 3-4",
                 pageMarkerStep2: "📄 【Cosmic Oath Awakening Project • Awakening Scroll】: Pages 3-4",
+                btnRestart: "↺ Restart",
                 dialogStep3: "✅ Step 2 successfully unlocked! Awaiting Step 3 connection and scanning integration."
             }
         };
 
-        /* STREAMING_CHUNK: Managing state transitions and updating elements... */
-        function updateTimerTextDisplay() {
-            const textEl = document.getElementById('timerTitleText');
-            if (timerState === 'initial') {
-                textEl.textContent = langPack[currentLang].timerInitial;
-            } else if (timerState === 'counting') {
-                textEl.textContent = langPack[currentLang].timerCounting.replace("{s}", countdownSeconds);
-            } else if (timerState === 'complete') {
-                textEl.textContent = langPack[currentLang].timerComplete;
-            } else if (timerState === 'reset') {
-                textEl.textContent = langPack[currentLang].timerReset;
-            }
-        }
+        /* ============================================================
+           核心函式
+           ============================================================ */
 
-        // 語系切換核心
+        // 語系切換
         function switchLanguage(lang) {
             currentLang = lang;
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 btn.classList.remove('active');
-                if(btn.textContent.toLowerCase().includes('english') && lang === 'en') btn.classList.add('active');
-                if(btn.textContent.includes('中文') && lang === 'zh') btn.classList.add('active');
+                if (btn.textContent.toLowerCase().includes('english') && lang === 'en') btn.classList.add('active');
+                if (btn.textContent.includes('中文') && lang === 'zh') btn.classList.add('active');
             });
 
-            // 頂部與流程導引同步
-            document.getElementById('homeBtnText').textContent = langPack[lang].homeBtn;
-            document.getElementById('appTitle').textContent = langPack[lang].appTitle;
-            document.getElementById('node1').textContent = langPack[lang].node1;
-            document.getElementById('node2').textContent = langPack[lang].node2;
-            document.getElementById('node3').textContent = langPack[lang].node3;
-            document.getElementById('node4').textContent = langPack[lang].node4;
-            document.getElementById('node5').textContent = langPack[lang].node5;
-            
-            // 步驟一卡片翻譯
-            document.getElementById('cardTitleText1').textContent = langPack[lang].cardTitle1;
-            document.getElementById('cond1').textContent = langPack[lang].cond1;
-            document.getElementById('cond2').textContent = langPack[lang].cond2;
-            document.getElementById('cond3').textContent = langPack[lang].cond3;
+            const p = langPack[lang];
+            document.getElementById('homeBtnText').textContent = p.homeBtn;
+            document.getElementById('appTitle').textContent = p.appTitle;
+            document.getElementById('node1').textContent = p.node1;
+            document.getElementById('node2').textContent = p.node2;
+            document.getElementById('node3').textContent = p.node3;
+            document.getElementById('node4').textContent = p.node4;
+            document.getElementById('node5').textContent = p.node5;
 
-            // 步驟二卡片與計時器翻譯
-            document.getElementById('proclamationText').textContent = langPack[lang].proclamation;
-            document.getElementById('cardTitleText2').textContent = langPack[lang].cardTitle2;
-            document.getElementById('inst1').textContent = langPack[lang].inst1;
-            document.getElementById('inst2').textContent = langPack[lang].inst2;
+            document.getElementById('cardTitleText1').textContent = p.cardTitle1;
+            document.getElementById('cond1').textContent = p.cond1;
+            document.getElementById('cond2').textContent = p.cond2;
+            document.getElementById('cond3').textContent = p.cond3;
 
+            // 步驟二（預留）
+            document.getElementById('proclamationText').textContent = p.proclamation;
+            document.getElementById('cardTitleText2').textContent = p.cardTitle2;
+            document.getElementById('inst1').textContent = p.inst1;
+            document.getElementById('inst2').textContent = p.inst2;
+            document.getElementById('btnRestartText').textContent = p.btnRestart;
+
+            // 計時器文字（若步驟二已啟用）
             updateTimerTextDisplay();
-            
-            // 頁尾控制按鈕與頁碼翻譯
-            document.getElementById('btnBackText').textContent = langPack[lang].btnBack;
-            document.getElementById('btnNextText').textContent = langPack[lang].btnNext;
-            
-            // 依據當前步驟更新規格化頁碼
+
+            document.getElementById('btnBackText').textContent = p.btnBack;
+            document.getElementById('btnNextText').textContent = p.btnNext;
+
             const pageMarkerEl = document.getElementById('pageMarkerText');
             if (currentStep === 1) {
-                pageMarkerEl.textContent = langPack[lang].pageMarkerStep1;
+                pageMarkerEl.textContent = p.pageMarkerStep1;
             } else if (currentStep === 2) {
-                pageMarkerEl.textContent = langPack[lang].pageMarkerStep2;
+                pageMarkerEl.textContent = p.pageMarkerStep2;
             }
         }
 
-        /* STREAMING_CHUNK: Handling resetting navigation to Step 1... */
-        function returnToHome() {
-            // 清除計時器與定時器
-            clearInterval(countdownTimer);
-            clearTimeout(startTimeout);
-
-            currentStep = 1;
-            countdownSeconds = 10;
-            timerState = 'reset';
-
-            // 回復流程導引高亮狀態
-            document.getElementById('node1').classList.add('active');
-            document.getElementById('node2').classList.remove('active');
-
-            // 回復面板可視性
-            document.getElementById('panelStep1').classList.add('active');
-            document.getElementById('panelStep2').classList.remove('active');
-
-            // 在步驟一：將返回按鈕設定為半透明禁用狀態（但不隱藏，維持同列存在感）
-            const backBtn = document.getElementById('btnBack');
-            backBtn.classList.remove('enabled');
-
-            // 步驟一預設下一步可用
-            const nextBtn = document.getElementById('btnNext');
-            nextBtn.classList.add('enabled');
-
-            document.getElementById('timerNumber').textContent = countdownSeconds;
-
-            // 語系文本刷新
-            switchLanguage(currentLang);
-        }
-
-        // 處理返回按鈕點擊
-        function handleBackClick() {
-            if (currentStep === 2) {
-                returnToHome();
+        // 更新倒數文字（步驟二專用）
+        function updateTimerTextDisplay() {
+            const textEl = document.getElementById('timerTitleText');
+            if (!textEl) return;
+            const p = langPack[currentLang];
+            if (timerState === 'initial') {
+                textEl.textContent = p.timerInitial;
+            } else if (timerState === 'counting') {
+                textEl.textContent = p.timerCounting.replace("{s}", countdownSeconds);
+            } else if (timerState === 'complete') {
+                textEl.textContent = p.timerComplete;
             }
         }
 
-        /* STREAMING_CHUNK: Custom dialog prompt control and countdown routines... */
+        // 對話框
         function openHudDialog(msg) {
             document.getElementById('hudDialogText').textContent = msg;
             document.getElementById('hudDialog').classList.add('active');
@@ -746,55 +722,89 @@
             document.getElementById('hudDialog').classList.remove('active');
         }
 
-        // 處理下一步點擊
-        function handleNextClick() {
-            if (currentStep === 1) {
-                goToStep2();
-            } else if (currentStep === 2) {
-                // 完成步驟二，重置計時器狀態
+        // 返回首頁（步驟一）
+        function returnToHome() {
+            clearInterval(countdownTimer);
+            clearTimeout(startTimeout);
+
+            currentStep = 1;
+            countdownSeconds = 10;
+            timerState = 'initial';
+
+            document.getElementById('node1').classList.add('active');
+            document.getElementById('node2').classList.remove('active');
+
+            document.getElementById('panelStep1').classList.add('active');
+            document.getElementById('panelStep2').classList.remove('active');
+
+            const backBtn = document.getElementById('btnBack');
+            backBtn.classList.remove('enabled');
+
+            const nextBtn = document.getElementById('btnNext');
+            nextBtn.classList.add('enabled');
+
+            document.getElementById('timerNumber').textContent = countdownSeconds;
+
+            switchLanguage(currentLang);
+        }
+
+        // 返回按鈕
+        function handleBackClick() {
+            if (currentStep === 2) {
+                // 從步驟二返回步驟一
                 clearInterval(countdownTimer);
                 clearTimeout(startTimeout);
-                timerState = 'reset';
+                returnToHome();
+            }
+        }
+
+        // 下一步按鈕
+        function handleNextClick() {
+            if (currentStep === 1) {
+                // 前往步驟二
+                goToStep2();
+            } else if (currentStep === 2) {
+                // 步驟二完成 → 前往步驟三（目前以對話框模擬）
+                clearInterval(countdownTimer);
+                clearTimeout(startTimeout);
+                timerState = 'initial';
                 countdownSeconds = 10;
                 document.getElementById('timerNumber').textContent = countdownSeconds;
-                
-                // 跳出自訂對話框，不使用內建 alert()
                 openHudDialog(langPack[currentLang].dialogStep3);
             }
         }
 
+        /* ============================================================
+           步驟二專用：倒數計時器（完整實作）
+           ============================================================ */
+
         function goToStep2() {
             currentStep = 2;
 
-            // 切換 active 節點
             document.getElementById('node1').classList.remove('active');
             document.getElementById('node2').classList.add('active');
 
-            // 切換顯示面板
             document.getElementById('panelStep1').classList.remove('active');
             document.getElementById('panelStep2').classList.add('active');
 
-            // 在步驟二：啟動返回按鈕（呈現霓虹藍色發光線條）
-            const backBtn = document.getElementById('btnBack');
-            backBtn.classList.add('enabled');
+            // 啟用返回按鈕
+            document.getElementById('btnBack').classList.add('enabled');
 
-            // 強制切換至 Initial (開始靜心)
+            // 下一步按鈕先禁用
+            const nextBtn = document.getElementById('btnNext');
+            nextBtn.classList.remove('enabled');
+
+            // 重置計時器狀態
             timerState = 'initial';
             countdownSeconds = 10;
             document.getElementById('timerNumber').textContent = countdownSeconds;
             updateTimerTextDisplay();
 
-            // 進入步驟二時，「進入下一步」按鈕進入禁用狀態，直到倒數歸零
-            const nextBtn = document.getElementById('btnNext');
-            nextBtn.classList.remove('enabled');
-
-            // 同步刷新頁碼
-            switchLanguage(currentLang);
-
+            // 清除舊計時器
             clearInterval(countdownTimer);
             clearTimeout(startTimeout);
 
-            // 0.5 秒 (500ms) 後切換為 Counting (請靜心誦讀 X 秒) 並正式倒數
+            // 0.5 秒後開始倒數
             startTimeout = setTimeout(() => {
                 timerState = 'counting';
                 countdownSeconds = 9;
@@ -803,18 +813,61 @@
 
                 countdownTimer = setInterval(() => {
                     countdownSeconds--;
-                    
+
                     if (countdownSeconds <= 0) {
-                        // 倒數歸零 → 進入 Complete 狀態
                         clearInterval(countdownTimer);
                         countdownSeconds = 0;
                         timerState = 'complete';
-                        
+
                         document.getElementById('timerNumber').textContent = countdownSeconds;
                         updateTimerTextDisplay();
-                        
-                        // ✅ 自動啟用按鈕並轉為藍光霓虹
+
+                        // ✅ 啟用下一步按鈕（藍色霓虹光）
                         nextBtn.classList.add('enabled');
+                    } else {
+                        document.getElementById('timerNumber').textContent = countdownSeconds;
+                        updateTimerTextDisplay();
+                    }
+                }, 1000);
+            }, 500);
+
+            switchLanguage(currentLang);
+        }
+
+        // 重新開始按鈕（步驟二專用）
+        function restartTimer() {
+            if (currentStep !== 2) return;
+
+            clearInterval(countdownTimer);
+            clearTimeout(startTimeout);
+
+            timerState = 'initial';
+            countdownSeconds = 10;
+            document.getElementById('timerNumber').textContent = countdownSeconds;
+            updateTimerTextDisplay();
+
+            // 禁用下一步按鈕
+            document.getElementById('btnNext').classList.remove('enabled');
+
+            // 0.5 秒後重新開始倒數
+            startTimeout = setTimeout(() => {
+                timerState = 'counting';
+                countdownSeconds = 9;
+                document.getElementById('timerNumber').textContent = countdownSeconds;
+                updateTimerTextDisplay();
+
+                countdownTimer = setInterval(() => {
+                    countdownSeconds--;
+
+                    if (countdownSeconds <= 0) {
+                        clearInterval(countdownTimer);
+                        countdownSeconds = 0;
+                        timerState = 'complete';
+
+                        document.getElementById('timerNumber').textContent = countdownSeconds;
+                        updateTimerTextDisplay();
+
+                        document.getElementById('btnNext').classList.add('enabled');
                     } else {
                         document.getElementById('timerNumber').textContent = countdownSeconds;
                         updateTimerTextDisplay();
@@ -825,12 +878,11 @@
 
         // 初始化
         window.onload = function() {
-            // 預設載入步驟一狀態
             const backBtn = document.getElementById('btnBack');
-            backBtn.classList.remove('enabled'); // 步驟一禁用返回
+            backBtn.classList.remove('enabled');
 
             const nextBtn = document.getElementById('btnNext');
-            nextBtn.classList.add('enabled'); // 步驟一啟用下一步
+            nextBtn.classList.add('enabled');
 
             switchLanguage('zh');
         };
