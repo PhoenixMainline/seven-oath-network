@@ -253,12 +253,12 @@
 <body>
 
     <div class="hud-container">
-        <!-- 頁首區域：系統名稱與雙語切換切換按鈕 -->
+        <!-- 頁首區域：系統名稱與雙語切換按鈕 -->
         <header class="hud-header">
             <div class="app-title" id="appTitle">宇宙誓印覺醒工程 • 七印誓網</div>
             <div class="lang-switch-group">
                 <button class="lang-btn active" onclick="switchLanguage('zh')">中文</button>
-                <button class="lang-btn" onclick="withLanguage('en')" onclick="switchLanguage('en')">English</button>
+                <button class="lang-btn" onclick="switchLanguage('en')">English</button>
             </div>
         </header>
 
@@ -279,19 +279,19 @@
                     <span id="cardTitleText">【一】啟動條件</span>
                 </div>
                 
-                <!-- 條件確認檢核清單[cite: 1] -->
+                <!-- 條件確認檢核清單 -->
                 <ul class="condition-list">
                     <li class="condition-item">
                         <i class="fa-solid fa-square-check check-icon"></i>
-                        <span id="cond1">請完成驗證之【購書序號】誓導碼[cite: 1]</span>
+                        <span id="cond1">請完成驗證之【購書序號】誓導碼</span>
                     </li>
                     <li class="condition-item">
                         <i class="fa-solid fa-square-check check-icon"></i>
-                        <span id="cond2">穩定網路環境運作中[cite: 1]</span>
+                        <span id="cond2">穩定網路環境運作中</span>
                     </li>
                     <li class="condition-item">
                         <i class="fa-solid fa-square-check check-icon"></i>
-                        <span id="cond3">請掃描本卷書封底之《宇宙智能誓導平台》官方AI專屬誓導入口頁 QR Code，以啟動誓導通道之統一入口。[cite: 1]</span>
+                        <span id="cond3">請掃描本卷書封底之《宇宙智能誓導平台》官方AI專屬誓導入口頁 QR Code，以啟動誓導通道之統一入口。</span>
                     </li>
                 </ul>
             </div>
@@ -369,8 +369,9 @@
             document.getElementById('pageMarker').textContent = langPack[lang].pageMarker;
         }
 
+        // 預留擴充槽：專供下一步貼上代碼整合切換
         function executeNextStep() {
-            alert("步驟一檢查完成！即將進入下一個整合狀態。");
+            console.log("步驟一確認完畢，等待下一步指令。");
         }
     </script>
 </body>
