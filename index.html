@@ -10,7 +10,7 @@
     
     <style>
         /* ==========================================================================
-           1. 宇宙深邃科技感星空背景與 HUD 基礎重設
+           1. 宇宙深邃科技感星空背景與動態粒子流動層（貫穿全場）
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -30,7 +30,7 @@
             position: relative;
         }
 
-        /* 宇宙動態星芒粒子流動層 */
+        /* 宇宙動態星芒粒子流動層：不被遮擋，穿透全畫面 */
         body::before {
             content: "";
             position: absolute;
@@ -42,8 +42,8 @@
             background-size: 550px 550px, 350px 350px, 450px 450px;
             background-position: 0 0, 40px 60px, 130px 270px;
             animation: starOrbit 120s linear infinite;
-            opacity: 0.6;
-            z-index: 1;
+            opacity: 0.7;
+            z-index: 2; /* 提高層級，使其能漂浮穿透在內框之上 */
             pointer-events: none;
         }
 
@@ -53,15 +53,13 @@
         }
 
         /* ==========================================================================
-           2. HUD 通透毛玻璃主容器外框
+           2. HUD 科技內框：與全背景同色，允許粒子穿透
            ========================================================================== */
         .hud-container {
             width: 100%;
             max-width: 680px;
             min-height: 85vh;
-            background: rgba(7, 18, 41, 0.45);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            background: rgba(2, 6, 17, 0.75); /* 與背景融合的色調，並帶有些微通透讓粒子隱現 */
             border: 1px solid rgba(41, 98, 255, 0.25);
             box-shadow: 0 0 50px rgba(0, 81, 255, 0.15), inset 0 0 30px rgba(41, 98, 255, 0.1);
             border-radius: 24px;
@@ -69,7 +67,7 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            z-index: 10;
+            z-index: 1; /* 低於粒子層，確保粒子穿透 */
             margin: 20px;
         }
 
@@ -101,16 +99,16 @@
             letter-spacing: 1px;
             color: #00bfff;
             text-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
-            transition: all 0.3s ease;
         }
 
-        /* 雙語切換切換按鈕組 */
+        /* 雙語切換按鈕組 */
         .lang-switch-group {
             display: flex;
             background: rgba(41, 98, 255, 0.15);
             border: 1px solid rgba(41, 98, 255, 0.3);
             border-radius: 20px;
             padding: 2px;
+            z-index: 10; /* 確保按鈕在粒子上方可點擊 */
         }
 
         .lang-btn {
@@ -121,7 +119,7 @@
             font-size: 0.8rem;
             border-radius: 16px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
         }
 
         .lang-btn.active {
@@ -132,7 +130,7 @@
         }
 
         /* ==========================================================================
-           4. 全球啟動流程狀態導航欄(縮小簡化版)
+           4. 全球啟動流程狀態導航欄
            ========================================================================== */
         .flow-nav {
             display: grid;
@@ -149,7 +147,6 @@
             text-align: center;
             font-size: 0.75rem;
             color: rgba(224, 232, 245, 0.4);
-            transition: all 0.4s ease;
         }
 
         .flow-node.active {
@@ -161,7 +158,7 @@
         }
 
         /* ==========================================================================
-           5. 步驟主內容顯示區與通透卡片
+           5. 步驟主內容顯示區與內卡片
            ========================================================================== */
         .step-content {
             flex-grow: 1;
@@ -191,7 +188,6 @@
             color: #D4AF37;
         }
 
-        /* 條件檢核清單樣式 */
         .condition-list {
             list-style: none;
             display: flex;
@@ -215,106 +211,7 @@
         }
 
         /* ==========================================================================
-           6. 智能 QR Code 相機掃描框與動態光軌
-           ========================================================================== */
-        .scan-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-            margin-top: 10px;
-        }
-
-        /* 微光金色霓虹核心掃描啟動按鈕 */
-        .btn-scan {
-            background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 100%);
-            border: none;
-            color: #020611;
-            padding: 12px 28px;
-            font-size: 1rem;
-            font-weight: 700;
-            border-radius: 30px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .btn-scan:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.7);
-        }
-
-        /* 模擬相機視訊框與全息動態雷射 */
-        .camera-preview-box {
-            width: 100%;
-            max-width: 280px;
-            height: 200px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px dashed rgba(0, 191, 255, 0.4);
-            border-radius: 12px;
-            display: none; /* 觸發啟動後才由 JS 開啟 */
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* 全息掃描雷射光軌效果 */
-        .camera-preview-box::before {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #00bfff, transparent);
-            top: 0;
-            left: 0;
-            animation: laserScan 2s linear infinite;
-            box-shadow: 0 0 8px #00bfff;
-        }
-
-        @keyframes laserScan {
-            0% { top: 0%; }
-            50% { top: 100%; }
-            100% { top: 0%; }
-        }
-
-        /* 掃描成功結果顯示艙 */
-        .scan-result-pod {
-            width: 100%;
-            background: rgba(0, 230, 118, 0.08);
-            border: 1px dashed rgba(0, 230, 118, 0.4);
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 0.9rem;
-            color: #00e676;
-            display: none;
-            text-align: center;
-        }
-
-        /* 相機權限異常中英雙語引導面板 */
-        .camera-guide-panel {
-            width: 100%;
-            background: rgba(255, 23, 68, 0.07);
-            border: 1px solid rgba(255, 23, 68, 0.3);
-            border-radius: 12px;
-            padding: 16px;
-            color: #ff1744;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            display: none; /* 發生異常時由 JS 展開 */
-        }
-
-        .guide-title {
-            font-weight: bold;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* ==========================================================================
-           7. 頁尾導航控制與專利右下角規格化頁碼
+           6. 頁尾導航控制與專利右下角規格化頁碼
            ========================================================================== */
         .hud-footer {
             margin-top: 30px;
@@ -323,38 +220,29 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            z-index: 10; /* 確保按鈕在粒子上方可點擊 */
         }
 
-        /* 進入下一步核心按鈕(置中靠右控制) */
         .btn-next {
             background: rgba(0, 191, 255, 0.1);
             border: 1px solid rgba(0, 191, 255, 0.3);
-            color: rgba(0, 191, 255, 0.4);
+            color: rgba(0, 191, 255, 0.6);
             padding: 10px 24px;
             font-size: 0.95rem;
             font-weight: bold;
             border-radius: 8px;
-            cursor: not-allowed;
+            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 8px;
             transition: all 0.3s ease;
         }
 
-        .btn-next.enabled {
-            background: linear-gradient(135deg, #00bfff 0%, #0051ff 100%);
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(0, 191, 255, 0.4);
+        .btn-next:hover {
+            background: rgba(0, 191, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
         }
 
-        .btn-next.enabled:hover {
-            box-shadow: 0 0 25px rgba(0, 191, 255, 0.6);
-            transform: translateX(2px);
-        }
-
-        /* 需求二指定的右下角絕對頁碼 */
         .page-marker {
             font-size: 0.8rem;
             color: rgba(224, 232, 245, 0.4);
@@ -370,7 +258,7 @@
             <div class="app-title" id="appTitle">宇宙誓印覺醒工程 • 七印誓網</div>
             <div class="lang-switch-group">
                 <button class="lang-btn active" onclick="switchLanguage('zh')">中文</button>
-                <button class="lang-btn" onclick="switchLanguage('en')">English</button>
+                <button class="lang-btn" onclick="withLanguage('en')" onclick="switchLanguage('en')">English</button>
             </div>
         </header>
 
@@ -383,7 +271,7 @@
             <div class="flow-node" id="node5">[5] 系統同步</div>
         </nav>
 
-        <!-- 步驟主內容顯示區（目前鎖定步驟一） -->
+        <!-- 步驟主內容顯示區（目前依要求：只保留步驟一純淨卡片） -->
         <main class="step-content">
             <div class="hud-card">
                 <div class="card-title">
@@ -391,49 +279,27 @@
                     <span id="cardTitleText">【一】啟動條件</span>
                 </div>
                 
-                <!-- 條件確認檢核清單 -->
+                <!-- 條件確認檢核清單[cite: 1] -->
                 <ul class="condition-list">
                     <li class="condition-item">
                         <i class="fa-solid fa-square-check check-icon"></i>
-                        <span id="cond1">請完成驗證之【購書序號】誓導碼</span>
+                        <span id="cond1">請完成驗證之【購書序號】誓導碼[cite: 1]</span>
                     </li>
                     <li class="condition-item">
                         <i class="fa-solid fa-square-check check-icon"></i>
-                        <span id="cond2">穩定網路環境運作中</span>
+                        <span id="cond2">穩定網路環境運作中[cite: 1]</span>
                     </li>
                     <li class="condition-item">
                         <i class="fa-solid fa-square-check check-icon"></i>
-                        <span id="cond3">請掃描本卷書封底之《宇宙智能誓導平台》官方AI專屬誓導入口頁 QR Code，以啟動誓導通道之統一入口。</span>
+                        <span id="cond3">請掃描本卷書封底之《宇宙智能誓導平台》官方AI專屬誓導入口頁 QR Code，以啟動誓導通道之統一入口。[cite: 1]</span>
                     </li>
                 </ul>
-            </div>
-
-            <!-- QR Code 智能掃描組件 -->
-            <div class="hud-card">
-                <div class="scan-wrapper">
-                    <button class="btn-scan" id="btnScan" onclick="triggerCameraScan()">
-                        <i class="fa-solid fa-camera"></i>
-                        <span id="btnScanText">點擊啟動掃描</span>
-                    </button>
-
-                    <!-- 相機串流視訊預留框 -->
-                    <div class="camera-preview-box" id="cameraPreview"></div>
-
-                    <!-- 成功解析結果面板 -->
-                    <div class="scan-result-pod" id="scanResultPod"></div>
-
-                    <!-- 相機權限錯誤處理中英雙語導引面板 -->
-                    <div class="camera-guide-panel" id="cameraGuidePanel">
-                        <!-- 由 JavaScript 依語系動態填入 -->
-                    </div>
-                </div>
             </div>
         </main>
 
         <!-- 頁尾控制與規格化頁碼 -->
         <footer class="hud-footer">
-            <div></div> <!-- 保持排版平衡的對齊空槽 -->
-            <button class="btn-next" id="btnNext" disabled onclick="executeNextStep()">
+            <button class="btn-next" id="btnNext" onclick="executeNextStep()">
                 <span id="btnNextText">進入下一步</span>
                 <i class="fa-solid fa-arrow-right"></i>
             </button>
@@ -442,13 +308,11 @@
     </div>
 
     <!-- ==========================================================================
-       8. 智能雙語翻譯文本資料庫與控制邏輯
+       7. 智能雙語翻譯文本資料庫與控制邏輯
        ========================================================================== */ -->
     <script>
-        // 當前語系狀態緩存鎖定
         let currentLang = 'zh';
 
-        // 雙語翻譯文本對照集
         const langPack = {
             zh: {
                 appTitle: "宇宙誓印覺醒工程 • 七印誓網",
@@ -461,18 +325,8 @@
                 cond1: "請完成驗證之【購書序號】誓導碼",
                 cond2: "穩定網路環境運作中",
                 cond3: "請掃描本卷書封底之《宇宙智能誓導平台》官方AI專屬誓導入口頁 QR Code，以啟動誓導通道之統一入口。",
-                btnScan: "點擊啟動掃描",
                 btnNext: "進入下一步",
-                pageMarker: "📄 【宇宙誓印覺醒工程 • 覺醒卷】：第 3-4 頁",
-                scanSuccess: "🎉 掃描完成！誓導通道已成功校準對頻。",
-                guideHtml: `
-                    <div class="guide-title">📷 無法啟動相機</div>
-                    ⚙️ 開啟手機「設定」<br>
-                    &nbsp;&nbsp; → 應用程式管理<br>
-                    &nbsp;&nbsp; → 權限 → 相機 → 改為「允許」<br>
-                    &nbsp;&nbsp; → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>
-                    ⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code
-                `
+                pageMarker: "📄 【宇宙誓印覺醒工程 • 覺醒卷】：第 3-4 頁"
             },
             en: {
                 appTitle: "Cosmic Oath Awakening Project · Seven-Seal Oath Network",
@@ -485,33 +339,20 @@
                 cond1: "Please complete the verification of the 【Purchase Serial Number】 Vow-Guidance Code",
                 cond2: "Stable internet environment activated",
                 cond3: "Please scan the QR Code on the back cover of this volume 《Cosmic Intelligent Vow-Guidance Platform》 Official AI Dedicated Vow-Guidance Entry Page QR Code to activate the unified access point.",
-                btnScan: "Scan QR Code",
                 btnNext: "Next Step",
-                pageMarker: "📄 【Cosmic Oath Awakening Project • Awakening Scroll】: Pages 3-4",
-                scanSuccess: "🎉 Scan Successful! Oath-Guidance channel alignment confirmed.",
-                guideHtml: `
-                    <div class="guide-title">📷 Unable to start camera</div>
-                    ⚙️ Open phone "Settings"<br>
-                    &nbsp;&nbsp; → App Management<br>
-                    &nbsp;&nbsp; → Permissions → Camera → Set to 「Allow」<br>
-                    &nbsp;&nbsp; → Open with 🌐 browser (Chrome / Yahoo / Edge...)<br>
-                    ⚠️ If still not working, please manually scan the QR Code from the physical book.
-                `
+                pageMarker: "📄 【Cosmic Oath Awakening Project • Awakening Scroll】: Pages 3-4"
             }
         };
 
-        // 語系切換核心函式
         function switchLanguage(lang) {
             currentLang = lang;
             
-            // 1. 更新切換按鈕亮起狀態
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 btn.classList.remove('active');
                 if(btn.textContent.toLowerCase().includes('english') && lang === 'en') btn.classList.add('active');
                 if(btn.textContent.includes('中文') && lang === 'zh') btn.classList.add('active');
             });
 
-            // 2. 全域文本同步刷新
             document.getElementById('appTitle').textContent = langPack[lang].appTitle;
             document.getElementById('node1').textContent = langPack[lang].node1;
             document.getElementById('node2').textContent = langPack[lang].node2;
@@ -524,57 +365,12 @@
             document.getElementById('cond2').textContent = langPack[lang].cond2;
             document.getElementById('cond3').textContent = langPack[lang].cond3;
             
-            document.getElementById('btnScanText').textContent = langPack[lang].btnScan;
             document.getElementById('btnNextText').textContent = langPack[lang].btnNext;
             document.getElementById('pageMarker').textContent = langPack[lang].pageMarker;
-
-            // 3. 異常引導面板動態更新
-            const guidePanel = document.getElementById('cameraGuidePanel');
-            if (guidePanel.style.display === 'block') {
-                guidePanel.innerHTML = langPack[lang].guideHtml;
-            }
         }
 
-        // 模擬模擬相機啟動與掃描解析機制
-        function triggerCameraScan() {
-            const previewBox = document.getElementById('cameraPreview');
-            const guidePanel = document.getElementById('cameraGuidePanel');
-            const resultPod = document.getElementById('scanResultPod');
-            const nextBtn = document.getElementById('btnNext');
-
-            // 初始化重設隱藏面板
-            guidePanel.style.display = 'none';
-            resultPod.style.display = 'none';
-
-            // 模擬偵測瀏覽器權限或硬體支援環境 (此處設定 15% 機率模擬相機啟動失敗，用以完美驗證需求四的引導語)
-            const isCameraAccessible = Math.random() > 0.15; 
-
-            if (!isCameraAccessible) {
-                // 模擬啟動失敗：顯示引導文字
-                previewBox.style.display = 'none';
-                guidePanel.innerHTML = langPack[currentLang].guideHtml;
-                guidePanel.style.display = 'block';
-            } else {
-                // 模擬成功啟動：開啟全息掃描預覽框
-                previewBox.style.display = 'block';
-                
-                // 模擬 2.5 秒後掃描對焦成功，並自動關閉預覽，回傳結果
-                setTimeout(() => {
-                    previewBox.style.display = 'none';
-                    resultPod.textContent = langPack[currentLang].scanSuccess;
-                    resultPod.style.display = 'block';
-                    
-                    // 自動解鎖並啟用「進入下一步」按鈕
-                    nextBtn.removeAttribute('disabled');
-                    nextBtn.classList.add('enabled');
-                }, 2500);
-            }
-        }
-
-        // 後續擴充槽：進入步驟二
         function executeNextStep() {
-            alert("步驟一驗證成功！已準備好銜接至下一步驟【二】授權誓讀。");
-            // 此處後續將直接整合步驟二之卡片切換排版邏輯
+            alert("步驟一檢查完成！即將進入下一個整合狀態。");
         }
     </script>
 </body>
