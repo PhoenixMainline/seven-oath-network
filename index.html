@@ -1,16 +1,17 @@
+```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>宇宙誓印覺醒工程 • 七印誓網</title>
-    <!-- 引入 FontAwesome 圖標庫與 Google 數位字型 -->
+    <title>【宇宙誓印覺醒工程 • 七印誓網】</title>
+    <!-- 引入 FontAwesome 圖標庫 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
         /* ==========================================================================
-           1. 宇宙深邃科技感星空背景與動態粒子流動層（貫穿全場）
+           1. 宇宙深邃背景、金黃星芒粒子與防偽浮水印（原設定調回）
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -20,179 +21,191 @@
         }
 
         body {
-            background: radial-gradient(circle at 50% 50%, #061026 0%, #020611 100%);
+            background: radial-gradient(circle at 50% 50%, #06122c 0%, #020715 100%);
             min-height: 100vh;
             color: #e0e8f5;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow-x: hidden;
+            overflow: hidden;
             position: relative;
         }
 
-        /* 宇宙動態星芒粒子流動層：不被遮擋，穿透全畫面 */
-        body::before {
-            content: "";
+        /* 🌌 金黃動態星芒粒子流動層：完全穿透內外框 */
+        .particle-container {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
-                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-                radial-gradient(rgba(212,175,55,.3), rgba(212,175,55,.05) 2px, transparent 40px);
-            background-size: 550px 550px, 350px 350px, 450px 450px;
-            background-position: 0 0, 40px 60px, 130px 270px;
-            animation: starOrbit 120s linear infinite;
-            opacity: 0.7;
-            z-index: 2; /* 提高層級，使其能漂浮穿透在內框之上 */
+                radial-gradient(#d4af37, rgba(212,175,55,.3) 1px, transparent 30px),
+                radial-gradient(#d4af37, rgba(212,175,55,.2) 2px, transparent 40px);
+            background-size: 350px 350px, 450px 450px;
+            background-position: 0 0, 90px 150px;
+            animation: starMove 90s linear infinite;
+            opacity: 0.65;
+            z-index: 5; /* 提高層級，使其自由穿透文字與內框 */
             pointer-events: none;
         }
 
-        @keyframes starOrbit {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @keyframes starMove {
+            from { transform: translateY(0px) rotate(0deg); }
+            to { transform: translateY(-1000px) rotate(360deg); }
+        }
+
+        /* 📜 「天地為鑑・光網為證」純CSS防偽浮水印層 */
+        .watermark-layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.04;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            padding: 50px;
+        }
+
+        .watermark-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            transform: rotate(-25deg);
+            white-space: nowrap;
+            user-select: none;
         }
 
         /* ==========================================================================
-           2. HUD 科技內框：與全背景同色，允許粒子穿透
+           2. HUD 科技內框（調回通透原設定，允許粒子穿透）
            ========================================================================== */
         .hud-container {
             width: 100%;
-            max-width: 680px;
-            min-height: 85vh;
-            background: rgba(2, 6, 17, 0.75); /* 與背景融合的色調，並帶有些微通透讓粒子隱現 */
-            border: 1px solid rgba(41, 98, 255, 0.25);
-            box-shadow: 0 0 50px rgba(0, 81, 255, 0.15), inset 0 0 30px rgba(41, 98, 255, 0.1);
-            border-radius: 24px;
-            padding: 30px;
+            max-width: 660px;
+            background: rgba(4, 13, 33, 0.4); /* 調回通透的原設定，不遮擋粒子 */
+            border: 1.5px solid rgba(0, 191, 255, 0.3);
+            box-shadow: 0 0 40px rgba(0, 191, 255, 0.15), inset 0 0 20px rgba(0, 191, 255, 0.05);
+            border-radius: 28px;
+            padding: 35px;
             display: flex;
             flex-direction: column;
             position: relative;
-            z-index: 1; /* 低於粒子層，確保粒子穿透 */
+            z-index: 3;
             margin: 20px;
         }
 
-        /* 邊角 HUD 電子光標裝飾 */
+        /* 右上角 HUD 光標細節 */
         .hud-container::after {
             content: "";
             position: absolute;
-            top: 15px; right: 15px; width: 15px; height: 15px;
-            border-top: 2px solid rgba(0, 191, 255, 0.6);
-            border-right: 2px solid rgba(0, 191, 255, 0.6);
+            top: 18px; right: 18px; width: 14px; height: 14px;
+            border-top: 3px solid #00bfff;
+            border-right: 3px solid #00bfff;
             pointer-events: none;
         }
 
         /* ==========================================================================
-           3. 頁首(Header)區域：統一專案名稱與雙語切換
+           3. 頁首(Header)區域：專案標題與語系切換
            ========================================================================== */
         .hud-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(41, 98, 255, 0.2);
-            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 191, 255, 0.15);
+            padding-bottom: 18px;
             margin-bottom: 25px;
         }
 
         .app-title {
-            font-size: 1.15rem;
+            font-size: 1.25rem;
             font-weight: 700;
-            letter-spacing: 1px;
-            color: #00bfff;
-            text-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
+            color: #d4af37; /* 金黃色標題 */
+            text-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
         }
 
-        /* 雙語切換按鈕組 */
         .lang-switch-group {
             display: flex;
-            background: rgba(41, 98, 255, 0.15);
-            border: 1px solid rgba(41, 98, 255, 0.3);
+            background: rgba(0, 191, 255, 0.08);
+            border: 1px solid rgba(0, 191, 255, 0.25);
             border-radius: 20px;
             padding: 2px;
-            z-index: 10; /* 確保按鈕在粒子上方可點擊 */
+            z-index: 10;
         }
 
         .lang-btn {
             background: transparent;
             border: none;
-            color: rgba(224, 232, 245, 0.5);
-            padding: 6px 14px;
+            color: rgba(224, 232, 245, 0.4);
+            padding: 5px 14px;
             font-size: 0.8rem;
             border-radius: 16px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .lang-btn.active {
             background: #00bfff;
             color: #020611;
             font-weight: bold;
-            box-shadow: 0 0 12px rgba(0, 191, 255, 0.5);
+            box-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
         }
 
         /* ==========================================================================
-           4. 全球啟動流程狀態導航欄
+           4. 全球流程導航欄
            ========================================================================== */
         .flow-nav {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 6px;
-            margin-bottom: 25px;
+            gap: 8px;
+            margin-bottom: 30px;
         }
 
         .flow-node {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 6px;
-            padding: 8px 4px;
+            padding: 8px 2px;
             text-align: center;
             font-size: 0.75rem;
-            color: rgba(224, 232, 245, 0.4);
+            color: rgba(224, 232, 245, 0.35);
         }
 
         .flow-node.active {
-            background: rgba(212, 175, 55, 0.12);
-            border: 1px solid #D4AF37;
-            color: #D4AF37;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+            background: rgba(212, 175, 55, 0.08);
+            border: 1px solid #d4af37;
+            color: #d4af37;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
             font-weight: bold;
         }
 
         /* ==========================================================================
-           5. 步驟主內容顯示區與內卡片
+           5. 步驟一主卡片區域（完全純淨）
            ========================================================================== */
         .step-content {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 22px;
         }
 
         .hud-card {
-            background: rgba(10, 25, 57, 0.4);
-            border: 1px solid rgba(41, 98, 255, 0.15);
+            background: rgba(6, 18, 44, 0.3);
+            border: 1px solid rgba(0, 191, 255, 0.12);
             border-radius: 16px;
             padding: 24px;
-            box-shadow: inset 0 0 15px rgba(41, 98, 255, 0.05);
         }
 
         .card-title {
-            font-size: 1.3rem;
-            color: #fff;
+            font-size: 1.2rem;
+            color: #d4af37;
             margin-bottom: 18px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .card-title i {
-            color: #D4AF37;
-        }
-
         .condition-list {
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 15px;
         }
 
         .condition-item {
@@ -200,37 +213,36 @@
             align-items: flex-start;
             gap: 12px;
             font-size: 0.95rem;
-            line-height: 1.5;
+            line-height: 1.6;
             color: rgba(224, 232, 245, 0.85);
         }
 
         .condition-item i.check-icon {
             color: #00e676;
-            margin-top: 3px;
-            text-shadow: 0 0 8px rgba(0, 230, 118, 0.4);
+            margin-top: 4px;
+            text-shadow: 0 0 8px rgba(0, 230, 118, 0.3);
         }
 
         /* ==========================================================================
-           6. 頁尾導航控制與專利右下角規格化頁碼
+           6. 頁尾導航與右下角規格化頁碼
            ========================================================================== */
         .hud-footer {
-            margin-top: 30px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(41, 98, 255, 0.15);
+            margin-top: 35px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(0, 191, 255, 0.12);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 10; /* 確保按鈕在粒子上方可點擊 */
+            z-index: 10;
         }
 
         .btn-next {
-            background: rgba(0, 191, 255, 0.1);
-            border: 1px solid rgba(0, 191, 255, 0.3);
-            color: rgba(0, 191, 255, 0.6);
-            padding: 10px 24px;
-            font-size: 0.95rem;
-            font-weight: bold;
-            border-radius: 8px;
+            background: transparent;
+            border: 1px solid #0051ff;
+            color: #00bfff;
+            padding: 10px 22px;
+            font-size: 0.9rem;
+            border-radius: 20px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -239,30 +251,48 @@
         }
 
         .btn-next:hover {
-            background: rgba(0, 191, 255, 0.2);
-            box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
+            background: rgba(0, 191, 255, 0.1);
+            box-shadow: 0 0 12px rgba(0, 191, 255, 0.2);
         }
 
         .page-marker {
-            font-size: 0.8rem;
-            color: rgba(224, 232, 245, 0.4);
-            letter-spacing: 0.5px;
+            font-size: 0.78rem;
+            color: rgba(224, 232, 245, 0.35);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
     </style>
 </head>
 <body>
 
+    <!-- 🌌 金黃動態星芒粒子層 -->
+    <div class="particle-container"></div>
+
+    <!-- 📜 純CSS防偽浮水印背景 -->
+    <div class="watermark-layer">
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+    </div>
+
+    <!-- 主 HUD 容器 -->
     <div class="hud-container">
-        <!-- 頁首區域：系統名稱與雙語切換按鈕 -->
+        <!-- 頁首 -->
         <header class="hud-header">
-            <div class="app-title" id="appTitle">宇宙誓印覺醒工程 • 七印誓網</div>
+            <div class="app-title" id="appTitle">【宇宙誓印覺醒工程 • 七印誓網】</div>
             <div class="lang-switch-group">
                 <button class="lang-btn active" onclick="switchLanguage('zh')">中文</button>
                 <button class="lang-btn" onclick="switchLanguage('en')">English</button>
             </div>
         </header>
 
-        <!-- 全球啟動流程導航欄 -->
+        <!-- 流程欄 -->
         <nav class="flow-nav">
             <div class="flow-node active" id="node1">[1] 啟動條件</div>
             <div class="flow-node" id="node2">[2] 授權誓讀</div>
@@ -271,7 +301,7 @@
             <div class="flow-node" id="node5">[5] 系統同步</div>
         </nav>
 
-        <!-- 步驟主內容顯示區（目前依要求：只保留步驟一純淨卡片） -->
+        <!-- 步驟主內容區（已移除按鈕與掃描框，純淨卡片狀態） -->
         <main class="step-content">
             <div class="hud-card">
                 <div class="card-title">
@@ -279,7 +309,6 @@
                     <span id="cardTitleText">【一】啟動條件</span>
                 </div>
                 
-                <!-- 條件確認檢核清單 -->
                 <ul class="condition-list">
                     <li class="condition-item">
                         <i class="fa-solid fa-square-check check-icon"></i>
@@ -297,25 +326,26 @@
             </div>
         </main>
 
-        <!-- 頁尾控制與規格化頁碼 -->
+        <!-- 頁尾 -->
         <footer class="hud-footer">
-            <button class="btn-next" id="btnNext" onclick="executeNextStep()">
+            <button class="btn-next" id="btnNext" onclick="goToNextStep()">
                 <span id="btnNextText">進入下一步</span>
                 <i class="fa-solid fa-arrow-right"></i>
             </button>
-            <div class="page-marker" id="pageMarker">📄 【宇宙誓印覺醒工程 • 覺醒卷】：第 3-4 頁</div>
+            <div class="page-marker" id="pageMarker">
+                <i class="fa-regular fa-file-lines"></i>
+                <span>【宇宙誓印覺醒工程 • 覺醒卷】：第 3-4 頁</span>
+            </div>
         </footer>
     </div>
 
-    <!-- ==========================================================================
-       7. 智能雙語翻譯文本資料庫與控制邏輯
-       ========================================================================== */ -->
+    <!-- 控制指令碼 -->
     <script>
         let currentLang = 'zh';
 
         const langPack = {
             zh: {
-                appTitle: "宇宙誓印覺醒工程 • 七印誓網",
+                appTitle: "【宇宙誓印覺醒工程 • 七印誓網】",
                 node1: "[1] 啟動條件",
                 node2: "[2] 授權誓讀",
                 node3: "[3] 授權綁定",
@@ -326,10 +356,10 @@
                 cond2: "穩定網路環境運作中",
                 cond3: "請掃描本卷書封底之《宇宙智能誓導平台》官方AI專屬誓導入口頁 QR Code，以啟動誓導通道之統一入口。",
                 btnNext: "進入下一步",
-                pageMarker: "📄 【宇宙誓印覺醒工程 • 覺醒卷】：第 3-4 頁"
+                pageMarker: "【宇宙誓印覺醒工程 • 覺醒卷】：第 3-4 頁"
             },
             en: {
-                appTitle: "Cosmic Oath Awakening Project · Seven-Seal Oath Network",
+                appTitle: "【Cosmic Oath Awakening Project · Seven-Seal Network】",
                 node1: "[1] Conditions",
                 node2: "[2] Authorized Vow",
                 node3: "[3] Binding Phase",
@@ -340,13 +370,12 @@
                 cond2: "Stable internet environment activated",
                 cond3: "Please scan the QR Code on the back cover of this volume 《Cosmic Intelligent Vow-Guidance Platform》 Official AI Dedicated Vow-Guidance Entry Page QR Code to activate the unified access point.",
                 btnNext: "Next Step",
-                pageMarker: "📄 【Cosmic Oath Awakening Project • Awakening Scroll】: Pages 3-4"
+                pageMarker: "【Cosmic Oath Awakening Project • Awakening Scroll】: Pages 3-4"
             }
         };
 
         function switchLanguage(lang) {
             currentLang = lang;
-            
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 btn.classList.remove('active');
                 if(btn.textContent.toLowerCase().includes('english') && lang === 'en') btn.classList.add('active');
@@ -366,13 +395,15 @@
             document.getElementById('cond3').textContent = langPack[lang].cond3;
             
             document.getElementById('btnNextText').textContent = langPack[lang].btnNext;
-            document.getElementById('pageMarker').textContent = langPack[lang].pageMarker;
+            document.querySelector('#pageMarker span').textContent = langPack[lang].pageMarker;
         }
 
-        // 預留擴充槽：專供下一步貼上代碼整合切換
-        function executeNextStep() {
-            console.log("步驟一確認完畢，等待下一步指令。");
+        // 預留對齊槽：供下一步整合直接切換卡片使用
+        function goToNextStep() {
+            console.log("第一步檢查無誤，等待下一步貼上指令。");
         }
     </script>
 </body>
 </html>
+
+```
