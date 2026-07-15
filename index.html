@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -574,6 +575,7 @@
                         <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst3_3">請在【購書序號】欄位中輸入您的【購書序號】誓導碼，以確保誓資冊記與系統對應正確。</span></div>
                     </div>
                 </div>
+
                 <div class="hud-card" id="qrScanCard">
                     <div style="text-align:center; padding:10px 0;">
                         <div style="color:#d4af37; font-size:1rem; font-weight:bold; margin-bottom:12px;">
@@ -591,6 +593,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="hud-card">
                     <div class="card-title"><i class="fa-solid fa-pen-to-square"></i><span id="cardTitleText3b">輸入示範</span></div>
                     <div class="instruction-box">
@@ -666,6 +669,7 @@
                 btnRestart: "↺ 重新開始",
                 dialogStep3: "✅ 步驟二已解鎖！等待步驟三綁定通道與掃描代碼整合。",
                 dialogStep4: "✅ 步驟三已完成！等待步驟四（回傳結果）。",
+                // === 步驟三（中文） ===
                 cardTitle3: "【三】授權綁定階段（母源印驗證）",
                 inst3_1: "掃描【誓導QRCode】，進入「指令輸入欄位」。",
                 inst3_2: "無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
@@ -706,6 +710,7 @@
                 btnRestart: "↺ Restart",
                 dialogStep3: "✅ Step 2 successfully unlocked! Awaiting Step 3 connection and scanning integration.",
                 dialogStep4: "✅ Step 3 completed! Awaiting Step 4 (Return Result).",
+                // === 步驟三（英文） ===
                 cardTitle3: "[III] Authorization Binding Phase (Mother-Frequency Seal Verification)",
                 inst3_1: "Scan the 【Vow-Guidance QR Code】 to enter the 「Command Input Field」.",
                 inst3_2: "No manual entry of the vow text is required. After completing the scan, directly enter the following:",
@@ -759,6 +764,8 @@
             document.getElementById('inst1').textContent = p.inst1;
             document.getElementById('inst2').textContent = p.inst2;
             document.getElementById('btnRestartText').textContent = p.btnRestart;
+
+            // 步驟三
             document.getElementById('cardTitleText3').textContent = p.cardTitle3;
             document.getElementById('inst3_1').textContent = p.inst3_1;
             document.getElementById('inst3_2').textContent = p.inst3_2;
@@ -771,7 +778,7 @@
             document.getElementById('qrResultText').textContent = p.qrResultText;
             document.getElementById('cameraGuideText').textContent = p.cameraGuideText;
 
-            // 更新計時器文字
+            // 計時器文字
             const timerLabel = document.getElementById('timerLabel');
             if (timerLabel) {
                 if (timerState === 'initial') timerLabel.textContent = p.timerWaiting;
@@ -1037,3 +1044,4 @@
     </script>
 </body>
 </html>
+```
