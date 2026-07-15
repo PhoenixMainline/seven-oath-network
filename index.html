@@ -424,6 +424,48 @@
             border-radius: 12px;
             width: 100%;
         }
+        .btn-start-centering {
+            background: linear-gradient(135deg, #d4af37, #b8952e);
+            border: none;
+            color: #0A060E;
+            font-weight: 800;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-start-centering:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5);
+        }
+        .btn-start-centering:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .timer-label {
+            font-size: 1rem;
+            color: rgba(224, 232, 245, 0.7);
+            min-width: 80px;
+        }
+        .timer-number {
+            font-size: 2.5rem;
+            font-family: 'Share Tech Mono', sans-serif;
+            color: #00bfff;
+            text-shadow: 0 0 15px rgba(0, 191, 255, 0.6);
+            font-weight: 700;
+            min-width: 60px;
+            text-align: center;
+        }
+        .timer-number.complete {
+            color: #00e676;
+            text-shadow: 0 0 20px rgba(0, 230, 118, 0.6);
+        }
     </style>
 </head>
 <body>
@@ -479,22 +521,45 @@
             <!-- 步驟二 -->
             <div class="step-panel" id="panelStep2">
                 <div class="hud-card">
-                    <div class="proclamation-text" id="proclamationText">★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★</div>
-                    <div class="timer-container">
-                        <div class="timer-title"><i class="fa-solid fa-hourglass-half"></i><span id="timerTitleText">開始靜心</span></div>
-                        <div class="timer-number" id="timerNumber">10</div>
+                    <div class="proclamation-text" id="proclamationText">
+                        ★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★
                     </div>
+
+                    <div class="timer-container">
+                        <div style="display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap; width:100%;">
+                            <button class="btn-start-centering" id="btnStartCentering" onclick="startCentering()">
+                                <i class="fa-solid fa-play"></i>
+                                <span id="btnStartText">開始靜心</span>
+                            </button>
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <span class="timer-label" id="timerLabel">⏳ 等待開始</span>
+                                <span class="timer-number" id="timerNumber">10</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div style="text-align:center; margin-top:12px;">
-                        <button class="btn-restart" id="btnRestart" onclick="restartTimer()">
-                            <i class="fa-solid fa-rotate-right"></i><span id="btnRestartText">↺ 重新開始</span>
+                        <button class="btn-restart" id="btnRestart" onclick="restartTimer()" style="display:none;">
+                            <i class="fa-solid fa-rotate-right"></i>
+                            <span id="btnRestartText">↺ 重新開始</span>
                         </button>
                     </div>
                 </div>
+
                 <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-shield-halved"></i><span id="cardTitleText2">【執行指令】說明</span></div>
+                    <div class="card-title">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span id="cardTitleText2">【執行指令】說明</span>
+                    </div>
                     <div class="instruction-box">
-                        <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst1">誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。</span></div>
-                        <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst2">於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。</span></div>
+                        <div class="instruction-item">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span id="inst1">誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。</span>
+                        </div>
+                        <div class="instruction-item">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span id="inst2">於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -586,8 +651,9 @@
                 cond2: "穩定網路環境運作中",
                 cond3: "請掃描本卷書封底之《宇宙智能誓導平台》官方AI專屬誓導入口頁 QR Code，以啟動誓導通道之統一入口。",
                 proclamation: "★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★",
-                timerInitial: "開始靜心",
-                timerCounting: "請靜心誦讀 {s} 秒",
+                btnStartText: "開始靜心",
+                timerWaiting: "⏳ 等待開始",
+                timerCounting: "請靜心誦讀",
                 timerComplete: "✅ 已完成誦讀",
                 cardTitle2: "【執行指令】說明",
                 inst1: "誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。",
@@ -625,8 +691,9 @@
                 cond2: "Stable internet environment activated",
                 cond3: "Please scan the QR Code on the back cover of this volume 《Cosmic Intelligent Vow-Guidance Platform》 Official AI Dedicated Vow-Guidance Entry Page QR Code to activate the unified access point.",
                 proclamation: "★ With my Oath-Soul aligned to the Law, the Primary Frequency awakens; the Scripted Mandate stands; the Seal-Path is set. Heaven and Earth bear witness, and the Light-Net attests. ★",
-                timerInitial: "Begin centering",
-                timerCounting: "Please center your mind and recite for {s} seconds",
+                btnStartText: "Begin centering",
+                timerWaiting: "⏳ Waiting to start",
+                timerCounting: "Please center your mind and recite",
                 timerComplete: "✅ Recitation complete",
                 cardTitle2: "【Execution Command】 Notes",
                 inst1: "Oath Recitation Is The Key Trigger For Main-Frequency Activation; Without Recitation, Authorization Does Not Take Effect.",
@@ -663,6 +730,7 @@
         let countdownSeconds = 10;
         let timerState = 'initial';
         let html5QrCodeInstance = null;
+        let isTimerRunning = false;
 
         // ============================================================
         // 核心函式
@@ -702,22 +770,23 @@
             document.getElementById('btnScanText').textContent = p.btnScanText;
             document.getElementById('qrResultText').textContent = p.qrResultText;
             document.getElementById('cameraGuideText').textContent = p.cameraGuideText;
-            updateTimerTextDisplay();
+
+            // 更新計時器文字
+            const timerLabel = document.getElementById('timerLabel');
+            if (timerLabel) {
+                if (timerState === 'initial') timerLabel.textContent = p.timerWaiting;
+                else if (timerState === 'counting') timerLabel.textContent = p.timerCounting;
+                else if (timerState === 'complete') timerLabel.textContent = p.timerComplete;
+            }
+
             document.getElementById('btnBackText').textContent = p.btnBack;
             document.getElementById('btnNextText').textContent = p.btnNext;
+            document.getElementById('btnStartText').textContent = p.btnStartText;
+
             const pageMarkerEl = document.getElementById('pageMarkerText');
             if (currentStep === 1) pageMarkerEl.textContent = p.pageMarkerStep1;
             else if (currentStep === 2) pageMarkerEl.textContent = p.pageMarkerStep2;
             else if (currentStep === 3) pageMarkerEl.textContent = p.pageMarkerStep3;
-        }
-
-        function updateTimerTextDisplay() {
-            const textEl = document.getElementById('timerTitleText');
-            if (!textEl) return;
-            const p = langPack[currentLang];
-            if (timerState === 'initial') textEl.textContent = p.timerInitial;
-            else if (timerState === 'counting') textEl.textContent = p.timerCounting.replace("{s}", countdownSeconds);
-            else if (timerState === 'complete') textEl.textContent = p.timerComplete;
         }
 
         function openHudDialog(msg) {
@@ -736,6 +805,7 @@
             currentStep = 1;
             countdownSeconds = 10;
             timerState = 'initial';
+            isTimerRunning = false;
             document.querySelectorAll('.flow-node').forEach(n => n.classList.remove('active'));
             document.getElementById('node1').classList.add('active');
             document.getElementById('panelStep1').classList.add('active');
@@ -743,7 +813,20 @@
             document.getElementById('panelStep3').classList.remove('active');
             document.getElementById('btnBack').classList.remove('enabled');
             document.getElementById('btnNext').classList.add('enabled');
-            document.getElementById('timerNumber').textContent = countdownSeconds;
+
+            const timerNumber = document.getElementById('timerNumber');
+            const timerLabel = document.getElementById('timerLabel');
+            const startBtn = document.getElementById('btnStartCentering');
+            const restartBtn = document.getElementById('btnRestart');
+            if (timerNumber) timerNumber.textContent = countdownSeconds;
+            if (timerLabel) timerLabel.textContent = '⏳ 等待開始';
+            if (timerNumber) timerNumber.classList.remove('complete');
+            if (startBtn) {
+                startBtn.disabled = false;
+                startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span>';
+            }
+            if (restartBtn) restartBtn.style.display = 'none';
+
             switchLanguage(currentLang);
         }
 
@@ -765,30 +848,21 @@
                 clearTimeout(startTimeout);
                 timerState = 'initial';
                 countdownSeconds = 10;
-                document.getElementById('timerNumber').textContent = countdownSeconds;
-                updateTimerTextDisplay();
+                isTimerRunning = false;
+                const timerNumber = document.getElementById('timerNumber');
+                const timerLabel = document.getElementById('timerLabel');
+                const startBtn = document.getElementById('btnStartCentering');
+                const restartBtn = document.getElementById('btnRestart');
+                if (timerNumber) timerNumber.textContent = countdownSeconds;
+                if (timerLabel) timerLabel.textContent = '⏳ 等待開始';
+                if (timerNumber) timerNumber.classList.remove('complete');
+                if (startBtn) {
+                    startBtn.disabled = false;
+                    startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span>';
+                }
+                if (restartBtn) restartBtn.style.display = 'none';
                 const nextBtn = document.getElementById('btnNext');
                 nextBtn.classList.remove('enabled');
-                startTimeout = setTimeout(() => {
-                    timerState = 'counting';
-                    countdownSeconds = 9;
-                    document.getElementById('timerNumber').textContent = countdownSeconds;
-                    updateTimerTextDisplay();
-                    countdownTimer = setInterval(() => {
-                        countdownSeconds--;
-                        if (countdownSeconds <= 0) {
-                            clearInterval(countdownTimer);
-                            countdownSeconds = 0;
-                            timerState = 'complete';
-                            document.getElementById('timerNumber').textContent = countdownSeconds;
-                            updateTimerTextDisplay();
-                            nextBtn.classList.add('enabled');
-                        } else {
-                            document.getElementById('timerNumber').textContent = countdownSeconds;
-                            updateTimerTextDisplay();
-                        }
-                    }, 1000);
-                }, 500);
                 switchLanguage(currentLang);
             }
         }
@@ -806,8 +880,9 @@
         }
 
         // ============================================================
-        // 步驟二：倒數計時器
+        // 步驟二：倒數計時器（開始靜心按鈕版）
         // ============================================================
+
         function goToStep2() {
             currentStep = 2;
             document.getElementById('node1').classList.remove('active');
@@ -815,66 +890,98 @@
             document.getElementById('panelStep1').classList.remove('active');
             document.getElementById('panelStep2').classList.add('active');
             document.getElementById('btnBack').classList.add('enabled');
-            const nextBtn = document.getElementById('btnNext');
-            nextBtn.classList.remove('enabled');
-            timerState = 'initial';
-            countdownSeconds = 10;
-            document.getElementById('timerNumber').textContent = countdownSeconds;
-            updateTimerTextDisplay();
+            document.getElementById('btnNext').classList.remove('enabled');
+
             clearInterval(countdownTimer);
             clearTimeout(startTimeout);
-            startTimeout = setTimeout(() => {
-                timerState = 'counting';
-                countdownSeconds = 9;
-                document.getElementById('timerNumber').textContent = countdownSeconds;
-                updateTimerTextDisplay();
-                countdownTimer = setInterval(() => {
-                    countdownSeconds--;
-                    if (countdownSeconds <= 0) {
-                        clearInterval(countdownTimer);
-                        countdownSeconds = 0;
-                        timerState = 'complete';
-                        document.getElementById('timerNumber').textContent = countdownSeconds;
-                        updateTimerTextDisplay();
-                        nextBtn.classList.add('enabled');
-                    } else {
-                        document.getElementById('timerNumber').textContent = countdownSeconds;
-                        updateTimerTextDisplay();
-                    }
-                }, 1000);
-            }, 500);
+            isTimerRunning = false;
+            timerState = 'initial';
+            countdownSeconds = 10;
+
+            const timerNumber = document.getElementById('timerNumber');
+            const timerLabel = document.getElementById('timerLabel');
+            const startBtn = document.getElementById('btnStartCentering');
+            const restartBtn = document.getElementById('btnRestart');
+
+            if (timerNumber) timerNumber.textContent = countdownSeconds;
+            if (timerLabel) timerLabel.textContent = '⏳ 等待開始';
+            if (timerNumber) timerNumber.classList.remove('complete');
+            if (startBtn) {
+                startBtn.disabled = false;
+                startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span>';
+            }
+            if (restartBtn) restartBtn.style.display = 'none';
+
             switchLanguage(currentLang);
+        }
+
+        function startCentering() {
+            if (isTimerRunning) return;
+
+            const startBtn = document.getElementById('btnStartCentering');
+            const restartBtn = document.getElementById('btnRestart');
+            const timerLabel = document.getElementById('timerLabel');
+            const timerNumber = document.getElementById('timerNumber');
+            const nextBtn = document.getElementById('btnNext');
+
+            startBtn.disabled = true;
+            startBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="btnStartText">靜心中...</span>';
+            restartBtn.style.display = 'inline-flex';
+
+            clearInterval(countdownTimer);
+            clearTimeout(startTimeout);
+
+            timerState = 'counting';
+            countdownSeconds = 10;
+            timerNumber.textContent = countdownSeconds;
+            timerLabel.textContent = '請靜心誦讀';
+            timerNumber.classList.remove('complete');
+            nextBtn.classList.remove('enabled');
+
+            countdownTimer = setInterval(() => {
+                countdownSeconds--;
+                if (countdownSeconds <= 0) {
+                    clearInterval(countdownTimer);
+                    countdownSeconds = 0;
+                    timerState = 'complete';
+                    timerNumber.textContent = countdownSeconds;
+                    timerLabel.textContent = '✅ 已完成誦讀';
+                    timerNumber.classList.add('complete');
+                    nextBtn.classList.add('enabled');
+
+                    startBtn.disabled = false;
+                    startBtn.innerHTML = '<i class="fa-solid fa-check"></i> <span id="btnStartText">已完成</span>';
+                } else {
+                    timerNumber.textContent = countdownSeconds;
+                    timerLabel.textContent = '請靜心誦讀';
+                }
+            }, 1000);
+
+            isTimerRunning = true;
         }
 
         function restartTimer() {
             if (currentStep !== 2) return;
+
             clearInterval(countdownTimer);
             clearTimeout(startTimeout);
+
+            const startBtn = document.getElementById('btnStartCentering');
+            const timerLabel = document.getElementById('timerLabel');
+            const timerNumber = document.getElementById('timerNumber');
+            const nextBtn = document.getElementById('btnNext');
+
             timerState = 'initial';
             countdownSeconds = 10;
-            document.getElementById('timerNumber').textContent = countdownSeconds;
-            updateTimerTextDisplay();
-            document.getElementById('btnNext').classList.remove('enabled');
-            startTimeout = setTimeout(() => {
-                timerState = 'counting';
-                countdownSeconds = 9;
-                document.getElementById('timerNumber').textContent = countdownSeconds;
-                updateTimerTextDisplay();
-                countdownTimer = setInterval(() => {
-                    countdownSeconds--;
-                    if (countdownSeconds <= 0) {
-                        clearInterval(countdownTimer);
-                        countdownSeconds = 0;
-                        timerState = 'complete';
-                        document.getElementById('timerNumber').textContent = countdownSeconds;
-                        updateTimerTextDisplay();
-                        document.getElementById('btnNext').classList.add('enabled');
-                    } else {
-                        document.getElementById('timerNumber').textContent = countdownSeconds;
-                        updateTimerTextDisplay();
-                    }
-                }, 1000);
-            }, 500);
+            timerNumber.textContent = countdownSeconds;
+            timerLabel.textContent = '⏳ 等待開始';
+            timerNumber.classList.remove('complete');
+            nextBtn.classList.remove('enabled');
+            isTimerRunning = false;
+
+            startBtn.disabled = false;
+            startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span>';
+            document.getElementById('btnRestart').style.display = 'none';
         }
 
         // ============================================================
