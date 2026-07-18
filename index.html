@@ -92,6 +92,8 @@
             border-right: 3px solid #00bfff;
             pointer-events: none;
         }
+
+        /* 🏠 修正「回到首頁」按鈕——提高 z-index 確保可點擊 */
         .home-breadcrumb {
             font-size: 0.85rem;
             color: #00bfff;
@@ -105,13 +107,16 @@
             align-self: flex-start;
             transition: all 0.3s ease;
             text-shadow: 0 0 8px rgba(0, 191, 255, 0.4);
-            z-index: 12;
+            position: relative;
+            z-index: 1000;  /* 提高層級，確保可點擊 */
+            pointer-events: auto !important;
         }
         .home-breadcrumb:hover {
             color: #d4af37;
             text-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
             transform: translateX(-2px);
         }
+
         .hud-header {
             display: flex;
             justify-content: space-between;
@@ -381,25 +386,29 @@
             background: rgba(0, 191, 255, 0.15);
             box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
         }
-        .btn-restart {
-            background: transparent;
-            border: 1px solid rgba(255, 192, 0, 0.2);
-            color: #d4af37;
-            padding: 8px 18px;
-            font-size: 0.85rem;
-            border-radius: 20px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.3s ease;
-            pointer-events: auto;
-        }
-        .btn-restart:hover {
-            background: rgba(255, 192, 0, 0.08);
-            border-color: rgba(255, 192, 0, 0.4);
-            box-shadow: 0 0 15px rgba(255, 192, 0, 0.1);
-        }
+        /* 修改「重新開始」按鈕樣式 — 改成與「開始靜心」一致的黃色 */
+/* ✅ 修改「重新開始」按鈕 — 改成與「開始靜心」一致的黃色 */
+.btn-restart {
+    background: linear-gradient(135deg, #d4af37, #b8952e);
+    border: none;
+    color: #0A060E;
+    font-weight: 800;
+    padding: 12px 28px;
+    border-radius: 40px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    pointer-events: auto;
+}
+
+.btn-restart:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5);
+}
         .qr-result {
             color: #00e676;
             font-size: 0.9rem;
@@ -484,6 +493,7 @@
     </div>
 
     <div class="hud-container">
+        <!-- 🏠 修正「回到首頁」按鈕：加入 onclick="returnToHome()" 確保功能正常 -->
         <a class="home-breadcrumb" id="homeBtn" onclick="returnToHome()">
             <i class="fa-solid fa-house"></i>
             <span id="homeBtnText">首頁 -></span>
@@ -539,10 +549,10 @@
                     </div>
 
                     <div style="text-align:center; margin-top:12px;">
-                        <button class="btn-restart" id="btnRestart" onclick="restartTimer()" style="display:none;">
-                            <i class="fa-solid fa-rotate-right"></i>
-                            <span id="btnRestartText">↺ 重新開始</span>
-                        </button>
+                     <button class="btn-restart" id="btnRestart" onclick="restartTimer()" style="display:none;">
+    <i class="fa-solid fa-play"></i>
+    <span id="btnRestartText">▶重新開始</span>
+</button>
                     </div>
                 </div>
 
@@ -706,7 +716,7 @@
                 pageMarkerStep1: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 3-4",
                 pageMarkerStep2: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 3-4",
                 pageMarkerStep3: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 5-6",
-                btnRestart: "↺ Restart",
+                btnRestart: "▶ Restart",
                 dialogStep3: "✅ Step 2 successfully unlocked! Awaiting Step 3 connection and scanning integration.",
                 dialogStep4: "✅ Step 3 completed! Awaiting Step 4 (Return Result).",
                 // === 步驟三（英文） ===
@@ -804,10 +814,14 @@
             document.getElementById('hudDialog').classList.remove('active');
         }
 
+        // 🔧 修正「回到首頁」函式——確保重置所有狀態
         function returnToHome() {
             clearInterval(countdownTimer);
             clearTimeout(startTimeout);
-            if (html5QrCodeInstance) { html5QrCodeInstance.stop().catch(() => {}); html5QrCodeInstance = null; }
+            if (html5QrCodeInstance) {
+                html5QrCodeInstance.stop().catch(() => {});
+                html5QrCodeInstance = null;
+            }
             currentStep = 1;
             countdownSeconds = 10;
             timerState = 'initial';
@@ -986,7 +1000,7 @@
             isTimerRunning = false;
 
             startBtn.disabled = false;
-            startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span>';
+        startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span>';
             document.getElementById('btnRestart').style.display = 'none';
         }
 
