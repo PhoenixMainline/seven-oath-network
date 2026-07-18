@@ -1099,54 +1099,84 @@
             switchLanguage(currentLang);
         }
 
+               // ============================================================
+        // QR Code 掃描（修正版 - 正常啟動相機）
+        // ============================================================
         function startQRScanner() {
-    const container = document.getElementById('qr-reader-container');
-    if (!container) {
-        alert('QR掃描容器不存在，請檢查HTML');
-        return;
-    }
-    
-    if (html5QrCodeInstance) {
-        html5QrCodeInstance.stop().then(() => { html5QrCodeInstance = null; }).catch(() => {});
-    }
-    
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        document.getElementById('cameraGuide').style.display = 'block';
-        return;
-    }
-    
-    // 清空容器內容，避免重複初始化
-    container.innerHTML = '';
-    
-    const config = { 
-        fps: 15, 
-        qrbox: { width: 200, height: 200 }, 
-        aspectRatio: 1.0 
-    };
-    
-    try {
-        const instance = new Html5Qrcode('qr-reader-container');
-        html5QrCodeInstance = instance;
-        
-        instance.start({ facingMode: "environment" }, config,
-            (decodedText) => {
-                document.getElementById('qrScanResult').style.display = 'block';
-                document.getElementById('qrResultText').textContent = decodedText;
-                instance.stop().then(() => { html5QrCodeInstance = null; }).catch(() => {});
-                document.getElementById('btnNext').classList.add('enabled');
-            },
-            (errorMessage) => {
-                // 忽略掃描中的錯誤
+            const container = document.getElementById('qr-reader-container');
+            if (!container) {
+                alert('QR掃描容器不存在，請檢查HTML');
+                return;
             }
-        ).catch((err) => {
-            console.error('掃描啟動失敗:', err);
-            document.getElementById('cameraGuide').style.display = 'block';
-        });
-    } catch (err) {
-        console.error('建立掃描器失敗:', err);
-        document.getElementById('cameraGuide').style.display = 'block';
-    }
-}
+
+            // 如果已經有實例，先停止並清除
+            if (html5QrCodeInstance) {
+                html5QrCodeInstance.stop().then(() => {
+                    html5QrCodeInstance = null;
+                }).catch(() => {
+                    html5QrCodeInstance = null;
+                });
+                // 清空容器
+                container.innerHTML = '';
+                // 短暫延遲後重新初始化
+                setTimeout(() => {
+                    initScanner(container);
+                }, 300);
+                return;
+            }
+
+            // 直接初始化掃描器
+            initScanner(container);
+        }
+
+        function initScanner(container) {
+            // 檢查瀏覽器是否支援相機
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                document.getElementById('cameraGuide').style.display = 'block';
+                return;
+            }
+
+            // 清空容器
+            container.innerHTML = '';
+
+            const config = {
+                fps: 15,
+                qrbox: { width: 200, height: 200 },
+                aspectRatio: 1.0
+            };
+
+            try {
+                const instance = new Html5Qrcode('qr-reader-container');
+                html5QrCodeInstance = instance;
+
+                instance.start({ facingMode: "environment" }, config,
+                    (decodedText) => {
+                        // 掃描成功
+                        document.getElementById('qrScanResult').style.display = 'block';
+                        document.getElementById('qrResultText').textContent = decodedText;
+                        document.getElementById('btnNext').classList.add('enabled');
+                        // 停止掃描
+                        instance.stop().then(() => {
+                            html5QrCodeInstance = null;
+                        }).catch(() => {
+                            html5QrCodeInstance = null;
+                        });
+                        // 顯示成功訊息
+                        alert('✅ 掃描成功！');
+                    },
+                    (errorMessage) => {
+                        // 掃描中錯誤，忽略
+                    }
+                ).catch((err) => {
+                    console.error('掃描啟動失敗:', err);
+                    document.getElementById('cameraGuide').style.display = 'block';
+                    html5QrCodeInstance = null;
+                });
+            } catch (err) {
+                console.error('建立掃描器失敗:', err);
+                document.getElementById('cameraGuide').style.display = 'block';
+            }
+        }
         // ============================================================
         // 初始化
         // ============================================================
