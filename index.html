@@ -1114,36 +1114,38 @@
         }
 
         function initScanner(container) {
-            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                document.getElementById('cameraGuide').style.display = 'block';
-                document.getElementById('cameraGuideText').textContent = '您的瀏覽器不支援相機功能，或未處於安全的 HTTPS 環境。';
-                return;
-            }
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        document.getElementById('cameraGuide').style.display = 'block';
+        document.getElementById('cameraGuideText').textContent = '📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+        return;
+    }
 
-            container.innerHTML = '';
+    container.innerHTML = '';
 
-            const config = {
-                fps: 15,
-                qrbox: { width: 200, height: 200 },
-                aspectRatio: 1.0
-            };
+    const config = {
+        fps: 15,
+        qrbox: { width: 200, height: 200 },
+        aspectRatio: 1.0
+    };
 
-            // 主動請求相機權限
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-                .then(function(stream) {
-                    stream.getTracks().forEach(track => track.stop());
-                    startScanning(container, config);
-                })
-                .catch(function(err) {
-                    console.error('相機權限被拒絕:', err);
-                    document.getElementById('cameraGuide').style.display = 'block';
-                    document.getElementById('cameraGuideText').textContent =
-                        '📷 無法啟動相機，請手動允許權限。\n\n' +
-                        '請點擊網址列左側的鎖頭圖示 (🔒)，\n' +
-                        '將「相機」權限設定為「允許」，\n' +
-                        '然後重新整理頁面再試一次。';
-                });
-        }
+    // 主動請求相機權限
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+        .then(function(stream) {
+            stream.getTracks().forEach(track => track.stop());
+            startScanning(container, config);
+        })
+        .catch(function(err) {
+            console.error('相機權限被拒絕:', err);
+            document.getElementById('cameraGuide').style.display = 'block';
+            document.getElementById('cameraGuideText').textContent =
+                '📷 無法啟動相機\n\n' +
+                '⚙️ 開啟手機「設定」\n' +
+                '   → 應用程式管理\n' +
+                '   → 權限 → 相機 → 改為「允許」\n' +
+                '   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n' +
+                '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+        });
+}      
 
         function startScanning(container, config) {
             try {
