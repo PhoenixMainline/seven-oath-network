@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>【宇宙誓印覺醒工程 • 七印誓網】</title>
+    <title>【宇宙誓印覺醒工程 · 七印誓網】</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js">
@@ -24,13 +24,15 @@
             align-items: center;
             overflow: hidden;
             position: relative;
+            margin: 0;
+            padding: 12px;
         }
         .particle-container {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             background-image:
                 radial-gradient(#d4af37, rgba(212, 175, 55, .3) 1px, transparent 30px),
                 radial-gradient(#d4af37, rgba(212, 175, 55, .2) 2px, transparent 40px);
@@ -46,11 +48,11 @@
             to { transform: translateY(-1000px) rotate(360deg); }
         }
         .watermark-layer {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             z-index: 1;
             pointer-events: none;
             opacity: 0.04;
@@ -79,7 +81,7 @@
             flex-direction: column;
             position: relative;
             z-index: 3;
-            margin: 20px;
+            margin: 20px auto;
         }
         .hud-container::after {
             content: "";
@@ -92,8 +94,6 @@
             border-right: 3px solid #00bfff;
             pointer-events: none;
         }
-
-        /* 🏠 修正「回到首頁」按鈕——提高 z-index 確保可點擊 */
         .home-breadcrumb {
             font-size: 0.85rem;
             color: #00bfff;
@@ -108,7 +108,7 @@
             transition: all 0.3s ease;
             text-shadow: 0 0 8px rgba(0, 191, 255, 0.4);
             position: relative;
-            z-index: 1000;  /* 提高層級，確保可點擊 */
+            z-index: 1000;
             pointer-events: auto !important;
         }
         .home-breadcrumb:hover {
@@ -116,7 +116,6 @@
             text-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
             transform: translateX(-2px);
         }
-
         .hud-header {
             display: flex;
             justify-content: space-between;
@@ -386,29 +385,26 @@
             background: rgba(0, 191, 255, 0.15);
             box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
         }
-        /* 修改「重新開始」按鈕樣式 — 改成與「開始靜心」一致的黃色 */
-/* ✅ 修改「重新開始」按鈕 — 改成與「開始靜心」一致的黃色 */
-.btn-restart {
-    background: linear-gradient(135deg, #d4af37, #b8952e);
-    border: none;
-    color: #0A060E;
-    font-weight: 800;
-    padding: 12px 28px;
-    border-radius: 40px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    pointer-events: auto;
-}
-
-.btn-restart:hover {
-    transform: scale(1.03);
-    box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5);
-}
+        .btn-restart {
+            background: linear-gradient(135deg, #d4af37, #b8952e);
+            border: none;
+            color: #0A060E;
+            font-weight: 800;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: auto;
+        }
+        .btn-restart:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5);
+        }
         .qr-result {
             color: #00e676;
             font-size: 0.9rem;
@@ -475,6 +471,93 @@
             color: #00e676;
             text-shadow: 0 0 20px rgba(0, 230, 118, 0.6);
         }
+        @media (max-width: 600px) {
+            .app-container {
+                padding: 16px 12px;
+                margin: 12px auto;
+                border-radius: 32px;
+            }
+            .app-header {
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+            .app-title {
+                font-size: 0.9rem;
+                white-space: normal;
+                max-width: 100%;
+                flex: 0 0 100%;
+            }
+            .header-actions {
+                width: 100%;
+                justify-content: flex-end;
+                gap: 6px;
+            }
+            .btn-home {
+                font-size: 0.65rem;
+                padding: 4px 10px;
+            }
+            .lang-btn {
+                font-size: 0.6rem;
+                padding: 3px 8px;
+            }
+            .step-title {
+                font-size: 1.1rem;
+            }
+            .proclamation-text {
+                font-size: 18px;
+                padding: 8px 4px;
+            }
+            .timer-number {
+                font-size: 2.2rem;
+            }
+            .content-text {
+                font-size: 0.85rem;
+            }
+            .flow-nav {
+                gap: 4px;
+            }
+            .flow-node {
+                font-size: 0.6rem;
+                padding: 6px 2px;
+            }
+            .hud-card {
+                padding: 16px 12px;
+            }
+            .footer-note {
+                font-size: 0.6rem;
+            }
+            .watermark-text {
+                font-size: 1rem;
+            }
+            .watermark-layer {
+                padding: 20px;
+                grid-gap: 30px 20px;
+            }
+        }
+        @media (max-width: 400px) {
+            .app-container {
+                padding: 12px 8px;
+                border-radius: 24px;
+            }
+            .app-title {
+                font-size: 0.8rem;
+            }
+            .btn-home {
+                font-size: 0.55rem;
+                padding: 3px 8px;
+            }
+            .lang-btn {
+                font-size: 0.5rem;
+                padding: 2px 6px;
+            }
+            .flow-node {
+                font-size: 0.5rem;
+                padding: 4px 1px;
+            }
+            .hud-card {
+                padding: 12px 8px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -493,14 +576,13 @@
     </div>
 
     <div class="hud-container">
-        <!-- 🏠 修正「回到首頁」按鈕：加入 onclick="returnToHome()" 確保功能正常 -->
         <a class="home-breadcrumb" id="homeBtn" onclick="returnToHome()">
             <i class="fa-solid fa-house"></i>
             <span id="homeBtnText">首頁 -></span>
         </a>
 
         <header class="hud-header">
-            <div class="app-title" id="appTitle">【宇宙誓印覺醒工程 • 七印誓網】</div>
+            <div class="app-title" id="appTitle">【宇宙誓印覺醒工程 · 七印誓網】</div>
             <div class="lang-switch-group">
                 <button class="lang-btn active" onclick="switchLanguage('zh')">中文</button>
                 <button class="lang-btn" onclick="switchLanguage('en')">English</button>
@@ -549,10 +631,10 @@
                     </div>
 
                     <div style="text-align:center; margin-top:12px;">
-                     <button class="btn-restart" id="btnRestart" onclick="restartTimer()" style="display:none;">
-    <i class="fa-solid fa-play"></i>
-    <span id="btnRestartText">重新開始</span>
-</button>
+                        <button class="btn-restart" id="btnRestart" onclick="restartTimer()" style="display:none;">
+                            <i class="fa-solid fa-play"></i>
+                            <span id="btnRestartText">重新開始</span>
+                        </button>
                     </div>
                 </div>
 
@@ -592,7 +674,8 @@
                         </div>
                         <div id="qr-reader-container" style="width:100%; max-width:280px; margin:0 auto;"></div>
                         <button class="btn-restart" id="btnScanQR" onclick="startQRScanner()" style="margin-top:12px;">
-                            <i class="fa-solid fa-qrcode"></i><span id="btnScanText">📷 掃描 QR Code</span>
+                            <i class="fa-solid fa-qrcode"></i>
+                            <span id="btnScanText">📷 掃描 QR Code</span>
                         </button>
                         <div id="qrScanResult" class="qr-result" style="display:none; margin-top:10px;">
                             <i class="fa-solid fa-check-circle"></i><span id="qrResultText">掃描成功！</span>
@@ -652,7 +735,7 @@
         const langPack = {
             zh: {
                 homeBtn: "首頁 ->",
-                appTitle: "【宇宙誓印覺醒工程 • 七印誓網】",
+                appTitle: "【宇宙誓印覺醒工程 · 七印誓網】",
                 node1: "[1] 啟動條件",
                 node2: "[2] 授權誓讀",
                 node3: "[3] 授權綁定",
@@ -672,6 +755,7 @@
                 inst2: "於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。",
                 btnBack: "返回",
                 btnNext: "進入下一步",
+                pageMarkerStep1: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 3-4 頁",
                 pageMarkerStep2: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 3-4 頁",
                 pageMarkerStep3: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 5-6 頁",
                 btnRestart: "重新開始",
@@ -712,6 +796,7 @@
                 inst2: "Within The 'Oath-Soul Resonance Channel', Center The Mind For 10 Seconds And Recite Or Silently Read The Text To Ensure Frequency Precision And Successful Execution.",
                 btnBack: "Back",
                 btnNext: "Next Step",
+                pageMarkerStep1: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 3-4",
                 pageMarkerStep2: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 3-4",
                 pageMarkerStep3: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 5-6",
                 btnRestart: "Restart",
@@ -812,14 +897,10 @@
             document.getElementById('hudDialog').classList.remove('active');
         }
 
-        // 🔧 修正「回到首頁」函式——確保重置所有狀態
         function returnToHome() {
             clearInterval(countdownTimer);
             clearTimeout(startTimeout);
-            if (html5QrCodeInstance) {
-                html5QrCodeInstance.stop().catch(() => {});
-                html5QrCodeInstance = null;
-            }
+            if (html5QrCodeInstance) { html5QrCodeInstance.stop().catch(() => {}); html5QrCodeInstance = null; }
             currentStep = 1;
             countdownSeconds = 10;
             timerState = 'initial';
@@ -998,7 +1079,7 @@
             isTimerRunning = false;
 
             startBtn.disabled = false;
-        startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span>';
+            startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span>';
             document.getElementById('btnRestart').style.display = 'none';
         }
 
