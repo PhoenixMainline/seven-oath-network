@@ -1125,12 +1125,15 @@
             initScanner(container);
         }
 
-        function initScanner(container) {
+                function initScanner(container) {
+            // 1. 檢查瀏覽器是否支援相機 API
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                 document.getElementById('cameraGuide').style.display = 'block';
+                document.getElementById('cameraGuideText').textContent = '您的瀏覽器不支援相機功能，或未處於安全的 HTTPS 環境。';
                 return;
             }
 
+            // 2. 清空掃描容器，避免重複初始化
             container.innerHTML = '';
 
             const config = {
@@ -1139,45 +1142,23 @@
                 aspectRatio: 1.0
             };
 
-            // 🔥 先請求相機權限，會彈出瀏覽器權限視窗
+            // 3. 🔥 主動請求相機權限（這是解決問題的關鍵）
             navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
                 .then(function(stream) {
+                    // 權限成功取得，停止測試用的串流，準備開始掃描
                     stream.getTracks().forEach(track => track.stop());
                     startScanning(container, config);
                 })
                 .catch(function(err) {
+                    // 4. 權限被拒絕或發生錯誤，顯示引導訊息
                     console.error('相機權限被拒絕:', err);
                     document.getElementById('cameraGuide').style.display = 'block';
+                    document.getElementById('cameraGuideText').textContent = 
+                        '📷 無法啟動相機，請手動允許權限。\n\n' +
+                        '請點擊網址列左側的鎖頭圖示 (🔒)，\n' +
+                        '將「相機」權限設定為「允許」，\n' +
+                        '然後重新整理頁面再試一次。';
                 });
-        }
-
-        function startScanning(container, config) {
-            try {
-                const instance = new Html5Qrcode('qr-reader-container');
-                html5QrCodeInstance = instance;
-
-                instance.start({ facingMode: "environment" }, config,
-                    (decodedText) => {
-                        document.getElementById('qrScanResult').style.display = 'block';
-                        document.getElementById('qrResultText').textContent = decodedText;
-                        document.getElementById('btnNext').classList.add('enabled');
-                        instance.stop().then(() => {
-                            html5QrCodeInstance = null;
-                        }).catch(() => {
-                            html5QrCodeInstance = null;
-                        });
-                        alert('✅ 掃描成功！');
-                    },
-                    (errorMessage) => {}
-                ).catch((err) => {
-                    console.error('掃描啟動失敗:', err);
-                    document.getElementById('cameraGuide').style.display = 'block';
-                    html5QrCodeInstance = null;
-                });
-            } catch (err) {
-                console.error('建立掃描器失敗:', err);
-                document.getElementById('cameraGuide').style.display = 'block';
-            }
         }
         // ============================================================
         // 初始化
