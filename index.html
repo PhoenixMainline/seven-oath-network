@@ -1,23 +1,28 @@
+```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>【宇宙誓印覺醒工程 · 七印誓網】</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js">
     </script>
     <style>
+        /* ===== 基礎重置 ===== */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif;
         }
+
+        /* ===== 宇宙背景 ===== */
         body {
             background: radial-gradient(circle at 50% 50%, #06122c 0%, #020715 100%);
             min-height: 100vh;
+            height: 100vh;
             color: #e0e8f5;
             display: flex;
             justify-content: center;
@@ -25,8 +30,10 @@
             overflow: hidden;
             position: relative;
             margin: 0;
-            padding: 12px;
+            padding: clamp(4px, 1.5vh, 16px);
         }
+
+        /* ===== 粒子流動層 ===== */
         .particle-container {
             position: fixed;
             top: 0;
@@ -47,6 +54,8 @@
             from { transform: translateY(0px) rotate(0deg); }
             to { transform: translateY(-1000px) rotate(360deg); }
         }
+
+        /* ===== 浮水印層 ===== */
         .watermark-layer {
             position: fixed;
             top: 0;
@@ -69,19 +78,23 @@
             white-space: nowrap;
             user-select: none;
         }
+
+        /* ===== 主容器 ===== */
         .hud-container {
             width: 100%;
-            max-width: 660px;
+            max-width: min(660px, 95vw);
+            max-height: min(98vh, 800px);
             background: rgba(4, 13, 33, 0.4);
             border: 1.5px solid rgba(0, 191, 255, 0.3);
             box-shadow: 0 0 40px rgba(0, 191, 255, 0.15), inset 0 0 20px rgba(0, 191, 255, 0.05);
-            border-radius: 28px;
-            padding: 35px;
+            border-radius: clamp(16px, 4vw, 28px);
+            padding: clamp(12px, 3vh, 35px);
             display: flex;
             flex-direction: column;
             position: relative;
             z-index: 3;
-            margin: 20px auto;
+            margin: clamp(4px, 1.5vh, 20px) auto;
+            overflow-y: auto;
         }
         .hud-container::after {
             content: "";
@@ -94,8 +107,10 @@
             border-right: 3px solid #00bfff;
             pointer-events: none;
         }
+
+        /* ===== 回到首頁按鈕 ===== */
         .home-breadcrumb {
-            font-size: 0.85rem;
+            font-size: clamp(0.6rem, 1.4vh, 0.85rem);
             color: #00bfff;
             text-decoration: none;
             cursor: pointer;
@@ -116,16 +131,18 @@
             text-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
             transform: translateX(-2px);
         }
+
+        /* ===== 頁首 ===== */
         .hud-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid rgba(0, 191, 255, 0.15);
-            padding-bottom: 18px;
-            margin-bottom: 25px;
+            padding-bottom: clamp(8px, 1.5vh, 18px);
+            margin-bottom: clamp(8px, 1.5vh, 25px);
         }
         .app-title {
-            font-size: 1.15rem;
+            font-size: clamp(0.9rem, 2.2vh, 1.15rem);
             font-weight: 700;
             color: #d4af37;
             text-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
@@ -144,8 +161,8 @@
             background: transparent;
             border: none;
             color: rgba(224, 232, 245, 0.4);
-            padding: 5px 12px;
-            font-size: 0.75rem;
+            font-size: clamp(0.5rem, 1.2vh, 0.75rem);
+            padding: clamp(2px, 0.6vh, 5px) clamp(6px, 1vw, 12px);
             border-radius: 16px;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -156,19 +173,21 @@
             font-weight: bold;
             box-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
         }
+
+        /* ===== 導航欄 ===== */
         .flow-nav {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 6px;
-            margin-bottom: 30px;
+            gap: clamp(3px, 0.6vw, 6px);
+            margin-bottom: clamp(8px, 1.5vh, 30px);
         }
         .flow-node {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 6px;
-            padding: 8px 2px;
+            padding: clamp(3px, 0.8vh, 8px) clamp(2px, 0.5vw, 6px);
             text-align: center;
-            font-size: 0.72rem;
+            font-size: clamp(0.45rem, 1.2vh, 0.72rem);
             color: rgba(224, 232, 245, 0.35);
             transition: all 0.3s ease;
         }
@@ -179,11 +198,13 @@
             box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
             font-weight: bold;
         }
+
+        /* ===== 步驟內容 ===== */
         .step-content {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            gap: 22px;
+            gap: clamp(8px, 1.5vh, 22px);
         }
         .step-panel {
             display: none;
@@ -195,25 +216,27 @@
             display: flex;
         }
         @keyframes fadeIn {
-            from { opacity: 0;
-                transform: translateY(5px); }
-            to { opacity: 1;
-                transform: translateY(0); }
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+
+        /* ===== 卡片 ===== */
         .hud-card {
             background: rgba(6, 18, 44, 0.3);
             border: 1px solid rgba(0, 191, 255, 0.12);
-            border-radius: 16px;
-            padding: 24px;
+            border-radius: clamp(10px, 2vw, 16px);
+            padding: clamp(10px, 2vh, 24px) clamp(10px, 2vw, 24px);
         }
         .card-title {
-            font-size: 1.2rem;
+            font-size: clamp(0.9rem, 2vh, 1.2rem);
             color: #d4af37;
             margin-bottom: 18px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
+
+        /* ===== 啟動條件清單 ===== */
         .condition-list {
             list-style: none;
             display: flex;
@@ -223,8 +246,8 @@
         .condition-item {
             display: flex;
             align-items: flex-start;
-            gap: 12px;
-            font-size: 0.95rem;
+            gap: clamp(6px, 1vw, 12px);
+            font-size: clamp(0.7rem, 1.6vh, 0.95rem);
             line-height: 1.6;
             color: rgba(224, 232, 245, 0.85);
         }
@@ -233,78 +256,91 @@
             margin-top: 4px;
             text-shadow: 0 0 8px rgba(0, 230, 118, 0.3);
         }
+
+        /* ===== 宣告式 ===== */
         .proclamation-text {
-            font-size: 21px;
+            font-size: clamp(14px, 2.2vh, 21px);
             color: #D4AF37;
             font-weight: bold;
             text-align: center;
             line-height: 1.6;
-            margin-bottom: 24px;
+            margin-bottom: clamp(8px, 1.5vh, 24px);
+            padding: clamp(4px, 1vh, 12px);
             text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
         }
+
+        /* ===== 計時器 ===== */
         .timer-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            padding: 20px;
+            gap: clamp(6px, 1vh, 12px);
+            padding: clamp(8px, 1.5vh, 20px);
             background: rgba(212, 175, 55, 0.04);
             border: 1px dashed rgba(212, 175, 55, 0.25);
             border-radius: 12px;
         }
-        .timer-title {
-            font-size: 1rem;
+        .timer-label {
+            font-size: clamp(0.7rem, 1.4vh, 1rem);
             color: rgba(224, 232, 245, 0.7);
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            min-width: clamp(50px, 8vw, 80px);
         }
         .timer-number {
-            font-size: 2.5rem;
+            font-size: clamp(1.8rem, 5vh, 2.5rem);
             font-family: 'Share Tech Mono', sans-serif;
             color: #00bfff;
             text-shadow: 0 0 15px rgba(0, 191, 255, 0.6);
             font-weight: 700;
+            min-width: clamp(30px, 5vw, 60px);
+            text-align: center;
         }
+        .timer-number.complete {
+            color: #00e676;
+            text-shadow: 0 0 20px rgba(0, 230, 118, 0.6);
+        }
+
+        /* ===== 執行指令 ===== */
         .instruction-box {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
         .instruction-item {
-            font-size: 0.95rem;
+            font-size: clamp(0.7rem, 1.6vh, 0.95rem);
             line-height: 1.6;
             color: rgba(224, 232, 245, 0.85);
             display: flex;
             align-items: flex-start;
-            gap: 10px;
+            gap: clamp(6px, 1vw, 12px);
         }
         .instruction-item i {
             color: #00e676;
             margin-top: 5px;
         }
+
+        /* ===== 頁尾按鈕 ===== */
         .hud-footer {
-            margin-top: 35px;
-            padding-top: 18px;
+            margin-top: clamp(10px, 2vh, 35px);
+            padding-top: clamp(8px, 1.5vh, 18px);
             border-top: 1px solid rgba(0, 191, 255, 0.12);
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 10;
+            flex-wrap: wrap;
         }
         .footer-btn-group {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: clamp(4px, 1vw, 12px);
         }
         .btn-action {
             background: transparent;
             border: 1px solid rgba(0, 191, 255, 0.15);
             color: rgba(0, 191, 255, 0.3);
-            padding: 10px 22px;
-            font-size: 0.9rem;
+            padding: clamp(6px, 1.2vh, 10px) clamp(10px, 1.5vw, 22px);
+            font-size: clamp(0.65rem, 1.3vh, 0.9rem);
             border-radius: 20px;
             cursor: not-allowed;
             display: inline-flex;
@@ -313,6 +349,7 @@
             transition: all 0.3s ease;
             pointer-events: none;
             text-decoration: none;
+            min-height: clamp(32px, 5vh, 44px);
         }
         .btn-action.enabled {
             border: 1px solid #00c3ff;
@@ -328,13 +365,17 @@
             box-shadow: 0 0 25px rgba(0, 195, 255, 0.5), inset 0 0 12px rgba(0, 195, 255, 0.2);
             transform: translateY(-1px);
         }
+
+        /* ===== 頁碼 ===== */
         .page-marker {
-            font-size: 0.78rem;
+            font-size: clamp(0.5rem, 1.2vh, 0.78rem);
             color: rgba(224, 232, 245, 0.35);
             display: flex;
             align-items: center;
             gap: 6px;
         }
+
+        /* ===== 對話框 ===== */
         .hud-dialog {
             display: none;
             position: fixed;
@@ -385,14 +426,16 @@
             background: rgba(0, 191, 255, 0.15);
             box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
         }
+
+        /* ===== QR Code 掃描 ===== */
         .btn-restart {
             background: linear-gradient(135deg, #d4af37, #b8952e);
             border: none;
             color: #0A060E;
             font-weight: 800;
-            padding: 12px 28px;
-            border-radius: 40px;
-            font-size: 1rem;
+            padding: clamp(6px, 1.2vh, 12px) clamp(12px, 2vw, 28px);
+            font-size: clamp(0.7rem, 1.4vh, 1rem);
+            border-radius: clamp(20px, 3vw, 40px);
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
@@ -405,6 +448,32 @@
             transform: scale(1.03);
             box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5);
         }
+
+        .btn-start-centering {
+            background: linear-gradient(135deg, #d4af37, #b8952e);
+            border: none;
+            color: #0A060E;
+            font-weight: 800;
+            padding: clamp(6px, 1.2vh, 12px) clamp(12px, 2vw, 28px);
+            font-size: clamp(0.7rem, 1.4vh, 1rem);
+            border-radius: clamp(20px, 3vw, 40px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-start-centering:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5);
+        }
+        .btn-start-centering:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .qr-result {
             color: #00e676;
             font-size: 0.9rem;
@@ -429,141 +498,76 @@
             border-radius: 12px;
             width: 100%;
         }
-        .btn-start-centering {
-            background: linear-gradient(135deg, #d4af37, #b8952e);
-            border: none;
-            color: #0A060E;
-            font-weight: 800;
-            padding: 12px 28px;
-            border-radius: 40px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .btn-start-centering:hover {
-            transform: scale(1.03);
-            box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5);
-        }
-        .btn-start-centering:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .timer-label {
-            font-size: 1rem;
-            color: rgba(224, 232, 245, 0.7);
-            min-width: 80px;
-        }
-        .timer-number {
-            font-size: 2.5rem;
-            font-family: 'Share Tech Mono', sans-serif;
-            color: #00bfff;
-            text-shadow: 0 0 15px rgba(0, 191, 255, 0.6);
-            font-weight: 700;
-            min-width: 60px;
-            text-align: center;
-        }
-        .timer-number.complete {
-            color: #00e676;
-            text-shadow: 0 0 20px rgba(0, 230, 118, 0.6);
-        }
-        @media (max-width: 600px) {
-            .app-container {
-                padding: 16px 12px;
-                margin: 12px auto;
-                border-radius: 32px;
+
+        /* ===== 手機螢幕極小化修正 ===== */
+        @media (max-width: 480px) {
+            .hud-container {
+                padding: 10px 8px !important;
+                border-radius: 16px !important;
+                max-height: 98vh !important;
             }
-            .app-header {
+            .hud-header {
                 flex-wrap: wrap;
-                gap: 6px;
             }
             .app-title {
-                font-size: 0.9rem;
-                white-space: normal;
-                max-width: 100%;
-                flex: 0 0 100%;
-            }
-            .header-actions {
-                width: 100%;
-                justify-content: flex-end;
-                gap: 6px;
-            }
-            .btn-home {
-                font-size: 0.65rem;
-                padding: 4px 10px;
+                font-size: 0.75rem !important;
+                max-width: 100% !important;
             }
             .lang-btn {
-                font-size: 0.6rem;
-                padding: 3px 8px;
+                font-size: 0.5rem !important;
+                padding: 2px 6px !important;
             }
-            .step-title {
-                font-size: 1.1rem;
+            .home-breadcrumb {
+                font-size: 0.55rem !important;
+            }
+            .flow-node {
+                font-size: 0.4rem !important;
+                padding: 2px 1px !important;
+            }
+            .hud-card {
+                padding: 8px 6px !important;
+            }
+            .card-title {
+                font-size: 0.7rem !important;
+            }
+            .condition-item,
+            .instruction-item {
+                font-size: 0.6rem !important;
             }
             .proclamation-text {
-                font-size: 18px;
-                padding: 8px 4px;
+                font-size: 12px !important;
             }
             .timer-number {
-                font-size: 2.2rem;
+                font-size: 1.5rem !important;
             }
-            .content-text {
-                font-size: 0.85rem;
+            .timer-label {
+                font-size: 0.6rem !important;
             }
-            .flow-nav {
-                gap: 4px;
+            .btn-start-centering,
+            .btn-restart {
+                padding: 4px 10px !important;
+                font-size: 0.6rem !important;
             }
-            .flow-node {
-                font-size: 0.6rem;
-                padding: 6px 2px;
+            .btn-action {
+                padding: 4px 8px !important;
+                font-size: 0.55rem !important;
+                min-height: 28px !important;
             }
-            .hud-card {
-                padding: 16px 12px;
-            }
-            .footer-note {
-                font-size: 0.6rem;
+            .page-marker {
+                font-size: 0.4rem !important;
             }
             .watermark-text {
-                font-size: 1rem;
-            }
-            .watermark-layer {
-                padding: 20px;
-                grid-gap: 30px 20px;
-            }
-        }
-        @media (max-width: 400px) {
-            .app-container {
-                padding: 12px 8px;
-                border-radius: 24px;
-            }
-            .app-title {
-                font-size: 0.8rem;
-            }
-            .btn-home {
-                font-size: 0.55rem;
-                padding: 3px 8px;
-            }
-            .lang-btn {
-                font-size: 0.5rem;
-                padding: 2px 6px;
-            }
-            .flow-node {
-                font-size: 0.5rem;
-                padding: 4px 1px;
-            }
-            .hud-card {
-                padding: 12px 8px;
+                font-size: 0.8rem !important;
             }
         }
     </style>
 </head>
 <body>
 
+    <!-- 🌌 粒子背景 -->
     <div class="particle-container"></div>
 
+    <!-- 📜 浮水印層 -->
     <div class="watermark-layer">
         <div class="watermark-text">天地為鑑・光網為證</div>
         <div class="watermark-text">天地為鑑・光網為證</div>
@@ -575,6 +579,7 @@
         <div class="watermark-text">天地為鑑・光網為證</div>
     </div>
 
+    <!-- 🚀 主容器 -->
     <div class="hud-container">
         <a class="home-breadcrumb" id="homeBtn" onclick="returnToHome()">
             <i class="fa-solid fa-house"></i>
@@ -589,6 +594,7 @@
             </div>
         </header>
 
+        <!-- 導航欄 -->
         <nav class="flow-nav">
             <div class="flow-node active" id="node1">[1] 啟動條件</div>
             <div class="flow-node" id="node2">[2] 授權誓讀</div>
@@ -597,6 +603,7 @@
             <div class="flow-node" id="node5">[5] 系統同步</div>
         </nav>
 
+        <!-- 步驟內容 -->
         <main class="step-content">
             <!-- 步驟一 -->
             <div class="step-panel active" id="panelStep1">
@@ -616,7 +623,6 @@
                     <div class="proclamation-text" id="proclamationText">
                         ★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★
                     </div>
-
                     <div class="timer-container">
                         <div style="display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap; width:100%;">
                             <button class="btn-start-centering" id="btnStartCentering" onclick="startCentering()">
@@ -629,7 +635,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div style="text-align:center; margin-top:12px;">
                         <button class="btn-restart" id="btnRestart" onclick="restartTimer()" style="display:none;">
                             <i class="fa-solid fa-play"></i>
@@ -637,21 +642,11 @@
                         </button>
                     </div>
                 </div>
-
                 <div class="hud-card">
-                    <div class="card-title">
-                        <i class="fa-solid fa-shield-halved"></i>
-                        <span id="cardTitleText2">【執行指令】說明</span>
-                    </div>
+                    <div class="card-title"><i class="fa-solid fa-shield-halved"></i><span id="cardTitleText2">【執行指令】說明</span></div>
                     <div class="instruction-box">
-                        <div class="instruction-item">
-                            <i class="fa-solid fa-circle-check"></i>
-                            <span id="inst1">誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。</span>
-                        </div>
-                        <div class="instruction-item">
-                            <i class="fa-solid fa-circle-check"></i>
-                            <span id="inst2">於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。</span>
-                        </div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst1">誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst2">於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。</span></div>
                     </div>
                 </div>
             </div>
@@ -666,7 +661,6 @@
                         <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst3_3">請在【購書序號】欄位中輸入您的【購書序號】誓導碼，以確保誓資冊記與系統對應正確。</span></div>
                     </div>
                 </div>
-
                 <div class="hud-card" id="qrScanCard">
                     <div style="text-align:center; padding:10px 0;">
                         <div style="color:#d4af37; font-size:1rem; font-weight:bold; margin-bottom:12px;">
@@ -674,9 +668,9 @@
                         </div>
                         <div id="qr-reader-container" style="width:100%; max-width:280px; margin:0 auto;"></div>
                         <button class="btn-restart" id="btnScanQR" onclick="startQRScanner()" style="margin-top:12px;">
-    <i class="fa-solid fa-qrcode"></i>
-    <span id="btnScanText">📷 掃描 QR Code</span>
-</button>
+                            <i class="fa-solid fa-qrcode"></i>
+                            <span id="btnScanText">📷 掃描 QR Code</span>
+                        </button>
                         <div id="qrScanResult" class="qr-result" style="display:none; margin-top:10px;">
                             <i class="fa-solid fa-check-circle"></i><span id="qrResultText">掃描成功！</span>
                         </div>
@@ -685,7 +679,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="hud-card">
                     <div class="card-title"><i class="fa-solid fa-pen-to-square"></i><span id="cardTitleText3b">輸入示範</span></div>
                     <div class="instruction-box">
@@ -702,9 +695,9 @@
                     </div>
                 </div>
             </div>
-            <!-- ===== 未來步驟四～二十請貼在這裡 ===== -->
         </main>
 
+        <!-- 頁尾 -->
         <footer class="hud-footer">
             <div class="footer-btn-group">
                 <button class="btn-action" id="btnBack" onclick="handleBackClick()">
@@ -721,6 +714,7 @@
         </footer>
     </div>
 
+    <!-- 對話框 -->
     <div id="hudDialog" class="hud-dialog">
         <div class="hud-dialog-content">
             <div class="hud-dialog-text" id="hudDialogText">提示訊息</div>
@@ -761,7 +755,6 @@
                 btnRestart: "重新開始",
                 dialogStep3: "✅ 步驟二已解鎖！等待步驟三綁定通道與掃描代碼整合。",
                 dialogStep4: "✅ 步驟三已完成！等待步驟四（回傳結果）。",
-                // === 步驟三（中文） ===
                 cardTitle3: "【三】授權綁定階段（母源印驗證）",
                 inst3_1: "掃描【誓導QRCode】，進入「指令輸入欄位」。",
                 inst3_2: "無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
@@ -802,7 +795,6 @@
                 btnRestart: "Restart",
                 dialogStep3: "✅ Step 2 successfully unlocked! Awaiting Step 3 connection and scanning integration.",
                 dialogStep4: "✅ Step 3 completed! Awaiting Step 4 (Return Result).",
-                // === 步驟三（英文） ===
                 cardTitle3: "[III] Authorization Binding Phase (Mother-Frequency Seal Verification)",
                 inst3_1: "Scan the 【Vow-Guidance QR Code】 to enter the 「Command Input Field」.",
                 inst3_2: "No manual entry of the vow text is required. After completing the scan, directly enter the following:",
@@ -857,7 +849,6 @@
             document.getElementById('inst2').textContent = p.inst2;
             document.getElementById('btnRestartText').textContent = p.btnRestart;
 
-            // 步驟三
             document.getElementById('cardTitleText3').textContent = p.cardTitle3;
             document.getElementById('inst3_1').textContent = p.inst3_1;
             document.getElementById('inst3_2').textContent = p.inst3_2;
@@ -870,7 +861,6 @@
             document.getElementById('qrResultText').textContent = p.qrResultText;
             document.getElementById('cameraGuideText').textContent = p.cameraGuideText;
 
-            // 計時器文字
             const timerLabel = document.getElementById('timerLabel');
             if (timerLabel) {
                 if (timerState === 'initial') timerLabel.textContent = p.timerWaiting;
@@ -979,9 +969,8 @@
         }
 
         // ============================================================
-        // 步驟二：倒數計時器（開始靜心按鈕版）
+        // 步驟二：倒數計時器
         // ============================================================
-
         function goToStep2() {
             currentStep = 2;
             document.getElementById('node1').classList.remove('active');
@@ -1086,9 +1075,6 @@
         // ============================================================
         // 步驟三：QR Code 掃描
         // ============================================================
-               // ============================================================
-        // 步驟三：QR Code 掃描（含相機權限請求）
-        // ============================================================
         function goToStep3() {
             currentStep = 3;
             document.getElementById('node2').classList.remove('active');
@@ -1102,6 +1088,9 @@
             switchLanguage(currentLang);
         }
 
+        // ============================================================
+        // QR Code 掃描（含相機權限請求）
+        // ============================================================
         function startQRScanner() {
             const container = document.getElementById('qr-reader-container');
             if (!container) {
@@ -1125,15 +1114,13 @@
             initScanner(container);
         }
 
-                function initScanner(container) {
-            // 1. 檢查瀏覽器是否支援相機 API
+        function initScanner(container) {
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                 document.getElementById('cameraGuide').style.display = 'block';
                 document.getElementById('cameraGuideText').textContent = '您的瀏覽器不支援相機功能，或未處於安全的 HTTPS 環境。';
                 return;
             }
 
-            // 2. 清空掃描容器，避免重複初始化
             container.innerHTML = '';
 
             const config = {
@@ -1142,24 +1129,52 @@
                 aspectRatio: 1.0
             };
 
-            // 3. 🔥 主動請求相機權限（這是解決問題的關鍵）
+            // 主動請求相機權限
             navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
                 .then(function(stream) {
-                    // 權限成功取得，停止測試用的串流，準備開始掃描
                     stream.getTracks().forEach(track => track.stop());
                     startScanning(container, config);
                 })
                 .catch(function(err) {
-                    // 4. 權限被拒絕或發生錯誤，顯示引導訊息
                     console.error('相機權限被拒絕:', err);
                     document.getElementById('cameraGuide').style.display = 'block';
-                    document.getElementById('cameraGuideText').textContent = 
+                    document.getElementById('cameraGuideText').textContent =
                         '📷 無法啟動相機，請手動允許權限。\n\n' +
                         '請點擊網址列左側的鎖頭圖示 (🔒)，\n' +
                         '將「相機」權限設定為「允許」，\n' +
                         '然後重新整理頁面再試一次。';
                 });
         }
+
+        function startScanning(container, config) {
+            try {
+                const instance = new Html5Qrcode('qr-reader-container');
+                html5QrCodeInstance = instance;
+
+                instance.start({ facingMode: "environment" }, config,
+                    (decodedText) => {
+                        document.getElementById('qrScanResult').style.display = 'block';
+                        document.getElementById('qrResultText').textContent = decodedText;
+                        document.getElementById('btnNext').classList.add('enabled');
+                        instance.stop().then(() => {
+                            html5QrCodeInstance = null;
+                        }).catch(() => {
+                            html5QrCodeInstance = null;
+                        });
+                        alert('✅ 掃描成功！');
+                    },
+                    (errorMessage) => {}
+                ).catch((err) => {
+                    console.error('掃描啟動失敗:', err);
+                    document.getElementById('cameraGuide').style.display = 'block';
+                    html5QrCodeInstance = null;
+                });
+            } catch (err) {
+                console.error('建立掃描器失敗:', err);
+                document.getElementById('cameraGuide').style.display = 'block';
+            }
+        }
+
         // ============================================================
         // 初始化
         // ============================================================
@@ -1171,3 +1186,4 @@
     </script>
 </body>
 </html>
+```
