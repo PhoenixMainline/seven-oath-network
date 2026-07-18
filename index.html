@@ -1086,6 +1086,9 @@
         // ============================================================
         // 步驟三：QR Code 掃描
         // ============================================================
+               // ============================================================
+        // 步驟三：QR Code 掃描（含相機權限請求）
+        // ============================================================
         function goToStep3() {
             currentStep = 3;
             document.getElementById('node2').classList.remove('active');
@@ -1099,9 +1102,6 @@
             switchLanguage(currentLang);
         }
 
-               // ============================================================
-        // QR Code 掃描（修正版 - 正常啟動相機）
-        // ============================================================
         function startQRScanner() {
             const container = document.getElementById('qr-reader-container');
             if (!container) {
@@ -1109,34 +1109,28 @@
                 return;
             }
 
-            // 如果已經有實例，先停止並清除
             if (html5QrCodeInstance) {
                 html5QrCodeInstance.stop().then(() => {
                     html5QrCodeInstance = null;
                 }).catch(() => {
                     html5QrCodeInstance = null;
                 });
-                // 清空容器
                 container.innerHTML = '';
-                // 短暫延遲後重新初始化
                 setTimeout(() => {
                     initScanner(container);
                 }, 300);
                 return;
             }
 
-            // 直接初始化掃描器
             initScanner(container);
         }
 
         function initScanner(container) {
-            // 檢查瀏覽器是否支援相機
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                 document.getElementById('cameraGuide').style.display = 'block';
                 return;
             }
 
-            // 清空容器
             container.innerHTML = '';
 
             const config = {
@@ -1145,28 +1139,36 @@
                 aspectRatio: 1.0
             };
 
+            // 🔥 先請求相機權限，會彈出瀏覽器權限視窗
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+                .then(function(stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                    startScanning(container, config);
+                })
+                .catch(function(err) {
+                    console.error('相機權限被拒絕:', err);
+                    document.getElementById('cameraGuide').style.display = 'block';
+                });
+        }
+
+        function startScanning(container, config) {
             try {
                 const instance = new Html5Qrcode('qr-reader-container');
                 html5QrCodeInstance = instance;
 
                 instance.start({ facingMode: "environment" }, config,
                     (decodedText) => {
-                        // 掃描成功
                         document.getElementById('qrScanResult').style.display = 'block';
                         document.getElementById('qrResultText').textContent = decodedText;
                         document.getElementById('btnNext').classList.add('enabled');
-                        // 停止掃描
                         instance.stop().then(() => {
                             html5QrCodeInstance = null;
                         }).catch(() => {
                             html5QrCodeInstance = null;
                         });
-                        // 顯示成功訊息
                         alert('✅ 掃描成功！');
                     },
-                    (errorMessage) => {
-                        // 掃描中錯誤，忽略
-                    }
+                    (errorMessage) => {}
                 ).catch((err) => {
                     console.error('掃描啟動失敗:', err);
                     document.getElementById('cameraGuide').style.display = 'block';
