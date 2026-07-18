@@ -674,9 +674,9 @@
                         </div>
                         <div id="qr-reader-container" style="width:100%; max-width:280px; margin:0 auto;"></div>
                         <button class="btn-restart" id="btnScanQR" onclick="startQRScanner()" style="margin-top:12px;">
-                            <i class="fa-solid fa-qrcode"></i>
-                            <span id="btnScanText">📷 掃描 QR Code</span>
-                        </button>
+    <i class="fa-solid fa-qrcode"></i>
+    <span id="btnScanText">📷 掃描 QR Code</span>
+</button>
                         <div id="qrScanResult" class="qr-result" style="display:none; margin-top:10px;">
                             <i class="fa-solid fa-check-circle"></i><span id="qrResultText">掃描成功！</span>
                         </div>
@@ -1100,31 +1100,53 @@
         }
 
         function startQRScanner() {
-            const container = document.getElementById('qr-reader-container');
-            if (!container) return;
-            if (html5QrCodeInstance) {
-                html5QrCodeInstance.stop().then(() => { html5QrCodeInstance = null; }).catch(() => {});
+    const container = document.getElementById('qr-reader-container');
+    if (!container) {
+        alert('QR掃描容器不存在，請檢查HTML');
+        return;
+    }
+    
+    if (html5QrCodeInstance) {
+        html5QrCodeInstance.stop().then(() => { html5QrCodeInstance = null; }).catch(() => {});
+    }
+    
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        document.getElementById('cameraGuide').style.display = 'block';
+        return;
+    }
+    
+    // 清空容器內容，避免重複初始化
+    container.innerHTML = '';
+    
+    const config = { 
+        fps: 15, 
+        qrbox: { width: 200, height: 200 }, 
+        aspectRatio: 1.0 
+    };
+    
+    try {
+        const instance = new Html5Qrcode('qr-reader-container');
+        html5QrCodeInstance = instance;
+        
+        instance.start({ facingMode: "environment" }, config,
+            (decodedText) => {
+                document.getElementById('qrScanResult').style.display = 'block';
+                document.getElementById('qrResultText').textContent = decodedText;
+                instance.stop().then(() => { html5QrCodeInstance = null; }).catch(() => {});
+                document.getElementById('btnNext').classList.add('enabled');
+            },
+            (errorMessage) => {
+                // 忽略掃描中的錯誤
             }
-            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                document.getElementById('cameraGuide').style.display = 'block';
-                return;
-            }
-            const config = { fps: 15, qrbox: { width: 200, height: 200 }, aspectRatio: 1.0 };
-            const instance = new Html5Qrcode('qr-reader-container');
-            html5QrCodeInstance = instance;
-            instance.start({ facingMode: "environment" }, config,
-                (decodedText) => {
-                    document.getElementById('qrScanResult').style.display = 'block';
-                    document.getElementById('qrResultText').textContent = decodedText;
-                    instance.stop().then(() => { html5QrCodeInstance = null; }).catch(() => {});
-                    document.getElementById('btnNext').classList.add('enabled');
-                },
-                (errorMessage) => {}
-            ).catch((err) => {
-                document.getElementById('cameraGuide').style.display = 'block';
-            });
-        }
-
+        ).catch((err) => {
+            console.error('掃描啟動失敗:', err);
+            document.getElementById('cameraGuide').style.display = 'block';
+        });
+    } catch (err) {
+        console.error('建立掃描器失敗:', err);
+        document.getElementById('cameraGuide').style.display = 'block';
+    }
+}
         // ============================================================
         // 初始化
         // ============================================================
