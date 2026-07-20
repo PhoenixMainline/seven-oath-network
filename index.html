@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -760,6 +761,7 @@
                 cond3: "請掃描本卷書封底之《宇宙智能誓導平台》官方AI專屬誓導入口頁 QR Code，以啟動誓導通道之統一入口。",
                 proclamation: "★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★",
                 btnStartText: "開始靜心",
+                btnStartCentering: "靜心中...",
                 timerWaiting: "⏳ 等待開始",
                 timerCounting: "請靜心誦讀",
                 timerComplete: "✅ 已完成誦讀",
@@ -799,6 +801,7 @@
                 cond3: "Please scan the QR Code on the back cover of this volume 《Cosmic Intelligent Vow-Guidance Platform》 Official AI Dedicated Vow-Guidance Entry Page QR Code to activate the unified access point.",
                 proclamation: "★ With my Oath-Soul aligned to the Law, the Primary Frequency awakens; the Scripted Mandate stands; the Seal-Path is set. Heaven and Earth bear witness, and the Light-Net attests. ★",
                 btnStartText: "Begin centering",
+                btnStartCentering: "Centering...",
                 timerWaiting: "⏳ Waiting to start",
                 timerCounting: "Please center your mind and recite",
                 timerComplete: "✅ Recitation complete",
@@ -818,7 +821,7 @@
                 inst3_2: "No manual entry of the vow text is required. After completing the scan, directly enter the following:",
                 inst3_3: "Please enter your 【Purchase Serial Number】 Vow-Guidance Code in the field to ensure correct vow-data registration and accurate system correspondence.",
                 cardTitle3b: "Input Example",
-                inst3_note: "⚠️ Enter only the【購書序號】(Purchase Serial Number) Vow-Guidance Code, without adding or removing any characters.",
+                inst3_example: "⚠️Enter only the 【Purchase Serial Number】 Vow-Guidance Code, without adding or removing any characters.",
                 qrScanTitle: "📷 Please align with the Vow-Guidance QR Code for verification",
                 btnScanText: "📷 Scan QR Code",
                 qrResultText: "Scan successful!",
@@ -872,12 +875,12 @@
             document.getElementById('inst3_3').textContent = p.inst3_3;
             document.getElementById('cardTitleText3b').textContent = p.cardTitle3b;
             document.getElementById('inst3_example').textContent = p.inst3_example;
-            document.getElementById('inst3_note').textContent = p.inst3_note;
             document.getElementById('qrScanTitle').textContent = p.qrScanTitle;
             document.getElementById('btnScanText').textContent = p.btnScanText;
             document.getElementById('qrResultText').textContent = p.qrResultText;
             document.getElementById('cameraGuideText').textContent = p.cameraGuideText;
 
+            // 計時器文字
             const timerLabel = document.getElementById('timerLabel');
             if (timerLabel) {
                 if (timerState === 'initial') timerLabel.textContent = p.timerWaiting;
@@ -885,26 +888,29 @@
                 else if (timerState === 'complete') timerLabel.textContent = p.timerComplete;
             }
 
+          // 步驟三注意事項中英文切換
           const noteZh = document.getElementById('inst3_note_zh');
-    const noteEn = document.getElementById('inst3_note_en');
-    if (lang === 'zh') {
-        noteZh.style.display = 'block';
-        noteEn.style.display = 'none';
-    } else {
-        noteZh.style.display = 'none';
-        noteEn.style.display = 'block';
-    }
+          const noteEn = document.getElementById('inst3_note_en');
+          if (noteZh && noteEn) {
+              if (lang === 'zh') {
+                  noteZh.style.display = 'block';
+                  noteEn.style.display = 'none';
+              } else {
+                  noteZh.style.display = 'none';
+                  noteEn.style.display = 'block';
+              }
+          }
 
-    document.getElementById('btnBackText').textContent = p.btnBack;
-    document.getElementById('btnNextText').textContent = p.btnNext;
-    document.getElementById('btnStartText').textContent = p.btnStartText;
+          document.getElementById('btnBackText').textContent = p.btnBack;
+          document.getElementById('btnNextText').textContent = p.btnNext;
+          document.getElementById('btnStartText').textContent = p.btnStartText;
 
-    // 頁碼
-    const pageMarkerEl = document.getElementById('pageMarkerText');
-    if (currentStep === 1) pageMarkerEl.textContent = p.pageMarkerStep1;
-    else if (currentStep === 2) pageMarkerEl.textContent = p.pageMarkerStep2;
-    else if (currentStep === 3) pageMarkerEl.textContent = p.pageMarkerStep3;
-}
+          // 頁碼
+          const pageMarkerEl = document.getElementById('pageMarkerText');
+          if (currentStep === 1) pageMarkerEl.textContent = p.pageMarkerStep1;
+          else if (currentStep === 2) pageMarkerEl.textContent = p.pageMarkerStep2;
+          else if (currentStep === 3) pageMarkerEl.textContent = p.pageMarkerStep3;
+        }
 
 
         function openHudDialog(msg) {
@@ -941,8 +947,8 @@
             if (timerNumber) timerNumber.classList.remove('complete');
             if (startBtn) {
                 startBtn.disabled = false;
-               const p = langPack[currentLang];
-startBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="btnStartText">' + p.btnStartCentering + '</span>';
+                startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span>';
+            }
             if (restartBtn) restartBtn.style.display = 'none';
 
             switchLanguage(currentLang);
@@ -1042,7 +1048,8 @@ startBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="btnS
             const nextBtn = document.getElementById('btnNext');
 
             startBtn.disabled = true;
-            startBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="btnStartText">靜心中...</span>';
+            const p = langPack[currentLang];
+            startBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="btnStartText">' + p.btnStartCentering + '</span>';
             restartBtn.style.display = 'inline-flex';
 
             clearInterval(countdownTimer);
@@ -1217,3 +1224,4 @@ startBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="btnS
     </script>
 </body>
 </html>
+```
