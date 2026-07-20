@@ -680,29 +680,26 @@
 </div>
                <!-- 輸入示範 -->
 <div class="hud-card">
+   <div class="hud-card">
     <div class="card-title"><i class="fa-solid fa-pen-to-square"></i><span id="cardTitleText3b">輸入示範</span></div>
     <div class="instruction-box">
         <div class="instruction-item">
-            <i class="fa-solid fa-quote-right" style="color:#d4af37;"></i>
-            <span id="inst3_example" style="font-family:'Share Tech Mono',monospace; color:#00bfff;">【誓印啟動】回傳【ISBN978-988-9**10-1-1】誓證</span>
+             <span id="inst3_example" style="font-family:'Share Tech Mono',monospace; color:#00bfff;">【誓印啟動】回傳【ISBN978-988-9**10-1-1】誓證</span>
         </div>
     </div>
 
-    <!-- 注意事項區塊（只保留 📡 和 🧭 兩行） -->
+    <!-- 注意事項區塊 -->
     <div style="margin-top:12px; padding:12px 16px; background:rgba(255,192,0,0.04); border-radius:10px; border-left:3px solid #d4af37;">
         <div style="display:flex; flex-direction:column; gap:4px;">
-
-            <!-- 中文版（預設顯示） -->
+            <!-- 中文版 -->
             <div id="inst3_note_zh" style="display:block; color:rgba(224,232,245,0.85); font-size:0.85rem; line-height:1.8;">
                 <span style="display:flex; align-items:flex-start; gap:8px;">
-                    <i class="fa-solid fa-triangle-exclamation" style="color:#d4af37; margin-top:3px;"></i>
-                    <span>
+                <span>
                         📡 送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。<br>
                         🧭 【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。
                     </span>
                 </span>
             </div>
-
             <!-- 英文版（預設隱藏） -->
             <div id="inst3_note_en" style="display:none; color:rgba(224,232,245,0.85); font-size:0.85rem; line-height:1.8;">
                 <span style="display:flex; align-items:flex-start; gap:8px;">
@@ -944,8 +941,8 @@
             if (timerNumber) timerNumber.classList.remove('complete');
             if (startBtn) {
                 startBtn.disabled = false;
-                startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span>';
-            }
+               const p = langPack[currentLang];
+startBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="btnStartText">' + p.btnStartCentering + '</span>';
             if (restartBtn) restartBtn.style.display = 'none';
 
             switchLanguage(currentLang);
