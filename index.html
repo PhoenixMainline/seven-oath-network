@@ -1037,7 +1037,7 @@
             switchLanguage(currentLang);
         }
 
-        function startCentering() {
+             function startCentering() {
             if (isTimerRunning) return;
 
             const startBtn = document.getElementById('btnStartCentering');
@@ -1073,7 +1073,7 @@
                     nextBtn.classList.add('enabled');
 
                     startBtn.disabled = false;
-                    startBtn.innerHTML = '<i class="fa-solid fa-check"></i> <span id="btnStartText">已完成</span>';
+                    startBtn.innerHTML = '<i class="fa-solid fa-check"></i> <span id="btnStartText">' + p.btnStartComplete + '</span>';
                 } else {
                     timerNumber.textContent = countdownSeconds;
                     timerLabel.textContent = p.timerCounting;
@@ -1082,7 +1082,6 @@
 
             isTimerRunning = true;
         }
-
         function restartTimer() {
             if (currentStep !== 2) return;
 
