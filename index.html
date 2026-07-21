@@ -773,6 +773,7 @@
                 pageMarkerStep2: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 3-4 頁",
                 pageMarkerStep3: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 5-6 頁",
                 btnRestart: "重新開始",
+                btnStartComplete: "已完成",
                 dialogStep3: "✅ 步驟二已解鎖！等待步驟三綁定通道與掃描代碼整合。",
                 dialogStep4: "✅ 步驟三已完成！等待步驟四（回傳結果）。",
                 cardTitle3: "【三】授權綁定階段（母源印驗證）",
@@ -813,6 +814,7 @@
                 pageMarkerStep2: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 3-4",
                 pageMarkerStep3: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 5-6",
                 btnRestart: "Restart",
+                btnStartComplete: "Complete",
                 dialogStep3: "✅ Step 2 successfully unlocked! Awaiting Step 3 connection and scanning integration.",
                 dialogStep4: "✅ Step 3 completed! Awaiting Step 4 (Return Result).",
                 cardTitle3: "[III] Authorization Binding Phase (Mother-Frequency Seal Verification)",
@@ -1073,7 +1075,7 @@
                     nextBtn.classList.add('enabled');
 
                     startBtn.disabled = false;
-                    startBtn.innerHTML = '<i class="fa-solid fa-check"></i> <span id="btnStartText">' + p.btnStartComplete + '</span>';
+                startBtn.innerHTML = '<i class="fa-solid fa-check"></i> <span id="btnStartText">' + p.btnStartComplete + '</span>';
                 } else {
                     timerNumber.textContent = countdownSeconds;
                     timerLabel.textContent = p.timerCounting;
