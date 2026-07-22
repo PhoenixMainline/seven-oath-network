@@ -1118,11 +1118,11 @@
             document.getElementById('panelStep3').classList.add('active');
             document.getElementById('btnBack').classList.add('enabled');
             
-            // 🔒 進入步驟三時，預設鎖住「進入下一步」
+            // 🔒 進入步驟三時，預設繼續「進入下一步」
             const nextBtn = document.getElementById('btnNext');
             if (nextBtn) {
                 nextBtn.classList.remove('enabled');
-                nextBtn.disabled = true;
+                nextBtn.disabled = false;      
             }
             
             document.getElementById('qrScanResult').style.display = 'none';
