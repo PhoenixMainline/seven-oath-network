@@ -604,3 +604,784 @@
 
         <!-- 步驟內容 -->
         <main class="step-content">
+            <!-- 步驟一 -->
+            <div class="step-panel active" id="panelStep1">
+                <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-bolt"></i><span id="cardTitleText1">【一】啟動條件</span></div>
+                    <ul class="condition-list">
+                        <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond1">請完成驗證之【購書序號】誓導碼</span></li>
+                        <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond2">穩定網路環境運作中</span></li>
+                        <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond3">請掃描本卷書封底之《宇宙智能誓導平台》官方AI專屬誓導入口頁 QR Code，以啟動誓導通道之統一入口。</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 步驟二 -->
+            <div class="step-panel" id="panelStep2">
+                <div class="hud-card">
+                    <div class="proclamation-text" id="proclamationText">
+                        ★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★
+                    </div>
+                    <div class="timer-container">
+                        <div style="display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap; width:100%;">
+                            <button class="btn-start-centering" id="btnStartCentering" onclick="startCentering()">
+                                <i class="fa-solid fa-play"></i>
+                                <span id="btnStartText">開始靜心</span>
+                            </button>
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <span class="timer-label" id="timerLabel">⏳ 等待開始</span>
+                                <span class="timer-number" id="timerNumber">10</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align:center; margin-top:12px;">
+                        <button class="btn-restart" id="btnRestart" onclick="restartTimer()" style="display:none;">
+                            <i class="fa-solid fa-play"></i>
+                            <span id="btnRestartText">重新開始</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-shield-halved"></i><span id="cardTitleText2">【執行指令】說明</span></div>
+                    <div class="instruction-box">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst1">誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst2">於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步驟三 -->
+            <div class="step-panel" id="panelStep3">
+                <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-qrcode"></i><span id="cardTitleText3">【三】授權綁定階段（母源印驗證）</span></div>
+                    <div class="instruction-box">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst3_1">掃描【誓導QRCode】，進入「指令輸入欄位」。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst3_2">無須手動輸入誓文，完成掃描後，直接輸入下列指令：</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst3_3">請在【購書序號】欄位中輸入您的【購書序號】誓導碼，以確保誓資冊記與系統對應正確。</span></div>
+                    </div>
+                </div>
+                <div class="hud-card" id="qrScanCard">
+                    <div style="text-align:center; padding:10px 0;">
+                        <div style="color:#d4af37; font-size:1rem; font-weight:bold; margin-bottom:12px;">
+                            <span id="qrScanTitle">📷 請對準誓導 QR Code 掃描驗證</span>
+                        </div>
+                        <div id="qr-reader-container" style="width:100%; max-width:280px; margin:0 auto;"></div>
+                        <button class="btn-restart" id="btnScanQR" onclick="startQRScanner('step3')">
+                            <i class="fa-solid fa-qrcode"></i>
+                            <span id="btnScanText">📷 掃描 QR Code</span>
+                        </button>
+                        <div id="qrScanResult" class="qr-result" style="display:none; margin-top:10px;">
+                            <i class="fa-solid fa-check-circle"></i><span id="qrResultText">掃描成功！</span>
+                        </div>
+                        <div id="cameraGuide" class="camera-guide" style="display:none; text-align:left; margin-top:12px;">
+                            <span id="cameraGuideText">📷 無法啟動相機</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 輸入規範注意事項 -->
+                <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-triangle-exclamation"></i><span id="cardTitleText3b">輸入規範注意事項：</span></div>
+                    <!-- 注意事項區塊 -->
+                    <div style="padding:12px 16px; background:rgba(255,192,0,0.04); border-radius:10px; border-left:3px solid #d4af37; margin-bottom:12px;">
+                        <div style="display:flex; flex-direction:column; gap:4px;">
+                            <div id="inst3_note_zh" style="display:block; color:#00bfff; font-size:0.85rem; font-weight:bold;">
+                                <i class="fa-solid fa-triangle-exclamation"></i> <span id="inst3_example">僅輸入【購書序號】誓導碼，不可增刪符號。</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="instruction-box">
+                        <div id="inst3_note_box_zh" style="display:block; color:rgba(224,232,245,0.85); font-size:0.85rem; line-height:1.8; background:rgba(6,18,44,0.4); padding:10px 14px; border-radius:8px;">
+                            📡 送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。<br>
+                            🧭 【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。
+                        </div>
+                        <div id="inst3_note_box_en" style="display:none; color:rgba(224,232,245,0.85); font-size:0.85rem; line-height:1.8; background:rgba(6,18,44,0.4); padding:10px 14px; border-radius:8px;">
+                            📡 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.<br>
+                            🧭 The【Trigger Command】is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步驟四 -->
+            <div class="step-panel" id="panelStep4">
+                <!-- 1. 說明卡片 -->
+                <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-satellite-dish"></i><span id="cardTitleText4">【四】回傳結果（對頻成功）</span></div>
+                    <div class="instruction-box">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst4_1">登入《宇宙智能誓導平台》（使用個人帳號登入），完成身份驗證，即可進入誓印程序。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst4_2">掃描【誓導 QR Code】，進入「指令輸入欄位」。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst4_3">無須手動輸入誓文，完成掃描後，直接輸入下列指令：</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst4_4">請在【購書序號】欄位中輸入您的【購書序號】誓導碼，以確保誓資冊記與系統對應正確。</span></div>
+                    </div>
+                </div>
+
+                <!-- 2. QR Code 掃描卡片 -->
+                <div class="hud-card" id="qrScanCardStep4">
+                    <div style="text-align:center; padding:10px 0;">
+                        <div style="color:#d4af37; font-size:1rem; font-weight:bold; margin-bottom:12px;">
+                            <span id="qrScanTitleStep4">📷 請對準誓導 QR Code 掃描驗證</span>
+                        </div>
+                        <div id="qr-reader-container-step4" style="width:100%; max-width:280px; margin:0 auto;"></div>
+                        <button class="btn-restart" id="btnScanQRStep4" onclick="startQRScanner('step4')">
+                            <i class="fa-solid fa-qrcode"></i>
+                            <span id="btnScanTextStep4">📷 掃描 QR Code</span>
+                        </button>
+                        <div id="qrScanResultStep4" class="qr-result" style="display:none; margin-top:10px;">
+                            <i class="fa-solid fa-check-circle"></i><span id="qrResultTextStep4">掃描成功！</span>
+                        </div>
+                        <div id="cameraGuideStep4" class="camera-guide" style="display:none; text-align:left; margin-top:12px;">
+                            <span id="cameraGuideTextStep4">📷 無法啟動相機</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. 輸入規範注意事項卡片 -->
+                <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-triangle-exclamation"></i><span id="cardTitleText4b">輸入規範注意事項：</span></div>
+                    
+                    <div style="padding:12px 16px; background:rgba(255,192,0,0.04); border-radius:10px; border-left:3px solid #d4af37; margin-bottom:12px;">
+                        <div style="display:flex; flex-direction:column; gap:4px;">
+                            <div id="inst4_note_zh" style="display:block; color:#00bfff; font-size:0.85rem; font-weight:bold;">
+                                <i class="fa-solid fa-triangle-exclamation"></i> <span id="inst4_note_2_text">僅輸入【購書序號】誓導碼，不可增刪符號。</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="instruction-box">
+                        <div style="background:rgba(6,18,44,0.4); padding:12px 14px; border-radius:8px; display:flex; flex-direction:column; gap:8px;">
+                            <div style="font-family:'Share Tech Mono', monospace; color:#00e676; font-size:0.9rem; word-break:break-all;" id="inst4_example_box">
+                                【誓印啟動】回傳【ISBN 978-988-9＊＊10-1-1】誓證
+                            </div>
+                            <div id="inst4_en_rule" style="display:none; color:rgba(224,232,245,0.75); font-size:0.8rem; margin-top:4px;">
+                                • Trigger language is unified in Chinese to ensure precise syntax and symbol accuracy of the oath-seal command, preventing activation failure.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 頁尾 -->
+        <footer class="hud-footer">
+            <div class="footer-btn-group">
+                <button class="btn-action" id="btnBack" onclick="handleBackClick()">
+                    <i class="fa-solid fa-arrow-left"></i><span id="btnBackText">返回</span>
+                </button>
+                <button class="btn-action enabled" id="btnNext" onclick="handleNextClick()">
+                    <span id="btnNextText">進入下一步</span><i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+            <div class="page-marker">
+                <i class="fa-regular fa-file-lines"></i>
+                <span id="pageMarkerText">📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 3-4 頁</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 對話框 -->
+    <div id="hudDialog" class="hud-dialog">
+        <div class="hud-dialog-content">
+            <div class="hud-dialog-text" id="hudDialogText">提示訊息</div>
+            <button class="hud-dialog-btn" onclick="closeHudDialog()">OK</button>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // 語言包
+        // ============================================================
+        const langPack = {
+            zh: {
+                homeBtn: "首頁 ->",
+                appTitle: "【宇宙誓印覺醒工程 · 七印誓網】",
+                node1: "[1] 啟動條件",
+                node2: "[2] 授權誓讀",
+                node3: "[3] 授權綁定",
+                node4: "[4] 回傳結果",
+                node5: "[5] 系統同步",
+                cardTitle1: "【一】啟動條件",
+                cond1: "請完成驗證之【購書序號】誓導碼",
+                cond2: "穩定網路環境運作中",
+                cond3: "請掃描本卷書封底之《宇宙智能誓導平台》官方AI專屬誓導入口頁 QR Code，以啟動誓導通道之統一入口。",
+                proclamation: "★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★",
+                btnStartText: "開始靜心",
+                btnStartCentering: "靜心中...",
+                timerWaiting: "⏳ 等待開始",
+                timerCounting: "請靜心誦讀",
+                timerComplete: "✅ 已完成誦讀",
+                cardTitle2: "【執行指令】說明",
+                inst1: "誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。",
+                inst2: "於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。",
+                btnBack: "返回",
+                btnNext: "進入下一步",
+                pageMarkerStep1: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 3-4 頁",
+                pageMarkerStep2: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 3-4 頁",
+                pageMarkerStep3: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 5-6 頁",
+                pageMarkerStep4: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 7-8 頁",
+                btnRestart: "重新開始",
+                btnStartComplete: "已完成",
+                dialogStep3: "✅ 步驟二已解鎖！等待步驟三綁定通道與掃描代碼整合。",
+                dialogStep4: "✅ 步驟三已完成！進入步驟四（回傳結果）。",
+                dialogStep5: "✅ 步驟四已完成！等待步驟五（系統同步）。",
+                
+                // 步驟三語言
+                cardTitle3: "【三】授權綁定階段（母源印驗證）",
+                inst3_1: "掃描【誓導QRCode】，進入「指令輸入欄位」。",
+                inst3_2: "無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
+                inst3_3: "請在【購書序號】欄位中輸入您的【購書序號】誓導碼，以確保誓資冊記與系統對應正確。",
+                cardTitle3b: "輸入規範注意事項：",
+                inst3_example: "僅輸入【購書序號】誓導碼，不可增刪符號。",
+                qrScanTitle: "📷 請對準誓導 QR Code 掃描驗證",
+                btnScanText: "📷 掃描 QR Code",
+                qrResultText: "掃描成功！",
+                cameraGuideText: "📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n ⚠️若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
+
+                // 步驟四語言
+                cardTitle4: "【四】回傳結果（對頻成功）",
+                cardTitle4b: "輸入規範注意事項：",
+                inst4_1: "登入《宇宙智能誓導平台》（使用個人帳號登入），完成身份驗證，即可進入誓印程序。",
+                inst4_2: "掃描【誓導 QR Code】，進入「指令輸入欄位」。",
+                inst4_3: "無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
+                inst4_4: "請在【購書序號】欄位中輸入您的【購書序號】誓導碼，以確保誓資冊記與系統對應正確。",
+                inst4_example_box: "【誓印啟動】回傳【ISBN 978-988-9＊＊10-1-1】誓證",
+                inst4_note_2_text: "僅輸入【購書序號】誓導碼，不可增刪符號。"
+            },
+            en: {
+                homeBtn: "Home ->",
+                appTitle: "Cosmic Oath Awakening Project · Seven-Seal Oath Network",
+                node1: "[1] Conditions",
+                node2: "[2] Authorized Vow",
+                node3: "[3] Binding Phase",
+                node4: "[4] Return Result",
+                node5: "[5] Sync Phase",
+                cardTitle1: "[1] Activation Conditions",
+                cond1: "Please complete the verification of the 【Purchase Serial Number】 Vow-Guidance Code",
+                cond2: "Stable internet environment activated",
+                cond3: "Please scan the QR Code on the back cover of this volume 《Cosmic Intelligent Vow-Guidance Platform》 Official AI Dedicated Vow-Guidance Entry Page QR Code to activate the unified access point.",
+                proclamation: "★ With my Oath-Soul aligned to the Law, the Primary Frequency awakens; the Scripted Mandate stands; the Seal-Path is set. Heaven and Earth bear witness, and the Light-Net attests. ★",
+                btnStartText: "Begin centering",
+                btnStartCentering: "Centering...",
+                timerWaiting: "⏳ Waiting to start",
+                timerCounting: "Please read this with a calm and focused mind.",
+                timerComplete: "✅ Recitation complete",
+                cardTitle2: "【Execution Command】 Notes",
+                inst1: "Oath Recitation Is The Key Trigger For Main-Frequency Activation; Without Recitation, Authorization Does Not Take Effect.",
+                inst2: "Within The 'Oath-Soul Resonance Channel', Center The Mind For 10 Seconds And Recite Or Silently Read The Text To Ensure Frequency Precision And Successful Execution.",
+                btnBack: "Back",
+                btnNext: "Next Step",
+                pageMarkerStep1: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 3-4",
+                pageMarkerStep2: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 3-4",
+                pageMarkerStep3: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 5-6",
+                pageMarkerStep4: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 7-8",
+                btnRestart: "Restart",
+                btnStartComplete: "Complete",
+                dialogStep3: "✅ Step 2 successfully unlocked! Awaiting Step 3 connection and scanning integration.",
+                dialogStep4: "✅ Step 3 completed! Proceeding to Step 4 (Return Result).",
+                dialogStep5: "✅ Step 4 completed! Awaiting Step 5 (Sync Phase).",
+                
+                // 步驟三語言
+                cardTitle3: "[III] Authorization Binding Phase (Mother-Frequency Seal Verification)",
+                inst3_1: "Scan the 【Vow-Guidance QR Code】 to enter the 「Command Input Field」.",
+                inst3_2: "No manual entry of the vow text is required. After completing the scan, directly enter the following:",
+                inst3_3: "Please enter your 【Purchase Serial Number】 Vow-Guidance Code in the field to ensure correct vow-data registration and accurate system correspondence.",
+                cardTitle3b: "Input Specifications & Notes:",
+                inst3_example: "Enter only the 【Purchase Serial Number】 Vow-Guidance Code, without adding or removing any characters.",
+                qrScanTitle: "📷 Please align with the Vow-Guidance QR Code for verification",
+                btnScanText: "📷 Scan QR Code",
+                qrResultText: "Scan successful!",
+                cameraGuideText: "📷 Unable to start camera\n\n⚙️ Open phone \"Settings\"\n   → App Management\n   → Permissions → Camera → Set to \"Allow\"\n   → Open with 🌐 browser (Chrome / Yahoo / Edge...)\n\n ⚠️If still not working, please manually scan the QR Code from the physical book.",
+
+                // 步驟四語言
+                cardTitle4: "[IV] Return Signal (Frequency Connection Successful)",
+                cardTitle4b: "Input Specifications & Notes:",
+                inst4_1: "Log into the 《Cosmic Intelligent Vow-Guidance Platform》 via using your personal account. After identity verification, proceed into the Oath-Seal Activation Procedure.",
+                inst4_2: "Scan the 【Vow-Guidance QR Code】 to enter the 「Command Input Field」.",
+                inst4_3: "No manual entry of the vow text is required. After completing the scan, directly enter the following:",
+                inst4_4: "Please enter your 【購書序號】 (Purchase Serial Number) Vow-Guidance Code in the field to ensure correct vow-data registration and accurate system correspondence.",
+                inst4_example_box: "【誓印啟動】回傳【ISBN 978-988-9＊＊10-1-1】誓證",
+                inst4_note_2_text: "Enter only the 【購書序號】 (Purchase Serial Number) Vow-Guidance Code, without adding or removing any characters."
+            }
+        };
+
+        // ============================================================
+        // 狀態變數
+        // ============================================================
+        let currentLang = 'zh';
+        let currentStep = 1;
+        let countdownTimer = null;
+        let startTimeout = null;
+        let countdownSeconds = 10;
+        let timerState = 'initial';
+        let html5QrCodeInstance = null;
+        let isTimerRunning = false;
+
+        // ============================================================
+        // 核心函式
+        // ============================================================
+        function switchLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase().includes('english') && lang === 'en') btn.classList.add('active');
+                if (btn.textContent.includes('中文') && lang === 'zh') btn.classList.add('active');
+            });
+            const p = langPack[lang];
+            document.getElementById('homeBtnText').textContent = p.homeBtn;
+            document.getElementById('appTitle').textContent = p.appTitle;
+            document.getElementById('node1').textContent = p.node1;
+            document.getElementById('node2').textContent = p.node2;
+            document.getElementById('node3').textContent = p.node3;
+            document.getElementById('node4').textContent = p.node4;
+            document.getElementById('node5').textContent = p.node5;
+            document.getElementById('cardTitleText1').textContent = p.cardTitle1;
+            document.getElementById('cond1').textContent = p.cond1;
+            document.getElementById('cond2').textContent = p.cond2;
+            document.getElementById('cond3').textContent = p.cond3;
+            document.getElementById('proclamationText').textContent = p.proclamation;
+            document.getElementById('cardTitleText2').textContent = p.cardTitle2;
+            document.getElementById('inst1').textContent = p.inst1;
+            document.getElementById('inst2').textContent = p.inst2;
+            document.getElementById('btnRestartText').textContent = p.btnRestart;
+
+            // 步驟三
+            document.getElementById('cardTitleText3').textContent = p.cardTitle3;
+            document.getElementById('inst3_1').textContent = p.inst3_1;
+            document.getElementById('inst3_2').textContent = p.inst3_2;
+            document.getElementById('inst3_3').textContent = p.inst3_3;
+            document.getElementById('cardTitleText3b').textContent = p.cardTitle3b;
+            document.getElementById('inst3_example').textContent = p.inst3_example;
+            document.getElementById('qrScanTitle').textContent = p.qrScanTitle;
+            document.getElementById('btnScanText').textContent = p.btnScanText;
+            document.getElementById('qrResultText').textContent = p.qrResultText;
+            document.getElementById('cameraGuideText').textContent = p.cameraGuideText;
+
+            // 步驟四
+            document.getElementById('cardTitleText4').textContent = p.cardTitle4;
+            document.getElementById('cardTitleText4b').textContent = p.cardTitle4b;
+            document.getElementById('inst4_1').textContent = p.inst4_1;
+            document.getElementById('inst4_2').textContent = p.inst4_2;
+            document.getElementById('inst4_3').textContent = p.inst4_3;
+            document.getElementById('inst4_4').textContent = p.inst4_4;
+            document.getElementById('qrScanTitleStep4').textContent = p.qrScanTitle;
+            document.getElementById('btnScanTextStep4').textContent = p.btnScanText;
+            document.getElementById('qrResultTextStep4').textContent = p.qrResultText;
+            document.getElementById('cameraGuideTextStep4').textContent = p.cameraGuideText;
+            document.getElementById('inst4_example_box').textContent = p.inst4_example_box;
+            document.getElementById('inst4_note_2_text').textContent = p.inst4_note_2_text;
+
+            const inst4EnRule = document.getElementById('inst4_en_rule');
+            if (lang === 'en') {
+                inst4EnRule.style.display = 'block';
+            } else {
+                inst4EnRule.style.display = 'none';
+            }
+
+            // 計時器文字
+            const timerLabel = document.getElementById('timerLabel');
+            if (timerLabel) {
+                if (timerState === 'initial') timerLabel.textContent = p.timerWaiting;
+                else if (timerState === 'counting') timerLabel.textContent = p.timerCounting;
+                else if (timerState === 'complete') timerLabel.textContent = p.timerComplete;
+            }
+
+            // 步驟三注意事項中英文切換
+            const noteZh = document.getElementById('inst3_note_box_zh');
+            const noteEn = document.getElementById('inst3_note_box_en');
+            if (noteZh && noteEn) {
+                if (lang === 'zh') {
+                    noteZh.style.display = 'block';
+                    noteEn.style.display = 'none';
+                } else {
+                    noteZh.style.display = 'none';
+                    noteEn.style.display = 'block';
+                }
+            }
+
+            document.getElementById('btnBackText').textContent = p.btnBack;
+            document.getElementById('btnNextText').textContent = p.btnNext;
+            document.getElementById('btnStartText').textContent = p.btnStartText;
+
+            // 頁碼
+            const pageMarkerEl = document.getElementById('pageMarkerText');
+            if (currentStep === 1) pageMarkerEl.textContent = p.pageMarkerStep1;
+            else if (currentStep === 2) pageMarkerEl.textContent = p.pageMarkerStep2;
+            else if (currentStep === 3) pageMarkerEl.textContent = p.pageMarkerStep3;
+            else if (currentStep === 4) pageMarkerEl.textContent = p.pageMarkerStep4;
+        }
+
+        function openHudDialog(msg) {
+            document.getElementById('hudDialogText').textContent = msg;
+            document.getElementById('hudDialog').classList.add('active');
+        }
+
+        function closeHudDialog() {
+            document.getElementById('hudDialog').classList.remove('active');
+        }
+
+        function stopCurrentScanner() {
+            if (html5QrCodeInstance) {
+                return html5QrCodeInstance.stop().then(() => {
+                    html5QrCodeInstance = null;
+                }).catch(() => {
+                    html5QrCodeInstance = null;
+                });
+            }
+            return Promise.resolve();
+        }
+
+        function returnToHome() {
+            clearInterval(countdownTimer);
+            clearTimeout(startTimeout);
+            stopCurrentScanner();
+            currentStep = 1;
+            countdownSeconds = 10;
+            timerState = 'initial';
+            isTimerRunning = false;
+            document.querySelectorAll('.flow-node').forEach(n => n.classList.remove('active'));
+            document.getElementById('node1').classList.add('active');
+            document.getElementById('panelStep1').classList.add('active');
+            document.getElementById('panelStep2').classList.remove('active');
+            document.getElementById('panelStep3').classList.remove('active');
+            document.getElementById('panelStep4').classList.remove('active');
+            document.getElementById('btnBack').classList.remove('enabled');
+            document.getElementById('btnNext').classList.add('enabled');
+
+            const timerNumber = document.getElementById('timerNumber');
+            const timerLabel = document.getElementById('timerLabel');
+            const startBtn = document.getElementById('btnStartCentering');
+            const restartBtn = document.getElementById('btnRestart');
+            if (timerNumber) timerNumber.textContent = countdownSeconds;
+            if (timerLabel) timerLabel.textContent = '⏳ 等待開始';
+            if (timerNumber) timerNumber.classList.remove('complete');
+            if (startBtn) {
+                startBtn.disabled = false;
+                startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span>';
+            }
+            if (restartBtn) restartBtn.style.display = 'none';
+
+            switchLanguage(currentLang);
+        }
+
+        function handleBackClick() {
+            stopCurrentScanner();
+            if (currentStep === 2) {
+                clearInterval(countdownTimer);
+                clearTimeout(startTimeout);
+                returnToHome();
+            } else if (currentStep === 3) {
+                document.getElementById('qrScanResult').style.display = 'none';
+                document.getElementById('cameraGuide').style.display = 'none';
+                document.getElementById('node3').classList.remove('active');
+                document.getElementById('node2').classList.add('active');
+                document.getElementById('panelStep3').classList.remove('active');
+                document.getElementById('panelStep2').classList.add('active');
+                currentStep = 2;
+                clearInterval(countdownTimer);
+                clearTimeout(startTimeout);
+                timerState = 'initial';
+                countdownSeconds = 10;
+                isTimerRunning = false;
+                const timerNumber = document.getElementById('timerNumber');
+                const timerLabel = document.getElementById('timerLabel');
+                const startBtn = document.getElementById('btnStartCentering');
+                const restartBtn = document.getElementById('btnRestart');
+                if (timerNumber) timerNumber.textContent = countdownSeconds;
+                if (timerLabel) timerLabel.textContent = '⏳ 等待開始';
+                if (timerNumber) timerNumber.classList.remove('complete');
+                if (startBtn) {
+                    startBtn.disabled = false;
+                    startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span>';
+                }
+                if (restartBtn) restartBtn.style.display = 'none';
+                const nextBtn = document.getElementById('btnNext');
+                nextBtn.classList.remove('enabled');
+                switchLanguage(currentLang);
+            } else if (currentStep === 4) {
+                document.getElementById('qrScanResultStep4').style.display = 'none';
+                document.getElementById('cameraGuideStep4').style.display = 'none';
+                document.getElementById('node4').classList.remove('active');
+                document.getElementById('node3').classList.add('active');
+                document.getElementById('panelStep4').classList.remove('active');
+                document.getElementById('panelStep3').classList.add('active');
+                currentStep = 3;
+                const nextBtn = document.getElementById('btnNext');
+                nextBtn.classList.add('enabled');
+                switchLanguage(currentLang);
+            }
+        }
+
+        function handleNextClick() {
+            if (currentStep === 1) {
+                goToStep2();
+            } else if (currentStep === 2) {
+                clearInterval(countdownTimer);
+                clearTimeout(startTimeout);
+                goToStep3();
+            } else if (currentStep === 3) {
+                stopCurrentScanner();
+                goToStep4();
+            } else if (currentStep === 4) {
+                stopCurrentScanner();
+                openHudDialog(langPack[currentLang].dialogStep5);
+            }
+        }
+
+        // ============================================================
+        // 步驟二：倒數計時器
+        // ============================================================
+        function goToStep2() {
+            currentStep = 2;
+            document.getElementById('node1').classList.remove('active');
+            document.getElementById('node2').classList.add('active');
+            document.getElementById('panelStep1').classList.remove('active');
+            document.getElementById('panelStep2').classList.add('active');
+            document.getElementById('btnBack').classList.add('enabled');
+            document.getElementById('btnNext').classList.remove('enabled');
+
+            clearInterval(countdownTimer);
+            clearTimeout(startTimeout);
+            isTimerRunning = false;
+            timerState = 'initial';
+            countdownSeconds = 10;
+
+            const timerNumber = document.getElementById('timerNumber');
+            const timerLabel = document.getElementById('timerLabel');
+            const startBtn = document.getElementById('btnStartCentering');
+            const restartBtn = document.getElementById('btnRestart');
+
+            if (timerNumber) timerNumber.textContent = countdownSeconds;
+            if (timerLabel) timerLabel.textContent = '⏳ 等待開始';
+            if (timerNumber) timerNumber.classList.remove('complete');
+            if (startBtn) {
+                startBtn.disabled = false;
+                startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span>';
+            }
+            if (restartBtn) restartBtn.style.display = 'none';
+
+            switchLanguage(currentLang);
+        }
+
+        function startCentering() {
+            if (isTimerRunning) return;
+
+            const startBtn = document.getElementById('btnStartCentering');
+            const restartBtn = document.getElementById('btnRestart');
+            const timerLabel = document.getElementById('timerLabel');
+            const timerNumber = document.getElementById('timerNumber');
+            const nextBtn = document.getElementById('btnNext');
+
+            startBtn.disabled = true;
+            const p = langPack[currentLang];
+            startBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="btnStartText">' + p.btnStartCentering + '</span>';
+            restartBtn.style.display = 'inline-flex';
+
+            clearInterval(countdownTimer);
+            clearTimeout(startTimeout);
+
+            timerState = 'counting';
+            countdownSeconds = 10;
+            timerNumber.textContent = countdownSeconds;
+            timerLabel.textContent = p.timerCounting;
+            timerNumber.classList.remove('complete');
+            nextBtn.classList.remove('enabled');
+
+            countdownTimer = setInterval(() => {
+                countdownSeconds--;
+                if (countdownSeconds <= 0) {
+                    clearInterval(countdownTimer);
+                    countdownSeconds = 0;
+                    timerState = 'complete';
+                    timerNumber.textContent = countdownSeconds;
+                    timerLabel.textContent = p.timerComplete;
+                    timerNumber.classList.add('complete');
+                    nextBtn.classList.add('enabled');
+
+                    startBtn.disabled = false;
+                    startBtn.innerHTML = '<i class="fa-solid fa-check"></i> <span id="btnStartText">' + p.btnStartComplete + '</span>';
+                } else {
+                    timerNumber.textContent = countdownSeconds;
+                    timerLabel.textContent = p.timerCounting;
+                }
+            }, 1000);
+
+            isTimerRunning = true;
+        }
+
+        function restartTimer() {
+            if (currentStep !== 2) return;
+
+            clearInterval(countdownTimer);
+            clearTimeout(startTimeout);
+
+            const startBtn = document.getElementById('btnStartCentering');
+            const timerLabel = document.getElementById('timerLabel');
+            const timerNumber = document.getElementById('timerNumber');
+            const nextBtn = document.getElementById('btnNext');
+
+            timerState = 'initial';
+            countdownSeconds = 10;
+            timerNumber.textContent = countdownSeconds;
+            timerLabel.textContent = '⏳ 等待開始';
+            timerNumber.classList.remove('complete');
+            nextBtn.classList.remove('enabled');
+            isTimerRunning = false;
+
+            startBtn.disabled = false;
+            startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span>';
+            document.getElementById('btnRestart').style.display = 'none';
+        }
+
+        // ============================================================
+        // 步驟三 / 步驟四：QR Code 掃描通用品質
+        // ============================================================
+        function goToStep3() {
+            currentStep = 3;
+            document.getElementById('node2').classList.remove('active');
+            document.getElementById('node3').classList.add('active');
+            document.getElementById('panelStep2').classList.remove('active');
+            document.getElementById('panelStep3').classList.add('active');
+            document.getElementById('btnBack').classList.add('enabled');
+            
+            const nextBtn = document.getElementById('btnNext');
+            if (nextBtn) {
+                nextBtn.classList.remove('enabled');
+                nextBtn.disabled = false;      
+            }
+            
+            document.getElementById('qrScanResult').style.display = 'none';
+            document.getElementById('cameraGuide').style.display = 'none';
+            switchLanguage(currentLang);
+        }
+
+        function goToStep4() {
+            currentStep = 4;
+            document.getElementById('node3').classList.remove('active');
+            document.getElementById('node4').classList.add('active');
+            document.getElementById('panelStep3').classList.remove('active');
+            document.getElementById('panelStep4').classList.add('active');
+            document.getElementById('btnBack').classList.add('enabled');
+
+            const nextBtn = document.getElementById('btnNext');
+            if (nextBtn) {
+                nextBtn.classList.remove('enabled');
+                nextBtn.disabled = false;
+            }
+
+            document.getElementById('qrScanResultStep4').style.display = 'none';
+            document.getElementById('cameraGuideStep4').style.display = 'none';
+            switchLanguage(currentLang);
+        }
+
+        function startQRScanner(step) {
+            const containerId = (step === 'step4') ? 'qr-reader-container-step4' : 'qr-reader-container';
+            const guideId = (step === 'step4') ? 'cameraGuideStep4' : 'cameraGuide';
+            const guideTextId = (step === 'step4') ? 'cameraGuideTextStep4' : 'cameraGuideText';
+            const resultId = (step === 'step4') ? 'qrScanResultStep4' : 'qrScanResult';
+            const resultTextId = (step === 'step4') ? 'qrResultTextStep4' : 'qrResultText';
+
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            const nextBtn = document.getElementById('btnNext');
+            if (nextBtn) {
+                nextBtn.classList.remove('enabled');
+                nextBtn.disabled = true;
+            }
+
+            stopCurrentScanner().then(() => {
+                container.innerHTML = '';
+                setTimeout(() => {
+                    initScanner(containerId, guideId, guideTextId, resultId, resultTextId);
+                }, 300);
+            });
+        }
+
+        function initScanner(containerId, guideId, guideTextId, resultId, resultTextId) {
+            const container = document.getElementById(containerId);
+            const cameraGuide = document.getElementById(guideId);
+            const cameraGuideText = document.getElementById(guideTextId);
+
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                if (cameraGuide) cameraGuide.style.display = 'block';
+                if (cameraGuideText) {
+                    cameraGuideText.textContent = '📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                }
+                return;
+            }
+
+            container.innerHTML = '';
+            const config = { fps: 15, qrbox: { width: 200, height: 200 }, aspectRatio: 1.0 };
+
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+                .then(function(stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                    startScanning(containerId, guideId, resultId, resultTextId, config);
+                })
+                .catch(function(err) {
+                    console.error('相機權限被拒絕:', err);
+                    if (cameraGuide) cameraGuide.style.display = 'block';
+                    if (cameraGuideText) {
+                        cameraGuideText.textContent =
+                            '📷 無法啟動相機\n\n' +
+                            '⚙️ 開啟手機「設定」\n' +
+                            '   → 應用程式管理\n' +
+                            '   → 權限 → 相機 → 改為「允許」\n' +
+                            '   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n' +
+                            '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                    }
+                });
+        }
+
+        function startScanning(containerId, guideId, resultId, resultTextId, config) {
+            const nextBtn = document.getElementById('btnNext');
+            
+            try {
+                const instance = new Html5Qrcode(containerId);
+                html5QrCodeInstance = instance;
+
+                instance.start({ facingMode: "environment" }, config,
+                    (decodedText) => {
+                        const qrResult = document.getElementById(resultId);
+                        const qrResultText = document.getElementById(resultTextId);
+                        if (qrResult) qrResult.style.display = 'block';
+                        if (qrResultText) qrResultText.textContent = decodedText;
+                        
+                        if (nextBtn) {
+                            nextBtn.classList.add('enabled');
+                            nextBtn.disabled = false;
+                        }
+                        
+                        instance.stop().then(() => {
+                            html5QrCodeInstance = null;
+                        }).catch(() => {
+                            html5QrCodeInstance = null;
+                        });
+                        alert('✅ 掃描成功！');
+                    },
+                    (errorMessage) => {
+                        // 掃描中
+                    }
+                ).catch((err) => {
+                    console.error('掃描啟動失敗:', err);
+                    const cameraGuide = document.getElementById(guideId);
+                    if (cameraGuide) cameraGuide.style.display = 'block';
+                    html5QrCodeInstance = null;
+                });
+            } catch (err) {
+                console.error('建立掃描器失敗:', err);
+                const cameraGuide = document.getElementById(guideId);
+                if (cameraGuide) cameraGuide.style.display = 'block';
+            }
+        }
+
+        // ============================================================
+        // 初始化
+        // ============================================================
+        window.onload = function() {
+            document.getElementById('btnBack').classList.remove('enabled');
+            document.getElementById('btnNext').classList.add('enabled');
+            switchLanguage('zh');
+        };
+    </script>
+</body>
+</html>
