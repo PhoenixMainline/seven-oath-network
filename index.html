@@ -764,12 +764,12 @@
                     <div class="card-title"><i class="fa-solid fa-circle-info"></i><span id="cardTitle6c">誓魂對頻判定條件</span></div>
                     <div style="background:rgba(212,175,55,0.04); border-left:3px solid #d4af37; padding:12px 16px; border-radius:8px;">
                         <p style="font-size:0.9rem; color:#e0e8f5; line-height:1.8;">
-                            <span id="judgeConditionText">對頻頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。</span>
+                            <span id="judgeConditionText">誓魂頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。</span>
                         </p>
                     </div>
                     <div style="margin-top:12px; background:rgba(0,191,255,0.04); border-left:3px solid #00bfff; padding:12px 16px; border-radius:8px;">
                         <p style="font-size:0.85rem; color:rgba(224,232,245,0.8); line-height:1.8;">
-                            <span id="judgeNoteText">⚠️ 若對頻未通過，系統將自動轉入補誓程序（懺悔補誓 × 七日循環 × 頻率再校）。</span>
+                            <span id="judgeNoteText">⚠️ 若對頻未通過，系統將自動轉入補誓程序（憶悔補誓 × 七日循環 × 頻率再校）。</span>
                         </p>
                     </div>
                 </div>
@@ -846,7 +846,7 @@
                 qrScanTitle: "📷 請對準誓導 QR Code 掃描驗證",
                 btnScanText: "📷 掃描 QR Code",
                 qrResultText: "掃描成功！",
-                cameraGuideText: "📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n ⚠️若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
+                cameraGuideText: "📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
                 cardTitle4: "【四】回傳結果（對頻成功）",
                 cardTitle4b: "輸入規範注意事項：",
                 inst4_1: "登入《宇宙智能誓導平台》（使用個人帳號登入），完成身份驗證，即可進入誓印程序。",
@@ -881,13 +881,16 @@
                 btnScanTextStep6: "📷 掃描 QR Code",
                 qrResultTextStep6: "掃描成功！",
                 cameraGuideTextStep6: "📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n ⚠️若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
+                cardTitle6c: "誓魂對頻判定條件",
+                judgeConditionText: "誓魂頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。",
+                judgeNoteText: "⚠️ 若對頻未通過，系統將自動轉入補誓程序（憶悔補誓 × 七日循環 × 頻率再校）。",
                 judgePassed: "✅ 誓印通過",
                 judgeFailed: "❌ 對頻未通過",
                 judgePassedDetail: "→ 進入第 7 項 七印誓網對應階段",
-                judgeFailedDetail: "→ 進入補誓程序（懺悔補誓 × 七日循環 × 頻率再校）",
+                judgeFailedDetail: "→ 進入補誓程序（憶悔補誓 × 七日循環 × 頻率再校）",
                 judgeProcessing: "⏳ 對頻中...請稍候",
                 dialogStep6Passed: "🎉 誓印通過！已進入七印誓網對應階段。",
-                dialogStep6Failed: "⚠️ 對頻未通過。將啟動補誓程序（懺悔補誓 × 七日循環 × 頻率再校）。"
+                dialogStep6Failed: "⚠️ 對頻未通過。將啟動補誓程序（憶悔補誓 × 七日循環 × 頻率再校）。"
             },
             en: {
                 homeBtn: "Home ->",
@@ -969,6 +972,9 @@
                 btnScanTextStep6: "📷 Scan QR Code",
                 qrResultTextStep6: "Scan successful!",
                 cameraGuideTextStep6: "📷 Unable to launch the feature\n\n⚙️ Open your phone's \"Settings\"\n   → App Management\n   → Permissions → Camera → Change setting to \"Allow\"\n   → Open using a web browser (Chrome / Yahoo / Edge...)\n\n ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.",
+                cardTitle6c: "Oath-Soul Frequency Judgment Conditions",
+                judgeConditionText: "Oath-Soul Minimum Frequency Requirement：5D（U-200 Tier）.",
+                judgeNoteText: "⚠️ If the frequency alignment is not passed, the system will automatically enter the Oath Renewal Procedure (Confession and Oath Renewal × Seven-Day Cycle × Frequency Recalibration).",
                 judgePassed: "✅ Oath Seal Passed",
                 judgeFailed: "❌ Alignment Not Passed",
                 judgePassedDetail: "→ Proceed to Item 7 Seven-Seal Vow Network Correspondence Stage",
@@ -1082,8 +1088,9 @@
             document.getElementById('btnScanTextStep6').textContent = p.btnScanTextStep6;
             document.getElementById('qrResultTextStep6').textContent = p.qrResultTextStep6;
             document.getElementById('cameraGuideTextStep6').textContent = p.cameraGuideTextStep6;
-            document.getElementById('judgeConditionText').textContent = '對頻頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。';
-            document.getElementById('judgeNoteText').textContent = '⚠️ 若對頻未通過，系統將自動轉入補誓程序（懺悔補誓 × 七日循環 × 頻率再校）。';
+            document.getElementById('cardTitle6c').textContent = p.cardTitle6c;
+            document.getElementById('judgeConditionText').textContent = p.judgeConditionText;
+            document.getElementById('judgeNoteText').textContent = p.judgeNoteText;
 
             const inst4EnRule = document.getElementById('inst4_en_rule');
             if (lang === 'en') { inst4EnRule.style.display = 'block'; } else { inst4EnRule.style.display = 'none'; }
