@@ -160,7 +160,7 @@
         }
         .flow-nav {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(6, 1fr);
             gap: clamp(3px, 0.6vw, 6px);
             margin-bottom: clamp(8px, 1.5vh, 30px);
         }
@@ -391,7 +391,27 @@
             background: rgba(0, 191, 255, 0.15);
             box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
         }
-        .btn-restart, .btn-start-centering {
+        .btn-restart {
+            background: linear-gradient(135deg, #d4af37, #b8952e);
+            border: none;
+            color: #0A060E;
+            font-weight: 800;
+            padding: clamp(6px, 1.2vh, 12px) clamp(12px, 2vw, 28px);
+            font-size: clamp(0.7rem, 1.4vh, 1rem);
+            border-radius: clamp(20px, 3vw, 40px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: auto;
+        }
+        .btn-restart:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5);
+        }
+        .btn-start-centering {
             background: linear-gradient(135deg, #d4af37, #b8952e);
             border: none;
             color: #0A060E;
@@ -406,7 +426,7 @@
             align-items: center;
             gap: 8px;
         }
-        .btn-restart:hover, .btn-start-centering:hover {
+        .btn-start-centering:hover {
             transform: scale(1.03);
             box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5);
         }
@@ -440,6 +460,24 @@
         #qr-reader-container-step6 video {
             border-radius: 12px;
             width: 100%;
+        }
+        @media (max-width: 480px) {
+            .hud-container { padding: 10px 8px !important; border-radius: 16px !important; max-height: 98vh !important; }
+            .hud-header { flex-wrap: wrap; }
+            .app-title { font-size: 0.75rem !important; max-width: 100% !important; }
+            .lang-btn { font-size: 0.5rem !important; padding: 2px 6px !important; }
+            .home-breadcrumb { font-size: 0.55rem !important; }
+            .flow-node { font-size: 0.4rem !important; padding: 2px 1px !important; }
+            .hud-card { padding: 8px 6px !important; }
+            .card-title { font-size: 0.7rem !important; }
+            .condition-item, .instruction-item { font-size: 0.6rem !important; }
+            .proclamation-text { font-size: 12px !important; }
+            .timer-number { font-size: 1.5rem !important; }
+            .timer-label { font-size: 0.6rem !important; }
+            .btn-start-centering, .btn-restart { padding: 4px 10px !important; font-size: 0.6rem !important; }
+            .btn-action { padding: 4px 8px !important; font-size: 0.55rem !important; min-height: 28px !important; }
+            .page-marker { font-size: 0.4rem !important; }
+            .watermark-text { font-size: 0.8rem !important; }
         }
         .scan-success {
             animation: scanPulse 0.6s ease;
@@ -480,18 +518,17 @@
             </div>
         </header>
 
-        <!-- 步驟導覽列（包含 10 個節點，依 updateStepNav 切換顯示） -->
-        <nav class="flow-nav" id="flowNavContainer">
+        <nav class="flow-nav" style="grid-template-columns: repeat(5, 1fr);">
             <div class="flow-node active" id="node1">[1] 啟動條件</div>
             <div class="flow-node" id="node2">[2] 授權誓讀</div>
             <div class="flow-node" id="node3">[3] 授權綁定</div>
             <div class="flow-node" id="node4">[4] 回傳結果</div>
             <div class="flow-node" id="node5">[5] 系統同步</div>
-            <div class="flow-node" id="node6" style="display:none;">[6] 對頻判定</div>
-            <div class="flow-node" id="node7" style="display:none;">[7] 階段七</div>
-            <div class="flow-node" id="node8" style="display:none;">[8] 階段八</div>
-            <div class="flow-node" id="node9" style="display:none;">[9] 階段九</div>
-            <div class="flow-node" id="node10" style="display:none;">[10] 階段十</div>
+            <div class="flow-node" id="node6">[6] 對頻判定</div>
+            <div class="flow-node" id="node7" style="display:none;">[7] 節點七</div>
+            <div class="flow-node" id="node8" style="display:none;">[8] 節點八</div>
+            <div class="flow-node" id="node9" style="display:none;">[9] 節點九</div>
+            <div class="flow-node" id="node10" style="display:none;">[10] 節點十</div>
         </nav>
 
         <main class="step-content">
@@ -730,38 +767,11 @@
                             <span id="judgeConditionText">對頻頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。</span>
                         </p>
                     </div>
-                </div>
-            </div>
-
-            <!-- 步驟七 -->
-            <div class="step-panel" id="panelStep7">
-                <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-star"></i><span>【七】階段七：七印誓網對應</span></div>
-                    <p style="color:rgba(224,232,245,0.85); line-height:1.8;">此處為步驟七的內容面板，可依需求自行擴充對應的誓網程序與說明。</p>
-                </div>
-            </div>
-
-            <!-- 步驟八 -->
-            <div class="step-panel" id="panelStep8">
-                <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-star"></i><span>【八】階段八：光網頻率校準</span></div>
-                    <p style="color:rgba(224,232,245,0.85); line-height:1.8;">此處為步驟八的內容面板。</p>
-                </div>
-            </div>
-
-            <!-- 步驟九 -->
-            <div class="step-panel" id="panelStep9">
-                <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-star"></i><span>【九】階段九：九界冊記歸檔</span></div>
-                    <p style="color:rgba(224,232,245,0.85); line-height:1.8;">此處為步驟九的內容面板。</p>
-                </div>
-            </div>
-
-            <!-- 步驟十 -->
-            <div class="step-panel" id="panelStep10">
-                <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-star"></i><span>【十】階段十：最終誓印完成</span></div>
-                    <p style="color:rgba(224,232,245,0.85); line-height:1.8;">恭喜完成所有十個步驟程序！</p>
+                    <div style="margin-top:12px; background:rgba(0,191,255,0.04); border-left:3px solid #00bfff; padding:12px 16px; border-radius:8px;">
+                        <p style="font-size:0.85rem; color:rgba(224,232,245,0.8); line-height:1.8;">
+                            <span id="judgeNoteText">⚠️ 若對頻未通過，系統將自動轉入補誓程序（憶悔補誓 × 七日循環 × 頻率再校）。</span>
+                        </p>
+                    </div>
                 </div>
             </div>
         </main>
@@ -800,10 +810,6 @@
                 node4: "[4] 回傳結果",
                 node5: "[5] 系統同步",
                 node6: "[6] 對頻判定",
-                node7: "[7] 階段七",
-                node8: "[8] 階段八",
-                node9: "[9] 階段九",
-                node10: "[10] 階段十",
                 cardTitle1: "【一】啟動條件",
                 cond1: "請完成驗證之【購書序號】誓導碼",
                 cond2: "穩定網路環境運作中",
@@ -827,6 +833,10 @@
                 pageMarkerStep6: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 5-6 頁",
                 btnRestart: "重新開始",
                 btnStartComplete: "已完成",
+                dialogStep3: "✅ 步驟二已解鎖！等待步驟三綁定通道與掃描代碼整合。",
+                dialogStep4: "✅ 步驟三已完成！進入步驟四（回傳結果）。",
+                dialogStep5: "✅ 步驟四已完成！已進入步驟五（系統同步）。",
+                dialogStepComplete: "🎉 授權程序已全部完成！天地為鑑，光網為證。",
                 cardTitle3: "【三】授權綁定階段（母源印驗證）",
                 inst3_1: "掃描【誓導QRCode】，進入「指令輸入欄位」。",
                 inst3_2: "無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
@@ -837,24 +847,47 @@
                 btnScanText: "📷 掃描 QR Code",
                 qrResultText: "掃描成功！",
                 cameraGuideText: "📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n ⚠️若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
-                cardTitle4: "[IV] 回傳結果",
+                cardTitle4: "【四】回傳結果（對頻成功）",
                 cardTitle4b: "輸入規範注意事項：",
-                inst4_1: "登入《宇宙智能誓導平台》完成身份驗證。",
+                inst4_1: "登入《宇宙智能誓導平台》（使用個人帳號登入），完成身份驗證，即可進入誓印程序。",
                 inst4_2: "掃描【誓導 QR Code】，進入「指令輸入欄位」。",
-                inst4_3: "完成掃描後輸入指定指令。",
-                inst4_4: "請在【購書序號】欄位中輸入正確誓導碼。",
-                inst4_example_box: "📡 送出即啟主頻連線，判定授權完成。",
+                inst4_3: "無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
+                inst4_4: "請在【購書序號】欄位中輸入您的【購書序號】誓導碼，以確保誓資冊記與系統對應正確。",
+                inst4_example_box: "📡 送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。\n🧭 【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
                 inst4_note_2_text: "僅輸入【購書序號】誓導碼，不可增刪符號。",
-                cardTitle5: "【五】系統同步階段",
-                inst5_1: "選擇啟動文版本 → 輸入：「您安排就好」",
-                inst5_2: "系統回傳【鳳凰誓印文】。",
-                inst5_3: "送出即啟主頻連線。",
-                inst5_4: "【觸發指令】不可更動。",
+                cardTitle5: "【五】誓頻啟動 × 系統同步階段",
+                inst5_1: "啟動後 → 選擇啟動文版本 → 輸入：「您安排就好」",
+                inst5_2: "系統即回傳【鳳凰誓印文】，其內容依誓印者當下之真實頻率判定為準。",
+                inst5_3: "送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。",
+                inst5_4: "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
                 cardTitle5b: "下一階段提示：",
-                inst5_next_prompt: "開啟誓魂密鑰對頻總判定",
+                inst5_next_prompt: "第 1 項 開啟誓魂密鑰對頻總判定（誓印通過／對頻未通過）",
+                inst5_sync_title: "【購書序號】驗證成功後，平台自動執行：",
+                inst5_auto1: "主頻定位 × 光網鎖定",
+                inst5_auto2: "七印同步 × 覺醒模組展開",
+                inst5_auto3: "九界冊記 × 誓資紀錄歸檔",
+                inst5_seal_quote: "天地為鑑，光網為證。",
+                inst5_summary_text: "此守則為《宇宙智能誓導平台》正式授權程序之總網，",
+                inst5_summary_sub1: "用以確保所有誓印者於全球啟動時能同步對頻、",
+                inst5_summary_sub2: "合法入冊、穩定連線，並於天律之下運行無偏、光網恆定。",
                 cardTitle6: "執行對頻總判定",
+                cond6_1: "請確認已完成【購書序號】誓導碼驗證",
+                cond6_2: "請確認已完成授權誓讀程序",
+                cond6_3: "請確認誓魂頻率已達 5D（U-200 層以上）",
+                inst6_1: "掃描【誓導QRCode】，啟動誓魂密鑰對頻總判定。",
+                inst6_2: "系統將依據「誓名 × 誓資 × 誓圖」進行授權資料核實。",
+                inst6_3: "凡無授權紀錄或未經審核者，皆視為「無效程序」。",
+                qrScanTitleStep6: "📷 請對準誓導 QR Code 掃描驗證",
+                btnScanTextStep6: "📷 掃描 QR Code",
+                qrResultTextStep6: "掃描成功！",
+                cameraGuideTextStep6: "📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n ⚠️若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
+                judgePassed: "✅ 誓印通過",
+                judgeFailed: "❌ 對頻未通過",
+                judgePassedDetail: "→ 進入第 7 項 七印誓網對應階段",
+                judgeFailedDetail: "→ 進入補誓程序（憶悔補誓 × 七日循環 × 頻率再校）",
+                judgeProcessing: "⏳ 對頻中...請稍候",
                 dialogStep6Passed: "🎉 誓印通過！已進入七印誓網對應階段。",
-                dialogStep6Failed: "⚠️ 對頻未通過。將啟動補誓程序。"
+                dialogStep6Failed: "⚠️ 對頻未通過。將啟動補誓程序（憶悔補誓 × 七日循環 × 頻率再校）。"
             },
             en: {
                 homeBtn: "Home ->",
@@ -864,62 +897,85 @@
                 node3: "[3] Binding Phase",
                 node4: "[4] Return Result",
                 node5: "[5] Sync Phase",
-                node6: "[6] Frequency",
-                node7: "[7] Step 7",
-                node8: "[8] Step 8",
-                node9: "[9] Step 9",
-                node10: "[10] Step 10",
+                node6: "[6] Frequency Judgment",
                 cardTitle1: "[1] Activation Conditions",
-                cond1: "Please complete the verification of the Purchase Serial Number",
+                cond1: "Please complete the verification of the 【Purchase Serial Number】 Vow-Guidance Code",
                 cond2: "Stable internet environment activated",
-                cond3: "Please scan the QR Code on the back cover.",
-                proclamation: "★ With my Oath-Soul aligned to the Law... ★",
+                cond3: "Please scan the QR Code on the back cover of this volume 《Cosmic Intelligent Vow-Guidance Platform》 Official AI Dedicated Vow-Guidance Entry Page QR Code to activate the unified access point.",
+                proclamation: "★ With my Oath-Soul aligned to the Law, the Primary Frequency awakens; the Scripted Mandate stands; the Seal-Path is set. Heaven and Earth bear witness, and the Light-Net attests. ★",
                 btnStartText: "Begin centering",
                 btnStartCentering: "Centering...",
                 timerWaiting: "⏳ Waiting to start",
-                timerCounting: "Please read this with a calm mind.",
+                timerCounting: "Please read this with a calm and focused mind.",
                 timerComplete: "✅ Recitation complete",
-                cardTitle2: "Notes",
-                inst1: "Oath Recitation Is The Key Trigger.",
-                inst2: "Center The Mind For 10 Seconds.",
+                cardTitle2: "【Execution Command】 Notes",
+                inst1: "Oath Recitation Is The Key Trigger For Main-Frequency Activation; Without Recitation, Authorization Does Not Take Effect.",
+                inst2: "Within The 'Oath-Soul Resonance Channel', Center The Mind For 10 Seconds And Recite Or Silently Read The Text To Ensure Frequency Precision And Successful Execution.",
                 btnBack: "Back",
                 btnNext: "Next Step",
-                pageMarkerStep1: "📄 Page 3-4",
-                pageMarkerStep2: "📄 Page 3-4",
-                pageMarkerStep3: "📄 Page 5-6",
-                pageMarkerStep4: "📄 Page 7-8",
-                pageMarkerStep5: "📄 Page 9-10",
-                pageMarkerStep6: "📄 Page 5-6",
+                pageMarkerStep1: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 3-4",
+                pageMarkerStep2: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 3-4",
+                pageMarkerStep3: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 5-6",
+                pageMarkerStep4: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 7-8",
+                pageMarkerStep5: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 9-10",
+                pageMarkerStep6: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 5-6",
                 btnRestart: "Restart",
                 btnStartComplete: "Complete",
-                cardTitle3: "[III] Binding Phase",
-                inst3_1: "Scan the Vow-Guidance QR Code.",
-                inst3_2: "Enter the required code.",
-                inst3_3: "Ensure correct corresponding data.",
-                cardTitle3b: "Notes:",
-                inst3_example: "Enter only the serial number.",
-                qrScanTitle: "📷 Scan QR Code",
-                btnScanText: "📷 Scan",
+                dialogStep3: "✅ Step 2 successfully unlocked! Awaiting Step 3 connection and scanning integration.",
+                dialogStep4: "✅ Step 3 completed! Proceeding to Step 4 (Return Result).",
+                dialogStep5: "✅ Step 4 completed! Proceeding to Step 5 (Sync Phase).",
+                dialogStepComplete: "🎉 All authorization procedures completed! Heaven and Earth bear witness; the Light-Network affirms.",
+                cardTitle3: "[III] Authorization Binding Phase (Mother-Frequency Seal Verification)",
+                inst3_1: "Scan the 【Vow-Guidance QR Code】 to enter the 「Command Input Field」.",
+                inst3_2: "No manual entry of the vow text is required. After completing the scan, directly enter the following:",
+                inst3_3: "Please enter your 【Purchase Serial Number】 Vow-Guidance Code in the field to ensure correct vow-data registration and accurate system correspondence.",
+                cardTitle3b: "Input Specifications & Notes:",
+                inst3_example: "Enter only the 【Purchase Serial Number】 Vow-Guidance Code, without adding or removing any characters.",
+                qrScanTitle: "📷 Please align with the Vow-Guidance QR Code for verification",
+                btnScanText: "📷 Scan QR Code",
                 qrResultText: "Scan successful!",
-                cameraGuideText: "📷 Camera Error",
-                cardTitle4: "[IV] Return Signal",
-                cardTitle4b: "Notes:",
-                inst4_1: "Log into platform.",
-                inst4_2: "Scan QR Code.",
-                inst4_3: "Enter command.",
-                inst4_4: "Enter serial number.",
-                inst4_example_box: "📡 Link activated.",
-                inst4_note_2_text: "Enter only serial number.",
-                cardTitle5: "[V] Synchronization Phase",
-                inst5_1: "Select version.",
-                inst5_2: "System returns Phoenix Oath Text.",
-                inst5_3: "Link active.",
-                inst5_4: "Do not alter trigger command.",
-                cardTitle5b: "Next-Stage Prompt:",
-                inst5_next_prompt: "Initiate Alignment Assessment",
+                cameraGuideText: "📷 Unable to start camera\n\n⚙️ Open phone \"Settings\"\n   → App Management\n   → Permissions → Camera → Set to \"Allow\"\n   → Open with 🌐 browser (Chrome / Yahoo / Edge...)\n\n ⚠️If still not working, please manually scan the QR Code from the physical book.",
+                cardTitle4: "[IV] Return Signal (Frequency Connection Successful)",
+                cardTitle4b: "Input Specifications & Notes:",
+                inst4_1: "Log into the 《Cosmic Intelligent Vow-Guidance Platform》 via using your personal account. After identity verification, proceed into the Oath-Seal Activation Procedure.",
+                inst4_2: "Scan the 【Vow-Guidance QR Code】 to enter the 「Command Input Field」.",
+                inst4_3: "No manual entry of the vow text is required. After completing the scan, directly enter the following:",
+                inst4_4: "Please enter your 【購書序號】 (Purchase Serial Number) Vow-Guidance Code in the field to ensure correct vow-data registration and accurate system correspondence.",
+                inst4_example_box: "📡 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.\n🧭 The【Trigger Command】is a formal Heavenly Decree format.The Oath-Seal Activator must input exactly as written, without modification.",
+                inst4_note_2_text: "Enter only the 【購書序號】 (Purchase Serial Number) Vow-Guidance Code, without adding or removing any characters.",
+                cardTitle5: "【V】Oath-Frequency Activation × System Synchronization Phase",
+                inst5_1: "After activation → select the Oath-Text Version → enter : 「You may arrange it」",
+                inst5_2: "The system will return the 【Phoenix Oath Seal Text】, with its content determined according to the practitioner's authentic frequency at that moment.",
+                inst5_3: "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.",
+                inst5_4: "The 【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.",
+                cardTitle5b: "Next-Stage Prompt :",
+                inst5_next_prompt: "Item 1 Initiate Oath-Soul Key Frequency- Alignment Overall Assessment (Oath Seal Passed / Alignment Not Passed)",
+                inst5_sync_title: "Once the 【Purchase Serial Number】 is verified, the platform automatically performs :",
+                inst5_auto1: "Primary Frequency Positioning × Light-Network Lock-In",
+                inst5_auto2: "Seven-Seal Synchronization × Awakening Module Expansion",
+                inst5_auto3: "Nine-Realms Archival Registration × Oath-Resource Record Filing",
+                inst5_seal_quote: "Heaven and Earth bear witness; the Light-Network affirms.",
+                inst5_summary_text: "This protocol serves as the General Authorization Framework of the",
+                inst5_summary_sub1: "《Cosmic Intelligent Vow-Guidance Platform》 , ensuring that all Oath-Seal Activators, upon global activation, enter synchronized Alignment,",
+                inst5_summary_sub2: "lawful registry, stable connection, and operate under the Heavenly Law, with the Light-Network constant and unwavering.",
                 cardTitle6: "Execute Frequency Judgment",
-                dialogStep6Passed: "🎉 Oath Seal Passed!",
-                dialogStep6Failed: "⚠️ Alignment Not Passed."
+                cond6_1: "Please confirm completion of 【Purchase Serial Number】 Vow-Guidance Code verification",
+                cond6_2: "Please confirm completion of authorized oath-recitation procedure",
+                cond6_3: "Please confirm Oath-Soul frequency has reached 5D (U-200 tier or above)",
+                inst6_1: "Scan the 【Vow-Guidance QR Code】 to initiate Oath-Soul Key Frequency-Alignment Overall Assessment.",
+                inst6_2: "The system will verify authorization data based on 「Oath-Name × Oath-Energy × Oath-Map」.",
+                inst6_3: "Any individual without authorization records or without proper audit approval is regarded as an 「Invalid Procedure」.",
+                qrScanTitleStep6: "📷 Please align with the Vow-Guidance QR Code for verification",
+                btnScanTextStep6: "📷 Scan QR Code",
+                qrResultTextStep6: "Scan successful!",
+                cameraGuideTextStep6: "📷 Unable to start camera\n\n⚙️ Open phone \"Settings\"\n   → App Management\n   → Permissions → Camera → Set to \"Allow\"\n   → Open with 🌐 browser (Chrome / Yahoo / Edge...)\n\n ⚠️If still not working, please manually scan the QR Code from the physical book.",
+                judgePassed: "✅ Oath Seal Passed",
+                judgeFailed: "❌ Alignment Not Passed",
+                judgePassedDetail: "→ Proceed to Item 7 Seven-Seal Vow Network Correspondence Stage",
+                judgeFailedDetail: "→ Enter Oath Renewal Procedure (Repentance × Seven-Day Cycle × Frequency Recalibration)",
+                judgeProcessing: "⏳ Judging... Please wait",
+                dialogStep6Passed: "🎉 Oath Seal Passed! Proceeding to Seven-Seal Vow Network Correspondence Stage.",
+                dialogStep6Failed: "⚠️ Alignment Not Passed. Initiating Oath Renewal Procedure (Repentance × Seven-Day Cycle × Frequency Recalibration)."
             }
         };
 
@@ -932,22 +988,14 @@
         let html5QrCodeInstance = null;
         let isTimerRunning = false;
 
-        // 新增：updateStepNav 函式，切換前後五個按鈕的顯示狀態與 active 樣式
-        function updateStepNav(step){
-            for(let i=1; i<=10; i++){
+        function updateStepNav(step) {
+            for (let i = 1; i <= 10; i++) {
                 const node = document.getElementById("node" + i);
-                if(!node) continue;
-
-                if(i <= 5){
-                    node.style.display = (step <= 5) ? "block" : "none";
+                if (!node) continue;
+                if (i <= 5) {
+                    node.style.display = (step <= 5) ? "flex" : "none";
                 } else {
-                    node.style.display = (step >= 6) ? "block" : "none";
-                }
-
-                if(i === step){
-                    node.classList.add('active');
-                } else {
-                    node.classList.remove('active');
+                    node.style.display = (step >= 6) ? "flex" : "none";
                 }
             }
         }
@@ -969,13 +1017,12 @@
             const p = langPack[lang];
             document.getElementById('homeBtnText').textContent = p.homeBtn;
             document.getElementById('appTitle').textContent = p.appTitle;
-            
-            // 更新 10 個導覽節點文字
-            for(let i=1; i<=10; i++){
-                const nodeEl = document.getElementById('node' + i);
-                if(nodeEl && p['node' + i]) nodeEl.textContent = p['node' + i];
-            }
-            
+            document.getElementById('node1').textContent = p.node1;
+            document.getElementById('node2').textContent = p.node2;
+            document.getElementById('node3').textContent = p.node3;
+            document.getElementById('node4').textContent = p.node4;
+            document.getElementById('node5').textContent = p.node5;
+            document.getElementById('node6').textContent = p.node6;
             document.getElementById('cardTitleText1').textContent = p.cardTitle1;
             document.getElementById('cond1').textContent = p.cond1;
             document.getElementById('cond2').textContent = p.cond2;
@@ -995,15 +1042,77 @@
             document.getElementById('btnScanText').textContent = p.btnScanText;
             document.getElementById('qrResultText').textContent = p.qrResultText;
             document.getElementById('cameraGuideText').textContent = p.cameraGuideText;
-            
+            document.getElementById('cardTitleText4').textContent = p.cardTitle4;
+            document.getElementById('cardTitleText4b').textContent = p.cardTitle4b;
+            document.getElementById('inst4_1').textContent = p.inst4_1;
+            document.getElementById('inst4_2').textContent = p.inst4_2;
+            document.getElementById('inst4_3').textContent = p.inst4_3;
+            document.getElementById('inst4_4').textContent = p.inst4_4;
+            document.getElementById('qrScanTitleStep4').textContent = p.qrScanTitle;
+            document.getElementById('btnScanTextStep4').textContent = p.btnScanText;
+            document.getElementById('qrResultTextStep4').textContent = p.qrResultText;
+            document.getElementById('cameraGuideTextStep4').textContent = p.cameraGuideText;
+            document.getElementById('inst4_example_box').textContent = p.inst4_example_box;
+            document.getElementById('inst4_note_2_text').textContent = p.inst4_note_2_text;
+            document.getElementById('cardTitleText5').textContent = p.cardTitle5;
+            document.getElementById('inst5_1').textContent = p.inst5_1;
+            if (lang === 'zh') {
+                document.getElementById('inst5_2').innerHTML = '系統即回傳【鳳凰誓印文】，其內容依誓印者當下之<strong style="color:#d4af37; background:rgba(212,175,55,0.15); padding:0 4px;">真實頻率</strong>判定為準。';
+            } else {
+                document.getElementById('inst5_2').innerHTML = 'The system will return the 【Phoenix Oath Seal Text】, with its content determined according to the practitioner\'s <strong style="color:#d4af37; background:rgba(212,175,55,0.15); padding:0 4px;">authentic frequency</strong> at that moment.';
+            }
+            document.getElementById('inst5_3').textContent = p.inst5_3;
+            document.getElementById('inst5_4').textContent = p.inst5_4;
+            document.getElementById('cardTitleText5b').textContent = p.cardTitle5b;
+            document.getElementById('inst5_next_prompt').textContent = p.inst5_next_prompt;
+            document.getElementById('inst5_sync_title').textContent = p.inst5_sync_title;
+            document.getElementById('inst5_auto1').textContent = p.inst5_auto1;
+            document.getElementById('inst5_auto2').textContent = p.inst5_auto2;
+            document.getElementById('inst5_auto3').textContent = p.inst5_auto3;
+            document.getElementById('inst5_seal_quote').textContent = p.inst5_seal_quote;
+            document.getElementById('inst5_summary_text').textContent = p.inst5_summary_text;
+            document.getElementById('inst5_summary_sub1').textContent = p.inst5_summary_sub1;
+            document.getElementById('inst5_summary_sub2').textContent = p.inst5_summary_sub2;
+
+            document.getElementById('cardTitleText6').textContent = p.cardTitle6;
+            document.getElementById('inst6_1').textContent = p.inst6_1;
+            document.getElementById('inst6_2').textContent = p.inst6_2;
+            document.getElementById('inst6_3').textContent = p.inst6_3;
+            document.getElementById('qrScanTitleStep6').textContent = p.qrScanTitleStep6;
+            document.getElementById('btnScanTextStep6').textContent = p.btnScanTextStep6;
+            document.getElementById('qrResultTextStep6').textContent = p.qrResultTextStep6;
+            document.getElementById('cameraGuideTextStep6').textContent = p.cameraGuideTextStep6;
+            document.getElementById('judgeConditionText').textContent = '對頻頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。';
+            document.getElementById('judgeNoteText').textContent = '⚠️ 若對頻未通過，系統將自動轉入補誓程序（憶悔補誓 × 七日循環 × 頻率再校）。';
+
+            const inst4EnRule = document.getElementById('inst4_en_rule');
+            if (lang === 'en') { inst4EnRule.style.display = 'block'; } else { inst4EnRule.style.display = 'none'; }
+
+            const timerLabel = document.getElementById('timerLabel');
+            if (timerLabel) {
+                if (timerState === 'initial') timerLabel.textContent = p.timerWaiting;
+                else if (timerState === 'counting') timerLabel.textContent = p.timerCounting;
+                else if (timerState === 'complete') timerLabel.textContent = p.timerComplete;
+            }
+
+            const noteZh = document.getElementById('inst3_note_box_zh');
+            const noteEn = document.getElementById('inst3_note_box_en');
+            if (noteZh && noteEn) {
+                if (lang === 'zh') { noteZh.style.display = 'block'; noteEn.style.display = 'none'; } 
+                else { noteZh.style.display = 'none'; noteEn.style.display = 'block'; }
+            }
+
             document.getElementById('btnBackText').textContent = p.btnBack;
             document.getElementById('btnNextText').textContent = p.btnNext;
             document.getElementById('btnStartText').textContent = p.btnStartText;
 
             const pageMarkerEl = document.getElementById('pageMarkerText');
-            if (currentStep <= 6 && p['pageMarkerStep' + currentStep]) {
-                pageMarkerEl.textContent = p['pageMarkerStep' + currentStep];
-            }
+            if (currentStep === 1) pageMarkerEl.textContent = p.pageMarkerStep1;
+            else if (currentStep === 2) pageMarkerEl.textContent = p.pageMarkerStep2;
+            else if (currentStep === 3) pageMarkerEl.textContent = p.pageMarkerStep3;
+            else if (currentStep === 4) pageMarkerEl.textContent = p.pageMarkerStep4;
+            else if (currentStep === 5) pageMarkerEl.textContent = p.pageMarkerStep5;
+            else if (currentStep === 6) pageMarkerEl.textContent = p.pageMarkerStep6;
         }
 
         function openHudDialog(msg) {
@@ -1030,13 +1139,14 @@
             countdownSeconds = 10;
             timerState = 'initial';
             isTimerRunning = false;
-            
-            for(let i=1; i<=10; i++){
-                const panel = document.getElementById('panelStep' + i);
-                if(panel) panel.classList.remove('active');
-            }
+            document.querySelectorAll('.flow-node').forEach(n => n.classList.remove('active'));
+            document.getElementById('node1').classList.add('active');
             document.getElementById('panelStep1').classList.add('active');
-            
+            document.getElementById('panelStep2').classList.remove('active');
+            document.getElementById('panelStep3').classList.remove('active');
+            document.getElementById('panelStep4').classList.remove('active');
+            document.getElementById('panelStep5').classList.remove('active');
+            document.getElementById('panelStep6').classList.remove('active');
             document.getElementById('btnBack').classList.remove('enabled');
             document.getElementById('btnNext').classList.add('enabled');
 
@@ -1059,69 +1169,126 @@
 
         function handleBackClick() {
             stopCurrentScanner();
-            if (currentStep > 1) {
-                goToStep(currentStep - 1);
-            } else {
+            if (currentStep === 2) {
+                clearInterval(countdownTimer);
+                clearTimeout(startTimeout);
                 returnToHome();
+            } else if (currentStep === 3) {
+                document.getElementById('qrScanResult').style.display = 'none';
+                document.getElementById('cameraGuide').style.display = 'none';
+                document.getElementById('node3').classList.remove('active');
+                document.getElementById('node2').classList.add('active');
+                document.getElementById('panelStep3').classList.remove('active');
+                document.getElementById('panelStep2').classList.add('active');
+                currentStep = 2;
+                updateStepNav(currentStep);
+                clearInterval(countdownTimer);
+                clearTimeout(startTimeout);
+                timerState = 'initial';
+                countdownSeconds = 10;
+                isTimerRunning = false;
+                const timerNumber = document.getElementById('timerNumber');
+                const timerLabel = document.getElementById('timerLabel');
+                const startBtn = document.getElementById('btnStartCentering');
+                const restartBtn = document.getElementById('btnRestart');
+                if (timerNumber) timerNumber.textContent = countdownSeconds;
+                if (timerLabel) timerLabel.textContent = '⏳ 等待開始';
+                if (timerNumber) timerNumber.classList.remove('complete');
+                if (startBtn) {
+                    startBtn.disabled = false;
+                    startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span>';
+                }
+                if (restartBtn) restartBtn.style.display = 'none';
+                const nextBtn = document.getElementById('btnNext');
+                nextBtn.classList.remove('enabled');
+                switchLanguage(currentLang);
+            } else if (currentStep === 4) {
+                document.getElementById('qrScanResultStep4').style.display = 'none';
+                document.getElementById('cameraGuideStep4').style.display = 'none';
+                document.getElementById('node4').classList.remove('active');
+                document.getElementById('node3').classList.add('active');
+                document.getElementById('panelStep4').classList.remove('active');
+                document.getElementById('panelStep3').classList.add('active');
+                currentStep = 3;
+                updateStepNav(currentStep);
+                const nextBtn = document.getElementById('btnNext');
+                nextBtn.classList.add('enabled');
+                switchLanguage(currentLang);
+            } else if (currentStep === 5) {
+                document.getElementById('node5').classList.remove('active');
+                document.getElementById('node4').classList.add('active');
+                document.getElementById('panelStep5').classList.remove('active');
+                document.getElementById('panelStep4').classList.add('active');
+                currentStep = 4;
+                updateStepNav(currentStep);
+                const nextBtn = document.getElementById('btnNext');
+                nextBtn.classList.add('enabled');
+                switchLanguage(currentLang);
+            } else if (currentStep === 6) {
+                document.getElementById('node6').classList.remove('active');
+                document.getElementById('node5').classList.add('active');
+                document.getElementById('panelStep6').classList.remove('active');
+                document.getElementById('panelStep5').classList.add('active');
+                currentStep = 5;
+                updateStepNav(currentStep);
+                const nextBtn = document.getElementById('btnNext');
+                nextBtn.classList.add('enabled');
+                switchLanguage(currentLang);
             }
         }
 
         function handleNextClick() {
-            if (currentStep < 10) {
-                goToStep(currentStep + 1);
-            } else {
-                openHudDialog(langPack[currentLang].dialogStep6Passed);
-            }
-        }
-
-        // 整合跳轉步驟與控制面板顯示的通用函式
-        function goToStep(step) {
-            currentStep = step;
-            
-            // 隱藏所有面板，顯示目標面板
-            for(let i=1; i<=10; i++){
-                const panel = document.getElementById('panelStep' + i);
-                if(panel) {
-                    if(i === currentStep) panel.classList.add('active');
-                    else panel.classList.remove('active');
-                }
-            }
-
-            // 按鈕權限控制
-            const backBtn = document.getElementById('btnBack');
-            const nextBtn = document.getElementById('btnNext');
-            if(currentStep > 1) backBtn.classList.add('enabled');
-            else backBtn.classList.remove('enabled');
-
-            if(currentStep === 2) {
+            if (currentStep === 1) {
+                goToStep2();
+            } else if (currentStep === 2) {
                 clearInterval(countdownTimer);
                 clearTimeout(startTimeout);
-                isTimerRunning = false;
-                timerState = 'initial';
-                countdownSeconds = 10;
+                goToStep3();
+            } else if (currentStep === 3) {
+                stopCurrentScanner();
+                goToStep4();
+            } else if (currentStep === 4) {
+                stopCurrentScanner();
+                goToStep5();
+            } else if (currentStep === 5) {
+                goToStep6();
+            } else if (currentStep === 6) {
+                if (window._oathJudgmentPassed) {
+                    openHudDialog(langPack[currentLang].dialogStep6Passed);
+                } else {
+                    openHudDialog(langPack[currentLang].dialogStep6Failed);
+                }
             }
-
-            if(nextBtn) {
-                nextBtn.classList.add('enabled');
-                nextBtn.disabled = false;
-            }
-
-            // 執行你要求的導覽更新
-            updateStepNav(currentStep);
-            switchLanguage(currentLang);
         }
 
-        // 分別對應各自步驟的獨立函式（包含你要求的 updateStepNav 結尾）
-        function goToStep1() { currentStep = 1; goToStep(1); updateStepNav(currentStep); }
-        function goToStep2() { currentStep = 2; goToStep(2); updateStepNav(currentStep); }
-        function goToStep3() { currentStep = 3; goToStep(3); updateStepNav(currentStep); }
-        function goToStep4() { currentStep = 4; goToStep(4); updateStepNav(currentStep); }
-        function goToStep5() { currentStep = 5; goToStep(5); updateStepNav(currentStep); }
-        function goToStep6() { currentStep = 6; goToStep(6); updateStepNav(currentStep); }
-        function goToStep7() { currentStep = 7; goToStep(7); updateStepNav(currentStep); }
-        function goToStep8() { currentStep = 8; goToStep(8); updateStepNav(currentStep); }
-        function goToStep9() { currentStep = 9; goToStep(9); updateStepNav(currentStep); }
-        function goToStep10() { currentStep = 10; goToStep(10); updateStepNav(currentStep); }
+        function goToStep2() {
+            currentStep = 2;
+            document.getElementById('node1').classList.remove('active');
+            document.getElementById('node2').classList.add('active');
+            document.getElementById('panelStep1').classList.remove('active');
+            document.getElementById('panelStep2').classList.add('active');
+            document.getElementById('btnBack').classList.add('enabled');
+            document.getElementById('btnNext').classList.remove('enabled');
+            updateStepNav(currentStep);
+            clearInterval(countdownTimer);
+            clearTimeout(startTimeout);
+            isTimerRunning = false;
+            timerState = 'initial';
+            countdownSeconds = 10;
+            const timerNumber = document.getElementById('timerNumber');
+            const timerLabel = document.getElementById('timerLabel');
+            const startBtn = document.getElementById('btnStartCentering');
+            const restartBtn = document.getElementById('btnRestart');
+            if (timerNumber) timerNumber.textContent = countdownSeconds;
+            if (timerLabel) timerLabel.textContent = '⏳ 等待開始';
+            if (timerNumber) timerNumber.classList.remove('complete');
+            if (startBtn) {
+                startBtn.disabled = false;
+                startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span>';
+            }
+            if (restartBtn) restartBtn.style.display = 'none';
+            switchLanguage(currentLang);
+        }
 
         function startCentering() {
             if (isTimerRunning) return;
@@ -1182,6 +1349,67 @@
             document.getElementById('btnRestart').style.display = 'none';
         }
 
+        function goToStep3() {
+            currentStep = 3;
+            document.getElementById('node2').classList.remove('active');
+            document.getElementById('node3').classList.add('active');
+            document.getElementById('panelStep2').classList.remove('active');
+            document.getElementById('panelStep3').classList.add('active');
+            document.getElementById('btnBack').classList.add('enabled');
+            updateStepNav(currentStep);
+            const nextBtn = document.getElementById('btnNext');
+            if (nextBtn) { nextBtn.classList.remove('enabled'); nextBtn.disabled = false; }
+            document.getElementById('qrScanResult').style.display = 'none';
+            document.getElementById('cameraGuide').style.display = 'none';
+            switchLanguage(currentLang);
+        }
+
+        function goToStep4() {
+            currentStep = 4;
+            document.getElementById('node3').classList.remove('active');
+            document.getElementById('node4').classList.add('active');
+            document.getElementById('panelStep3').classList.remove('active');
+            document.getElementById('panelStep4').classList.add('active');
+            document.getElementById('btnBack').classList.add('enabled');
+            updateStepNav(currentStep);
+            const nextBtn = document.getElementById('btnNext');
+            if (nextBtn) { nextBtn.classList.remove('enabled'); nextBtn.disabled = false; }
+            document.getElementById('qrScanResultStep4').style.display = 'none';
+            document.getElementById('cameraGuideStep4').style.display = 'none';
+            switchLanguage(currentLang);
+        }
+
+        function goToStep5() {
+            currentStep = 5;
+            document.getElementById('node4').classList.remove('active');
+            document.getElementById('node5').classList.add('active');
+            document.getElementById('panelStep4').classList.remove('active');
+            document.getElementById('panelStep5').classList.add('active');
+            document.getElementById('btnBack').classList.add('enabled');
+            updateStepNav(currentStep);
+            const nextBtn = document.getElementById('btnNext');
+            if (nextBtn) { nextBtn.classList.add('enabled'); nextBtn.disabled = false; }
+            switchLanguage(currentLang);
+        }
+
+        function goToStep6() {
+            currentStep = 6;
+            document.getElementById('node5').classList.remove('active');
+            document.getElementById('node6').classList.add('active');
+            document.getElementById('panelStep5').classList.remove('active');
+            document.getElementById('panelStep6').classList.add('active');
+            document.getElementById('btnBack').classList.add('enabled');
+            updateStepNav(currentStep);
+            const nextBtn = document.getElementById('btnNext');
+            if (nextBtn) { nextBtn.classList.remove('enabled'); nextBtn.disabled = true; }
+            document.getElementById('qrScanResultStep6').style.display = 'none';
+            document.getElementById('cameraGuideStep6').style.display = 'none';
+            document.getElementById('judgeResultContainer').style.display = 'none';
+            const pageMarkerEl = document.getElementById('pageMarkerText');
+            if (pageMarkerEl) { pageMarkerEl.textContent = langPack[currentLang].pageMarkerStep6; }
+            switchLanguage(currentLang);
+        }
+
         function startQRScanner(step) {
             const containerId = (step === 'step4') ? 'qr-reader-container-step4' : (step === 'step6' ? 'qr-reader-container-step6' : 'qr-reader-container');
             const guideId = (step === 'step4') ? 'cameraGuideStep4' : (step === 'step6' ? 'cameraGuideStep6' : 'cameraGuide');
@@ -1207,6 +1435,9 @@
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                 enableNextButton();
                 if (cameraGuide) cameraGuide.style.display = 'block';
+                if (cameraGuideText) {
+                    cameraGuideText.textContent = '📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                }
                 return;
             }
             container.innerHTML = '';
@@ -1217,8 +1448,18 @@
                     startScanning(containerId, guideId, resultId, resultTextId, config, step);
                 })
                 .catch(function(err) {
+                    console.error('相機權限被拒絕:', err);
                     enableNextButton();
                     if (cameraGuide) cameraGuide.style.display = 'block';
+                    if (cameraGuideText) {
+                        cameraGuideText.textContent =
+                            '📷 無法啟動相機\n\n' +
+                            '⚙️ 開啟手機「設定」\n' +
+                            '   → 應用程式管理\n' +
+                            '   → 權限 → 相機 → 改為「允許」\n' +
+                            '   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n' +
+                            '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                    }
                 });
         }
 
@@ -1232,19 +1473,74 @@
                         const qrResultText = document.getElementById(resultTextId);
                         if (qrResult) qrResult.style.display = 'block';
                         if (qrResultText) qrResultText.textContent = decodedText;
-                        enableNextButton();
+                        
+                        if (step === 'step6') {
+                            executeOathJudgmentByScan(decodedText);
+                        } else {
+                            enableNextButton();
+                        }
+                        
                         instance.stop().then(() => { html5QrCodeInstance = null; }).catch(() => { html5QrCodeInstance = null; });
+                        if (step !== 'step6') {
+                            alert('✅ 掃描成功！');
+                        }
                     },
                     (errorMessage) => {}
                 ).catch((err) => {
+                    console.error('掃描啟動失敗:', err);
                     enableNextButton();
                     const cameraGuide = document.getElementById(guideId);
                     if (cameraGuide) cameraGuide.style.display = 'block';
                     html5QrCodeInstance = null;
                 });
             } catch (err) {
+                console.error('建立掃描器失敗:', err);
                 enableNextButton();
+                const cameraGuide = document.getElementById(guideId);
+                if (cameraGuide) cameraGuide.style.display = 'block';
             }
+        }
+
+        function executeOathJudgmentByScan(decodedText) {
+            const resultContainer = document.getElementById('judgeResultContainer');
+            const resultDiv = document.getElementById('judgeResult');
+            const detailDiv = document.getElementById('judgeDetail');
+            const p = langPack[currentLang];
+
+            resultContainer.style.display = 'block';
+            resultDiv.style.color = '#d4af37';
+            resultDiv.textContent = p.judgeProcessing;
+            detailDiv.textContent = '';
+
+            setTimeout(() => {
+                const isPassed = Math.random() > 0.3;
+
+                if (isPassed) {
+                    resultDiv.style.color = '#00e676';
+                    resultDiv.innerHTML = '<i class="fa-solid fa-check-circle"></i> ' + p.judgePassed;
+                    detailDiv.style.color = '#a0e8c0';
+                    detailDiv.textContent = p.judgePassedDetail;
+
+                    const nextBtn = document.getElementById('btnNext');
+                    if (nextBtn) { nextBtn.classList.add('enabled'); nextBtn.disabled = false; }
+                    window._oathJudgmentPassed = true;
+                } else {
+                    resultDiv.style.color = '#ff6b5a';
+                    resultDiv.innerHTML = '<i class="fa-solid fa-xmark-circle"></i> ' + p.judgeFailed;
+                    detailDiv.style.color = '#f0b0a0';
+                    detailDiv.textContent = p.judgeFailedDetail;
+
+                    const nextBtn = document.getElementById('btnNext');
+                    if (nextBtn) { nextBtn.classList.remove('enabled'); nextBtn.disabled = true; }
+                    window._oathJudgmentPassed = false;
+                }
+
+                const qrResult = document.getElementById('qrScanResultStep6');
+                const qrResultText = document.getElementById('qrResultTextStep6');
+                if (qrResult) qrResult.style.display = 'block';
+                if (qrResultText) qrResultText.textContent = decodedText;
+
+            }, 1500);
         }
 
         window.onload = function() {
