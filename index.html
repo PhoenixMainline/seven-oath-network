@@ -1005,8 +1005,8 @@
         let isTimerRunning = false;
 
         // ============================================================
-        // 核心函式
-
+        // 核心輔助函式
+        // ============================================================
         function enableNextButton() {
             const nextBtn = document.getElementById('btnNext');
             if (!nextBtn) return;
@@ -1014,6 +1014,8 @@
             nextBtn.disabled = false;
         }
 
+        // ============================================================
+        // 語言切換
         // ============================================================
         function switchLanguage(lang) {
             currentLang = lang;
@@ -1498,10 +1500,7 @@
                         if (qrResult) qrResult.style.display = 'block';
                         if (qrResultText) qrResultText.textContent = decodedText;
                         
-                        if (nextBtn) {
-                            nextBtn.classList.add('enabled');
-                            nextBtn.disabled = false;
-                        }
+                        enableNextButton();
                         
                         instance.stop().then(() => {
                             html5QrCodeInstance = null;
@@ -1511,7 +1510,7 @@
                         alert('✅ 掃描成功！');
                     },
                     (errorMessage) => {
-                        // 掃描中
+                        // 掃描進行中
                     }
                 ).catch((err) => {
                     console.error('掃描啟動失敗:', err);
