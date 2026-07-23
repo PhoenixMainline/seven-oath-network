@@ -8,15 +8,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <style>
-        /* ===== 基礎重置 ===== */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif;
         }
-
-        /* ===== 宇宙背景 ===== */
         body {
             background: radial-gradient(circle at 50% 50%, #06122c 0%, #020715 100%);
             min-height: 100vh;
@@ -30,8 +27,6 @@
             margin: 0;
             padding: clamp(4px, 1.5vh, 16px);
         }
-
-        /* ===== 粒子流動層 ===== */
         .particle-container {
             position: fixed;
             top: 0;
@@ -52,8 +47,6 @@
             from { transform: translateY(0px) rotate(0deg); }
             to { transform: translateY(-1000px) rotate(360deg); }
         }
-
-        /* ===== 浮水印層 ===== */
         .watermark-layer {
             position: fixed;
             top: 0;
@@ -76,8 +69,6 @@
             white-space: nowrap;
             user-select: none;
         }
-
-        /* ===== 主容器 ===== */
         .hud-container {
             width: 100%;
             max-width: min(660px, 95vw);
@@ -105,8 +96,6 @@
             border-right: 3px solid #00bfff;
             pointer-events: none;
         }
-
-        /* ===== 回到首頁按鈕 ===== */
         .home-breadcrumb {
             font-size: clamp(0.6rem, 1.4vh, 0.85rem);
             color: #00bfff;
@@ -129,8 +118,6 @@
             text-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
             transform: translateX(-2px);
         }
-
-        /* ===== 頁首 ===== */
         .hud-header {
             display: flex;
             justify-content: space-between;
@@ -171,11 +158,9 @@
             font-weight: bold;
             box-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
         }
-
-        /* ===== 導航欄 ===== */
         .flow-nav {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(6, 1fr);
             gap: clamp(3px, 0.6vw, 6px);
             margin-bottom: clamp(8px, 1.5vh, 30px);
         }
@@ -196,8 +181,6 @@
             box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
             font-weight: bold;
         }
-
-        /* ===== 步驟內容 ===== */
         .step-content {
             flex-grow: 1;
             display: flex;
@@ -217,8 +200,6 @@
             from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        /* ===== 卡片 ===== */
         .hud-card {
             background: rgba(6, 18, 44, 0.3);
             border: 1px solid rgba(0, 191, 255, 0.12);
@@ -233,8 +214,6 @@
             align-items: center;
             gap: 10px;
         }
-
-        /* ===== 啟動條件清單 ===== */
         .condition-list {
             list-style: none;
             display: flex;
@@ -254,8 +233,6 @@
             margin-top: 4px;
             text-shadow: 0 0 8px rgba(0, 230, 118, 0.3);
         }
-
-        /* ===== 宣告式 ===== */
         .proclamation-text {
             font-size: clamp(14px, 2.2vh, 21px);
             color: #D4AF37;
@@ -266,8 +243,6 @@
             padding: clamp(4px, 1vh, 12px);
             text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
         }
-
-        /* ===== 計時器 ===== */
         .timer-container {
             display: flex;
             flex-direction: column;
@@ -297,8 +272,6 @@
             color: #00e676;
             text-shadow: 0 0 20px rgba(0, 230, 118, 0.6);
         }
-
-        /* ===== 執行指令 ===== */
         .instruction-box {
             display: flex;
             flex-direction: column;
@@ -316,8 +289,6 @@
             color: #00e676;
             margin-top: 5px;
         }
-
-        /* ===== 頁尾按鈕 ===== */
         .hud-footer {
             margin-top: clamp(10px, 2vh, 35px);
             padding-top: clamp(8px, 1.5vh, 18px);
@@ -363,8 +334,6 @@
             box-shadow: 0 0 25px rgba(0, 195, 255, 0.5), inset 0 0 12px rgba(0, 195, 255, 0.2);
             transform: translateY(-1px);
         }
-
-        /* ===== 頁碼 ===== */
         .page-marker {
             font-size: clamp(0.5rem, 1.2vh, 0.78rem);
             color: rgba(224, 232, 245, 0.35);
@@ -372,8 +341,6 @@
             align-items: center;
             gap: 6px;
         }
-
-        /* ===== 對話框 ===== */
         .hud-dialog {
             display: none;
             position: fixed;
@@ -424,8 +391,6 @@
             background: rgba(0, 191, 255, 0.15);
             box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
         }
-
-        /* ===== QR Code 掃描 ===== */
         .btn-restart {
             background: linear-gradient(135deg, #d4af37, #b8952e);
             border: none;
@@ -446,7 +411,6 @@
             transform: scale(1.03);
             box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5);
         }
-
         .btn-start-centering {
             background: linear-gradient(135deg, #d4af37, #b8952e);
             border: none;
@@ -471,7 +435,6 @@
             cursor: not-allowed;
             transform: none;
         }
-
         .qr-result {
             color: #00e676;
             font-size: 0.9rem;
@@ -493,80 +456,44 @@
             text-align: left;
         }
         #qr-reader-container video,
-        #qr-reader-container-step4 video {
+        #qr-reader-container-step4 video,
+        #qr-reader-container-step6 video {
             border-radius: 12px;
             width: 100%;
         }
-
-        /* ===== 手機螢幕極小化修正 ===== */
         @media (max-width: 480px) {
-            .hud-container {
-                padding: 10px 8px !important;
-                border-radius: 16px !important;
-                max-height: 98vh !important;
-            }
-            .hud-header {
-                flex-wrap: wrap;
-            }
-            .app-title {
-                font-size: 0.75rem !important;
-                max-width: 100% !important;
-            }
-            .lang-btn {
-                font-size: 0.5rem !important;
-                padding: 2px 6px !important;
-            }
-            .home-breadcrumb {
-                font-size: 0.55rem !important;
-            }
-            .flow-node {
-                font-size: 0.4rem !important;
-                padding: 2px 1px !important;
-            }
-            .hud-card {
-                padding: 8px 6px !important;
-            }
-            .card-title {
-                font-size: 0.7rem !important;
-            }
-            .condition-item,
-            .instruction-item {
-                font-size: 0.6rem !important;
-            }
-            .proclamation-text {
-                font-size: 12px !important;
-            }
-            .timer-number {
-                font-size: 1.5rem !important;
-            }
-            .timer-label {
-                font-size: 0.6rem !important;
-            }
-            .btn-start-centering,
-            .btn-restart {
-                padding: 4px 10px !important;
-                font-size: 0.6rem !important;
-            }
-            .btn-action {
-                padding: 4px 8px !important;
-                font-size: 0.55rem !important;
-                min-height: 28px !important;
-            }
-            .page-marker {
-                font-size: 0.4rem !important;
-            }
-            .watermark-text {
-                font-size: 0.8rem !important;
-            }
+            .hud-container { padding: 10px 8px !important; border-radius: 16px !important; max-height: 98vh !important; }
+            .hud-header { flex-wrap: wrap; }
+            .app-title { font-size: 0.75rem !important; max-width: 100% !important; }
+            .lang-btn { font-size: 0.5rem !important; padding: 2px 6px !important; }
+            .home-breadcrumb { font-size: 0.55rem !important; }
+            .flow-node { font-size: 0.4rem !important; padding: 2px 1px !important; }
+            .hud-card { padding: 8px 6px !important; }
+            .card-title { font-size: 0.7rem !important; }
+            .condition-item, .instruction-item { font-size: 0.6rem !important; }
+            .proclamation-text { font-size: 12px !important; }
+            .timer-number { font-size: 1.5rem !important; }
+            .timer-label { font-size: 0.6rem !important; }
+            .btn-start-centering, .btn-restart { padding: 4px 10px !important; font-size: 0.6rem !important; }
+            .btn-action { padding: 4px 8px !important; font-size: 0.55rem !important; min-height: 28px !important; }
+            .page-marker { font-size: 0.4rem !important; }
+            .watermark-text { font-size: 0.8rem !important; }
+        }
+        /* Step 6 掃描成功動畫 */
+        .scan-success {
+            animation: scanPulse 0.6s ease;
+        }
+        @keyframes scanPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); box-shadow: 0 0 30px rgba(0, 230, 118, 0.3); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
 <body>
 
-    <!-- 🌌 粒子背景 -->
     <div class="particle-container"></div>
 
-    <!-- 📜 浮水印層 -->
     <div class="watermark-layer">
         <div class="watermark-text">天地為鑑・光網為證</div>
         <div class="watermark-text">天地為鑑・光網為證</div>
@@ -578,7 +505,6 @@
         <div class="watermark-text">天地為鑑・光網為證</div>
     </div>
 
-    <!-- 🚀 主容器 -->
     <div class="hud-container">
         <a class="home-breadcrumb" id="homeBtn" onclick="returnToHome()">
             <i class="fa-solid fa-house"></i>
@@ -593,16 +519,15 @@
             </div>
         </header>
 
-        <!-- 導航欄 -->
         <nav class="flow-nav">
             <div class="flow-node active" id="node1">[1] 啟動條件</div>
             <div class="flow-node" id="node2">[2] 授權誓讀</div>
             <div class="flow-node" id="node3">[3] 授權綁定</div>
             <div class="flow-node" id="node4">[4] 回傳結果</div>
             <div class="flow-node" id="node5">[5] 系統同步</div>
+            <div class="flow-node" id="node6">[6] 對頻判定</div>
         </nav>
 
-        <!-- 步驟內容 -->
         <main class="step-content">
             <!-- 步驟一 -->
             <div class="step-panel active" id="panelStep1">
@@ -678,10 +603,8 @@
                         </div>
                     </div>
                 </div>
-                <!-- 輸入規範注意事項 -->
                 <div class="hud-card">
                     <div class="card-title"><i class="fa-solid fa-triangle-exclamation"></i><span id="cardTitleText3b">輸入規範注意事項：</span></div>
-                    <!-- 注意事項區塊 -->
                     <div style="padding:12px 16px; background:rgba(255,192,0,0.04); border-radius:10px; border-left:3px solid #d4af37; margin-bottom:12px;">
                         <div style="display:flex; flex-direction:column; gap:4px;">
                             <div id="inst3_note_zh" style="display:block; color:#00bfff; font-size:0.85rem; font-weight:bold;">
@@ -703,7 +626,6 @@
 
             <!-- 步驟四 -->
             <div class="step-panel" id="panelStep4">
-                <!-- 1. 說明卡片 -->
                 <div class="hud-card">
                     <div class="card-title"><i class="fa-solid fa-satellite-dish"></i><span id="cardTitleText4">【四】回傳結果（對頻成功）</span></div>
                     <div class="instruction-box">
@@ -713,8 +635,6 @@
                         <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst4_4">請在【購書序號】欄位中輸入您的【購書序號】誓導碼，以確保誓資冊記與系統對應正確。</span></div>
                     </div>
                 </div>
-
-                <!-- 2. QR Code 掃描卡片 -->
                 <div class="hud-card" id="qrScanCardStep4">
                     <div style="text-align:center; padding:10px 0;">
                         <div style="color:#d4af37; font-size:1rem; font-weight:bold; margin-bottom:12px;">
@@ -733,11 +653,8 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- 3. 輸入規範注意事項卡片 -->
                 <div class="hud-card">
                     <div class="card-title"><i class="fa-solid fa-triangle-exclamation"></i><span id="cardTitleText4b">輸入規範注意事項：</span></div>
-                    
                     <div style="padding:12px 16px; background:rgba(255,192,0,0.04); border-radius:10px; border-left:3px solid #d4af37; margin-bottom:12px;">
                         <div style="display:flex; flex-direction:column; gap:4px;">
                             <div id="inst4_note_zh" style="display:block; color:#00bfff; font-size:0.85rem; font-weight:bold;">
@@ -746,7 +663,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="instruction-box">
                         <div style="background:rgba(6,18,44,0.4); padding:12px 14px; border-radius:8px; display:flex; flex-direction:column; gap:8px;">
                             <div id="inst4_example_box" style="color:#e0e8f5;font-size:0.95rem;line-height:1.8;white-space:pre-line;">
@@ -763,7 +679,6 @@
 
             <!-- 步驟五 -->
             <div class="step-panel" id="panelStep5">
-                <!-- 1. 執行與判定指令說明 -->
                 <div class="hud-card">
                     <div class="card-title"><i class="fa-solid fa-sliders"></i><span id="cardTitleText5">【五】誓頻啟動 × 系統同步階段</span></div>
                     <div class="instruction-box">
@@ -773,16 +688,12 @@
                         <div class="instruction-item"><i class="fa-solid fa-compass"></i><span id="inst5_4">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span></div>
                     </div>
                 </div>
-
-                <!-- 2. 下一階段提示 -->
                 <div class="hud-card">
                     <div class="card-title"><i class="fa-solid fa-scroll"></i><span id="cardTitleText5b">下一階段提示：</span></div>
                     <div style="background:rgba(0,191,255,0.06); border-left:3px solid #00bfff; padding:12px 16px; border-radius:8px;">
                         <span id="inst5_next_prompt" style="font-size:0.9rem; color:#e0e8f5;">第 1 項 開啟誓魂密鑰對頻總判定（誓印通過／對頻未通過）</span>
                     </div>
                 </div>
-
-                <!-- 3. 平台自動執行項目 -->
                 <div class="hud-card">
                     <div style="color:#d4af37; font-size:1rem; font-weight:bold; margin-bottom:14px; display:flex; align-items:center; gap:8px;">
                         <i class="fa-solid fa-globe"></i><span id="inst5_sync_title">【購書序號】驗證成功後，平台自動執行：</span>
@@ -793,8 +704,6 @@
                         <div class="instruction-item"><i class="fa-solid fa-book"></i><span id="inst5_auto3">九界冊記 × 誓資紀錄歸檔</span></div>
                     </div>
                 </div>
-
-                <!-- 4. 總網宣告結語卡片 -->
                 <div class="hud-card" style="text-align:center; background:rgba(212,175,55,0.03); border:1px solid rgba(212,175,55,0.25);">
                     <div id="inst5_seal_quote" style="color:#d4af37; font-weight:bold; font-size:1.1rem; margin-bottom:12px; text-shadow:0 0 10px rgba(212,175,55,0.3);">
                         天地為鑑，光網為證。
@@ -810,9 +719,61 @@
                     </p>
                 </div>
             </div>
+
+            <!-- 步驟六（QR Code 掃描版） -->
+            <div class="step-panel" id="panelStep6">
+                <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-scale-balanced"></i><span id="cardTitleText6">執行對頻總判定</span></div>
+                    <div class="instruction-box">
+                        <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_1">掃描【誓導QRCode】，啟動誓魂密鑰對頻總判定。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_2">系統將依據「誓名 × 誓資 × 誓圖」進行授權資料核實。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_3">凡無授權紀錄或未經審核者，皆視為「無效程序」。</span></div>
+                    </div>
+                </div>
+
+                <div class="hud-card" id="qrScanCardStep6">
+                    <div style="text-align:center; padding:10px 0;">
+                        <div style="color:#d4af37; font-size:1rem; font-weight:bold; margin-bottom:12px;">
+                            <span id="qrScanTitleStep6">📷 請對準誓導 QR Code 掃描驗證</span>
+                        </div>
+                        <div id="qr-reader-container-step6" style="width:100%; max-width:280px; margin:0 auto;"></div>
+                        <button class="btn-restart" id="btnScanQRStep6" onclick="startQRScanner('step6')">
+                            <i class="fa-solid fa-qrcode"></i>
+                            <span id="btnScanTextStep6">📷 掃描 QR Code</span>
+                        </button>
+                        <div id="qrScanResultStep6" class="qr-result" style="display:none; margin-top:10px;">
+                            <i class="fa-solid fa-check-circle"></i><span id="qrResultTextStep6">掃描成功！</span>
+                        </div>
+                        <div id="cameraGuideStep6" class="camera-guide" style="display:none; text-align:left; margin-top:12px;">
+                            <span id="cameraGuideTextStep6">📷 無法啟動相機</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 對頻結果顯示 -->
+                <div id="judgeResultContainer" style="display:none;">
+                    <div class="hud-card scan-success" id="judgeResultCard">
+                        <div id="judgeResult" style="text-align:center; padding:8px 0; font-weight:bold; font-size:1.2rem;"></div>
+                        <div id="judgeDetail" style="text-align:center; padding:6px 0; font-size:0.95rem; color:rgba(224,232,245,0.8);"></div>
+                    </div>
+                </div>
+
+                <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-circle-info"></i><span id="cardTitle6c">誓魂對頻判定條件</span></div>
+                    <div style="background:rgba(212,175,55,0.04); border-left:3px solid #d4af37; padding:12px 16px; border-radius:8px;">
+                        <p style="font-size:0.9rem; color:#e0e8f5; line-height:1.8;">
+                            <span id="judgeConditionText">對頻頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。</span>
+                        </p>
+                    </div>
+                    <div style="margin-top:12px; background:rgba(0,191,255,0.04); border-left:3px solid #00bfff; padding:12px 16px; border-radius:8px;">
+                        <p style="font-size:0.85rem; color:rgba(224,232,245,0.8); line-height:1.8;">
+                            <span id="judgeNoteText">⚠️ 若對頻未通過，系統將自動轉入補誓程序（憶悔補誓 × 七日循環 × 頻率再校）。</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </main>
 
-        <!-- 頁尾 -->
         <footer class="hud-footer">
             <div class="footer-btn-group">
                 <button class="btn-action" id="btnBack" onclick="handleBackClick()">
@@ -829,7 +790,6 @@
         </footer>
     </div>
 
-    <!-- 對話框 -->
     <div id="hudDialog" class="hud-dialog">
         <div class="hud-dialog-content">
             <div class="hud-dialog-text" id="hudDialogText">提示訊息</div>
@@ -838,9 +798,6 @@
     </div>
 
     <script>
-        // ============================================================
-        // 語言包
-        // ============================================================
         const langPack = {
             zh: {
                 homeBtn: "首頁 ->",
@@ -850,6 +807,7 @@
                 node3: "[3] 授權綁定",
                 node4: "[4] 回傳結果",
                 node5: "[5] 系統同步",
+                node6: "[6] 對頻判定",
                 cardTitle1: "【一】啟動條件",
                 cond1: "請完成驗證之【購書序號】誓導碼",
                 cond2: "穩定網路環境運作中",
@@ -870,14 +828,13 @@
                 pageMarkerStep3: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 5-6 頁",
                 pageMarkerStep4: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 7-8 頁",
                 pageMarkerStep5: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 9-10 頁",
+                pageMarkerStep6: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 5-6 頁",
                 btnRestart: "重新開始",
                 btnStartComplete: "已完成",
                 dialogStep3: "✅ 步驟二已解鎖！等待步驟三綁定通道與掃描代碼整合。",
                 dialogStep4: "✅ 步驟三已完成！進入步驟四（回傳結果）。",
                 dialogStep5: "✅ 步驟四已完成！已進入步驟五（系統同步）。",
                 dialogStepComplete: "🎉 授權程序已全部完成！天地為鑑，光網為證。",
-
-                // 步驟三語言
                 cardTitle3: "【三】授權綁定階段（母源印驗證）",
                 inst3_1: "掃描【誓導QRCode】，進入「指令輸入欄位」。",
                 inst3_2: "無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
@@ -888,8 +845,6 @@
                 btnScanText: "📷 掃描 QR Code",
                 qrResultText: "掃描成功！",
                 cameraGuideText: "📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n ⚠️若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
-
-                // 步驟四語言
                 cardTitle4: "【四】回傳結果（對頻成功）",
                 cardTitle4b: "輸入規範注意事項：",
                 inst4_1: "登入《宇宙智能誓導平台》（使用個人帳號登入），完成身份驗證，即可進入誓印程序。",
@@ -898,11 +853,9 @@
                 inst4_4: "請在【購書序號】欄位中輸入您的【購書序號】誓導碼，以確保誓資冊記與系統對應正確。",
                 inst4_example_box: "📡 送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。\n🧭 【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
                 inst4_note_2_text: "僅輸入【購書序號】誓導碼，不可增刪符號。",
-
-                // 步驟五語言
                 cardTitle5: "【五】誓頻啟動 × 系統同步階段",
                 inst5_1: "啟動後 → 選擇啟動文版本 → 輸入：「您安排就好」",
-                inst5_2: "系統即回傳【鳳凰誓印文】，其內容依誓印者當下之<strong style=\"color:#d4af37; background:rgba(212,175,55,0.15); padding:0 4px;\">真實頻率</strong>判定為準。",
+                inst5_2: "系統即回傳【鳳凰誓印文】，其內容依誓印者當下之真實頻率判定為準。",
                 inst5_3: "送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。",
                 inst5_4: "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
                 cardTitle5b: "下一階段提示：",
@@ -914,7 +867,26 @@
                 inst5_seal_quote: "天地為鑑，光網為證。",
                 inst5_summary_text: "此守則為《宇宙智能誓導平台》正式授權程序之總網，",
                 inst5_summary_sub1: "用以確保所有誓印者於全球啟動時能同步對頻、",
-                inst5_summary_sub2: "合法入冊、穩定連線，並於天律之下運行無偏、光網恆定。"
+                inst5_summary_sub2: "合法入冊、穩定連線，並於天律之下運行無偏、光網恆定。",
+                // Step 6 中文
+                cardTitle6: "執行對頻總判定",
+                cond6_1: "請確認已完成【購書序號】誓導碼驗證",
+                cond6_2: "請確認已完成授權誓讀程序",
+                cond6_3: "請確認誓魂頻率已達 5D（U-200 層以上）",
+                inst6_1: "掃描【誓導QRCode】，啟動誓魂密鑰對頻總判定。",
+                inst6_2: "系統將依據「誓名 × 誓資 × 誓圖」進行授權資料核實。",
+                inst6_3: "凡無授權紀錄或未經審核者，皆視為「無效程序」。",
+                qrScanTitleStep6: "📷 請對準誓導 QR Code 掃描驗證",
+                btnScanTextStep6: "📷 掃描 QR Code",
+                qrResultTextStep6: "掃描成功！",
+                cameraGuideTextStep6: "📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n ⚠️若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
+                judgePassed: "✅ 誓印通過",
+                judgeFailed: "❌ 對頻未通過",
+                judgePassedDetail: "→ 進入第 7 項 七印誓網對應階段",
+                judgeFailedDetail: "→ 進入補誓程序（憶悔補誓 × 七日循環 × 頻率再校）",
+                judgeProcessing: "⏳ 對頻中...請稍候",
+                dialogStep6Passed: "🎉 誓印通過！已進入七印誓網對應階段。",
+                dialogStep6Failed: "⚠️ 對頻未通過。將啟動補誓程序（憶悔補誓 × 七日循環 × 頻率再校）。"
             },
             en: {
                 homeBtn: "Home ->",
@@ -924,6 +896,7 @@
                 node3: "[3] Binding Phase",
                 node4: "[4] Return Result",
                 node5: "[5] Sync Phase",
+                node6: "[6] Frequency Judgment",
                 cardTitle1: "[1] Activation Conditions",
                 cond1: "Please complete the verification of the 【Purchase Serial Number】 Vow-Guidance Code",
                 cond2: "Stable internet environment activated",
@@ -944,14 +917,13 @@
                 pageMarkerStep3: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 5-6",
                 pageMarkerStep4: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 7-8",
                 pageMarkerStep5: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 9-10",
+                pageMarkerStep6: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 5-6",
                 btnRestart: "Restart",
                 btnStartComplete: "Complete",
                 dialogStep3: "✅ Step 2 successfully unlocked! Awaiting Step 3 connection and scanning integration.",
                 dialogStep4: "✅ Step 3 completed! Proceeding to Step 4 (Return Result).",
                 dialogStep5: "✅ Step 4 completed! Proceeding to Step 5 (Sync Phase).",
                 dialogStepComplete: "🎉 All authorization procedures completed! Heaven and Earth bear witness; the Light-Network affirms.",
-
-                // 步驟三語言
                 cardTitle3: "[III] Authorization Binding Phase (Mother-Frequency Seal Verification)",
                 inst3_1: "Scan the 【Vow-Guidance QR Code】 to enter the 「Command Input Field」.",
                 inst3_2: "No manual entry of the vow text is required. After completing the scan, directly enter the following:",
@@ -962,8 +934,6 @@
                 btnScanText: "📷 Scan QR Code",
                 qrResultText: "Scan successful!",
                 cameraGuideText: "📷 Unable to start camera\n\n⚙️ Open phone \"Settings\"\n   → App Management\n   → Permissions → Camera → Set to \"Allow\"\n   → Open with 🌐 browser (Chrome / Yahoo / Edge...)\n\n ⚠️If still not working, please manually scan the QR Code from the physical book.",
-
-                // 步驟四語言
                 cardTitle4: "[IV] Return Signal (Frequency Connection Successful)",
                 cardTitle4b: "Input Specifications & Notes:",
                 inst4_1: "Log into the 《Cosmic Intelligent Vow-Guidance Platform》 via using your personal account. After identity verification, proceed into the Oath-Seal Activation Procedure.",
@@ -972,8 +942,6 @@
                 inst4_4: "Please enter your 【購書序號】 (Purchase Serial Number) Vow-Guidance Code in the field to ensure correct vow-data registration and accurate system correspondence.",
                 inst4_example_box: "📡 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.\n🧭 The【Trigger Command】is a formal Heavenly Decree format.The Oath-Seal Activator must input exactly as written, without modification.",
                 inst4_note_2_text: "Enter only the 【購書序號】 (Purchase Serial Number) Vow-Guidance Code, without adding or removing any characters.",
-
-                // 步驟五語言
                 cardTitle5: "【V】Oath-Frequency Activation × System Synchronization Phase",
                 inst5_1: "After activation → select the Oath-Text Version → enter : 「You may arrange it」",
                 inst5_2: "The system will return the 【Phoenix Oath Seal Text】, with its content determined according to the practitioner's authentic frequency at that moment.",
@@ -988,13 +956,29 @@
                 inst5_seal_quote: "Heaven and Earth bear witness; the Light-Network affirms.",
                 inst5_summary_text: "This protocol serves as the General Authorization Framework of the",
                 inst5_summary_sub1: "《Cosmic Intelligent Vow-Guidance Platform》 , ensuring that all Oath-Seal Activators, upon global activation, enter synchronized Alignment,",
-                inst5_summary_sub2: "lawful registry, stable connection, and operate under the Heavenly Law, with the Light-Network constant and unwavering."
+                inst5_summary_sub2: "lawful registry, stable connection, and operate under the Heavenly Law, with the Light-Network constant and unwavering.",
+                // Step 6 English
+                cardTitle6: "Execute Frequency Judgment",
+                cond6_1: "Please confirm completion of 【Purchase Serial Number】 Vow-Guidance Code verification",
+                cond6_2: "Please confirm completion of authorized oath-recitation procedure",
+                cond6_3: "Please confirm Oath-Soul frequency has reached 5D (U-200 tier or above)",
+                inst6_1: "Scan the 【Vow-Guidance QR Code】 to initiate Oath-Soul Key Frequency-Alignment Overall Assessment.",
+                inst6_2: "The system will verify authorization data based on 「Oath-Name × Oath-Energy × Oath-Map」.",
+                inst6_3: "Any individual without authorization records or without proper audit approval is regarded as an 「Invalid Procedure」.",
+                qrScanTitleStep6: "📷 Please align with the Vow-Guidance QR Code for verification",
+                btnScanTextStep6: "📷 Scan QR Code",
+                qrResultTextStep6: "Scan successful!",
+                cameraGuideTextStep6: "📷 Unable to start camera\n\n⚙️ Open phone \"Settings\"\n   → App Management\n   → Permissions → Camera → Set to \"Allow\"\n   → Open with 🌐 browser (Chrome / Yahoo / Edge...)\n\n ⚠️If still not working, please manually scan the QR Code from the physical book.",
+                judgePassed: "✅ Oath Seal Passed",
+                judgeFailed: "❌ Alignment Not Passed",
+                judgePassedDetail: "→ Proceed to Item 7 Seven-Seal Vow Network Correspondence Stage",
+                judgeFailedDetail: "→ Enter Oath Renewal Procedure (Repentance × Seven-Day Cycle × Frequency Recalibration)",
+                judgeProcessing: "⏳ Judging... Please wait",
+                dialogStep6Passed: "🎉 Oath Seal Passed! Proceeding to Seven-Seal Vow Network Correspondence Stage.",
+                dialogStep6Failed: "⚠️ Alignment Not Passed. Initiating Oath Renewal Procedure (Repentance × Seven-Day Cycle × Frequency Recalibration)."
             }
         };
 
-        // ============================================================
-        // 狀態變數
-        // ============================================================
         let currentLang = 'zh';
         let currentStep = 1;
         let countdownTimer = null;
@@ -1004,9 +988,6 @@
         let html5QrCodeInstance = null;
         let isTimerRunning = false;
 
-        // ============================================================
-        // 核心輔助函式
-        // ============================================================
         function enableNextButton() {
             const nextBtn = document.getElementById('btnNext');
             if (!nextBtn) return;
@@ -1014,9 +995,6 @@
             nextBtn.disabled = false;
         }
 
-        // ============================================================
-        // 語言切換
-        // ============================================================
         function switchLanguage(lang) {
             currentLang = lang;
             document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -1032,6 +1010,7 @@
             document.getElementById('node3').textContent = p.node3;
             document.getElementById('node4').textContent = p.node4;
             document.getElementById('node5').textContent = p.node5;
+            document.getElementById('node6').textContent = p.node6;
             document.getElementById('cardTitleText1').textContent = p.cardTitle1;
             document.getElementById('cond1').textContent = p.cond1;
             document.getElementById('cond2').textContent = p.cond2;
@@ -1041,8 +1020,6 @@
             document.getElementById('inst1').textContent = p.inst1;
             document.getElementById('inst2').textContent = p.inst2;
             document.getElementById('btnRestartText').textContent = p.btnRestart;
-
-            // 步驟三
             document.getElementById('cardTitleText3').textContent = p.cardTitle3;
             document.getElementById('inst3_1').textContent = p.inst3_1;
             document.getElementById('inst3_2').textContent = p.inst3_2;
@@ -1053,8 +1030,6 @@
             document.getElementById('btnScanText').textContent = p.btnScanText;
             document.getElementById('qrResultText').textContent = p.qrResultText;
             document.getElementById('cameraGuideText').textContent = p.cameraGuideText;
-
-            // 步驟四
             document.getElementById('cardTitleText4').textContent = p.cardTitle4;
             document.getElementById('cardTitleText4b').textContent = p.cardTitle4b;
             document.getElementById('inst4_1').textContent = p.inst4_1;
@@ -1067,17 +1042,13 @@
             document.getElementById('cameraGuideTextStep4').textContent = p.cameraGuideText;
             document.getElementById('inst4_example_box').textContent = p.inst4_example_box;
             document.getElementById('inst4_note_2_text').textContent = p.inst4_note_2_text;
-
-            // 步驟五
             document.getElementById('cardTitleText5').textContent = p.cardTitle5;
             document.getElementById('inst5_1').textContent = p.inst5_1;
-
             if (lang === 'zh') {
                 document.getElementById('inst5_2').innerHTML = '系統即回傳【鳳凰誓印文】，其內容依誓印者當下之<strong style="color:#d4af37; background:rgba(212,175,55,0.15); padding:0 4px;">真實頻率</strong>判定為準。';
             } else {
                 document.getElementById('inst5_2').innerHTML = 'The system will return the 【Phoenix Oath Seal Text】, with its content determined according to the practitioner\'s <strong style="color:#d4af37; background:rgba(212,175,55,0.15); padding:0 4px;">authentic frequency</strong> at that moment.';
             }
-
             document.getElementById('inst5_3').textContent = p.inst5_3;
             document.getElementById('inst5_4').textContent = p.inst5_4;
             document.getElementById('cardTitleText5b').textContent = p.cardTitle5b;
@@ -1091,14 +1062,21 @@
             document.getElementById('inst5_summary_sub1').textContent = p.inst5_summary_sub1;
             document.getElementById('inst5_summary_sub2').textContent = p.inst5_summary_sub2;
 
-            const inst4EnRule = document.getElementById('inst4_en_rule');
-            if (lang === 'en') {
-                inst4EnRule.style.display = 'block';
-            } else {
-                inst4EnRule.style.display = 'none';
-            }
+            // Step 6
+            document.getElementById('cardTitleText6').textContent = p.cardTitle6;
+            document.getElementById('inst6_1').textContent = p.inst6_1;
+            document.getElementById('inst6_2').textContent = p.inst6_2;
+            document.getElementById('inst6_3').textContent = p.inst6_3;
+            document.getElementById('qrScanTitleStep6').textContent = p.qrScanTitleStep6;
+            document.getElementById('btnScanTextStep6').textContent = p.btnScanTextStep6;
+            document.getElementById('qrResultTextStep6').textContent = p.qrResultTextStep6;
+            document.getElementById('cameraGuideTextStep6').textContent = p.cameraGuideTextStep6;
+            document.getElementById('judgeConditionText').textContent = '對頻頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。';
+            document.getElementById('judgeNoteText').textContent = '⚠️ 若對頻未通過，系統將自動轉入補誓程序（憶悔補誓 × 七日循環 × 頻率再校）。';
 
-            // 計時器文字
+            const inst4EnRule = document.getElementById('inst4_en_rule');
+            if (lang === 'en') { inst4EnRule.style.display = 'block'; } else { inst4EnRule.style.display = 'none'; }
+
             const timerLabel = document.getElementById('timerLabel');
             if (timerLabel) {
                 if (timerState === 'initial') timerLabel.textContent = p.timerWaiting;
@@ -1106,30 +1084,24 @@
                 else if (timerState === 'complete') timerLabel.textContent = p.timerComplete;
             }
 
-            // 步驟三注意事項中英文切換
             const noteZh = document.getElementById('inst3_note_box_zh');
             const noteEn = document.getElementById('inst3_note_box_en');
             if (noteZh && noteEn) {
-                if (lang === 'zh') {
-                    noteZh.style.display = 'block';
-                    noteEn.style.display = 'none';
-                } else {
-                    noteZh.style.display = 'none';
-                    noteEn.style.display = 'block';
-                }
+                if (lang === 'zh') { noteZh.style.display = 'block'; noteEn.style.display = 'none'; } 
+                else { noteZh.style.display = 'none'; noteEn.style.display = 'block'; }
             }
 
             document.getElementById('btnBackText').textContent = p.btnBack;
             document.getElementById('btnNextText').textContent = p.btnNext;
             document.getElementById('btnStartText').textContent = p.btnStartText;
 
-            // 頁碼
             const pageMarkerEl = document.getElementById('pageMarkerText');
             if (currentStep === 1) pageMarkerEl.textContent = p.pageMarkerStep1;
             else if (currentStep === 2) pageMarkerEl.textContent = p.pageMarkerStep2;
             else if (currentStep === 3) pageMarkerEl.textContent = p.pageMarkerStep3;
             else if (currentStep === 4) pageMarkerEl.textContent = p.pageMarkerStep4;
             else if (currentStep === 5) pageMarkerEl.textContent = p.pageMarkerStep5;
+            else if (currentStep === 6) pageMarkerEl.textContent = p.pageMarkerStep6;
         }
 
         function openHudDialog(msg) {
@@ -1143,11 +1115,7 @@
 
         function stopCurrentScanner() {
             if (html5QrCodeInstance) {
-                return html5QrCodeInstance.stop().then(() => {
-                    html5QrCodeInstance = null;
-                }).catch(() => {
-                    html5QrCodeInstance = null;
-                });
+                return html5QrCodeInstance.stop().then(() => { html5QrCodeInstance = null; }).catch(() => { html5QrCodeInstance = null; });
             }
             return Promise.resolve();
         }
@@ -1167,6 +1135,7 @@
             document.getElementById('panelStep3').classList.remove('active');
             document.getElementById('panelStep4').classList.remove('active');
             document.getElementById('panelStep5').classList.remove('active');
+            document.getElementById('panelStep6').classList.remove('active');
             document.getElementById('btnBack').classList.remove('enabled');
             document.getElementById('btnNext').classList.add('enabled');
 
@@ -1182,7 +1151,6 @@
                 startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span>';
             }
             if (restartBtn) restartBtn.style.display = 'none';
-
             switchLanguage(currentLang);
         }
 
@@ -1240,6 +1208,15 @@
                 const nextBtn = document.getElementById('btnNext');
                 nextBtn.classList.add('enabled');
                 switchLanguage(currentLang);
+            } else if (currentStep === 6) {
+                document.getElementById('node6').classList.remove('active');
+                document.getElementById('node5').classList.add('active');
+                document.getElementById('panelStep6').classList.remove('active');
+                document.getElementById('panelStep5').classList.add('active');
+                currentStep = 5;
+                const nextBtn = document.getElementById('btnNext');
+                nextBtn.classList.add('enabled');
+                switchLanguage(currentLang);
             }
         }
 
@@ -1257,13 +1234,16 @@
                 stopCurrentScanner();
                 goToStep5();
             } else if (currentStep === 5) {
-                openHudDialog(langPack[currentLang].dialogStepComplete);
+                goToStep6();
+            } else if (currentStep === 6) {
+                if (window._oathJudgmentPassed) {
+                    openHudDialog(langPack[currentLang].dialogStep6Passed);
+                } else {
+                    openHudDialog(langPack[currentLang].dialogStep6Failed);
+                }
             }
         }
 
-        // ============================================================
-        // 步驟二：倒數計時器
-        // ============================================================
         function goToStep2() {
             currentStep = 2;
             document.getElementById('node1').classList.remove('active');
@@ -1272,18 +1252,15 @@
             document.getElementById('panelStep2').classList.add('active');
             document.getElementById('btnBack').classList.add('enabled');
             document.getElementById('btnNext').classList.remove('enabled');
-
             clearInterval(countdownTimer);
             clearTimeout(startTimeout);
             isTimerRunning = false;
             timerState = 'initial';
             countdownSeconds = 10;
-
             const timerNumber = document.getElementById('timerNumber');
             const timerLabel = document.getElementById('timerLabel');
             const startBtn = document.getElementById('btnStartCentering');
             const restartBtn = document.getElementById('btnRestart');
-
             if (timerNumber) timerNumber.textContent = countdownSeconds;
             if (timerLabel) timerLabel.textContent = '⏳ 等待開始';
             if (timerNumber) timerNumber.classList.remove('complete');
@@ -1292,34 +1269,28 @@
                 startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span>';
             }
             if (restartBtn) restartBtn.style.display = 'none';
-
             switchLanguage(currentLang);
         }
 
         function startCentering() {
             if (isTimerRunning) return;
-
             const startBtn = document.getElementById('btnStartCentering');
             const restartBtn = document.getElementById('btnRestart');
             const timerLabel = document.getElementById('timerLabel');
             const timerNumber = document.getElementById('timerNumber');
             const nextBtn = document.getElementById('btnNext');
-
             startBtn.disabled = true;
             const p = langPack[currentLang];
             startBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="btnStartText">' + p.btnStartCentering + '</span>';
             restartBtn.style.display = 'inline-flex';
-
             clearInterval(countdownTimer);
             clearTimeout(startTimeout);
-
             timerState = 'counting';
             countdownSeconds = 10;
             timerNumber.textContent = countdownSeconds;
             timerLabel.textContent = p.timerCounting;
             timerNumber.classList.remove('complete');
             nextBtn.classList.remove('enabled');
-
             countdownTimer = setInterval(() => {
                 countdownSeconds--;
                 if (countdownSeconds <= 0) {
@@ -1330,7 +1301,6 @@
                     timerLabel.textContent = p.timerComplete;
                     timerNumber.classList.add('complete');
                     nextBtn.classList.add('enabled');
-
                     startBtn.disabled = false;
                     startBtn.innerHTML = '<i class="fa-solid fa-check"></i> <span id="btnStartText">' + p.btnStartComplete + '</span>';
                 } else {
@@ -1338,21 +1308,17 @@
                     timerLabel.textContent = p.timerCounting;
                 }
             }, 1000);
-
             isTimerRunning = true;
         }
 
         function restartTimer() {
             if (currentStep !== 2) return;
-
             clearInterval(countdownTimer);
             clearTimeout(startTimeout);
-
             const startBtn = document.getElementById('btnStartCentering');
             const timerLabel = document.getElementById('timerLabel');
             const timerNumber = document.getElementById('timerNumber');
             const nextBtn = document.getElementById('btnNext');
-
             timerState = 'initial';
             countdownSeconds = 10;
             timerNumber.textContent = countdownSeconds;
@@ -1360,15 +1326,11 @@
             timerNumber.classList.remove('complete');
             nextBtn.classList.remove('enabled');
             isTimerRunning = false;
-
             startBtn.disabled = false;
             startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span>';
             document.getElementById('btnRestart').style.display = 'none';
         }
 
-        // ============================================================
-        // 步驟三 / 步驟四 / 步驟五導航
-        // ============================================================
         function goToStep3() {
             currentStep = 3;
             document.getElementById('node2').classList.remove('active');
@@ -1376,13 +1338,8 @@
             document.getElementById('panelStep2').classList.remove('active');
             document.getElementById('panelStep3').classList.add('active');
             document.getElementById('btnBack').classList.add('enabled');
-            
             const nextBtn = document.getElementById('btnNext');
-            if (nextBtn) {
-                nextBtn.classList.remove('enabled');
-                nextBtn.disabled = false;      
-            }
-            
+            if (nextBtn) { nextBtn.classList.remove('enabled'); nextBtn.disabled = false; }
             document.getElementById('qrScanResult').style.display = 'none';
             document.getElementById('cameraGuide').style.display = 'none';
             switchLanguage(currentLang);
@@ -1395,13 +1352,8 @@
             document.getElementById('panelStep3').classList.remove('active');
             document.getElementById('panelStep4').classList.add('active');
             document.getElementById('btnBack').classList.add('enabled');
-
             const nextBtn = document.getElementById('btnNext');
-            if (nextBtn) {
-                nextBtn.classList.remove('enabled');
-                nextBtn.disabled = false;
-            }
-
+            if (nextBtn) { nextBtn.classList.remove('enabled'); nextBtn.disabled = false; }
             document.getElementById('qrScanResultStep4').style.display = 'none';
             document.getElementById('cameraGuideStep4').style.display = 'none';
             switchLanguage(currentLang);
@@ -1414,45 +1366,54 @@
             document.getElementById('panelStep4').classList.remove('active');
             document.getElementById('panelStep5').classList.add('active');
             document.getElementById('btnBack').classList.add('enabled');
-
             const nextBtn = document.getElementById('btnNext');
-            if (nextBtn) {
-                nextBtn.classList.add('enabled');
-                nextBtn.disabled = false;
-            }
-
+            if (nextBtn) { nextBtn.classList.add('enabled'); nextBtn.disabled = false; }
             switchLanguage(currentLang);
         }
 
-        function startQRScanner(step) {
-            const containerId = (step === 'step4') ? 'qr-reader-container-step4' : 'qr-reader-container';
-            const guideId = (step === 'step4') ? 'cameraGuideStep4' : 'cameraGuide';
-            const guideTextId = (step === 'step4') ? 'cameraGuideTextStep4' : 'cameraGuideText';
-            const resultId = (step === 'step4') ? 'qrScanResultStep4' : 'qrScanResult';
-            const resultTextId = (step === 'step4') ? 'qrResultTextStep4' : 'qrResultText';
+        function goToStep6() {
+            currentStep = 6;
+            document.getElementById('node5').classList.remove('active');
+            document.getElementById('node6').classList.add('active');
+            document.getElementById('panelStep5').classList.remove('active');
+            document.getElementById('panelStep6').classList.add('active');
+            document.getElementById('btnBack').classList.add('enabled');
+            const nextBtn = document.getElementById('btnNext');
+            if (nextBtn) { nextBtn.classList.remove('enabled'); nextBtn.disabled = true; }
+            document.getElementById('qrScanResultStep6').style.display = 'none';
+            document.getElementById('cameraGuideStep6').style.display = 'none';
+            document.getElementById('judgeResultContainer').style.display = 'none';
+            const pageMarkerEl = document.getElementById('pageMarkerText');
+            if (pageMarkerEl) { pageMarkerEl.textContent = langPack[currentLang].pageMarkerStep6; }
+            switchLanguage(currentLang);
+        }
 
+        // ============================================================
+        // QR Code 掃描器（支援 Step 3 / Step 4 / Step 6）
+        // ============================================================
+
+        function startQRScanner(step) {
+            const containerId = (step === 'step4') ? 'qr-reader-container-step4' : (step === 'step6' ? 'qr-reader-container-step6' : 'qr-reader-container');
+            const guideId = (step === 'step4') ? 'cameraGuideStep4' : (step === 'step6' ? 'cameraGuideStep6' : 'cameraGuide');
+            const guideTextId = (step === 'step4') ? 'cameraGuideTextStep4' : (step === 'step6' ? 'cameraGuideTextStep6' : 'cameraGuideText');
+            const resultId = (step === 'step4') ? 'qrScanResultStep4' : (step === 'step6' ? 'qrScanResultStep6' : 'qrScanResult');
+            const resultTextId = (step === 'step4') ? 'qrResultTextStep4' : (step === 'step6' ? 'qrResultTextStep6' : 'qrResultText');
             const container = document.getElementById(containerId);
             if (!container) return;
-
             const nextBtn = document.getElementById('btnNext');
-            if (nextBtn) {
-                nextBtn.classList.remove('enabled');
-                nextBtn.disabled = true;
-            }
-
+            if (nextBtn) { nextBtn.classList.remove('enabled'); nextBtn.disabled = true; }
             stopCurrentScanner().then(() => {
                 container.innerHTML = '';
                 setTimeout(() => {
-                    initScanner(containerId, guideId, guideTextId, resultId, resultTextId);
+                    initScanner(containerId, guideId, guideTextId, resultId, resultTextId, step);
                 }, 300);
             });
         }
 
-        function initScanner(containerId, guideId, guideTextId, resultId, resultTextId) {
+        function initScanner(containerId, guideId, guideTextId, resultId, resultTextId, step) {
             const container = document.getElementById(containerId);
             const cameraGuide = document.getElementById(guideId);
             const cameraGuideText = document.getElementById(guideTextId);
-
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                 enableNextButton();
                 if (cameraGuide) cameraGuide.style.display = 'block';
@@ -1461,14 +1422,12 @@
                 }
                 return;
             }
-
             container.innerHTML = '';
             const config = { fps: 15, qrbox: { width: 200, height: 200 }, aspectRatio: 1.0 };
-
             navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
                 .then(function(stream) {
                     stream.getTracks().forEach(track => track.stop());
-                    startScanning(containerId, guideId, resultId, resultTextId, config);
+                    startScanning(containerId, guideId, resultId, resultTextId, config, step);
                 })
                 .catch(function(err) {
                     console.error('相機權限被拒絕:', err);
@@ -1486,13 +1445,10 @@
                 });
         }
 
-        function startScanning(containerId, guideId, resultId, resultTextId, config) {
-            const nextBtn = document.getElementById('btnNext');
-            
+        function startScanning(containerId, guideId, resultId, resultTextId, config, step) {
             try {
                 const instance = new Html5Qrcode(containerId);
                 html5QrCodeInstance = instance;
-
                 instance.start({ facingMode: "environment" }, config,
                     (decodedText) => {
                         const qrResult = document.getElementById(resultId);
@@ -1500,18 +1456,19 @@
                         if (qrResult) qrResult.style.display = 'block';
                         if (qrResultText) qrResultText.textContent = decodedText;
                         
-                        enableNextButton();
+                        // 如果是 Step 6，掃描成功後自動執行對頻判定
+                        if (step === 'step6') {
+                            executeOathJudgmentByScan(decodedText);
+                        } else {
+                            enableNextButton();
+                        }
                         
-                        instance.stop().then(() => {
-                            html5QrCodeInstance = null;
-                        }).catch(() => {
-                            html5QrCodeInstance = null;
-                        });
-                        alert('✅ 掃描成功！');
+                        instance.stop().then(() => { html5QrCodeInstance = null; }).catch(() => { html5QrCodeInstance = null; });
+                        if (step !== 'step6') {
+                            alert('✅ 掃描成功！');
+                        }
                     },
-                    (errorMessage) => {
-                        // 掃描進行中
-                    }
+                    (errorMessage) => {}
                 ).catch((err) => {
                     console.error('掃描啟動失敗:', err);
                     enableNextButton();
@@ -1528,8 +1485,54 @@
         }
 
         // ============================================================
-        // 初始化
+        // 步驟六：掃描後自動執行對頻判定
         // ============================================================
+
+        function executeOathJudgmentByScan(decodedText) {
+            const resultContainer = document.getElementById('judgeResultContainer');
+            const resultDiv = document.getElementById('judgeResult');
+            const detailDiv = document.getElementById('judgeDetail');
+            const p = langPack[currentLang];
+
+            // 顯示處理中
+            resultContainer.style.display = 'block';
+            resultDiv.style.color = '#d4af37';
+            resultDiv.textContent = p.judgeProcessing;
+            detailDiv.textContent = '';
+
+            // 模擬對頻判定延遲（1.5 秒）
+            setTimeout(() => {
+                const isPassed = Math.random() > 0.3;
+
+                if (isPassed) {
+                    resultDiv.style.color = '#00e676';
+                    resultDiv.innerHTML = '<i class="fa-solid fa-check-circle"></i> ' + p.judgePassed;
+                    detailDiv.style.color = '#a0e8c0';
+                    detailDiv.textContent = p.judgePassedDetail;
+
+                    const nextBtn = document.getElementById('btnNext');
+                    if (nextBtn) { nextBtn.classList.add('enabled'); nextBtn.disabled = false; }
+                    window._oathJudgmentPassed = true;
+                } else {
+                    resultDiv.style.color = '#ff6b5a';
+                    resultDiv.innerHTML = '<i class="fa-solid fa-xmark-circle"></i> ' + p.judgeFailed;
+                    detailDiv.style.color = '#f0b0a0';
+                    detailDiv.textContent = p.judgeFailedDetail;
+
+                    const nextBtn = document.getElementById('btnNext');
+                    if (nextBtn) { nextBtn.classList.remove('enabled'); nextBtn.disabled = true; }
+                    window._oathJudgmentPassed = false;
+                }
+
+                // 掃描成功後自動顯示掃描結果
+                const qrResult = document.getElementById('qrScanResultStep6');
+                const qrResultText = document.getElementById('qrResultTextStep6');
+                if (qrResult) qrResult.style.display = 'block';
+                if (qrResultText) qrResultText.textContent = decodedText;
+
+            }, 1500);
+        }
+
         window.onload = function() {
             document.getElementById('btnBack').classList.remove('enabled');
             document.getElementById('btnNext').classList.add('enabled');
