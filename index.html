@@ -917,6 +917,14 @@
 
         // ============================================================
         // 核心函式
+
+        function enableNextButton() {
+            const nextBtn = document.getElementById('btnNext');
+            if (!nextBtn) return;
+            nextBtn.classList.add('enabled');
+            nextBtn.disabled = false;
+        }
+
         // ============================================================
         function switchLanguage(lang) {
             currentLang = lang;
@@ -1302,6 +1310,7 @@
             const cameraGuideText = document.getElementById(guideTextId);
 
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                enableNextButton();
                 if (cameraGuide) cameraGuide.style.display = 'block';
                 if (cameraGuideText) {
                     cameraGuideText.textContent = '📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
@@ -1319,6 +1328,7 @@
                 })
                 .catch(function(err) {
                     console.error('相機權限被拒絕:', err);
+                    enableNextButton();
                     if (cameraGuide) cameraGuide.style.display = 'block';
                     if (cameraGuideText) {
                         cameraGuideText.textContent =
@@ -1363,12 +1373,14 @@
                     }
                 ).catch((err) => {
                     console.error('掃描啟動失敗:', err);
+                    enableNextButton();
                     const cameraGuide = document.getElementById(guideId);
                     if (cameraGuide) cameraGuide.style.display = 'block';
                     html5QrCodeInstance = null;
                 });
             } catch (err) {
                 console.error('建立掃描器失敗:', err);
+                enableNextButton();
                 const cameraGuide = document.getElementById(guideId);
                 if (cameraGuide) cameraGuide.style.display = 'block';
             }
