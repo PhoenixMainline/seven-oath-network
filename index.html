@@ -526,35 +526,40 @@
         </nav>
 
         <main class="step-content">
-            <!-- 步驟一 -->
-<div class="step-panel active" id="panelStep1">
-    <div class="hud-card">
-        <div class="card-title"><i class="fa-solid fa-bolt"></i>【一】啟動條件</div>
+                       <!-- 步驟一 -->
+            <div class="step-panel active" id="panelStep1">
+                <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-bolt"></i><span id="cardTitleText1">【一】啟動條件</span></div>
 
-        <!-- 第一組 5 項 -->
-        <div class="page-group">
-            <ul class="condition-list">
-                <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i>請完成驗證之【購書序號】誓導碼</li>
-                <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i>穩定網路環境運作中</li>
-                <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i>請掃描本卷書封底之 QR Code</li>
-                <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i>確認個人專屬誓魂密鑰備妥</li>
-                <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i>已完成覺醒前意識淨化準備</li>
-            </ul>
-        </div>
-         <!-- 第二組 5 項（切換後才顯示，第一組自動隱藏） -->
-        <div class="page-group">
-            <ul class="condition-list">
-                <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i>已完成首次誓印能量校準</li>
-                <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i>個人覺醒頻率已達基礎門檻</li>
-                <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i>誓導通道已建立初步連結</li>
-                <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i>確認實體書本與數位平台同步</li>
-                <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i>已完成三次意識確認震盪</li>
-            </ul>
-        </div>
+                    <!-- 第一組 5 項 -->
+                    <div class="condition-group" id="group1" style="display: block;">
+                        <ul class="condition-list">
+                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond1">請完成驗證之【購書序號】誓導碼</span></li>
+                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond2">穩定網路環境運作中</span></li>
+                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond3">請掃描本卷書封底之 QR Code</span></li>
+                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span>確認個人專屬誓魂密鑰備妥</span></li>
+                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span>已完成覺醒前意識淨化準備</span></li>
+                        </ul>
+                    </div>
 
-        <!-- 分頁圓點會自動產生在這裡 -->
-    </div>
-</div>
+                    <!-- 第二組 5 項（第二版面，初始隱藏） -->
+                    <div class="condition-group" id="group2" style="display: none;">
+                        <ul class="condition-list">
+                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span>已完成首次誓印能量校準</span></li>
+                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span>個人覺醒頻率已達基礎門檻</span></li>
+                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span>誓導通道已建立初步連結</span></li>
+                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span>確認實體書本與數位平台同步</span></li>
+                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span>已完成三次意識確認震盪</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- 切換按鈕導覽 -->
+                    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+                        <button class="hud-dialog-btn" id="btnGroup1" onclick="switchConditionGroup(1)" style="background: rgba(0,191,255,0.2);">第 1 版面</button>
+                        <button class="hud-dialog-btn" id="btnGroup2" onclick="switchConditionGroup(2)">第 2 版面</button>
+                    </div>
+                </div>
+            </div>
 
             <!-- ===== 步驟二 ===== -->
             <div class="step-panel" id="panelStep2">
@@ -2264,5 +2269,31 @@ console.log('📷 請點擊「掃描 QR Code」按鈕啟動相機');
 </script>
 </body>
 </html>
+   <!-- 你的 HTML 內容 -->
+
+    <script>
+        // ==========================================
+        // 請將程式碼貼在這裡（例如其他函式的旁邊）
+        // ==========================================
+        function switchConditionGroup(groupNum) {
+            const g1 = document.getElementById('group1');
+            const g2 = document.getElementById('group2');
+            const b1 = document.getElementById('btnGroup1');
+            const b2 = document.getElementById('btnGroup2');
+
+            if (groupNum === 1) {
+                g1.style.display = 'block';
+                g2.style.display = 'none';
+                b1.style.background = 'rgba(0,191,255,0.2)';
+                b2.style.background = 'transparent';
+            } else {
+                g1.style.display = 'none';
+                g2.style.display = 'block';
+                b2.style.background = 'rgba(0,191,255,0.2)';
+                b1.style.background = 'transparent';
+            }
+        }
+        // ==========================================
+    </script>
 </body>
 </html>
