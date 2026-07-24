@@ -72,7 +72,7 @@
     .hud-container {
     width: 100%;
     max-width: min(660px, 95vw);
-    height: 92vh; /* 改回固定合適的視窗高度，避免超出畫面 */
+    height: 92vh;
     max-height: 92vh;
     background: rgba(4, 13, 33, 0.4);
     border: 1.5px solid rgba(0, 191, 255, 0.3);
@@ -88,17 +88,17 @@
 }
 
 .step-content {
-    flex: 1 1 auto; /* 讓中間內容區塊自動伸縮填滿剩餘空間 */
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
     gap: clamp(8px, 1.5vh, 22px);
-    overflow-y: auto; /* 內容過多時內部自動捲動，不擠壓 Footer */
+    overflow-y: auto;
     padding-right: 4px;
-    min-height: 0; /* 關鍵：允許 flex 子元素正確收縮 */
+    min-height: 0;
 }
 
 .hud-footer {
-    flex-shrink: 0; /* 確保底部按鈕絕對不會被壓縮或推擠出畫面 */
+    flex-shrink: 0;
     margin-top: auto;
     padding-top: clamp(6px, 1vh, 12px);
     border-top: 1px solid rgba(0, 191, 255, 0.12);
@@ -204,26 +204,6 @@
             box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
             font-weight: bold;
         }
-        .step-content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    gap: clamp(8px, 1.5vh, 22px);
-    overflow-y: auto; /* 讓步驟內容區塊可以上下捲動 */
-    padding-right: 4px;
-}
-
-.hud-footer {
-    margin-top: auto; /* 將 footer 自動推到底部 */
-    padding-top: clamp(8px, 1.5vh, 18px);
-    border-top: 1px solid rgba(0, 191, 255, 0.12);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 10;
-    flex-wrap: wrap;
-    flex-shrink: 0; /* 確保 footer 絕對不會被擠壓消失 */
-}
         .step-panel {
             display: none;
             flex-direction: column;
@@ -325,16 +305,6 @@
         .instruction-item i {
             color: #00e676;
             margin-top: 5px;
-        }
-        .hud-footer {
-            margin-top: clamp(10px, 2vh, 35px);
-            padding-top: clamp(8px, 1.5vh, 18px);
-            border-top: 1px solid rgba(0, 191, 255, 0.12);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 10;
-            flex-wrap: wrap;
         }
         .footer-btn-group {
             display: flex;
@@ -500,13 +470,13 @@
         }
        @media (max-width: 480px) {
     body {
-        padding: 4px !important; /* 減少 body 邊距 */
+        padding: 4px !important;
     }
     .hud-container { 
         padding: 8px 6px !important; 
         border-radius: 12px !important; 
         max-height: 98vh !important;
-        height: auto !important; /* 允許自動適應高度 */
+        height: auto !important;
     }
     .hud-header { 
         margin-bottom: 6px !important;
