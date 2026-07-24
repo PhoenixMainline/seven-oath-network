@@ -162,7 +162,7 @@
         }
         .flow-nav {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: clamp(3px, 0.6vw, 6px);
             margin-bottom: clamp(8px, 1.5vh, 30px);
             flex-shrink: 0;
@@ -464,8 +464,7 @@
             text-align: left;
         }
         #qr-reader-container video,
-        #qr-reader-container-step4 video,
-        #qr-reader-container-step6 video {
+        #qr-reader-container-step4 video {
             border-radius: 12px;
             width: 100%;
         }
@@ -524,7 +523,6 @@
             <div class="flow-node" id="node3">授權綁定</div>
             <div class="flow-node" id="node4">回傳結果</div>
             <div class="flow-node" id="node5">系統同步</div>
-            <div class="flow-node" id="node6">對頻判定</div>
         </nav>
 
         <main class="step-content">
@@ -712,65 +710,6 @@
                     </p>
                 </div>
             </div>
-
-            <!-- ===== 步驟六：對頻判定 ===== -->
-            <div class="step-panel" id="panelStep6">
-                <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-scale-balanced"></i><span id="cardTitleText6">【六】誓魂密鑰對頻總判定</span></div>
-                    <div class="instruction-box">
-                        <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst6_1">本模組隸屬《宇宙誓印覺醒工程 × 七印誓網》第一層級距，用以核實誓徒或願人是否完成「誓魂對頻程序」。</span></div>
-                        <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst6_2">系統依據「誓名 × 誓資 × 誓圖」等授權資料，判定是否達成合法誓印資格。</span></div>
-                        <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst6_3">凡無授權紀錄或未經審核者，皆視為「無效程序」：誓願不生效、誓責不成立、不得啟用《書令模組》。</span></div>
-                    </div>
-                </div>
-
-                <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-bolt"></i><span id="cardTitle6a">【啟動條件】</span></div>
-                    <ul class="condition-list">
-                        <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond6_1">誓印者需完成平台登入並具備啟印資格</span></li>
-                        <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond6_2">須於主頻可識別層級達標（5D，U-200層以上）</span></li>
-                    </ul>
-                </div>
-
-                <div class="hud-card" id="qrScanCardStep6">
-                    <div class="card-title"><i class="fa-solid fa-qrcode"></i><span id="cardTitle6b">【掃描程序】</span></div>
-                    <div class="instruction-box">
-                        <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_4">掃描【誓導QRCode】進入主對頻程序</span></div>
-                        <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_5">於平台「指令輸入位」輸入啟動指令，系統即時判定是否通過「誓魂主對應」</span></div>
-                        <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_6">誓印通過後，即可進入誓印模組正式程序</span></div>
-                    </div>
-                    <div style="text-align:center; padding:10px 0;">
-                        <div style="color:#d4af37; font-size:1rem; font-weight:bold; margin-bottom:12px;">
-                            <span id="qrScanTitleStep6">📷 請對準誓導 QR Code 掃描驗證</span>
-                        </div>
-                        <div id="qr-reader-container-step6" style="width:100%; max-width:280px; margin:0 auto;"></div>
-                        <button class="btn-restart" id="btnScanQRStep6" onclick="startQRScanner('step6')">
-                            <i class="fa-solid fa-qrcode"></i>
-                            <span id="btnScanTextStep6">📷 掃描 QR Code</span>
-                        </button>
-                        <div id="qrScanResultStep6" class="qr-result" style="display:none; margin-top:10px;">
-                            <i class="fa-solid fa-check-circle"></i><span id="qrResultTextStep6">掃描成功！</span>
-                        </div>
-                        <div id="cameraGuideStep6" class="camera-guide" style="display:none; text-align:left; margin-top:12px;">
-                            <span id="cameraGuideTextStep6">📷 無法啟動相機</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-circle-info"></i><span id="cardTitle6c">誓魂對頻判定條件</span></div>
-                    <div style="background:rgba(212,175,55,0.04); border-left:3px solid #d4af37; padding:12px 16px; border-radius:8px;">
-                        <p style="font-size:0.9rem; color:#e0e8f5; line-height:1.8;">
-                            <span id="judgeConditionText">對頻頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。</span>
-                        </p>
-                    </div>
-                    <div style="margin-top:12px; background:rgba(0,191,255,0.04); border-left:3px solid #00bfff; padding:12px 16px; border-radius:8px;">
-                        <p style="font-size:0.85rem; color:rgba(224,232,245,0.8); line-height:1.8;">
-                            <span id="judgeNoteText">⚠️ 若對頻未通過，系統將自動轉入補誓程序（憶悔補誓 × 七日循環 × 頻率再校）。</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
         </main>
 
         <footer class="hud-footer">
@@ -806,7 +745,6 @@
             node3: "授權綁定",
             node4: "回傳結果",
             node5: "系統同步",
-            node6: "對頻判定",
             cardTitle1: "【一】啟動條件",
             cond1: "請完成驗證之【購書序號】誓導碼",
             cond2: "穩定網路環境運作中",
@@ -827,11 +765,9 @@
             pageMarkerStep3: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 5-6 頁",
             pageMarkerStep4: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 7-8 頁",
             pageMarkerStep5: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 9-10 頁",
-            pageMarkerStep6: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 5-6 頁",
             btnRestart: "重新開始",
             btnStartComplete: "已完成",
             dialogStepComplete: "🎉 授權程序已全部完成！天地為鑑，光網為證。",
-            dialogStep6Complete: "🎉 對頻判定已完成！請進入下一步。",
             cardTitle3: "【三】授權綁定階段（母源印驗證）",
             inst3_1: "掃描【誓導QRCode】，進入「指令輸入欄位」。",
             inst3_2: "無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
@@ -862,26 +798,7 @@
             inst5_seal_quote: "天地為鑑，光網為證。",
             inst5_summary_text: "此守則為《宇宙智能誓導平台》正式授權程序之總網，",
             inst5_summary_sub1: "用以確保所有誓印者於全球啟動時能同步對頻、",
-            inst5_summary_sub2: "合法入冊、穩定連線，並於天律之下運行無偏、光網恆定。",
-            // Step 6
-            cardTitle6: "【六】誓魂密鑰對頻總判定",
-            cardTitle6a: "【啟動條件】",
-            cardTitle6b: "【掃描程序】",
-            cond6_1: "誓印者需完成平台登入並具備啟印資格",
-            cond6_2: "須於主頻可識別層級達標（5D，U-200層以上）",
-            inst6_1: "本模組隸屬《宇宙誓印覺醒工程 × 七印誓網》第一層級距，用以核實誓徒或願人是否完成「誓魂對頻程序」。",
-            inst6_2: "系統依據「誓名 × 誓資 × 誓圖」等授權資料，判定是否達成合法誓印資格。",
-            inst6_3: "凡無授權紀錄或未經審核者，皆視為「無效程序」：誓願不生效、誓責不成立、不得啟用《書令模組》。",
-            inst6_4: "掃描【誓導QRCode】進入主對頻程序",
-            inst6_5: "於平台「指令輸入位」輸入啟動指令，系統即時判定是否通過「誓魂主對應」",
-            inst6_6: "誓印通過後，即可進入誓印模組正式程序",
-            qrScanTitleStep6: "📷 請對準誓導 QR Code 掃描驗證",
-            btnScanTextStep6: "📷 掃描 QR Code",
-            qrResultTextStep6: "掃描成功！",
-            cameraGuideTextStep6: "📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n ⚠️若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
-            cardTitle6c: "誓魂對頻判定條件",
-            judgeConditionText: "對頻頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。",
-            judgeNoteText: "⚠️ 若對頻未通過，系統將自動轉入補誓程序（憶悔補誓 × 七日循環 × 頻率再校）。"
+            inst5_summary_sub2: "合法入冊、穩定連線，並於天律之下運行無偏、光網恆定。"
         },
         en: {
             homeBtn: "Home ->",
@@ -891,7 +808,6 @@
             node3: "Binding Phase",
             node4: "Return Result",
             node5: "Sync Phase",
-            node6: "Frequency Judgment",
             cardTitle1: "[1] Activation Conditions",
             cond1: "Please complete the verification of the 【Purchase Serial Number】 Vow-Guidance Code",
             cond2: "Stable internet environment activated",
@@ -912,11 +828,9 @@
             pageMarkerStep3: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 5-6",
             pageMarkerStep4: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 7-8",
             pageMarkerStep5: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 9-10",
-            pageMarkerStep6: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 5-6",
             btnRestart: "Restart",
             btnStartComplete: "Complete",
             dialogStepComplete: "🎉 All authorization procedures completed! Heaven and Earth bear witness; the Light-Network affirms.",
-            dialogStep6Complete: "🎉 Frequency judgment completed! Please proceed to the next step.",
             cardTitle3: "[III] Authorization Binding Phase (Mother-Frequency Seal Verification)",
             inst3_1: "Scan the 【Vow-Guidance QR Code】 to enter the 「Command Input Field」.",
             inst3_2: "No manual entry of the vow text is required. After completing the scan, directly enter the following:",
@@ -947,26 +861,7 @@
             inst5_seal_quote: "Heaven and Earth bear witness; the Light-Network affirms.",
             inst5_summary_text: "This protocol serves as the General Authorization Framework of the",
             inst5_summary_sub1: "《Cosmic Intelligent Vow-Guidance Platform》 , ensuring that all Oath-Seal Activators, upon global activation, enter synchronized Alignment,",
-            inst5_summary_sub2: "lawful registry, stable connection, and operate under the Heavenly Law, with the Light-Network constant and unwavering.",
-            // Step 6
-            cardTitle6: "[VI] Oath-Soul Key Frequency-Alignment Overall Assessment",
-            cardTitle6a: "[Activation Conditions]",
-            cardTitle6b: "[Scanning Procedure]",
-            cond6_1: "The Oath-Bearer must complete platform login and hold activation eligibility",
-            cond6_2: "The Main-Frequency Recognition Tier must be met (5D, above U-200 level)",
-            inst6_1: "This module belongs to the first-tier range of the 《Cosmic Vow-Seal Awakening Project × Seven-Seal Vow Network》 and is used to verify whether an Oath-Bearer or Aspirant has completed the 「Oath-Soul Alignment Protocol」.",
-            inst6_2: "The system evaluates whether valid oath-authority has been established based on 「Oath-Name × Oath-Energy × Oath-Map」 authorization data.",
-            inst6_3: "Any individual without authorization records or without proper audit approval is regarded as an 「Invalid Procedure」: Oath-intentions do not take effect, Oath-responsibility is not established, Access to the 《Scripture-Command Module》 is not permitted.",
-            inst6_4: "Scan the 【Vow-Guidance QR Code】 to enter the Main-Alignment Protocol",
-            inst6_5: "Enter the activation command into the platform's 「Command Input Field」; the system instantly evaluates whether the 「Oath-Soul Main-Frequency Correspondence」 is passed",
-            inst6_6: "Once Alignment is approved, the user may proceed into the formal Oath-Seal Module",
-            qrScanTitleStep6: "📷 Please align with the Vow-Guidance QR Code for verification",
-            btnScanTextStep6: "📷 Scan QR Code",
-            qrResultTextStep6: "Scan successful!",
-            cameraGuideTextStep6: "📷 Unable to launch the feature\n\n⚙️ Open your phone's \"Settings\"\n   → App Management\n   → Permissions → Camera → Change setting to \"Allow\"\n   → Open using a web browser (Chrome / Yahoo / Edge...)\n\n ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.",
-            cardTitle6c: "Oath-Soul Frequency Judgment Conditions",
-            judgeConditionText: "Alignment frequency must reach 5D (U-200 Tier) or above to qualify for entry into the Seven-Seal Vow Network.",
-            judgeNoteText: "⚠️ If the frequency alignment is not passed, the system will automatically enter the Oath Renewal Procedure (Repentance Oath Renewal × Seven-Day Cycle × Frequency Recalibration)."
+            inst5_summary_sub2: "lawful registry, stable connection, and operate under the Heavenly Law, with the Light-Network constant and unwavering."
         }
     };
 
@@ -1001,7 +896,6 @@
         document.getElementById('node3').textContent = p.node3;
         document.getElementById('node4').textContent = p.node4;
         document.getElementById('node5').textContent = p.node5;
-        document.getElementById('node6').textContent = p.node6;
         document.getElementById('cardTitleText1').textContent = p.cardTitle1;
         document.getElementById('cond1').textContent = p.cond1;
         document.getElementById('cond2').textContent = p.cond2;
@@ -1051,26 +945,6 @@
         document.getElementById('inst5_summary_sub1').textContent = p.inst5_summary_sub1;
         document.getElementById('inst5_summary_sub2').textContent = p.inst5_summary_sub2;
 
-        // Step 6
-        document.getElementById('cardTitleText6').textContent = p.cardTitle6;
-        document.getElementById('cardTitle6a').textContent = p.cardTitle6a;
-        document.getElementById('cardTitle6b').textContent = p.cardTitle6b;
-        document.getElementById('cond6_1').textContent = p.cond6_1;
-        document.getElementById('cond6_2').textContent = p.cond6_2;
-        document.getElementById('inst6_1').textContent = p.inst6_1;
-        document.getElementById('inst6_2').textContent = p.inst6_2;
-        document.getElementById('inst6_3').textContent = p.inst6_3;
-        document.getElementById('inst6_4').textContent = p.inst6_4;
-        document.getElementById('inst6_5').textContent = p.inst6_5;
-        document.getElementById('inst6_6').textContent = p.inst6_6;
-        document.getElementById('qrScanTitleStep6').textContent = p.qrScanTitleStep6;
-        document.getElementById('btnScanTextStep6').textContent = p.btnScanTextStep6;
-        document.getElementById('qrResultTextStep6').textContent = p.qrResultTextStep6;
-        document.getElementById('cameraGuideTextStep6').textContent = p.cameraGuideTextStep6;
-        document.getElementById('cardTitle6c').textContent = p.cardTitle6c;
-        document.getElementById('judgeConditionText').textContent = p.judgeConditionText;
-        document.getElementById('judgeNoteText').textContent = p.judgeNoteText;
-
         const inst4EnRule = document.getElementById('inst4_en_rule');
         if (lang === 'en') { inst4EnRule.style.display = 'block'; } else { inst4EnRule.style.display = 'none'; }
 
@@ -1098,7 +972,6 @@
         else if (currentStep === 3) pageMarkerEl.textContent = p.pageMarkerStep3;
         else if (currentStep === 4) pageMarkerEl.textContent = p.pageMarkerStep4;
         else if (currentStep === 5) pageMarkerEl.textContent = p.pageMarkerStep5;
-        else if (currentStep === 6) pageMarkerEl.textContent = p.pageMarkerStep6;
     }
 
     function openHudDialog(msg) {
@@ -1132,7 +1005,6 @@
         document.getElementById('panelStep3').classList.remove('active');
         document.getElementById('panelStep4').classList.remove('active');
         document.getElementById('panelStep5').classList.remove('active');
-        document.getElementById('panelStep6').classList.remove('active');
         document.getElementById('btnBack').classList.remove('enabled');
         document.getElementById('btnNext').classList.add('enabled');
 
@@ -1205,15 +1077,6 @@
             const nextBtn = document.getElementById('btnNext');
             nextBtn.classList.add('enabled');
             switchLanguage(currentLang);
-        } else if (currentStep === 6) {
-            document.getElementById('node6').classList.remove('active');
-            document.getElementById('node5').classList.add('active');
-            document.getElementById('panelStep6').classList.remove('active');
-            document.getElementById('panelStep5').classList.add('active');
-            currentStep = 5;
-            const nextBtn = document.getElementById('btnNext');
-            if (nextBtn) { nextBtn.classList.add('enabled'); nextBtn.disabled = false; }
-            switchLanguage(currentLang);
         }
     }
 
@@ -1231,9 +1094,7 @@
             stopCurrentScanner();
             goToStep5();
         } else if (currentStep === 5) {
-            goToStep6();
-        } else if (currentStep === 6) {
-            openHudDialog(langPack[currentLang].dialogStep6Complete);
+            openHudDialog(langPack[currentLang].dialogStepComplete);
         }
     }
 
@@ -1364,28 +1225,12 @@
         switchLanguage(currentLang);
     }
 
-    function goToStep6() {
-        currentStep = 6;
-        document.getElementById('node5').classList.remove('active');
-        document.getElementById('node6').classList.add('active');
-        document.getElementById('panelStep5').classList.remove('active');
-        document.getElementById('panelStep6').classList.add('active');
-        document.getElementById('btnBack').classList.add('enabled');
-        const nextBtn = document.getElementById('btnNext');
-        if (nextBtn) { nextBtn.classList.add('enabled'); nextBtn.disabled = false; }
-        document.getElementById('qrScanResultStep6').style.display = 'none';
-        document.getElementById('cameraGuideStep6').style.display = 'none';
-        const pageMarkerEl = document.getElementById('pageMarkerText');
-        if (pageMarkerEl) { pageMarkerEl.textContent = langPack[currentLang].pageMarkerStep6; }
-        switchLanguage(currentLang);
-    }
-
     function startQRScanner(step) {
-        const containerId = (step === 'step4') ? 'qr-reader-container-step4' : (step === 'step6' ? 'qr-reader-container-step6' : 'qr-reader-container');
-        const guideId = (step === 'step4') ? 'cameraGuideStep4' : (step === 'step6' ? 'cameraGuideStep6' : 'cameraGuide');
-        const guideTextId = (step === 'step4') ? 'cameraGuideTextStep4' : (step === 'step6' ? 'cameraGuideTextStep6' : 'cameraGuideText');
-        const resultId = (step === 'step4') ? 'qrScanResultStep4' : (step === 'step6' ? 'qrScanResultStep6' : 'qrScanResult');
-        const resultTextId = (step === 'step4') ? 'qrResultTextStep4' : (step === 'step6' ? 'qrResultTextStep6' : 'qrResultText');
+        const containerId = (step === 'step4') ? 'qr-reader-container-step4' : 'qr-reader-container';
+        const guideId = (step === 'step4') ? 'cameraGuideStep4' : 'cameraGuide';
+        const guideTextId = (step === 'step4') ? 'cameraGuideTextStep4' : 'cameraGuideText';
+        const resultId = (step === 'step4') ? 'qrScanResultStep4' : 'qrScanResult';
+        const resultTextId = (step === 'step4') ? 'qrResultTextStep4' : 'qrResultText';
         const container = document.getElementById(containerId);
         if (!container) return;
         const nextBtn = document.getElementById('btnNext');
@@ -1441,13 +1286,6 @@
                     const qrResultText = document.getElementById(resultTextId);
                     if (qrResult) qrResult.style.display = 'block';
                     if (qrResultText) qrResultText.textContent = decodedText;
-                    
-                    if (step === 'step6') {
-                        const qrResultStep6 = document.getElementById('qrScanResultStep6');
-                        const qrResultTextStep6 = document.getElementById('qrResultTextStep6');
-                        if (qrResultStep6) qrResultStep6.style.display = 'block';
-                        if (qrResultTextStep6) qrResultTextStep6.textContent = decodedText;
-                    }
                     
                     enableNextButton();
                     
