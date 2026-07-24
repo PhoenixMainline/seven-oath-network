@@ -69,21 +69,44 @@
             white-space: nowrap;
             user-select: none;
         }
-     .hud-container {
+    .hud-container {
     width: 100%;
     max-width: min(660px, 95vw);
-    max-height: 94vh; /* 修改這裡：改用 max-height 讓容器能根據內容自適應 */
+    height: 92vh; /* 改回固定合適的視窗高度，避免超出畫面 */
+    max-height: 92vh;
     background: rgba(4, 13, 33, 0.4);
     border: 1.5px solid rgba(0, 191, 255, 0.3);
     box-shadow: 0 0 40px rgba(0, 191, 255, 0.15), inset 0 0 20px rgba(0, 191, 255, 0.05);
     border-radius: clamp(16px, 4vw, 28px);
-    padding: clamp(10px, 2vh, 25px); /* 微調內距讓空間更緊湊 */
+    padding: clamp(8px, 1.5vh, 20px);
     display: flex;
     flex-direction: column;
     position: relative;
     z-index: 3;
     margin: auto;
     overflow: hidden;
+}
+
+.step-content {
+    flex: 1 1 auto; /* 讓中間內容區塊自動伸縮填滿剩餘空間 */
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.5vh, 22px);
+    overflow-y: auto; /* 內容過多時內部自動捲動，不擠壓 Footer */
+    padding-right: 4px;
+    min-height: 0; /* 關鍵：允許 flex 子元素正確收縮 */
+}
+
+.hud-footer {
+    flex-shrink: 0; /* 確保底部按鈕絕對不會被壓縮或推擠出畫面 */
+    margin-top: auto;
+    padding-top: clamp(6px, 1vh, 12px);
+    border-top: 1px solid rgba(0, 191, 255, 0.12);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    flex-wrap: wrap;
 }
         .hud-container::after {
             content: "";
