@@ -1807,5 +1807,35 @@ console.log('✅ Step 6 已完全修復！');
 <!-- ============================================================ -->
 <!-- 修復完成                                                      -->
 <!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- 導航欄修復 - 每行 5 個                                       -->
+<!-- 貼上位置：</body> 前面                                       -->
+<!-- ============================================================ -->
+
+<style>
+.flow-nav {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: clamp(3px, 0.6vw, 6px) !important;
+}
+@media (max-width: 480px) {
+    .flow-nav {
+        grid-template-columns: repeat(5, 1fr) !important;
+        gap: 2px !important;
+    }
+    .flow-node {
+        font-size: 0.4rem !important;
+        padding: 2px 1px !important;
+        white-space: nowrap !important;
+    }
+}
+</style>
+
+<script>
+document.querySelector('.flow-nav').style.gridTemplateColumns = 'repeat(5, 1fr)';
+</script>
+<!-- ============================================================ -->
+<!-- 修復完成                                                      -->
+<!-- ============================================================ -->
 </body>
 </html>
