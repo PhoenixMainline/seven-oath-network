@@ -526,17 +526,35 @@
         </nav>
 
         <main class="step-content">
-            <!-- ===== 步驟一 ===== -->
-            <div class="step-panel active" id="panelStep1">
-                <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-bolt"></i><span id="cardTitleText1">【一】啟動條件</span></div>
-                    <ul class="condition-list">
-                        <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond1">請完成驗證之【購書序號】誓導碼</span></li>
-                        <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond2">穩定網路環境運作中</span></li>
-                        <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond3">請掃描本卷書封底之《宇宙智能誓導平台》官方AI專屬誓導入口頁 QR Code，以啟動誓導通道之統一入口。</span></li>
-                    </ul>
-                </div>
-            </div>
+            <!-- 步驟一 -->
+<div class="step-panel active" id="panelStep1">
+    <div class="hud-card">
+        <div class="card-title"><i class="fa-solid fa-bolt"></i>【一】啟動條件</div>
+
+        <!-- 第一組 5 項 -->
+        <div class="page-group">
+            <ul class="condition-list">
+                <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i>請完成驗證之【購書序號】誓導碼</li>
+                <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i>穩定網路環境運作中</li>
+                <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i>請掃描本卷書封底之 QR Code</li>
+                <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i>確認個人專屬誓魂密鑰備妥</li>
+                <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i>已完成覺醒前意識淨化準備</li>
+            </ul>
+        </div>
+         <!-- 第二組 5 項（切換後才顯示，第一組自動隱藏） -->
+        <div class="page-group">
+            <ul class="condition-list">
+                <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i>已完成首次誓印能量校準</li>
+                <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i>個人覺醒頻率已達基礎門檻</li>
+                <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i>誓導通道已建立初步連結</li>
+                <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i>確認實體書本與數位平台同步</li>
+                <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i>已完成三次意識確認震盪</li>
+            </ul>
+        </div>
+
+        <!-- 分頁圓點會自動產生在這裡 -->
+    </div>
+</div>
 
             <!-- ===== 步驟二 ===== -->
             <div class="step-panel" id="panelStep2">
@@ -2094,5 +2112,80 @@ console.log('📷 請點擊「掃描 QR Code」按鈕啟動相機');
 <!-- ============================================================ -->
 <!-- 修復完成                                                      -->
 <!-- ============================================================ -->
+<script>
+// ============================================================
+// 分頁切換功能：同一步驟內每 5 項一組，切換時前一組隱藏
+// 使用方式：用 .page-group 包裝每 5 項，自動產生圓點切換
+// ============================================================
+
+(function() {
+    'use strict';
+
+    function initPagination() {
+        document.querySelectorAll('.hud-card').forEach(card => {
+            const groups = card.querySelectorAll('.page-group');
+            if (groups.length <= 1) return;
+
+            // 只顯示第一組
+            groups.forEach((g, idx) => {
+                g.style.display = idx === 0 ? 'block' : 'none';
+            });
+
+            // 建立分頁圓點
+            let dots = card.querySelector('.page-dots');
+            if (!dots) {
+                dots = document.createElement('div');
+                dots.className = 'page-dots';
+                dots.style.cssText = 'display:flex;justify-content:center;gap:10px;margin-top:16px;';
+                card.appendChild(dots);
+            }
+            dots.innerHTML = '';
+
+            groups.forEach((g, idx) => {
+                const dot = document.createElement('button');
+                dot.style.cssText = `
+                    width:10px;height:10px;border-radius:50%;border:none;
+                    background:${idx === 0 ? '#d4af37' : 'rgba(255,255,255,0.2)'};
+                    cursor:pointer;padding:0;flex-shrink:0;
+                    box-shadow:${idx === 0 ? '0 0 10px rgba(212,175,55,0.4)' : 'none'};
+                `;
+                dot.dataset.index = idx;
+                dot.addEventListener('click', function() {
+                    const parent = this.closest('.hud-card');
+                    const allGroups = parent.querySelectorAll('.page-group');
+                    const allDots = parent.querySelectorAll('.page-dots button');
+                    const target = parseInt(this.dataset.index);
+
+                    allGroups.forEach((g, i) => {
+                        g.style.display = i === target ? 'block' : 'none';
+                    });
+                    allDots.forEach((d, i) => {
+                        d.style.background = i === target ? '#d4af37' : 'rgba(255,255,255,0.2)';
+                        d.style.boxShadow = i === target ? '0 0 10px rgba(212,175,55,0.4)' : 'none';
+                    });
+                });
+                dots.appendChild(dot);
+            });
+        });
+    }
+
+    // 頁面載入初始化
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPagination);
+    } else {
+        initPagination();
+    }
+
+    // 監聽步驟切換後重新初始化
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('[onclick*="goToStep"], .flow-node, .btn-action.enabled');
+        if (btn) {
+            setTimeout(initPagination, 100);
+        }
+    });
+
+    console.log('✅ 分頁系統已啟動');
+})();
+</script>
 </body>
 </html>
