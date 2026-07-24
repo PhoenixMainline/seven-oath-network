@@ -1596,5 +1596,186 @@ const langPack = {
             switchLanguage('zh');
         };
     </script>
+<!-- ============================================================ -->
+<!-- 取消 Step 6 對頻判定邏輯，保留掃描相機功能                    -->
+<!-- 貼上位置：</body> 前面（最後一個 </script> 之後）              -->
+<!-- ============================================================ -->
+
+<script>
+// ================================================================
+// 1. 修改 language pack zh - 移除對頻判定相關文字
+// ================================================================
+// 在 langPack.zh 中，將 Step 6 改為以下內容（刪除 judgePassed/judgeFailed 等）：
+/*
+cardTitle6: "執行對頻總判定",
+inst6_1: "掃描【誓導QRCode】，啟動誓魂密鑰對頻總判定。",
+inst6_2: "系統將依據「誓名 × 誓資 × 誓圖」進行授權資料核實。",
+inst6_3: "凡無授權紀錄或未經審核者，皆視為「無效程序」。",
+qrScanTitleStep6: "📷 請對準誓導 QR Code 掃描驗證",
+btnScanTextStep6: "📷 掃描 QR Code",
+qrResultTextStep6: "✅ 掃描成功！",
+cameraGuideTextStep6: "📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n ⚠️若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
+cardTitle6c: "誓魂對頻判定條件",
+judgeConditionText: "誓魂頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。",
+judgeNoteText: "⚠️ 若對頻未通過，系統將自動轉入補誓程序（懺悔補誓 × 七日循環 × 頻率再校）。",
+*/
+
+// ================================================================
+// 2. 修改 language pack en - 移除對頻判定相關文字
+// ================================================================
+// 在 langPack.en 中，將 Step 6 改為以下內容：
+/*
+cardTitle6: "Execute Frequency Judgment",
+inst6_1: "Scan the 【Vow-Guidance QR Code】 to initiate Oath-Soul Key Frequency-Alignment Overall Assessment.",
+inst6_2: "The system will verify authorization data based on 「Oath-Name × Oath-Energy × Oath-Map」.",
+inst6_3: "Any individual without authorization records or without proper audit approval is regarded as an 「Invalid Procedure」.",
+qrScanTitleStep6: "📷 Please align with the Vow-Guidance QR Code for verification",
+btnScanTextStep6: "📷 Scan QR Code",
+qrResultTextStep6: "✅ Scan successful!",
+cameraGuideTextStep6: "📷 Unable to launch the feature\n\n⚙️ Open your phone's \"Settings\"\n   → App Management\n   → Permissions → Camera → Change setting to \"Allow\"\n   → Open using a web browser (Chrome / Yahoo / Edge...)\n\n ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.",
+cardTitle6c: "Oath-Soul Frequency Judgment Conditions",
+judgeConditionText: "Oath-Soul Minimum Frequency Requirement：5D（U-200 Tier）.",
+judgeNoteText: "⚠️ If the frequency alignment is not passed, the system will automatically enter the Oath Renewal Procedure (Confession and Oath Renewal × Seven-Day Cycle × Frequency Recalibration).",
+*/
+
+// ================================================================
+// 3. 修改 goToStep6 - 保留掃描器初始化，移除對頻結果顯示
+// ================================================================
+function goToStep6() {
+    currentStep = 6;
+    document.getElementById('node5').classList.remove('active');
+    document.getElementById('node6').classList.add('active');
+    document.getElementById('panelStep5').classList.remove('active');
+    document.getElementById('panelStep6').classList.add('active');
+    document.getElementById('btnBack').classList.add('enabled');
+    const nextBtn = document.getElementById('btnNext');
+    if (nextBtn) { nextBtn.classList.remove('enabled'); nextBtn.disabled = true; }
+    document.getElementById('qrScanResultStep6').style.display = 'none';
+    document.getElementById('cameraGuideStep6').style.display = 'none';
+    const pageMarkerEl = document.getElementById('pageMarkerText');
+    if (pageMarkerEl) { pageMarkerEl.textContent = langPack[currentLang].pageMarkerStep6; }
+    switchLanguage(currentLang);
+}
+
+// ================================================================
+// 4. 修改 startScanning - Step 6 掃描成功只顯示成功，不執行判定
+// ================================================================
+// 在 startScanning 函式中，找到這段：
+/*
+if (step === 'step6') {
+    executeOathJudgmentByScan(decodedText);
+} else {
+    enableNextButton();
+}
+*/
+// 替換為：
+/*
+if (step === 'step6') {
+    // 只顯示掃描成功，啟用下一步
+    const qrResult = document.getElementById('qrScanResultStep6');
+    const qrResultText = document.getElementById('qrResultTextStep6');
+    if (qrResult) qrResult.style.display = 'block';
+    if (qrResultText) qrResultText.textContent = decodedText;
+    enableNextButton();
+} else {
+    enableNextButton();
+}
+*/
+
+// ================================================================
+// 5. 修改 handleNextClick - Step 6 改為顯示完成對話框
+// ================================================================
+// 在 handleNextClick 函式中，找到這一段：
+/*
+} else if (currentStep === 6) {
+    if (window._oathJudgmentPassed) {
+        openHudDialog(langPack[currentLang].dialogStep6Passed);
+    } else {
+        openHudDialog(langPack[currentLang].dialogStep6Failed);
+    }
+}
+*/
+// 替換為：
+/*
+} else if (currentStep === 6) {
+    openHudDialog(langPack[currentLang].dialogStepComplete);
+}
+*/
+
+// ================================================================
+// 6. 修改 switchLanguage - 保留掃描器相關文字
+// ================================================================
+// 在 switchLanguage 函式中，Step 6 相關區塊改為：
+/*
+document.getElementById('cardTitleText6').textContent = p.cardTitle6;
+document.getElementById('inst6_1').textContent = p.inst6_1;
+document.getElementById('inst6_2').textContent = p.inst6_2;
+document.getElementById('inst6_3').textContent = p.inst6_3;
+document.getElementById('qrScanTitleStep6').textContent = p.qrScanTitleStep6;
+document.getElementById('btnScanTextStep6').textContent = p.btnScanTextStep6;
+document.getElementById('qrResultTextStep6').textContent = p.qrResultTextStep6;
+document.getElementById('cameraGuideTextStep6').textContent = p.cameraGuideTextStep6;
+document.getElementById('cardTitle6c').textContent = p.cardTitle6c;
+document.getElementById('judgeConditionText').textContent = p.judgeConditionText;
+document.getElementById('judgeNoteText').textContent = p.judgeNoteText;
+*/
+
+// ================================================================
+// 7. 刪除 executeOathJudgmentByScan 函式（整個刪除）
+// ================================================================
+
+// ================================================================
+// 8. Step 6 面板 HTML - 保留 QR Code 掃描器
+// ================================================================
+// 將原本的 panelStep6 替換為以下內容（保留掃描器，移除結果顯示區）：
+/*
+<div class="step-panel" id="panelStep6">
+    <div class="hud-card">
+        <div class="card-title"><i class="fa-solid fa-scale-balanced"></i><span id="cardTitleText6">執行對頻總判定</span></div>
+        <div class="instruction-box">
+            <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_1">掃描【誓導QRCode】，啟動誓魂密鑰對頻總判定。</span></div>
+            <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_2">系統將依據「誓名 × 誓資 × 誓圖」進行授權資料核實。</span></div>
+            <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_3">凡無授權紀錄或未經審核者，皆視為「無效程序」。</span></div>
+        </div>
+    </div>
+
+    <div class="hud-card" id="qrScanCardStep6">
+        <div style="text-align:center; padding:10px 0;">
+            <div style="color:#d4af37; font-size:1rem; font-weight:bold; margin-bottom:12px;">
+                <span id="qrScanTitleStep6">📷 請對準誓導 QR Code 掃描驗證</span>
+            </div>
+            <div id="qr-reader-container-step6" style="width:100%; max-width:280px; margin:0 auto;"></div>
+            <button class="btn-restart" id="btnScanQRStep6" onclick="startQRScanner('step6')">
+                <i class="fa-solid fa-qrcode"></i>
+                <span id="btnScanTextStep6">📷 掃描 QR Code</span>
+            </button>
+            <div id="qrScanResultStep6" class="qr-result" style="display:none; margin-top:10px;">
+                <i class="fa-solid fa-check-circle"></i><span id="qrResultTextStep6">✅ 掃描成功！</span>
+            </div>
+            <div id="cameraGuideStep6" class="camera-guide" style="display:none; text-align:left; margin-top:12px;">
+                <span id="cameraGuideTextStep6">📷 無法啟動相機</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="hud-card">
+        <div class="card-title"><i class="fa-solid fa-circle-info"></i><span id="cardTitle6c">誓魂對頻判定條件</span></div>
+        <div style="background:rgba(212,175,55,0.04); border-left:3px solid #d4af37; padding:12px 16px; border-radius:8px;">
+            <p style="font-size:0.9rem; color:#e0e8f5; line-height:1.8;">
+                <span id="judgeConditionText">誓魂頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。</span>
+            </p>
+        </div>
+        <div style="margin-top:12px; background:rgba(0,191,255,0.04); border-left:3px solid #00bfff; padding:12px 16px; border-radius:8px;">
+            <p style="font-size:0.85rem; color:rgba(224,232,245,0.8); line-height:1.8;">
+                <span id="judgeNoteText">⚠️ 若對頻未通過，系統將自動轉入補誓程序（懺悔補誓 × 七日循環 × 頻率再校）。</span>
+            </p>
+        </div>
+    </div>
+</div>
+*/
+</script>
+<!-- ============================================================ -->
+<!-- 模板結束                                                      -->
+<!-- ============================================================ -->
 </body>
 </html>
