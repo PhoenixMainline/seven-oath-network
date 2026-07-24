@@ -69,21 +69,21 @@
             white-space: nowrap;
             user-select: none;
         }
-       .hud-container {
+     .hud-container {
     width: 100%;
     max-width: min(660px, 95vw);
-    height: min(98vh, 800px); /* 將 max-height 改為固定 height 或確保 flex 正常分配 */
+    max-height: 94vh; /* 修改這裡：改用 max-height 讓容器能根據內容自適應 */
     background: rgba(4, 13, 33, 0.4);
     border: 1.5px solid rgba(0, 191, 255, 0.3);
     box-shadow: 0 0 40px rgba(0, 191, 255, 0.15), inset 0 0 20px rgba(0, 191, 255, 0.05);
     border-radius: clamp(16px, 4vw, 28px);
-    padding: clamp(12px, 3vh, 35px);
+    padding: clamp(10px, 2vh, 25px); /* 微調內距讓空間更緊湊 */
     display: flex;
     flex-direction: column;
     position: relative;
     z-index: 3;
     margin: auto;
-    overflow: hidden; /* 避免整個外框滾動 */
+    overflow: hidden;
 }
         .hud-container::after {
             content: "";
@@ -475,24 +475,28 @@
             border-radius: 12px;
             width: 100%;
         }
-        @media (max-width: 480px) {
-            .hud-container { padding: 10px 8px !important; border-radius: 16px !important; max-height: 98vh !important; }
-            .hud-header { flex-wrap: wrap; }
-            .app-title { font-size: 0.75rem !important; max-width: 100% !important; }
-            .lang-btn { font-size: 0.5rem !important; padding: 2px 6px !important; }
-            .home-breadcrumb { font-size: 0.55rem !important; }
-            .flow-node { font-size: 0.4rem !important; padding: 2px 1px !important; }
-            .hud-card { padding: 8px 6px !important; }
-            .card-title { font-size: 0.7rem !important; }
-            .condition-item, .instruction-item { font-size: 0.6rem !important; }
-            .proclamation-text { font-size: 12px !important; }
-            .timer-number { font-size: 1.5rem !important; }
-            .timer-label { font-size: 0.6rem !important; }
-            .btn-start-centering, .btn-restart { padding: 4px 10px !important; font-size: 0.6rem !important; }
-            .btn-action { padding: 4px 8px !important; font-size: 0.55rem !important; min-height: 28px !important; }
-            .page-marker { font-size: 0.4rem !important; }
-            .watermark-text { font-size: 0.8rem !important; }
-        }
+       @media (max-width: 480px) {
+    body {
+        padding: 4px !important; /* 減少 body 邊距 */
+    }
+    .hud-container { 
+        padding: 8px 6px !important; 
+        border-radius: 12px !important; 
+        max-height: 98vh !important;
+        height: auto !important; /* 允許自動適應高度 */
+    }
+    .hud-header { 
+        margin-bottom: 6px !important;
+        padding-bottom: 4px !important;
+    }
+    .flow-nav {
+        margin-bottom: 8px !important;
+    }
+    .hud-footer {
+        margin-top: 8px !important;
+        padding-top: 6px !important;
+    }
+}
         .scan-success {
             animation: scanPulse 0.6s ease;
         }
