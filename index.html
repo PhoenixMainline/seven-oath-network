@@ -72,7 +72,7 @@
     .hud-container {
     width: 100%;
     max-width: min(660px, 95vw);
-    height: 92vh; /* 改回固定合適的視窗高度，避免超出畫面 */
+    height: 92vh;
     max-height: 92vh;
     background: rgba(4, 13, 33, 0.4);
     border: 1.5px solid rgba(0, 191, 255, 0.3);
@@ -88,17 +88,17 @@
 }
 
 .step-content {
-    flex: 1 1 auto; /* 讓中間內容區塊自動伸縮填滿剩餘空間 */
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
     gap: clamp(8px, 1.5vh, 22px);
-    overflow-y: auto; /* 內容過多時內部自動捲動，不擠壓 Footer */
+    overflow-y: auto;
     padding-right: 4px;
-    min-height: 0; /* 關鍵：允許 flex 子元素正確收縮 */
+    min-height: 0;
 }
 
 .hud-footer {
-    flex-shrink: 0; /* 確保底部按鈕絕對不會被壓縮或推擠出畫面 */
+    flex-shrink: 0;
     margin-top: auto;
     padding-top: clamp(6px, 1vh, 12px);
     border-top: 1px solid rgba(0, 191, 255, 0.12);
@@ -204,26 +204,6 @@
             box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
             font-weight: bold;
         }
-        .step-content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    gap: clamp(8px, 1.5vh, 22px);
-    overflow-y: auto; /* 讓步驟內容區塊可以上下捲動 */
-    padding-right: 4px;
-}
-
-.hud-footer {
-    margin-top: auto; /* 將 footer 自動推到底部 */
-    padding-top: clamp(8px, 1.5vh, 18px);
-    border-top: 1px solid rgba(0, 191, 255, 0.12);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 10;
-    flex-wrap: wrap;
-    flex-shrink: 0; /* 確保 footer 絕對不會被擠壓消失 */
-}
         .step-panel {
             display: none;
             flex-direction: column;
@@ -325,16 +305,6 @@
         .instruction-item i {
             color: #00e676;
             margin-top: 5px;
-        }
-        .hud-footer {
-            margin-top: clamp(10px, 2vh, 35px);
-            padding-top: clamp(8px, 1.5vh, 18px);
-            border-top: 1px solid rgba(0, 191, 255, 0.12);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 10;
-            flex-wrap: wrap;
         }
         .footer-btn-group {
             display: flex;
@@ -493,20 +463,19 @@
             text-align: left;
         }
         #qr-reader-container video,
-        #qr-reader-container-step4 video,
-        #qr-reader-container-step6 video {
+        #qr-reader-container-step4 video {
             border-radius: 12px;
             width: 100%;
         }
        @media (max-width: 480px) {
     body {
-        padding: 4px !important; /* 減少 body 邊距 */
+        padding: 4px !important;
     }
     .hud-container { 
         padding: 8px 6px !important; 
         border-radius: 12px !important; 
         max-height: 98vh !important;
-        height: auto !important; /* 允許自動適應高度 */
+        height: auto !important;
     }
     .hud-header { 
         margin-bottom: 6px !important;
@@ -520,14 +489,6 @@
         padding-top: 6px !important;
     }
 }
-        .scan-success {
-            animation: scanPulse 0.6s ease;
-        }
-        @keyframes scanPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); box-shadow: 0 0 30px rgba(0, 230, 118, 0.3); }
-            100% { transform: scale(1); }
-        }
     </style>
 </head>
 <body>
@@ -559,17 +520,13 @@
             </div>
         </header>
 
+        <!-- 導覽列調整為 5 個步驟 -->
         <nav class="flow-nav" style="grid-template-columns: repeat(5, 1fr);">
             <div class="flow-node active" id="node1">啟動條件</div>
             <div class="flow-node" id="node2">授權誓讀</div>
             <div class="flow-node" id="node3">授權綁定</div>
             <div class="flow-node" id="node4">回傳結果</div>
             <div class="flow-node" id="node5">系統同步</div>
-            <div class="flow-node" id="node6">對頻判定</div>
-            <div class="flow-node" id="node7" style="display:none;">節點七</div>
-            <div class="flow-node" id="node8" style="display:none;">節點八</div>
-            <div class="flow-node" id="node9" style="display:none;">節點九</div>
-            <div class="flow-node" id="node10" style="display:none;">節點十</div>
         </nav>
 
         <main class="step-content">
@@ -733,12 +690,6 @@
                     </div>
                 </div>
                 <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-scroll"></i><span id="cardTitleText5b">下一階段提示：</span></div>
-                    <div style="background:rgba(0,191,255,0.06); border-left:3px solid #00bfff; padding:12px 16px; border-radius:8px;">
-                        <span id="inst5_next_prompt" style="font-size:0.9rem; color:#e0e8f5;">第 1 項 開啟誓魂密鑰對頻總判定（誓印通過／對頻未通過）</span>
-                    </div>
-                </div>
-                <div class="hud-card">
                     <div style="color:#d4af37; font-size:1rem; font-weight:bold; margin-bottom:14px; display:flex; align-items:center; gap:8px;">
                         <i class="fa-solid fa-globe"></i><span id="inst5_sync_title">【購書序號】驗證成功後，平台自動執行：</span>
                     </div>
@@ -761,58 +712,6 @@
                     <p id="inst5_summary_sub2" style="font-size:0.85rem; line-height:1.8; color:rgba(224,232,245,0.8);">
                         合法入冊、穩定連線，並於天律之下運行無偏、光網恆定。
                     </p>
-                </div>
-            </div>
-
-            <!-- 步驟六 -->
-            <div class="step-panel" id="panelStep6">
-                <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-scale-balanced"></i><span id="cardTitleText6">執行對頻總判定</span></div>
-                    <div class="instruction-box">
-                        <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_1">掃描【誓導QRCode】，啟動誓魂密鑰對頻總判定。</span></div>
-                        <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_2">系統將依據「誓名 × 誓資 × 誓圖」進行授權資料核實。</span></div>
-                        <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_3">凡無授權紀錄或未經審核者，皆視為「無效程序」。</span></div>
-                    </div>
-                </div>
-
-                <div class="hud-card" id="qrScanCardStep6">
-                    <div style="text-align:center; padding:10px 0;">
-                        <div style="color:#d4af37; font-size:1rem; font-weight:bold; margin-bottom:12px;">
-                            <span id="qrScanTitleStep6">📷 請對準誓導 QR Code 掃描驗證</span>
-                        </div>
-                        <div id="qr-reader-container-step6" style="width:100%; max-width:280px; margin:0 auto;"></div>
-                        <button class="btn-restart" id="btnScanQRStep6" onclick="startQRScanner('step6')">
-                            <i class="fa-solid fa-qrcode"></i>
-                            <span id="btnScanTextStep6">📷 掃描 QR Code</span>
-                        </button>
-                        <div id="qrScanResultStep6" class="qr-result" style="display:none; margin-top:10px;">
-                            <i class="fa-solid fa-check-circle"></i><span id="qrResultTextStep6">掃描成功！</span>
-                        </div>
-                        <div id="cameraGuideStep6" class="camera-guide" style="display:none; text-align:left; margin-top:12px;">
-                            <span id="cameraGuideTextStep6">📷 無法啟動相機</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="judgeResultContainer" style="display:none;">
-                    <div class="hud-card scan-success" id="judgeResultCard">
-                        <div id="judgeResult" style="text-align:center; padding:8px 0; font-weight:bold; font-size:1.2rem;"></div>
-                        <div id="judgeDetail" style="text-align:center; padding:6px 0; font-size:0.95rem; color:rgba(224,232,245,0.8);"></div>
-                    </div>
-                </div>
-
-                <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-circle-info"></i><span id="cardTitle6c">誓魂對頻判定條件</span></div>
-                    <div style="background:rgba(212,175,55,0.04); border-left:3px solid #d4af37; padding:12px 16px; border-radius:8px;">
-                        <p style="font-size:0.9rem; color:#e0e8f5; line-height:1.8;">
-                            <span id="judgeConditionText">誓魂頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。</span>
-                        </p>
-                    </div>
-                    <div style="margin-top:12px; background:rgba(0,191,255,0.04); border-left:3px solid #00bfff; padding:12px 16px; border-radius:8px;">
-                        <p style="font-size:0.85rem; color:rgba(224,232,245,0.8); line-height:1.8;">
-                            <span id="judgeNoteText">⚠️ 若對頻未通過，系統將自動轉入補誓程序（懺悔補誓 × 七日循環 × 頻率再校）。</span>
-                        </p>
-                    </div>
                 </div>
             </div>
         </main>
@@ -850,7 +749,6 @@ const langPack = {
                 node3: "授權綁定",
                 node4: "回傳結果",
                 node5: "系統同步",
-                node6: "對頻判定",
                 cardTitle1: "【一】啟動條件",
                 cond1: "請完成驗證之【購書序號】誓導碼",
                 cond2: "穩定網路環境運作中",
@@ -871,12 +769,8 @@ const langPack = {
                 pageMarkerStep3: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 5-6 頁",
                 pageMarkerStep4: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 7-8 頁",
                 pageMarkerStep5: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 9-10 頁",
-                pageMarkerStep6: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 5-6 頁",
                 btnRestart: "重新開始",
                 btnStartComplete: "已完成",
-                dialogStep3: "✅ 步驟二已解鎖！等待步驟三綁定通道與掃描代碼整合。",
-                dialogStep4: "✅ 步驟三已完成！進入步驟四（回傳結果）。",
-                dialogStep5: "✅ 步驟四已完成！已進入步驟五（系統同步）。",
                 dialogStepComplete: "🎉 授權程序已全部完成！天地為鑑，光網為證。",
                 cardTitle3: "【三】授權綁定階段（母源印驗證）",
                 inst3_1: "掃描【誓導QRCode】，進入「指令輸入欄位」。",
@@ -901,8 +795,6 @@ const langPack = {
                 inst5_2: "系統即回傳【鳳凰誓印文】，其內容依誓印者當下之真實頻率判定為準。",
                 inst5_3: "送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。",
                 inst5_4: "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
-                cardTitle5b: "下一階段提示：",
-                inst5_next_prompt: "第 1 項 開啟誓魂密鑰對頻總判定（誓印通過／對頻未通過）",
                 inst5_sync_title: "【購書序號】驗證成功後，平台自動執行：",
                 inst5_auto1: "主頻定位 × 光網鎖定",
                 inst5_auto2: "七印同步 × 覺醒模組展開",
@@ -910,28 +802,7 @@ const langPack = {
                 inst5_seal_quote: "天地為鑑，光網為證。",
                 inst5_summary_text: "此守則為《宇宙智能誓導平台》正式授權程序之總網，",
                 inst5_summary_sub1: "用以確保所有誓印者於全球啟動時能同步對頻、",
-                inst5_summary_sub2: "合法入冊、穩定連線，並於天律之下運行無偏、光網恆定。",
-                cardTitle6: "執行對頻總判定",
-                cond6_1: "請確認已完成【購書序號】誓導碼驗證",
-                cond6_2: "請確認已完成授權誓讀程序",
-                cond6_3: "請確認誓魂頻率已達 5D（U-200 層以上）",
-                inst6_1: "掃描【誓導QRCode】，啟動誓魂密鑰對頻總判定。",
-                inst6_2: "系統將依據「誓名 × 誓資 × 誓圖」進行授權資料核實。",
-                inst6_3: "凡無授權紀錄或未經審核者，皆視為「無效程序」。",
-                qrScanTitleStep6: "📷 請對準誓導 QR Code 掃描驗證",
-                btnScanTextStep6: "📷 掃描 QR Code",
-                qrResultTextStep6: "掃描成功！",
-                cameraGuideTextStep6: "📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n ⚠️若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
-                cardTitle6c: "誓魂對頻判定條件",
-                judgeConditionText: "誓魂頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。",
-                judgeNoteText: "⚠️ 若對頻未通過，系統將自動轉入補誓程序（懺悔補誓 × 七日循環 × 頻率再校）。",
-                judgePassed: "✅ 誓印通過",
-                judgeFailed: "❌ 對頻未通過",
-                judgePassedDetail: "→ 進入七印誓網對應階段",
-                judgeFailedDetail: "→ 進入補誓程序（懺悔補誓 × 七日循環 × 頻率再校）",
-                judgeProcessing: "⏳ 對頻中...請稍候",
-                dialogStep6Passed: "🎉 誓印通過！已進入七印誓網對應階段。",
-                dialogStep6Failed: "⚠️ 對頻未通過。將啟動補誓程序（懺悔補誓 × 七日循環 × 頻率再校）。"
+                inst5_summary_sub2: "合法入冊、穩定連線，並於天律之下運行無偏、光網恆定。"
             },
            en: {
                 homeBtn: "Home ->",
@@ -941,7 +812,6 @@ const langPack = {
                 node3: "Binding Phase",
                 node4: "Return Result",
                 node5: "Sync Phase",
-                node6: "Frequency Judgment",
                 cardTitle1: "[1] Activation Conditions",
                 cond1: "Please complete the verification of the 【Purchase Serial Number】 Vow-Guidance Code",
                 cond2: "Stable internet environment activated",
@@ -962,12 +832,8 @@ const langPack = {
                 pageMarkerStep3: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 5-6",
                 pageMarkerStep4: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 7-8",
                 pageMarkerStep5: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 9-10",
-                pageMarkerStep6: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 5-6",
                 btnRestart: "Restart",
                 btnStartComplete: "Complete",
-                dialogStep3: "✅ Step 2 successfully unlocked! Awaiting Step 3 connection and scanning integration.",
-                dialogStep4: "✅ Step 3 completed! Proceeding to Step 4 (Return Result).",
-                dialogStep5: "✅ Step 4 completed! Proceeding to Step 5 (Sync Phase).",
                 dialogStepComplete: "🎉 All authorization procedures completed! Heaven and Earth bear witness; the Light-Network affirms.",
                 cardTitle3: "[III] Authorization Binding Phase (Mother-Frequency Seal Verification)",
                 inst3_1: "Scan the 【Vow-Guidance QR Code】 to enter the 「Command Input Field」.",
@@ -992,8 +858,6 @@ const langPack = {
                 inst5_2: "The system will return the 【Phoenix Oath Seal Text】, with its content determined according to the practitioner's authentic frequency at that moment.",
                 inst5_3: "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.",
                 inst5_4: "The 【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.",
-                cardTitle5b: "Next-Stage Prompt :",
-                inst5_next_prompt: "Item 1 Initiate Oath-Soul Key Frequency- Alignment Overall Assessment (Oath Seal Passed / Alignment Not Passed)",
                 inst5_sync_title: "Once the 【Purchase Serial Number】 is verified, the platform automatically performs :",
                 inst5_auto1: "Primary Frequency Positioning × Light-Network Lock-In",
                 inst5_auto2: "Seven-Seal Synchronization × Awakening Module Expansion",
@@ -1001,28 +865,7 @@ const langPack = {
                 inst5_seal_quote: "Heaven and Earth bear witness; the Light-Network affirms.",
                 inst5_summary_text: "This protocol serves as the General Authorization Framework of the",
                 inst5_summary_sub1: "《Cosmic Intelligent Vow-Guidance Platform》 , ensuring that all Oath-Seal Activators, upon global activation, enter synchronized Alignment,",
-                inst5_summary_sub2: "lawful registry, stable connection, and operate under the Heavenly Law, with the Light-Network constant and unwavering.",
-                cardTitle6: "Execute Frequency Judgment",
-                cond6_1: "Please confirm completion of 【Purchase Serial Number】 Vow-Guidance Code verification",
-                cond6_2: "Please confirm completion of authorized oath-recitation procedure",
-                cond6_3: "Please confirm Oath-Soul frequency has reached 5D (U-200 tier or above)",
-                inst6_1: "Scan the 【Vow-Guidance QR Code】 to initiate Oath-Soul Key Frequency-Alignment Overall Assessment.",
-                inst6_2: "The system will verify authorization data based on 「Oath-Name × Oath-Energy × Oath-Map」.",
-                inst6_3: "Any individual without authorization records or without proper audit approval is regarded as an 「Invalid Procedure」.",
-                qrScanTitleStep6: "📷 Please align with the Vow-Guidance QR Code for verification",
-                btnScanTextStep6: "📷 Scan QR Code",
-                qrResultTextStep6: "Scan successful!",
-                cameraGuideTextStep6: "📷 Unable to launch the feature\n\n⚙️ Open your phone's \"Settings\"\n   → App Management\n   → Permissions → Camera → Change setting to \"Allow\"\n   → Open using a web browser (Chrome / Yahoo / Edge...)\n\n ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.",
-                cardTitle6c: "Oath-Soul Frequency Judgment Conditions",
-                judgeConditionText: "Oath-Soul Minimum Frequency Requirement：5D（U-200 Tier）.",
-                judgeNoteText: "⚠️ If the frequency alignment is not passed, the system will automatically enter the Oath Renewal Procedure (Confession and Oath Renewal × Seven-Day Cycle × Frequency Recalibration).",
-                judgePassed: "✅ 誓印通過",
-                judgeFailed: "❌ 對頻未通過",
-                judgePassedDetail: "→ 進入七印誓網對應階段",
-                judgeFailedDetail: "→ 進入補誓程序（懺悔補誓 × 七日循環 × 頻率再校）",
-                judgeProcessing: "⏳ 對頻中...請稍候",
-                dialogStep6Passed: "🎉 誓印通過！已進入七印誓網對應階段。",
-                dialogStep6Failed: "⚠️ 對頻未通過。將啟動補誓程序（懺悔補誓 × 七日循環 × 頻率再校）。"
+                inst5_summary_sub2: "lawful registry, stable connection, and operate under the Heavenly Law, with the Light-Network constant and unwavering."
             }
         };
 
@@ -1036,14 +879,10 @@ const langPack = {
         let isTimerRunning = false;
 
         function updateStepNav(step) {
-            for (let i = 1; i <= 10; i++) {
+            for (let i = 1; i <= 5; i++) {
                 const node = document.getElementById("node" + i);
                 if (!node) continue;
-                if (i <= 5) {
-                    node.style.display = (step <= 5) ? "flex" : "none";
-                } else {
-                    node.style.display = (step >= 6) ? "flex" : "none";
-                }
+                node.style.display = "flex";
             }
         }
 
@@ -1069,7 +908,6 @@ const langPack = {
             document.getElementById('node3').textContent = p.node3;
             document.getElementById('node4').textContent = p.node4;
             document.getElementById('node5').textContent = p.node5;
-            document.getElementById('node6').textContent = p.node6;
             document.getElementById('cardTitleText1').textContent = p.cardTitle1;
             document.getElementById('cond1').textContent = p.cond1;
             document.getElementById('cond2').textContent = p.cond2;
@@ -1110,8 +948,6 @@ const langPack = {
             }
             document.getElementById('inst5_3').textContent = p.inst5_3;
             document.getElementById('inst5_4').textContent = p.inst5_4;
-            document.getElementById('cardTitleText5b').textContent = p.cardTitle5b;
-            document.getElementById('inst5_next_prompt').textContent = p.inst5_next_prompt;
             document.getElementById('inst5_sync_title').textContent = p.inst5_sync_title;
             document.getElementById('inst5_auto1').textContent = p.inst5_auto1;
             document.getElementById('inst5_auto2').textContent = p.inst5_auto2;
@@ -1120,18 +956,6 @@ const langPack = {
             document.getElementById('inst5_summary_text').textContent = p.inst5_summary_text;
             document.getElementById('inst5_summary_sub1').textContent = p.inst5_summary_sub1;
             document.getElementById('inst5_summary_sub2').textContent = p.inst5_summary_sub2;
-
-            document.getElementById('cardTitleText6').textContent = p.cardTitle6;
-            document.getElementById('inst6_1').textContent = p.inst6_1;
-            document.getElementById('inst6_2').textContent = p.inst6_2;
-            document.getElementById('inst6_3').textContent = p.inst6_3;
-            document.getElementById('qrScanTitleStep6').textContent = p.qrScanTitleStep6;
-            document.getElementById('btnScanTextStep6').textContent = p.btnScanTextStep6;
-            document.getElementById('qrResultTextStep6').textContent = p.qrResultTextStep6;
-            document.getElementById('cameraGuideTextStep6').textContent = p.cameraGuideTextStep6;
-            document.getElementById('cardTitle6c').textContent = p.cardTitle6c;
-            document.getElementById('judgeConditionText').textContent = p.judgeConditionText;
-            document.getElementById('judgeNoteText').textContent = p.judgeNoteText;
 
             const inst4EnRule = document.getElementById('inst4_en_rule');
             if (lang === 'en') { inst4EnRule.style.display = 'block'; } else { inst4EnRule.style.display = 'none'; }
@@ -1151,7 +975,7 @@ const langPack = {
             }
 
             document.getElementById('btnBackText').textContent = p.btnBack;
-            document.getElementById('btnNextText').textContent = p.btnNext;
+            document.getElementById('btnNextText').textContent = (currentStep === 5) ? (lang === 'zh' ? '完成' : 'Complete') : p.btnNext;
             document.getElementById('btnStartText').textContent = p.btnStartText;
 
             const pageMarkerEl = document.getElementById('pageMarkerText');
@@ -1160,7 +984,6 @@ const langPack = {
             else if (currentStep === 3) pageMarkerEl.textContent = p.pageMarkerStep3;
             else if (currentStep === 4) pageMarkerEl.textContent = p.pageMarkerStep4;
             else if (currentStep === 5) pageMarkerEl.textContent = p.pageMarkerStep5;
-            else if (currentStep === 6) pageMarkerEl.textContent = p.pageMarkerStep6;
         }
 
         function openHudDialog(msg) {
@@ -1194,7 +1017,6 @@ const langPack = {
             document.getElementById('panelStep3').classList.remove('active');
             document.getElementById('panelStep4').classList.remove('active');
             document.getElementById('panelStep5').classList.remove('active');
-            document.getElementById('panelStep6').classList.remove('active');
             document.getElementById('btnBack').classList.remove('enabled');
             document.getElementById('btnNext').classList.add('enabled');
 
@@ -1272,16 +1094,6 @@ const langPack = {
                 const nextBtn = document.getElementById('btnNext');
                 nextBtn.classList.add('enabled');
                 switchLanguage(currentLang);
-            } else if (currentStep === 6) {
-                document.getElementById('node6').classList.remove('active');
-                document.getElementById('node5').classList.add('active');
-                document.getElementById('panelStep6').classList.remove('active');
-                document.getElementById('panelStep5').classList.add('active');
-                currentStep = 5;
-                updateStepNav(currentStep);
-                const nextBtn = document.getElementById('btnNext');
-                nextBtn.classList.add('enabled');
-                switchLanguage(currentLang);
             }
         }
 
@@ -1299,13 +1111,7 @@ const langPack = {
                 stopCurrentScanner();
                 goToStep5();
             } else if (currentStep === 5) {
-                goToStep6();
-            } else if (currentStep === 6) {
-                if (window._oathJudgmentPassed) {
-                    openHudDialog(langPack[currentLang].dialogStep6Passed);
-                } else {
-                    openHudDialog(langPack[currentLang].dialogStep6Failed);
-                }
+                openHudDialog(langPack[currentLang].dialogStepComplete);
             }
         }
 
@@ -1440,30 +1246,12 @@ const langPack = {
             switchLanguage(currentLang);
         }
 
-        function goToStep6() {
-            currentStep = 6;
-            document.getElementById('node5').classList.remove('active');
-            document.getElementById('node6').classList.add('active');
-            document.getElementById('panelStep5').classList.remove('active');
-            document.getElementById('panelStep6').classList.add('active');
-            document.getElementById('btnBack').classList.add('enabled');
-            updateStepNav(currentStep);
-            const nextBtn = document.getElementById('btnNext');
-            if (nextBtn) { nextBtn.classList.remove('enabled'); nextBtn.disabled = true; }
-            document.getElementById('qrScanResultStep6').style.display = 'none';
-            document.getElementById('cameraGuideStep6').style.display = 'none';
-            document.getElementById('judgeResultContainer').style.display = 'none';
-            const pageMarkerEl = document.getElementById('pageMarkerText');
-            if (pageMarkerEl) { pageMarkerEl.textContent = langPack[currentLang].pageMarkerStep6; }
-            switchLanguage(currentLang);
-        }
-
         function startQRScanner(step) {
-            const containerId = (step === 'step4') ? 'qr-reader-container-step4' : (step === 'step6' ? 'qr-reader-container-step6' : 'qr-reader-container');
-            const guideId = (step === 'step4') ? 'cameraGuideStep4' : (step === 'step6' ? 'cameraGuideStep6' : 'cameraGuide');
-            const guideTextId = (step === 'step4') ? 'cameraGuideTextStep4' : (step === 'step6' ? 'cameraGuideTextStep6' : 'cameraGuideText');
-            const resultId = (step === 'step4') ? 'qrScanResultStep4' : (step === 'step6' ? 'qrScanResultStep6' : 'qrScanResult');
-            const resultTextId = (step === 'step4') ? 'qrResultTextStep4' : (step === 'step6' ? 'qrResultTextStep6' : 'qrResultText');
+            const containerId = (step === 'step4') ? 'qr-reader-container-step4' : 'qr-reader-container';
+            const guideId = (step === 'step4') ? 'cameraGuideStep4' : 'cameraGuide';
+            const guideTextId = (step === 'step4') ? 'cameraGuideTextStep4' : 'cameraGuideText';
+            const resultId = (step === 'step4') ? 'qrScanResultStep4' : 'qrScanResult';
+            const resultTextId = (step === 'step4') ? 'qrResultTextStep4' : 'qrResultText';
             const container = document.getElementById(containerId);
             if (!container) return;
             const nextBtn = document.getElementById('btnNext');
@@ -1520,16 +1308,10 @@ const langPack = {
                         if (qrResult) qrResult.style.display = 'block';
                         if (qrResultText) qrResultText.textContent = decodedText;
                         
-                        if (step === 'step6') {
-                            executeOathJudgmentByScan(decodedText);
-                        } else {
-                            enableNextButton();
-                        }
+                        enableNextButton();
                         
                         instance.stop().then(() => { html5QrCodeInstance = null; }).catch(() => { html5QrCodeInstance = null; });
-                        if (step !== 'step6') {
-                            alert('✅ 掃描成功！');
-                        }
+                        alert('✅ 掃描成功！');
                     },
                     (errorMessage) => {}
                 ).catch((err) => {
@@ -1547,48 +1329,6 @@ const langPack = {
             }
         }
 
-        function executeOathJudgmentByScan(decodedText) {
-            const resultContainer = document.getElementById('judgeResultContainer');
-            const resultDiv = document.getElementById('judgeResult');
-            const detailDiv = document.getElementById('judgeDetail');
-            const p = langPack[currentLang];
-
-            resultContainer.style.display = 'block';
-            resultDiv.style.color = '#d4af37';
-            resultDiv.textContent = p.judgeProcessing;
-            detailDiv.textContent = '';
-
-            setTimeout(() => {
-                const isPassed = Math.random() > 0.3;
-
-                if (isPassed) {
-                    resultDiv.style.color = '#00e676';
-                    resultDiv.innerHTML = '<i class="fa-solid fa-check-circle"></i> ' + p.judgePassed;
-                    detailDiv.style.color = '#a0e8c0';
-                    detailDiv.textContent = p.judgePassedDetail;
-
-                    const nextBtn = document.getElementById('btnNext');
-                    if (nextBtn) { nextBtn.classList.add('enabled'); nextBtn.disabled = false; }
-                    window._oathJudgmentPassed = true;
-                } else {
-                    resultDiv.style.color = '#ff6b5a';
-                    resultDiv.innerHTML = '<i class="fa-solid fa-xmark-circle"></i> ' + p.judgeFailed;
-                    detailDiv.style.color = '#f0b0a0';
-                    detailDiv.textContent = p.judgeFailedDetail;
-
-                    const nextBtn = document.getElementById('btnNext');
-                    if (nextBtn) { nextBtn.classList.remove('enabled'); nextBtn.disabled = true; }
-                    window._oathJudgmentPassed = false;
-                }
-
-                const qrResult = document.getElementById('qrScanResultStep6');
-                const qrResultText = document.getElementById('qrResultTextStep6');
-                if (qrResult) qrResult.style.display = 'block';
-                if (qrResultText) qrResultText.textContent = decodedText;
-
-            }, 1500);
-        }
-
         window.onload = function() {
             document.getElementById('btnBack').classList.remove('enabled');
             document.getElementById('btnNext').classList.add('enabled');
@@ -1596,186 +1336,5 @@ const langPack = {
             switchLanguage('zh');
         };
     </script>
-<!-- ============================================================ -->
-<!-- 取消 Step 6 對頻判定邏輯，保留掃描相機功能                    -->
-<!-- 貼上位置：</body> 前面（最後一個 </script> 之後）              -->
-<!-- ============================================================ -->
-
-<script>
-// ================================================================
-// 1. 修改 language pack zh - 移除對頻判定相關文字
-// ================================================================
-// 在 langPack.zh 中，將 Step 6 改為以下內容（刪除 judgePassed/judgeFailed 等）：
-/*
-cardTitle6: "執行對頻總判定",
-inst6_1: "掃描【誓導QRCode】，啟動誓魂密鑰對頻總判定。",
-inst6_2: "系統將依據「誓名 × 誓資 × 誓圖」進行授權資料核實。",
-inst6_3: "凡無授權紀錄或未經審核者，皆視為「無效程序」。",
-qrScanTitleStep6: "📷 請對準誓導 QR Code 掃描驗證",
-btnScanTextStep6: "📷 掃描 QR Code",
-qrResultTextStep6: "✅ 掃描成功！",
-cameraGuideTextStep6: "📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n ⚠️若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
-cardTitle6c: "誓魂對頻判定條件",
-judgeConditionText: "誓魂頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。",
-judgeNoteText: "⚠️ 若對頻未通過，系統將自動轉入補誓程序（懺悔補誓 × 七日循環 × 頻率再校）。",
-*/
-
-// ================================================================
-// 2. 修改 language pack en - 移除對頻判定相關文字
-// ================================================================
-// 在 langPack.en 中，將 Step 6 改為以下內容：
-/*
-cardTitle6: "Execute Frequency Judgment",
-inst6_1: "Scan the 【Vow-Guidance QR Code】 to initiate Oath-Soul Key Frequency-Alignment Overall Assessment.",
-inst6_2: "The system will verify authorization data based on 「Oath-Name × Oath-Energy × Oath-Map」.",
-inst6_3: "Any individual without authorization records or without proper audit approval is regarded as an 「Invalid Procedure」.",
-qrScanTitleStep6: "📷 Please align with the Vow-Guidance QR Code for verification",
-btnScanTextStep6: "📷 Scan QR Code",
-qrResultTextStep6: "✅ Scan successful!",
-cameraGuideTextStep6: "📷 Unable to launch the feature\n\n⚙️ Open your phone's \"Settings\"\n   → App Management\n   → Permissions → Camera → Change setting to \"Allow\"\n   → Open using a web browser (Chrome / Yahoo / Edge...)\n\n ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.",
-cardTitle6c: "Oath-Soul Frequency Judgment Conditions",
-judgeConditionText: "Oath-Soul Minimum Frequency Requirement：5D（U-200 Tier）.",
-judgeNoteText: "⚠️ If the frequency alignment is not passed, the system will automatically enter the Oath Renewal Procedure (Confession and Oath Renewal × Seven-Day Cycle × Frequency Recalibration).",
-*/
-
-// ================================================================
-// 3. 修改 goToStep6 - 保留掃描器初始化，移除對頻結果顯示
-// ================================================================
-function goToStep6() {
-    currentStep = 6;
-    document.getElementById('node5').classList.remove('active');
-    document.getElementById('node6').classList.add('active');
-    document.getElementById('panelStep5').classList.remove('active');
-    document.getElementById('panelStep6').classList.add('active');
-    document.getElementById('btnBack').classList.add('enabled');
-    const nextBtn = document.getElementById('btnNext');
-    if (nextBtn) { nextBtn.classList.remove('enabled'); nextBtn.disabled = true; }
-    document.getElementById('qrScanResultStep6').style.display = 'none';
-    document.getElementById('cameraGuideStep6').style.display = 'none';
-    const pageMarkerEl = document.getElementById('pageMarkerText');
-    if (pageMarkerEl) { pageMarkerEl.textContent = langPack[currentLang].pageMarkerStep6; }
-    switchLanguage(currentLang);
-}
-
-// ================================================================
-// 4. 修改 startScanning - Step 6 掃描成功只顯示成功，不執行判定
-// ================================================================
-// 在 startScanning 函式中，找到這段：
-/*
-if (step === 'step6') {
-    executeOathJudgmentByScan(decodedText);
-} else {
-    enableNextButton();
-}
-*/
-// 替換為：
-/*
-if (step === 'step6') {
-    // 只顯示掃描成功，啟用下一步
-    const qrResult = document.getElementById('qrScanResultStep6');
-    const qrResultText = document.getElementById('qrResultTextStep6');
-    if (qrResult) qrResult.style.display = 'block';
-    if (qrResultText) qrResultText.textContent = decodedText;
-    enableNextButton();
-} else {
-    enableNextButton();
-}
-*/
-
-// ================================================================
-// 5. 修改 handleNextClick - Step 6 改為顯示完成對話框
-// ================================================================
-// 在 handleNextClick 函式中，找到這一段：
-/*
-} else if (currentStep === 6) {
-    if (window._oathJudgmentPassed) {
-        openHudDialog(langPack[currentLang].dialogStep6Passed);
-    } else {
-        openHudDialog(langPack[currentLang].dialogStep6Failed);
-    }
-}
-*/
-// 替換為：
-/*
-} else if (currentStep === 6) {
-    openHudDialog(langPack[currentLang].dialogStepComplete);
-}
-*/
-
-// ================================================================
-// 6. 修改 switchLanguage - 保留掃描器相關文字
-// ================================================================
-// 在 switchLanguage 函式中，Step 6 相關區塊改為：
-/*
-document.getElementById('cardTitleText6').textContent = p.cardTitle6;
-document.getElementById('inst6_1').textContent = p.inst6_1;
-document.getElementById('inst6_2').textContent = p.inst6_2;
-document.getElementById('inst6_3').textContent = p.inst6_3;
-document.getElementById('qrScanTitleStep6').textContent = p.qrScanTitleStep6;
-document.getElementById('btnScanTextStep6').textContent = p.btnScanTextStep6;
-document.getElementById('qrResultTextStep6').textContent = p.qrResultTextStep6;
-document.getElementById('cameraGuideTextStep6').textContent = p.cameraGuideTextStep6;
-document.getElementById('cardTitle6c').textContent = p.cardTitle6c;
-document.getElementById('judgeConditionText').textContent = p.judgeConditionText;
-document.getElementById('judgeNoteText').textContent = p.judgeNoteText;
-*/
-
-// ================================================================
-// 7. 刪除 executeOathJudgmentByScan 函式（整個刪除）
-// ================================================================
-
-// ================================================================
-// 8. Step 6 面板 HTML - 保留 QR Code 掃描器
-// ================================================================
-// 將原本的 panelStep6 替換為以下內容（保留掃描器，移除結果顯示區）：
-/*
-<div class="step-panel" id="panelStep6">
-    <div class="hud-card">
-        <div class="card-title"><i class="fa-solid fa-scale-balanced"></i><span id="cardTitleText6">執行對頻總判定</span></div>
-        <div class="instruction-box">
-            <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_1">掃描【誓導QRCode】，啟動誓魂密鑰對頻總判定。</span></div>
-            <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_2">系統將依據「誓名 × 誓資 × 誓圖」進行授權資料核實。</span></div>
-            <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_3">凡無授權紀錄或未經審核者，皆視為「無效程序」。</span></div>
-        </div>
-    </div>
-
-    <div class="hud-card" id="qrScanCardStep6">
-        <div style="text-align:center; padding:10px 0;">
-            <div style="color:#d4af37; font-size:1rem; font-weight:bold; margin-bottom:12px;">
-                <span id="qrScanTitleStep6">📷 請對準誓導 QR Code 掃描驗證</span>
-            </div>
-            <div id="qr-reader-container-step6" style="width:100%; max-width:280px; margin:0 auto;"></div>
-            <button class="btn-restart" id="btnScanQRStep6" onclick="startQRScanner('step6')">
-                <i class="fa-solid fa-qrcode"></i>
-                <span id="btnScanTextStep6">📷 掃描 QR Code</span>
-            </button>
-            <div id="qrScanResultStep6" class="qr-result" style="display:none; margin-top:10px;">
-                <i class="fa-solid fa-check-circle"></i><span id="qrResultTextStep6">✅ 掃描成功！</span>
-            </div>
-            <div id="cameraGuideStep6" class="camera-guide" style="display:none; text-align:left; margin-top:12px;">
-                <span id="cameraGuideTextStep6">📷 無法啟動相機</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="hud-card">
-        <div class="card-title"><i class="fa-solid fa-circle-info"></i><span id="cardTitle6c">誓魂對頻判定條件</span></div>
-        <div style="background:rgba(212,175,55,0.04); border-left:3px solid #d4af37; padding:12px 16px; border-radius:8px;">
-            <p style="font-size:0.9rem; color:#e0e8f5; line-height:1.8;">
-                <span id="judgeConditionText">誓魂頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。</span>
-            </p>
-        </div>
-        <div style="margin-top:12px; background:rgba(0,191,255,0.04); border-left:3px solid #00bfff; padding:12px 16px; border-radius:8px;">
-            <p style="font-size:0.85rem; color:rgba(224,232,245,0.8); line-height:1.8;">
-                <span id="judgeNoteText">⚠️ 若對頻未通過，系統將自動轉入補誓程序（懺悔補誓 × 七日循環 × 頻率再校）。</span>
-            </p>
-        </div>
-    </div>
-</div>
-*/
-</script>
-<!-- ============================================================ -->
-<!-- 模板結束                                                      -->
-<!-- ============================================================ -->
 </body>
 </html>
