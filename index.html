@@ -1314,5 +1314,498 @@
         switchLanguage('zh');
     };
     </script>
+<!-- ============================================================ -->
+<!-- Step 6 完整重新整理 + 版面修復                               -->
+<!-- 貼上位置：</body> 前面                                       -->
+<!-- ============================================================ -->
+
+<style>
+/* ===== 導航欄 6 欄 ===== */
+.flow-nav {
+    display: grid !important;
+    grid-template-columns: repeat(6, 1fr) !important;
+    gap: clamp(3px, 0.6vw, 6px) !important;
+}
+
+/* ===== 手機版每行 5 個 ===== */
+@media (max-width: 480px) {
+    .flow-nav {
+        grid-template-columns: repeat(5, 1fr) !important;
+        gap: 2px !important;
+    }
+    .flow-node {
+        font-size: 0.4rem !important;
+        padding: 2px 1px !important;
+        white-space: nowrap !important;
+    }
+}
+
+/* ===== 確保卡片內容不溢出 ===== */
+.hud-card {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 100% !important;
+}
+.instruction-item {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    font-size: clamp(0.7rem, 1.6vh, 0.95rem) !important;
+}
+.condition-item {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    font-size: clamp(0.7rem, 1.6vh, 0.95rem) !important;
+}
+</style>
+
+<script>
+// ================================================================
+// 1. 移除重複的 panelStep6（如果有）
+// ================================================================
+(function() {
+    // 移除所有重複的 panelStep6
+    const allPanels = document.querySelectorAll('#panelStep6');
+    if (allPanels.length > 1) {
+        for (let i = 1; i < allPanels.length; i++) {
+            allPanels[i].remove();
+        }
+    }
+    
+    // 移除所有重複的 node6
+    const allNodes = document.querySelectorAll('#node6');
+    if (allNodes.length > 1) {
+        for (let i = 1; i < allNodes.length; i++) {
+            allNodes[i].remove();
+        }
+    }
+    
+    // 確保只有一個 node6
+    const nav = document.querySelector('.flow-nav');
+    if (nav) {
+        let node6 = document.getElementById('node6');
+        if (!node6) {
+            const newNode = document.createElement('div');
+            newNode.className = 'flow-node';
+            newNode.id = 'node6';
+            newNode.textContent = '對頻判定';
+            nav.appendChild(newNode);
+        }
+        nav.style.gridTemplateColumns = 'repeat(6, 1fr)';
+    }
+})();
+
+// ================================================================
+// 2. 確保 Step 6 面板只有一個且內容正確
+// ================================================================
+// 如果 panelStep6 不存在或內容不對，重新建立
+(function() {
+    let panel6 = document.getElementById('panelStep6');
+    const stepContent = document.querySelector('.step-content');
+    if (!stepContent) return;
+    
+    // 如果沒有 panelStep6，建立一個
+    if (!panel6) {
+        panel6 = document.createElement('div');
+        panel6.className = 'step-panel';
+        panel6.id = 'panelStep6';
+        stepContent.appendChild(panel6);
+    }
+    
+    // 如果 panelStep6 是空的或內容不完整，重新填充
+    if (!panel6.querySelector('.hud-card')) {
+        panel6.innerHTML = `
+            <div class="hud-card">
+                <div class="card-title"><i class="fa-solid fa-scale-balanced"></i><span id="cardTitleText6">【六】誓魂密鑰對頻總判定</span></div>
+                <div class="instruction-box">
+                    <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst6_1">本模組隸屬《宇宙誓印覺醒工程 × 七印誓網》第一層級距，用以核實誓徒或願人是否完成「誓魂對頻程序」。</span></div>
+                    <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst6_2">系統依據「誓名 × 誓資 × 誓圖」等授權資料，判定是否達成合法誓印資格。</span></div>
+                    <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst6_3">凡無授權紀錄或未經審核者，皆視為「無效程序」：誓願不生效、誓責不成立、不得啟用《書令模組》。</span></div>
+                </div>
+            </div>
+
+            <div class="hud-card">
+                <div class="card-title"><i class="fa-solid fa-bolt"></i><span id="cardTitle6a">【啟動條件】</span></div>
+                <ul class="condition-list">
+                    <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond6_1">誓印者需完成平台登入並具備啟印資格</span></li>
+                    <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond6_2">須於主頻可識別層級達標（5D，U-200層以上）</span></li>
+                </ul>
+            </div>
+
+            <div class="hud-card" id="qrScanCardStep6">
+                <div class="card-title"><i class="fa-solid fa-qrcode"></i><span id="cardTitle6b">【掃描程序】</span></div>
+                <div class="instruction-box">
+                    <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_4">掃描【誓導QRCode】進入主對頻程序</span></div>
+                    <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_5">於平台「指令輸入位」輸入啟動指令，系統即時判定是否通過「誓魂主對應」</span></div>
+                    <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_6">誓印通過後，即可進入誓印模組正式程序</span></div>
+                </div>
+                <div style="text-align:center; padding:10px 0;">
+                    <div style="color:#d4af37; font-size:1rem; font-weight:bold; margin-bottom:12px;">
+                        <span id="qrScanTitleStep6">📷 請對準誓導 QR Code 掃描驗證</span>
+                    </div>
+                    <div id="qr-reader-container-step6" style="width:100%; max-width:280px; margin:0 auto;"></div>
+                    <button class="btn-restart" id="btnScanQRStep6" onclick="startQRScanner('step6')">
+                        <i class="fa-solid fa-qrcode"></i>
+                        <span id="btnScanTextStep6">📷 掃描 QR Code</span>
+                    </button>
+                    <div id="qrScanResultStep6" class="qr-result" style="display:none; margin-top:10px;">
+                        <i class="fa-solid fa-check-circle"></i><span id="qrResultTextStep6">掃描成功！</span>
+                    </div>
+                    <div id="cameraGuideStep6" class="camera-guide" style="display:none; text-align:left; margin-top:12px;">
+                        <span id="cameraGuideTextStep6">📷 無法啟動相機</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hud-card">
+                <div class="card-title"><i class="fa-solid fa-circle-info"></i><span id="cardTitle6c">誓魂對頻判定條件</span></div>
+                <div style="background:rgba(212,175,55,0.04); border-left:3px solid #d4af37; padding:12px 16px; border-radius:8px;">
+                    <p style="font-size:0.9rem; color:#e0e8f5; line-height:1.8;">
+                        <span id="judgeConditionText">對頻頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。</span>
+                    </p>
+                </div>
+                <div style="margin-top:12px; background:rgba(0,191,255,0.04); border-left:3px solid #00bfff; padding:12px 16px; border-radius:8px;">
+                    <p style="font-size:0.85rem; color:rgba(224,232,245,0.8); line-height:1.8;">
+                        <span id="judgeNoteText">⚠️ 若對頻未通過，系統將自動轉入補誓程序（憶悔補誓 × 七日循環 × 頻率再校）。</span>
+                    </p>
+                </div>
+            </div>
+        `;
+    }
+})();
+
+// ================================================================
+// 3. 確保 Step 6 語言包存在
+// ================================================================
+if (langPack && langPack.zh) {
+    if (!langPack.zh.node6) {
+        langPack.zh.node6 = "對頻判定";
+        langPack.zh.cardTitle6 = "【六】誓魂密鑰對頻總判定";
+        langPack.zh.cardTitle6a = "【啟動條件】";
+        langPack.zh.cardTitle6b = "【掃描程序】";
+        langPack.zh.cond6_1 = "誓印者需完成平台登入並具備啟印資格";
+        langPack.zh.cond6_2 = "須於主頻可識別層級達標（5D，U-200層以上）";
+        langPack.zh.inst6_1 = "本模組隸屬《宇宙誓印覺醒工程 × 七印誓網》第一層級距，用以核實誓徒或願人是否完成「誓魂對頻程序」。";
+        langPack.zh.inst6_2 = "系統依據「誓名 × 誓資 × 誓圖」等授權資料，判定是否達成合法誓印資格。";
+        langPack.zh.inst6_3 = "凡無授權紀錄或未經審核者，皆視為「無效程序」：誓願不生效、誓責不成立、不得啟用《書令模組》。";
+        langPack.zh.inst6_4 = "掃描【誓導QRCode】進入主對頻程序";
+        langPack.zh.inst6_5 = "於平台「指令輸入位」輸入啟動指令，系統即時判定是否通過「誓魂主對應」";
+        langPack.zh.inst6_6 = "誓印通過後，即可進入誓印模組正式程序";
+        langPack.zh.qrScanTitleStep6 = "📷 請對準誓導 QR Code 掃描驗證";
+        langPack.zh.btnScanTextStep6 = "📷 掃描 QR Code";
+        langPack.zh.qrResultTextStep6 = "掃描成功！";
+        langPack.zh.cameraGuideTextStep6 = "📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n ⚠️若仍無法使用，請自行手動掃描器掃描實體書 QR Code";
+        langPack.zh.cardTitle6c = "誓魂對頻判定條件";
+        langPack.zh.judgeConditionText = "對頻頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。";
+        langPack.zh.judgeNoteText = "⚠️ 若對頻未通過，系統將自動轉入補誓程序（憶悔補誓 × 七日循環 × 頻率再校）。";
+        langPack.zh.pageMarkerStep6 = "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 5-6 頁";
+        langPack.zh.dialogStep6Complete = "🎉 對頻判定已完成！請進入下一步。";
+    }
+}
+if (langPack && langPack.en) {
+    if (!langPack.en.node6) {
+        langPack.en.node6 = "Frequency Judgment";
+        langPack.en.cardTitle6 = "[VI] Oath-Soul Key Frequency-Alignment Overall Assessment";
+        langPack.en.cardTitle6a = "[Activation Conditions]";
+        langPack.en.cardTitle6b = "[Scanning Procedure]";
+        langPack.en.cond6_1 = "The Oath-Bearer must complete platform login and hold activation eligibility";
+        langPack.en.cond6_2 = "The Main-Frequency Recognition Tier must be met (5D, above U-200 level)";
+        langPack.en.inst6_1 = "This module belongs to the first-tier range of the 《Cosmic Vow-Seal Awakening Project × Seven-Seal Vow Network》 and is used to verify whether an Oath-Bearer or Aspirant has completed the 「Oath-Soul Alignment Protocol」.";
+        langPack.en.inst6_2 = "The system evaluates whether valid oath-authority has been established based on 「Oath-Name × Oath-Energy × Oath-Map」 authorization data.";
+        langPack.en.inst6_3 = "Any individual without authorization records or without proper audit approval is regarded as an 「Invalid Procedure」: Oath-intentions do not take effect, Oath-responsibility is not established, Access to the 《Scripture-Command Module》 is not permitted.";
+        langPack.en.inst6_4 = "Scan the 【Vow-Guidance QR Code】 to enter the Main-Alignment Protocol";
+        langPack.en.inst6_5 = "Enter the activation command into the platform's 「Command Input Field」; the system instantly evaluates whether the 「Oath-Soul Main-Frequency Correspondence」 is passed";
+        langPack.en.inst6_6 = "Once Alignment is approved, the user may proceed into the formal Oath-Seal Module";
+        langPack.en.qrScanTitleStep6 = "📷 Please align with the Vow-Guidance QR Code for verification";
+        langPack.en.btnScanTextStep6 = "📷 Scan QR Code";
+        langPack.en.qrResultTextStep6 = "Scan successful!";
+        langPack.en.cameraGuideTextStep6 = "📷 Unable to launch the feature\n\n⚙️ Open your phone's \"Settings\"\n   → App Management\n   → Permissions → Camera → Change setting to \"Allow\"\n   → Open using a web browser (Chrome / Yahoo / Edge...)\n\n ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.";
+        langPack.en.cardTitle6c = "Oath-Soul Frequency Judgment Conditions";
+        langPack.en.judgeConditionText = "Alignment frequency must reach 5D (U-200 Tier) or above to qualify for entry into the Seven-Seal Vow Network.";
+        langPack.en.judgeNoteText = "⚠️ If the frequency alignment is not passed, the system will automatically enter the Oath Renewal Procedure (Repentance Oath Renewal × Seven-Day Cycle × Frequency Recalibration).";
+        langPack.en.pageMarkerStep6 = "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 5-6";
+        langPack.en.dialogStep6Complete = "🎉 Frequency judgment completed! Please proceed to the next step.";
+    }
+}
+
+// ================================================================
+// 4. 確保 goToStep6 函式存在
+// ================================================================
+if (typeof goToStep6 !== 'function') {
+    window.goToStep6 = function() {
+        currentStep = 6;
+        if (document.getElementById('node5')) document.getElementById('node5').classList.remove('active');
+        if (document.getElementById('node6')) document.getElementById('node6').classList.add('active');
+        if (document.getElementById('panelStep5')) document.getElementById('panelStep5').classList.remove('active');
+        if (document.getElementById('panelStep6')) document.getElementById('panelStep6').classList.add('active');
+        if (document.getElementById('btnBack')) document.getElementById('btnBack').classList.add('enabled');
+        const nextBtn = document.getElementById('btnNext');
+        if (nextBtn) {
+            nextBtn.classList.add('enabled');
+            nextBtn.disabled = false;
+        }
+        if (document.getElementById('qrScanResultStep6')) document.getElementById('qrScanResultStep6').style.display = 'none';
+        if (document.getElementById('cameraGuideStep6')) document.getElementById('cameraGuideStep6').style.display = 'none';
+        const pageMarkerEl = document.getElementById('pageMarkerText');
+        if (pageMarkerEl) {
+            pageMarkerEl.textContent = (langPack[currentLang] && langPack[currentLang].pageMarkerStep6) || '📄 步驟六';
+        }
+        if (typeof switchLanguage === 'function') switchLanguage(currentLang);
+    };
+}
+
+// ================================================================
+// 5. 確保 handleNextClick 正確串接 Step 6
+// ================================================================
+if (typeof handleNextClick === 'function') {
+    // 完全重寫 handleNextClick
+    window.handleNextClick = function() {
+        if (currentStep === 1) {
+            if (typeof goToStep2 === 'function') goToStep2();
+        } else if (currentStep === 2) {
+            if (countdownTimer) clearInterval(countdownTimer);
+            if (startTimeout) clearTimeout(startTimeout);
+            if (typeof goToStep3 === 'function') goToStep3();
+        } else if (currentStep === 3) {
+            if (typeof stopCurrentScanner === 'function') stopCurrentScanner();
+            if (typeof goToStep4 === 'function') goToStep4();
+        } else if (currentStep === 4) {
+            if (typeof stopCurrentScanner === 'function') stopCurrentScanner();
+            if (typeof goToStep5 === 'function') goToStep5();
+        } else if (currentStep === 5) {
+            if (typeof goToStep6 === 'function') goToStep6();
+        } else if (currentStep === 6) {
+            const msg = (langPack && langPack[currentLang] && langPack[currentLang].dialogStep6Complete) 
+                ? langPack[currentLang].dialogStep6Complete 
+                : '🎉 對頻判定已完成！請進入下一步。';
+            if (typeof openHudDialog === 'function') openHudDialog(msg);
+        }
+    };
+}
+
+// ================================================================
+// 6. 確保 handleBackClick 正確返回
+// ================================================================
+if (typeof handleBackClick === 'function') {
+    const origBack = handleBackClick;
+    window.handleBackClick = function() {
+        if (typeof stopCurrentScanner === 'function') stopCurrentScanner();
+        if (currentStep === 2) {
+            if (countdownTimer) clearInterval(countdownTimer);
+            if (startTimeout) clearTimeout(startTimeout);
+            if (typeof returnToHome === 'function') returnToHome();
+        } else if (currentStep === 3) {
+            if (document.getElementById('qrScanResult')) document.getElementById('qrScanResult').style.display = 'none';
+            if (document.getElementById('cameraGuide')) document.getElementById('cameraGuide').style.display = 'none';
+            if (document.getElementById('node3')) document.getElementById('node3').classList.remove('active');
+            if (document.getElementById('node2')) document.getElementById('node2').classList.add('active');
+            if (document.getElementById('panelStep3')) document.getElementById('panelStep3').classList.remove('active');
+            if (document.getElementById('panelStep2')) document.getElementById('panelStep2').classList.add('active');
+            currentStep = 2;
+            if (countdownTimer) clearInterval(countdownTimer);
+            if (startTimeout) clearTimeout(startTimeout);
+            timerState = 'initial';
+            countdownSeconds = 10;
+            isTimerRunning = false;
+            const timerNumber = document.getElementById('timerNumber');
+            const timerLabel = document.getElementById('timerLabel');
+            const startBtn = document.getElementById('btnStartCentering');
+            const restartBtn = document.getElementById('btnRestart');
+            if (timerNumber) timerNumber.textContent = countdownSeconds;
+            if (timerLabel) timerLabel.textContent = '⏳ 等待開始';
+            if (timerNumber) timerNumber.classList.remove('complete');
+            if (startBtn) {
+                startBtn.disabled = false;
+                startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span>';
+            }
+            if (restartBtn) restartBtn.style.display = 'none';
+            const nextBtn = document.getElementById('btnNext');
+            if (nextBtn) nextBtn.classList.remove('enabled');
+            if (typeof switchLanguage === 'function') switchLanguage(currentLang);
+        } else if (currentStep === 4) {
+            if (document.getElementById('qrScanResultStep4')) document.getElementById('qrScanResultStep4').style.display = 'none';
+            if (document.getElementById('cameraGuideStep4')) document.getElementById('cameraGuideStep4').style.display = 'none';
+            if (document.getElementById('node4')) document.getElementById('node4').classList.remove('active');
+            if (document.getElementById('node3')) document.getElementById('node3').classList.add('active');
+            if (document.getElementById('panelStep4')) document.getElementById('panelStep4').classList.remove('active');
+            if (document.getElementById('panelStep3')) document.getElementById('panelStep3').classList.add('active');
+            currentStep = 3;
+            const nextBtn = document.getElementById('btnNext');
+            if (nextBtn) nextBtn.classList.add('enabled');
+            if (typeof switchLanguage === 'function') switchLanguage(currentLang);
+        } else if (currentStep === 5) {
+            if (document.getElementById('node5')) document.getElementById('node5').classList.remove('active');
+            if (document.getElementById('node4')) document.getElementById('node4').classList.add('active');
+            if (document.getElementById('panelStep5')) document.getElementById('panelStep5').classList.remove('active');
+            if (document.getElementById('panelStep4')) document.getElementById('panelStep4').classList.add('active');
+            currentStep = 4;
+            const nextBtn = document.getElementById('btnNext');
+            if (nextBtn) nextBtn.classList.add('enabled');
+            if (typeof switchLanguage === 'function') switchLanguage(currentLang);
+        } else if (currentStep === 6) {
+            if (document.getElementById('node6')) document.getElementById('node6').classList.remove('active');
+            if (document.getElementById('node5')) document.getElementById('node5').classList.add('active');
+            if (document.getElementById('panelStep6')) document.getElementById('panelStep6').classList.remove('active');
+            if (document.getElementById('panelStep5')) document.getElementById('panelStep5').classList.add('active');
+            currentStep = 5;
+            const nextBtn = document.getElementById('btnNext');
+            if (nextBtn) {
+                nextBtn.classList.add('enabled');
+                nextBtn.disabled = false;
+            }
+            if (typeof switchLanguage === 'function') switchLanguage(currentLang);
+        }
+    };
+}
+
+// ================================================================
+// 7. 修改 switchLanguage 支援 Step 6
+// ================================================================
+if (typeof switchLanguage === 'function') {
+    const origSwitch = switchLanguage;
+    window.switchLanguage = function(lang) {
+        origSwitch(lang);
+        const p = langPack[lang];
+        if (p) {
+            const map = {
+                'cardTitleText6': p.cardTitle6,
+                'cardTitle6a': p.cardTitle6a,
+                'cardTitle6b': p.cardTitle6b,
+                'cond6_1': p.cond6_1,
+                'cond6_2': p.cond6_2,
+                'inst6_1': p.inst6_1,
+                'inst6_2': p.inst6_2,
+                'inst6_3': p.inst6_3,
+                'inst6_4': p.inst6_4,
+                'inst6_5': p.inst6_5,
+                'inst6_6': p.inst6_6,
+                'qrScanTitleStep6': p.qrScanTitleStep6,
+                'btnScanTextStep6': p.btnScanTextStep6,
+                'qrResultTextStep6': p.qrResultTextStep6,
+                'cameraGuideTextStep6': p.cameraGuideTextStep6,
+                'cardTitle6c': p.cardTitle6c,
+                'judgeConditionText': p.judgeConditionText,
+                'judgeNoteText': p.judgeNoteText
+            };
+            for (const [id, text] of Object.entries(map)) {
+                const el = document.getElementById(id);
+                if (el) el.textContent = text;
+            }
+            const pageMarkerEl = document.getElementById('pageMarkerText');
+            if (pageMarkerEl) {
+                const steps = {
+                    1: p.pageMarkerStep1,
+                    2: p.pageMarkerStep2,
+                    3: p.pageMarkerStep3,
+                    4: p.pageMarkerStep4,
+                    5: p.pageMarkerStep5,
+                    6: p.pageMarkerStep6
+                };
+                if (steps[currentStep]) pageMarkerEl.textContent = steps[currentStep];
+            }
+        }
+    };
+}
+
+// ================================================================
+// 8. 確保 startQRScanner 支援 step6
+// ================================================================
+if (typeof startQRScanner === 'function') {
+    const origQR = startQRScanner;
+    window.startQRScanner = function(step) {
+        const containerId = (step === 'step4') ? 'qr-reader-container-step4' : (step === 'step6' ? 'qr-reader-container-step6' : 'qr-reader-container');
+        const guideId = (step === 'step4') ? 'cameraGuideStep4' : (step === 'step6' ? 'cameraGuideStep6' : 'cameraGuide');
+        const guideTextId = (step === 'step4') ? 'cameraGuideTextStep4' : (step === 'step6' ? 'cameraGuideTextStep6' : 'cameraGuideText');
+        const resultId = (step === 'step4') ? 'qrScanResultStep4' : (step === 'step6' ? 'qrScanResultStep6' : 'qrScanResult');
+        const resultTextId = (step === 'step4') ? 'qrResultTextStep4' : (step === 'step6' ? 'qrResultTextStep6' : 'qrResultText');
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        const nextBtn = document.getElementById('btnNext');
+        if (nextBtn) { nextBtn.classList.remove('enabled'); nextBtn.disabled = true; }
+        if (typeof stopCurrentScanner === 'function') {
+            stopCurrentScanner().then(() => {
+                container.innerHTML = '';
+                setTimeout(() => {
+                    if (typeof initScanner === 'function') {
+                        initScanner(containerId, guideId, guideTextId, resultId, resultTextId, step);
+                    }
+                }, 300);
+            });
+        }
+    };
+}
+
+// ================================================================
+// 9. 確保 startScanning 支援 step6
+// ================================================================
+if (typeof startScanning === 'function') {
+    const origScan = startScanning;
+    window.startScanning = function(containerId, guideId, resultId, resultTextId, config, step) {
+        try {
+            const instance = new Html5Qrcode(containerId);
+            html5QrCodeInstance = instance;
+            instance.start({ facingMode: "environment" }, config,
+                (decodedText) => {
+                    const qrResult = document.getElementById(resultId);
+                    const qrResultText = document.getElementById(resultTextId);
+                    if (qrResult) qrResult.style.display = 'block';
+                    if (qrResultText) qrResultText.textContent = decodedText;
+                    
+                    if (step === 'step6') {
+                        const qrResultStep6 = document.getElementById('qrScanResultStep6');
+                        const qrResultTextStep6 = document.getElementById('qrResultTextStep6');
+                        if (qrResultStep6) qrResultStep6.style.display = 'block';
+                        if (qrResultTextStep6) qrResultTextStep6.textContent = decodedText;
+                    }
+                    
+                    if (typeof enableNextButton === 'function') enableNextButton();
+                    
+                    instance.stop().then(() => { html5QrCodeInstance = null; }).catch(() => { html5QrCodeInstance = null; });
+                    alert('✅ 掃描成功！');
+                },
+                (errorMessage) => {}
+            ).catch((err) => {
+                console.error('掃描啟動失敗:', err);
+                if (typeof enableNextButton === 'function') enableNextButton();
+                const cameraGuide = document.getElementById(guideId);
+                if (cameraGuide) cameraGuide.style.display = 'block';
+                html5QrCodeInstance = null;
+            });
+        } catch (err) {
+            console.error('建立掃描器失敗:', err);
+            if (typeof enableNextButton === 'function') enableNextButton();
+            const cameraGuide = document.getElementById(guideId);
+            if (cameraGuide) cameraGuide.style.display = 'block';
+        }
+    };
+}
+
+// ================================================================
+// 10. 強制刷新
+// ================================================================
+// 更新 node6 文字
+const node6El = document.getElementById('node6');
+if (node6El) {
+    node6El.textContent = (langPack && langPack[currentLang] && langPack[currentLang].node6) || '對頻判定';
+}
+
+// 如果當前是 Step 6，強制顯示
+if (currentStep === 6) {
+    const panel6 = document.getElementById('panelStep6');
+    if (panel6) {
+        panel6.classList.add('active');
+        panel6.style.display = 'flex';
+    }
+}
+
+// 切換語言
+if (typeof switchLanguage === 'function') {
+    switchLanguage(currentLang);
+}
+
+console.log('✅ Step 6 已完全修復！');
+</script>
+<!-- ============================================================ -->
+<!-- 修復完成                                                      -->
+<!-- ============================================================ -->
 </body>
 </html>
