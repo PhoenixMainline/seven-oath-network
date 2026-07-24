@@ -1566,5 +1566,104 @@ const langPack = {
             switchLanguage('zh');
         };
     </script>
+<!-- ============================================================ -->
+<!-- 取消 Step 6 對頻誓印通過功能 完整修改模板                       -->
+<!-- ============================================================ -->
+
+<!-- ===== 1. 修改導航欄（將 flow-nav 內的 grid-template-columns 改為 6 欄） ===== -->
+<!-- 如果 flow-nav 已有 style="grid-template-columns: repeat(5, 1fr);"，改為： -->
+<!-- <nav class="flow-nav" style="grid-template-columns: repeat(6, 1fr);"> -->
+
+
+<!-- ===== 2. 步驟六面板（完整替換原本的 panelStep6） ===== -->
+<div class="step-panel" id="panelStep6">
+    <div class="hud-card">
+        <div class="card-title"><i class="fa-solid fa-scale-balanced"></i><span id="cardTitleText6">執行對頻總判定</span></div>
+        <div class="instruction-box">
+            <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_1">掃描【誓導QRCode】，啟動誓魂密鑰對頻總判定。</span></div>
+            <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_2">系統將依據「誓名 × 誓資 × 誓圖」進行授權資料核實。</span></div>
+            <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_3">凡無授權紀錄或未經審核者，皆視為「無效程序」。</span></div>
+        </div>
+    </div>
+
+    <div class="hud-card">
+        <div class="card-title"><i class="fa-solid fa-circle-info"></i><span id="cardTitle6c">誓魂對頻判定條件</span></div>
+        <div style="background:rgba(212,175,55,0.04); border-left:3px solid #d4af37; padding:12px 16px; border-radius:8px;">
+            <p style="font-size:0.9rem; color:#e0e8f5; line-height:1.8;">
+                <span id="judgeConditionText">誓魂頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。</span>
+            </p>
+        </div>
+        <div style="margin-top:12px; background:rgba(0,191,255,0.04); border-left:3px solid #00bfff; padding:12px 16px; border-radius:8px;">
+            <p style="font-size:0.85rem; color:rgba(224,232,245,0.8); line-height:1.8;">
+                <span id="judgeNoteText">⚠️ 若對頻未通過，系統將自動轉入補誓程序（懺悔補誓 × 七日循環 × 頻率再校）。</span>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+// ===== 3. 語言包修改（zh） 將 langPack.zh 內的 Step 6 改為以下內容 =====
+/*
+cardTitle6: "執行對頻總判定",
+inst6_1: "掃描【誓導QRCode】，啟動誓魂密鑰對頻總判定。",
+inst6_2: "系統將依據「誓名 × 誓資 × 誓圖」進行授權資料核實。",
+inst6_3: "凡無授權紀錄或未經審核者，皆視為「無效程序」。",
+cardTitle6c: "誓魂對頻判定條件",
+judgeConditionText: "誓魂頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。",
+judgeNoteText: "⚠️ 若對頻未通過，系統將自動轉入補誓程序（懺悔補誓 × 七日循環 × 頻率再校）。",
+*/
+
+// ===== 3. 語言包修改（en） 將 langPack.en 內的 Step 6 改為以下內容 =====
+/*
+cardTitle6: "Execute Frequency Judgment",
+inst6_1: "Scan the 【Vow-Guidance QR Code】 to initiate Oath-Soul Key Frequency-Alignment Overall Assessment.",
+inst6_2: "The system will verify authorization data based on 「Oath-Name × Oath-Energy × Oath-Map」.",
+inst6_3: "Any individual without authorization records or without proper audit approval is regarded as an 「Invalid Procedure」.",
+cardTitle6c: "Oath-Soul Frequency Judgment Conditions",
+judgeConditionText: "Oath-Soul Minimum Frequency Requirement：5D（U-200 Tier）.",
+judgeNoteText: "⚠️ If the frequency alignment is not passed, the system will automatically enter the Oath Renewal Procedure (Confession and Oath Renewal × Seven-Day Cycle × Frequency Recalibration).",
+*/
+
+// ===== 4. 刪除以下函式（如果存在） =====
+// - executeOathJudgmentByScan()
+// - 與 Step 6 QR Code 掃描相關的程式碼
+
+// ===== 5. 修改 handleNextClick（在現有函式內，將 currentStep === 6 改為顯示完成） =====
+/*
+} else if (currentStep === 6) {
+    openHudDialog(langPack[currentLang].dialogStepComplete);
+*/
+
+// ===== 6. 修改 goToStep6（移除 QR Code 掃描相關邏輯） =====
+/*
+function goToStep6() {
+    currentStep = 6;
+    document.getElementById('node5').classList.remove('active');
+    document.getElementById('node6').classList.add('active');
+    document.getElementById('panelStep5').classList.remove('active');
+    document.getElementById('panelStep6').classList.add('active');
+    document.getElementById('btnBack').classList.add('enabled');
+    const nextBtn = document.getElementById('btnNext');
+    if (nextBtn) { nextBtn.classList.add('enabled'); nextBtn.disabled = false; }
+    const pageMarkerEl = document.getElementById('pageMarkerText');
+    if (pageMarkerEl) { pageMarkerEl.textContent = langPack[currentLang].pageMarkerStep6; }
+    switchLanguage(currentLang);
+}
+*/
+
+// ===== 7. 修改 switchLanguage（Step 6 部分只保留文字，移除掃描器相關） =====
+/*
+document.getElementById('cardTitleText6').textContent = p.cardTitle6;
+document.getElementById('inst6_1').textContent = p.inst6_1;
+document.getElementById('inst6_2').textContent = p.inst6_2;
+document.getElementById('inst6_3').textContent = p.inst6_3;
+document.getElementById('cardTitle6c').textContent = p.cardTitle6c;
+document.getElementById('judgeConditionText').textContent = p.judgeConditionText;
+document.getElementById('judgeNoteText').textContent = p.judgeNoteText;
+*/
+</script>
+<!-- ============================================================ -->
+<!-- 模板結束                                                      -->
+<!-- ============================================================ -->
 </body>
 </html>
