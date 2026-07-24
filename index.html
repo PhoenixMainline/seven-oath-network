@@ -2187,5 +2187,82 @@ console.log('📷 請點擊「掃描 QR Code」按鈕啟動相機');
     console.log('✅ 分頁系統已啟動');
 })();
 </script>
+<script>
+// ============================================================
+// 分頁切換功能：同一步驟內每 5 項一組，切換時前一組隱藏
+// 使用方式：用 .page-group 包裝每 5 項，自動產生圓點切換
+// ============================================================
+
+(function() {
+    'use strict';
+
+    function initPagination() {
+        document.querySelectorAll('.hud-card').forEach(card => {
+            const groups = card.querySelectorAll('.page-group');
+            if (groups.length <= 1) return;
+
+            // 只顯示第一組
+            groups.forEach((g, idx) => {
+                g.style.display = idx === 0 ? 'block' : 'none';
+            });
+
+            // 建立分頁圓點
+            let dots = card.querySelector('.page-dots');
+            if (!dots) {
+                dots = document.createElement('div');
+                dots.className = 'page-dots';
+                dots.style.cssText = 'display:flex;justify-content:center;gap:10px;margin-top:16px;';
+                card.appendChild(dots);
+            }
+            dots.innerHTML = '';
+
+            groups.forEach((g, idx) => {
+                const dot = document.createElement('button');
+                dot.style.cssText = `
+                    width:10px;height:10px;border-radius:50%;border:none;
+                    background:${idx === 0 ? '#d4af37' : 'rgba(255,255,255,0.2)'};
+                    cursor:pointer;padding:0;flex-shrink:0;
+                    box-shadow:${idx === 0 ? '0 0 10px rgba(212,175,55,0.4)' : 'none'};
+                `;
+                dot.dataset.index = idx;
+                dot.addEventListener('click', function() {
+                    const parent = this.closest('.hud-card');
+                    const allGroups = parent.querySelectorAll('.page-group');
+                    const allDots = parent.querySelectorAll('.page-dots button');
+                    const target = parseInt(this.dataset.index);
+
+                    allGroups.forEach((g, i) => {
+                        g.style.display = i === target ? 'block' : 'none';
+                    });
+                    allDots.forEach((d, i) => {
+                        d.style.background = i === target ? '#d4af37' : 'rgba(255,255,255,0.2)';
+                        d.style.boxShadow = i === target ? '0 0 10px rgba(212,175,55,0.4)' : 'none';
+                    });
+                });
+                dots.appendChild(dot);
+            });
+        });
+    }
+
+    // 頁面載入初始化
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPagination);
+    } else {
+        initPagination();
+    }
+
+    // 監聽步驟切換後重新初始化
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('[onclick*="goToStep"], .flow-node, .btn-action.enabled');
+        if (btn) {
+            setTimeout(initPagination, 100);
+        }
+    });
+
+    console.log('✅ 分頁系統已啟動');
+})();
+</script>
+</body>
+</html>
 </body>
 </html>
