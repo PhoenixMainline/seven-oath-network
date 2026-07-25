@@ -517,21 +517,25 @@
             </div>
         </header>
 
-        <nav class="flow-nav">
+      <nav class="flow-nav">
 
-    <!-- 第一組 -->
-    <div class="flow-node active" id="node1">啟動條件</div>
-    <div class="flow-node" id="node2">授權誓讀</div>
-    <div class="flow-node" id="node3">授權綁定</div>
-    <div class="flow-node" id="node4">回傳結果</div>
-    <div class="flow-node" id="node5">系統同步</div>
+<div id="node1" class="flow-node">啟動條件</div>
+<div id="node2" class="flow-node">授權誓讀</div>
+<div id="node3" class="flow-node">授權綁定</div>
+<div id="node4" class="flow-node">回傳結果</div>
+<div id="node5" class="flow-node">系統同步</div>
 
-    <!-- 第二組 -->
-    <div class="flow-node group2" id="node6" style="display:none;">對頻判定</div>
-    <div class="flow-node group2" id="node7" style="display:none;">步驟7</div>
-    <div class="flow-node group2" id="node8" style="display:none;">步驟8</div>
-    <div class="flow-node group2" id="node9" style="display:none;">步驟9</div>
-    <div class="flow-node group2" id="node10" style="display:none;">完成</div>
+<div id="node6" class="flow-node">對頻判定</div>
+<div id="node7" class="flow-node">步驟7</div>
+<div id="node8" class="flow-node">步驟8</div>
+<div id="node9" class="flow-node">步驟9</div>
+<div id="node10" class="flow-node">步驟10</div>
+
+<div id="node11" class="flow-node">步驟11</div>
+<div id="node12" class="flow-node">步驟12</div>
+<div id="node13" class="flow-node">步驟13</div>
+<div id="node14" class="flow-node">步驟14</div>
+<div id="node15" class="flow-node">步驟15</div>
 
 </nav>
 
@@ -1537,30 +1541,38 @@ if (langPack && langPack.en) {
     }
 }
 
-// ================================================================
-// 4. 確保 goToStep6 函式存在
-// ================================================================
-if (typeof goToStep6 !== 'function') {
-    window.goToStep6 = function() {
-        currentStep = 6;
-        if (document.getElementById('node5')) document.getElementById('node5').classList.remove('active');
-        if (document.getElementById('node6')) document.getElementById('node6').classList.add('active');
-        if (document.getElementById('panelStep5')) document.getElementById('panelStep5').classList.remove('active');
-        if (document.getElementById('panelStep6')) document.getElementById('panelStep6').classList.add('active');
-        if (document.getElementById('btnBack')) document.getElementById('btnBack').classList.add('enabled');
-        const nextBtn = document.getElementById('btnNext');
-        if (nextBtn) {
-            nextBtn.classList.add('enabled');
-            nextBtn.disabled = false;
-        }
-        if (document.getElementById('qrScanResultStep6')) document.getElementById('qrScanResultStep6').style.display = 'none';
-        if (document.getElementById('cameraGuideStep6')) document.getElementById('cameraGuideStep6').style.display = 'none';
-        const pageMarkerEl = document.getElementById('pageMarkerText');
-        if (pageMarkerEl) {
-            pageMarkerEl.textContent = (langPack[currentLang] && langPack[currentLang].pageMarkerStep6) || '📄 步驟六';
-        }
-        if (typeof switchLanguage === 'function') switchLanguage(currentLang);
-    };
+// ===============================
+// 第二組(6~10)
+// ===============================
+
+// 全部先取消 active
+for (let i = 1; i <= 15; i++) {
+
+    const node = document.getElementById("node" + i);
+
+    if (!node) continue;
+
+    node.style.display = "none";
+    node.classList.remove("active");
+
+}
+
+// 只顯示第二組
+for (let i = 6; i <= 10; i++) {
+
+    const node = document.getElementById("node" + i);
+
+    if (node) {
+        node.style.display = "flex";
+    }
+
+}
+
+// 依照目前步驟點亮
+const currentNode = document.getElementById("node" + currentStep);
+
+if (currentNode) {
+    currentNode.classList.add("active");
 }
 
 // ================================================================
@@ -1583,13 +1595,91 @@ if (typeof handleNextClick === 'function') {
             if (typeof goToStep5 === 'function') goToStep5();
         } else if (currentStep === 5) {
             if (typeof goToStep6 === 'function') goToStep6();
-        } else if (currentStep === 6) {
-            const msg = (langPack && langPack[currentLang] && langPack[currentLang].dialogStep6Complete) 
-                ? langPack[currentLang].dialogStep6Complete 
-                : '🎉 對頻判定已完成！請進入下一步。';
-            if (typeof openHudDialog === 'function') openHudDialog(msg);
-        }
-    };
+       //==================================================
+// Step6
+//==================================================
+else if (currentStep === 6) {
+
+    if(typeof goToStep7==="function"){
+
+        goToStep7();
+
+    }else{
+
+        currentStep=7;
+        updateStep();
+
+    }
+
+}
+
+//==================================================
+// Step7
+//==================================================
+else if(currentStep===7){
+
+    if(typeof goToStep8==="function"){
+
+        goToStep8();
+
+    }else{
+
+        currentStep=8;
+        updateStep();
+
+    }
+
+}
+
+//==================================================
+// Step8
+//==================================================
+else if(currentStep===8){
+
+    if(typeof goToStep9==="function"){
+
+        goToStep9();
+
+    }else{
+
+        currentStep=9;
+        updateStep();
+
+    }
+
+}
+
+//==================================================
+// Step9
+//==================================================
+else if(currentStep===9){
+
+    if(typeof goToStep10==="function"){
+
+        goToStep10();
+
+    }else{
+
+        currentStep=10;
+        updateStep();
+
+    }
+
+}
+
+//==================================================
+// Step10
+//==================================================
+else if(currentStep===10){
+
+    const msg=(langPack&&langPack[currentLang]&&langPack[currentLang].dialogStep10Complete)
+        ?langPack[currentLang].dialogStep10Complete
+        :"🎉 全部完成！";
+
+    if(typeof openHudDialog==="function"){
+        openHudDialog(msg);
+    }
+
 }
 
 // ================================================================
@@ -1919,6 +2009,109 @@ console.log('✅ Step 6 已完全修復！');
 
 })();
 script>
+<script>
+(function(){
 
-    </body>
+    function updateFlowNav(){
+
+        let step = window.currentStep || 1;
+
+        // 算目前是哪一組
+        let group = Math.floor((step-1)/5);
+
+        // 起始與結束
+        let start = group * 5 + 1;
+        let end   = start + 4;
+
+        // 全部先隱藏
+        document.querySelectorAll(".flow-nav .flow-node").forEach(function(el){
+            el.style.display = "none";
+        });
+
+        // 只顯示目前五個
+        for(let i=start;i<=end;i++){
+
+            let node=document.getElementById("node"+i);
+
+            if(node){
+                node.style.display="flex";
+            }
+
+        }
+
+    }
+
+    // 第一次
+    updateFlowNav();
+
+    // 監看 currentStep 是否改變
+    let lastStep=-1;
+
+    setInterval(function(){
+
+        if(lastStep!==window.currentStep){
+
+            lastStep=window.currentStep;
+
+            updateFlowNav();
+
+        }
+
+    },50);
+
+})();
+</script>
+<script>
+(function () {
+
+    let lastStep = -1;
+
+    function updateFlowNav() {
+
+        // 取得目前步驟
+        const step = window.currentStep || 1;
+
+        // 如果沒變，不重複更新
+        if (step === lastStep) return;
+        lastStep = step;
+
+        // 算目前五個一組
+        const start = Math.floor((step - 1) / 5) * 5 + 1;
+        const end = start + 4;
+
+        // 全部先隱藏並取消 active
+        document.querySelectorAll(".flow-nav .flow-node").forEach(function (node) {
+            node.style.display = "none";
+            node.classList.remove("active");
+        });
+
+        // 只顯示目前五個
+        for (let i = start; i <= end; i++) {
+
+            const node = document.getElementById("node" + i);
+
+            if (node) {
+                node.style.display = "flex";
+            }
+
+        }
+
+        // 點亮目前步驟
+        const activeNode = document.getElementById("node" + step);
+
+        if (activeNode) {
+            activeNode.classList.add("active");
+        }
+
+    }
+
+    // 啟動
+    updateFlowNav();
+
+    // 持續監看 currentStep
+    setInterval(updateFlowNav, 100);
+
+})();
+</script>
+</body>
 </html>
