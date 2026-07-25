@@ -3017,6 +3017,57 @@ script>
     }
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 【宇宙誓印覺醒工程】導航欄標題英文對應修正模版              -->
+<!-- 請直接將以下完整程式碼貼在原檔案的 </body> 前方即可             -->
+<!-- ============================================================ -->
+
+<script>
+(function() {
+    if (typeof langPack !== 'undefined') {
+        langPack.en = langPack.en || {};
+        
+        // 將英文版導航欄（或當前選中方塊）的文字更新為指定格式
+        langPack.en.node6 = "Item 1 Initiate Oath-Soul Key Frequency- Alignment Overall Assessment\n（ Oath Seal Passed / Alignment Not Passed ）";
+    }
+
+    // 若當前頁面正在顯示英文版，立即同步更新導航節點的文字
+    if (typeof currentLang !== 'undefined' && currentLang === 'en') {
+        const node6 = document.getElementById('node6');
+        if (node6) {
+            node6.style.fontSize = "0.45rem"; // 調整英文長字串在導航方塊內的字體大小
+            node6.style.lineHeight = "1.2";
+            node6.style.textAlign = "center";
+            node6.innerHTML = "Item 1 Initiate Oath-Soul Key<br>（ Oath Seal / Alignment ）";
+        }
+    }
+
+    // 擴充切換語系時的導航標題處理
+    const originalSwitchLang = window.switchLanguage;
+    window.switchLanguage = function(lang) {
+        if (typeof originalSwitchLang === 'function') {
+            originalSwitchLang(lang);
+        } else {
+            window.currentLang = lang;
+        }
+        if (typeof renderStep6Content === 'function') {
+            renderStep6Content(lang);
+        }
+        const node6 = document.getElementById('node6');
+        if (node6) {
+            if (lang === 'en') {
+                node6.style.fontSize = "0.45rem";
+                node6.style.lineHeight = "1.2";
+                node6.innerHTML = "Item 1 Initiate Oath-Soul Key<br>（ Oath Seal / Alignment ）";
+            } else {
+                node6.style.fontSize = "";
+                node6.style.lineHeight = "";
+                node6.textContent = langPack.zh.node6 || "對頻判定";
+            }
+        }
+    };
+})();
+</script>
 </body>
 </html>
 
