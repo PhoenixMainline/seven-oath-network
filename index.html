@@ -3068,6 +3068,212 @@ script>
     };
 })();
 </script>
-</body>
-</html>
+<!-- ============================================================ -->
+<!-- 【宇宙誓印覺醒工程】對頻判定（Step 6）                         -->
+<!-- 將「相機掃描 QR Code」步驟改為「靜心讀秒」步驟 修正模版         -->
+<!-- 套用方式：完整複製以下程式碼，貼在原檔案 index.html 的           -->
+<!-- </body> 前方即可（放在最後面最保險）                            -->
+<!-- 僅修改「對頻判定」頁的相機掃描區塊，其餘步驟／內容完全不動        -->
+<!-- 本版採用 MutationObserver 監看方式，不論貼在 </body> 前的        -->
+<!-- 哪個位置、也不論該頁面渲染時機為何，都會自動偵測並套用            -->
+<!-- ============================================================ -->
 
+<script>
+(function () {
+    // ------------------------------------------------------------
+    // 1. 補上「靜心讀秒」所需的語系文字（比照步驟二 靜心讀秒 文案）
+    // ------------------------------------------------------------
+    function ensureLangPack() {
+        if (typeof langPack === 'undefined') return false;
+        langPack.zh = langPack.zh || {};
+        langPack.en = langPack.en || {};
+
+        langPack.zh.meditateTitleStep6 = "誓魂共振靜心";
+        langPack.zh.meditateDescStep6 = "請於「誓魂共振頻道」靜心誦讀，靜心 10 秒誦讀或默念，確保頻位精確並成功執行。";
+        langPack.zh.btnStartCenteringStep6Text = "開始靜心";
+        langPack.zh.btnStartCenteringStep6Progress = "靜心中...";
+        langPack.zh.btnStartCenteringStep6Complete = "靜心完成";
+        langPack.zh.timerWaitingStep6 = "⏳ 等待開始";
+        langPack.zh.timerCountingStep6 = "請靜心誦讀";
+        langPack.zh.timerCompleteStep6 = "✅ 靜心完成";
+        langPack.zh.btnRestartStep6Text = "重新開始";
+
+        langPack.en.meditateTitleStep6 = "Oath-Soul Resonance Centering";
+        langPack.en.meditateDescStep6 = "Please recite or silently read within the \u201cOath-Soul Resonance Channel\u201d, centering the mind for 10 seconds to ensure frequency precision and successful execution.";
+        langPack.en.btnStartCenteringStep6Text = "Begin Centering";
+        langPack.en.btnStartCenteringStep6Progress = "Centering...";
+        langPack.en.btnStartCenteringStep6Complete = "Centering Complete";
+        langPack.en.timerWaitingStep6 = "\u23F3 Waiting to Start";
+        langPack.en.timerCountingStep6 = "Please read this with a calm and focused mind.";
+        langPack.en.timerCompleteStep6 = "\u2705 Centering Complete";
+        langPack.en.btnRestartStep6Text = "Restart";
+        return true;
+    }
+
+    // ------------------------------------------------------------
+    // 2. 獨立的靜心倒數狀態（與步驟二計時器互不干擾）
+    // ------------------------------------------------------------
+    let countdownTimerStep6 = null;
+    let countdownSecondsStep6 = 10;
+    let timerStateStep6 = 'initial';
+    let isTimerRunningStep6 = false;
+
+    function getP() {
+        const lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
+        if (typeof langPack === 'undefined') return {};
+        return langPack[lang] || langPack.zh || {};
+    }
+
+    window.startCenteringStep6 = function () {
+        if (isTimerRunningStep6) return;
+        const startBtn = document.getElementById('btnStartCenteringStep6');
+        const restartBtn = document.getElementById('btnRestartStep6');
+        const timerLabel = document.getElementById('timerLabelStep6');
+        const timerNumber = document.getElementById('timerNumberStep6');
+        const nextBtn = document.getElementById('btnNext');
+        if (!startBtn || !timerLabel || !timerNumber) return;
+        const p = getP();
+
+        startBtn.disabled = true;
+        startBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="btnStartTextStep6">' + p.btnStartCenteringStep6Progress + '</span>';
+        if (restartBtn) restartBtn.style.display = 'inline-flex';
+
+        clearInterval(countdownTimerStep6);
+        timerStateStep6 = 'counting';
+        countdownSecondsStep6 = 10;
+        timerNumber.textContent = countdownSecondsStep6;
+        timerLabel.textContent = p.timerCountingStep6;
+        timerNumber.classList.remove('complete');
+        if (nextBtn) nextBtn.classList.remove('enabled');
+        isTimerRunningStep6 = true;
+
+        countdownTimerStep6 = setInterval(function () {
+            countdownSecondsStep6--;
+            if (countdownSecondsStep6 <= 0) {
+                clearInterval(countdownTimerStep6);
+                countdownSecondsStep6 = 0;
+                timerStateStep6 = 'complete';
+                timerNumber.textContent = countdownSecondsStep6;
+                timerLabel.textContent = p.timerCompleteStep6;
+                timerNumber.classList.add('complete');
+                if (nextBtn) nextBtn.classList.add('enabled');
+                if (typeof enableNextButton === 'function') enableNextButton();
+                startBtn.disabled = false;
+                startBtn.innerHTML = '<i class="fa-solid fa-check"></i> <span id="btnStartTextStep6">' + p.btnStartCenteringStep6Complete + '</span>';
+                isTimerRunningStep6 = false;
+            } else {
+                timerNumber.textContent = countdownSecondsStep6;
+                timerLabel.textContent = p.timerCountingStep6;
+            }
+        }, 1000);
+    };
+
+    window.restartTimerStep6 = function () {
+        clearInterval(countdownTimerStep6);
+        const startBtn = document.getElementById('btnStartCenteringStep6');
+        const timerLabel = document.getElementById('timerLabelStep6');
+        const timerNumber = document.getElementById('timerNumberStep6');
+        const restartBtn = document.getElementById('btnRestartStep6');
+        const nextBtn = document.getElementById('btnNext');
+        const p = getP();
+
+        timerStateStep6 = 'initial';
+        countdownSecondsStep6 = 10;
+        isTimerRunningStep6 = false;
+        if (timerNumber) { timerNumber.textContent = countdownSecondsStep6; timerNumber.classList.remove('complete'); }
+        if (timerLabel) timerLabel.textContent = p.timerWaitingStep6;
+        if (nextBtn) nextBtn.classList.remove('enabled');
+        if (startBtn) {
+            startBtn.disabled = false;
+            startBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartTextStep6">' + p.btnStartCenteringStep6Text + '</span>';
+        }
+        if (restartBtn) restartBtn.style.display = 'none';
+    };
+
+    // ------------------------------------------------------------
+    // 3. 將「對頻判定」頁原本的相機掃描 QR Code 區塊，
+    //    置換為「靜心讀秒」區塊（外觀比照步驟二的靜心計時卡片）
+    //    只動這一個區塊（#qrScanCardStep6），其餘內容原封不動
+    // ------------------------------------------------------------
+    let applyingMeditation = false;
+    function applyMeditationBlockStep6() {
+        if (applyingMeditation) return;
+        const scanCard = document.getElementById('qrScanCardStep6');
+        if (!scanCard) return;
+        ensureLangPack();
+        const p = getP();
+        if (!p.meditateTitleStep6) return; // langPack 尚未就緒，稍後由 observer 再次觸發
+
+        applyingMeditation = true;
+        scanCard.innerHTML =
+            '<div class="card-title"><i class="fa-solid fa-om"></i><span id="meditateTitleStep6">' + p.meditateTitleStep6 + '</span></div>' +
+            '<div style="text-align:center; padding:10px 0;">' +
+                '<div style="color:#d4af37; font-size:0.9rem; font-weight:bold; margin-bottom:14px; line-height:1.6;">' +
+                    '<span id="meditateDescStep6">' + p.meditateDescStep6 + '</span>' +
+                '</div>' +
+                '<div class="timer-container">' +
+                    '<div style="display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap; width:100%;">' +
+                        '<button class="btn-start-centering" id="btnStartCenteringStep6" onclick="startCenteringStep6()">' +
+                            '<i class="fa-solid fa-play"></i> ' +
+                            '<span id="btnStartTextStep6">' + p.btnStartCenteringStep6Text + '</span>' +
+                        '</button>' +
+                        '<div style="display:flex; align-items:center; gap:12px;">' +
+                            '<span class="timer-label" id="timerLabelStep6">' + p.timerWaitingStep6 + '</span>' +
+                            '<span class="timer-number" id="timerNumberStep6">10</span>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+                '<div style="text-align:center; margin-top:12px;">' +
+                    '<button class="btn-restart" id="btnRestartStep6" onclick="restartTimerStep6()" style="display:none;">' +
+                        '<i class="fa-solid fa-rotate-right"></i> ' +
+                        '<span id="btnRestartTextStep6">' + p.btnRestartStep6Text + '</span>' +
+                    '</button>' +
+                '</div>' +
+            '</div>';
+
+        // 尚未完成靜心讀秒前，鎖定下一步按鈕
+        const nextBtn = document.getElementById('btnNext');
+        if (nextBtn && timerStateStep6 !== 'complete') nextBtn.classList.remove('enabled');
+        applyingMeditation = false;
+    }
+
+    // ------------------------------------------------------------
+    // 4. 穩固監看機制：不論這段程式貼在 </body> 前的哪個位置、
+    //    也不論「對頻判定」頁面何時被建立或重新渲染，
+    //    只要 #panelStep6 顯示或內容被重繪，就自動套用靜心讀秒區塊。
+    //    （比直接覆寫 renderStep6Content 更不受貼入順序影響）
+    // ------------------------------------------------------------
+    function startObserving() {
+        const panel6 = document.getElementById('panelStep6');
+        if (!panel6) {
+            setTimeout(startObserving, 100);
+            return;
+        }
+        const observer = new MutationObserver(function () {
+            if (panel6.classList.contains('active')) {
+                applyMeditationBlockStep6();
+            }
+        });
+        observer.observe(panel6, { attributes: true, attributeFilter: ['class'], childList: true, subtree: false });
+
+        // 頁面載入當下若已經停留在對頻判定頁，立即套用
+        if (panel6.classList.contains('active')) {
+            applyMeditationBlockStep6();
+        }
+    }
+    startObserving();
+
+    // 保險：輪詢重試（涵蓋 langPack / 面板建立時機較晚的情況）
+    let retryCount = 0;
+    const retryTimer = setInterval(function () {
+        retryCount++;
+        const panel6 = document.getElementById('panelStep6');
+        if (panel6 && panel6.classList.contains('active')) {
+            applyMeditationBlockStep6();
+        }
+        if (retryCount > 100) clearInterval(retryTimer); // 最多重試約 10 秒
+    }, 100);
+})();
+</script>
+body>
+</html>
