@@ -2113,5 +2113,534 @@ script>
 
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 【宇宙誓印覺醒工程】標題修正為「第 1 項」版 -->
+<!-- 請直接貼在 </body> 前方即可                                  -->
+<!-- ============================================================ -->
+
+<style>
+/* ===== 導航欄與響應式排版優化 ===== */
+.flow-nav {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: clamp(3px, 0.6vw, 6px) !important;
+}
+
+@media (max-width: 480px) {
+    .flow-nav {
+        grid-template-columns: repeat(5, 1fr) !important;
+        gap: 2px !important;
+    }
+    .flow-node {
+        font-size: 0.4rem !important;
+        padding: 2px 1px !important;
+        white-space: nowrap !important;
+    }
+}
+
+.hud-card {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 100% !important;
+}
+.instruction-item, .condition-item {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    font-size: clamp(0.7rem, 1.6vh, 0.95rem) !important;
+}
+
+/* ===== 頂部紫色大標題與右側小卡風格 ===== */
+.header-banner-container {
+    background: linear-gradient(135deg, rgba(128, 0, 128, 0.35), rgba(75, 0, 130, 0.5));
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 15px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+.banner-title-main {
+    font-size: clamp(0.95rem, 2.2vw, 1.25rem);
+    color: #f3e5ab;
+    font-weight: bold;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+.banner-title-sub {
+    font-size: clamp(0.85rem, 1.8vw, 1.05rem);
+    color: #00ffff;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.layout-flex-wrapper {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+.main-content-area {
+    flex: 1;
+    min-width: 260px;
+}
+.side-floating-card {
+    width: 180px;
+    background: rgba(80, 20, 90, 0.4);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 0.85rem;
+    color: #f3e5ab;
+    line-height: 1.6;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+@media (max-width: 768px) {
+    .side-floating-card {
+        width: 100%;
+    }
+}
+</style>
+
+<script>
+(function() {
+    // 1. 確保 Step 6 節點 (node6) 存在於導航列中，並設定名稱
+    const nav = document.querySelector('.flow-nav');
+    if (nav) {
+        let node6 = document.getElementById('node6');
+        if (!node6) {
+            const newNode = document.createElement('div');
+            newNode.className = 'flow-node';
+            newNode.id = 'node6';
+            node6 = newNode;
+            nav.appendChild(newNode);
+        }
+        node6.innerHTML = '開啟誓魂密鑰<br>對頻總判定<br>(誓印通過／對頻未通過)';
+    }
+
+    // 2. 確保 Step 6 面板 (panelStep6) 存在於內容區中
+    let panel6 = document.getElementById('panelStep6');
+    const stepContent = document.querySelector('.step-content');
+    if (stepContent && !panel6) {
+        panel6 = document.createElement('div');
+        panel6.className = 'step-panel';
+        panel6.id = 'panelStep6';
+        stepContent.appendChild(panel6);
+    }
+
+    if (panel6 && !panel6.querySelector('.header-banner-container')) {
+        panel6.innerHTML = `
+            <!-- 頂部對照大標題 -->
+            <div class="header-banner-container">
+                <div class="banner-title-main">
+                    <i class="fa-solid fa-lock-open"></i> 解鎖誓魂血脈身分記載歷程  ×  全表結構總覽
+                </div>
+                <div class="banner-title-sub">
+                    <i class="fa-solid fa-square-check"></i> 第一層級距誓魂定位模組（對應書令系統分類  ×  靈脈對位）
+                </div>
+            </div>
+
+            <div class="layout-flex-wrapper">
+                <!-- 左側主內容區 -->
+                <div class="main-content-area">
+                    <div class="hud-card">
+                        <div class="card-title"><i class="fa-solid fa-scale-balanced"></i><span id="cardTitleText6">第 1 項 開啟誓魂密鑰 對頻總判定 (誓印通過 ／對頻未通過）</span></div>
+                        <div class="instruction-box">
+                            <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst6_1">判斷誓魂是否對應至七印誓網組合法身份，並確認是否具備進入系統通行資格。</span></div>
+                            <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst6_2">本模組隸屬《宇宙誓印覺醒工程 × 七印誓網》第一層級距，用以核實誓徒或願人是否完成「誓魂對頻程序」。</span></div>
+                            <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst6_3">凡無授權紀錄或未經審核者，皆視為「無效程序」：誓願不生效、誓責不成立、不得啟用《書令模組》。</span></div>
+                        </div>
+                    </div>
+
+                    <div class="hud-card">
+                        <div class="card-title"><i class="fa-solid fa-bolt"></i><span id="cardTitle6a">【啟動條件】</span></div>
+                        <ul class="condition-list">
+                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond6_1">誓印者需完成平台登入並具備啟印資格</span></li>
+                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond6_2">須於主頻可識別層級達標（5D，U-200層以上）</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="hud-card" id="qrScanCardStep6">
+                        <div class="card-title"><i class="fa-solid fa-qrcode"></i><span id="cardTitle6b">【掃描程序】</span></div>
+                        <div class="instruction-box">
+                            <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_4">掃描【誓導QRCode】進入主對頻程序</span></div>
+                            <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_5">於平台「指令輸入位」輸入啟動指令，系統即時判定是否通過「誓魂主對應」</span></div>
+                            <div class="instruction-item"><i class="fa-solid fa-arrow-right"></i><span id="inst6_6">誓印通過後，即可進入誓印模組正式程序</span></div>
+                        </div>
+                        <div style="text-align:center; padding:10px 0;">
+                            <div style="color:#d4af37; font-size:1rem; font-weight:bold; margin-bottom:12px;">
+                                <span id="qrScanTitleStep6">📷 請對準誓導 QR Code 掃描驗證</span>
+                            </div>
+                            <div id="qr-reader-container-step6" style="width:100%; max-width:280px; margin:0 auto;"></div>
+                            <button class="btn-restart" id="btnScanQRStep6" onclick="startQRScanner('step6')">
+                                <i class="fa-solid fa-qrcode"></i>
+                                <span id="btnScanTextStep6">📷 掃描 QR Code</span>
+                            </button>
+                            <div id="qrScanResultStep6" class="qr-result" style="display:none; margin-top:10px;">
+                                <i class="fa-solid fa-check-circle"></i><span id="qrResultTextStep6">掃描成功！</span>
+                            </div>
+                            <div id="cameraGuideStep6" class="camera-guide" style="display:none; text-align:left; margin-top:12px;">
+                                <span id="cameraGuideTextStep6">📷 無法啟動相機</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右側浮動小卡 (對應原圖右側區塊) -->
+                <div class="side-floating-card">
+                    <div style="font-weight:bold; margin-bottom:8px; border-bottom:1px solid rgba(212,175,55,0.3); padding-bottom:4px;">
+                        <i class="fa-solid fa-star"></i> 檢核重點
+                    </div>
+                    <div>• 身份啟動與資格檢核</div>
+                    <div style="margin-top:6px;">• 誓魂頻率需達 5D</div>
+                </div>
+            </div>
+
+            <div class="hud-card" style="margin-top: 15px;">
+                <div class="card-title"><i class="fa-solid fa-circle-info"></i><span id="cardTitle6c">誓魂對頻判定條件</span></div>
+                <div style="background:rgba(212,175,55,0.04); border-left:3px solid #d4af37; padding:12px 16px; border-radius:8px;">
+                    <p style="font-size:0.9rem; color:#e0e8f5; line-height:1.8;">
+                        <span id="judgeConditionText">對頻頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。</span>
+                    </p>
+                </div>
+                <div style="margin-top:12px; background:rgba(0,191,255,0.04); border-left:3px solid #00bfff; padding:12px 16px; border-radius:8px;">
+                    <p style="font-size:0.85rem; color:rgba(224,232,245,0.8); line-height:1.8;">
+                        <span id="judgeNoteText">⚠️ 若對頻未通過，系統將自動轉入補誓程序（憶悔補誓 × 七日循環 × 頻率再校）。</span>
+                    </p>
+                </div>
+            </div>
+        `;
+    }
+
+    // 3. 擴充多國語言包 (支援 Step 6)
+    if (typeof langPack !== 'undefined') {
+        if (langPack.zh && !langPack.zh.node6) {
+            langPack.zh.node6 = "開啟誓魂密鑰<br>對頻總判定<br>(誓印通過／對頻未通過)";
+            langPack.zh.cardTitle6 = "第 1 項 開啟誓魂密鑰 對頻總判定 (誓印通過 ／對頻未通過）";
+            langPack.zh.cardTitle6a = "【啟動條件】";
+            langPack.zh.cardTitle6b = "【掃描程序】";
+            langPack.zh.cond6_1 = "誓印者需完成平台登入並具備啟印資格";
+            langPack.zh.cond6_2 = "須於主頻可識別層級達標（5D，U-200層以上）";
+            langPack.zh.inst6_1 = "判斷誓魂是否對應至七印誓網組合法身份，並確認是否具備進入系統通行資格。";
+            langPack.zh.inst6_2 = "本模組隸屬《宇宙誓印覺醒工程 × 七印誓網》第一層級距，用以核實誓徒或願人是否完成「誓魂對頻程序」。";
+            langPack.zh.inst6_3 = "凡無授權紀錄或未經審核者，皆視為「無效程序」：誓願不生效、誓責不成立、不得啟用《書令模組》。";
+            langPack.zh.inst6_4 = "掃描【誓導QRCode】進入主對頻程序";
+            langPack.zh.inst6_5 = "於平台「指令輸入位」輸入啟動指令，系統即時判定是否通過「誓魂主對應」";
+            langPack.zh.inst6_6 = "誓印通過後，即可進入誓印模組正式程序";
+            langPack.zh.qrScanTitleStep6 = "📷 請對準誓導 QR Code 掃描驗證";
+            langPack.zh.btnScanTextStep6 = "📷 掃描 QR Code";
+            langPack.zh.qrResultTextStep6 = "掃描成功！";
+            langPack.zh.cameraGuideTextStep6 = "📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）";
+            langPack.zh.cardTitle6c = "誓魂對頻判定條件";
+            langPack.zh.judgeConditionText = "對頻頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。";
+            langPack.zh.judgeNoteText = "⚠️ 若對頻未通過，系統將自動轉入補誓程序（憶悔補誓 × 七日循環 × 頻率再校）。";
+        }
+        if (langPack.en && !langPack.en.node6) {
+            langPack.en.node6 = "Initiate Oath-Soul Key<br>Frequency-Alignment Assessment<br>(Oath Seal Passed / Alignment Not Passed)";
+            langPack.en.cardTitle6 = "Item 1 Initiate Oath-Soul Key Frequency-Alignment Assessment (Oath Seal Passed / Alignment Not Passed)";
+            langPack.en.cardTitle6a = "[Activation Conditions]";
+            langPack.en.cardTitle6b = "[Scanning Procedure]";
+            langPack.en.cond6_1 = "Complete platform login and hold activation eligibility";
+            langPack.en.cond6_2 = "Main-Frequency Recognition Tier must be met (5D, above U-200 level)";
+            langPack.en.inst6_1 = "Determines whether the Oath-Soul corresponds to a valid identity within the Seven-Seal Vow Network.";
+            langPack.en.inst6_2 = "Verify whether the Oath-Bearer has completed the Oath-Soul Alignment Protocol.";
+            langPack.en.inst6_3 = "Individuals without authorization records are regarded as an Invalid Procedure.";
+            langPack.en.inst6_4 = "Scan the Vow-Guidance QR Code to enter the Main-Alignment Protocol";
+            langPack.en.inst6_5 = "Enter the activation command into the platform";
+            langPack.en.inst6_6 = "Proceed into the formal Oath-Seal Module upon approval";
+            langPack.en.qrScanTitleStep6 = "📷 Please align with the Vow-Guidance QR Code";
+            langPack.en.btnScanTextStep6 = "📷 Scan QR Code";
+            langPack.en.qrResultTextStep6 = "Scan successful!";
+            langPack.en.cameraGuideTextStep6 = "📷 Unable to launch camera";
+            langPack.en.cardTitle6c = "Judgment Conditions";
+            langPack.en.judgeConditionText = "Alignment frequency must reach 5D (U-200 Tier) or above.";
+            langPack.en.judgeNoteText = "⚠️ If alignment fails, the system will enter the Oath Renewal Procedure.";
+        }
+    }
+
+    // 4. 定義跳轉函式：進入 Step 6
+    window.goToStep6 = function() {
+        currentStep = 6;
+        document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+        const p6 = document.getElementById('panelStep6');
+        if (p6) p6.classList.add('active');
+        document.getElementById('btnBack').classList.add('enabled');
+        const nextBtn = document.getElementById('btnNext');
+        if (nextBtn) {
+            nextBtn.classList.add('enabled');
+            nextBtn.disabled = false;
+        }
+        if (typeof switchLanguage === 'function') switchLanguage(currentLang);
+    };
+
+    // 5. 擴充點擊下一步 (handleNextClick) 邏輯串接 Step 5 進入 Step 6
+    if (typeof handleNextClick === 'function') {
+        const originalNext = handleNextClick;
+        window.handleNextClick = function() {
+            if (currentStep === 5) {
+                goToStep6();
+            } else if (currentStep === 6) {
+                openHudDialog((langPack && langPack[currentLang] && langPack[currentLang].dialogStep6Complete) || "🎉 對頻判定已完成！");
+            } else {
+                originalNext();
+            }
+        };
+    }
+
+    // 6. 擴充返回 (handleBackClick) 邏輯
+    if (typeof handleBackClick === 'function') {
+        const originalBack = handleBackClick;
+        window.handleBackClick = function() {
+            if (currentStep === 6) {
+                if (typeof stopCurrentScanner === 'function') stopCurrentScanner();
+                document.getElementById('node6').classList.remove('active');
+                document.getElementById('node5').classList.add('active');
+                document.getElementById('panelStep6').classList.remove('active');
+                document.getElementById('panelStep5').classList.add('active');
+                currentStep = 5;
+                const nextBtn = document.getElementById('btnNext');
+                if (nextBtn) {
+                    nextBtn.classList.add('enabled');
+                    nextBtn.disabled = false;
+                }
+                if (typeof switchLanguage === 'function') switchLanguage(currentLang);
+            } else {
+                originalBack();
+            }
+        };
+    }
+
+    // 7. 動態導航列分組控制器（每 5 個節點一組自動切換顯示）
+    function autoGroupFlowNav() {
+        let step = typeof currentStep !== 'undefined' ? currentStep : 1;
+        let group = Math.floor((step - 1) / 5);
+        let start = group * 5 + 1;
+        let end = start + 4;
+
+        // 隱藏全部，只顯示當前 5 個
+        for (let i = 1; i <= 15; i++) {
+            let node = document.getElementById("node" + i);
+            if (node) {
+                node.style.display = (i >= start && i <= end) ? "flex" : "none";
+                node.classList.remove("active");
+            }
+        }
+
+        // 點亮當前步驟
+        let activeNode = document.getElementById("node" + step);
+        if (activeNode) {
+            activeNode.classList.add("active");
+            activeNode.style.display = "flex";
+        }
+    }
+
+    // 啟動定時監看與初始化
+    setInterval(autoGroupFlowNav, 100);
+    autoGroupRef = autoGroupFlowNav;
+})();
+</script>
+<script>
+// ================================================================
+// 修復相機掃描功能 - 支援所有步驟 (step3 ~ step10)
+// ================================================================
+
+(function() {
+    // 如果已經有 startQRScanner，先保存
+    const originalStartQR = window.startQRScanner;
+
+    window.startQRScanner = function(step) {
+        console.log('📷 啟動掃描器: step', step);
+
+        // 根據步驟決定 container ID
+        let containerId;
+        let guideId;
+        let guideTextId;
+        let resultId;
+        let resultTextId;
+
+        // step3 和 step4 使用原有的 ID
+        if (step === 'step3') {
+            containerId = 'qr-reader-container';
+            guideId = 'cameraGuide';
+            guideTextId = 'cameraGuideText';
+            resultId = 'qrScanResult';
+            resultTextId = 'qrResultText';
+        } else if (step === 'step4') {
+            containerId = 'qr-reader-container-step4';
+            guideId = 'cameraGuideStep4';
+            guideTextId = 'cameraGuideTextStep4';
+            resultId = 'qrScanResultStep4';
+            resultTextId = 'qrResultTextStep4';
+        } else {
+            // step6 ~ step10 使用動態 ID
+            const stepNum = step.replace('step', '');
+            containerId = 'qr-reader-container-step' + stepNum;
+            guideId = 'cameraGuideStep' + stepNum;
+            guideTextId = 'cameraGuideTextStep' + stepNum;
+            resultId = 'qrScanResultStep' + stepNum;
+            resultTextId = 'qrResultTextStep' + stepNum;
+        }
+
+        const container = document.getElementById(containerId);
+        if (!container) {
+            console.error('❌ 找不到容器:', containerId);
+            return;
+        }
+
+        // 禁用下一步按鈕
+        const nextBtn = document.getElementById('btnNext');
+        if (nextBtn) {
+            nextBtn.classList.remove('enabled');
+            nextBtn.disabled = true;
+        }
+
+        // 停止現有掃描器
+        if (window.html5QrCodeInstance) {
+            window.html5QrCodeInstance.stop().then(() => {
+                window.html5QrCodeInstance = null;
+                container.innerHTML = '';
+                setTimeout(() => {
+                    initScanner(containerId, guideId, guideTextId, resultId, resultTextId, step);
+                }, 300);
+            }).catch(() => {
+                window.html5QrCodeInstance = null;
+                container.innerHTML = '';
+                setTimeout(() => {
+                    initScanner(containerId, guideId, guideTextId, resultId, resultTextId, step);
+                }, 300);
+            });
+        } else {
+            container.innerHTML = '';
+            setTimeout(() => {
+                initScanner(containerId, guideId, guideTextId, resultId, resultTextId, step);
+            }, 300);
+        }
+    };
+
+    // ================================================================
+    // initScanner - 初始化掃描器
+    // ================================================================
+    window.initScanner = function(containerId, guideId, guideTextId, resultId, resultTextId, step) {
+        const container = document.getElementById(containerId);
+        const cameraGuide = document.getElementById(guideId);
+        const cameraGuideText = document.getElementById(guideTextId);
+
+        if (!container) {
+            console.error('❌ 容器不存在');
+            return;
+        }
+
+        // 檢查瀏覽器是否支援 getUserMedia
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            console.warn('⚠️ 瀏覽器不支援相機');
+            if (cameraGuide) cameraGuide.style.display = 'block';
+            if (cameraGuideText) {
+                cameraGuideText.textContent = (currentLang === 'en') ?
+                    '📷 Unable to launch the feature\n\n⚙️ Open your phone\'s "Settings"\n   → App Management\n   → Permissions → Camera → Change setting to "Allow"\n   → Open using a web browser (Chrome / Yahoo / Edge...)\n\n ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.' :
+                    '📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+            }
+            if (typeof enableNextButton === 'function') enableNextButton();
+            return;
+        }
+
+        // 先檢查相機權限
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+            .then(function(stream) {
+                // 取得權限後立即停止串流
+                stream.getTracks().forEach(track => track.stop());
+                // 開始掃描
+                startScanning(containerId, guideId, resultId, resultTextId, step);
+            })
+            .catch(function(err) {
+                console.error('❌ 相機權限被拒絕:', err);
+                if (cameraGuide) cameraGuide.style.display = 'block';
+                if (cameraGuideText) {
+                    cameraGuideText.textContent = (currentLang === 'en') ?
+                        '📷 Unable to launch the feature\n\n⚙️ Open your phone\'s "Settings"\n   → App Management\n   → Permissions → Camera → Change setting to "Allow"\n   → Open using a web browser (Chrome / Yahoo / Edge...)\n\n ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.' :
+                        '📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n   → 應用程式管理\n   → 權限 → 相機 → 改為「允許」\n   → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                }
+                if (typeof enableNextButton === 'function') enableNextButton();
+            });
+    };
+
+    // ================================================================
+    // startScanning - 開始掃描 QR Code
+    // ================================================================
+    window.startScanning = function(containerId, guideId, resultId, resultTextId, step) {
+        const container = document.getElementById(containerId);
+        if (!container) {
+            console.error('❌ 容器不存在:', containerId);
+            return;
+        }
+
+        // 確保容器是空的
+        container.innerHTML = '';
+
+        try {
+            const config = {
+                fps: 15,
+                qrbox: { width: 200, height: 200 },
+                aspectRatio: 1.0
+            };
+
+            const instance = new Html5Qrcode(containerId);
+            window.html5QrCodeInstance = instance;
+
+            instance.start(
+                { facingMode: "environment" },
+                config,
+                function(decodedText) {
+                    // 掃描成功
+                    console.log('✅ 掃描成功:', decodedText);
+
+                    // 顯示結果
+                    const qrResult = document.getElementById(resultId);
+                    const qrResultText = document.getElementById(resultTextId);
+                    if (qrResult) qrResult.style.display = 'block';
+                    if (qrResultText) qrResultText.textContent = decodedText;
+
+                    // 也更新 step 專屬結果
+                    const stepNum = step.replace('step', '');
+                    const stepResult = document.getElementById('qrScanResultStep' + stepNum);
+                    const stepResultText = document.getElementById('qrResultTextStep' + stepNum);
+                    if (stepResult) stepResult.style.display = 'block';
+                    if (stepResultText) stepResultText.textContent = decodedText;
+
+                    // 啟用下一步
+                    if (typeof enableNextButton === 'function') enableNextButton();
+
+                    // 停止掃描
+                    instance.stop().then(() => {
+                        window.html5QrCodeInstance = null;
+                    }).catch(() => {
+                        window.html5QrCodeInstance = null;
+                    });
+
+                    // 顯示提示
+                    alert('✅ 掃描成功！');
+                },
+                function(errorMessage) {
+                    // 掃描中（持續回報錯誤但忽略）
+                    // console.log('掃描中...', errorMessage);
+                }
+            ).catch(function(err) {
+                console.error('❌ 掃描啟動失敗:', err);
+                if (typeof enableNextButton === 'function') enableNextButton();
+                const cameraGuide = document.getElementById(guideId);
+                if (cameraGuide) cameraGuide.style.display = 'block';
+                window.html5QrCodeInstance = null;
+            });
+        } catch (err) {
+            console.error('❌ 建立掃描器失敗:', err);
+            if (typeof enableNextButton === 'function') enableNextButton();
+            const cameraGuide = document.getElementById(guideId);
+            if (cameraGuide) cameraGuide.style.display = 'block';
+            window.html5QrCodeInstance = null;
+        }
+    };
+
+    console.log('✅ 相機掃描功能已修復（支援 step3 ~ step10）');
+})();
+</script>
 </body>
 </html>
+
