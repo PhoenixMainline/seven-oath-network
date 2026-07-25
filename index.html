@@ -2641,6 +2641,382 @@ script>
     console.log('✅ 相機掃描功能已修復（支援 step3 ~ step10）');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 【宇宙誓印覺醒工程】Step 6 語系切換對應與動態渲染模版       -->
+<!-- 請直接將以下完整程式碼貼在原檔案的 </body> 前方即可             -->
+<!-- ============================================================ -->
+
+<style>
+/* ===== Step 6 專屬樣式與表格微調 ===== */
+.step6-book-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    background: rgba(128, 0, 128, 0.25);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-radius: 8px;
+    overflow: hidden;
+}
+.step6-book-table th, .step6-book-table td {
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 0.9rem;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    color: #e0e8f5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+.step6-book-table th {
+    background: rgba(100, 20, 100, 0.6);
+    color: #d4af37;
+    font-weight: bold;
+    border-bottom: 2px solid #d4af37;
+}
+.step6-book-table tr:last-child td {
+    border-bottom: none;
+}
+</style>
+
+<script>
+(function() {
+    // 1. 確保導航欄存在 node6
+    const nav = document.querySelector('.flow-nav');
+    if (nav && !document.getElementById('node6')) {
+        const node6 = document.createElement('div');
+        node6.className = 'flow-node';
+        node6.id = 'node6';
+        node6.textContent = '對頻判定';
+        nav.appendChild(node6);
+    }
+
+    // 2. 確保 panelStep6 頁面框架存在
+    let panel6 = document.getElementById('panelStep6');
+    const stepContent = document.querySelector('.step-content');
+    if (stepContent && !panel6) {
+        panel6 = document.createElement('div');
+        panel6.className = 'step-panel';
+        panel6.id = 'panelStep6';
+        stepContent.appendChild(panel6);
+    }
+
+    // 3. 完整定義中文與英文的字典（實現點擊右上角切換按鈕時，自動切換對應語系排版）
+    if (typeof langPack !== 'undefined') {
+        langPack.zh = langPack.zh || {};
+        langPack.en = langPack.en || {};
+
+        // 中文版資料
+        langPack.zh.node6 = "對頻判定";
+        langPack.zh.bannerTop6 = "身份啟動與資格檢核 • 誓魂頻率需達 5D";
+        langPack.zh.bannerSub6 = "解鎖誓魂血脈身分記載歷程 × 全表結構總覽";
+        langPack.zh.cardTitle6 = "第一層級距誓魂定位模組";
+        langPack.zh.cardTitleSub6 = "(對應書令系統分類 × 靈脈對位)";
+        langPack.zh.tableHead1 = "欄位名稱";
+        langPack.zh.tableHead2 = "功能簡要說明";
+        langPack.zh.tableCol1 = "第 1 項 開啟誓魂密鑰 對頻總判定 (誓印通過 / 對頻未通過)";
+        langPack.zh.tableCol2 = "判斷誓魂是否對應至七印誓網組合法身份，並確認是否具備進入系統通行資格。";
+        langPack.zh.secTitle1 = "【I】 模組說明";
+        langPack.zh.inst6_1 = "本模組隸屬《宇宙誓印覺醒工程 × 七印誓網》第一層級距，用以核實誓徒或願人是否完成「誓魂對頻程序」。";
+        langPack.zh.inst6_2 = "系統依據「誓名 × 誓資 × 誓圖」等授權資料，判定是否達成合法誓印資格。";
+        langPack.zh.inst6_3 = "凡無授權紀錄或未經審核者，皆視為「無效程序」：";
+        langPack.zh.inst6_sub1 = "誓願不生效";
+        langPack.zh.inst6_sub2 = "誓責不成立";
+        langPack.zh.inst6_sub3 = "不得啟用《書令模組》";
+        langPack.zh.secTitle2 = "【II】 啟動條件與提交程序";
+        langPack.zh.condTitle1 = "啟動條件：";
+        langPack.zh.cond6_1 = "誓印者需完成平台登入並具備啟印資格";
+        langPack.zh.cond6_2 = "須於主頻可識別層級達標（5D，U-200層以上）";
+        langPack.zh.subTitle1 = "提交程序：";
+        langPack.zh.inst6_4 = "掃描【誓導QRCode】進入主對頻程序";
+        langPack.zh.inst6_5 = "於平台「指令輸入位」輸入啟動指令，系統即時判定是否通過「誓魂主對應」";
+        langPack.zh.inst6_6 = "誓印通過後，即可進入誓印模組正式程序";
+        langPack.zh.qrTitle = "誓魂對頻要求";
+        langPack.zh.qrScanTitleStep6 = "📷 請對準誓導 QR Code 掃描驗證";
+        langPack.zh.btnScanTextStep6 = "📷 掃描 QR Code";
+        langPack.zh.qrResultTextStep6 = "掃描成功！";
+        langPack.zh.cameraGuideTextStep6 = "📷 無法啟動相機";
+        langPack.zh.pageMarkerStep6 = "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 171-172 頁";
+        langPack.zh.hudRightTitle = "檢核重點";
+        langPack.zh.hudRight1 = "身份啟動與資格檢核";
+        langPack.zh.hudRight2 = "誓魂頻率需達 5D";
+
+        // 英文版資料 (完全對應圖 2-4 英文原文排版)
+        langPack.en.node6 = "Frequency Alignment";
+        langPack.en.bannerTop6 = "Identity Activation and Eligibility Verification • Oath-Soul Frequency Must Reach 5D";
+        langPack.en.bannerSub6 = "Unlocking The Oath-Soul Bloodline Identity Record × Complete Structural Overview";
+        langPack.en.cardTitle6 = "First- Tier Oath-Soul Positioning Module";
+        langPack.en.cardTitleSub6 = "(Corresponding To Book-Decree System Classification × Spiritual-Lineage Alignment)";
+        langPack.en.tableHead1 = "Field Name";
+        langPack.en.tableHead2 = "Function Overview";
+        langPack.en.tableCol1 = "Item 1 Initiate Oath-Soul Key Frequency- Alignment Overall Assessment <br><span style='font-size:0.75rem; color:#d4af37;'>（ Oath Seal Passed / Alignment Not Passed ）</span>";
+        langPack.en.tableCol2 = "Determines whether the Oath-Soul corresponds to a valid identity within the Seven-Seal Vow Network and whether it holds the authorization to enter the main Oath-Resource System.";
+        langPack.en.secTitle1 = "【I】 Module Description";
+        langPack.en.inst6_1 = "This module belongs to the first-tier range of the 《Cosmic Vow-Seal Awakening Project × Seven-Seal Vow Network》 and is used to verify whether an Oath-Bearer or Aspirant has completed the 「Oath-Soul Alignment Protocol」.";
+        langPack.en.inst6_2 = "The system evaluates whether valid oath-authority has been established based on 「Oath-Name × Oath-Energy × Oath-Map」 authorization data.";
+        langPack.en.inst6_3 = "Any individual without authorization records or without proper audit approval is regarded as an 「Invalid Procedure」, meaning :";
+        langPack.en.inst6_sub1 = "Oath-intentions do not take effect";
+        langPack.en.inst6_sub2 = "Oath-responsibility is not established";
+        langPack.en.inst6_sub3 = "Access to the 《Scripture-Command Module》 is not permitted";
+        langPack.en.secTitle2 = "【II】 Activation Conditions and Submission Procedure";
+        langPack.en.condTitle1 = "Activation Conditions :";
+        langPack.en.cond6_1 = "The Oath-Bearer must complete platform login and hold activation eligibility.";
+        langPack.en.cond6_2 = "The Main-Frequency Recognition Tier must be met (<span style='color:#000; background:#ffff00; padding:1px 4px; border-radius:3px; font-weight:bold;'>5D, above U-200 level</span>).";
+        langPack.en.subTitle1 = "Submission Procedure :";
+        langPack.en.inst6_4 = "Scan the 【Vow-Guidance QR Code】 to enter the Main- Alignment Protocol.";
+        langPack.en.inst6_5 = "Enter the activation command into the platform's 「Command Input Field」 ; the system instantly evaluates whether the 「Oath-Soul Main-Frequency Correspondence」 is passed.";
+        langPack.en.inst6_6 = "Once Alignment is approved, the user may proceed into the formal Oath-Seal Module.";
+        langPack.en.qrTitle = "Oath-Soul Alignment Requirements";
+        langPack.en.qrScanTitleStep6 = "📷 Please align with the Vow-Guidance QR Code for verification";
+        langPack.en.btnScanTextStep6 = "📷 Scan QR Code";
+        langPack.en.qrResultTextStep6 = "Scan successful!";
+        langPack.en.cameraGuideTextStep6 = "📷 Unable to launch camera";
+        langPack.en.pageMarkerStep6 = "📄 [Cosmic Oath Awakening Project · Awakening Scroll] : Pages 171-172";
+        langPack.en.hudRightTitle = "Inspection Key Points";
+        langPack.en.hudRight1 = "Identity Activation & Eligibility Audit";
+        langPack.en.hudRight2 = "Oath-Soul Frequency Must Reach 5D";
+    }
+
+    // 4. 動態渲染 Step 6 內容結構函式
+    window.renderStep6Content = function(lang) {
+        const p = langPack[lang] || langPack['zh'];
+        const panel = document.getElementById('panelStep6');
+        if (!panel) return;
+
+        panel.innerHTML = `
+            <!-- 頂部提示標語 -->
+            <div style="background:rgba(128,0,128,0.3); border:1px solid rgba(212,175,55,0.4); border-radius:8px; padding:8px 12px; margin-bottom:12px; text-align:center;">
+                <span id="bannerTop6" style="font-size:0.8rem; color:#d4af37; font-weight:bold; letter-spacing:0.5px;">${p.bannerTop6}</span>
+            </div>
+
+            <!-- 主標題紫金卡片 -->
+            <div class="hud-card" style="background:linear-gradient(135deg, rgba(80,10,80,0.85), rgba(30,10,40,0.95)); border:1px solid #d4af37;">
+                <div style="text-align:center; margin-bottom:10px;">
+                    <i class="fa-solid fa-lock-open" style="color:#d4af37; margin-right:6px;"></i>
+                    <span id="bannerSub6" style="font-size:0.85rem; color:#e0e8f5; font-weight:bold;">${p.bannerSub6}</span>
+                </div>
+                <div class="card-title" style="justify-content:center; border-bottom:none; margin-bottom:4px;">
+                    <i class="fa-solid fa-square-check" style="color:#d4af37;"></i>
+                    <span id="cardTitle6" style="font-size:1.05rem; color:#d4af37;">${p.cardTitle6}</span>
+                </div>
+                <div style="text-align:center; font-size:0.8rem; color:rgba(224,232,245,0.8); margin-bottom:10px;">
+                    <span id="cardTitleSub6">${p.cardTitleSub6}</span>
+                </div>
+
+                <!-- 模擬書本結構表格 -->
+                <table class="step6-book-table">
+                    <thead>
+                        <tr>
+                            <th style="width:45%;"><span id="tableHead1">${p.tableHead1}</span></th>
+                            <th style="width:55%;"><span id="tableHead2">${p.tableHead2}</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span id="tableCol1">${p.tableCol1}</span></td>
+                            <td><span id="tableCol2">${p.tableCol2}</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 區塊一：模組說明 -->
+            <div class="hud-card">
+                <div class="card-title"><i class="fa-solid fa-circle-info"></i><span id="secTitle1">${p.secTitle1}</span></div>
+                <div class="instruction-box">
+                    <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#d4af37; min-width:16px;"></i><span id="inst6_1">${p.inst6_1}</span></div>
+                    <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#d4af37; min-width:16px;"></i><span id="inst6_2">${p.inst6_2}</span></div>
+                    <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#d4af37; min-width:16px;"></i><span id="inst6_3">${p.inst6_3}</span></div>
+                    <div style="padding-left:24px; margin-top:6px; font-size:0.85rem; color:rgba(224,232,245,0.9); line-height:1.6;">
+                        <div>• <span id="inst6_sub1">${p.inst6_sub1}</span></div>
+                        <div>• <span id="inst6_sub2">${p.inst6_sub2}</span></div>
+                        <div>• <span id="inst6_sub3">${p.inst6_sub3}</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 區塊二：啟動條件與提交程序 -->
+            <div class="hud-card">
+                <div class="card-title"><i class="fa-solid fa-bolt"></i><span id="secTitle2">${p.secTitle2}</span></div>
+                
+                <div style="margin-bottom:12px;">
+                    <div style="font-size:0.9rem; color:#d4af37; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-arrow-up-right-dots"></i> <span id="condTitle1">${p.condTitle1}</span></div>
+                    <ul class="condition-list" style="list-style:none; padding-left:0;">
+                        <li class="condition-item" style="margin-bottom:6px; display:flex; align-items:flex-start; gap:8px;"><span style="background:#1e3a8a; color:#fff; padding:1px 6px; border-radius:4px; font-size:0.75rem; font-weight:bold; margin-top:2px;">1</span><span id="cond6_1">${p.cond6_1}</span></li>
+                        <li class="condition-item" style="display:flex; align-items:flex-start; gap:8px;"><span style="background:#1e3a8a; color:#fff; padding:1px 6px; border-radius:4px; font-size:0.75rem; font-weight:bold; margin-top:2px;">2</span><span id="cond6_2">${p.cond6_2}</span></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <div style="font-size:0.9rem; color:#d4af37; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-list-check"></i> <span id="subTitle1">${p.subTitle1}</span></div>
+                    <div class="instruction-box" style="padding:8px 12px;">
+                        <div class="instruction-item" style="margin-bottom:6px; display:flex; align-items:flex-start; gap:8px;"><span style="background:#1e3a8a; color:#fff; padding:1px 6px; border-radius:4px; font-size:0.75rem; font-weight:bold; margin-top:2px;">1</span><span id="inst6_4">${p.inst6_4}</span></div>
+                        <div class="instruction-item" style="margin-bottom:6px; display:flex; align-items:flex-start; gap:8px;"><span style="background:#1e3a8a; color:#fff; padding:1px 6px; border-radius:4px; font-size:0.75rem; font-weight:bold; margin-top:2px;">2</span><span id="inst6_5">${p.inst6_5}</span></div>
+                        <div class="instruction-item" style="display:flex; align-items:flex-start; gap:8px;"><span style="background:#1e3a8a; color:#fff; padding:1px 6px; border-radius:4px; font-size:0.75rem; font-weight:bold; margin-top:2px;">3</span><span id="inst6_6">${p.inst6_6}</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 區塊三：掃描與對頻要求 -->
+            <div class="hud-card" id="qrScanCardStep6">
+                <div class="card-title"><i class="fa-solid fa-qrcode"></i><span id="qrTitle">${p.qrTitle}</span></div>
+                <div style="text-align:center; padding:10px 0;">
+                    <div style="color:#d4af37; font-size:0.95rem; font-weight:bold; margin-bottom:12px;">
+                        <span id="qrScanTitleStep6">${p.qrScanTitleStep6}</span>
+                    </div>
+                    <div id="qr-reader-container-step6" style="width:100%; max-width:280px; margin:0 auto;"></div>
+                    <button class="btn-restart" id="btnScanQRStep6" onclick="startQRScanner('step6')" style="margin-top:10px;">
+                        <i class="fa-solid fa-qrcode"></i>
+                        <span id="btnScanTextStep6">${p.btnScanTextStep6}</span>
+                    </button>
+                    <div id="qrScanResultStep6" class="qr-result" style="display:none; margin-top:10px;">
+                        <i class="fa-solid fa-check-circle"></i><span id="qrResultTextStep6">${p.qrResultTextStep6}</span>
+                    </div>
+                    <div id="cameraGuideStep6" class="camera-guide" style="display:none; text-align:left; margin-top:12px; font-size:0.8rem; background:rgba(0,0,0,0.4); padding:10px; border-radius:6px;">
+                        <span id="cameraGuideTextStep6">${p.cameraGuideTextStep6}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // 同步更新右側檢核重點面板
+        document.querySelectorAll('.hud-card').forEach(card => {
+            if (card.textContent.includes('檢核重點') || card.textContent.includes('Inspection Key Points')) {
+                card.innerHTML = `
+                    <div class="card-title"><i class="fa-solid fa-star"></i><span id="hudRightTitleText">${p.hudRightTitle}</span></div>
+                    <ul style="padding-left:18px; margin:0; font-size:0.85rem; color:#e0e8f5; line-height:1.8;">
+                        <li><span id="hudRightText1">${p.hudRight1}</span></li>
+                        <li><span id="hudRightText2">${p.hudRight2}</span></li>
+                    </ul>
+                `;
+            }
+        });
+
+        // 同步頁碼
+        const pageMarkerEl = document.getElementById('pageMarkerText');
+        if (pageMarkerEl) pageMarkerEl.textContent = p.pageMarkerStep6;
+    };
+
+    // 5. 攔截全域 switchLanguage 函式，確保點擊右上角切換語系時同步重繪 Step 6
+    const originalSwitchLang = window.switchLanguage;
+    window.switchLanguage = function(lang) {
+        if (typeof originalSwitchLang === 'function') {
+            originalSwitchLang(lang);
+        } else {
+            window.currentLang = lang;
+        }
+        renderStep6Content(lang);
+    };
+
+    // 6. 整合 5 格分組與導航邏輯
+    let lastStep = -1;
+    function updateFlowNav() {
+        const step = window.currentStep || 1;
+        if (step === lastStep) return;
+        lastStep = step;
+
+        const start = Math.floor((step - 1) / 5) * 5 + 1;
+        const end = start + 4;
+
+        document.querySelectorAll(".flow-nav .flow-node").forEach(function (node) {
+            node.style.display = "none";
+            node.classList.remove("active");
+        });
+
+        for (let i = start; i <= end; i++) {
+            const node = document.getElementById("node" + i);
+            if (node) node.style.display = "flex";
+        }
+
+        const activeNode = document.getElementById("node" + step);
+        if (activeNode) activeNode.classList.add("active");
+    }
+    setInterval(updateFlowNav, 100);
+
+    // 7. 攔截上下一步按鈕事件
+    const originalNextClick = window.handleNextClick;
+    window.handleNextClick = function() {
+        const step = window.currentStep || 1;
+        if (step === 5) {
+            window.currentStep = 6;
+            document.getElementById('node5').classList.remove('active');
+            document.getElementById('node6').classList.add('active');
+            document.getElementById('panelStep5').classList.remove('active');
+            document.getElementById('panelStep6').classList.add('active');
+            document.getElementById('btnBack').classList.add('enabled');
+            renderStep6Content(typeof currentLang !== 'undefined' ? currentLang : 'zh');
+            return;
+        }
+        if (typeof originalNextClick === 'function') originalNextClick();
+    };
+
+    const originalBackClick = window.handleBackClick;
+    window.handleBackClick = function() {
+        const step = window.currentStep || 1;
+        if (step === 6) {
+            window.currentStep = 5;
+            document.getElementById('node6').classList.remove('active');
+            document.getElementById('node5').classList.add('active');
+            document.getElementById('panelStep6').classList.remove('active');
+            document.getElementById('panelStep5').classList.add('active');
+            renderStep6Content(typeof currentLang !== 'undefined' ? currentLang : 'zh');
+            return;
+        }
+        if (typeof originalBackClick === 'function') originalBackClick();
+    };
+
+    // 8. 擴充 QR 掃描功能對應 Step 6
+    const originalStartQR = window.startQRScanner;
+    window.startQRScanner = function(step) {
+        if (step === 'step6') {
+            const containerId = 'qr-reader-container-step6';
+            const guideId = 'cameraGuideStep6';
+            const guideTextId = 'cameraGuideTextStep6';
+            const resultId = 'qrScanResultStep6';
+            const resultTextId = 'qrResultTextStep6';
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            const nextBtn = document.getElementById('btnNext');
+            if (nextBtn) { nextBtn.classList.remove('enabled'); nextBtn.disabled = true; }
+            if (typeof stopCurrentScanner === 'function') {
+                stopCurrentScanner().then(() => {
+                    container.innerHTML = '';
+                    setTimeout(() => {
+                        if (typeof initScanner === 'function') {
+                            initScanner(containerId, guideId, guideTextId, resultId, resultTextId, step);
+                        }
+                    }, 300);
+                });
+            }
+            return;
+        }
+        if (typeof originalStartQR === 'function') originalStartQR(step);
+    };
+
+    // 初始載入時即渲染一次當前語系
+    setTimeout(() => {
+        renderStep6Content(typeof currentLang !== 'undefined' ? currentLang : 'zh');
+    }, 100);
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 【宇宙誓印覺醒工程】Step 6 中文版螢光標記修正模版              -->
+<!-- 請直接將以下完整程式碼貼在原檔案的 </body> 前方即可             -->
+<!-- ============================================================ -->
+
+<script>
+(function() {
+    if (typeof langPack !== 'undefined') {
+        langPack.zh = langPack.zh || {};
+        
+        // 更新中文版的 cond6_2，加入與英文版相同的螢光黃背景樣式
+        langPack.zh.cond6_2 = "須於主頻可識別層級達標（<span style='color:#000; background:#ffff00; padding:1px 4px; border-radius:3px; font-weight:bold;'>5D，U-200層以上</span>）";
+    }
+
+    // 若當前頁面已渲染，立即重新調用渲染函式更新畫面
+    if (typeof renderStep6Content === 'function') {
+        renderStep6Content(typeof currentLang !== 'undefined' ? currentLang : 'zh');
+    }
+})();
+</script>
 </body>
 </html>
 
