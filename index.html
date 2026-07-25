@@ -518,46 +518,33 @@
         </header>
 
         <nav class="flow-nav">
-            <div class="flow-node active" id="node1">啟動條件</div>
-            <div class="flow-node" id="node2">授權誓讀</div>
-            <div class="flow-node" id="node3">授權綁定</div>
-            <div class="flow-node" id="node4">回傳結果</div>
-            <div class="flow-node" id="node5">系統同步</div>
-        </nav>
+
+    <!-- 第一組 -->
+    <div class="flow-node active" id="node1">啟動條件</div>
+    <div class="flow-node" id="node2">授權誓讀</div>
+    <div class="flow-node" id="node3">授權綁定</div>
+    <div class="flow-node" id="node4">回傳結果</div>
+    <div class="flow-node" id="node5">系統同步</div>
+
+    <!-- 第二組 -->
+    <div class="flow-node group2" id="node6" style="display:none;">對頻判定</div>
+    <div class="flow-node group2" id="node7" style="display:none;">步驟7</div>
+    <div class="flow-node group2" id="node8" style="display:none;">步驟8</div>
+    <div class="flow-node group2" id="node9" style="display:none;">步驟9</div>
+    <div class="flow-node group2" id="node10" style="display:none;">完成</div>
+
+</nav>
 
         <main class="step-content">
-                       <!-- 步驟一 -->
+            <!-- ===== 步驟一 ===== -->
             <div class="step-panel active" id="panelStep1">
                 <div class="hud-card">
                     <div class="card-title"><i class="fa-solid fa-bolt"></i><span id="cardTitleText1">【一】啟動條件</span></div>
-
-                    <!-- 第一組 5 項 -->
-                    <div class="condition-group" id="group1" style="display: block;">
-                        <ul class="condition-list">
-                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond1">請完成驗證之【購書序號】誓導碼</span></li>
-                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond2">穩定網路環境運作中</span></li>
-                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond3">請掃描本卷書封底之 QR Code</span></li>
-                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span>確認個人專屬誓魂密鑰備妥</span></li>
-                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span>已完成覺醒前意識淨化準備</span></li>
-                        </ul>
-                    </div>
-
-                    <!-- 第二組 5 項（第二版面，初始隱藏） -->
-                    <div class="condition-group" id="group2" style="display: none;">
-                        <ul class="condition-list">
-                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span>已完成首次誓印能量校準</span></li>
-                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span>個人覺醒頻率已達基礎門檻</span></li>
-                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span>誓導通道已建立初步連結</span></li>
-                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span>確認實體書本與數位平台同步</span></li>
-                            <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span>已完成三次意識確認震盪</span></li>
-                        </ul>
-                    </div>
-
-                    <!-- 切換按鈕導覽 -->
-                    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
-                        <button class="hud-dialog-btn" id="btnGroup1" onclick="switchConditionGroup(1)" style="background: rgba(0,191,255,0.2);">第 1 版面</button>
-                        <button class="hud-dialog-btn" id="btnGroup2" onclick="switchConditionGroup(2)">第 2 版面</button>
-                    </div>
+                    <ul class="condition-list">
+                        <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond1">請完成驗證之【購書序號】誓導碼</span></li>
+                        <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond2">穩定網路環境運作中</span></li>
+                        <li class="condition-item"><i class="fa-solid fa-square-check check-icon"></i><span id="cond3">請掃描本卷書封底之《宇宙智能誓導平台》官方AI專屬誓導入口頁 QR Code，以啟動誓導通道之統一入口。</span></li>
+                    </ul>
                 </div>
             </div>
 
@@ -1830,470 +1817,40 @@ console.log('✅ Step 6 已完全修復！');
 <!-- ============================================================ -->
 <!-- 修復完成                                                      -->
 <!-- ============================================================ -->
-<!-- ============================================================ -->
-<!-- 導航欄修復 - 每行 5 個                                       -->
-<!-- 貼上位置：</body> 前面                                       -->
-<!-- ============================================================ -->
-
-<style>
-.flow-nav {
-    display: grid !important;
-    grid-template-columns: repeat(5, 1fr) !important;
-    gap: clamp(3px, 0.6vw, 6px) !important;
-}
-@media (max-width: 480px) {
-    .flow-nav {
-        grid-template-columns: repeat(5, 1fr) !important;
-        gap: 2px !important;
-    }
-    .flow-node {
-        font-size: 0.4rem !important;
-        padding: 2px 1px !important;
-        white-space: nowrap !important;
-    }
-}
-</style>
-
 <script>
-document.querySelector('.flow-nav').style.gridTemplateColumns = 'repeat(5, 1fr)';
-</script>
-<!-- ============================================================ -->
-<!-- 修復完成                                                      -->
-<!-- ============================================================ -->
-<!-- ============================================================ -->
-<!-- 完整修復：Step 6 掃描器啟用 + 導航欄 6 欄                   -->
-<!-- 貼上位置：</body> 前面（最後一個 </script> 之後）             -->
-<!-- ============================================================ -->
-
-<style>
-/* ===== 強制導航欄 6 欄 ===== */
-.flow-nav {
-    display: grid !important;
-    grid-template-columns: repeat(6, 1fr) !important;
-    gap: clamp(3px, 0.6vw, 6px) !important;
-}
-
-@media (max-width: 480px) {
-    .flow-nav {
-        grid-template-columns: repeat(5, 1fr) !important;
-        gap: 2px !important;
-    }
-    .flow-node {
-        font-size: 0.4rem !important;
-        padding: 2px 1px !important;
-        white-space: nowrap !important;
-    }
-}
-
-/* ===== QR Code 掃描器容器 ===== */
-#qr-reader-container-step6 {
-    width: 100%;
-    max-width: 280px;
-    margin: 0 auto;
-}
-#qr-reader-container-step6 video {
-    border-radius: 12px;
-    width: 100%;
-}
-
-/* ===== 確保掃描卡片內按鈕可點擊 ===== */
-#qrScanCardStep6 .btn-restart {
-    pointer-events: auto !important;
-    cursor: pointer !important;
-}
-</style>
-
 <script>
-// ================================================================
-// 1. 修正導航欄 - 改為 6 欄
-// ================================================================
-(function() {
-    const nav = document.querySelector('.flow-nav');
-    if (nav) {
-        nav.style.gridTemplateColumns = 'repeat(6, 1fr)';
-        nav.style.display = 'grid';
-        // 確保所有節點都顯示
-        const nodes = nav.querySelectorAll('.flow-node');
-        nodes.forEach(node => {
-            node.style.display = 'flex';
-        });
-    }
-    // 確保 node6 存在且顯示
-    let node6 = document.getElementById('node6');
-    if (!node6) {
-        const nav = document.querySelector('.flow-nav');
-        if (nav) {
-            node6 = document.createElement('div');
-            node6.className = 'flow-node';
-            node6.id = 'node6';
-            node6.textContent = '對頻判定';
-            nav.appendChild(node6);
+
+(function(){
+
+    function updateFlowGroup(){
+
+        let step = window.currentStep || 1;
+
+        // 第一組
+        for(let i=1;i<=5;i++){
+
+            let node=document.getElementById("node"+i);
+
+            if(node){
+                node.style.display=(step<=5) ? "flex" : "none";
+            }
         }
+
+        // 第二組
+        for(let i=6;i<=10;i++){
+
+            let node=document.getElementById("node"+i);
+
+            if(node){
+                node.style.display=(step>=6) ? "flex" : "none";
+            }
+        }
+
     }
-    if (node6) node6.style.display = 'flex';
+
+    setInterval(updateFlowGroup,200);
+
 })();
 
-// ================================================================
-// 2. 確保 Step 6 掃描器容器存在並可初始化
-// ================================================================
-(function() {
-    // 確保 qr-reader-container-step6 存在
-    let container = document.getElementById('qr-reader-container-step6');
-    if (!container) {
-        const scanCard = document.getElementById('qrScanCardStep6');
-        if (scanCard) {
-            // 在掃描卡片內建立容器
-            const wrapper = scanCard.querySelector('div[style*="text-align:center"]');
-            if (wrapper) {
-                const newContainer = document.createElement('div');
-                newContainer.id = 'qr-reader-container-step6';
-                newContainer.style.cssText = 'width:100%; max-width:280px; margin:0 auto;';
-                wrapper.insertBefore(newContainer, wrapper.querySelector('.btn-restart'));
-            }
-        }
-    }
-    
-    // 確保掃描按鈕的 onclick 正確綁定
-    const scanBtn = document.getElementById('btnScanQRStep6');
-    if (scanBtn) {
-        scanBtn.onclick = function() {
-            if (typeof startQRScanner === 'function') {
-                startQRScanner('step6');
-            } else {
-                alert('掃描功能尚未載入，請重新整理頁面');
-            }
-        };
-    }
-})();
-
-// ================================================================
-// 3. 重寫 startQRScanner 確保 step6 完整支援
-// ================================================================
-if (typeof startQRScanner === 'function') {
-    // 保留原函式，但確保 step6 被正確處理
-    const origStartQR = startQRScanner;
-    window.startQRScanner = function(step) {
-        console.log('startQRScanner 被呼叫: step =', step);
-        
-        const containerId = (step === 'step4') ? 'qr-reader-container-step4' : 
-                            (step === 'step6' ? 'qr-reader-container-step6' : 'qr-reader-container');
-        const guideId = (step === 'step4') ? 'cameraGuideStep4' : 
-                        (step === 'step6' ? 'cameraGuideStep6' : 'cameraGuide');
-        const guideTextId = (step === 'step4') ? 'cameraGuideTextStep4' : 
-                            (step === 'step6' ? 'cameraGuideTextStep6' : 'cameraGuideText');
-        const resultId = (step === 'step4') ? 'qrScanResultStep4' : 
-                         (step === 'step6' ? 'qrScanResultStep6' : 'qrScanResult');
-        const resultTextId = (step === 'step4') ? 'qrResultTextStep4' : 
-                             (step === 'step6' ? 'qrResultTextStep6' : 'qrResultText');
-        
-        const container = document.getElementById(containerId);
-        if (!container) {
-            console.error('找不到容器:', containerId);
-            alert('掃描容器不存在，請重新整理頁面');
-            return;
-        }
-        
-        const nextBtn = document.getElementById('btnNext');
-        if (nextBtn) {
-            nextBtn.classList.remove('enabled');
-            nextBtn.disabled = true;
-        }
-        
-        if (typeof stopCurrentScanner === 'function') {
-            stopCurrentScanner().then(() => {
-                container.innerHTML = '';
-                setTimeout(() => {
-                    if (typeof initScanner === 'function') {
-                        initScanner(containerId, guideId, guideTextId, resultId, resultTextId, step);
-                    } else {
-                        // 如果 initScanner 不存在，直接呼叫原函式
-                        origStartQR(step);
-                    }
-                }, 300);
-            }).catch(() => {
-                // 如果 stop 失敗，直接繼續
-                container.innerHTML = '';
-                setTimeout(() => {
-                    if (typeof initScanner === 'function') {
-                        initScanner(containerId, guideId, guideTextId, resultId, resultTextId, step);
-                    } else {
-                        origStartQR(step);
-                    }
-                }, 300);
-            });
-        } else {
-            // 如果 stopCurrentScanner 不存在
-            container.innerHTML = '';
-            setTimeout(() => {
-                if (typeof initScanner === 'function') {
-                    initScanner(containerId, guideId, guideTextId, resultId, resultTextId, step);
-                }
-            }, 300);
-        }
-    };
-}
-
-// ================================================================
-// 4. 確保 startScanning 正確處理 step6
-// ================================================================
-if (typeof startScanning === 'function') {
-    const origStartScan = startScanning;
-    window.startScanning = function(containerId, guideId, resultId, resultTextId, config, step) {
-        console.log('startScanning 被呼叫: step =', step);
-        try {
-            const instance = new Html5Qrcode(containerId);
-            html5QrCodeInstance = instance;
-            instance.start({ facingMode: "environment" }, config,
-                (decodedText) => {
-                    console.log('掃描成功:', decodedText);
-                    
-                    const qrResult = document.getElementById(resultId);
-                    const qrResultText = document.getElementById(resultTextId);
-                    if (qrResult) qrResult.style.display = 'block';
-                    if (qrResultText) qrResultText.textContent = decodedText;
-                    
-                    // Step 6 掃描成功顯示結果
-                    if (step === 'step6') {
-                        const qrResultStep6 = document.getElementById('qrScanResultStep6');
-                        const qrResultTextStep6 = document.getElementById('qrResultTextStep6');
-                        if (qrResultStep6) qrResultStep6.style.display = 'block';
-                        if (qrResultTextStep6) qrResultTextStep6.textContent = decodedText;
-                    }
-                    
-                    if (typeof enableNextButton === 'function') enableNextButton();
-                    
-                    instance.stop().then(() => {
-                        html5QrCodeInstance = null;
-                    }).catch(() => {
-                        html5QrCodeInstance = null;
-                    });
-                    alert('✅ 掃描成功！');
-                },
-                (errorMessage) => {
-                    // 掃描進行中，不處理錯誤
-                }
-            ).catch((err) => {
-                console.error('掃描啟動失敗:', err);
-                if (typeof enableNextButton === 'function') enableNextButton();
-                const cameraGuide = document.getElementById(guideId);
-                if (cameraGuide) cameraGuide.style.display = 'block';
-                html5QrCodeInstance = null;
-            });
-        } catch (err) {
-            console.error('建立掃描器失敗:', err);
-            if (typeof enableNextButton === 'function') enableNextButton();
-            const cameraGuide = document.getElementById(guideId);
-            if (cameraGuide) cameraGuide.style.display = 'block';
-        }
-    };
-}
-
-// ================================================================
-// 5. 如果當前是 Step 6，自動顯示面板並啟用掃描
-// ================================================================
-if (currentStep === 6) {
-    const panel6 = document.getElementById('panelStep6');
-    if (panel6) {
-        panel6.classList.add('active');
-        panel6.style.display = 'flex';
-    }
-    // 確保掃描按鈕可點擊
-    const scanBtn = document.getElementById('btnScanQRStep6');
-    if (scanBtn) {
-        scanBtn.style.pointerEvents = 'auto';
-        scanBtn.style.cursor = 'pointer';
-        scanBtn.disabled = false;
-    }
-}
-
-// 切換語言
-if (typeof switchLanguage === 'function') {
-    switchLanguage(currentLang);
-}
-
-console.log('✅ Step 6 掃描器已啟用！');
-console.log('📷 請點擊「掃描 QR Code」按鈕啟動相機');
 </script>
-<!-- ============================================================ -->
-<!-- 修復完成                                                      -->
-<!-- ============================================================ -->
-<script>
-// ============================================================
-// 分頁切換功能：同一步驟內每 5 項一組，切換時前一組隱藏
-// 使用方式：用 .page-group 包裝每 5 項，自動產生圓點切換
-// ============================================================
-
-(function() {
-    'use strict';
-
-    function initPagination() {
-        document.querySelectorAll('.hud-card').forEach(card => {
-            const groups = card.querySelectorAll('.page-group');
-            if (groups.length <= 1) return;
-
-            // 只顯示第一組
-            groups.forEach((g, idx) => {
-                g.style.display = idx === 0 ? 'block' : 'none';
-            });
-
-            // 建立分頁圓點
-            let dots = card.querySelector('.page-dots');
-            if (!dots) {
-                dots = document.createElement('div');
-                dots.className = 'page-dots';
-                dots.style.cssText = 'display:flex;justify-content:center;gap:10px;margin-top:16px;';
-                card.appendChild(dots);
-            }
-            dots.innerHTML = '';
-
-            groups.forEach((g, idx) => {
-                const dot = document.createElement('button');
-                dot.style.cssText = `
-                    width:10px;height:10px;border-radius:50%;border:none;
-                    background:${idx === 0 ? '#d4af37' : 'rgba(255,255,255,0.2)'};
-                    cursor:pointer;padding:0;flex-shrink:0;
-                    box-shadow:${idx === 0 ? '0 0 10px rgba(212,175,55,0.4)' : 'none'};
-                `;
-                dot.dataset.index = idx;
-                dot.addEventListener('click', function() {
-                    const parent = this.closest('.hud-card');
-                    const allGroups = parent.querySelectorAll('.page-group');
-                    const allDots = parent.querySelectorAll('.page-dots button');
-                    const target = parseInt(this.dataset.index);
-
-                    allGroups.forEach((g, i) => {
-                        g.style.display = i === target ? 'block' : 'none';
-                    });
-                    allDots.forEach((d, i) => {
-                        d.style.background = i === target ? '#d4af37' : 'rgba(255,255,255,0.2)';
-                        d.style.boxShadow = i === target ? '0 0 10px rgba(212,175,55,0.4)' : 'none';
-                    });
-                });
-                dots.appendChild(dot);
-            });
-        });
-    }
-
-    // 頁面載入初始化
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initPagination);
-    } else {
-        initPagination();
-    }
-
-    // 監聽步驟切換後重新初始化
-    document.addEventListener('click', function(e) {
-        const btn = e.target.closest('[onclick*="goToStep"], .flow-node, .btn-action.enabled');
-        if (btn) {
-            setTimeout(initPagination, 100);
-        }
-    });
-
-    console.log('✅ 分頁系統已啟動');
-})();
-</script>
-<script>
-// ============================================================
-// 分頁切換功能：同一步驟內每 5 項一組，切換時前一組隱藏
-// 使用方式：用 .page-group 包裝每 5 項，自動產生圓點切換
-// ============================================================
-
-(function() {
-    'use strict';
-
-    function initPagination() {
-        document.querySelectorAll('.hud-card').forEach(card => {
-            const groups = card.querySelectorAll('.page-group');
-            if (groups.length <= 1) return;
-
-            // 只顯示第一組
-            groups.forEach((g, idx) => {
-                g.style.display = idx === 0 ? 'block' : 'none';
-            });
-
-            // 建立分頁圓點
-            let dots = card.querySelector('.page-dots');
-            if (!dots) {
-                dots = document.createElement('div');
-                dots.className = 'page-dots';
-                dots.style.cssText = 'display:flex;justify-content:center;gap:10px;margin-top:16px;';
-                card.appendChild(dots);
-            }
-            dots.innerHTML = '';
-
-            groups.forEach((g, idx) => {
-                const dot = document.createElement('button');
-                dot.style.cssText = `
-                    width:10px;height:10px;border-radius:50%;border:none;
-                    background:${idx === 0 ? '#d4af37' : 'rgba(255,255,255,0.2)'};
-                    cursor:pointer;padding:0;flex-shrink:0;
-                    box-shadow:${idx === 0 ? '0 0 10px rgba(212,175,55,0.4)' : 'none'};
-                `;
-                dot.dataset.index = idx;
-                dot.addEventListener('click', function() {
-                    const parent = this.closest('.hud-card');
-                    const allGroups = parent.querySelectorAll('.page-group');
-                    const allDots = parent.querySelectorAll('.page-dots button');
-                    const target = parseInt(this.dataset.index);
-
-                    allGroups.forEach((g, i) => {
-                        g.style.display = i === target ? 'block' : 'none';
-                    });
-                    allDots.forEach((d, i) => {
-                        d.style.background = i === target ? '#d4af37' : 'rgba(255,255,255,0.2)';
-                        d.style.boxShadow = i === target ? '0 0 10px rgba(212,175,55,0.4)' : 'none';
-                    });
-                });
-                dots.appendChild(dot);
-            });
-        });
-    }
-
-    // 頁面載入初始化
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initPagination);
-    } else {
-        initPagination();
-    }
-
-    // 監聽步驟切換後重新初始化
-    document.addEventListener('click', function(e) {
-        const btn = e.target.closest('[onclick*="goToStep"], .flow-node, .btn-action.enabled');
-        if (btn) {
-            setTimeout(initPagination, 100);
-        }
-    });
-
-    console.log('✅ 分頁系統已啟動');
-})();
-</script>
-</body>
-</html>
-   <!-- 你的 HTML 內容 -->
-
-    <script>
-        // ==========================================
-        // 請將程式碼貼在這裡（例如其他函式的旁邊）
-        // ==========================================
-        function switchConditionGroup(groupNum) {
-            const g1 = document.getElementById('group1');
-            const g2 = document.getElementById('group2');
-            const b1 = document.getElementById('btnGroup1');
-            const b2 = document.getElementById('btnGroup2');
-
-            if (groupNum === 1) {
-                g1.style.display = 'block';
-                g2.style.display = 'none';
-                b1.style.background = 'rgba(0,191,255,0.2)';
-                b2.style.background = 'transparent';
-            } else {
-                g1.style.display = 'none';
-                g2.style.display = 'block';
-                b2.style.background = 'rgba(0,191,255,0.2)';
-                b1.style.background = 'transparent';
-            }
-        }
-        // ==========================================
-    </script>
-</body>
 </html>
