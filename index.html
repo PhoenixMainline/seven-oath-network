@@ -3275,6 +3275,234 @@ script>
     }, 100);
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 恢復導航按鈕 + 乾淨【三】授權誓讀階段（最終穩定版）          -->
+<!-- 請先刪除所有舊的 Step 6 / 靜心相關 script，只留這一段        -->
+<!-- ============================================================ -->
 
+<script>
+(function () {
+    // ========== 1. 強制恢復返回 / 下一步按鈕可點擊 ==========
+    function forceEnableNavButtons() {
+        const back = document.getElementById('btnBack');
+        const next = document.getElementById('btnNext');
+        if (back) {
+            back.classList.add('enabled');
+            back.style.pointerEvents = 'auto';
+            back.style.cursor = 'pointer';
+            back.disabled = false;
+        }
+        if (next) {
+            // Step 1 一開始就先讓下一步可按（後續步驟再由各步驟邏輯控制）
+            next.classList.add('enabled');
+            next.style.pointerEvents = 'auto';
+            next.style.cursor = 'pointer';
+            next.disabled = false;
+        }
+    }
+
+    // 頁面載入後立刻執行一次，之後每 500ms 再檢查一次（防止被其他腳本關掉）
+    forceEnableNavButtons();
+    setInterval(forceEnableNavButtons, 500);
+
+    // ========== 2. 語系文字（【三】授權誓讀階段） ==========
+    function ensureLang() {
+        if (typeof langPack === 'undefined') return false;
+        langPack.zh = langPack.zh || {};
+        langPack.en = langPack.en || {};
+
+        langPack.zh.meditateTitleStep6   = "【三】授權誓讀階段";
+        langPack.zh.meditateDescStep6    = "誓印者於登入前，須先於「誓魂共振頻道」（即《宇宙智能誓導平台》之「指令輸入欄位」）誦讀授權誓文，以啟動主頻授權並對應天律識別座標。";
+        langPack.zh.meditateKeyPointStep6 = "誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。<br>於「誓魂共振頻道」靜心 10 秒誦讀或默念，確保頻位精確並成功執行。";
+        langPack.zh.meditateVowLabelStep6 = "誓文啟動語：";
+        langPack.zh.meditateVowTextStep6  = "★願我本願回響於誓導主尊之聲；願我靈印對應誓導主尊之筆；<br>願我之誓，入於誓導之網；願我步步有印、願願有書、行行有應。★";
+        langPack.zh.btnStartTextStep6     = "開始靜心誦讀";
+        langPack.zh.btnProgressTextStep6  = "靜心誦讀中...";
+        langPack.zh.btnCompleteTextStep6  = "誦讀完成";
+        langPack.zh.timerWaitingStep6     = "⏳ 等待開始";
+        langPack.zh.timerCountingStep6    = "請靜心誦讀";
+        langPack.zh.timerCompleteStep6    = "✅ 誦讀完成";
+        langPack.zh.btnRestartTextStep6   = "重新開始";
+
+        langPack.en.meditateTitleStep6   = "[III] Authorized Oath-Recitation Phase";
+        langPack.en.meditateDescStep6    = "Prior to login, the Oath-Bearer must recite the authorized oath-script within the 「Oath-Soul Resonance Channel」 (the 「Command-Input Field」 of the 《Cosmic Intelligent Vow-Guidance Platform》) to activate primary-frequency authorization and align with the Heavenly-Law Identification Coordinates.";
+        langPack.en.meditateKeyPointStep6 = "Oath Recitation Is The Key Trigger For Main-Frequency Activation;<br>Without Recitation, Authorization Does Not Take Effect.<br>Within The 「Oath-Soul Resonance Channel」, Center The Mind For 10 Seconds And Recite Or Silently Read The Text To Ensure Frequency Precision And Successful Execution.";
+        langPack.en.meditateVowLabelStep6 = "Activation Vow Text：";
+        langPack.en.meditateVowTextStep6  = "★May my original vow resound in the voice of the Oath-Guiding Sovereign;<br>may my Oath-Soul-seal align with the pen of the Oath-Guiding Sovereign;<br>may my oath enter the Oath-Guiding Network;<br>may every step bear a seal, every vow hold a record, and every action receive response.★";
+        langPack.en.btnStartTextStep6     = "Begin Recitation Centering";
+        langPack.en.btnProgressTextStep6  = "Reciting...";
+        langPack.en.btnCompleteTextStep6  = "Recitation Complete";
+        langPack.en.timerWaitingStep6     = "⏳ Waiting to Start";
+        langPack.en.timerCountingStep6    = "Please recite with a calm and focused mind.";
+        langPack.en.timerCompleteStep6    = "✅ Recitation Complete";
+        langPack.en.btnRestartTextStep6   = "Restart";
+        return true;
+    }
+
+    // ========== 3. Step 6 計時狀態 ==========
+    let timerId = null;
+    let seconds = 10;
+    let running = false;
+    let state = 'initial';
+
+    function p() {
+        const lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
+        return (langPack && langPack[lang]) ? langPack[lang] : (langPack ? langPack.zh : {});
+    }
+
+    window.startCenteringStep6 = function () {
+        if (running) return;
+        const btn = document.getElementById('btnStartCenteringStep6');
+        const restart = document.getElementById('btnRestartStep6');
+        const label = document.getElementById('timerLabelStep6');
+        const num = document.getElementById('timerNumberStep6');
+        const next = document.getElementById('btnNext');
+        if (!btn || !label || !num) return;
+
+        const pack = p();
+        running = true;
+        state = 'counting';
+        seconds = 10;
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>' + (pack.btnProgressTextStep6 || '靜心誦讀中...') + '</span>';
+        if (restart) restart.style.display = 'inline-flex';
+        label.textContent = pack.timerCountingStep6 || '請靜心誦讀';
+        num.textContent = seconds;
+        num.classList.remove('complete');
+        if (next) next.classList.remove('enabled');
+
+        clearInterval(timerId);
+        timerId = setInterval(function () {
+            seconds--;
+            if (seconds <= 0) {
+                clearInterval(timerId);
+                running = false;
+                state = 'complete';
+                num.textContent = '0';
+                num.classList.add('complete');
+                label.textContent = pack.timerCompleteStep6 || '✅ 誦讀完成';
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> <span>' + (pack.btnCompleteTextStep6 || '誦讀完成') + '</span>';
+                if (next) {
+                    next.classList.add('enabled');
+                    next.style.pointerEvents = 'auto';
+                    next.disabled = false;
+                }
+            } else {
+                num.textContent = seconds;
+            }
+        }, 1000);
+    };
+
+    window.restartTimerStep6 = function () {
+        clearInterval(timerId);
+        running = false;
+        state = 'initial';
+        seconds = 10;
+
+        const btn = document.getElementById('btnStartCenteringStep6');
+        const restart = document.getElementById('btnRestartStep6');
+        const label = document.getElementById('timerLabelStep6');
+        const num = document.getElementById('timerNumberStep6');
+        const next = document.getElementById('btnNext');
+        const pack = p();
+
+        if (num) {
+            num.textContent = '10';
+            num.classList.remove('complete');
+        }
+        if (label) label.textContent = pack.timerWaitingStep6 || '⏳ 等待開始';
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-play"></i> <span>' + (pack.btnStartTextStep6 || '開始靜心誦讀') + '</span>';
+        }
+        if (restart) restart.style.display = 'none';
+        if (next) next.classList.remove('enabled');
+    };
+
+    // ========== 4. 只替換 Step 6 的卡片內容 ==========
+    let applying = false;
+    function applyBlock() {
+        if (applying) return;
+        const card = document.getElementById('qrScanCardStep6');
+        if (!card) return;
+        if (!ensureLang()) return;
+
+        applying = true;
+        const pack = p();
+
+        card.innerHTML = `
+            <div class="card-title">
+                <i class="fa-solid fa-om"></i>
+                <span>${pack.meditateTitleStep6 || '【三】授權誓讀階段'}</span>
+            </div>
+
+            <div style="color:rgba(224,232,245,0.92); font-size:0.88rem; line-height:1.75; margin-bottom:14px; text-align:left;">
+                ${pack.meditateDescStep6 || ''}
+            </div>
+
+            <div style="background:rgba(128,0,128,0.28); border-left:4px solid #c084fc; padding:12px 14px; border-radius:10px; margin-bottom:16px; color:#e8e0f0; font-size:0.85rem; line-height:1.7;">
+                <i class="fa-solid fa-key" style="color:#c084fc; margin-right:6px;"></i>
+                ${pack.meditateKeyPointStep6 || ''}
+            </div>
+
+            <div style="background:rgba(212,175,55,0.08); border:1px dashed rgba(212,175,55,0.4); border-radius:12px; padding:14px 16px; margin-bottom:18px;">
+                <div style="color:#d4af37; font-size:0.9rem; font-weight:bold; margin-bottom:8px;">
+                    <i class="fa-solid fa-scroll" style="margin-right:6px;"></i>
+                    ${pack.meditateVowLabelStep6 || '誓文啟動語：'}
+                </div>
+                <div style="color:#D4AF37; font-size:0.95rem; font-weight:bold; line-height:1.7; text-align:center;">
+                    ${pack.meditateVowTextStep6 || ''}
+                </div>
+            </div>
+
+            <div class="timer-container">
+                <div style="display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap; width:100%;">
+                    <button class="btn-start-centering" id="btnStartCenteringStep6" onclick="startCenteringStep6()">
+                        <i class="fa-solid fa-play"></i>
+                        <span>${pack.btnStartTextStep6 || '開始靜心誦讀'}</span>
+                    </button>
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <span class="timer-label" id="timerLabelStep6">${pack.timerWaitingStep6 || '⏳ 等待開始'}</span>
+                        <span class="timer-number" id="timerNumberStep6">10</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align:center; margin-top:12px;">
+                <button class="btn-restart" id="btnRestartStep6" onclick="restartTimerStep6()" style="display:none;">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    <span>${pack.btnRestartTextStep6 || '重新開始'}</span>
+                </button>
+            </div>
+        `;
+        applying = false;
+    }
+
+    // ========== 5. 監看 Step 6 面板 ==========
+    function startWatch() {
+        const panel = document.getElementById('panelStep6');
+        if (!panel) {
+            setTimeout(startWatch, 150);
+            return;
+        }
+        const obs = new MutationObserver(() => {
+            if (panel.classList.contains('active')) applyBlock();
+        });
+        obs.observe(panel, { attributes: true, attributeFilter: ['class'], childList: true, subtree: false });
+        if (panel.classList.contains('active')) applyBlock();
+    }
+    startWatch();
+
+    // 語系切換時也重套
+    const _orig = window.switchLanguage;
+    window.switchLanguage = function (lang) {
+        if (typeof _orig === 'function') _orig(lang);
+        else window.currentLang = lang;
+        setTimeout(applyBlock, 80);
+    };
+})();
+</script>
     <body>
 </html>
