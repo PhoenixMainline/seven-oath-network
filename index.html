@@ -4615,5 +4615,130 @@ script>
     setInterval(forceUpdateTitle, 800);
 })();
 </script>
+<script>
+(function(){
+    // 頁面載入完成後自動刪除 Step6 對頻判定面板
+    function removeStep6Panel(){
+        // 刪除導航節點 node6
+        const node6 = document.getElementById('node6');
+        if(node6) node.remove();
+        // 刪除 Step6 內容面板
+        const panel6 = document.getElementById('panelStep6');
+        if(panel6) panel.remove();
+        // 攔截所有會自動重建 Step6 的舊渲染函式，永久屏蔽
+        const oldRender6 = window.renderStep6Content;
+        window.renderStep6 = function(){};
+        window.renderStep6Content = function(){};
+        window.goToStep6 = function(){
+            // 切換到Step6時直接跳回Step5，不渲染空面板
+            currentStep = 5;
+            const p5 = document.getElementById('panelStep5');
+            document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('active'));
+            if(p5) p5.classList.add('active');
+            document.querySelectorAll('.flow-node').forEach(n=>n.classList.remove('active'));
+            document.getElementById('node5').classList.add('active');
+            const nextBtn = document.getElementById('btnNext');
+            if(nextBtn) next.classList.add('enabled');
+            if(typeof switchLanguage === 'function') switchLanguage(currentLang);
+        };
+        // 監聽DOM動態重建，一旦偵測到panel6自動銷毀
+        const observer = new MutationObserver(muts=>{
+            const p6Check = document.getElementById('panelStep6');
+            const n6Check = document.getElementById('node6');
+            if(p6Check) p6Check.remove();
+            if(n6Check) n6Check.remove();
+        });
+        const stepWrap = document.querySelector('.step-content');
+        const navWrap = document.querySelector('.flow-nav');
+        if(stepWrap) observer.observe(stepWrap,{childList:true,subtree:true});
+        if(navWrap) observer.observe(navWrap,{childList:true,subtree:true});
+    }
+    // DOM載入完執行刪除
+    document.addEventListener('DOMContentLoaded', removeStep6Panel);
+    // 防止延遲渲染重建，額外定時檢查
+    setInterval(()=>{
+        const p6 = document.getElementById('panelStep6');
+        const n6 = document.getElementById('node6');
+        if(p6) p6.remove();
+        if(n6) n6.remove();
+    },100);
+    // 覆蓋上下一步切換邏輯，刪除Step6跳轉分支
+    const originNext = window.handleNextClick;
+    window.handleNextClick = function(){
+        if(currentStep === 5){
+            // 原本要跳Step6，現在直接跳Step7
+            currentStep = 7;
+            document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('active'));
+            const p7 = document.getElementById('panelStep7');
+            if(p7) p7.classList.add('active');
+            document.querySelectorAll('.flow-node').forEach(n=>n.classList.remove('active'));
+            document.getElementById('node7').classList.add('active');
+            const backBtn = document.getElementById('btnBack');
+            if(backBtn) backBtn.classList.add('enabled');
+            if(typeof applyStep7 === 'function') applyStep7();
+            return;
+        }
+        if(typeof originNext === 'function') originNext();
+    };
+    const originBack = window.handleBackClick;
+    window.handleBackClick = function(){
+        if(currentStep === 7){
+            // 從Step7返回直接回到Step5，不經過6
+            currentStep = 5;
+            document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('active'));
+            const p5 = document.getElementById('panelStep5');
+            if(p5) p5.classList.add('active');
+            document.querySelectorAll('.flow-node').forEach(n=>n.classList.remove('active'));
+            document.getElementById('node5').classList.add('active');
+            const nextBtn = document.getElementById('btnNext');
+            if(nextBtn) next.classList.add('enabled');
+            return;
+        }
+        if(typeof originBack === 'function') originBack();
+    };
+})();
+<script>
+(function(){
+    // 持續刪除對頻判定彈窗
+    function removeOscDialog(){
+        const allDiv = document.querySelectorAll("div");
+        allDiv.forEach(box=>{
+            const html = box.innerHTML || "";
+            // 中文彈窗判斷
+            if(html.includes("對頻判定已完成！")){
+                box.remove();
+            }
+            // 英文版彈窗判斷
+            if(html.includes("Frequency Alignment Complete!")){
+                box.remove();
+            }
+        });
+    }
+
+    // 劫持所有會觸發彈窗的函式，阻止彈窗生成
+    const originShowDialog = window.showOathDialog;
+    window.showOathDialog = function(){
+        // 攔截：只要是對頻判定彈窗，直接不執行
+        const arg = arguments[0] || "";
+        if(arg.includes("對頻判定") || arg.includes("Frequency Alignment")){
+            return;
+        }
+        if(typeof originShowDialog === "function") originShowDialog(...arguments);
+    };
+
+    // 頁面載入立刻執行
+    window.addEventListener("load",()=>{
+        removeOscDialog();
+    });
+
+    // 實時監控DOM，一旦彈窗出現瞬間刪除
+    const observer = new MutationObserver(()=>{
+        removeOscDialog();
+    });
+    observer.observe(document.body, {
+        childList:true,
+        subtree:true
+    });
+})();
     <body>
 </html>
