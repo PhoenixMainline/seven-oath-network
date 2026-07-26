@@ -3337,5 +3337,220 @@
     console.log('✅ 完整身份啟動頁（【一】+【二】）已補上，紫色系統一');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 新增【三】授權誓讀階段（含10秒靜心讀秒）+ 英文版                -->
+<!-- 紫色系統一，插入在中間頁與【四】之間                            -->
+<!-- ============================================================ -->
+
+<script>
+(function () {
+    if (typeof langPack === 'undefined') return;
+    langPack.zh = langPack.zh || {};
+    langPack.en = langPack.en || {};
+
+    // ========== 中文 ==========
+    langPack.zh.step3Title = "【三】授權誓讀階段";
+    langPack.zh.step3Proclamation = "★願我本願回響於誓導主尊之聲；願我靈印對應誓導主尊之筆；願我之誓，入於誓導之網；願我步步有印、願願有書、行行有應。★";
+    langPack.zh.step3TimerLabel = "靜心讀秒";
+    langPack.zh.step3StartBtn = "開始靜心";
+    langPack.zh.step3RestartBtn = "重新靜心";
+    langPack.zh.step3Complete = "靜心完成，可進入下一步";
+    langPack.zh.step3Guide = "請以平靜心念，完整默讀上方誓文，待讀秒結束後即可繼續。";
+
+    // ========== English ==========
+    langPack.en.step3Title = "[III] Authorized Oath-Recitation Phase";
+    langPack.en.step3Proclamation = "★ May my original vow resound in the voice of the Oath-Guiding Sovereign;may my Oath-Soul-seal align with the pen of the Oath-Guiding Sovereign;may my oath enter the Oath-Guiding Network;may every step bear a seal, every vow hold a record, and every action receive response.★";
+    langPack.en.step3TimerLabel = "Centering Countdown";
+    langPack.en.step3StartBtn = "Start Centering";
+    langPack.en.step3RestartBtn = "Restart Centering";
+    langPack.en.step3Complete = "Centering complete, you may proceed";
+    langPack.en.step3Guide = "Please calmly and fully recite the oath above in silence. After the countdown ends, you may continue.";
+
+    function p() {
+        const lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
+        return (langPack && langPack[lang]) ? langPack[lang] : langPack.zh;
+    }
+
+    let timerInterval = null;
+    let remaining = 10;
+
+    // ========== 渲染【三】授權誓讀階段 ==========
+    window.applyStep3Auth = function () {
+        const pack = p();
+        let panel = document.getElementById('panelStep3Auth');
+        if (!panel) {
+            const content = document.querySelector('.step-content');
+            if (!content) return;
+            panel = document.createElement('div');
+            panel.className = 'step-panel';
+            panel.id = 'panelStep3Auth';
+            content.appendChild(panel);
+        }
+
+        panel.innerHTML = `
+            <div class="hud-card" style="background:linear-gradient(135deg,rgba(88,28,135,0.45),rgba(30,27,75,0.55)); border:1px solid rgba(168,85,247,0.45);">
+                <div class="card-title" style="justify-content:center; color:#e9d5ff;">
+                    <i class="fa-solid fa-book-open" style="color:#a78bfa;"></i>
+                    <span>${pack.step3Title}</span>
+                </div>
+
+                <div class="proclamation-text" style="color:#fde68a; text-shadow:0 0 12px rgba(253,230,138,0.4);">
+                    ${pack.step3Proclamation}
+                </div>
+
+                <div style="text-align:center; margin:16px 0; color:rgba(224,232,245,0.85); font-size:0.9rem;">
+                    ${pack.step3Guide}
+                </div>
+
+                <div class="timer-container" style="background:rgba(124,58,237,0.12); border:1px dashed rgba(168,85,247,0.4);">
+                    <div class="timer-label" style="color:#c4b5fd;">${pack.step3TimerLabel}</div>
+                    <div class="timer-number" id="timerNumberStep3" style="color:#a78bfa;">10</div>
+                    <button class="btn-start-centering" id="btnStartStep3" onclick="startTimerStep3()" style="background:linear-gradient(135deg,#7c3aed,#6d28d9); color:#fff;">
+                        <i class="fa-solid fa-play"></i>
+                        <span id="btnStartTextStep3">${pack.step3StartBtn}</span>
+                    </button>
+                </div>
+            </div>
+        `;
+
+        // 重置狀態
+        remaining = 10;
+        const num = document.getElementById('timerNumberStep3');
+        if (num) {
+            num.textContent = '10';
+            num.classList.remove('complete');
+        }
+        const next = document.getElementById('btnNext');
+        if (next) {
+            next.classList.remove('enabled');
+            next.style.pointerEvents = 'none';
+            next.disabled = true;
+        }
+    };
+
+    // ========== 10秒靜心讀秒 ==========
+    window.startTimerStep3 = function () {
+        if (timerInterval) clearInterval(timerInterval);
+        remaining = 10;
+        const numEl = document.getElementById('timerNumberStep3');
+        const btn = document.getElementById('btnStartStep3');
+        const btnText = document.getElementById('btnStartTextStep3');
+        const pack = p();
+
+        if (btn) btn.disabled = true;
+        if (btnText) btnText.textContent = pack.step3RestartBtn || '重新靜心';
+
+        timerInterval = setInterval(() => {
+            remaining--;
+            if (numEl) numEl.textContent = remaining;
+            if (remaining <= 0) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                if (numEl) {
+                    numEl.textContent = '✓';
+                    numEl.classList.add('complete');
+                    numEl.style.color = '#00e676';
+                }
+                if (btn) btn.disabled = false;
+                if (btnText) btnText.textContent = pack.step3StartBtn || '開始靜心';
+
+                // 啟用下一步
+                const next = document.getElementById('btnNext');
+                if (next) {
+                    next.classList.add('enabled');
+                    next.style.pointerEvents = 'auto';
+                    next.disabled = false;
+                }
+                alert(pack.step3Complete || '靜心完成，可進入下一步');
+            }
+        }, 1000);
+    };
+
+    // ========== 導航攔截（中間頁 →【三】→【四】） ==========
+    const _origNext = window.handleNextClick;
+    window.handleNextClick = function () {
+        const step = window.currentStep || 1;
+        const pMid = document.getElementById('panelStepMid');
+        const p3 = document.getElementById('panelStep3Auth');
+        const p7 = document.getElementById('panelStep7');
+
+        // 中間頁（【一】+【二】） →【三】授權誓讀
+        if (step === 'mid' || (pMid && pMid.classList.contains('active'))) {
+            window.currentStep = 'step3Auth';
+            document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+            window.applyStep3Auth();
+            const panel = document.getElementById('panelStep3Auth');
+            if (panel) panel.classList.add('active');
+            // 鎖定下一步直到靜心完成
+            const next = document.getElementById('btnNext');
+            if (next) {
+                next.classList.remove('enabled');
+                next.style.pointerEvents = 'none';
+                next.disabled = true;
+            }
+            return;
+        }
+
+        // 【三】 →【四】接續進程
+        if (step === 'step3Auth' || (p3 && p3.classList.contains('active'))) {
+            window.currentStep = 7;
+            document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+            if (typeof window.applyStep7 === 'function') window.applyStep7();
+            if (p7) p7.classList.add('active');
+            const next = document.getElementById('btnNext');
+            if (next) {
+                next.classList.add('enabled');
+                next.style.pointerEvents = 'auto';
+                next.disabled = false;
+            }
+            return;
+        }
+
+        if (typeof _origNext === 'function') _origNext();
+    };
+
+    const _origBack = window.handleBackClick;
+    window.handleBackClick = function () {
+        const step = window.currentStep || 1;
+        const p7 = document.getElementById('panelStep7');
+        const p3 = document.getElementById('panelStep3Auth');
+        const pMid = document.getElementById('panelStepMid');
+
+        // 【四】 →【三】
+        if (step === 7 || (p7 && p7.classList.contains('active'))) {
+            window.currentStep = 'step3Auth';
+            document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+            window.applyStep3Auth();
+            const panel = document.getElementById('panelStep3Auth');
+            if (panel) panel.classList.add('active');
+            return;
+        }
+
+        // 【三】 → 中間頁
+        if (step === 'step3Auth' || (p3 && p3.classList.contains('active'))) {
+            window.currentStep = 'mid';
+            document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+            if (typeof window.applyStepMid === 'function') window.applyStepMid();
+            const panel = document.getElementById('panelStepMid');
+            if (panel) panel.classList.add('active');
+            return;
+        }
+
+        if (typeof _origBack === 'function') _origBack();
+    };
+
+    // 語系切換
+    const _origSwitch = window.switchLanguage;
+    window.switchLanguage = function (lang) {
+        if (typeof _origSwitch === 'function') _origSwitch(lang);
+        else window.currentLang = lang;
+        if (window.currentStep === 'step3Auth') {
+            setTimeout(() => window.applyStep3Auth(), 60);
+        }
+    };
+
+    console.log('✅ 【三】授權誓讀階段（含10秒靜心）已補上，紫色系統一');
+})();
+</script>
 </body> 
 </html>
