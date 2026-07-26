@@ -523,7 +523,7 @@
 <div id="node2" class="flow-node">授權誓讀</div>
 <div id="node3" class="flow-node">授權綁定</div>
 <div id="node4" class="flow-node">回傳結果</div>
-<div id="node5" class="flow-node">系統同步</div>
+<div id="node5" class="flow-node">誓頻啟動</div>
 
 <div id="node6" class="flow-node">對頻判定</div>
 <div id="node7" class="flow-node">步驟7</div>
@@ -758,7 +758,7 @@
             node2: "授權誓讀",
             node3: "授權綁定",
             node4: "回傳結果",
-            node5: "系統同步",
+            node5: "誓頻啟動",
             cardTitle1: "【一】啟動條件",
             cond1: "請完成驗證之【購書序號】誓導碼",
             cond2: "穩定網路環境運作中",
@@ -821,7 +821,7 @@
             node2: "Authorized Vow",
             node3: "Binding Phase",
             node4: "Return Result",
-            node5: "Sync Phase",
+            node5: "Oath-Frequency Activation",
             cardTitle1: "[1] Activation Conditions",
             cond1: "Please complete the verification of the 【Purchase Serial Number】 Vow-Guidance Code",
             cond2: "Stable internet environment activated",
@@ -3751,7 +3751,7 @@ script>
         langPack.zh = langPack.zh || {};
         langPack.en = langPack.en || {};
 
-        langPack.zh.node7 = "執行指令";
+        langPack.zh.node7 = "🧭 ① 驗證階段";
         langPack.zh.step7Title = "【執行指令】";
         langPack.zh.step7Desc1 = "① 登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。";
         langPack.zh.step7Desc2 = "② 掃描【誓導 QR Code】後，進入「指令輸入欄位」。";
@@ -3768,7 +3768,7 @@ script>
         langPack.zh.qrResultTextStep7 = "掃描成功！已完成回傳誓證";
         langPack.zh.cameraGuideTextStep7 = "請將相機對準書本上的【誓導 QR Code】，系統會自動辨識。";
 
-        langPack.en.node7 = "Execution Cmd";
+        langPack.en.node7 = "🧭 ① Verification Phase";
         langPack.en.step7Title = "[Execution Command]";
         langPack.en.step7Desc1 = "① Log into the 《Cosmic Intelligent Vow-Guidance Platform》 using your personal account. After identity verification, proceed into the Oath-Seal Activation Procedure.";
         langPack.en.step7Desc2 = "② Scan the 【Vow-Guidance QR Code】 to enter the 「Command Input Field」.";
@@ -4044,7 +4044,7 @@ script>
         langPack.en = langPack.en || {};
 
         // Step 7
-        langPack.zh.node7 = "執行指令";
+        langPack.zh.node7 = "🧭 ① 驗證階段";
         langPack.zh.step7Title = "【執行指令】";
         langPack.zh.step7Desc1 = "① 登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。";
         langPack.zh.step7Desc2 = "② 掃描【誓導 QR Code】後，進入「指令輸入欄位」。";
@@ -4068,7 +4068,7 @@ script>
         langPack.zh.step8Return2 = "② 進入「第 7 項 七印誓網對應階段」。";
 
         // English
-        langPack.en.node7 = "Execution Cmd";
+        langPack.en.node7 = "🧭 ① Verification Phase";
         langPack.en.step7Title = "[Execution Command]";
         langPack.en.step7Desc1 = "① Log into the 《Cosmic Intelligent Vow-Guidance Platform》 using your personal account. After identity verification, proceed into the Oath-Seal Activation Procedure.";
         langPack.en.step7Desc2 = "② Scan the 【Vow-Guidance QR Code】 to enter the 「Command Input Field」.";
@@ -4339,7 +4339,7 @@ script>
     setTimeout(() => {
         ensureLang();
         const node7 = document.getElementById('node7');
-        if (node7) node7.textContent = p().node7 || '執行指令';
+        if (node7) node7.textContent = p().node7 || '🧭 ① 驗證階段';
         const node8 = document.getElementById('node8');
         if (node8) node8.textContent = p().node8 || '回傳誓證';
     }, 300);
@@ -4699,46 +4699,43 @@ script>
 })();
 <script>
 (function(){
-    // 持續刪除對頻判定彈窗
-    function removeOscDialog(){
-        const allDiv = document.querySelectorAll("div");
-        allDiv.forEach(box=>{
-            const html = box.innerHTML || "";
-            // 中文彈窗判斷
-            if(html.includes("對頻判定已完成！")){
-                box.remove();
-            }
-            // 英文版彈窗判斷
-            if(html.includes("Frequency Alignment Complete!")){
-                box.remove();
+    const oldTxt = "系統同步";
+    const newTxt = "誓頻啟動";
+
+    function replaceText(){
+        document.querySelectorAll("*").forEach(el=>{
+            // 處理文字節點
+            Array.from(el.childNodes).forEach(node=>{
+                if(node.nodeType === 3){
+                    let str = node.textContent;
+                    if(str.includes(oldTxt)){
+                        node.textContent = str.replaceAll(oldTxt, newTxt);
+                    }
+                }
+            });
+            // 備援處理按鈕innerText
+            if(el.innerText && el.innerText.includes(oldTxt)){
+                el.innerText = el.innerText.replaceAll(oldTxt, newTxt);
             }
         });
     }
 
-    // 劫持所有會觸發彈窗的函式，阻止彈窗生成
-    const originShowDialog = window.showOathDialog;
-    window.showOathDialog = function(){
-        // 攔截：只要是對頻判定彈窗，直接不執行
-        const arg = arguments[0] || "";
-        if(arg.includes("對頻判定") || arg.includes("Frequency Alignment")){
-            return;
-        }
-        if(typeof originShowDialog === "function") originShowDialog(...arguments);
+    window.addEventListener('load', ()=>setTimeout(replaceText,180));
+    const obs = new MutationObserver(replaceText);
+    obs.observe(document.body, {childList:true,subtree:true,characterData:true});
+
+    // 語言切換自動修正
+    const originSwitch = window.switchLanguage;
+    window.switchLanguage = function(lang){
+        if(originSwitch) originSwitch(lang);
+        setTimeout(replaceText,180);
     };
-
-    // 頁面載入立刻執行
-    window.addEventListener("load",()=>{
-        removeOscDialog();
-    });
-
-    // 實時監控DOM，一旦彈窗出現瞬間刪除
-    const observer = new MutationObserver(()=>{
-        removeOscDialog();
-    });
-    observer.observe(document.body, {
-        childList:true,
-        subtree:true
-    });
+    // 步驟渲染自動修正
+    const originRender = window.renderCurrentStep;
+    window.renderCurrentStep = function(...args){
+        if(originRender) originRender(...args);
+        setTimeout(replaceText,180);
+    };
 })();
     <body>
 </html>
