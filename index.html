@@ -3552,5 +3552,294 @@
     console.log('✅ 【三】授權誓讀階段（含10秒靜心）已補上，紫色系統一');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 只針對「吾以誓魂應律」這頁加上標題 + 大字大框                  -->
+<!-- ============================================================ -->
+
+<script>
+(function () {
+    function forceThisPage() {
+        const panels = document.querySelectorAll('.step-panel');
+        panels.forEach(panel => {
+            const proc = panel.querySelector('.proclamation-text');
+            const timer = panel.querySelector('.timer-container');
+            if (!proc || !timer) return;
+
+            // 只處理有「吾以誓魂應律」的頁面
+            if (!proc.textContent.includes('吾以誓魂應律')) return;
+
+            // 已經是我們的【三】頁就跳過
+            if (panel.id === 'panelStep3Auth') return;
+
+            // ===== 加上標題 =====
+            let titleEl = panel.querySelector('.force-title-only');
+            if (!titleEl) {
+                titleEl = document.createElement('div');
+                titleEl.className = 'force-title-only';
+                titleEl.style.cssText = `
+                    text-align: center;
+                    color: #e9d5ff;
+                    font-size: 1.25rem;
+                    font-weight: bold;
+                    margin-bottom: 16px;
+                    letter-spacing: 1px;
+                `;
+                titleEl.innerHTML = `<i class="fa-solid fa-book-open" style="color:#a78bfa; margin-right:8px;"></i>【二】授權誓讀階段`;
+                
+                const card = panel.querySelector('.hud-card');
+                if (card) card.insertBefore(titleEl, card.firstChild);
+            }
+
+            // ===== 大大的誓文 =====
+            proc.style.cssText = `
+                color: #fde68a !important;
+                font-size: clamp(1.2rem, 3vh, 1.5rem) !important;
+                line-height: 1.75 !important;
+                text-shadow: 0 0 15px rgba(253,230,138,0.5) !important;
+                margin-bottom: 20px !important;
+                padding: 10px 6px !important;
+                text-align: center !important;
+            `;
+
+            // ===== 大大的靜心框 =====
+            timer.style.cssText = `
+                background: rgba(124,58,237,0.22) !important;
+                border: 1.5px dashed rgba(168,85,247,0.6) !important;
+                border-radius: 16px !important;
+                padding: 24px 20px !important;
+                gap: 16px !important;
+                min-height: 150px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+            `;
+
+            // 讀秒數字變大
+            const num = timer.querySelector('.timer-number');
+            if (num) {
+                num.style.cssText = `
+                    color: #a78bfa !important;
+                    font-size: clamp(3rem, 8vh, 4rem) !important;
+                    text-shadow: 0 0 25px rgba(167,139,250,0.8) !important;
+                    margin: 8px 0 !important;
+                `;
+            }
+
+            // 標籤
+            const label = timer.querySelector('.timer-label');
+            if (label) {
+                label.style.cssText = `
+                    color: #c4b5fd !important;
+                    font-size: 1.1rem !important;
+                    margin-bottom: 4px !important;
+                `;
+            }
+
+            // 按鈕變大
+            const btn = timer.querySelector('.btn-start-centering, button');
+            if (btn) {
+                btn.style.cssText = `
+                    background: linear-gradient(135deg,#7c3aed,#6d28d9) !important;
+                    color: #fff !important;
+                    font-size: 1.1rem !important;
+                    padding: 14px 36px !important;
+                    border-radius: 40px !important;
+                    box-shadow: 0 5px 22px rgba(124,58,237,0.5) !important;
+                    border: none !important;
+                `;
+            }
+        });
+    }
+
+    // 立即執行 + 持續監看
+    forceThisPage();
+    setInterval(forceThisPage, 700);
+
+    // 語系切換後再強制
+    const orig = window.switchLanguage;
+    window.switchLanguage = function (lang) {
+        if (typeof orig === 'function') orig(lang);
+        setTimeout(forceThisPage, 100);
+    };
+
+    console.log('✅ 已針對「吾以誓魂應律」這頁加上標題 + 大字大框');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 全域強制亮色紫系（比照左圖）                                 -->
+<!-- 一次改完全部色系，其他功能完全不動                            -->
+<!-- ============================================================ -->
+
+<style>
+/* ===== 全域亮色紫系覆蓋 ===== */
+
+/* 主標題改紫金 */
+.app-title {
+    color: #e9d5ff !important;
+    text-shadow: 0 0 12px rgba(168, 85, 247, 0.5) !important;
+}
+
+/* 卡片標題 */
+.card-title {
+    color: #e9d5ff !important;
+}
+.card-title i {
+    color: #a78bfa !important;
+}
+
+/* 誓文（proclamation） */
+.proclamation-text {
+    color: #fde68a !important;
+    text-shadow: 0 0 15px rgba(253, 230, 138, 0.45) !important;
+}
+
+/* 靜心容器 */
+.timer-container {
+    background: rgba(124, 58, 237, 0.18) !important;
+    border: 1px dashed rgba(168, 85, 247, 0.55) !important;
+    border-radius: 14px !important;
+}
+
+/* 靜心標籤 */
+.timer-label {
+    color: #c4b5fd !important;
+}
+
+/* 讀秒數字 */
+.timer-number {
+    color: #a78bfa !important;
+    text-shadow: 0 0 18px rgba(167, 139, 250, 0.7) !important;
+}
+.timer-number.complete {
+    color: #00e676 !important;
+    text-shadow: 0 0 20px rgba(0, 230, 118, 0.6) !important;
+}
+
+/* 開始靜心按鈕（原本金色 → 亮紫） */
+.btn-start-centering,
+#btnStartStep3,
+button[onclick*="startTimer"],
+button[onclick*="startCentering"] {
+    background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 18px rgba(124, 58, 237, 0.45) !important;
+}
+.btn-start-centering:hover {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+    box-shadow: 0 6px 25px rgba(124, 58, 237, 0.65) !important;
+    transform: scale(1.03);
+}
+
+/* 重新開始按鈕 */
+.btn-restart {
+    background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 18px rgba(124, 58, 237, 0.45) !important;
+}
+
+/* 下一步 / 返回按鈕啟用狀態 */
+.btn-action.enabled {
+    border: 1px solid #a78bfa !important;
+    color: #e9d5ff !important;
+    background: rgba(124, 58, 237, 0.15) !important;
+    text-shadow: 0 0 10px rgba(167, 139, 250, 0.6) !important;
+    box-shadow: 0 0 15px rgba(124, 58, 237, 0.3) !important;
+}
+.btn-action.enabled:hover {
+    background: rgba(124, 58, 237, 0.28) !important;
+    box-shadow: 0 0 25px rgba(124, 58, 237, 0.5) !important;
+}
+
+/* 語系切換按鈕 */
+.lang-btn.active {
+    background: #7c3aed !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 12px rgba(124, 58, 237, 0.5) !important;
+}
+
+/* 首頁麵包屑 */
+.home-breadcrumb {
+    color: #c4b5fd !important;
+}
+.home-breadcrumb:hover {
+    color: #e9d5ff !important;
+}
+
+/* 一般卡片邊框與背景微調 */
+.hud-card {
+    border-color: rgba(168, 85, 247, 0.25) !important;
+}
+
+/* 檢查圖示改紫 */
+.condition-item i.check-icon,
+.instruction-item i.fa-circle-check {
+    color: #a78bfa !important;
+    text-shadow: 0 0 8px rgba(167, 139, 250, 0.4) !important;
+}
+
+/* 對話框 */
+.hud-dialog-content {
+    border-color: #a78bfa !important;
+    box-shadow: 0 0 30px rgba(124, 58, 237, 0.4) !important;
+}
+.hud-dialog-btn {
+    border-color: #a78bfa !important;
+    color: #e9d5ff !important;
+}
+</style>
+
+<script>
+(function () {
+    function forceAllPurple() {
+        // 強制所有靜心按鈕
+        document.querySelectorAll('.btn-start-centering, #btnStartStep3, button[onclick*="startTimer"], button[onclick*="startCentering"]').forEach(btn => {
+            btn.style.setProperty('background', 'linear-gradient(135deg, #7c3aed, #6d28d9)', 'important');
+            btn.style.setProperty('color', '#ffffff', 'important');
+            btn.style.setProperty('border', 'none', 'important');
+            btn.style.setProperty('box-shadow', '0 4px 18px rgba(124, 58, 237, 0.45)', 'important');
+        });
+
+        // 強制所有讀秒數字
+        document.querySelectorAll('.timer-number, #timerNumberStep3').forEach(el => {
+            if (!el.classList.contains('complete')) {
+                el.style.setProperty('color', '#a78bfa', 'important');
+                el.style.setProperty('text-shadow', '0 0 18px rgba(167, 139, 250, 0.7)', 'important');
+            }
+        });
+
+        // 強制所有靜心容器
+        document.querySelectorAll('.timer-container').forEach(box => {
+            box.style.setProperty('background', 'rgba(124, 58, 237, 0.18)', 'important');
+            box.style.setProperty('border', '1px dashed rgba(168, 85, 247, 0.55)', 'important');
+        });
+
+        // 強制所有靜心標籤
+        document.querySelectorAll('.timer-label').forEach(lab => {
+            lab.style.setProperty('color', '#c4b5fd', 'important');
+        });
+
+        // 強制誓文顏色
+        document.querySelectorAll('.proclamation-text').forEach(txt => {
+            txt.style.setProperty('color', '#fde68a', 'important');
+            txt.style.setProperty('text-shadow', '0 0 15px rgba(253, 230, 138, 0.45)', 'important');
+        });
+    }
+
+    // 立即執行 + 持續監看
+    forceAllPurple();
+    setInterval(forceAllPurple, 500);
+
+    // 語系切換後再強制
+    const orig = window.switchLanguage;
+    window.switchLanguage = function (lang) {
+        if (typeof orig === 'function') orig(lang);
+        setTimeout(forceAllPurple, 100);
+    };
+
+    console.log('✅ 全頁色系已統一為左圖亮色紫系');
+})();
+</script>
 </body> 
 </html>
