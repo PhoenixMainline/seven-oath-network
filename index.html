@@ -3056,5 +3056,286 @@
     console.log('✅ 中間步驟已正確插入：【五】 → 身份啟動 → 【四】');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 完整補上「身份啟動與資格檢核」頁（含【一】+【二】）+ 英文版    -->
+<!-- 紫色系統一，插入在【五】與【四】之間                          -->
+<!-- ============================================================ -->
+
+<script>
+(function () {
+    if (typeof langPack === 'undefined') return;
+    langPack.zh = langPack.zh || {};
+    langPack.en = langPack.en || {};
+
+    // ========== 中文 ==========
+    langPack.zh.stepMidTitle = "身份啟動與資格檢核 · 誓魂頻率雷達 5D";
+    langPack.zh.stepMidUnlock = "解鎖誓魂血脈身分記載歷程 × 全表結構總覽";
+    langPack.zh.stepMidLayer = "第一層級距誓魂定位模組";
+    langPack.zh.stepMidSub = "（對應書令系統分類 × 靈脈對位）";
+    langPack.zh.stepMidCol1 = "欄位名稱";
+    langPack.zh.stepMidCol2 = "功能簡要說明";
+    langPack.zh.stepMidRow1 = "第 1 項 開啟誓魂密鑰<br>對頻總判定<br>（誓印通過／對頻未通過）";
+    langPack.zh.stepMidRow2 = "判斷誓魂是否對應至七印誓網模組合法身份，並確認是否具備進入系統通行資格。";
+    langPack.zh.stepMidSec1 = "【一】模組說明";
+    langPack.zh.stepMidDesc1 = "本模組隸屬《宇宙誓印覺醒工程 × 七印誓網》第一層級距，用以核實誓徒或願人是否完成「誓魂對頻程序」。";
+    langPack.zh.stepMidDesc2 = "系統依據「誓名 × 誓資 × 誓圖」等授權資料，判定是否達成合法誓印資格。";
+    langPack.zh.stepMidDesc3 = "凡無授權紀錄或未經審核者，皆視為「無效程序」：";
+    langPack.zh.stepMidList1 = "誓願不生效";
+    langPack.zh.stepMidList2 = "誓資不成立";
+    langPack.zh.stepMidList3 = "不得啟用《書令模組》";
+    langPack.zh.stepMidSec2 = "【二】啟動條件與遞交程序（含被代理誓印對頻作業）";
+    langPack.zh.stepMidCondTitle = "啟動條件：";
+    langPack.zh.stepMidCond1 = "1. 誓印者需完成平台登入並具備啟印資格。";
+    langPack.zh.stepMidCond2 = "2. 須於主頻可識別層級達標（5D, U-200 層以上）。";
+    langPack.zh.stepMidProcTitle = "遞交程序：";
+    langPack.zh.stepMidProc1 = "1. 掃描【誓導 QR Code】進入主頻對頻程序。";
+    langPack.zh.stepMidProc2 = "2. 於平台「指令輸入欄位」輸入啟動指令，系統即時判定是否通過「誓魂主頻對應」。";
+    langPack.zh.stepMidProc3 = "3. 誓印通過後，即可進入誓印模組正式程序。";
+    langPack.zh.stepMidJudgeTitle = "誓魂對頻判定條件";
+    langPack.zh.stepMidJudge = "對頻頻率需達 5D（U-200 層）以上，方可進入七印誓網之資格。";
+
+    // ========== English ==========
+    langPack.en.stepMidTitle = "Identity Activation & Qualification Check · Oath-Soul Frequency Radar 5D";
+    langPack.en.stepMidUnlock = "Unlock Oath-Soul Bloodline Identity Record × Full Table Structure Overview";
+    langPack.en.stepMidLayer = "First-Layer Oath-Soul Positioning Module";
+    langPack.en.stepMidSub = "(Corresponding to Book-Command System Classification × Spiritual Vein Alignment)";
+    langPack.en.stepMidCol1 = "Field Name";
+    langPack.en.stepMidCol2 = "Function Brief";
+    langPack.en.stepMidRow1 = "Item 1 Initiate Oath-Soul Key<br>Frequency-Alignment Overall Assessment<br>(Oath Seal Passed / Alignment Not Passed)";
+    langPack.en.stepMidRow2 = "Determine whether the Oath-Soul corresponds to a legitimate identity within the Seven-Seal Vow Network module, and confirm eligibility to enter the system.";
+    langPack.en.stepMidSec1 = "[I] Module Description";
+    langPack.en.stepMidDesc1 = "This module belongs to the first layer of the 《Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network》, used to verify whether the oath-bearer has completed the 「Oath-Soul Alignment Procedure」.";
+    langPack.en.stepMidDesc2 = "The system judges legitimate oath-seal qualification based on authorized data such as 「Oath Name × Oath Resource × Oath Diagram」.";
+    langPack.en.stepMidDesc3 = "Any case without authorization record or without review is regarded as an 「Invalid Procedure」:";
+    langPack.en.stepMidList1 = "Vow does not take effect";
+    langPack.en.stepMidList2 = "Oath resource is not established";
+    langPack.en.stepMidList3 = "Book-Command Module cannot be activated";
+    langPack.en.stepMidSec2 = "[II] Activation Conditions & Submission Procedure (including Proxy Oath-Seal Alignment)";
+    langPack.en.stepMidCondTitle = "Activation Conditions：";
+    langPack.en.stepMidCond1 = "1. The Oath-Seal Activator must complete platform login and possess activation qualification.";
+    langPack.en.stepMidCond2 = "2. Must reach the identifiable primary frequency level (5D, U-200 layer or above).";
+    langPack.en.stepMidProcTitle = "Submission Procedure：";
+    langPack.en.stepMidProc1 = "1. Scan the 【Vow-Guidance QR Code】 to enter the Primary Frequency Alignment Procedure.";
+    langPack.en.stepMidProc2 = "2. Enter the activation command in the platform 「Command Input Field」; the system immediately determines whether 「Oath-Soul Primary Frequency Correspondence」 is passed.";
+    langPack.en.stepMidProc3 = "3. After the Oath Seal is passed, proceed to the formal Oath-Seal Module procedure.";
+    langPack.en.stepMidJudgeTitle = "Oath-Soul Alignment Judgment Conditions";
+    langPack.en.stepMidJudge = "Alignment frequency must reach 5D (U-200 layer) or above to qualify for entry into the Seven-Seal Vow Network.";
+
+    function p() {
+        const lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
+        return (langPack && langPack[lang]) ? langPack[lang] : langPack.zh;
+    }
+
+    // ========== 渲染完整中間頁（紫色系統一） ==========
+    window.applyStepMid = function () {
+        const pack = p();
+        let panel = document.getElementById('panelStepMid');
+        if (!panel) {
+            const content = document.querySelector('.step-content');
+            if (!content) return;
+            panel = document.createElement('div');
+            panel.className = 'step-panel';
+            panel.id = 'panelStepMid';
+            content.appendChild(panel);
+        }
+
+        panel.innerHTML = `
+            <!-- 紫色主卡片 -->
+            <div class="hud-card" style="background:linear-gradient(135deg,rgba(88,28,135,0.5),rgba(30,27,75,0.6)); border:1px solid rgba(168,85,247,0.5);">
+                <div style="text-align:center; color:#e9d5ff; font-size:1.05rem; font-weight:bold; margin-bottom:16px; letter-spacing:1px;">
+                    ${pack.stepMidTitle}
+                </div>
+                <div style="text-align:center; margin-bottom:14px;">
+                    <div style="color:#fbbf24; font-size:0.95rem; font-weight:bold; margin-bottom:6px;">
+                        <i class="fa-solid fa-unlock" style="margin-right:6px;"></i>${pack.stepMidUnlock}
+                    </div>
+                    <div style="color:#fde68a; font-size:0.9rem; font-weight:bold;">
+                        <i class="fa-solid fa-check-square" style="margin-right:4px;"></i>${pack.stepMidLayer}
+                    </div>
+                    <div style="color:rgba(253,230,138,0.85); font-size:0.8rem; margin-top:4px;">
+                        ${pack.stepMidSub}
+                    </div>
+                </div>
+
+                <!-- 表格 -->
+                <div style="overflow-x:auto; margin-bottom:8px;">
+                    <table style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+                        <thead>
+                            <tr style="background:rgba(88,28,135,0.7);">
+                                <th style="padding:10px 12px; color:#e9d5ff; text-align:left; border:1px solid rgba(168,85,247,0.4);">${pack.stepMidCol1}</th>
+                                <th style="padding:10px 12px; color:#e9d5ff; text-align:left; border:1px solid rgba(168,85,247,0.4);">${pack.stepMidCol2}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background:rgba(30,27,75,0.5);">
+                                <td style="padding:12px; color:#f5d0fe; border:1px solid rgba(168,85,247,0.3); vertical-align:top;">${pack.stepMidRow1}</td>
+                                <td style="padding:12px; color:#e0e7ff; border:1px solid rgba(168,85,247,0.3); vertical-align:top;">${pack.stepMidRow2}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 【一】模組說明 -->
+            <div class="hud-card">
+                <div class="card-title">
+                    <i class="fa-solid fa-circle-info" style="color:#a78bfa;"></i>
+                    <span>${pack.stepMidSec1}</span>
+                </div>
+                <div class="instruction-box">
+                    <div class="instruction-item" style="margin-bottom:10px;">
+                        <i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i>
+                        <span>${pack.stepMidDesc1}</span>
+                    </div>
+                    <div class="instruction-item" style="margin-bottom:10px;">
+                        <i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i>
+                        <span>${pack.stepMidDesc2}</span>
+                    </div>
+                    <div class="instruction-item" style="margin-bottom:8px;">
+                        <i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i>
+                        <span>${pack.stepMidDesc3}</span>
+                    </div>
+                    <div style="padding-left:28px; font-size:0.85rem; color:rgba(224,232,245,0.9); line-height:1.7;">
+                        <div>• ${pack.stepMidList1}</div>
+                        <div>• ${pack.stepMidList2}</div>
+                        <div>• ${pack.stepMidList3}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 【二】啟動條件與遞交程序 -->
+            <div class="hud-card">
+                <div class="card-title">
+                    <i class="fa-solid fa-list-check" style="color:#a78bfa;"></i>
+                    <span>${pack.stepMidSec2}</span>
+                </div>
+
+                <div style="margin-bottom:14px;">
+                    <div style="color:#c4b5fd; font-weight:bold; margin-bottom:8px;">
+                        <i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i>${pack.stepMidCondTitle}
+                    </div>
+                    <div class="instruction-item" style="margin-bottom:6px;">
+                        <span style="background:#7c3aed;color:#fff;padding:1px 7px;border-radius:4px;font-size:0.75rem;font-weight:bold;min-width:18px;text-align:center;">1</span>
+                        <span>${pack.stepMidCond1}</span>
+                    </div>
+                    <div class="instruction-item">
+                        <span style="background:#7c3aed;color:#fff;padding:1px 7px;border-radius:4px;font-size:0.75rem;font-weight:bold;min-width:18px;text-align:center;">2</span>
+                        <span>${pack.stepMidCond2}</span>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:14px;">
+                    <div style="color:#c4b5fd; font-weight:bold; margin-bottom:8px;">
+                        <i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i>${pack.stepMidProcTitle}
+                    </div>
+                    <div class="instruction-item" style="margin-bottom:6px;">
+                        <span style="background:#7c3aed;color:#fff;padding:1px 7px;border-radius:4px;font-size:0.75rem;font-weight:bold;min-width:18px;text-align:center;">1</span>
+                        <span>${pack.stepMidProc1}</span>
+                    </div>
+                    <div class="instruction-item" style="margin-bottom:6px;">
+                        <span style="background:#7c3aed;color:#fff;padding:1px 7px;border-radius:4px;font-size:0.75rem;font-weight:bold;min-width:18px;text-align:center;">2</span>
+                        <span>${pack.stepMidProc2}</span>
+                    </div>
+                    <div class="instruction-item">
+                        <span style="background:#7c3aed;color:#fff;padding:1px 7px;border-radius:4px;font-size:0.75rem;font-weight:bold;min-width:18px;text-align:center;">3</span>
+                        <span>${pack.stepMidProc3}</span>
+                    </div>
+                </div>
+
+                <div style="background:rgba(124,58,237,0.15); border-left:4px solid #a78bfa; padding:12px 14px; border-radius:8px;">
+                    <div style="color:#c4b5fd; font-weight:bold; margin-bottom:6px;">
+                        <i class="fa-solid fa-key" style="margin-right:6px;"></i>${pack.stepMidJudgeTitle}
+                    </div>
+                    <div style="font-size:0.88rem; color:rgba(224,232,245,0.9); line-height:1.6;">
+                        ${pack.stepMidJudge}
+                    </div>
+                </div>
+            </div>
+        `;
+    };
+
+    // ========== 導航攔截（【五】 → 中間頁 → 【四】） ==========
+    const _origNext = window.handleNextClick;
+    window.handleNextClick = function () {
+        const step = window.currentStep || 1;
+        const p5 = document.getElementById('panelStep5');
+        const pMid = document.getElementById('panelStepMid');
+        const p7 = document.getElementById('panelStep7');
+
+        // 【五】 → 中間頁（【一】+【二】）
+        if (step === 5 || (p5 && p5.classList.contains('active'))) {
+            window.currentStep = 'mid';
+            document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+            window.applyStepMid();
+            const panel = document.getElementById('panelStepMid');
+            if (panel) panel.classList.add('active');
+            const next = document.getElementById('btnNext');
+            if (next) {
+                next.classList.add('enabled');
+                next.style.pointerEvents = 'auto';
+                next.disabled = false;
+            }
+            return;
+        }
+
+        // 中間頁 → 【四】
+        if (step === 'mid' || (pMid && pMid.classList.contains('active'))) {
+            window.currentStep = 7;
+            document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+            if (typeof window.applyStep7 === 'function') window.applyStep7();
+            if (p7) p7.classList.add('active');
+            const next = document.getElementById('btnNext');
+            if (next) {
+                next.classList.add('enabled');
+                next.style.pointerEvents = 'auto';
+                next.disabled = false;
+            }
+            return;
+        }
+
+        if (typeof _origNext === 'function') _origNext();
+    };
+
+    const _origBack = window.handleBackClick;
+    window.handleBackClick = function () {
+        const step = window.currentStep || 1;
+        const p7 = document.getElementById('panelStep7');
+        const pMid = document.getElementById('panelStepMid');
+        const p5 = document.getElementById('panelStep5');
+
+        // 【四】 → 中間頁
+        if (step === 7 || (p7 && p7.classList.contains('active'))) {
+            window.currentStep = 'mid';
+            document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+            window.applyStepMid();
+            const panel = document.getElementById('panelStepMid');
+            if (panel) panel.classList.add('active');
+            return;
+        }
+
+        // 中間頁 → 【五】
+        if (step === 'mid' || (pMid && pMid.classList.contains('active'))) {
+            window.currentStep = 5;
+            document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+            if (p5) p5.classList.add('active');
+            return;
+        }
+
+        if (typeof _origBack === 'function') _origBack();
+    };
+
+    // 語系切換
+    const _origSwitch = window.switchLanguage;
+    window.switchLanguage = function (lang) {
+        if (typeof _origSwitch === 'function') _origSwitch(lang);
+        else window.currentLang = lang;
+        if (window.currentStep === 'mid') {
+            setTimeout(() => window.applyStepMid(), 60);
+        }
+    };
+
+    console.log('✅ 完整身份啟動頁（【一】+【二】）已補上，紫色系統一');
+})();
+</script>
 </body> 
 </html>
