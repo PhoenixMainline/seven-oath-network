@@ -3841,5 +3841,209 @@ button[onclick*="startCentering"] {
     console.log('✅ 全頁色系已統一為左圖亮色紫系');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 新增 📩 ② 回傳誓證（確認誓印）步驟 + 英文版                   -->
+<!-- 紫色系統一，接在【四】接續進程之後                            -->
+<!-- ============================================================ -->
+
+<script>
+(function () {
+    if (typeof langPack === 'undefined') return;
+    langPack.zh = langPack.zh || {};
+    langPack.en = langPack.en || {};
+
+    // ========== 中文 ==========
+    langPack.zh.step8Title = "📩 ② 回傳誓證（確認誓印）";
+    langPack.zh.step8Success = "✅ 顯示：「誓印通過」";
+    langPack.zh.step8Item1 = "❶ 進入 📩 ②【回傳誓證】執行階段。";
+    langPack.zh.step8Item2 = "❷ 進入「第 7 項 七印誓網對應階段」。";
+    langPack.zh.step8Note = "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。";
+
+    // ========== English ==========
+    langPack.en.step8Title = "📩 ② Return Oath Certificate (Oath Confirmation)";
+    langPack.en.step8Success = "✅ Display：「Oath Seal Passed」";
+    langPack.en.step8Item1 = "❶ Enter 📩 ②【Return Oath Certificate】execution stage.";
+    langPack.en.step8Item2 = "❷ Enter 「Item 7 Seven-Seal Vow Network Correspondence Stage」.";
+    langPack.en.step8Note = "【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.";
+
+    function p() {
+        const lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
+        return (langPack && langPack[lang]) ? langPack[lang] : langPack.zh;
+    }
+
+    // ========== 渲染 ② 回傳誓證 ==========
+    window.applyStep8 = function () {
+        const pack = p();
+        let panel = document.getElementById('panelStep8');
+        if (!panel) {
+            const content = document.querySelector('.step-content');
+            if (!content) return;
+            panel = document.createElement('div');
+            panel.className = 'step-panel';
+            panel.id = 'panelStep8';
+            content.appendChild(panel);
+        }
+
+        panel.innerHTML = `
+            <div class="hud-card" style="background:linear-gradient(135deg,rgba(88,28,135,0.45),rgba(30,27,75,0.55)); border:1px solid rgba(168,85,247,0.45);">
+                <div class="card-title" style="justify-content:center; color:#e9d5ff;">
+                    <i class="fa-solid fa-certificate" style="color:#a78bfa;"></i>
+                    <span>${pack.step8Title}</span>
+                </div>
+
+                <!-- 成功顯示 -->
+                <div style="background:rgba(0,230,118,0.12); border-left:4px solid #00e676; padding:14px 16px; border-radius:10px; margin-bottom:18px;">
+                    <div style="color:#00e676; font-size:1.1rem; font-weight:bold;">
+                        ${pack.step8Success}
+                    </div>
+                </div>
+
+                <!-- 兩個進入項目 -->
+                <div class="instruction-box" style="margin-bottom:16px;">
+                    <div class="instruction-item" style="margin-bottom:12px;">
+                        <span style="background:#7c3aed;color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8rem;font-weight:bold;min-width:22px;text-align:center;">1</span>
+                        <span style="color:#e0e7ff; font-size:0.95rem;">${pack.step8Item1}</span>
+                    </div>
+                    <div class="instruction-item">
+                        <span style="background:#7c3aed;color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8rem;font-weight:bold;min-width:22px;text-align:center;">2</span>
+                        <span style="color:#e0e7ff; font-size:0.95rem;">${pack.step8Item2}</span>
+                    </div>
+                </div>
+
+                <!-- 注意文字 -->
+                <div style="background:rgba(232,96,74,0.1); border-left:4px solid #E8604A; padding:12px 14px; border-radius:8px; font-size:0.88rem; color:#e0dcc8; line-height:1.6;">
+                    <i class="fa-solid fa-exclamation-circle" style="color:#E8604A; margin-right:6px;"></i>
+                    ${pack.step8Note}
+                </div>
+            </div>
+        `;
+    };
+
+    // ========== 導航攔截（【四】→ ② 回傳誓證） ==========
+    const _origNext = window.handleNextClick;
+    window.handleNextClick = function () {
+        const step = window.currentStep || 1;
+        const p7 = document.getElementById('panelStep7');
+        const p8 = document.getElementById('panelStep8');
+
+        // 從【四】接續進程 → 進入 ② 回傳誓證
+        if (step === 7 || (p7 && p7.classList.contains('active'))) {
+            window.currentStep = 8;
+            document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+            window.applyStep8();
+            const panel = document.getElementById('panelStep8');
+            if (panel) panel.classList.add('active');
+            const next = document.getElementById('btnNext');
+            if (next) {
+                next.classList.add('enabled');
+                next.style.pointerEvents = 'auto';
+                next.disabled = false;
+            }
+            return;
+        }
+
+        if (typeof _origNext === 'function') _origNext();
+    };
+
+    const _origBack = window.handleBackClick;
+    window.handleBackClick = function () {
+        const step = window.currentStep || 1;
+        const p8 = document.getElementById('panelStep8');
+        const p7 = document.getElementById('panelStep7');
+
+        // 從 ② 回傳誓證 → 返回【四】
+        if (step === 8 || (p8 && p8.classList.contains('active'))) {
+            window.currentStep = 7;
+            document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+            if (typeof window.applyStep7 === 'function') window.applyStep7();
+            if (p7) p7.classList.add('active');
+            return;
+        }
+
+        if (typeof _origBack === 'function') _origBack();
+    };
+
+    // 語系切換
+    const _origSwitch = window.switchLanguage;
+    window.switchLanguage = function (lang) {
+        if (typeof _origSwitch === 'function') _origSwitch(lang);
+        else window.currentLang = lang;
+        if (window.currentStep === 8) {
+            setTimeout(() => window.applyStep8(), 60);
+        }
+    };
+
+    console.log('✅ 📩 ② 回傳誓證（確認誓印）步驟已補上（含中英）');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- ② 回傳誓證 底部文字改成完整【執行指令】三點說明               -->
+<!-- ============================================================ -->
+
+<script>
+(function () {
+    if (typeof langPack === 'undefined') return;
+    langPack.zh = langPack.zh || {};
+    langPack.en = langPack.en || {};
+
+    // 中文
+    langPack.zh.step8Note = `
+        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:10px;">🧭【執行指令】</div>
+        <div style="margin-bottom:8px; line-height:1.6;">
+            <span style="background:#7c3aed;color:#fff;padding:1px 6px;border-radius:4px;font-size:0.75rem;margin-right:6px;">1</span>
+            登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。
+        </div>
+        <div style="margin-bottom:8px; line-height:1.6;">
+            <span style="background:#7c3aed;color:#fff;padding:1px 6px;border-radius:4px;font-size:0.75rem;margin-right:6px;">2</span>
+            📲 掃描【誓導 QR Code】後，進入「指令輸入欄位」。
+        </div>
+        <div style="line-height:1.6;">
+            <span style="background:#7c3aed;color:#fff;padding:1px 6px;border-radius:4px;font-size:0.75rem;margin-right:6px;">3</span>
+            無須手動輸入誓文，完成掃描後，直接輸入下列指令：
+        </div>
+    `;
+
+    // 英文
+    langPack.en.step8Note = `
+        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:10px;">🧭【Execution Command】</div>
+        <div style="margin-bottom:8px; line-height:1.6;">
+            <span style="background:#7c3aed;color:#fff;padding:1px 6px;border-radius:4px;font-size:0.75rem;margin-right:6px;">1</span>
+            Log into the《Cosmic Intelligent Vow-Guidance Platform》via using your personal account. After identity verification, proceed into the Oath-Seal Activation Procedure.
+        </div>
+        <div style="margin-bottom:8px; line-height:1.6;">
+            <span style="background:#7c3aed;color:#fff;padding:1px 6px;border-radius:4px;font-size:0.75rem;margin-right:6px;">2</span>
+            📲 Scan the【Vow-Guidance QR Code】to enter the「Command Input Field」.
+        </div>
+        <div style="line-height:1.6;">
+            <span style="background:#7c3aed;color:#fff;padding:1px 6px;border-radius:4px;font-size:0.75rem;margin-right:6px;">3</span>
+            No manual entry of the vow text is required. After completing the scan, directly enter the following command：
+        </div>
+    `;
+
+    // 重新渲染
+    if (window.currentStep === 8 && typeof window.applyStep8 === 'function') {
+        setTimeout(() => window.applyStep8(), 80);
+    }
+
+    // 保險：覆蓋渲染後再強制更新底部區塊
+    const origApply = window.applyStep8;
+    if (typeof origApply === 'function') {
+        window.applyStep8 = function () {
+            origApply();
+            setTimeout(() => {
+                const noteBox = document.querySelector('#panelStep8 [style*="border-left:4px solid #E8604A"]');
+                if (noteBox) {
+                    const pack = (langPack[currentLang] || langPack.zh);
+                    noteBox.style.background = 'rgba(124,58,237,0.12)';
+                    noteBox.style.borderLeft = '4px solid #a78bfa';
+                    noteBox.innerHTML = pack.step8Note;
+                }
+            }, 60);
+        };
+    }
+
+    console.log('✅ 底部已改成完整【執行指令】三點說明（中英）');
+})();
+</script>
 </body> 
 </html>
