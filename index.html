@@ -4653,5 +4653,218 @@ button[onclick*="Scan"] {
     console.log('✅ 相機權限失敗 & 靜心完成 系統彈窗已全部刪除');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 【二】靜心讀秒排版統一成【三】樣式（直向 + 說明文字 + 中英）   -->
+<!-- 直接貼在 </body> 前即可，不修改其他既有邏輯                    -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (typeof langPack === 'undefined') return;
+
+    // ========== ① 統一說明文字（中英） ==========
+    langPack.zh = langPack.zh || {};
+    langPack.en = langPack.en || {};
+
+    langPack.zh.step2Guide      = '請以平靜心念，完整默讀上方誓文，待讀秒結束後即可繼續。';
+    langPack.zh.step2TimerLabel = '靜心讀秒';
+    langPack.zh.btnStartText    = '開始靜心';
+    langPack.zh.btnStartCentering = '靜心中...';
+    langPack.zh.btnStartComplete  = '已完成';
+    langPack.zh.timerComplete     = '✅ 已完成誦讀';
+    langPack.zh.timerWaiting      = '⏳ 等待開始';
+
+    langPack.en.step2Guide      = 'Please calmly and fully recite the oath above in silence. After the countdown ends, you may continue.';
+    langPack.en.step2TimerLabel = 'Centering Countdown';
+    langPack.en.btnStartText    = 'Start Centering';
+    langPack.en.btnStartCentering = 'Centering...';
+    langPack.en.btnStartComplete  = 'Complete';
+    langPack.en.timerComplete     = '✅ Recitation complete';
+    langPack.en.timerWaiting      = '⏳ Waiting to start';
+
+    function pack() {
+        const lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
+        return (langPack[lang] || langPack.zh);
+    }
+
+    // ========== ② 把【二】的 timer 區改成和【三】一樣的直向排版 ==========
+    window.applyStep2TimerLayout = function () {
+        const p = pack();
+        const panel = document.getElementById('panelStep2');
+        if (!panel) return;
+
+        // 找到原本的 timer-container
+        let timerBox = panel.querySelector('.timer-container');
+        if (!timerBox) return;
+
+        // 保留原本的按鈕與數字元素（ID 不變，既有 startCentering / restartTimer 才能繼續用）
+        const oldBtn     = document.getElementById('btnStartCentering');
+        const oldNum     = document.getElementById('timerNumber');
+        const oldLabel   = document.getElementById('timerLabel');
+        const oldRestart = document.getElementById('btnRestart');
+
+        // 建立說明文字（若還沒有）
+        let guideEl = document.getElementById('step2GuideText');
+        if (!guideEl) {
+            guideEl = document.createElement('div');
+            guideEl.id = 'step2GuideText';
+            guideEl.style.cssText = 'text-align:center; margin:16px 0 12px; color:rgba(224,232,245,0.85); font-size:0.9rem; line-height:1.6;';
+            // 插在 proclamation 後面、timer 前面
+            const proc = panel.querySelector('.proclamation-text');
+            if (proc && proc.parentNode) {
+                proc.parentNode.insertBefore(guideEl, timerBox);
+            }
+        }
+        guideEl.textContent = p.step2Guide;
+
+        // 重建 timer-container 成直向排版（與【三】一致）
+        timerBox.style.cssText = `
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            gap:clamp(8px, 1.2vh, 14px);
+            padding:clamp(12px, 2vh, 20px);
+            background:rgba(212, 175, 55, 0.04);
+            border:1px dashed rgba(212, 175, 55, 0.25);
+            border-radius:12px;
+            width:100%;
+        `;
+
+        // 清空後依正確順序放回元素
+        timerBox.innerHTML = '';
+
+        // 1. 標籤「靜心讀秒」
+        const label = document.createElement('div');
+        label.className = 'timer-label';
+        label.id = 'timerLabel';
+        label.style.cssText = 'font-size:clamp(0.85rem, 1.8vh, 1.05rem); color:rgba(224,232,245,0.75); text-align:center;';
+        label.textContent = p.step2TimerLabel;
+        timerBox.appendChild(label);
+
+        // 2. 大數字
+        const num = document.createElement('div');
+        num.className = 'timer-number';
+        num.id = 'timerNumber';
+        num.style.cssText = `
+            font-size:clamp(2.2rem, 6vh, 3.2rem);
+            font-family:'Share Tech Mono', monospace;
+            color:#00bfff;
+            text-shadow:0 0 18px rgba(0,191,255,0.6);
+            font-weight:700;
+            text-align:center;
+            line-height:1.1;
+            min-width:auto;
+        `;
+        // 保留原本數字狀態
+        num.textContent = (oldNum && oldNum.textContent) ? oldNum.textContent : '10';
+        if (oldNum && oldNum.classList.contains('complete')) {
+            num.classList.add('complete');
+        }
+        timerBox.appendChild(num);
+
+        // 3. 開始靜心按鈕
+        const btn = document.createElement('button');
+        btn.className = 'btn-start-centering';
+        btn.id = 'btnStartCentering';
+        btn.onclick = function () { if (typeof startCentering === 'function') startCentering(); };
+        btn.style.cssText = `
+            background:linear-gradient(135deg, #d4af37, #b8952e);
+            border:none;
+            color:#0A060E;
+            font-weight:800;
+            padding:clamp(8px, 1.4vh, 12px) clamp(18px, 3vw, 32px);
+            font-size:clamp(0.8rem, 1.6vh, 1rem);
+            border-radius:clamp(20px, 3vw, 40px);
+            cursor:pointer;
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            box-shadow:0 4px 20px rgba(212,175,55,0.3);
+            margin-top:4px;
+        `;
+        // 保留原本按鈕文字狀態
+        let btnInner = '<i class="fa-solid fa-play"></i> <span id="btnStartText">' + (p.btnStartText || '開始靜心') + '</span>';
+        if (oldBtn) {
+            const oldText = oldBtn.querySelector('#btnStartText');
+            if (oldText) {
+                btnInner = oldBtn.innerHTML; // 保留「靜心中...」「已完成」等狀態
+            }
+        }
+        btn.innerHTML = btnInner;
+        timerBox.appendChild(btn);
+
+        // 4. 重新開始按鈕（預設隱藏，維持原本邏輯）
+        const restartWrap = document.createElement('div');
+        restartWrap.style.cssText = 'text-align:center; margin-top:4px; width:100%;';
+        const restartBtn = document.createElement('button');
+        restartBtn.className = 'btn-restart';
+        restartBtn.id = 'btnRestart';
+        restartBtn.onclick = function () { if (typeof restartTimer === 'function') restartTimer(); };
+        restartBtn.style.display = (oldRestart && oldRestart.style.display !== 'none') ? 'inline-flex' : 'none';
+        restartBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnRestartText">' +
+            ((typeof currentLang !== 'undefined' && currentLang === 'en') ? 'Restart' : '重新開始') + '</span>';
+        restartWrap.appendChild(restartBtn);
+        timerBox.appendChild(restartWrap);
+
+        // 隱藏原本可能殘留的外層 restart 區塊（避免重複）
+        const oldRestartWrap = panel.querySelector('div[style*="margin-top:12px"] > #btnRestart');
+        if (oldRestartWrap && oldRestartWrap.parentNode) {
+            oldRestartWrap.parentNode.style.display = 'none';
+        }
+    };
+
+    // ========== ③ 在語系切換 / 進入步驟二時重新套用 ==========
+    const _origSwitch = window.switchLanguage;
+    window.switchLanguage = function (lang) {
+        if (typeof _origSwitch === 'function') _origSwitch(lang);
+        else window.currentLang = lang;
+        setTimeout(function () {
+            if (document.getElementById('panelStep2') &&
+                document.getElementById('panelStep2').classList.contains('active')) {
+                window.applyStep2TimerLayout();
+            }
+        }, 50);
+    };
+
+    // 攔截進入步驟二
+    const _origNext = window.handleNextClick;
+    window.handleNextClick = function () {
+        if (typeof _origNext === 'function') _origNext.apply(this, arguments);
+        setTimeout(function () {
+            const p2 = document.getElementById('panelStep2');
+            if (p2 && p2.classList.contains('active')) {
+                window.applyStep2TimerLayout();
+            }
+        }, 80);
+    };
+
+    const _origBack = window.handleBackClick;
+    window.handleBackClick = function () {
+        if (typeof _origBack === 'function') _origBack.apply(this, arguments);
+        setTimeout(function () {
+            const p2 = document.getElementById('panelStep2');
+            if (p2 && p2.classList.contains('active')) {
+                window.applyStep2TimerLayout();
+            }
+        }, 80);
+    };
+
+    // 頁面載入後若已在步驟二也套用
+    function tryApply() {
+        const p2 = document.getElementById('panelStep2');
+        if (p2) window.applyStep2TimerLayout();
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', tryApply);
+    } else {
+        tryApply();
+    }
+    // 保險延遲再跑一次（確保 DOM 與其他腳本都就緒）
+    setTimeout(tryApply, 300);
+    setTimeout(tryApply, 800);
+
+    console.log('✅ 【二】靜心讀秒排版已統一成【三】樣式（含說明文字中英）');
+})();
+</script>
 </body> 
 </html>
