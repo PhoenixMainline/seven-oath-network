@@ -4045,5 +4045,253 @@ button[onclick*="startCentering"] {
     console.log('✅ 底部已改成完整【執行指令】三點說明（中英）');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 新增：回傳誓證執行頁（輸入示範 + 相機掃描 + 通過／未通過）   -->
+<!-- 紫色系統一，相機掃描直接套用前面步驟邏輯                      -->
+<!-- ============================================================ -->
+
+<script>
+(function () {
+    if (typeof langPack === 'undefined') return;
+    langPack.zh = langPack.zh || {};
+    langPack.en = langPack.en || {};
+
+    // ========== 中文 ==========
+    langPack.zh.step9Title = "📩 ② 回傳誓證（確認誓印）· 執行階段";
+    langPack.zh.step9InputTitle = "輸入示範：";
+    langPack.zh.step9InputCmd = "【執行指令】第 1 項 回傳【誓印通過】誓證";
+    langPack.zh.step9ScanBtn = "開始掃描";
+    langPack.zh.step9ScanHint = "請掃描【誓導 QR Code】完成執行指令";
+    langPack.zh.step9Submit = "送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。";
+    langPack.zh.step9Trigger = "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。";
+    langPack.zh.step9FailTitle = "⚠️ 顯示：「誓印未通過」";
+    langPack.zh.step9Fail1 = "① 進入「第 1 項 開啟誓魂密鑰對頻總判定（對頻未通過）」之【補誓程序】。";
+    langPack.zh.step9Fail2 = "② 啟動「懺悔補誓 × 七日循環 × 頻率再校」程序，修正後方可重新啟印。";
+    langPack.zh.step9Version = "《七印誓網・第 1 項 誓魂密鑰對頻總判定》v2.0（封冊正式版）。";
+    langPack.zh.step9Lock = "鎖入《宇宙天律 × 七印誓網》主冊，誓資承流有效。";
+    langPack.zh.step9CameraFail = "📷 無法啟動相機\n⚙️ 開啟手機「設定」→ 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用\n🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code";
+
+    // ========== English ==========
+    langPack.en.step9Title = "📩 ② Return Oath Certificate (Oath Confirmation) · Execution Stage";
+    langPack.en.step9InputTitle = "Input Example：";
+    langPack.en.step9InputCmd = "【Execution Command】Item 1 Return 【Oath Seal Passed】Certificate";
+    langPack.en.step9ScanBtn = "Start Scan";
+    langPack.en.step9ScanHint = "Please scan the【Vow-Guidance QR Code】to complete the execution command";
+    langPack.en.step9Submit = "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Seal Alignment Network is made manifest.";
+    langPack.en.step9Trigger = "【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.";
+    langPack.en.step9FailTitle = "⚠️ Display：「Oath Seal Not Passed」";
+    langPack.en.step9Fail1 = "① Enter 「Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Alignment Not Passed)」 and enter the 【Oath Renewal Procedure】.";
+    langPack.en.step9Fail2 = "② Initiate the process of 「Repentance Oath Renewal Procedure × Seven-Day Cycle × Frequency Recalibration」. Only after correction may the oath-seal activation be attempted again.";
+    langPack.en.step9Version = "《Seven-Seal Vow Network · Item 1 Oath-Soul Key Frequency-Alignment Determination》 v2.0 (Official Sealed Edition).";
+    langPack.en.step9Lock = "Locked into the 《Cosmic Heavenly-Law × Seven-Seal Vow Network》 Main Ledger; oath-energy flow is valid and in effect.";
+    langPack.en.step9CameraFail = "📷 Unable to start camera\n⚙️ Go to phone「Settings」→ App Management → Permissions → Camera → Set to「Allow」\n🌐 Open with browser (Chrome / Yahoo / Edge....)\n⚠️ If still unavailable, please manually scan the physical book QR Code";
+
+    function p() {
+        const lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
+        return (langPack && langPack[lang]) ? langPack[lang] : langPack.zh;
+    }
+
+    let html5QrCodeStep9 = null;
+
+    // ========== 渲染 Step9 ==========
+    window.applyStep9 = function () {
+        const pack = p();
+        let panel = document.getElementById('panelStep9');
+        if (!panel) {
+            const content = document.querySelector('.step-content');
+            if (!content) return;
+            panel = document.createElement('div');
+            panel.className = 'step-panel';
+            panel.id = 'panelStep9';
+            content.appendChild(panel);
+        }
+
+        panel.innerHTML = `
+            <div class="hud-card" style="background:linear-gradient(135deg,rgba(88,28,135,0.45),rgba(30,27,75,0.55)); border:1px solid rgba(168,85,247,0.45);">
+                <div class="card-title" style="justify-content:center; color:#e9d5ff;">
+                    <i class="fa-solid fa-certificate" style="color:#a78bfa;"></i>
+                    <span>${pack.step9Title}</span>
+                </div>
+
+                <!-- 輸入示範 -->
+                <div style="margin-bottom:14px;">
+                    <div style="color:#c4b5fd; font-size:0.9rem; margin-bottom:6px;">${pack.step9InputTitle}</div>
+                    <div style="background:rgba(124,58,237,0.35); border:1px solid rgba(168,85,247,0.5); border-radius:10px; padding:12px 14px; color:#f5d0fe; font-weight:bold; font-size:0.95rem; line-height:1.5;">
+                        ${pack.step9InputCmd}
+                    </div>
+                </div>
+
+                <!-- 相機掃描區 -->
+                <div style="text-align:center; margin:14px 0; color:rgba(224,232,245,0.9); font-size:0.9rem;">
+                    <i class="fa-solid fa-camera" style="color:#a78bfa; margin-right:6px;"></i>
+                    ${pack.step9ScanHint}
+                </div>
+                <div id="qr-reader-container-step9" style="width:100%; max-width:320px; margin:0 auto 12px; border-radius:12px; overflow:hidden;"></div>
+                <div style="text-align:center; margin-bottom:16px;">
+                    <button id="btnStartScanStep9" onclick="startQRScannerStep9()" style="
+                        background:linear-gradient(135deg,#7c3aed,#6d28d9);
+                        color:#fff;
+                        border:none;
+                        padding:12px 28px;
+                        border-radius:30px;
+                        font-size:1rem;
+                        font-weight:bold;
+                        cursor:pointer;
+                        box-shadow:0 4px 18px rgba(124,58,237,0.45);
+                    ">
+                        <i class="fa-solid fa-qrcode"></i> ${pack.step9ScanBtn}
+                    </button>
+                </div>
+                <div id="qr-result-step9" class="qr-result" style="display:none; margin-bottom:12px;"></div>
+                <div id="camera-guide-step9" class="camera-guide" style="display:none; margin-bottom:14px;"></div>
+
+                <!-- 送出說明 -->
+                <div style="background:rgba(0,230,118,0.1); border-left:4px solid #00e676; padding:12px 14px; border-radius:8px; margin-bottom:12px; font-size:0.9rem; color:#e0e7ff; line-height:1.6;">
+                    ${pack.step9Submit}
+                </div>
+
+                <!-- 觸發注意 -->
+                <div style="background:rgba(232,96,74,0.1); border-left:4px solid #E8604A; padding:12px 14px; border-radius:8px; margin-bottom:14px; font-size:0.88rem; color:#e0dcc8; line-height:1.6;">
+                    <i class="fa-solid fa-exclamation-circle" style="color:#E8604A; margin-right:6px;"></i>
+                    ${pack.step9Trigger}
+                </div>
+
+                <!-- 未通過分支 -->
+                <div style="background:rgba(251,191,36,0.1); border-left:4px solid #fbbf24; padding:12px 14px; border-radius:8px; margin-bottom:12px;">
+                    <div style="color:#fbbf24; font-weight:bold; margin-bottom:10px;">${pack.step9FailTitle}</div>
+                    <div style="font-size:0.9rem; color:#e0e7ff; line-height:1.6; margin-bottom:6px;">${pack.step9Fail1}</div>
+                    <div style="font-size:0.9rem; color:#e0e7ff; line-height:1.6;">${pack.step9Fail2}</div>
+                </div>
+
+                <!-- 版本與鎖定 -->
+                <div style="font-size:0.82rem; color:rgba(224,232,245,0.7); line-height:1.6; margin-top:10px;">
+                    <div style="margin-bottom:4px;">📘 ${pack.step9Version}</div>
+                    <div>📗 ${pack.step9Lock}</div>
+                </div>
+            </div>
+        `;
+
+        // 預設鎖定下一步，掃描成功後才開
+        const next = document.getElementById('btnNext');
+        if (next) {
+            next.classList.remove('enabled');
+            next.style.pointerEvents = 'none';
+            next.disabled = true;
+        }
+    };
+
+    // ========== 相機掃描（套用前面步驟邏輯） ==========
+    window.startQRScannerStep9 = function () {
+        const pack = p();
+        const container = document.getElementById('qr-reader-container-step9');
+        const resultEl = document.getElementById('qr-result-step9');
+        const guideEl = document.getElementById('camera-guide-step9');
+        const btn = document.getElementById('btnStartScanStep9');
+
+        if (!container) return;
+
+        // 停止舊的
+        if (html5QrCodeStep9) {
+            try { html5QrCodeStep9.stop(); } catch (e) {}
+            html5QrCodeStep9 = null;
+        }
+
+        container.innerHTML = '';
+        if (resultEl) resultEl.style.display = 'none';
+        if (guideEl) guideEl.style.display = 'none';
+        if (btn) btn.disabled = true;
+
+        try {
+            html5QrCodeStep9 = new Html5Qrcode("qr-reader-container-step9");
+            html5QrCodeStep9.start(
+                { facingMode: "environment" },
+                { fps: 10, qrbox: { width: 250, height: 250 } },
+                (decodedText) => {
+                    // 掃描成功
+                    if (resultEl) {
+                        resultEl.style.display = 'block';
+                        resultEl.textContent = '✅ ' + decodedText;
+                    }
+                    // 啟用下一步
+                    const next = document.getElementById('btnNext');
+                    if (next) {
+                        next.classList.add('enabled');
+                        next.style.pointerEvents = 'auto';
+                        next.disabled = false;
+                    }
+                    // 停止相機
+                    try { html5QrCodeStep9.stop(); } catch (e) {}
+                    if (btn) btn.disabled = false;
+                },
+                (err) => {}
+            ).catch((err) => {
+                if (guideEl) {
+                    guideEl.style.display = 'block';
+                    guideEl.textContent = pack.step9CameraFail;
+                }
+                if (btn) btn.disabled = false;
+            });
+        } catch (e) {
+            if (guideEl) {
+                guideEl.style.display = 'block';
+                guideEl.textContent = pack.step9CameraFail;
+            }
+            if (btn) btn.disabled = false;
+        }
+    };
+
+    // ========== 導航：Step8 → Step9 ==========
+    const _origNext = window.handleNextClick;
+    window.handleNextClick = function () {
+        const step = window.currentStep || 1;
+        const p8 = document.getElementById('panelStep8');
+
+        if (step === 8 || (p8 && p8.classList.contains('active'))) {
+            window.currentStep = 9;
+            document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+            window.applyStep9();
+            const panel = document.getElementById('panelStep9');
+            if (panel) panel.classList.add('active');
+            return;
+        }
+
+        if (typeof _origNext === 'function') _origNext();
+    };
+
+    const _origBack = window.handleBackClick;
+    window.handleBackClick = function () {
+        const step = window.currentStep || 1;
+        const p9 = document.getElementById('panelStep9');
+
+        if (step === 9 || (p9 && p9.classList.contains('active'))) {
+            // 停止相機
+            if (html5QrCodeStep9) {
+                try { html5QrCodeStep9.stop(); } catch (e) {}
+                html5QrCodeStep9 = null;
+            }
+            window.currentStep = 8;
+            document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+            if (typeof window.applyStep8 === 'function') window.applyStep8();
+            const panel = document.getElementById('panelStep8');
+            if (panel) panel.classList.add('active');
+            return;
+        }
+
+        if (typeof _origBack === 'function') _origBack();
+    };
+
+    // 語系切換
+    const _origSwitch = window.switchLanguage;
+    window.switchLanguage = function (lang) {
+        if (typeof _origSwitch === 'function') _origSwitch(lang);
+        else window.currentLang = lang;
+        if (window.currentStep === 9) {
+            setTimeout(() => window.applyStep9(), 60);
+        }
+    };
+
+    console.log('✅ 回傳誓證執行頁（含相機掃描）已補上');
+})();
+</script>
 </body> 
 </html>
