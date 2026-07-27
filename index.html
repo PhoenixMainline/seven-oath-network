@@ -4396,5 +4396,262 @@ button[onclick*="Scan"] {
     console.log('✅ 所有暗色系已強制改成跟右圖一致的亮色紫系');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 統一：相機失敗提示 + 掃描成功 + 靜心完成 回應模版（中英）     -->
+<!-- 直接貼在 </body> 前即可，不修改其他既有程式                    -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (typeof langPack === 'undefined') return;
+
+    // ========== ① 統一「無法啟動相機」全文（中英） ==========
+    const CAMERA_FAIL_ZH =
+        '📷 無法啟動相機\n' +
+        '⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」 → 使用\n' +
+        '🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n' +
+        '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+
+    const CAMERA_FAIL_EN =
+        '📷 Unable to start camera\n' +
+        '⚙️ Go to phone「Settings」 → App Management → Permissions → Camera → Set to「Allow」\n' +
+        '🌐 Open with browser (Chrome / Yahoo / Edge....)\n' +
+        '⚠️ If still unavailable, please manually scan the physical book QR Code';
+
+    // ========== ② 統一「掃描成功」與「靜心完成」回應 ==========
+    const SCAN_OK_ZH   = '✅ 掃描成功！已完成執行指令';
+    const SCAN_OK_EN   = '✅ Scan successful! Execution command completed';
+    const TIMER_OK_ZH  = '靜心完成，可進入下一步';
+    const TIMER_OK_EN  = 'Centering complete. You may proceed to the next step.';
+    const TIMER_LABEL_COMPLETE_ZH = '✅ 已完成誦讀';
+    const TIMER_LABEL_COMPLETE_EN = '✅ Recitation complete';
+    const BTN_COMPLETE_ZH = '已完成';
+    const BTN_COMPLETE_EN = 'Complete';
+
+    // ========== ③ 寫入 langPack（覆蓋所有變體） ==========
+    function applyUnifiedTexts() {
+        // 中文
+        langPack.zh = langPack.zh || {};
+        langPack.zh.cameraGuideText        = CAMERA_FAIL_ZH;
+        langPack.zh.cameraGuideTextStep6   = CAMERA_FAIL_ZH;
+        langPack.zh.cameraGuideTextStep7   = CAMERA_FAIL_ZH;
+        langPack.zh.cameraGuideTextStep8   = CAMERA_FAIL_ZH;
+        langPack.zh.step9CameraFail        = CAMERA_FAIL_ZH;
+        langPack.zh.qrResultText           = '掃描成功！';
+        langPack.zh.qrResultTextStep7      = SCAN_OK_ZH;
+        langPack.zh.qrResultTextStep8      = SCAN_OK_ZH;
+        langPack.zh.step3Complete          = TIMER_OK_ZH;
+        langPack.zh.timerComplete          = TIMER_LABEL_COMPLETE_ZH;
+        langPack.zh.btnStartComplete       = BTN_COMPLETE_ZH;
+
+        // 英文
+        langPack.en = langPack.en || {};
+        langPack.en.cameraGuideText        = CAMERA_FAIL_EN;
+        langPack.en.cameraGuideTextStep6   = CAMERA_FAIL_EN;
+        langPack.en.cameraGuideTextStep7   = CAMERA_FAIL_EN;
+        langPack.en.cameraGuideTextStep8   = CAMERA_FAIL_EN;
+        langPack.en.step9CameraFail        = CAMERA_FAIL_EN;
+        langPack.en.qrResultText           = 'Scan successful!';
+        langPack.en.qrResultTextStep7      = SCAN_OK_EN;
+        langPack.en.qrResultTextStep8      = SCAN_OK_EN;
+        langPack.en.step3Complete          = TIMER_OK_EN;
+        langPack.en.timerComplete          = TIMER_LABEL_COMPLETE_EN;
+        langPack.en.btnStartComplete       = BTN_COMPLETE_EN;
+    }
+    applyUnifiedTexts();
+
+    // ========== ④ 統一 DOM 顯示函式（失敗 / 成功） ==========
+    window.showUnifiedCameraFail = function (guideEl, textEl) {
+        const isEn = (typeof currentLang !== 'undefined' && currentLang === 'en');
+        const msg  = isEn ? CAMERA_FAIL_EN : CAMERA_FAIL_ZH;
+        if (guideEl) guideEl.style.display = 'block';
+        if (textEl) {
+            // 支援 textContent 或 innerHTML
+            if (textEl.tagName === 'SPAN' || textEl.tagName === 'DIV') {
+                textEl.innerHTML = msg.replace(/\n/g, '<br>');
+            } else {
+                textEl.textContent = msg;
+            }
+        }
+    };
+
+    window.showUnifiedScanSuccess = function (resultEl, textEl) {
+        const isEn = (typeof currentLang !== 'undefined' && currentLang === 'en');
+        const msg  = isEn ? SCAN_OK_EN : SCAN_OK_ZH;
+        if (resultEl) resultEl.style.display = 'block';
+        if (textEl)   textEl.textContent = msg;
+    };
+
+    // ========== ⑤ 強制覆蓋所有現有相機失敗 DOM ==========
+    function forceUpdateAllCameraGuides() {
+        const isEn = (typeof currentLang !== 'undefined' && currentLang === 'en');
+        const msg  = isEn ? CAMERA_FAIL_EN : CAMERA_FAIL_ZH;
+        const html = msg.replace(/\n/g, '<br>');
+
+        const pairs = [
+            ['cameraGuide',          'cameraGuideText'],
+            ['cameraGuideStep4',     'cameraGuideTextStep4'],
+            ['cameraGuideStep6',     'cameraGuideTextStep6'],
+            ['cameraGuideStep7',     'cameraGuideTextStep7'],
+            ['cameraGuideStep8',     'cameraGuideTextStep8'],
+            ['camera-guide-step9',   null]          // step9 直接寫在 guide 本身
+        ];
+
+        pairs.forEach(([guideId, textId]) => {
+            const guide = document.getElementById(guideId);
+            if (!guide) return;
+            if (textId) {
+                const t = document.getElementById(textId);
+                if (t) t.innerHTML = html;
+            } else {
+                // step9 等直接把內容寫進 guide
+                guide.innerHTML = html;
+            }
+        });
+
+        // step7 / step8 舊版 span id 相容
+        ['step7CameraGuide', 'step8CameraGuide'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.innerHTML = html;
+        });
+    }
+
+    // ========== ⑥ 攔截常見失敗寫入點（不改原函式本體） ==========
+    // 攔截 startQRScanner 內硬寫文字
+    const _origStartQR = window.startQRScanner;
+    if (typeof _origStartQR === 'function') {
+        window.startQRScanner = function (step) {
+            const result = _origStartQR.apply(this, arguments);
+            // 延遲一點再強制覆寫，確保原函式寫完後再統一
+            setTimeout(forceUpdateAllCameraGuides, 80);
+            return result;
+        };
+    }
+
+    // 攔截 step7 / step8 / step9 的掃描失敗
+    ['startQRScannerStep7', 'startQRScannerStep8', 'startQRScannerStep9'].forEach(fnName => {
+        const orig = window[fnName];
+        if (typeof orig === 'function') {
+            window[fnName] = function () {
+                const r = orig.apply(this, arguments);
+                setTimeout(forceUpdateAllCameraGuides, 80);
+                return r;
+            };
+        }
+    });
+
+    // ========== ⑦ 統一靜心完成彈窗文字 ==========
+    // 若原本用 alert(pack.step3Complete)，已透過 langPack 覆蓋
+    // 若用 openHudDialog，也統一 dialog 內容
+    const _origOpenHud = window.openHudDialog;
+    if (typeof _origOpenHud === 'function') {
+        window.openHudDialog = function (msg) {
+            // 若是舊版「靜心完成」相關訊息，改成統一版
+            if (typeof msg === 'string' &&
+                (msg.indexOf('靜心') !== -1 || msg.indexOf('Centering') !== -1 ||
+                 msg.indexOf('誦讀') !== -1 || msg.indexOf('Recitation') !== -1)) {
+                const isEn = (typeof currentLang !== 'undefined' && currentLang === 'en');
+                msg = isEn ? TIMER_OK_EN : TIMER_OK_ZH;
+            }
+            return _origOpenHud.call(this, msg);
+        };
+    }
+
+    // ========== ⑧ 語系切換時重新套用 ==========
+    const _origSwitch = window.switchLanguage;
+    window.switchLanguage = function (lang) {
+        if (typeof _origSwitch === 'function') _origSwitch(lang);
+        else window.currentLang = lang;
+        applyUnifiedTexts();
+        setTimeout(forceUpdateAllCameraGuides, 60);
+    };
+
+    // 頁面載入後立刻套用一次
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', forceUpdateAllCameraGuides);
+    } else {
+        forceUpdateAllCameraGuides();
+    }
+
+    // 保險：每 1.5 秒檢查一次是否有新產生的 guide（動態步驟）
+    setInterval(forceUpdateAllCameraGuides, 1500);
+
+    console.log('✅ 相機失敗 / 掃描成功 / 靜心完成 回應已全部統一');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 刪除：相機權限失敗 / 靜心完成 的系統彈窗（alert）               -->
+<!-- 直接貼在 </body> 前即可，不改其他邏輯                          -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    // 要封鎖的關鍵字（中英都擋）
+    const BLOCK_KEYWORDS = [
+        // 相機相關
+        '無法取得相機權限',
+        '請允許相機存取',
+        'Could not start video source',
+        '無法啟動相機',
+        'Unable to start camera',
+        'Unable to launch the feature',
+        '請允許相機權限',
+        '相機權限',
+        // 靜心完成相關
+        '靜心完成',
+        '可進入下一步',
+        'Centering complete',
+        'You may proceed',
+        '已完成誦讀',
+        'Recitation complete'
+    ];
+
+    function shouldBlock(msg) {
+        if (typeof msg !== 'string') return false;
+        return BLOCK_KEYWORDS.some(k => msg.indexOf(k) !== -1);
+    }
+
+    // 1. 攔截原生 alert
+    const _origAlert = window.alert;
+    window.alert = function (msg) {
+        if (shouldBlock(String(msg || ''))) {
+            console.log('[已封鎖彈窗]', msg);
+            return; // 直接不顯示
+        }
+        return _origAlert.apply(this, arguments);
+    };
+
+    // 2. 攔截 openHudDialog（若有用自訂對話框）
+    if (typeof window.openHudDialog === 'function') {
+        const _origHud = window.openHudDialog;
+        window.openHudDialog = function (msg) {
+            if (shouldBlock(String(msg || ''))) {
+                console.log('[已封鎖 HUD 彈窗]', msg);
+                return;
+            }
+            return _origHud.apply(this, arguments);
+        };
+    }
+
+    // 3. 保險：把可能會再呼叫 alert 的失敗回調也靜默化
+    //    （不改原函式本體，只在失敗時不再彈窗）
+    const silentCatch = function () {
+        // 空函式，什麼都不做
+    };
+
+    // 若之後有動態產生的 alert，再擋一次
+    setInterval(function () {
+        if (window.alert !== arguments.callee._patched) {
+            // 被別人又改回去的話再鎖一次
+            const current = window.alert;
+            window.alert = function (msg) {
+                if (shouldBlock(String(msg || ''))) return;
+                return current.apply(this, arguments);
+            };
+            arguments.callee._patched = window.alert;
+        }
+    }, 2000);
+
+    console.log('✅ 相機權限失敗 & 靜心完成 系統彈窗已全部刪除');
+})();
+</script>
 </body> 
 </html>
