@@ -4293,5 +4293,108 @@ button[onclick*="startCentering"] {
     console.log('✅ 回傳誓證執行頁（含相機掃描）已補上');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 全域強制亮色紫系（讓左圖【四】等所有暗色頁面都跟右圖一致）   -->
+<!-- ============================================================ -->
+
+<style>
+/* ===== 強制所有卡片與文字改亮紫 ===== */
+.hud-card {
+    background: linear-gradient(135deg, rgba(88,28,135,0.45), rgba(30,27,75,0.55)) !important;
+    border: 1px solid rgba(168,85,247,0.45) !important;
+}
+
+.card-title,
+.card-title span,
+.card-title i {
+    color: #e9d5ff !important;
+}
+
+/* 輸入示範框 */
+[style*="background:rgba(124,58,237"],
+.hud-card div[style*="background"] {
+    border-radius: 10px !important;
+}
+
+/* 按鈕統一亮紫 */
+button,
+.btn-action.enabled,
+#btnStartScanStep9,
+button[onclick*="startQR"],
+button[onclick*="Scan"] {
+    background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 18px rgba(124, 58, 237, 0.45) !important;
+}
+
+/* 綠色成功框保持綠色，黃色警告框保持黃色 */
+/* 其他一般文字改亮 */
+.instruction-item span,
+.condition-item span,
+.hud-card div {
+    color: #e0e7ff !important;
+}
+
+/* 強制標題與數字 */
+.app-title {
+    color: #e9d5ff !important;
+    text-shadow: 0 0 12px rgba(168, 85, 247, 0.5) !important;
+}
+
+/* 語系按鈕 */
+.lang-btn.active {
+    background: #7c3aed !important;
+    color: #fff !important;
+}
+</style>
+
+<script>
+(function () {
+    function forceAllToBrightPurple() {
+        // 強制所有 hud-card 改亮紫背景
+        document.querySelectorAll('.hud-card').forEach(card => {
+            card.style.setProperty('background', 'linear-gradient(135deg, rgba(88,28,135,0.45), rgba(30,27,75,0.55))', 'important');
+            card.style.setProperty('border', '1px solid rgba(168,85,247,0.45)', 'important');
+        });
+
+        // 強制所有標題改亮紫
+        document.querySelectorAll('.card-title, .card-title span, .card-title i').forEach(el => {
+            el.style.setProperty('color', '#e9d5ff', 'important');
+        });
+
+        // 強制所有掃描按鈕
+        document.querySelectorAll('button, .btn-action.enabled').forEach(btn => {
+            if (btn.textContent.includes('掃描') || btn.textContent.includes('Scan') || btn.id.includes('Scan') || btn.onclick) {
+                btn.style.setProperty('background', 'linear-gradient(135deg, #7c3aed, #6d28d9)', 'important');
+                btn.style.setProperty('color', '#ffffff', 'important');
+                btn.style.setProperty('border', 'none', 'important');
+                btn.style.setProperty('box-shadow', '0 4px 18px rgba(124, 58, 237, 0.45)', 'important');
+            }
+        });
+
+        // 強制輸入示範框
+        document.querySelectorAll('.hud-card div').forEach(div => {
+            if (div.textContent.includes('執行指令') || div.textContent.includes('Execution Command')) {
+                div.style.setProperty('background', 'rgba(124,58,237,0.35)', 'important');
+                div.style.setProperty('border', '1px solid rgba(168,85,247,0.5)', 'important');
+                div.style.setProperty('color', '#f5d0fe', 'important');
+            }
+        });
+    }
+
+    forceAllToBrightPurple();
+    setInterval(forceAllToBrightPurple, 600);
+
+    // 語系切換後再強制
+    const orig = window.switchLanguage;
+    window.switchLanguage = function (lang) {
+        if (typeof orig === 'function') orig(lang);
+        setTimeout(forceAllToBrightPurple, 100);
+    };
+
+    console.log('✅ 所有暗色系已強制改成跟右圖一致的亮色紫系');
+})();
+</script>
 </body> 
 </html>
