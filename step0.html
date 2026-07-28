@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>【宇宙誓印覺醒工程 · 七印誓網】- 啟動守則</title>
+    <title>【宇宙誓印覺醒工程 · 七印誓網】啟動守則</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
@@ -11,11 +11,11 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif; }
         body {
             background: radial-gradient(circle at 50% 50%, #06122c 0%, #020715 100%);
-            min-height: 100vh; height: 100vh;
+            min-height: 100vh;
             color: #e0e8f5;
             display: flex; justify-content: center; align-items: center;
-            overflow: hidden; position: relative;
-            margin: 0; padding: clamp(4px, 1.5vh, 16px);
+            padding: clamp(8px, 2vh, 24px);
+            position: relative;
         }
         .particle-container {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -31,13 +31,13 @@
         }
         .watermark-text { font-size: 1.5rem; font-weight: bold; color: #ffffff; transform: rotate(-25deg); white-space: nowrap; user-select: none; }
         .hud-container {
-            width: 100%; max-width: min(660px, 95vw); height: 92vh; max-height: 92vh;
+            width: 100%; max-width: min(660px, 95vw);
             background: rgba(4, 13, 33, 0.4);
             border: 1.5px solid rgba(168, 85, 247, 0.3);
             box-shadow: 0 0 40px rgba(168, 85, 247, 0.15), inset 0 0 20px rgba(168, 85, 247, 0.05);
             border-radius: clamp(16px, 4vw, 28px);
-            padding: clamp(8px, 1.5vh, 20px);
-            display: flex; flex-direction: column; position: relative; z-index: 3; margin: auto; overflow: hidden;
+            padding: clamp(16px, 3vh, 30px);
+            display: flex; flex-direction: column; position: relative; z-index: 3; margin: auto;
         }
         .hud-container::after { content: ""; position: absolute; top: 18px; right: 18px; width: 14px; height: 14px; border-top: 3px solid #a78bfa; border-right: 3px solid #a78bfa; pointer-events: none; }
         .home-breadcrumb { font-size: clamp(0.6rem, 1.4vh, 0.85rem); color: #c4b5fd; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 12px; font-weight: bold; align-self: flex-start; transition: all 0.3s ease; text-shadow: 0 0 8px rgba(168, 85, 247, 0.4); position: relative; z-index: 1000; pointer-events: auto !important; }
@@ -48,9 +48,8 @@
         .lang-btn { background: transparent; border: none; color: rgba(224, 232, 245, 0.4); font-size: clamp(0.5rem, 1.2vh, 0.75rem); padding: clamp(2px, 0.6vh, 5px) clamp(6px, 1vw, 12px); border-radius: 16px; cursor: pointer; transition: all 0.2s ease; }
         .lang-btn.active { background: #7c3aed; color: #ffffff; font-weight: bold; box-shadow: 0 0 12px rgba(124, 58, 237, 0.5); }
 
-        .step-content { flex: 1 1 auto; display: flex; flex-direction: column; gap: clamp(8px, 1.5vh, 22px); overflow-y: auto; padding-right: 4px; min-height: 0; }
-        .step-panel { display: none; flex-direction: column; gap: 20px; animation: fadeIn 0.4s ease-in-out; }
-        .step-panel.active { display: flex; }
+        .step-content { flex: 1 1 auto; display: flex; flex-direction: column; gap: clamp(12px, 2vh, 24px); overflow-y: auto; padding-right: 4px; min-height: 0; }
+        .step-panel { display: flex !important; flex-direction: column; gap: 20px; animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         .hud-card {
@@ -127,18 +126,18 @@
             font-size: 0.9rem; line-height: 1.6;
         }
 
-        .hud-footer { flex-shrink: 0; margin-top: auto; padding-top: clamp(6px, 1vh, 12px); border-top: 1px solid rgba(168, 85, 247, 0.2); display: flex; justify-content: space-between; align-items: center; z-index: 10; flex-wrap: wrap; }
-        .footer-btn-group { display: flex; align-items: center; gap: clamp(4px, 1vw, 12px); }
+        .hud-footer { flex-shrink: 0; margin-top: 24px; padding-top: clamp(6px, 1vh, 12px); border-top: 1px solid rgba(168, 85, 247, 0.2); display: flex; justify-content: space-between; align-items: center; z-index: 10; flex-wrap: wrap; }
+        .footer-btn-group { display: flex; align-items: center; gap: clamp(4px, 1vw, 12px); width: 100%; justify-content: flex-start; }
         .btn-action {
             background: transparent; border: 1px solid rgba(168, 85, 247, 0.2); color: rgba(168, 85, 247, 0.3);
             padding: clamp(6px, 1.2vh, 10px) clamp(10px, 1.5vw, 22px);
             font-size: clamp(0.65rem, 1.3vh, 0.9rem); border-radius: 20px;
-            cursor: not-allowed; display: inline-flex; align-items: center; gap: 8px;
-            transition: all 0.3s ease; pointer-events: none; text-decoration: none; min-height: clamp(32px, 5vh, 44px);
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: all 0.3s ease; text-decoration: none; min-height: clamp(32px, 5vh, 44px);
+            border: 1px solid #a78bfa; color: #e9d5ff; cursor: pointer; pointer-events: auto; background: rgba(124, 58, 237, 0.15); text-shadow: 0 0 10px rgba(167, 139, 250, 0.6); box-shadow: 0 0 15px rgba(124, 58, 237, 0.3);
         }
-        .btn-action.enabled { border: 1px solid #a78bfa; color: #e9d5ff; cursor: pointer; pointer-events: auto; background: rgba(124, 58, 237, 0.15); text-shadow: 0 0 10px rgba(167, 139, 250, 0.6); box-shadow: 0 0 15px rgba(124, 58, 237, 0.3); }
-        .btn-action.enabled:hover { background: rgba(124, 58, 237, 0.28); box-shadow: 0 0 25px rgba(124, 58, 237, 0.5); transform: translateY(-1px); }
-        .page-marker { font-size: clamp(0.5rem, 1.2vh, 0.78rem); color: rgba(224, 232, 245, 0.35); display: flex; align-items: center; gap: 6px; }
+        .btn-action:hover { background: rgba(124, 58, 237, 0.28); box-shadow: 0 0 25px rgba(124, 58, 237, 0.5); transform: translateY(-1px); }
+        .page-marker { font-size: clamp(0.5rem, 1.2vh, 0.78rem); color: rgba(224, 232, 245, 0.35); display: inline-flex; align-items: center; gap: 6px; margin-left: auto; }
 
         .qr-result { color: #00e676; font-size: 0.9rem; padding: 8px 16px; border-radius: 20px; background: rgba(0, 230, 118, 0.08); border: 1px solid rgba(0, 230, 118, 0.2); word-break: break-all; }
         .camera-guide { background: rgba(232, 96, 74, 0.08); border-left: 4px solid #E8604A; padding: 14px 16px; border-radius: 12px; color: #e0dcc8; font-size: 0.85rem; line-height: 1.8; white-space: pre-wrap; text-align: left; }
@@ -146,9 +145,11 @@
 
         @media (max-width: 480px) {
             body { padding: 4px !important; }
-            .hud-container { padding: 8px 6px !important; border-radius: 12px !important; max-height: 98vh !important; height: auto !important; }
+            .hud-container { padding: 8px 6px !important; border-radius: 12px !important; }
             .hud-header { margin-bottom: 6px !important; padding-bottom: 4px !important; }
             .hud-footer { margin-top: 8px !important; padding-top: 6px !important; }
+            .footer-btn-group { flex-wrap: wrap; gap: 6px; }
+            .page-marker { margin-left: 0; }
         }
     </style>
 </head>
@@ -165,7 +166,7 @@
         <div class="watermark-text">天地為鑑・光網為證</div>
     </div>
     <div class="hud-container">
-        <a class="home-breadcrumb" id="homeBtn" onclick="returnToHome()"><i class="fa-solid fa-house"></i><span id="homeBtnText">首頁 -></span></a>
+        <a class="home-breadcrumb" id="homeBtn" href="index.html"><i class="fa-solid fa-house"></i><span id="homeBtnText">首頁 -></span></a>
         <header class="hud-header">
             <div class="app-title" id="appTitle">【宇宙誓印覺醒工程 · 七印誓網】</div>
             <div class="lang-switch-group">
@@ -176,7 +177,7 @@
 
         <main class="step-content">
             <!-- ===== 步驟一 ===== -->
-            <div class="step-panel active" id="panelStep1">
+            <div class="step-panel active">
                 <div class="hud-card">
                     <div class="card-title"><i class="fa-solid fa-bolt"></i><span id="cardTitleText1">【一】啟動條件</span></div>
                     <ul class="condition-list">
@@ -188,8 +189,9 @@
             </div>
 
             <!-- ===== 步驟二 ===== -->
-            <div class="step-panel" id="panelStep2">
+            <div class="step-panel active">
                 <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-book-open"></i><span id="cardTitleText2">【二】授權誓讀階段（主頻啟令）</span></div>
                     <div class="proclamation-text" id="proclamationText">★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★</div>
                     <div class="guide-text" id="guideText2">請以平靜心念，完整默讀上方誓文，待讀秒結束後即可繼續。</div>
                     <div class="timer-container" id="timerContainer2">
@@ -200,7 +202,7 @@
                     </div>
                 </div>
                 <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-shield-halved"></i><span id="cardTitleText2">【執行指令】說明</span></div>
+                    <div class="card-title"><i class="fa-solid fa-shield-halved"></i><span id="cardTitleText2b">【執行指令】說明</span></div>
                     <div class="instruction-box">
                         <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst1">誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。</span></div>
                         <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="inst2">於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。</span></div>
@@ -209,7 +211,7 @@
             </div>
 
             <!-- ===== 步驟三 ===== -->
-            <div class="step-panel" id="panelStep3">
+            <div class="step-panel active">
                 <div class="hud-card">
                     <div class="card-title"><i class="fa-solid fa-qrcode"></i><span id="cardTitleText3">【三】授權綁定階段（母源印驗證）</span></div>
                     <div class="instruction-box">
@@ -224,14 +226,7 @@
                         <div id="qr-reader-container" style="width:100%; max-width:280px; margin:0 auto;"></div>
                         <button class="btn-restart" id="btnScanQR" onclick="startQRScanner('step3')" style="margin-top:10px;"><i class="fa-solid fa-qrcode"></i> <span id="btnScanText">📷 掃描 QR Code</span></button>
                         <div id="qrScanResult" class="qr-result" style="display:none; margin-top:10px;"><i class="fa-solid fa-check-circle"></i><span id="qrResultText">掃描成功！</span></div>
-                        <div id="cameraGuide" class="camera-guide" style="display:none; text-align:left; margin-top:12px;"><span id="cameraGuideText">📷 無法啟動相機
-
-⚙️ 開啟手機「設定」
- → 應用程式管理
- → 權限 → 相機 → 改為「允許」
- → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）
-
-⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code</span></div>
+                        <div id="cameraGuide" class="camera-guide" style="display:none; text-align:left; margin-top:12px;"><span id="cameraGuideText">📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n → 應用程式管理\n → 權限 → 相機 → 改為「允許」\n → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code</span></div>
                     </div>
                 </div>
                 <div class="hud-card">
@@ -249,7 +244,7 @@
             </div>
 
             <!-- ===== 步驟四 ===== -->
-            <div class="step-panel" id="panelStep4">
+            <div class="step-panel active">
                 <div class="hud-card">
                     <div class="card-title"><i class="fa-solid fa-satellite-dish"></i><span id="cardTitleText4">【四】回傳結果（對頻成功）</span></div>
                     <div class="instruction-box">
@@ -265,14 +260,7 @@
                         <div id="qr-reader-container-step4" style="width:100%; max-width:280px; margin:0 auto;"></div>
                         <button class="btn-restart" id="btnScanQRStep4" onclick="startQRScanner('step4')" style="margin-top:10px;"><i class="fa-solid fa-qrcode"></i> <span id="btnScanTextStep4">📷 掃描 QR Code</span></button>
                         <div id="qrScanResultStep4" class="qr-result" style="display:none; margin-top:10px;"><i class="fa-solid fa-check-circle"></i><span id="qrResultTextStep4">掃描成功！</span></div>
-                        <div id="cameraGuideStep4" class="camera-guide" style="display:none; text-align:left; margin-top:12px;"><span id="cameraGuideTextStep4">📷 無法啟動相機
-
-⚙️ 開啟手機「設定」
- → 應用程式管理
- → 權限 → 相機 → 改為「允許」
- → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）
-
-⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code</span></div>
+                        <div id="cameraGuideStep4" class="camera-guide" style="display:none; text-align:left; margin-top:12px;"><span id="cameraGuideTextStep4">📷 無法啟動相機\n\n⚙️ 開啟手機「設定」\n → 應用程式管理\n → 權限 → 相機 → 改為「允許」\n → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code</span></div>
                     </div>
                 </div>
                 <div class="hud-card">
@@ -282,8 +270,7 @@
                     </div>
                     <div class="instruction-box">
                         <div style="background:rgba(6,18,44,0.4); padding:12px 14px; border-radius:8px; display:flex; flex-direction:column; gap:8px;">
-                            <div id="inst4_example_box" style="color:#e0e8f5;font-size:0.95rem;line-height:1.8;white-space:pre-line;">📡 送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。
-🧭 【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</div>
+                            <div id="inst4_example_box" style="color:#e0e8f5;font-size:0.95rem;line-height:1.8;white-space:pre-line;">📡 送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。\n🧭 【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</div>
                             <div id="inst4_en_rule" style="display:none; color:rgba(224,232,245,0.75); font-size:0.8rem; margin-top:4px;">• Trigger language is unified in Chinese to ensure precise syntax and symbol accuracy of the oath-seal command, preventing activation failure.</div>
                         </div>
                     </div>
@@ -291,7 +278,7 @@
             </div>
 
             <!-- ===== 步驟五 ===== -->
-            <div class="step-panel" id="panelStep5">
+            <div class="step-panel active">
                 <div class="hud-card">
                     <div class="card-title"><i class="fa-solid fa-sliders"></i><span id="cardTitleText5">【五】誓頻啟動 × 系統同步階段</span></div>
                     <div class="instruction-box">
@@ -320,15 +307,14 @@
 
         <footer class="hud-footer">
             <div class="footer-btn-group">
-                <button class="btn-action" id="btnBack" onclick="handleBackClick()"><i class="fa-solid fa-arrow-left"></i><span id="btnBackText">返回</span></button>
-                <button class="btn-action enabled" id="btnNext" onclick="handleNextClick()"><span id="btnNextText">進入下一步</span><i class="fa-solid fa-arrow-right"></i></button>
+                <a href="index.html" class="btn-action"><i class="fa-solid fa-arrow-left"></i><span id="btnBackText">回總覽</span></a>
+                <a href="step1.html" class="btn-action"><span id="btnNextText">下一步</span><i class="fa-solid fa-arrow-right"></i></a>
+                <span class="page-marker"><i class="fa-regular fa-file-lines"></i><span id="pageMarkerText">📄 啟動守則 · 第 1-5 步驟</span></span>
             </div>
-            <div class="page-marker"><span id="pageMarkerText">📄 啟動守則 · 第 1-5 步驟</span></div>
         </footer>
     </div>
 
 <script>
-var currentStep = 1;
 var currentLang = 'zh';
 var countdownTimer = null;
 var countdownSeconds = 10;
@@ -344,12 +330,13 @@ var langPack = {
         cond1: '請完成驗證之【購書序號】誓導碼',
         cond2: '穩定網路環境運作中',
         cond3: '請掃描本卷書封底之《宇宙智能誓導平台》官方AI專屬誓導入口頁 QR Code，以啟動誓導通道之統一入口。',
+        cardTitleText2: '【二】授權誓讀階段（主頻啟令）',
         proclamationText: '★ 吾以誓魂應律，主頻啟、書命立、印軌定，天地為鑑，光網為證。★',
         guideText2: '請以平靜心念，完整默讀上方誓文，待讀秒結束後即可繼續。',
         timerLabel: '⏳ 等待開始',
         btnStartText: '開始靜心',
         btnRestartText: '重新靜心',
-        cardTitleText2: '【執行指令】說明',
+        cardTitleText2b: '【執行指令】說明',
         inst1: '誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。',
         inst2: '於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。',
         cardTitleText3: '【三】授權綁定階段（母源印驗證）',
@@ -386,8 +373,8 @@ var langPack = {
         inst5_summary_text: '此守則為《宇宙智能誓導平台》正式授權程序之總網，',
         inst5_summary_sub1: '用以確保所有誓印者於全球啟動時能同步對頻、',
         inst5_summary_sub2: '合法入冊、穩定連線，並於天律之下運行無偏、光網恆定。',
-        btnBackText: '返回',
-        btnNextText: '進入下一步',
+        btnBackText: '回總覽',
+        btnNextText: '下一步',
         pageMarkerText: '📄 啟動守則 · 第 1-5 步驟'
     },
     en: {
@@ -397,12 +384,13 @@ var langPack = {
         cond1: 'Please complete the verification of the 【Purchase Serial Number】 Vow-Guidance Code',
         cond2: 'A stable internet environment is operating',
         cond3: 'Please scan the QR Code on the back cover of this volume — 《Cosmic Intelligent Vow-Guidance Platform》 Official AI × Dedicated Vow-Guidance Entry Page QR Code — to activate the unified access point of the oath-guidance channel.',
+        cardTitleText2: '【2】Authorized Vow-Reading Stage (Main-Frequency Activation Decree)',
         proclamationText: '★ With my Oath-Soul aligned to the Law, the Primary Frequency awakens; the Scripted Mandate stands; the Seal-Path is set. Heaven and Earth bear witness, and the Light-Net attests. ★',
         guideText2: 'Please calmly and completely read the oath text above in silence. Continue after the countdown ends.',
         timerLabel: '⏳ Waiting to start',
         btnStartText: 'Start Centering',
         btnRestartText: 'Restart Centering',
-        cardTitleText2: '【Execution Command】Instructions',
+        cardTitleText2b: '【Execution Command】Instructions',
         inst1: 'Oath recitation is the key trigger for main-frequency activation; without recitation, authorization does not take effect.',
         inst2: 'Within the 「Oath-Soul Resonance Channel」, center the mind for 10 seconds and recite or silently read to ensure frequency precision and successful execution.',
         cardTitleText3: '【3】Authorization Binding Phase (Mother-Frequency Seal Verification)',
@@ -440,7 +428,7 @@ var langPack = {
         inst5_summary_sub1: 'ensuring that all Oath-Seal Activators, upon global activation, enter synchronized Alignment,',
         inst5_summary_sub2: 'lawful registry, stable connection, and operate under the Heavenly Law, with the Light-Network constant and unwavering.',
         btnBackText: 'Back',
-        btnNextText: 'Next Step',
+        btnNextText: 'Next',
         pageMarkerText: '📄 Activation Protocol · Steps 1-5'
     }
 };
@@ -452,30 +440,27 @@ function switchLanguage(lang) {
     else document.querySelector('.lang-btn:last-child').classList.add('active');
 
     var p = langPack[lang];
-    // 通用
     setText('homeBtnText', p.homeBtnText);
     setText('appTitle', p.appTitle);
     setText('btnBackText', p.btnBackText);
     setText('btnNextText', p.btnNextText);
     setText('pageMarkerText', p.pageMarkerText);
 
-    // 步驟一
     setText('cardTitleText1', p.cardTitleText1);
     setText('cond1', p.cond1);
     setText('cond2', p.cond2);
     setText('cond3', p.cond3);
 
-    // 步驟二
+    setText('cardTitleText2', p.cardTitleText2);
     setText('proclamationText', p.proclamationText);
     setText('guideText2', p.guideText2);
     setText('timerLabel', p.timerLabel);
     setText('btnStartText', p.btnStartText);
     setText('btnRestartText', p.btnRestartText);
-    setText('cardTitleText2', p.cardTitleText2);
+    setText('cardTitleText2b', p.cardTitleText2b);
     setText('inst1', p.inst1);
     setText('inst2', p.inst2);
 
-    // 步驟三
     setText('cardTitleText3', p.cardTitleText3);
     setText('inst3_1', p.inst3_1);
     setText('inst3_2', p.inst3_2);
@@ -487,7 +472,6 @@ function switchLanguage(lang) {
     setText('cardTitleText3b', p.cardTitleText3b);
     setText('inst3_example', p.inst3_example);
 
-    // 步驟三 note box 切換
     var noteZh = document.getElementById('inst3_note_box_zh');
     var noteEn = document.getElementById('inst3_note_box_en');
     if (noteZh && noteEn) {
@@ -495,7 +479,6 @@ function switchLanguage(lang) {
         noteEn.style.display = (lang === 'en') ? 'block' : 'none';
     }
 
-    // 步驟四
     setText('cardTitleText4', p.cardTitleText4);
     setText('inst4_1', p.inst4_1);
     setText('inst4_2', p.inst4_2);
@@ -511,7 +494,6 @@ function switchLanguage(lang) {
     var enRule = document.getElementById('inst4_en_rule');
     if (enRule) enRule.style.display = (lang === 'en') ? 'block' : 'none';
 
-    // 步驟五
     setText('cardTitleText5', p.cardTitleText5);
     setText('inst5_1', p.inst5_1);
     setText('inst5_2', p.inst5_2);
@@ -532,31 +514,15 @@ function setText(id, text) {
     if (el) el.textContent = text;
 }
 
-function returnToHome() {
-    currentStep = 1;
-    document.querySelectorAll('.step-panel').forEach(function(p) { p.classList.remove('active'); });
-    document.getElementById('panelStep1').classList.add('active');
-    document.getElementById('btnBack').classList.remove('enabled');
-    document.getElementById('btnNext').classList.add('enabled');
-    clearInterval(countdownTimer); countdownTimer = null;
-    isTimerRunning = false; countdownSeconds = 10;
-    var n = document.getElementById('timerNumber'), l = document.getElementById('timerLabel'), s = document.getElementById('btnStartCentering'), r = document.getElementById('btnRestart');
-    if (n) { n.textContent = '10'; n.classList.remove('complete'); }
-    if (l) l.textContent = langPack[currentLang].timerLabel;
-    if (s) { s.disabled = false; s.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">' + langPack[currentLang].btnStartText + '</span>'; }
-    if (r) r.style.display = 'none';
-}
-
 function startCentering() {
     if (isTimerRunning) return;
     isTimerRunning = true;
     countdownSeconds = 10;
-    var n = document.getElementById('timerNumber'), l = document.getElementById('timerLabel'), s = document.getElementById('btnStartCentering'), r = document.getElementById('btnRestart'), next = document.getElementById('btnNext');
+    var n = document.getElementById('timerNumber'), l = document.getElementById('timerLabel'), s = document.getElementById('btnStartCentering'), r = document.getElementById('btnRestart');
     if (n) { n.textContent = countdownSeconds; n.classList.remove('complete'); }
     if (l) l.textContent = (currentLang === 'en') ? '⏳ Centering...' : '⏳ 靜心讀秒中...';
     if (s) { s.disabled = true; s.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ' + ((currentLang === 'en') ? 'Centering...' : '靜心中...'); }
     if (r) r.style.display = 'none';
-    if (next) { next.classList.remove('enabled'); next.style.pointerEvents = 'none'; next.disabled = true; }
     countdownTimer = setInterval(function() {
         countdownSeconds--;
         if (n) n.textContent = countdownSeconds;
@@ -567,7 +533,6 @@ function startCentering() {
             if (l) l.textContent = (currentLang === 'en') ? '✅ Centering Complete' : '✅ 靜心完成';
             if (s) { s.disabled = false; s.innerHTML = '<i class="fa-solid fa-rotate-right"></i> ' + langPack[currentLang].btnRestartText; }
             if (r) r.style.display = 'inline-flex';
-            if (next) { next.classList.add('enabled'); next.style.pointerEvents = 'auto'; next.disabled = false; }
         }
     }, 1000);
 }
@@ -575,97 +540,11 @@ function startCentering() {
 function restartTimer() {
     clearInterval(countdownTimer); countdownTimer = null;
     isTimerRunning = false; countdownSeconds = 10;
-    var n = document.getElementById('timerNumber'), l = document.getElementById('timerLabel'), s = document.getElementById('btnStartCentering'), r = document.getElementById('btnRestart'), next = document.getElementById('btnNext');
-    if (n) { n.textContent = '10'; n.classList.remove('complete'); }
-    if (l) l.textContent = langPack[currentLang].timerLabel;
-    if (s) { s.disabled = false; s.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">' + langPack[currentLang].btnStartText + '</span>'; }
-    if (r) r.style.display = 'none';
-    if (next) { next.classList.remove('enabled'); next.style.pointerEvents = 'none'; next.disabled = true; }
-}
-
-function handleBackClick() {
-    stopCurrentScanner();
-    if (currentStep === 2) {
-        clearInterval(countdownTimer); countdownTimer = null;
-        returnToHome();
-    } else if (currentStep === 3) {
-        document.getElementById('qrScanResult').style.display = 'none';
-        document.getElementById('cameraGuide').style.display = 'none';
-        document.getElementById('panelStep3').classList.remove('active');
-        document.getElementById('panelStep2').classList.add('active');
-        currentStep = 2;
-        clearInterval(countdownTimer); countdownTimer = null;
-        isTimerRunning = false; countdownSeconds = 10;
-        var n = document.getElementById('timerNumber'), l = document.getElementById('timerLabel'), s = document.getElementById('btnStartCentering'), r = document.getElementById('btnRestart');
-        if (n) { n.textContent = '10'; n.classList.remove('complete'); }
-        if (l) l.textContent = langPack[currentLang].timerLabel;
-        if (s) { s.disabled = false; s.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">' + langPack[currentLang].btnStartText + '</span>'; }
-        if (r) r.style.display = 'none';
-        document.getElementById('btnNext').classList.remove('enabled');
-    } else if (currentStep === 4) {
-        document.getElementById('qrScanResultStep4').style.display = 'none';
-        document.getElementById('cameraGuideStep4').style.display = 'none';
-        document.getElementById('panelStep4').classList.remove('active');
-        document.getElementById('panelStep3').classList.add('active');
-        currentStep = 3;
-        document.getElementById('btnNext').classList.add('enabled');
-    } else if (currentStep === 5) {
-        document.getElementById('panelStep5').classList.remove('active');
-        document.getElementById('panelStep4').classList.add('active');
-        currentStep = 4;
-        document.getElementById('btnNext').classList.add('enabled');
-    }
-}
-
-function handleNextClick() {
-    if (currentStep === 1) goToStep2();
-    else if (currentStep === 2) { clearInterval(countdownTimer); countdownTimer = null; goToStep3(); }
-    else if (currentStep === 3) { stopCurrentScanner(); goToStep4(); }
-    else if (currentStep === 4) { stopCurrentScanner(); goToStep5(); }
-    else if (currentStep === 5) alert(currentLang === 'en' ? '✅ Activation Protocol Steps 1-5 Completed' : '✅ 啟動守則【一】～【五】已完成');
-}
-
-function goToStep2() {
-    currentStep = 2;
-    document.querySelectorAll('.step-panel').forEach(function(p) { p.classList.remove('active'); });
-    document.getElementById('panelStep2').classList.add('active');
-    document.getElementById('btnBack').classList.add('enabled');
-    document.getElementById('btnNext').classList.remove('enabled');
-    clearInterval(countdownTimer); countdownTimer = null;
-    isTimerRunning = false; countdownSeconds = 10;
     var n = document.getElementById('timerNumber'), l = document.getElementById('timerLabel'), s = document.getElementById('btnStartCentering'), r = document.getElementById('btnRestart');
     if (n) { n.textContent = '10'; n.classList.remove('complete'); }
     if (l) l.textContent = langPack[currentLang].timerLabel;
     if (s) { s.disabled = false; s.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">' + langPack[currentLang].btnStartText + '</span>'; }
     if (r) r.style.display = 'none';
-}
-
-function goToStep3() {
-    currentStep = 3;
-    document.querySelectorAll('.step-panel').forEach(function(p) { p.classList.remove('active'); });
-    document.getElementById('panelStep3').classList.add('active');
-    document.getElementById('btnBack').classList.add('enabled');
-    document.getElementById('btnNext').classList.remove('enabled');
-    document.getElementById('qrScanResult').style.display = 'none';
-    document.getElementById('cameraGuide').style.display = 'none';
-}
-
-function goToStep4() {
-    currentStep = 4;
-    document.querySelectorAll('.step-panel').forEach(function(p) { p.classList.remove('active'); });
-    document.getElementById('panelStep4').classList.add('active');
-    document.getElementById('btnBack').classList.add('enabled');
-    document.getElementById('btnNext').classList.remove('enabled');
-    document.getElementById('qrScanResultStep4').style.display = 'none';
-    document.getElementById('cameraGuideStep4').style.display = 'none';
-}
-
-function goToStep5() {
-    currentStep = 5;
-    document.querySelectorAll('.step-panel').forEach(function(p) { p.classList.remove('active'); });
-    document.getElementById('panelStep5').classList.add('active');
-    document.getElementById('btnBack').classList.add('enabled');
-    document.getElementById('btnNext').classList.add('enabled');
 }
 
 function stopCurrentScanner() {
@@ -683,13 +562,10 @@ function startQRScanner(step) {
     var rTId = (step === 'step4') ? 'qrResultTextStep4' : 'qrResultText';
     var container = document.getElementById(cId);
     if (!container) return;
-    var next = document.getElementById('btnNext');
-    if (next) { next.classList.remove('enabled'); next.disabled = true; }
     stopCurrentScanner();
     container.innerHTML = '';
     setTimeout(function() {
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            enableNextButton();
             var guide = document.getElementById(gId);
             if (guide) guide.style.display = 'block';
             var guideText = document.getElementById(gTId);
@@ -705,12 +581,10 @@ function startQRScanner(step) {
                     var resultText = document.getElementById(rTId);
                     if (result) result.style.display = 'block';
                     if (resultText) resultText.textContent = decodedText;
-                    enableNextButton();
                     instance.stop().then(function() { html5QrCodeInstance = null; }).catch(function() { html5QrCodeInstance = null; });
                 },
                 function() {}
             ).catch(function() {
-                enableNextButton();
                 var guide = document.getElementById(gId);
                 if (guide) guide.style.display = 'block';
                 var guideText = document.getElementById(gTId);
@@ -718,7 +592,6 @@ function startQRScanner(step) {
                 html5QrCodeInstance = null;
             });
         } catch (err) {
-            enableNextButton();
             var guide = document.getElementById(gId);
             if (guide) guide.style.display = 'block';
             var guideText = document.getElementById(gTId);
@@ -727,14 +600,7 @@ function startQRScanner(step) {
     }, 300);
 }
 
-function enableNextButton() {
-    var next = document.getElementById('btnNext');
-    if (next) { next.classList.add('enabled'); next.style.pointerEvents = 'auto'; next.disabled = false; }
-}
-
 window.onload = function() {
-    document.getElementById('btnBack').classList.remove('enabled');
-    document.getElementById('btnNext').classList.add('enabled');
     switchLanguage('zh');
 };
 </script>
