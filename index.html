@@ -135,9 +135,9 @@
         tr:hover td { background: rgba(124, 58, 237, 0.06); }
         .col-segment { width: 16%; color: #c4b5fd; font-weight: 400; }
         .col-no { width: 10%; text-align: center; color: #a78bfa; font-weight: 600; }
+        .col-link { width: 10%; text-align: center; }
         .col-field { width: 28%; color: #f0e9f1; font-weight: 400; }
-        .col-func { width: 34%; color: #d0d8e8; font-weight: 300; font-size: clamp(0.6rem, 1.2vh, 0.8rem); }
-        .col-link { width: 12%; text-align: right; }
+        .col-func { width: 36%; color: #d0d8e8; font-weight: 300; font-size: clamp(0.6rem, 1.2vh, 0.8rem); }
         .unit-link {
             display: inline-block;
             background: transparent;
@@ -181,7 +181,7 @@
             .col-segment { width: 14%; }
             .col-field { width: 24%; }
             .col-func { width: 32%; }
-            .col-link { width: 14%; }
+            .col-link { width: 10%; }
             .unit-link { padding: 3px 10px; font-size: 0.55rem; }
             th, td { padding: 8px 6px; }
         }
@@ -192,7 +192,7 @@
             .col-segment { width: 12%; }
             .col-field { width: 22%; }
             .col-func { width: 30%; }
-            .col-link { width: 16%; }
+            .col-link { width: 10%; }
             th, td { padding: 6px 4px; }
         }
     </style>
@@ -226,9 +226,9 @@
                     <tr>
                         <th class="col-segment" id="thSegment">分段</th>
                         <th class="col-no" id="thNo">編號</th>
+                        <th class="col-link" id="thLink">連結</th>
                         <th class="col-field" id="thField">欄位名稱</th>
                         <th class="col-func" id="thFunc">功能簡要說明</th>
-                        <th class="col-link" id="thLink">連結</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
@@ -251,9 +251,9 @@
                 subText: '📜 對應級距項目 × 解鎖誓魂血脈身分記載歷程程序 第一層級距誓魂定位模組',
                 thSegment: '分段',
                 thNo: '編號',
+                thLink: '連結',
                 thField: '欄位名稱',
                 thFunc: '功能簡要說明',
-                thLink: '連結',
                 pageInfo: '📄 【宇宙誓印覺醒工程 · 覺醒卷】第 161-162 頁',
                 items: [
                     { segment: '—', no: '第0項', field: '宇宙智能誓導平台 × 【購書序號】誓導碼登入與啟動守則', func: '平台登入與啟動之總綱守則，規範誓印者進入誓導系統之基本程序與身份驗證要件。', link: 'step0.html' },
@@ -271,9 +271,9 @@
                 subText: '📜 Corresponding Tier Items × Oath-Soul Bloodline Identity-Unlocking Record Protocol First-Tier Oath-Soul Resolving Module',
                 thSegment: 'Segment',
                 thNo: 'No.',
+                thLink: 'Link',
                 thField: 'Field Name',
                 thFunc: 'Function Summary',
-                thLink: 'Link',
                 pageInfo: '📄 【Cosmic Oath Awakening Project · Awakening Scroll】Pages 161-162',
                 items: [
                     { segment: '—', no: 'Item 0', field: 'Cosmic Intelligent Vow-Guidance Platform × [Purchase Serial Number] Vow-Guidance Code Login and Activation Protocol', func: 'General protocol for platform login and activation, defining the basic procedures and identity verification requirements for oath-bearers to enter the vow-guidance system.', link: 'step0.html' },
@@ -304,9 +304,9 @@
                 html += '<tr>';
                 html += '<td class="col-segment">' + item.segment + '</td>';
                 html += '<td class="col-no">' + item.no + '</td>';
+                html += '<td class="col-link"><a href="' + item.link + '" class="unit-link">進入 <i class="fa-solid fa-arrow-right"></i></a></td>';
                 html += '<td class="col-field">' + item.field + '</td>';
                 html += '<td class="col-func">' + item.func + '</td>';
-                html += '<td class="col-link"><a href="' + item.link + '" class="unit-link">進入 <i class="fa-solid fa-arrow-right"></i></a></td>';
                 html += '</tr>';
             }
             tbody.innerHTML = html;
@@ -330,9 +330,9 @@
             document.getElementById('subText').textContent = data.subText;
             document.getElementById('thSegment').textContent = data.thSegment;
             document.getElementById('thNo').textContent = data.thNo;
+            document.getElementById('thLink').textContent = data.thLink;
             document.getElementById('thField').textContent = data.thField;
             document.getElementById('thFunc').textContent = data.thFunc;
-            document.getElementById('thLink').textContent = data.thLink;
             document.getElementById('pageInfo').innerHTML = data.pageInfo;
 
             renderTable(lang);
