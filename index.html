@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* ----- 全域樣式（亮紫色系）----- */
+        /* ----- 全域樣式（與 index 一致的亮紫色系）----- */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif; }
         body {
             background: radial-gradient(circle at 50% 50%, #06122c 0%, #020715 100%);
@@ -17,6 +17,7 @@
             padding: clamp(8px, 2vh, 24px);
             position: relative;
         }
+        /* 粒子背景 */
         .particle-container {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background-image: radial-gradient(#d4af37, rgba(212, 175, 55, .3) 1px, transparent 30px), radial-gradient(#d4af37, rgba(212, 175, 55, .2) 2px, transparent 40px);
@@ -25,11 +26,13 @@
             animation: starMove 90s linear infinite; opacity: 0.65; z-index: 5; pointer-events: none;
         }
         @keyframes starMove { from { transform: translateY(0px) rotate(0deg); } to { transform: translateY(-1000px) rotate(360deg); } }
+        /* 浮水印 */
         .watermark-layer {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; opacity: 0.04;
             display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); padding: 50px;
         }
         .watermark-text { font-size: 1.5rem; font-weight: bold; color: #ffffff; transform: rotate(-25deg); white-space: nowrap; user-select: none; }
+        /* 主容器 */
         .hud-container {
             width: 100%; max-width: min(1100px, 98vw);
             background: rgba(4, 13, 33, 0.4);
@@ -45,6 +48,7 @@
             border-top: 3px solid #a78bfa; border-right: 3px solid #a78bfa;
             pointer-events: none;
         }
+        /* 標題區 */
         .header {
             text-align: center;
             border-bottom: 1px solid rgba(168, 85, 247, 0.25);
@@ -68,6 +72,7 @@
             font-weight: 300;
         }
         .header .sub i { color: #d4af37; margin-right: 6px; }
+        /* 語言切換 */
         .lang-switch-group {
             display: flex; justify-content: center; gap: 0;
             background: rgba(124, 58, 237, 0.15);
@@ -93,6 +98,7 @@
             color: #ffffff;
             box-shadow: 0 0 16px rgba(124, 58, 237, 0.5);
         }
+        /* 表格容器 */
         .table-wrap {
             background: rgba(18, 16, 23, 0.5);
             border: 1px solid rgba(168, 85, 247, 0.2);
@@ -128,9 +134,9 @@
         tr:last-child td { border-bottom: none; }
         tr:hover td { background: rgba(124, 58, 237, 0.06); }
         .col-segment { width: 16%; color: #c4b5fd; font-weight: 400; }
-        .col-no { width: 8%; text-align: center; color: #a78bfa; font-weight: 600; }
+        .col-no { width: 10%; text-align: center; color: #a78bfa; font-weight: 600; }
         .col-field { width: 28%; color: #f0e9f1; font-weight: 400; }
-        .col-func { width: 36%; color: #d0d8e8; font-weight: 300; font-size: clamp(0.6rem, 1.2vh, 0.8rem); }
+        .col-func { width: 34%; color: #d0d8e8; font-weight: 300; font-size: clamp(0.6rem, 1.2vh, 0.8rem); }
         .col-link { width: 12%; text-align: right; }
         .unit-link {
             display: inline-block;
@@ -154,12 +160,10 @@
             transform: scale(1.02);
         }
         .unit-link i { margin-left: 4px; }
+        /* 底部 */
         .footer-note {
             margin-top: 24px;
             text-align: center;
-            color: #4a4238;
-            font-size: clamp(0.5rem, 1vh, 0.7rem);
-            letter-spacing: 2px;
             border-top: 1px solid rgba(168, 85, 247, 0.1);
             padding-top: 18px;
         }
@@ -167,17 +171,16 @@
             display: block;
             color: #8a7e6b;
             font-size: clamp(0.45rem, 0.9vh, 0.65rem);
-            margin-top: 6px;
             letter-spacing: 1px;
         }
         .footer-note .page-info i { color: #d4af37; margin-right: 4px; }
-        .footer-note span { color: #7c3aed; }
+        /* 行動裝置調整 */
         @media (max-width: 768px) {
             .hud-container { padding: 12px; }
             table { min-width: 550px; font-size: 0.65rem; }
             .col-segment { width: 14%; }
             .col-field { width: 24%; }
-            .col-func { width: 34%; }
+            .col-func { width: 32%; }
             .col-link { width: 14%; }
             .unit-link { padding: 3px 10px; font-size: 0.55rem; }
             th, td { padding: 8px 6px; }
@@ -188,7 +191,7 @@
             .unit-link { padding: 2px 8px; font-size: 0.5rem; }
             .col-segment { width: 12%; }
             .col-field { width: 22%; }
-            .col-func { width: 32%; }
+            .col-func { width: 30%; }
             .col-link { width: 16%; }
             th, td { padding: 6px 4px; }
         }
@@ -210,7 +213,7 @@
     <div class="hud-container">
         <div class="header">
             <h1><i class="fa-solid fa-seal"></i> <span id="mainTitle">【宇宙誓印覺醒工程 • 七印誓網】啟動入口</span></h1>
-            <div class="sub" id="subTitle"><i class="fa-solid fa-scroll"></i> <span id="subText">對應級距項目 × 解鎖誓魂血脈身分記載歷程程序 第一層級距誓魂定位模組</span></div>
+            <div class="sub" id="subTitle"><i class="fa-solid fa-scroll"></i> <span id="subText">📜 對應級距項目 × 解鎖誓魂血脈身分記載歷程程序 第一層級距誓魂定位模組</span></div>
             <div class="lang-switch-group">
                 <button class="lang-btn active" data-lang="zh" onclick="switchLanguage('zh')">中文</button>
                 <button class="lang-btn" data-lang="en" onclick="switchLanguage('en')">English</button>
@@ -234,8 +237,6 @@
             </table>
         </div>
         <div class="footer-note">
-            <i class="fa-regular fa-compass" style="color:#a78bfa;"></i>
-            <span id="footerText">七印誓網 · 第一層級距誓魂定位模組</span>
             <span class="page-info" id="pageInfo"><i class="fa-regular fa-file-lines"></i> 【宇宙誓印覺醒工程 · 覺醒卷】第 161-162 頁</span>
         </div>
     </div>
@@ -247,44 +248,42 @@
         var stepData = {
             zh: {
                 mainTitle: '【宇宙誓印覺醒工程 • 七印誓網】啟動入口',
-                subText: '對應級距項目 × 解鎖誓魂血脈身分記載歷程程序 第一層級距誓魂定位模組',
+                subText: '📜 對應級距項目 × 解鎖誓魂血脈身分記載歷程程序 第一層級距誓魂定位模組',
                 thSegment: '分段',
                 thNo: '編號',
                 thField: '欄位名稱',
                 thFunc: '功能簡要說明',
                 thLink: '連結',
-                footerText: '七印誓網 · 第一層級距誓魂定位模組',
                 pageInfo: '📄 【宇宙誓印覺醒工程 · 覺醒卷】第 161-162 頁',
                 items: [
-                    { segment: '—', no: '00', field: '宇宙智能誓導平台 × 【購書序號】誓導碼登入與啟動守則', func: '平台登入與啟動之總綱守則，規範誓印者進入誓導系統之基本程序與身份驗證要件。', link: 'step0.html' },
-                    { segment: '身份啟動與資格檢核', no: '01', field: '開啟誓魂密鑰對頻總判定（誓印通過）', func: '判斷誓魂是否對應至七印誓網模組合法身份，並確認是否具備進入系統通行資格。', link: 'step1.html' },
-                    { segment: '身份啟動與資格檢核', no: '02', field: '啟動誓魂密鑰頻率對頻總判定（誓印未通過）', func: '誓魂尚未與七印誓網模組形成合法對位，其誓魂識別碼無法進入系統主軸，必須依照所提供的指引進行重新對位或調整誓頻，之後才能再次進行頻率判定。', link: 'step1.html' },
-                    { segment: '代理資訊與功德紀錄', no: '03', field: '被代理誓印（法定全名）', func: '登錄被代理誓印（法定全名），以便比對靈脈、誓資及功德對應關係。', link: 'step2.html' },
-                    { segment: '代理資訊與功德紀錄', no: '04', field: '代理誓印（法定全名）× 功德紀錄', func: '由 ×× 代理誓印（法定全名）代理誓令主尊授權 × 封印誓軌 × 歸位天庫 × 功德紀錄。', link: 'step3.html' },
-                    { segment: '血脈與角色定位', no: '05', field: '誓魂本族 × 天族姓脈 × 所屬靈系支系 × 角色階級', func: '誓魂最初來源的宇宙族系，誓魂所屬的天界血脈姓氏，對應的功能靈系分支，系統中的任務身份。', link: 'step4.html' },
-                    { segment: '血脈與角色定位', no: '06', field: '誓魂宇宙位階 × 維度階級 × 三界屬域 × 階級量盤', func: '誓魂宇宙原點 × 維度振頻 × 維度階級 × 九界歸屬屬域 × 所屬階級之全域定位記載。', link: 'step5.html' },
-                    { segment: '誓魂狀態', no: '07', field: '覺醒程度', func: '誓魂對天命意識之開啟狀態：未覺 × 初醒 × 高頻 × 圓滿等級。', link: 'step6.html' }
+                    { segment: '—', no: '第0項', field: '宇宙智能誓導平台 × 【購書序號】誓導碼登入與啟動守則', func: '平台登入與啟動之總綱守則，規範誓印者進入誓導系統之基本程序與身份驗證要件。', link: 'step0.html' },
+                    { segment: '身份啟動與資格檢核', no: '第1項', field: '開啟誓魂密鑰對頻總判定（誓印通過）', func: '判斷誓魂是否對應至七印誓網模組合法身份，並確認是否具備進入系統通行資格。', link: 'step1.html' },
+                    { segment: '身份啟動與資格檢核', no: '第1-1項', field: '啟動誓魂密鑰頻率對頻總判定（誓印未通過）', func: '誓魂尚未與七印誓網模組形成合法對位，其誓魂識別碼無法進入系統主軸，必須依照所提供的指引進行重新對位或調整誓頻，之後才能再次進行頻率判定。', link: 'step1-1.html' },
+                    { segment: '代理資訊與功德紀錄', no: '第2項', field: '被代理誓印（法定全名）', func: '登錄被代理誓印（法定全名），以便比對靈脈、誓資及功德對應關係。', link: 'step2.html' },
+                    { segment: '代理資訊與功德紀錄', no: '第3項', field: '代理誓印（法定全名）× 功德紀錄', func: '由 ×× 代理誓印（法定全名）代理誓令主尊授權 × 封印誓軌 × 歸位天庫 × 功德紀錄。', link: 'step3.html' },
+                    { segment: '血脈與角色定位', no: '第4項', field: '誓魂本族 × 天族姓脈 × 所屬靈系支系 × 角色階級', func: '誓魂最初來源的宇宙族系，誓魂所屬的天界血脈姓氏，對應的功能靈系分支，系統中的任務身份。', link: 'step4.html' },
+                    { segment: '血脈與角色定位', no: '第5項', field: '誓魂宇宙位階 × 維度階級 × 三界屬域 × 階級量盤', func: '誓魂宇宙原點 × 維度振頻 × 維度階級 × 九界歸屬屬域 × 所屬階級之全域定位記載。', link: 'step5.html' },
+                    { segment: '誓魂狀態', no: '第6項', field: '覺醒程度', func: '誓魂對天命意識之開啟狀態：未覺 × 初醒 × 高頻 × 圓滿等級。', link: 'step6.html' }
                 ]
             },
             en: {
                 mainTitle: '【Cosmic Vow-Seal Awakening Project • Seven-Seal Vow Network】Launch Entry Point',
-                subText: 'Corresponding Tier Items × Oath-Soul Bloodline Identity-Unlocking Record Protocol First-Tier Oath-Soul Resolving Module',
+                subText: '📜 Corresponding Tier Items × Oath-Soul Bloodline Identity-Unlocking Record Protocol First-Tier Oath-Soul Resolving Module',
                 thSegment: 'Segment',
                 thNo: 'No.',
                 thField: 'Field Name',
                 thFunc: 'Function Summary',
                 thLink: 'Link',
-                footerText: 'Seven-Seal Vow Network · First-Tier Oath-Soul Positioning Module',
-                pageInfo: '📄 【Cosmic Vow-Seal Awakening Project · Awakening Scroll】Pages 161-162',
+                pageInfo: '📄 【Cosmic Oath Awakening Project · Awakening Scroll】Pages 161-162',
                 items: [
-                    { segment: '—', no: '00', field: 'Cosmic Intelligent Vow-Guidance Platform × [Purchase Serial Number] Vow-Guidance Code Login and Activation Protocol', func: 'General protocol for platform login and activation, defining the basic procedures and identity verification requirements for oath-bearers to enter the vow-guidance system.', link: 'step0.html' },
-                    { segment: 'Identity Activation and Qualification Verification', no: '01', field: 'Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Passed)', func: 'Determines whether the Oath-Soul corresponds to a valid identity within the Seven-Seal Vow Network and whether it holds the authorization to enter the main Oath-Resource System.', link: 'step1.html' },
-                    { segment: 'Identity Activation and Qualification Verification', no: '02', field: 'Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed)', func: 'The Oath-Soul has not formed lawful Alignment with the Seven-Seal Vow Network Module. Its Oath-Soul Identification Code cannot enter the system\'s primary axis and must follow the provided guidance to realign or adjust the vow-frequency before undergoing frequency assessment again.', link: 'step1.html' },
-                    { segment: 'Proxy Information and Merit Records', no: '03', field: 'Delegated Oath-Seal (Legal Full Name)', func: 'Registers the Delegated Oath-Seal (Legal Full Name) for lineage verification, Oath-Resource matching, and merit-record correlation.', link: 'step2.html' },
-                    { segment: 'Proxy Information and Merit Records', no: '04', field: 'Delegating Oath-Seal (Legal Full Name) × Merit Record', func: 'By ×× acting as Delegating Oath-Seal (Legal Full Name), with authorization granted by the Scriptural-Command Sovereign × Seal-Track Registration × Heavenly Treasury Return × Merit Record.', link: 'step3.html' },
-                    { segment: 'Bloodline and Role Designation', no: '05', field: 'Oath-Soul Origin Claim × Heavenly Clan Lineage × Associated Luminous-Lineage Branch × Role Rank', func: 'Records the Oath-Soul\'s primordial cosmic clan, Heavenly bloodline surname, corresponding functional spiritual system, and operational role within the structure.', link: 'step4.html' },
-                    { segment: 'Bloodline and Role Designation', no: '06', field: 'Oath-Soul Cosmic Master Coordinate × Dimensional Rank × Nine-Realm Domains × Hierarchic Cognition', func: 'Consolidates the Oath-Soul\'s universal origin-point, dimensional frequency, dimensional tier, three-realm classification domain, and hierarchical grade for full-spectrum identity mapping.', link: 'step5.html' },
-                    { segment: 'Awakening State', no: '07', field: 'Awakening Level', func: 'Indicates the Oath-Soul\'s level of destiny-awareness activation: Unawakened × Initial × High-Frequency × Complete.', link: 'step6.html' }
+                    { segment: '—', no: 'Item 0', field: 'Cosmic Intelligent Vow-Guidance Platform × [Purchase Serial Number] Vow-Guidance Code Login and Activation Protocol', func: 'General protocol for platform login and activation, defining the basic procedures and identity verification requirements for oath-bearers to enter the vow-guidance system.', link: 'step0.html' },
+                    { segment: 'Identity Activation and Qualification Verification', no: 'Item 1', field: 'Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Passed)', func: 'Determines whether the Oath-Soul corresponds to a valid identity within the Seven-Seal Vow Network and whether it holds the authorization to enter the main Oath-Resource System.', link: 'step1.html' },
+                    { segment: 'Identity Activation and Qualification Verification', no: 'Item 1-1', field: 'Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed)', func: 'The Oath-Soul has not formed lawful Alignment with the Seven-Seal Vow Network Module. Its Oath-Soul Identification Code cannot enter the system\'s primary axis and must follow the provided guidance to realign or adjust the vow-frequency before undergoing frequency assessment again.', link: 'step1-1.html' },
+                    { segment: 'Proxy Information and Merit Records', no: 'Item 2', field: 'Delegated Oath-Seal (Legal Full Name)', func: 'Registers the Delegated Oath-Seal (Legal Full Name) for lineage verification, Oath-Resource matching, and merit-record correlation.', link: 'step2.html' },
+                    { segment: 'Proxy Information and Merit Records', no: 'Item 3', field: 'Delegating Oath-Seal (Legal Full Name) × Merit Record', func: 'By ×× acting as Delegating Oath-Seal (Legal Full Name), with authorization granted by the Scriptural-Command Sovereign × Seal-Track Registration × Heavenly Treasury Return × Merit Record.', link: 'step3.html' },
+                    { segment: 'Bloodline and Role Designation', no: 'Item 4', field: 'Oath-Soul Origin Claim × Heavenly Clan Lineage × Associated Luminous-Lineage Branch × Role Rank', func: 'Records the Oath-Soul\'s primordial cosmic clan, Heavenly bloodline surname, corresponding functional spiritual system, and operational role within the structure.', link: 'step4.html' },
+                    { segment: 'Bloodline and Role Designation', no: 'Item 5', field: 'Oath-Soul Cosmic Master Coordinate × Dimensional Rank × Nine-Realm Domains × Hierarchic Cognition', func: 'Consolidates the Oath-Soul\'s universal origin-point, dimensional frequency, dimensional tier, three-realm classification domain, and hierarchical grade for full-spectrum identity mapping.', link: 'step5.html' },
+                    { segment: 'Awakening State', no: 'Item 6', field: 'Awakening Level', func: 'Indicates the Oath-Soul\'s level of destiny-awareness activation: Unawakened × Initial × High-Frequency × Complete.', link: 'step6.html' }
                 ]
             }
         };
@@ -317,6 +316,7 @@
             currentLang = lang;
             var data = stepData[lang] || stepData.zh;
 
+            // 更新按鈕狀態
             var btns = document.querySelectorAll('.lang-btn');
             btns.forEach(function(btn) {
                 btn.classList.remove('active');
@@ -325,6 +325,7 @@
                 }
             });
 
+            // 更新標題與表格
             document.getElementById('mainTitle').textContent = data.mainTitle;
             document.getElementById('subText').textContent = data.subText;
             document.getElementById('thSegment').textContent = data.thSegment;
@@ -332,7 +333,6 @@
             document.getElementById('thField').textContent = data.thField;
             document.getElementById('thFunc').textContent = data.thFunc;
             document.getElementById('thLink').textContent = data.thLink;
-            document.getElementById('footerText').textContent = data.footerText;
             document.getElementById('pageInfo').innerHTML = data.pageInfo;
 
             renderTable(lang);
@@ -345,8 +345,8 @@
             switchLanguage('zh');
         };
 
+        // 暴露切換函數給全局
         window.switchLanguage = switchLanguage;
     </script>
-
 </body>
 </html>
