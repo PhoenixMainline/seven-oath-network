@@ -531,8 +531,8 @@ function startCentering() {
             isTimerRunning = false;
             if (n) { n.textContent = '✔'; n.classList.add('complete'); }
             if (l) l.textContent = (currentLang === 'en') ? '✅ Centering Complete' : '✅ 靜心完成';
-            if (s) { s.disabled = false; s.innerHTML = '<i class="fa-solid fa-rotate-right"></i> ' + langPack[currentLang].btnRestartText; }
-            if (r) r.style.display = 'inline-flex';
+            if (s) { s.disabled = false; s.innerHTML = '<i class="fa-solid fa-check"></i> <span id="btnStartText">' + langPack[currentLang].btnStartText + '</span>'; }
+            if (r) r.style.display = 'none';
         }
     }, 1000);
 }
@@ -605,48 +605,64 @@ window.onload = function() {
 };
 </script>
 <!-- ============================================================ -->
-<!-- 隱藏 step0.html 底部的「回總覽」按鈕（已有首頁按鈕）        -->
+<!-- 隱藏「重新靜心」按鈕（保留「開始靜心」按鈕）                 -->
 <!-- 貼在 </body> 前即可                                            -->
 <!-- ============================================================ -->
 <script>
 (function() {
     // ================================================================
-    // 隱藏「回總覽」按鈕
+    // 隱藏「重新靜心」按鈕（保留「開始靜心」按鈕）
     // ================================================================
-    function hideBackButton() {
-        // 查找所有「回總覽」按鈕
-        var allLinks = document.querySelectorAll('a');
-        allLinks.forEach(function(link) {
-            var text = link.textContent || '';
-            // 如果是「回總覽」按鈕，隱藏它
-            if (text.includes('回總覽') || text.includes('Back to Home')) {
-                link.style.display = 'none';
-                console.log('✅ 「回總覽」按鈕已隱藏');
+    function hideRestartButton() {
+        // 查找所有「重新靜心」按鈕
+        var allElements = document.querySelectorAll('button, .btn-restart, .btn-action, [class*="restart"]');
+        allElements.forEach(function(el) {
+            var text = el.textContent || '';
+            // 如果是「重新靜心」按鈕，隱藏它
+            if (text.includes('重新靜心') || text.includes('Restart Centering')) {
+                el.style.display = 'none';
+                console.log('✅ 「重新靜心」按鈕已隱藏');
             }
         });
 
-        // 更精確的方式：查找 footer 中的「回總覽」連結
-        var footer = document.querySelector('.hud-footer, footer');
-        if (footer) {
-            var links = footer.querySelectorAll('a');
-            links.forEach(function(link) {
-                var text = link.textContent || '';
-                if (text.includes('回總覽') || text.includes('Back to Home')) {
-                    link.style.display = 'none';
-                    console.log('✅ Footer 「回總覽」已隱藏');
-                }
-            });
-
-            // 檢查是否只剩下「下一步」按鈕，如果是則調整位置
-            var visibleLinks = footer.querySelectorAll('a:not([style*="display: none"])');
-            if (visibleLinks.length === 1) {
-                // 只有「下一步」按鈕，讓它置中或靠左
-                var btnGroup = footer.querySelector('.footer-btn-group');
-                if (btnGroup) {
-                    btnGroup.style.justifyContent = 'flex-start';
-                }
+        // 更精確的方式：查找 timer-container 中的重新靜心按鈕
+        var timerContainers = document.querySelectorAll('.timer-container');
+        timerContainers.forEach(function(container) {
+            var restartBtn = container.querySelector('.btn-restart');
+            if (restartBtn) {
+                restartBtn.style.display = 'none';
+                console.log('✅ Timer 中的「重新靜心」已隱藏');
             }
-        }
+        });
+
+        // 確保「開始靜心」按鈕不被影響
+        var startBtns = document.querySelectorAll('.btn-start-centering, #btnStartCentering, [id*="btnStart"]');
+        startBtns.forEach(function(btn) {
+            var text = btn.textContent || '';
+            if (text.includes('開始靜心') || text.includes('Start Centering')) {
+                btn.style.display = ''; // 恢復顯示
+                console.log('✅ 「開始靜心」按鈕已保留');
+            }
+        });
+    }
+
+    // ================================================================
+    // 覆蓋 startCentering 函數，讓計時完成後不顯示重新靜心按鈕
+    // ================================================================
+    var _origStartCentering = window.startCentering;
+    if (typeof window.startCentering === 'function') {
+        window.startCentering = function() {
+            if (typeof _origStartCentering === 'function') _origStartCentering();
+            // 計時完成後，隱藏重新靜心按鈕
+            setTimeout(function() {
+                hideRestartButton();
+                // 確保開始靜心按鈕顯示為「已完成」狀態但仍保留
+                var startBtn = document.getElementById('btnStartCentering');
+                if (startBtn) {
+                    startBtn.style.display = '';
+                }
+            }, 100);
+        };
     }
 
     // ================================================================
@@ -654,27 +670,27 @@ window.onload = function() {
     // ================================================================
     if (document.readyState === 'complete') {
         setTimeout(function() {
-            hideBackButton();
+            hideRestartButton();
         }, 100);
     } else {
         window.addEventListener('load', function() {
             setTimeout(function() {
-                hideBackButton();
+                hideRestartButton();
             }, 200);
         });
     }
 
     // 監聽 DOM 變化
     var observer = new MutationObserver(function() {
-        hideBackButton();
+        hideRestartButton();
     });
     observer.observe(document.body, {
         childList: true,
         subtree: true
     });
 
-    console.log('✅ 「回總覽」按鈕已隱藏（已有首頁按鈕）');
+    console.log('✅ 「重新靜心」按鈕已隱藏（「開始靜心」按鈕已保留）');
 })();
 </script>
-<body>
+</body>
 </html>
