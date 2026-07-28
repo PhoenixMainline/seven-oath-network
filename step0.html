@@ -604,5 +604,77 @@ window.onload = function() {
     switchLanguage('zh');
 };
 </script>
-</body>
+<!-- ============================================================ -->
+<!-- 隱藏 step0.html 底部的「回總覽」按鈕（已有首頁按鈕）        -->
+<!-- 貼在 </body> 前即可                                            -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    // ================================================================
+    // 隱藏「回總覽」按鈕
+    // ================================================================
+    function hideBackButton() {
+        // 查找所有「回總覽」按鈕
+        var allLinks = document.querySelectorAll('a');
+        allLinks.forEach(function(link) {
+            var text = link.textContent || '';
+            // 如果是「回總覽」按鈕，隱藏它
+            if (text.includes('回總覽') || text.includes('Back to Home')) {
+                link.style.display = 'none';
+                console.log('✅ 「回總覽」按鈕已隱藏');
+            }
+        });
+
+        // 更精確的方式：查找 footer 中的「回總覽」連結
+        var footer = document.querySelector('.hud-footer, footer');
+        if (footer) {
+            var links = footer.querySelectorAll('a');
+            links.forEach(function(link) {
+                var text = link.textContent || '';
+                if (text.includes('回總覽') || text.includes('Back to Home')) {
+                    link.style.display = 'none';
+                    console.log('✅ Footer 「回總覽」已隱藏');
+                }
+            });
+
+            // 檢查是否只剩下「下一步」按鈕，如果是則調整位置
+            var visibleLinks = footer.querySelectorAll('a:not([style*="display: none"])');
+            if (visibleLinks.length === 1) {
+                // 只有「下一步」按鈕，讓它置中或靠左
+                var btnGroup = footer.querySelector('.footer-btn-group');
+                if (btnGroup) {
+                    btnGroup.style.justifyContent = 'flex-start';
+                }
+            }
+        }
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    if (document.readyState === 'complete') {
+        setTimeout(function() {
+            hideBackButton();
+        }, 100);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                hideBackButton();
+            }, 200);
+        });
+    }
+
+    // 監聽 DOM 變化
+    var observer = new MutationObserver(function() {
+        hideBackButton();
+    });
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+
+    console.log('✅ 「回總覽」按鈕已隱藏（已有首頁按鈕）');
+})();
+</script>
+body>
 </html>
