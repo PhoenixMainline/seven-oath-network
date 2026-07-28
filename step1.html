@@ -933,5 +933,97 @@
     console.log('✅ 「誓印未通過」已改為亮綠色（與「誓印通過」版面一致）');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 將 step1.html 底部的「回總覽」改為「上一步」並連結到 step0.html -->
+<!-- 貼在 </body> 前即可                                            -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    // ================================================================
+    // 將「回總覽」改為「上一步」並修改連結
+    // ================================================================
+    function fixBackButton() {
+        // 查找所有「回總覽」按鈕
+        var allLinks = document.querySelectorAll('a');
+        allLinks.forEach(function(link) {
+            var text = link.textContent || '';
+            // 如果是「回總覽」按鈕
+            if (text.includes('回總覽') || text.includes('Back to Home')) {
+                // 修改文字為「上一步」
+                var span = link.querySelector('span');
+                if (span) {
+                    span.textContent = (currentLang === 'zh') ? '上一步' : 'Previous';
+                } else {
+                    // 如果沒有 span，直接修改文字節點
+                    var textNode = link.childNodes[0];
+                    if (textNode && textNode.nodeType === 3) {
+                        textNode.textContent = (currentLang === 'zh') ? '上一步' : 'Previous';
+                    }
+                }
+                // 修改連結為 step0.html
+                link.setAttribute('href', 'step0.html');
+                console.log('✅ 「回總覽」已改為「上一步」，連結指向 step0.html');
+            }
+        });
+
+        // 更精確的方式：查找 footer 中的「回總覽」連結
+        var footer = document.querySelector('.hud-footer, footer');
+        if (footer) {
+            var links = footer.querySelectorAll('a');
+            links.forEach(function(link) {
+                var text = link.textContent || '';
+                if (text.includes('回總覽') || text.includes('Back to Home')) {
+                    var span = link.querySelector('span');
+                    if (span) {
+                        span.textContent = (currentLang === 'zh') ? '上一步' : 'Previous';
+                    }
+                    link.setAttribute('href', 'step0.html');
+                    console.log('✅ Footer 「回總覽」已改為「上一步」，連結指向 step0.html');
+                }
+            });
+        }
+    }
+
+    // ================================================================
+    // 監聽語言切換事件
+    // ================================================================
+    var _origSwitch = window.switchLanguage;
+    if (typeof window.switchLanguage === 'function') {
+        window.switchLanguage = function(lang) {
+            if (typeof _origSwitch === 'function') _origSwitch(lang);
+            else window.currentLang = lang;
+            setTimeout(function() {
+                fixBackButton();
+            }, 150);
+        };
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    if (document.readyState === 'complete') {
+        setTimeout(function() {
+            fixBackButton();
+        }, 100);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                fixBackButton();
+            }, 200);
+        });
+    }
+
+    // 監聽 DOM 變化
+    var observer = new MutationObserver(function() {
+        fixBackButton();
+    });
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+
+    console.log('✅ 「回總覽」已改為「上一步」，連結指向 step0.html');
+})();
+</script>
 </body>
 </html>
