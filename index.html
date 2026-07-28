@@ -218,7 +218,7 @@
     <div class="hud-container">
         <div class="header">
             <h1><i class="fa-solid fa-seal"></i> <span id="mainTitle">【宇宙誓印覺醒工程 • 七印誓網】啟動入口</span></h1>
-            <div class="sub" id="subTitle"><i class="fa-solid fa-scroll"></i> <span id="subText">📜 對應級距項目 × 解鎖誓魂血脈身分記載歷程程序 第一層級距誓魂定位模組</span></div>
+            <div class="sub" id="subTitle"><i class="fa-solid fa-scroll"></i> <span id="subText"> 對應級距項目 × 解鎖誓魂血脈身分記載歷程程序 第一層級距誓魂定位模組</span></div>
             <div class="lang-switch-group">
                 <button class="lang-btn active" data-lang="zh" onclick="switchLanguage('zh')">中文</button>
                 <button class="lang-btn" data-lang="en" onclick="switchLanguage('en')">English</button>
@@ -255,7 +255,7 @@
         var stepData = {
             zh: {
                 mainTitle: '【宇宙誓印覺醒工程 • 七印誓網】啟動入口',
-                subText: '📜 對應級距項目 × 解鎖誓魂血脈身分記載歷程程序 第一層級距誓魂定位模組',
+                subText: ' 對應級距項目 × 解鎖誓魂血脈身分記載歷程程序 第一層級距誓魂定位模組',
                 thSegment: '分段',
                 thNo: '編號',
                 thField: '欄位名稱',
@@ -274,7 +274,7 @@
             },
             en: {
                 mainTitle: '【Cosmic Vow-Seal Awakening Project • Seven-Seal Vow Network】Launch Entry Point',
-                subText: '📜 Corresponding Tier Items × Oath-Soul Bloodline Identity-Unlocking Record Protocol First-Tier Oath-Soul Resolving Module',
+                subText: ' Corresponding Tier Items × Oath-Soul Bloodline Identity-Unlocking Record Protocol First-Tier Oath-Soul Resolving Module',
                 thSegment: 'Segment',
                 thNo: 'No.',
                 thField: 'Field Name',
@@ -354,5 +354,136 @@
         // 暴露切換函數給全局
         window.switchLanguage = switchLanguage;
     </script>
+<!-- ============================================================ -->
+<!-- 將「undefined」替換為正確的頁碼資訊                           -->
+<!-- 貼在 </body> 前即可                                            -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    // ================================================================
+    // 1. 定義正確的頁碼文字（中英文）
+    // ================================================================
+    var pageInfo = {
+        zh: '📄 【宇宙誓印覺醒工程 · 覺醒卷】第 161-162 頁',
+        en: '📄 【Cosmic Vow-Seal Awakening Project · Awakening Scroll】Pages 161-162'
+    };
+
+    // ================================================================
+    // 2. 偵測當前語言並替換 undefined
+    // ================================================================
+    function replaceUndefinedWithPageInfo() {
+        // 判斷當前語言
+        var lang = 'zh';
+        // 檢查按鈕狀態
+        var activeBtn = document.querySelector('.lang-btn.active');
+        if (activeBtn) {
+            var btnText = activeBtn.textContent || '';
+            if (btnText.toLowerCase().includes('english') || btnText === 'English') {
+                lang = 'en';
+            }
+        }
+
+        var targetText = pageInfo[lang] || pageInfo.zh;
+
+        // 遍歷所有文字節點，將 undefined 替換為頁碼
+        var elements = document.querySelectorAll('*');
+        elements.forEach(function(el) {
+            if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE') return;
+
+            var childNodes = el.childNodes;
+            for (var i = childNodes.length - 1; i >= 0; i--) {
+                var node = childNodes[i];
+                if (node.nodeType === 3 && node.textContent) {
+                    var newText = node.textContent;
+                    // 將 undefined 替換為頁碼
+                    if (newText.includes('undefined')) {
+                        newText = newText.replace(/undefined/gi, targetText);
+                        node.textContent = newText;
+                    }
+                }
+            }
+        });
+
+        // 處理 HTML 內容中的 undefined
+        var allElements = document.querySelectorAll('*');
+        allElements.forEach(function(el) {
+            if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE') return;
+            if (el.innerHTML && el.innerHTML.includes('undefined')) {
+                el.innerHTML = el.innerHTML.replace(/undefined/gi, targetText);
+            }
+        });
+
+        // 特別處理頁碼標記元素
+        var pageMarker = document.getElementById('pageMarkerText');
+        if (pageMarker) {
+            pageMarker.textContent = targetText;
+        }
+
+        // 處理所有包含「undefined」的 span/div
+        var targetElements = document.querySelectorAll('span, div, p, td, th, li');
+        targetElements.forEach(function(el) {
+            if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE') return;
+            if (el.childNodes.length === 1 && el.childNodes[0].nodeType === 3) {
+                var text = el.childNodes[0].textContent || '';
+                if (text.includes('undefined')) {
+                    el.childNodes[0].textContent = text.replace(/undefined/gi, targetText);
+                }
+            }
+        });
+    }
+
+    // ================================================================
+    // 3. 監聽語言切換事件
+    // ================================================================
+    // 覆蓋 switchLanguage 以確保頁碼在切換語言時更新
+    var _origSwitch = window.switchLanguage;
+    if (typeof window.switchLanguage === 'function') {
+        window.switchLanguage = function(lang) {
+            if (typeof _origSwitch === 'function') _origSwitch(lang);
+            else window.currentLang = lang;
+            setTimeout(function() {
+                replaceUndefinedWithPageInfo();
+            }, 150);
+        };
+    }
+
+    // ================================================================
+    // 4. 執行
+    // ================================================================
+    if (document.readyState === 'complete') {
+        setTimeout(function() { replaceUndefinedWithPageInfo(); }, 100);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(function() { replaceUndefinedWithPageInfo(); }, 200);
+        });
+    }
+
+    // 監聽 DOM 變化
+    var observer = new MutationObserver(function() {
+        replaceUndefinedWithPageInfo();
+    });
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        characterData: true
+    });
+
+    // 每秒檢查一次
+    var checkInterval = setInterval(function() {
+        var allText = document.body.textContent || '';
+        if (allText.includes('undefined')) {
+            replaceUndefinedWithPageInfo();
+        }
+    }, 1000);
+
+    // 5 分鐘後自動清除定時器
+    setTimeout(function() {
+        clearInterval(checkInterval);
+        observer.disconnect();
+    }, 300000);
+
+    console.log('✅ 「undefined」已替換為頁碼資訊');
+})();
+</script>
 </body>
 </html>
