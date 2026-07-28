@@ -429,7 +429,7 @@
                 timerLabel: "⏳ 靜心讀秒",
                 btnStartText: "開始靜心",
                 btnRestartText: "重新靜心",
-                timerComplete: "✅ 已完成誦讀",
+                timerComplete: " 開始靜心",
                 timerCounting: "⏳ 靜心讀秒中..."
             },
             en: {
@@ -761,5 +761,140 @@
         console.log('✅ 相機權限失敗彈窗已全部刪除');
     })();
     </script>
+<!-- ============================================================ -->
+<!-- 修正靜心計時器：與圖片一致（只顯示「靜心完成」文字）           -->
+<!-- 貼在 </body> 前即可                                            -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    // 保存原始函數
+    var _origStartTimer = window.startTimer;
+    var _origResetTimer = window.resetTimer;
+
+    // ================================================================
+    // 覆蓋 startTimer 函數
+    // ================================================================
+    window.startTimer = function() {
+        // 如果已經在運行，不重複啟動
+        if (isTimerRunning) return;
+        
+        var s = document.getElementById('btnStart');
+        var r = document.getElementById('btnRestart');
+        var l = document.getElementById('timerLabel');
+        var n = document.getElementById('timerNumber');
+        var p = langPack[currentLang] || langPack.zh;
+        
+        // 隱藏重新靜心按鈕
+        if (r) r.style.display = 'none';
+        
+        // 開始計時
+        isTimerRunning = true;
+        timerState = 'counting';
+        countdownSeconds = 10;
+        
+        if (n) {
+            n.textContent = countdownSeconds;
+            n.classList.remove('complete');
+        }
+        if (l) l.textContent = p.timerCounting || '⏳ 靜心讀秒中...';
+        if (s) {
+            s.disabled = true;
+            s.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ' + (p.btnStartText || '靜心中...');
+        }
+        
+        // 清除舊的計時器
+        if (countdownTimer) {
+            clearInterval(countdownTimer);
+            countdownTimer = null;
+        }
+        
+        // 開始倒數
+        countdownTimer = setInterval(function() {
+            countdownSeconds--;
+            if (n) n.textContent = countdownSeconds;
+            
+            if (countdownSeconds <= 0) {
+                clearInterval(countdownTimer);
+                countdownTimer = null;
+                isTimerRunning = false;
+                timerState = 'complete';
+                
+                // 完成狀態
+                if (n) {
+                    n.textContent = '✔';
+                    n.classList.add('complete');
+                }
+                if (l) l.textContent = (currentLang === 'en') ? '✅ Centering Complete' : '✅ 靜心完成';
+                if (s) {
+                    s.disabled = false;
+                    s.innerHTML = '<i class="fa-solid fa-check"></i> ' + (currentLang === 'en' ? 'Complete' : '開始靜心');
+                }
+                // 確保重新靜心按鈕隱藏
+                if (r) r.style.display = 'none';
+            }
+        }, 1000);
+    };
+
+    // ================================================================
+    // 覆蓋 resetTimer 函數
+    // ================================================================
+    window.resetTimer = function() {
+        // 清除計時器
+        if (countdownTimer) {
+            clearInterval(countdownTimer);
+            countdownTimer = null;
+        }
+        
+        isTimerRunning = false;
+        timerState = 'initial';
+        countdownSeconds = 10;
+        
+        var s = document.getElementById('btnStart');
+        var r = document.getElementById('btnRestart');
+        var l = document.getElementById('timerLabel');
+        var n = document.getElementById('timerNumber');
+        var p = langPack[currentLang] || langPack.zh;
+        
+        if (n) {
+            n.textContent = '10';
+            n.classList.remove('complete');
+        }
+        if (l) l.textContent = p.timerLabel || '⏳ 靜心讀秒';
+        if (s) {
+            s.disabled = false;
+            s.innerHTML = '<i class="fa-solid fa-play"></i> ' + (p.btnStartText || '開始靜心');
+        }
+        // 確保重新靜心按鈕隱藏
+        if (r) r.style.display = 'none';
+    };
+
+    // ================================================================
+    // 頁面加載時立即執行一次
+    // ================================================================
+    function fixTimerOnLoad() {
+        var r = document.getElementById('btnRestart');
+        if (r) r.style.display = 'none';
+        
+        var s = document.getElementById('btnStart');
+        if (s) {
+            var text = s.textContent || '';
+            // 如果按鈕顯示「開始靜心」或「Complete」，保留顯示
+            if (text.includes('開始靜心') || text.includes('Complete')) {
+                s.style.display = '';
+            }
+        }
+    }
+
+    if (document.readyState === 'complete') {
+        setTimeout(fixTimerOnLoad, 100);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(fixTimerOnLoad, 200);
+        });
+    }
+
+    console.log('✅ 靜心計時器已修正（與圖片一致）');
+})();
+</script>  
 </body>
 </html>
