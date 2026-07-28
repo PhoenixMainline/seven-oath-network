@@ -330,9 +330,9 @@
 
                 <!-- ===== 顯示：「誓印未通過」→ 補誓程序 ===== -->
                 <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.2);">
-                    <div style="background:rgba(251,191,36,0.08); border-left:4px solid #fbbf24; padding:12px 16px; border-radius:10px; margin-bottom:16px;">
-                        <div style="color:#fde68a; font-size:0.95rem; line-height:1.6;">
-                            <span id="step1NotPassedTitle">⚠️ 顯示：「誓印未通過」</span>
+                    <div style="background:rgba(0,230,118,0.12); border-left:4px solid #00e676; padding:14px 16px; border-radius:10px; margin-bottom:16px;">
+                        <div style="color:#00e676; font-size:1.1rem; font-weight:bold;">
+                            <span id="step1NotPassedTitle">✅ 顯示：「誓印未通過」</span>
                         </div>
                     </div>
                     <div class="instruction-box">
@@ -347,7 +347,7 @@
 
         <footer class="hud-footer">
             <div class="footer-btn-group">
-                <a href="index.html" class="btn-action enabled"><i class="fa-solid fa-arrow-left"></i><span id="btnBackText">回總覽</span></a>
+                <a href="step0.html" class="btn-action enabled"><i class="fa-solid fa-arrow-left"></i><span id="btnBackText">上一步</span></a>
                 <a href="step2.html" class="btn-action enabled"><span id="btnNextText">下一步</span><i class="fa-solid fa-arrow-right"></i></a>
             </div>
             <div class="page-marker"><i class="fa-regular fa-file-lines"></i><span id="pageMarkerText">📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 161-162 頁</span></div>
@@ -432,18 +432,18 @@
                 step1ReturnBtnScan: "開始掃描",
                 step1ReturnResult: "掃描成功！已完成回傳誓證",
                 step1ReturnCameraGuide: "📷 無法啟動相機\n⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
-                step1NotPassedTitle: "⚠️ 顯示：「誓印未通過」",
+                step1NotPassedTitle: "✅ 顯示：「誓印未通過」",
                 step1NotPassed1: "進入「第 1 項 開啟誓魂密鑰對頻總判定（誓印未通過）」之【補誓程序】。",
                 step1NotPassed2: "啟動「懺悔補誓 × 七日循環 × 頻率再校」程序，修正後方可重新啟印。",
                 step1NotPassed3: "《七印誓網·第 1 項 誓魂密鑰對頻總判定》v2.0（封冊正式版）。",
                 step1NotPassed4: "鎖入《宇宙天律 × 七印誓網》主冊，誓資承流有效。",
-                btnBackText: "回總覽",
+                btnBackText: "上一步",
                 btnNextText: "下一步",
                 pageMarker: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 161-162 頁",
                 timerLabel: "⏳ 靜心讀秒",
                 btnStartText: "開始靜心",
                 btnRestartText: "重新靜心",
-                timerComplete: "✅ 已完成誦讀",
+                timerComplete: "✅ 開始靜心",
                 timerCounting: "⏳ 靜心讀秒中..."
             },
             en: {
@@ -518,12 +518,12 @@
                 step1ReturnBtnScan: "Start Scan",
                 step1ReturnResult: "Scan successful! Return Oath Certificate completed",
                 step1ReturnCameraGuide: "📷 Unable to start camera\n⚙️ Go to Phone Settings → App Management → Permissions → Camera → Allow\n→ Open with 🌐 Browser (Chrome / Yahoo / Edge....)\n⚠️ If still not working, please manually scan the physical book QR Code with a scanner",
-                step1NotPassedTitle: "⚠️ Display：「Oath Seal Not Passed」",
+                step1NotPassedTitle: "✅ Display：「Oath Seal Not Passed」",
                 step1NotPassed1: "Enter Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed) Activation Procedure and enter the [Oath Renewal Procedure].",
                 step1NotPassed2: "Initiate the process of Repentance Oath Renewal × Seven-Day Cycle × Frequency Recalibration. Only after correction may the oath-seal activation be attempted again.",
                 step1NotPassed3: "《Seven-Seal Vow Network · Item 1 Oath-Soul Key Frequency-Alignment Determination》 v2.0 (Official Sealed Edition)",
                 step1NotPassed4: "Locked into the Cosmic Heavenly-Law × Seven-Seal Vow Network Main Ledger; oath-energy flow is valid and in effect.",
-                btnBackText: "Back",
+                btnBackText: "Previous",
                 btnNextText: "Next",
                 pageMarker: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 161-162",
                 timerLabel: "⏳ Centering Countdown",
@@ -655,7 +655,7 @@
             var p = langPack[currentLang];
             s.disabled = true;
             s.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="btnStartText">' + p.btnStartText + '</span>';
-            r.style.display = 'inline-flex';
+            r.style.display = 'none';
             clearInterval(countdownTimer);
             timerState = 'counting';
             countdownSeconds = 10;
@@ -782,247 +782,138 @@
     })();
     </script>
 <!-- ============================================================ -->
-<!-- 修改：「誓印未通過」改為亮綠色 + 與「誓印通過」版面一致        -->
+<!-- 修正靜心計時器：與圖片一致（只顯示「靜心完成」文字）           -->
 <!-- 貼在 </body> 前即可                                            -->
 <!-- ============================================================ -->
 <script>
 (function() {
-    // ================================================================
-    // 1. 更新語系文字（將「誓印未通過」改為亮綠色 + 加 ✅ 圖示）
-    // ================================================================
-    if (typeof langPack !== 'undefined') {
-        langPack.zh = langPack.zh || {};
-        langPack.en = langPack.en || {};
-
-        // Step 1 - 中文
-        langPack.zh.step1NotPassedTitle = "✅ 顯示：「誓印未通過」";
-
-        // Step 1 - 英文
-        langPack.en.step1NotPassedTitle = "✅ Display：「Oath Seal Not Passed」";
-    }
+    // 保存原始函數
+    var _origStartTimer = window.startTimer;
+    var _origResetTimer = window.resetTimer;
 
     // ================================================================
-    // 2. 重新渲染「誓印未通過」區塊（改為亮綠色）
+    // 覆蓋 startTimer 函數
     // ================================================================
-    function updateNotPassedStyle() {
-        var lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
-        var p = (langPack && langPack[lang]) ? langPack[lang] : langPack.zh;
-
-        // 更新文字（如果元素存在）
-        var titleEl = document.getElementById('step1NotPassedTitle');
-        if (titleEl) {
-            titleEl.textContent = p.step1NotPassedTitle || '✅ 顯示：「誓印未通過」';
+    window.startTimer = function() {
+        // 如果已經在運行，不重複啟動
+        if (isTimerRunning) return;
+        
+        var s = document.getElementById('btnStart');
+        var r = document.getElementById('btnRestart');
+        var l = document.getElementById('timerLabel');
+        var n = document.getElementById('timerNumber');
+        var p = langPack[currentLang] || langPack.zh;
+        
+        // 隱藏重新靜心按鈕
+        if (r) r.style.display = 'none';
+        
+        // 開始計時
+        isTimerRunning = true;
+        timerState = 'counting';
+        countdownSeconds = 10;
+        
+        if (n) {
+            n.textContent = countdownSeconds;
+            n.classList.remove('complete');
         }
-
-        // 找到「誓印未通過」的父層容器，將背景改為亮綠色（與「誓印通過」一致）
-        var notPassedCard = document.querySelector('.hud-card:has(.step1-not-passed-box)');
-        if (!notPassedCard) {
-            // 如果找不到，改用 class 搜尋
-            notPassedCard = document.querySelector('.step1-not-passed-box');
+        if (l) l.textContent = p.timerCounting || '⏳ 靜心讀秒中...';
+        if (s) {
+            s.disabled = true;
+            s.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ' + (p.btnStartText || '靜心中...');
         }
-        if (notPassedCard) {
-            // 將原本的橙色背景改為亮綠色
-            var box = notPassedCard.querySelector('.not-passed-box-inner') || notPassedCard;
-            box.style.background = 'rgba(0, 230, 118, 0.12)';
-            box.style.borderLeft = '4px solid #00e676';
-            var textEl = box.querySelector('div[style*="color:"]') || box.querySelector('div');
-            if (textEl) {
-                textEl.style.color = '#00e676';
-                textEl.style.fontSize = '1.1rem';
-                textEl.style.fontWeight = 'bold';
-            }
+        
+        // 清除舊的計時器
+        if (countdownTimer) {
+            clearInterval(countdownTimer);
+            countdownTimer = null;
         }
-
-        // 直接查找「誓印未通過」的標題元素並改為綠色
-        var notPassedElements = document.querySelectorAll('[id*="NotPassed"], [id*="notPassed"]');
-        notPassedElements.forEach(function(el) {
-            if (el.textContent && (el.textContent.includes('誓印未通過') || el.textContent.includes('Oath Seal Not Passed'))) {
-                el.style.color = '#00e676';
-                el.style.fontWeight = 'bold';
-                el.style.fontSize = '1.1rem';
-            }
-        });
-
-        // 查找包含「誓印未通過」文字的 div，將整個區塊樣式改為亮綠色
-        var allDivs = document.querySelectorAll('.hud-card div');
-        allDivs.forEach(function(div) {
-            var text = div.textContent || '';
-            if (text.includes('誓印未通過') || text.includes('Oath Seal Not Passed')) {
-                // 檢查是否已經有綠色樣式，避免重複覆蓋
-                if (!div.dataset.greenFixed) {
-                    div.dataset.greenFixed = 'true';
-                    // 如果這個 div 是標題區塊，將父層的 border-left 和 background 改為綠色
-                    var parent = div.closest('.hud-card') || div.parentElement;
-                    if (parent) {
-                        // 查找或建立內層容器
-                        var inner = parent.querySelector('.not-passed-inner');
-                        if (!inner) {
-                            inner = document.createElement('div');
-                            inner.className = 'not-passed-inner';
-                            inner.style.background = 'rgba(0, 230, 118, 0.12)';
-                            inner.style.borderLeft = '4px solid #00e676';
-                            inner.style.padding = '14px 16px';
-                            inner.style.borderRadius = '10px';
-                            inner.style.marginBottom = '18px';
-                            // 將原本的內容移到 inner 裡面
-                            var children = parent.children;
-                            var temp = [];
-                            for (var i = 0; i < children.length; i++) {
-                                temp.push(children[i]);
-                            }
-                            parent.innerHTML = '';
-                            parent.appendChild(inner);
-                            temp.forEach(function(child) {
-                                inner.appendChild(child);
-                            });
-                            // 如果 inner 內有文字，將顏色改為綠色
-                            var textDiv = inner.querySelector('div') || inner;
-                            textDiv.style.color = '#00e676';
-                            textDiv.style.fontSize = '1.1rem';
-                            textDiv.style.fontWeight = 'bold';
-                        }
-                    }
+        
+        // 開始倒數
+        countdownTimer = setInterval(function() {
+            countdownSeconds--;
+            if (n) n.textContent = countdownSeconds;
+            
+            if (countdownSeconds <= 0) {
+                clearInterval(countdownTimer);
+                countdownTimer = null;
+                isTimerRunning = false;
+                timerState = 'complete';
+                
+                // 完成狀態
+                if (n) {
+                    n.textContent = '✔';
+                    n.classList.add('complete');
                 }
+                if (l) l.textContent = (currentLang === 'en') ? '✅ Centering Complete' : '✅ 靜心完成';
+                if (s) {
+                    s.disabled = false;
+                    s.innerHTML = '<i class="fa-solid fa-check"></i> ' + (currentLang === 'en' ? 'Complete' : '開始靜心');
+                }
+                // 確保重新靜心按鈕隱藏
+                if (r) r.style.display = 'none';
             }
-        });
-    }
+        }, 1000);
+    };
 
     // ================================================================
-    // 3. 在頁面載入和語言切換時重新渲染
+    // 覆蓋 resetTimer 函數
     // ================================================================
-    // 覆蓋原本的 switchLanguage 以確保樣式更新
-    var _origSwitch = window.switchLanguage;
-    if (typeof window.switchLanguage === 'function') {
-        window.switchLanguage = function(lang) {
-            if (typeof _origSwitch === 'function') _origSwitch(lang);
-            else window.currentLang = lang;
-            // 延遲執行，確保 DOM 已更新
-            setTimeout(function() {
-                updateNotPassedStyle();
-            }, 100);
-        };
+    window.resetTimer = function() {
+        // 清除計時器
+        if (countdownTimer) {
+            clearInterval(countdownTimer);
+            countdownTimer = null;
+        }
+        
+        isTimerRunning = false;
+        timerState = 'initial';
+        countdownSeconds = 10;
+        
+        var s = document.getElementById('btnStart');
+        var r = document.getElementById('btnRestart');
+        var l = document.getElementById('timerLabel');
+        var n = document.getElementById('timerNumber');
+        var p = langPack[currentLang] || langPack.zh;
+        
+        if (n) {
+            n.textContent = '10';
+            n.classList.remove('complete');
+        }
+        if (l) l.textContent = p.timerLabel || '⏳ 靜心讀秒';
+        if (s) {
+            s.disabled = false;
+            s.innerHTML = '<i class="fa-solid fa-play"></i> ' + (p.btnStartText || '開始靜心');
+        }
+        // 確保重新靜心按鈕隱藏
+        if (r) r.style.display = 'none';
+    };
+
+    // ================================================================
+    // 頁面加載時立即執行一次
+    // ================================================================
+    function fixTimerOnLoad() {
+        var r = document.getElementById('btnRestart');
+        if (r) r.style.display = 'none';
+        
+        var s = document.getElementById('btnStart');
+        if (s) {
+            var text = s.textContent || '';
+            // 如果按鈕顯示「開始靜心」或「Complete」，保留顯示
+            if (text.includes('開始靜心') || text.includes('Complete')) {
+                s.style.display = '';
+            }
+        }
     }
 
-    // 頁面載入完成後執行
     if (document.readyState === 'complete') {
-        setTimeout(function() {
-            updateNotPassedStyle();
-        }, 200);
+        setTimeout(fixTimerOnLoad, 100);
     } else {
         window.addEventListener('load', function() {
-            setTimeout(function() {
-                updateNotPassedStyle();
-            }, 300);
+            setTimeout(fixTimerOnLoad, 200);
         });
     }
 
-    // 每隔 1 秒檢查一次（確保動態生成的內容也被修改）
-    var checkInterval = setInterval(function() {
-        var el = document.querySelector('[id*="NotPassed"], [id*="notPassed"]');
-        if (el) {
-            updateNotPassedStyle();
-            // 如果已經找到並修改，可以清除定時器（但保留也無妨）
-        }
-    }, 2000);
-
-    // 5 分鐘後自動清除定時器，避免資源浪費
-    setTimeout(function() {
-        clearInterval(checkInterval);
-    }, 300000);
-
-    console.log('✅ 「誓印未通過」已改為亮綠色（與「誓印通過」版面一致）');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 將 step1.html 底部的「回總覽」改為「上一步」並連結到 step0.html -->
-<!-- 貼在 </body> 前即可                                            -->
-<!-- ============================================================ -->
-<script>
-(function() {
-    // ================================================================
-    // 將「回總覽」改為「上一步」並修改連結
-    // ================================================================
-    function fixBackButton() {
-        // 查找所有「回總覽」按鈕
-        var allLinks = document.querySelectorAll('a');
-        allLinks.forEach(function(link) {
-            var text = link.textContent || '';
-            // 如果是「回總覽」按鈕
-            if (text.includes('回總覽') || text.includes('Back to Home')) {
-                // 修改文字為「上一步」
-                var span = link.querySelector('span');
-                if (span) {
-                    span.textContent = (currentLang === 'zh') ? '上一步' : 'Previous';
-                } else {
-                    // 如果沒有 span，直接修改文字節點
-                    var textNode = link.childNodes[0];
-                    if (textNode && textNode.nodeType === 3) {
-                        textNode.textContent = (currentLang === 'zh') ? '上一步' : 'Previous';
-                    }
-                }
-                // 修改連結為 step0.html
-                link.setAttribute('href', 'step0.html');
-                console.log('✅ 「回總覽」已改為「上一步」，連結指向 step0.html');
-            }
-        });
-
-        // 更精確的方式：查找 footer 中的「回總覽」連結
-        var footer = document.querySelector('.hud-footer, footer');
-        if (footer) {
-            var links = footer.querySelectorAll('a');
-            links.forEach(function(link) {
-                var text = link.textContent || '';
-                if (text.includes('回總覽') || text.includes('Back to Home')) {
-                    var span = link.querySelector('span');
-                    if (span) {
-                        span.textContent = (currentLang === 'zh') ? '上一步' : 'Previous';
-                    }
-                    link.setAttribute('href', 'step0.html');
-                    console.log('✅ Footer 「回總覽」已改為「上一步」，連結指向 step0.html');
-                }
-            });
-        }
-    }
-
-    // ================================================================
-    // 監聽語言切換事件
-    // ================================================================
-    var _origSwitch = window.switchLanguage;
-    if (typeof window.switchLanguage === 'function') {
-        window.switchLanguage = function(lang) {
-            if (typeof _origSwitch === 'function') _origSwitch(lang);
-            else window.currentLang = lang;
-            setTimeout(function() {
-                fixBackButton();
-            }, 150);
-        };
-    }
-
-    // ================================================================
-    // 執行
-    // ================================================================
-    if (document.readyState === 'complete') {
-        setTimeout(function() {
-            fixBackButton();
-        }, 100);
-    } else {
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                fixBackButton();
-            }, 200);
-        });
-    }
-
-    // 監聽 DOM 變化
-    var observer = new MutationObserver(function() {
-        fixBackButton();
-    });
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
-
-    console.log('✅ 「回總覽」已改為「上一步」，連結指向 step0.html');
+    console.log('✅ 靜心計時器已修正（與圖片一致）');
 })();
 </script>
 </body>
