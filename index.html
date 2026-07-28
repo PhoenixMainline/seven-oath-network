@@ -261,7 +261,9 @@
                 thField: '欄位名稱',
                 thFunc: '功能簡要說明',
                 thLink: '連結',
-                               items: [
+                footerText: '七印誓網 · 第一層級距誓魂定位模組',
+                pageInfo: '📄 【宇宙誓印覺醒工程 · 覺醒卷】第 161-162 頁',
+                items: [
                     { segment: '—', no: '00', field: '宇宙智能誓導平台 × 【購書序號】誓導碼登入與啟動守則', func: '平台登入與啟動之總綱守則，規範誓印者進入誓導系統之基本程序與身份驗證要件。', link: 'step0.html' },
                     { segment: '身份啟動與資格檢核', no: '01', field: '開啟誓魂密鑰對頻總判定（誓印通過）', func: '判斷誓魂是否對應至七印誓網模組合法身份，並確認是否具備進入系統通行資格。', link: 'step1.html' },
                     { segment: '身份啟動與資格檢核', no: '02', field: '啟動誓魂密鑰頻率對頻總判定（誓印未通過）', func: '誓魂尚未與七印誓網模組形成合法對位，其誓魂識別碼無法進入系統主軸，必須依照所提供的指引進行重新對位或調整誓頻，之後才能再次進行頻率判定。', link: 'step1.html' },
@@ -280,7 +282,9 @@
                 thField: 'Field Name',
                 thFunc: 'Function Summary',
                 thLink: 'Link',
-                               items: [
+                footerText: 'Seven-Seal Vow Network · First-Tier Oath-Soul Positioning Module',
+                pageInfo: '📄 【Cosmic Vow-Seal Awakening Project · Awakening Scroll】Pages 161-162',
+                items: [
                     { segment: '—', no: '00', field: 'Cosmic Intelligent Vow-Guidance Platform × [Purchase Serial Number] Vow-Guidance Code Login and Activation Protocol', func: 'General protocol for platform login and activation, defining the basic procedures and identity verification requirements for oath-bearers to enter the vow-guidance system.', link: 'step0.html' },
                     { segment: 'Identity Activation and Qualification Verification', no: '01', field: 'Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Passed)', func: 'Determines whether the Oath-Soul corresponds to a valid identity within the Seven-Seal Vow Network and whether it holds the authorization to enter the main Oath-Resource System.', link: 'step1.html' },
                     { segment: 'Identity Activation and Qualification Verification', no: '02', field: 'Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed)', func: 'The Oath-Soul has not formed lawful Alignment with the Seven-Seal Vow Network Module. Its Oath-Soul Identification Code cannot enter the system\'s primary axis and must follow the provided guidance to realign or adjust the vow-frequency before undergoing frequency assessment again.', link: 'step1.html' },
@@ -354,136 +358,5 @@
         // 暴露切換函數給全局
         window.switchLanguage = switchLanguage;
     </script>
-<!-- ============================================================ -->
-<!-- 將「undefined」替換為正確的頁碼資訊                           -->
-<!-- 貼在 </body> 前即可                                            -->
-<!-- ============================================================ -->
-<script>
-(function() {
-    // ================================================================
-    // 1. 定義正確的頁碼文字（中英文）
-    // ================================================================
-    var pageInfo = {
-        zh: '📄 【宇宙誓印覺醒工程 · 覺醒卷】第 161-162 頁',
-        en: '📄 【Cosmic Vow-Seal Awakening Project · Awakening Scroll】Pages 161-162'
-    };
-
-    // ================================================================
-    // 2. 偵測當前語言並替換 undefined
-    // ================================================================
-    function replaceUndefinedWithPageInfo() {
-        // 判斷當前語言
-        var lang = 'zh';
-        // 檢查按鈕狀態
-        var activeBtn = document.querySelector('.lang-btn.active');
-        if (activeBtn) {
-            var btnText = activeBtn.textContent || '';
-            if (btnText.toLowerCase().includes('english') || btnText === 'English') {
-                lang = 'en';
-            }
-        }
-
-        var targetText = pageInfo[lang] || pageInfo.zh;
-
-        // 遍歷所有文字節點，將 undefined 替換為頁碼
-        var elements = document.querySelectorAll('*');
-        elements.forEach(function(el) {
-            if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE') return;
-
-            var childNodes = el.childNodes;
-            for (var i = childNodes.length - 1; i >= 0; i--) {
-                var node = childNodes[i];
-                if (node.nodeType === 3 && node.textContent) {
-                    var newText = node.textContent;
-                    // 將 undefined 替換為頁碼
-                    if (newText.includes('undefined')) {
-                        newText = newText.replace(/undefined/gi, targetText);
-                        node.textContent = newText;
-                    }
-                }
-            }
-        });
-
-        // 處理 HTML 內容中的 undefined
-        var allElements = document.querySelectorAll('*');
-        allElements.forEach(function(el) {
-            if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE') return;
-            if (el.innerHTML && el.innerHTML.includes('undefined')) {
-                el.innerHTML = el.innerHTML.replace(/undefined/gi, targetText);
-            }
-        });
-
-        // 特別處理頁碼標記元素
-        var pageMarker = document.getElementById('pageMarkerText');
-        if (pageMarker) {
-            pageMarker.textContent = targetText;
-        }
-
-        // 處理所有包含「undefined」的 span/div
-        var targetElements = document.querySelectorAll('span, div, p, td, th, li');
-        targetElements.forEach(function(el) {
-            if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE') return;
-            if (el.childNodes.length === 1 && el.childNodes[0].nodeType === 3) {
-                var text = el.childNodes[0].textContent || '';
-                if (text.includes('undefined')) {
-                    el.childNodes[0].textContent = text.replace(/undefined/gi, targetText);
-                }
-            }
-        });
-    }
-
-    // ================================================================
-    // 3. 監聽語言切換事件
-    // ================================================================
-    // 覆蓋 switchLanguage 以確保頁碼在切換語言時更新
-    var _origSwitch = window.switchLanguage;
-    if (typeof window.switchLanguage === 'function') {
-        window.switchLanguage = function(lang) {
-            if (typeof _origSwitch === 'function') _origSwitch(lang);
-            else window.currentLang = lang;
-            setTimeout(function() {
-                replaceUndefinedWithPageInfo();
-            }, 150);
-        };
-    }
-
-    // ================================================================
-    // 4. 執行
-    // ================================================================
-    if (document.readyState === 'complete') {
-        setTimeout(function() { replaceUndefinedWithPageInfo(); }, 100);
-    } else {
-        window.addEventListener('load', function() {
-            setTimeout(function() { replaceUndefinedWithPageInfo(); }, 200);
-        });
-    }
-
-    // 監聽 DOM 變化
-    var observer = new MutationObserver(function() {
-        replaceUndefinedWithPageInfo();
-    });
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-        characterData: true
-    });
-
-    // 每秒檢查一次
-    var checkInterval = setInterval(function() {
-        var allText = document.body.textContent || '';
-        if (allText.includes('undefined')) {
-            replaceUndefinedWithPageInfo();
-        }
-    }, 1000);
-
-    // 5 分鐘後自動清除定時器
-    setTimeout(function() {
-        clearInterval(checkInterval);
-        observer.disconnect();
-    }, 300000);
-
-    console.log('✅ 「undefined」已替換為頁碼資訊');
-})();
-</script>
 </body>
 </html>
