@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* ----- 全域樣式（與 index 一致的亮紫色系）----- */
+        /* ----- 全域樣式（亮紫色系）----- */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif; }
         body {
             background: radial-gradient(circle at 50% 50%, #06122c 0%, #020715 100%);
@@ -17,7 +17,6 @@
             padding: clamp(8px, 2vh, 24px);
             position: relative;
         }
-        /* 粒子背景 */
         .particle-container {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background-image: radial-gradient(#d4af37, rgba(212, 175, 55, .3) 1px, transparent 30px), radial-gradient(#d4af37, rgba(212, 175, 55, .2) 2px, transparent 40px);
@@ -26,13 +25,11 @@
             animation: starMove 90s linear infinite; opacity: 0.65; z-index: 5; pointer-events: none;
         }
         @keyframes starMove { from { transform: translateY(0px) rotate(0deg); } to { transform: translateY(-1000px) rotate(360deg); } }
-        /* 浮水印 */
         .watermark-layer {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; opacity: 0.04;
             display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); padding: 50px;
         }
         .watermark-text { font-size: 1.5rem; font-weight: bold; color: #ffffff; transform: rotate(-25deg); white-space: nowrap; user-select: none; }
-        /* 主容器 */
         .hud-container {
             width: 100%; max-width: min(1100px, 98vw);
             background: rgba(4, 13, 33, 0.4);
@@ -48,7 +45,6 @@
             border-top: 3px solid #a78bfa; border-right: 3px solid #a78bfa;
             pointer-events: none;
         }
-        /* 標題區 */
         .header {
             text-align: center;
             border-bottom: 1px solid rgba(168, 85, 247, 0.25);
@@ -72,7 +68,6 @@
             font-weight: 300;
         }
         .header .sub i { color: #d4af37; margin-right: 6px; }
-        /* 語言切換 */
         .lang-switch-group {
             display: flex; justify-content: center; gap: 0;
             background: rgba(124, 58, 237, 0.15);
@@ -98,7 +93,6 @@
             color: #ffffff;
             box-shadow: 0 0 16px rgba(124, 58, 237, 0.5);
         }
-        /* 表格容器 */
         .table-wrap {
             background: rgba(18, 16, 23, 0.5);
             border: 1px solid rgba(168, 85, 247, 0.2);
@@ -160,7 +154,6 @@
             transform: scale(1.02);
         }
         .unit-link i { margin-left: 4px; }
-        /* 底部 */
         .footer-note {
             margin-top: 24px;
             text-align: center;
@@ -179,7 +172,6 @@
         }
         .footer-note .page-info i { color: #d4af37; margin-right: 4px; }
         .footer-note span { color: #7c3aed; }
-        /* 行動裝置調整 */
         @media (max-width: 768px) {
             .hud-container { padding: 12px; }
             table { min-width: 550px; font-size: 0.65rem; }
@@ -218,7 +210,7 @@
     <div class="hud-container">
         <div class="header">
             <h1><i class="fa-solid fa-seal"></i> <span id="mainTitle">【宇宙誓印覺醒工程 • 七印誓網】啟動入口</span></h1>
-            <div class="sub" id="subTitle"><i class="fa-solid fa-scroll"></i> <span id="subText"> 對應級距項目 × 解鎖誓魂血脈身分記載歷程程序 第一層級距誓魂定位模組</span></div>
+            <div class="sub" id="subTitle"><i class="fa-solid fa-scroll"></i> <span id="subText">對應級距項目 × 解鎖誓魂血脈身分記載歷程程序 第一層級距誓魂定位模組</span></div>
             <div class="lang-switch-group">
                 <button class="lang-btn active" data-lang="zh" onclick="switchLanguage('zh')">中文</button>
                 <button class="lang-btn" data-lang="en" onclick="switchLanguage('en')">English</button>
@@ -255,7 +247,7 @@
         var stepData = {
             zh: {
                 mainTitle: '【宇宙誓印覺醒工程 • 七印誓網】啟動入口',
-                subText: ' 對應級距項目 × 解鎖誓魂血脈身分記載歷程程序 第一層級距誓魂定位模組',
+                subText: '對應級距項目 × 解鎖誓魂血脈身分記載歷程程序 第一層級距誓魂定位模組',
                 thSegment: '分段',
                 thNo: '編號',
                 thField: '欄位名稱',
@@ -271,12 +263,12 @@
                     { segment: '代理資訊與功德紀錄', no: '04', field: '代理誓印（法定全名）× 功德紀錄', func: '由 ×× 代理誓印（法定全名）代理誓令主尊授權 × 封印誓軌 × 歸位天庫 × 功德紀錄。', link: 'step3.html' },
                     { segment: '血脈與角色定位', no: '05', field: '誓魂本族 × 天族姓脈 × 所屬靈系支系 × 角色階級', func: '誓魂最初來源的宇宙族系，誓魂所屬的天界血脈姓氏，對應的功能靈系分支，系統中的任務身份。', link: 'step4.html' },
                     { segment: '血脈與角色定位', no: '06', field: '誓魂宇宙位階 × 維度階級 × 三界屬域 × 階級量盤', func: '誓魂宇宙原點 × 維度振頻 × 維度階級 × 九界歸屬屬域 × 所屬階級之全域定位記載。', link: 'step5.html' },
-                    { segment: '誓魂狀態', no: '07', field: '誓醒程度', func: '誓魂對天命意識之開啟狀態：未覺 × 初醒 × 高頻 × 圓滿等級。', link: 'step6.html' }
+                    { segment: '誓魂狀態', no: '07', field: '覺醒程度', func: '誓魂對天命意識之開啟狀態：未覺 × 初醒 × 高頻 × 圓滿等級。', link: 'step6.html' }
                 ]
             },
             en: {
                 mainTitle: '【Cosmic Vow-Seal Awakening Project • Seven-Seal Vow Network】Launch Entry Point',
-                subText: ' Corresponding Tier Items × Oath-Soul Bloodline Identity-Unlocking Record Protocol First-Tier Oath-Soul Resolving Module',
+                subText: 'Corresponding Tier Items × Oath-Soul Bloodline Identity-Unlocking Record Protocol First-Tier Oath-Soul Resolving Module',
                 thSegment: 'Segment',
                 thNo: 'No.',
                 thField: 'Field Name',
@@ -325,7 +317,6 @@
             currentLang = lang;
             var data = stepData[lang] || stepData.zh;
 
-            // 更新按鈕狀態
             var btns = document.querySelectorAll('.lang-btn');
             btns.forEach(function(btn) {
                 btn.classList.remove('active');
@@ -334,7 +325,6 @@
                 }
             });
 
-            // 更新標題與表格
             document.getElementById('mainTitle').textContent = data.mainTitle;
             document.getElementById('subText').textContent = data.subText;
             document.getElementById('thSegment').textContent = data.thSegment;
@@ -355,8 +345,8 @@
             switchLanguage('zh');
         };
 
-        // 暴露切換函數給全局
         window.switchLanguage = switchLanguage;
     </script>
+
 </body>
 </html>
