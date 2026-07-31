@@ -806,5 +806,129 @@
         console.log('✅ 相機權限失敗彈窗已全部刪除');
     })();
     </script>
+<!-- ============================================================ -->
+<!-- QR Code 掃描器完整修復模板（含移除「掃描成功」文字）        -->
+<!-- 貼在 </body> 前即可                                            -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    // ================================================================
+    // 1. 重新定義掃描器啟動函數
+    // ================================================================
+    function startQRScanner(containerId, resultId, guideId) {
+        var container = document.getElementById(containerId);
+        if (!container) {
+            console.warn('找不到容器:', containerId);
+            return;
+        }
+        
+        if (typeof Html5Qrcode === 'undefined') {
+            alert('QR Code 掃描器尚未載入，請重新整理頁面');
+            return;
+        }
+        
+        // 停止現有掃描器
+        if (window._currentScanner) {
+            window._currentScanner.stop().catch(function() {});
+            window._currentScanner = null;
+        }
+        
+        container.innerHTML = '';
+        
+        var guide = document.getElementById(guideId);
+        if (guide) guide.style.display = 'block';
+        
+        var resultEl = document.getElementById(resultId);
+        if (resultEl) {
+            resultEl.style.display = 'none';
+            resultEl.innerHTML = '';
+        }
+        
+        try {
+            var scanner = new Html5Qrcode(containerId);
+            window._currentScanner = scanner;
+            
+            scanner.start(
+                { facingMode: "environment" },
+                { fps: 10, qrbox: { width: 220, height: 220 } },
+                function(decodedText, decodedResult) {
+                    // 掃描成功：顯示解碼內容（不包含「掃描成功」文字）
+                    console.log('QR Code 解碼內容:', decodedText);
+                    scanner.stop().then(function() {
+                        window._currentScanner = null;
+                        container.innerHTML = '';
+                        if (guide) guide.style.display = 'none';
+                        if (resultEl) {
+                            // 只顯示解碼後的實際內容
+                            resultEl.innerHTML = decodedText;
+                            resultEl.style.display = 'block';
+                        }
+                    }).catch(function() {});
+                },
+                function(errorMessage) {
+                    // 持續掃描中
+                }
+            ).catch(function(err) {
+                console.warn('啟動掃描器失敗:', err);
+                if (guide) {
+                    guide.style.display = 'block';
+                    guide.innerHTML = '📷 無法啟動相機<br>⚙️ 請允許相機權限後重新點擊「開始掃描」';
+                }
+            });
+        } catch (e) {
+            console.error('掃描器初始化失敗:', e);
+        }
+    }
+
+    // ================================================================
+    // 2. 重新綁定所有掃描按鈕
+    // ================================================================
+    function bindScanButtons() {
+        // Step8 按鈕
+        var btn8 = document.getElementById('btnScanQRStep8');
+        if (btn8) {
+            btn8.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+            };
+            console.log('✅ 已綁定 btnScanQRStep8');
+        }
+        
+        // Step9 按鈕
+        var btn9 = document.getElementById('btnScanQRStep9');
+        if (btn9) {
+            btn9.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
+            };
+            console.log('✅ 已綁定 btnScanQRStep9');
+        }
+        
+        // 通用按鈕
+        var btnGeneric = document.getElementById('btnScanQR');
+        if (btnGeneric) {
+            btnGeneric.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                startQRScanner('qr-reader-container', 'qrScanResult', 'cameraGuide');
+            };
+            console.log('✅ 已綁定 btnScanQR');
+        }
+    }
+
+    // ================================================================
+    // 3. 執行
+    // ================================================================
+    if (document.readyState === 'complete') {
+        setTimeout(bindScanButtons, 200);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(bindScanButtons, 300);
+        });
+    }
+})();
+</script>
 </body>
 </html>
