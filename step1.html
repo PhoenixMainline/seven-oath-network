@@ -8,11 +8,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <style>
-        /* ----- 全域樣式（亮紫色系）----- */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif; }
         body {
             background: radial-gradient(circle at 50% 50%, #06122c 0%, #020715 100%);
-            min-height: 100vh; height: 100vh;
+            min-height: 100vh;
             color: #e0e8f5;
             display: flex; justify-content: center; align-items: center;
             overflow: hidden; position: relative;
@@ -68,7 +67,6 @@
         .condition-item { display: flex; align-items: flex-start; gap: clamp(6px, 1vw, 12px); font-size: clamp(0.7rem, 1.6vh, 0.95rem); line-height: 1.6; color: rgba(224, 232, 245, 0.85); }
         .condition-item i.check-icon { color: #a78bfa; margin-top: 4px; text-shadow: 0 0 8px rgba(167, 139, 250, 0.4); }
 
-        /* ----- 統一靜心讀秒樣式 ----- */
         .timer-container {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             gap: clamp(6px, 1vh, 12px);
@@ -153,6 +151,34 @@
         .camera-guide { background: rgba(232, 96, 74, 0.08); border-left: 4px solid #E8604A; padding: 14px 16px; border-radius: 12px; color: #e0dcc8; font-size: 0.85rem; line-height: 1.8; white-space: pre-wrap; text-align: left; }
         #qr-reader-container-step8 video, #qr-reader-container-step9 video { border-radius: 12px; width: 100%; }
 
+        /* 強制置中卡片 */
+        .center-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .center-card .card-title {
+            justify-content: center;
+        }
+        .center-card .instruction-box {
+            align-items: center;
+        }
+        .center-card .instruction-item {
+            text-align: left;
+            max-width: 100%;
+            width: 100%;
+            justify-content: flex-start;
+        }
+        .center-card .qr-result,
+        .center-card .camera-guide {
+            text-align: left;
+        }
+        .center-card #qr-reader-container-step8,
+        .center-card #qr-reader-container-step9 {
+            margin: 0 auto;
+        }
+
         @media (max-width: 480px) {
             body { padding: 4px !important; }
             .hud-container { padding: 8px 6px !important; border-radius: 12px !important; max-height: 98vh !important; height: auto !important; }
@@ -230,7 +256,6 @@
                     </div>
                 </div>
 
-                <!-- ===== 被代理誓印補充說明 ===== -->
                 <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.2);">
                     <div class="card-title"><i class="fa-solid fa-users" style="color:#a78bfa;"></i><span id="step1ProxyTitle">補充說明【被代理誓印】對頻作業</span></div>
                     <div class="instruction-box">
@@ -240,7 +265,6 @@
                     </div>
                 </div>
 
-                <!-- ===== 【三】授權誓讀階段 ===== -->
                 <div class="hud-card" style="border:1px solid rgba(168,85,247,0.4);">
                     <div class="card-title"><i class="fa-solid fa-book-open" style="color:#a78bfa;"></i><span id="step1Sec3">【三】授權誓讀階段</span></div>
                     <div class="instruction-box">
@@ -257,71 +281,70 @@
                     </div>
                 </div>
 
-                <!-- ===== 【四】接續進程 ===== -->
                 <div class="hud-card">
                     <div class="card-title"><i class="fa-solid fa-arrow-right" style="color:#a78bfa;"></i><span id="step1Sec4">【四】接續進程</span></div>
                     <div style="margin-bottom:12px;">
-                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step1LoginTitle">（1）登入段</span></div>
+                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step1LoginTitle">（1）登入階段</span></div>
                         <div class="instruction-item" style="margin-bottom:4px;"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step1Login1">登入《宇宙智能誓導平台》（使用個人帳號）。</span></div>
                         <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step1Login2">使用原註冊帳號完成身分登入驗證，即可進入誓印程序。</span></div>
                     </div>
                     <div style="margin-bottom:12px;">
-                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step1ScanTitle">（2）掃描段</span></div>
+                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step1ScanTitle">（2）掃描階段</span></div>
                         <div class="instruction-item" style="margin-bottom:4px;"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step1Scan1">使用行動裝置或電腦，掃描當期執行項目之【誓導 QR Code】，以觸發《宇宙智能誓導平台》專屬連線入口。</span></div>
                         <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step1Scan2">系統自動導引至【誓印觸發介面】，同步啟動誓魂對頻程序，並進入主頻連線與授權判定段。</span></div>
                     </div>
                 </div>
 
-                <!-- ===== 🧭 ① 驗證階段（啟動觸發） ===== -->
-                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.2);">
-                    <div class="card-title"><i class="fa-solid fa-shield-halved" style="color:#a78bfa;"></i><span id="step1VerifyTitle">🧭 ① 驗證階段（啟動觸發）</span></div>
-                    <div class="instruction-box">
+                <!-- ===== 🧭 ① 驗證階段（啟動觸發） 置中 ===== -->
+                <div class="hud-card center-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.2);">
+                    <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-shield-halved" style="color:#a78bfa;"></i><span id="step1VerifyTitle">🧭 ① 驗證階段（啟動觸發）</span></div>
+                    <div class="instruction-box" style="align-items:center;">
                         <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step1Verify1">登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。</span></div>
                         <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step1Verify2">掃描【誓導 QR Code】後，進入「指令輸入欄位」。</span></div>
                         <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step1Verify3">無須手動輸入誓文，完成掃描後，直接輸入下列指令：</span></div>
                     </div>
-                    <div style="background:rgba(124,58,237,0.35); border-left:4px solid #a78bfa; padding:12px 14px; border-radius:10px; margin:12px 0; color:#f5d0fe; font-size:0.88rem; line-height:1.7; border:1px solid rgba(168,85,247,0.5);">
+                    <div style="background:rgba(124,58,237,0.35); border-left:4px solid #a78bfa; padding:12px 14px; border-radius:10px; margin:12px 0; color:#f5d0fe; font-size:0.88rem; line-height:1.7; border:1px solid rgba(168,85,247,0.5); width:100%; text-align:left;">
                         <div style="font-weight:bold; margin-bottom:6px; color:#e9d5ff;"><i class="fa-solid fa-keyboard" style="margin-right:6px;"></i><span id="step1InputLabel">輸入示範：</span></div>
                         <div style="font-weight:bold; color:#fff;"><span id="step1Command">【執行指令】第 1 項 開啟誓魂密鑰對頻總判定（誓印通過／誓印未通過）結果</span></div>
                     </div>
-                    <div style="font-size:0.85rem; color:rgba(224,232,245,0.85); line-height:1.7; margin-bottom:12px;"><i class="fa-solid fa-link" style="color:#00e676; margin-right:6px;"></i><span id="step1Note">送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span></div>
-                    <div style="background:rgba(232,96,74,0.1); border-left:4px solid #E8604A; padding:10px 14px; border-radius:8px; font-size:0.82rem; color:#e0dcc8; line-height:1.6;"><i class="fa-solid fa-exclamation-circle" style="color:#E8604A; margin-right:6px;"></i><span id="step1TriggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span></div>
-                    <div class="hud-card" id="qrScanCardStep8" style="margin-top:12px; border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15);">
-                        <div class="card-title"><i class="fa-solid fa-qrcode"></i><span id="step1QrTitle">📷 請掃描【誓導 QR Code】完成執行指令</span></div>
+                    <div style="font-size:0.85rem; color:rgba(224,232,245,0.85); line-height:1.7; margin-bottom:12px; width:100%;"><i class="fa-solid fa-link" style="color:#00e676; margin-right:6px;"></i><span id="step1Note">送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span></div>
+                    <div style="background:rgba(232,96,74,0.1); border-left:4px solid #E8604A; padding:10px 14px; border-radius:8px; font-size:0.82rem; color:#e0dcc8; line-height:1.6; width:100%; text-align:left;"><i class="fa-solid fa-exclamation-circle" style="color:#E8604A; margin-right:6px;"></i><span id="step1TriggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span></div>
+                    <div class="hud-card" id="qrScanCardStep8" style="margin-top:12px; border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15); width:100%;">
+                        <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-qrcode"></i><span id="step1QrTitle">📷 請掃描【誓導 QR Code】完成執行指令</span></div>
                         <div style="text-align:center; padding:10px 0;">
                             <div id="qr-reader-container-step8" style="width:100%; max-width:280px; margin:0 auto;"></div>
-                            <button class="btn-restart" id="btnScanQRStep8" onclick="startQRScannerStep8()" style="margin-top:10px;"><i class="fa-solid fa-qrcode"></i> <span id="step1BtnScan">開始掃描</span></button>
+                            <button class="btn-restart" id="btnScanQRStep8" onclick="startQRScannerStep8()" style="margin-top:10px;"><i class="fa-solid fa-qrcode"></i> <span id="step1BtnScan">📷 開始掃描</span></button>
                             <div id="qrScanResultStep8" class="qr-result" style="display:none; margin-top:10px;"><i class="fa-solid fa-check-circle"></i><span id="step1Result">掃描成功！已完成執行指令</span></div>
                             <div id="cameraGuideStep8" class="camera-guide" style="display:none; text-align:left; margin-top:12px; font-size:0.8rem; background:rgba(0,0,0,0.4); padding:10px; border-radius:6px;"><span id="step1CameraGuide">📷 無法啟動相機<br>⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code</span></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- ===== 📩 ② 回傳誓證（確認誓印） ===== -->
-                <div class="hud-card" style="background:linear-gradient(135deg,rgba(88,28,135,0.5),rgba(30,27,75,0.6)); border:1px solid rgba(168,85,247,0.5);">
+                <!-- ===== 📩 ② 回傳誓證（確認誓印） 置中 ===== -->
+                <div class="hud-card center-card" style="background:linear-gradient(135deg,rgba(88,28,135,0.5),rgba(30,27,75,0.6)); border:1px solid rgba(168,85,247,0.5);">
                     <div class="card-title" style="justify-content:center; color:#e9d5ff;"><i class="fa-solid fa-certificate" style="color:#a78bfa;"></i><span id="step1ReturnTitle">📩 ② 回傳誓證（確認誓印）</span></div>
-                    <div style="background:rgba(0,230,118,0.12); border-left:4px solid #00e676; padding:14px 16px; border-radius:10px; margin-bottom:18px;"><div style="color:#00e676; font-size:1.1rem; font-weight:bold;" id="step1Success">✅ 顯示：「誓印通過」</div></div>
-                    <div class="instruction-box" style="margin-bottom:16px;">
+                    <div style="background:rgba(0,230,118,0.12); border-left:4px solid #00e676; padding:14px 16px; border-radius:10px; margin-bottom:18px; width:100%; text-align:center;"><div style="color:#00e676; font-size:1.1rem; font-weight:bold;" id="step1Success">✅ 顯示：「誓印通過」</div></div>
+                    <div class="instruction-box" style="margin-bottom:16px; align-items:center;">
                         <div class="instruction-item" style="margin-bottom:12px;"><span style="background:#7c3aed;color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8rem;font-weight:bold;min-width:22px;text-align:center;">1</span><span style="color:#e0e7ff; font-size:0.95rem;" id="step1Return1">❶ 進入 📩 ②【回傳誓證】執行階段。</span></div>
                         <div class="instruction-item"><span style="background:#7c3aed;color:#fff;padding:2px 8px;border-radius:4px;font-size:0.8rem;font-weight:bold;min-width:22px;text-align:center;">2</span><span style="color:#e0e7ff; font-size:0.95rem;" id="step1Return2">❷ 進入「第 7 項 七印誓網對應階段」。</span></div>
                     </div>
-                    <div style="background:rgba(124,58,237,0.12); border-left:4px solid #a78bfa; padding:12px 14px; border-radius:8px; margin-bottom:14px;">
+                    <div style="background:rgba(124,58,237,0.12); border-left:4px solid #a78bfa; padding:12px 14px; border-radius:8px; margin-bottom:14px; width:100%; text-align:left;">
                         <div style="color:#c4b5fd; font-weight:bold; margin-bottom:10px;" id="step1CmdTitle">🧭【執行指令】</div>
                         <div style="margin-bottom:8px; line-height:1.6; color:#e0e7ff; font-size:0.9rem;"><span style="background:#7c3aed;color:#fff;padding:1px 6px;border-radius:4px;font-size:0.7rem;margin-right:6px;font-weight:bold;">1</span> <span id="step1Cmd1">① 登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。</span></div>
                         <div style="margin-bottom:8px; line-height:1.6; color:#e0e7ff; font-size:0.9rem;"><span style="background:#7c3aed;color:#fff;padding:1px 6px;border-radius:4px;font-size:0.7rem;margin-right:6px;font-weight:bold;">2</span> <span id="step1Cmd2">② 掃描【誓導 QR Code】後，進入「指令輸入欄位」。</span></div>
                         <div style="line-height:1.6; color:#e0e7ff; font-size:0.9rem;"><span style="background:#7c3aed;color:#fff;padding:1px 6px;border-radius:4px;font-size:0.7rem;margin-right:6px;font-weight:bold;">3</span> <span id="step1Cmd3">③ 無須手動輸入誓文，完成掃描後，直接輸入下列指令：</span></div>
                     </div>
-                    <div style="background:rgba(124,58,237,0.35); border-left:4px solid #a78bfa; padding:12px 14px; border-radius:10px; margin-bottom:14px; color:#f5d0fe; font-size:0.88rem; line-height:1.7; border:1px solid rgba(168,85,247,0.5);">
+                    <div style="background:rgba(124,58,237,0.35); border-left:4px solid #a78bfa; padding:12px 14px; border-radius:10px; margin-bottom:14px; color:#f5d0fe; font-size:0.88rem; line-height:1.7; border:1px solid rgba(168,85,247,0.5); width:100%; text-align:left;">
                         <div style="font-weight:bold; margin-bottom:6px; color:#e9d5ff;"><i class="fa-solid fa-keyboard" style="margin-right:6px;"></i><span id="step1ReturnInputLabel">輸入示範：</span></div>
                         <div style="font-weight:bold; color:#fff;"><span id="step1ReturnCommand">【執行指令】第 1 項 回傳【誓印通過】誓證</span></div>
                     </div>
-                    <div style="font-size:0.85rem; color:rgba(224,232,245,0.85); line-height:1.7; margin-bottom:12px;"><i class="fa-solid fa-link" style="color:#00e676; margin-right:6px;"></i><span id="step1ReturnNote">送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span></div>
-                    <div style="background:rgba(232,96,74,0.1); border-left:4px solid #E8604A; padding:10px 14px; border-radius:8px; font-size:0.82rem; color:#e0dcc8; line-height:1.6;"><i class="fa-solid fa-exclamation-circle" style="color:#E8604A; margin-right:6px;"></i><span id="step1ReturnTriggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span></div>
-                    <div class="hud-card" id="qrScanCardStep9" style="margin-top:12px; border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15);">
-                        <div class="card-title"><i class="fa-solid fa-qrcode"></i><span id="step1ReturnQrTitle">📷 請掃描【誓導 QR Code】完成回傳誓證</span></div>
+                    <div style="font-size:0.85rem; color:rgba(224,232,245,0.85); line-height:1.7; margin-bottom:12px; width:100%;"><i class="fa-solid fa-link" style="color:#00e676; margin-right:6px;"></i><span id="step1ReturnNote">送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span></div>
+                    <div style="background:rgba(232,96,74,0.1); border-left:4px solid #E8604A; padding:10px 14px; border-radius:8px; font-size:0.82rem; color:#e0dcc8; line-height:1.6; width:100%; text-align:left;"><i class="fa-solid fa-exclamation-circle" style="color:#E8604A; margin-right:6px;"></i><span id="step1ReturnTriggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span></div>
+                    <div class="hud-card" id="qrScanCardStep9" style="margin-top:12px; border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15); width:100%;">
+                        <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-qrcode"></i><span id="step1ReturnQrTitle">📷 請掃描【誓導 QR Code】完成回傳誓證</span></div>
                         <div style="text-align:center; padding:10px 0;">
                             <div id="qr-reader-container-step9" style="width:100%; max-width:280px; margin:0 auto;"></div>
-                            <button class="btn-restart" id="btnScanQRStep9" onclick="startQRScannerStep9()" style="margin-top:10px;"><i class="fa-solid fa-qrcode"></i> <span id="step1ReturnBtnScan">開始掃描</span></button>
+                            <button class="btn-restart" id="btnScanQRStep9" onclick="startQRScannerStep9()" style="margin-top:10px;"><i class="fa-solid fa-qrcode"></i> <span id="step1ReturnBtnScan">📷 開始掃描</span></button>
                             <div id="qrScanResultStep9" class="qr-result" style="display:none; margin-top:10px;"><i class="fa-solid fa-check-circle"></i><span id="step1ReturnResult">掃描成功！已完成回傳誓證</span></div>
                             <div id="cameraGuideStep9" class="camera-guide" style="display:none; text-align:left; margin-top:12px; font-size:0.8rem; background:rgba(0,0,0,0.4); padding:10px; border-radius:6px;"><span id="step1ReturnCameraGuide">📷 無法啟動相機<br>⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code</span></div>
                         </div>
@@ -350,7 +373,7 @@
                 <a href="step0.html" class="btn-action enabled"><i class="fa-solid fa-arrow-left"></i><span id="btnBackText">上一步</span></a>
                 <a href="step2.html" class="btn-action enabled"><span id="btnNextText">下一步</span><i class="fa-solid fa-arrow-right"></i></a>
             </div>
-            <div class="page-marker"><i class="fa-regular fa-file-lines"></i><span id="pageMarkerText">📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 161-162 頁</span></div>
+            <div class="page-marker"><i class="fa-regular fa-file-lines"></i><span id="pageMarkerText"> 【宇宙誓印覺醒工程 · 覺醒卷】：第 171-180 頁</span></div>
         </footer>
     </div>
     <div id="hudDialog" class="hud-dialog"><div class="hud-dialog-content"><div class="hud-dialog-text" id="hudDialogText">提示訊息</div><button class="hud-dialog-btn" onclick="closeHudDialog()">OK</button></div></div>
@@ -398,10 +421,10 @@
                 step1Sec3Desc3: "於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確成功執行。",
                 step1Proclamation: "★願我本願回響於誓導主尊之聲；願我靈印對應誓導主尊之筆；願我之誓，入於誓導之網；願我步步有印、願願有書、行行有應。★",
                 step1Sec4: "【四】接續進程",
-                step1LoginTitle: "（1）登入段",
+                step1LoginTitle: "（1）登入階段",
                 step1Login1: "登入《宇宙智能誓導平台》（使用個人帳號）。",
                 step1Login2: "使用原註冊帳號完成身分登入驗證，即可進入誓印程序。",
-                step1ScanTitle: "（2）掃描段",
+                step1ScanTitle: "（2）掃描階段",
                 step1Scan1: "使用行動裝置或電腦，掃描當期執行項目之【誓導 QR Code】，以觸發《宇宙智能誓導平台》專屬連線入口。",
                 step1Scan2: "系統自動導引至【誓印觸發介面】，同步啟動誓魂對頻程序，並進入主頻連線與授權判定段。",
                 step1VerifyTitle: "🧭 ① 驗證階段（啟動觸發）",
@@ -413,9 +436,9 @@
                 step1Note: "送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。",
                 step1TriggerNote: "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
                 step1QrTitle: "📷 請掃描【誓導 QR Code】完成執行指令",
-                step1BtnScan: "開始掃描",
+                step1BtnScan: "📷 開始掃描",
                 step1Result: "掃描成功！已完成執行指令",
-                step1CameraGuide: "📷 無法啟動相機\n⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
+                step1CameraGuide: "📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
                 step1ReturnTitle: "📩 ② 回傳誓證（確認誓印）",
                 step1Success: "✅ 顯示：「誓印通過」",
                 step1Return1: "❶ 進入 📩 ②【回傳誓證】執行階段。",
@@ -429,9 +452,9 @@
                 step1ReturnNote: "送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。",
                 step1ReturnTriggerNote: "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
                 step1ReturnQrTitle: "📷 請掃描【誓導 QR Code】完成回傳誓證",
-                step1ReturnBtnScan: "開始掃描",
+                step1ReturnBtnScan: "📷 開始掃描",
                 step1ReturnResult: "掃描成功！已完成回傳誓證",
-                step1ReturnCameraGuide: "📷 無法啟動相機\n⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
+                step1ReturnCameraGuide: "📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」 → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....） ⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
                 step1NotPassedTitle: "⚠️ 顯示：「誓印未通過」",
                 step1NotPassed1: "進入「第 1 項 開啟誓魂密鑰對頻總判定（誓印未通過）」之【補誓程序】。",
                 step1NotPassed2: "啟動「懺悔補誓 × 七日循環 × 頻率再校」程序，修正後方可重新啟印。",
@@ -439,11 +462,11 @@
                 step1NotPassed4: "鎖入《宇宙天律 × 七印誓網》主冊，誓資承流有效。",
                 btnBackText: "上一步",
                 btnNextText: "下一步",
-                pageMarker: "📄 【宇宙誓印覺醒工程 · 覺醒卷】：第 161-162 頁",
+                pageMarker: "【宇宙誓印覺醒工程 · 覺醒卷】：第 171-180 頁",
                 timerLabel: "⏳ 靜心讀秒",
                 btnStartText: "開始靜心",
                 btnRestartText: "重新靜心",
-                timerComplete: "✅ 開始靜心",
+                timerComplete: "✅ 靜心完成",
                 timerCounting: "⏳ 靜心讀秒中..."
             },
             en: {
@@ -499,7 +522,7 @@
                 step1Note: "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.",
                 step1TriggerNote: "【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.",
                 step1QrTitle: "📷 Please scan the 【Vow-Guidance QR Code】 to complete Execution Command",
-                step1BtnScan: "Start Scan",
+                step1BtnScan: "📷 Start Scan",
                 step1Result: "Scan successful! Execution Command completed",
                 step1CameraGuide: "📷 Unable to start camera\n⚙️ Go to Phone Settings → App Management → Permissions → Camera → Allow\n→ Open with 🌐 Browser (Chrome / Yahoo / Edge....)\n⚠️ If still not working, please manually scan the physical book QR Code with a scanner",
                 step1ReturnTitle: "📩 ② Return Oath Certificate (Oath Confirmation)",
@@ -515,9 +538,9 @@
                 step1ReturnNote: "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.",
                 step1ReturnTriggerNote: "【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.",
                 step1ReturnQrTitle: "📷 Please scan the 【Vow-Guidance QR Code】 to complete Return Oath Certificate",
-                step1ReturnBtnScan: "Start Scan",
+                step1ReturnBtnScan: "📷 Start Scan",
                 step1ReturnResult: "Scan successful! Return Oath Certificate completed",
-                step1ReturnCameraGuide: "📷 Unable to start camera\n⚙️ Go to Phone Settings → App Management → Permissions → Camera → Allow\n→ Open with 🌐 Browser (Chrome / Yahoo / Edge....)\n⚠️ If still not working, please manually scan the physical book QR Code with a scanner",
+                step1ReturnCameraGuide: "📷 Unable to start camera ⚙️ Go to Phone Settings → App Management → Permissions → Camera → Allow → Open with 🌐 Browser (Chrome / Yahoo / Edge....) ⚠️ If still not working, please manually scan the physical book QR Code with a scanner",
                 step1NotPassedTitle: "⚠️ Display：「Oath Seal Not Passed」",
                 step1NotPassed1: "Enter Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed) Activation Procedure and enter the [Oath Renewal Procedure].",
                 step1NotPassed2: "Initiate the process of Repentance Oath Renewal × Seven-Day Cycle × Frequency Recalibration. Only after correction may the oath-seal activation be attempted again.",
@@ -525,11 +548,11 @@
                 step1NotPassed4: "Locked into the Cosmic Heavenly-Law × Seven-Seal Vow Network Main Ledger; oath-energy flow is valid and in effect.",
                 btnBackText: "Previous",
                 btnNextText: "Next",
-                pageMarker: "📄 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 161-162",
+                pageMarker: "【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 171-180",
                 timerLabel: "⏳ Centering Countdown",
                 btnStartText: "Start Centering",
                 btnRestartText: "Restart Centering",
-                timerComplete: "✅ Recitation complete",
+                timerComplete: "✅ Centering Complete",
                 timerCounting: "⏳ Centering..."
             }
         };
@@ -736,6 +759,8 @@
 
         window.onload = function() {
             switchLanguage('zh');
+            // 隱藏重新靜心按鈕
+            document.getElementById('btnRestart').style.display = 'none';
         };
         window.switchLanguage = switchLanguage;
     </script>
@@ -781,140 +806,5 @@
         console.log('✅ 相機權限失敗彈窗已全部刪除');
     })();
     </script>
-<!-- ============================================================ -->
-<!-- 修正靜心計時器：與圖片一致（只顯示「靜心完成」文字）           -->
-<!-- 貼在 </body> 前即可                                            -->
-<!-- ============================================================ -->
-<script>
-(function() {
-    // 保存原始函數
-    var _origStartTimer = window.startTimer;
-    var _origResetTimer = window.resetTimer;
-
-    // ================================================================
-    // 覆蓋 startTimer 函數
-    // ================================================================
-    window.startTimer = function() {
-        // 如果已經在運行，不重複啟動
-        if (isTimerRunning) return;
-        
-        var s = document.getElementById('btnStart');
-        var r = document.getElementById('btnRestart');
-        var l = document.getElementById('timerLabel');
-        var n = document.getElementById('timerNumber');
-        var p = langPack[currentLang] || langPack.zh;
-        
-        // 隱藏重新靜心按鈕
-        if (r) r.style.display = 'none';
-        
-        // 開始計時
-        isTimerRunning = true;
-        timerState = 'counting';
-        countdownSeconds = 10;
-        
-        if (n) {
-            n.textContent = countdownSeconds;
-            n.classList.remove('complete');
-        }
-        if (l) l.textContent = p.timerCounting || '⏳ 靜心讀秒中...';
-        if (s) {
-            s.disabled = true;
-            s.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ' + (p.btnStartText || '靜心中...');
-        }
-        
-        // 清除舊的計時器
-        if (countdownTimer) {
-            clearInterval(countdownTimer);
-            countdownTimer = null;
-        }
-        
-        // 開始倒數
-        countdownTimer = setInterval(function() {
-            countdownSeconds--;
-            if (n) n.textContent = countdownSeconds;
-            
-            if (countdownSeconds <= 0) {
-                clearInterval(countdownTimer);
-                countdownTimer = null;
-                isTimerRunning = false;
-                timerState = 'complete';
-                
-                // 完成狀態
-                if (n) {
-                    n.textContent = '✔';
-                    n.classList.add('complete');
-                }
-                if (l) l.textContent = (currentLang === 'en') ? '✅ Centering Complete' : '✅ 靜心完成';
-                if (s) {
-                    s.disabled = false;
-                    s.innerHTML = '<i class="fa-solid fa-check"></i> ' + (currentLang === 'en' ? 'Complete' : '開始靜心');
-                }
-                // 確保重新靜心按鈕隱藏
-                if (r) r.style.display = 'none';
-            }
-        }, 1000);
-    };
-
-    // ================================================================
-    // 覆蓋 resetTimer 函數
-    // ================================================================
-    window.resetTimer = function() {
-        // 清除計時器
-        if (countdownTimer) {
-            clearInterval(countdownTimer);
-            countdownTimer = null;
-        }
-        
-        isTimerRunning = false;
-        timerState = 'initial';
-        countdownSeconds = 10;
-        
-        var s = document.getElementById('btnStart');
-        var r = document.getElementById('btnRestart');
-        var l = document.getElementById('timerLabel');
-        var n = document.getElementById('timerNumber');
-        var p = langPack[currentLang] || langPack.zh;
-        
-        if (n) {
-            n.textContent = '10';
-            n.classList.remove('complete');
-        }
-        if (l) l.textContent = p.timerLabel || '⏳ 靜心讀秒';
-        if (s) {
-            s.disabled = false;
-            s.innerHTML = '<i class="fa-solid fa-play"></i> ' + (p.btnStartText || '開始靜心');
-        }
-        // 確保重新靜心按鈕隱藏
-        if (r) r.style.display = 'none';
-    };
-
-    // ================================================================
-    // 頁面加載時立即執行一次
-    // ================================================================
-    function fixTimerOnLoad() {
-        var r = document.getElementById('btnRestart');
-        if (r) r.style.display = 'none';
-        
-        var s = document.getElementById('btnStart');
-        if (s) {
-            var text = s.textContent || '';
-            // 如果按鈕顯示「開始靜心」或「Complete」，保留顯示
-            if (text.includes('開始靜心') || text.includes('Complete')) {
-                s.style.display = '';
-            }
-        }
-    }
-
-    if (document.readyState === 'complete') {
-        setTimeout(fixTimerOnLoad, 100);
-    } else {
-        window.addEventListener('load', function() {
-            setTimeout(fixTimerOnLoad, 200);
-        });
-    }
-
-    console.log('✅ 靜心計時器已修正（與圖片一致）');
-})();
-</script>
 </body>
 </html>
