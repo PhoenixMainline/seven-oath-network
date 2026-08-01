@@ -1686,5 +1686,264 @@
         width: 100% !important;
     }
 </style>
+<!-- ============================================================ -->
+<!-- 修復兩個掃描器互相干擾問題                                    -->
+<!-- 貼在 </body> 前即可                                            -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    // ================================================================
+    // 強制停止所有掃描器（確保相機資源釋放）
+    // ================================================================
+    function stopAllScanners() {
+        if (window._scannerStep8) {
+            try {
+                window._scannerStep8.stop().catch(function() {});
+            } catch(e) {}
+            window._scannerStep8 = null;
+        }
+        if (window._scannerStep9) {
+            try {
+                window._scannerStep9.stop().catch(function() {});
+            } catch(e) {}
+            window._scannerStep9 = null;
+        }
+        if (window._currentScanner) {
+            try {
+                window._currentScanner.stop().catch(function() {});
+            } catch(e) {}
+            window._currentScanner = null;
+        }
+        // 清理舊的變數
+        if (html5QrCodeStep8) {
+            try {
+                html5QrCodeStep8.stop().catch(function() {});
+            } catch(e) {}
+            html5QrCodeStep8 = null;
+        }
+        if (html5QrCodeStep9) {
+            try {
+                html5QrCodeStep9.stop().catch(function() {});
+            } catch(e) {}
+            html5QrCodeStep9 = null;
+        }
+    }
+
+    // ================================================================
+    // 中英文錯誤訊息
+    // ================================================================
+    var enCameraText = '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
+    var zhCameraText = '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+
+    function getCameraText() {
+        return (currentLang === 'en') ? enCameraText : zhCameraText;
+    }
+
+    // ================================================================
+    // Step8 掃描器（啟動前先停止所有掃描器）
+    // ================================================================
+    window.startQRScannerStep8 = function() {
+        // 先停止所有掃描器，釋放相機資源
+        stopAllScanners();
+
+        var container = document.getElementById('qr-reader-container-step8');
+        var guide = document.getElementById('cameraGuideStep8');
+        var resultEl = document.getElementById('qrScanResultStep8');
+
+        if (!container) {
+            console.warn('找不到容器 qr-reader-container-step8');
+            return;
+        }
+
+        container.innerHTML = '';
+        if (guide) guide.style.display = 'none';
+        if (resultEl) {
+            resultEl.style.display = 'none';
+            resultEl.innerHTML = '';
+        }
+
+        if (typeof Html5Qrcode === 'undefined') {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.innerHTML = getCameraText();
+            }
+            return;
+        }
+
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.innerHTML = getCameraText();
+            }
+            return;
+        }
+
+        try {
+            var scanner = new Html5Qrcode('qr-reader-container-step8');
+            window._scannerStep8 = scanner;
+
+            scanner.start(
+                { facingMode: "environment" },
+                { fps: 15, qrbox: { width: 200, height: 200 } },
+                function(decodedText) {
+                    if (resultEl) {
+                        resultEl.style.display = 'block';
+                        resultEl.innerHTML = decodedText;
+                    }
+                    scanner.stop().then(function() {
+                        window._scannerStep8 = null;
+                    }).catch(function() {
+                        window._scannerStep8 = null;
+                    });
+                },
+                function() {}
+            ).catch(function() {
+                if (guide) {
+                    guide.style.display = 'block';
+                    guide.innerHTML = getCameraText();
+                }
+                window._scannerStep8 = null;
+            });
+        } catch (err) {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.innerHTML = getCameraText();
+            }
+            window._scannerStep8 = null;
+        }
+    };
+
+    // ================================================================
+    // Step9 掃描器（啟動前先停止所有掃描器）
+    // ================================================================
+    window.startQRScannerStep9 = function() {
+        // 先停止所有掃描器，釋放相機資源
+        stopAllScanners();
+
+        var container = document.getElementById('qr-reader-container-step9');
+        var guide = document.getElementById('cameraGuideStep9');
+        var resultEl = document.getElementById('qrScanResultStep9');
+
+        if (!container) {
+            console.warn('找不到容器 qr-reader-container-step9');
+            return;
+        }
+
+        container.innerHTML = '';
+        if (guide) guide.style.display = 'none';
+        if (resultEl) {
+            resultEl.style.display = 'none';
+            resultEl.innerHTML = '';
+        }
+
+        if (typeof Html5Qrcode === 'undefined') {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.innerHTML = getCameraText();
+            }
+            return;
+        }
+
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.innerHTML = getCameraText();
+            }
+            return;
+        }
+
+        try {
+            var scanner = new Html5Qrcode('qr-reader-container-step9');
+            window._scannerStep9 = scanner;
+
+            scanner.start(
+                { facingMode: "environment" },
+                { fps: 15, qrbox: { width: 200, height: 200 } },
+                function(decodedText) {
+                    if (resultEl) {
+                        resultEl.style.display = 'block';
+                        resultEl.innerHTML = decodedText;
+                    }
+                    scanner.stop().then(function() {
+                        window._scannerStep9 = null;
+                    }).catch(function() {
+                        window._scannerStep9 = null;
+                    });
+                },
+                function() {}
+            ).catch(function() {
+                if (guide) {
+                    guide.style.display = 'block';
+                    guide.innerHTML = getCameraText();
+                }
+                window._scannerStep9 = null;
+            });
+        } catch (err) {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.innerHTML = getCameraText();
+            }
+            window._scannerStep9 = null;
+        }
+    };
+
+    // ================================================================
+    // 重新綁定按鈕
+    // ================================================================
+    function rebindButtons() {
+        var btn8 = document.getElementById('btnScanQRStep8');
+        if (btn8) {
+            var newBtn8 = btn8.cloneNode(true);
+            btn8.parentNode.replaceChild(newBtn8, btn8);
+            newBtn8.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.startQRScannerStep8();
+            };
+        }
+
+        var btn9 = document.getElementById('btnScanQRStep9');
+        if (btn9) {
+            var newBtn9 = btn9.cloneNode(true);
+            btn9.parentNode.replaceChild(newBtn9, btn9);
+            newBtn9.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.startQRScannerStep9();
+            };
+        }
+        console.log('✅ 兩個掃描按鈕已重新綁定');
+    }
+
+    // ================================================================
+    // 語言切換時更新錯誤訊息
+    // ================================================================
+    var origSwitch = window.switchLanguage;
+    if (origSwitch) {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            var guides = document.querySelectorAll('.camera-guide');
+            guides.forEach(function(g) {
+                if (g.style.display === 'block') {
+                    g.innerHTML = getCameraText();
+                }
+            });
+        };
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    if (document.readyState === 'complete') {
+        setTimeout(rebindButtons, 200);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(rebindButtons, 300);
+        });
+    }
+
+    console.log('✅ 兩個掃描器已修復（啟動時會先停止另一個）');
+})();
+</script>
 </body>
 </html>
