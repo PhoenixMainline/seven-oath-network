@@ -1753,5 +1753,234 @@
         width: 100% !important;
     }
 </style>
+<!-- ============================================================ -->
+<!-- 修復 step2 中「被代理誓印資格」與「代理誓印資格」英文顯示    -->
+<!-- 貼在 </body> 前即可                                            -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    function fixEligibilityText() {
+        var lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
+
+        // 找到包含「被代理誓印資格」或「代理誓印資格」的父層區塊
+        var allDivs = document.querySelectorAll('.hud-card div, .hud-card span, .hud-card p, .condition-item');
+        var found1 = false;
+        var found2 = false;
+
+        for (var i = 0; i < allDivs.length; i++) {
+            var el = allDivs[i];
+            var text = el.textContent || '';
+
+            // 找「被代理誓印資格」
+            if (!found1 && (text.indexOf('被代理誓印資格') !== -1 || text.indexOf('被代理誓印】資格') !== -1)) {
+                found1 = true;
+                if (lang === 'en') {
+                    // 保留原本的資格內容，只替換標題
+                    var html = el.innerHTML || '';
+                    // 替換標題部分
+                    html = html.replace(/被代理誓印【資格】/g, '【Delegated Oath-Seal】Eligibility');
+                    html = html.replace(/被代理誓印資格/g, '【Delegated Oath-Seal】Eligibility');
+                    html = html.replace(/被代理誓印】資格/g, '【Delegated Oath-Seal】Eligibility');
+                    el.innerHTML = html;
+                } else {
+                    var html = el.innerHTML || '';
+                    html = html.replace(/【Delegated Oath-Seal】Eligibility/g, '被代理誓印【資格】');
+                    el.innerHTML = html;
+                }
+                console.log('✅ 已更新「被代理誓印資格」');
+            }
+
+            // 找「代理誓印資格」
+            if (!found2 && (text.indexOf('代理誓印資格') !== -1 || text.indexOf('代理誓印】資格') !== -1)) {
+                found2 = true;
+                if (lang === 'en') {
+                    var html = el.innerHTML || '';
+                    html = html.replace(/代理誓印【資格】/g, '【Delegating Oath-Seal】Eligibility');
+                    html = html.replace(/代理誓印資格/g, '【Delegating Oath-Seal】Eligibility');
+                    html = html.replace(/代理誓印】資格/g, '【Delegating Oath-Seal】Eligibility');
+                    el.innerHTML = html;
+                } else {
+                    var html = el.innerHTML || '';
+                    html = html.replace(/【Delegating Oath-Seal】Eligibility/g, '代理誓印【資格】');
+                    el.innerHTML = html;
+                }
+                console.log('✅ 已更新「代理誓印資格」');
+            }
+        }
+
+        // 如果上面沒找到，改用更精確的方式：透過 step2Cond1 和 step2Cond2 的父層
+        var cond1 = document.getElementById('step2Cond1');
+        var cond2 = document.getElementById('step2Cond2');
+        
+        if (cond1) {
+            var parent1 = cond1.closest('div');
+            if (parent1) {
+                var text1 = parent1.textContent || '';
+                if (text1.indexOf('被代理誓印') !== -1 || text1.indexOf('Delegated') !== -1) {
+                    if (lang === 'en') {
+                        var html1 = parent1.innerHTML || '';
+                        html1 = html1.replace(/被代理誓印【資格】/g, '【Delegated Oath-Seal】Eligibility');
+                        html1 = html1.replace(/被代理誓印資格/g, '【Delegated Oath-Seal】Eligibility');
+                        parent1.innerHTML = html1;
+                    } else {
+                        var html1 = parent1.innerHTML || '';
+                        html1 = html1.replace(/【Delegated Oath-Seal】Eligibility/g, '被代理誓印【資格】');
+                        parent1.innerHTML = html1;
+                    }
+                }
+            }
+        }
+
+        if (cond2) {
+            var parent2 = cond2.closest('div');
+            if (parent2) {
+                var text2 = parent2.textContent || '';
+                if (text2.indexOf('代理誓印') !== -1 || text2.indexOf('Delegating') !== -1) {
+                    if (lang === 'en') {
+                        var html2 = parent2.innerHTML || '';
+                        html2 = html2.replace(/代理誓印【資格】/g, '【Delegating Oath-Seal】Eligibility');
+                        html2 = html2.replace(/代理誓印資格/g, '【Delegating Oath-Seal】Eligibility');
+                        parent2.innerHTML = html2;
+                    } else {
+                        var html2 = parent2.innerHTML || '';
+                        html2 = html2.replace(/【Delegating Oath-Seal】Eligibility/g, '代理誓印【資格】');
+                        parent2.innerHTML = html2;
+                    }
+                }
+            }
+        }
+    }
+
+    // 執行
+    if (document.readyState === 'complete') {
+        setTimeout(fixEligibilityText, 100);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(fixEligibilityText, 150);
+        });
+    }
+
+    // 語言切換時也執行
+    var origSwitch = window.switchLanguage;
+    if (origSwitch) {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(fixEligibilityText, 100);
+        };
+    }
+})();
+</script>
+
+<!-- ============================================================ -->
+<!-- 備用 CSS 修復                                                -->
+<!-- ============================================================ -->
+<style>
+    /* 確保文字顯示正確 */
+    .hud-card div:contains("被代理誓印【資格】"),
+    .hud-card div:contains("代理誓印【資格】"),
+    .hud-card div:contains("【Delegated Oath-Seal】Eligibility"),
+    .hud-card div:contains("【Delegating Oath-Seal】Eligibility") {
+        display: block !important;
+    }
+</style>
+<!-- ============================================================ -->
+<!-- 修復 step2 中「送出即啟主頻連線...」英文顯示                  -->
+<!-- 貼在 </body> 前即可                                            -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    function fixNoteText() {
+        var lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
+
+        // 中英文對照
+        var zhText = '送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。';
+        var enText = 'Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.';
+
+        // 要處理的 ID 列表
+        var ids = [
+            'step2Note',
+            'step2ReturnNote'
+        ];
+
+        for (var i = 0; i < ids.length; i++) {
+            var el = document.getElementById(ids[i]);
+            if (el) {
+                var currentText = el.textContent || '';
+                // 如果包含中文關鍵字或英文關鍵字，就替換
+                if (currentText.indexOf('送出即啟主頻連線') !== -1 || 
+                    currentText.indexOf('Once submitted') !== -1 ||
+                    currentText.indexOf('Primary Frequency Link') !== -1) {
+                    el.textContent = (lang === 'en') ? enText : zhText;
+                    console.log('✅ 已更新 ' + ids[i] + ' 為 ' + (lang === 'en' ? '英文' : '中文'));
+                }
+            }
+        }
+
+        // 也透過文字內容搜尋（備用）
+        var allDivs = document.querySelectorAll('.hud-card div, .center-card div, .step-panel div');
+        for (var j = 0; j < allDivs.length; j++) {
+            var div = allDivs[j];
+            var text = div.textContent || '';
+            // 檢查是否包含「送出即啟主頻連線」或「Once submitted」
+            if ((text.indexOf('送出即啟主頻連線') !== -1 || text.indexOf('Once submitted') !== -1) &&
+                (text.indexOf('判定授權完成') !== -1 || text.indexOf('authorization is recognized') !== -1)) {
+                // 確認這個 div 沒有 ID，或者 ID 不是我們已經處理過的
+                var hasId = false;
+                for (var k = 0; k < ids.length; k++) {
+                    if (div.id === ids[k]) {
+                        hasId = true;
+                        break;
+                    }
+                }
+                if (!hasId) {
+                    // 只替換文字內容，保留 HTML 結構
+                    var html = div.innerHTML || '';
+                    if (lang === 'en') {
+                        html = html.replace(/送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。/g, enText);
+                        html = html.replace(/送出即啟主頻連線/g, 'Once submitted, the Primary Frequency Link is activated');
+                        html = html.replace(/判定授權完成/g, 'authorization is recognized');
+                        html = html.replace(/誓印對頻律網顯化/g, 'The Oath-Soul Alignment Network is made manifest');
+                    } else {
+                        html = html.replace(/Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest./g, zhText);
+                        html = html.replace(/Once submitted, the Primary Frequency Link is activated/g, '送出即啟主頻連線');
+                        html = html.replace(/authorization is recognized/g, '判定授權完成');
+                        html = html.replace(/The Oath-Soul Alignment Network is made manifest/g, '誓印對頻律網顯化');
+                    }
+                    div.innerHTML = html;
+                    console.log('✅ 已更新包含「送出即啟主頻連線」的 div');
+                }
+            }
+        }
+    }
+
+    // 執行
+    if (document.readyState === 'complete') {
+        setTimeout(fixNoteText, 100);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(fixNoteText, 150);
+        });
+    }
+
+    // 語言切換時也執行
+    var origSwitch = window.switchLanguage;
+    if (origSwitch) {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(fixNoteText, 100);
+        };
+    }
+})();
+</script>
+
+<style>
+    /* 確保文字顯示正確 */
+    #step2Note,
+    #step2ReturnNote {
+        text-align: left !important;
+        justify-content: flex-start !important;
+        width: 100% !important;
+    }
+</style>
 </body>
 </html>
