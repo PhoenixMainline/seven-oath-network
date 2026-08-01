@@ -1682,5 +1682,76 @@
     console.log('✅ Step2 中英文切換修復已載入');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 強制將「送出即啟主頻連線...」設為靠左                        -->
+<!-- 貼在 </body> 前即可                                            -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    function fixAllNoteLeft() {
+        // 處理所有可能出現「送出即啟主頻連線」的區塊
+        var targets = [
+            'step2Note',
+            'step2ReturnNote',
+            'step2TriggerNote',
+            'step2ReturnTriggerNote'
+        ];
+
+        for (var i = 0; i < targets.length; i++) {
+            var el = document.getElementById(targets[i]);
+            if (el) {
+                el.style.textAlign = 'left';
+                el.style.justifyContent = 'flex-start';
+                el.style.width = '100%';
+                console.log('✅ 已將 ' + targets[i] + ' 設為靠左');
+            }
+        }
+
+        // 也透過文字內容搜尋（備用）
+        var allDivs = document.querySelectorAll('.hud-card div, .center-card div');
+        for (var j = 0; j < allDivs.length; j++) {
+            var div = allDivs[j];
+            var text = div.textContent || '';
+            if (text.indexOf('送出即啟主頻連線') !== -1 && 
+                text.indexOf('判定授權完成') !== -1) {
+                div.style.textAlign = 'left';
+                div.style.justifyContent = 'flex-start';
+                div.style.width = '100%';
+                console.log('✅ 已將包含「送出即啟主頻連線」的 div 設為靠左');
+            }
+        }
+    }
+
+    if (document.readyState === 'complete') {
+        setTimeout(fixAllNoteLeft, 100);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(fixAllNoteLeft, 150);
+        });
+    }
+
+    var origSwitch = window.switchLanguage;
+    if (origSwitch) {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(fixAllNoteLeft, 100);
+        };
+    }
+})();
+</script>
+
+<style>
+    /* 強制「送出即啟主頻連線...」靠左 */
+    #step2Note,
+    #step2ReturnNote,
+    #step2TriggerNote,
+    #step2ReturnTriggerNote,
+    .hud-card div:contains("送出即啟主頻連線"),
+    .center-card div:contains("送出即啟主頻連線") {
+        text-align: left !important;
+        justify-content: flex-start !important;
+        width: 100% !important;
+    }
+</style>
 </body>
 </html>
