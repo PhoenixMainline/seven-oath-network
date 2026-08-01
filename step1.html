@@ -210,7 +210,7 @@
         </header>
 
         <main class="step-content">
-            <!-- ===== 第1項：身份啟動與資格檢核 · 誓魂頻率雷達 5D ===== -->
+            <!-- ===== 第1項：身份啟動與資格檢核 · 誓魂頻率需達 5D ===== -->
             <div class="step-panel active" id="panelStep1">
                 <div class="hud-card" style="background:linear-gradient(135deg,rgba(88,28,135,0.5),rgba(30,27,75,0.6)); border:1px solid rgba(168,85,247,0.5);">
                     <div style="text-align:center; color:#e9d5ff; font-size:1.05rem; font-weight:bold; margin-bottom:16px; letter-spacing:1px;"><span id="step1Title">🔓 身份啟動與資格檢核 · 誓魂頻率需達 5D</span></div>
@@ -310,7 +310,7 @@
                     <div style="font-size:0.85rem; color:rgba(224,232,245,0.85); line-height:1.7; margin-bottom:12px; width:100%;"><i class="fa-solid fa-link" style="color:#00e676; margin-right:6px;"></i><span id="step1Note">送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span></div>
                     <div style="background:rgba(232,96,74,0.1); border-left:4px solid #E8604A; padding:10px 14px; border-radius:8px; font-size:0.82rem; color:#e0dcc8; line-height:1.6; width:100%; text-align:left;"><i class="fa-solid fa-exclamation-circle" style="color:#E8604A; margin-right:6px;"></i><span id="step1TriggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span></div>
                     <div class="hud-card" id="qrScanCardStep8" style="margin-top:12px; border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15); width:100%;">
-                        <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-qrcode"></i><span id="step1QrTitle">📷 請掃描【誓導 QR Code】完成執行指令</span></div>
+                        <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-qrcode"></i><span id="step1QrTitle">📷 請對準誓導 QR Code掃描驗證</span></div>
                         <div style="text-align:center; padding:10px 0;">
                             <div id="qr-reader-container-step8" style="width:100%; max-width:280px; margin:0 auto;"></div>
                             <button class="btn-restart" id="btnScanQRStep8" onclick="startQRScannerStep8()" style="margin-top:10px;"><i class="fa-solid fa-qrcode"></i> <span id="step1BtnScan">📷 開始掃描</span></button>
@@ -341,7 +341,7 @@
                     <div style="font-size:0.85rem; color:rgba(224,232,245,0.85); line-height:1.7; margin-bottom:12px; width:100%;"><i class="fa-solid fa-link" style="color:#00e676; margin-right:6px;"></i><span id="step1ReturnNote">送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span></div>
                     <div style="background:rgba(232,96,74,0.1); border-left:4px solid #E8604A; padding:10px 14px; border-radius:8px; font-size:0.82rem; color:#e0dcc8; line-height:1.6; width:100%; text-align:left;"><i class="fa-solid fa-exclamation-circle" style="color:#E8604A; margin-right:6px;"></i><span id="step1ReturnTriggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span></div>
                     <div class="hud-card" id="qrScanCardStep9" style="margin-top:12px; border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15); width:100%;">
-                        <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-qrcode"></i><span id="step1ReturnQrTitle">📷 請掃描【誓導 QR Code】完成回傳誓證</span></div>
+                        <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-qrcode"></i><span id="step1ReturnQrTitle">📷 請對準誓導 QR Code掃描驗證</span></div>
                         <div style="text-align:center; padding:10px 0;">
                             <div id="qr-reader-container-step9" style="width:100%; max-width:280px; margin:0 auto;"></div>
                             <button class="btn-restart" id="btnScanQRStep9" onclick="startQRScannerStep9()" style="margin-top:10px;"><i class="fa-solid fa-qrcode"></i> <span id="step1ReturnBtnScan">📷 開始掃描</span></button>
@@ -435,7 +435,7 @@
                 step1Command: "【執行指令】第 1 項 開啟誓魂密鑰對頻總判定（誓印通過／誓印未通過）結果",
                 step1Note: "送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。",
                 step1TriggerNote: "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
-                step1QrTitle: "📷 請掃描【誓導 QR Code】完成執行指令",
+                step1QrTitle: "📷 請對準誓導 QR Code掃描驗證",
                 step1BtnScan: "📷 開始掃描",
                 step1Result: "掃描成功！已完成執行指令",
                 step1CameraGuide: "📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
@@ -451,7 +451,7 @@
                 step1ReturnCommand: "【執行指令】第 1 項 回傳【誓印通過】誓證",
                 step1ReturnNote: "送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。",
                 step1ReturnTriggerNote: "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
-                step1ReturnQrTitle: "📷 請掃描【誓導 QR Code】完成回傳誓證",
+                step1ReturnQrTitle: "📷 請對準誓導 QR Code掃描驗證",
                 step1ReturnBtnScan: "📷 開始掃描",
                 step1ReturnResult: "掃描成功！已完成回傳誓證",
                 step1ReturnCameraGuide: "📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」 → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....） ⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
