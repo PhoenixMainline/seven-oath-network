@@ -2285,91 +2285,172 @@
     console.log('✅ 通用導航按鈕修復模板已載入');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 最強力「上一步/下一步」按鈕修復模板 - 強制建立可點擊按鈕   -->
+<!-- 貼在 </body> 前即可                                            -->
+<!-- ============================================================ -->
+<div id="universal-nav-container" style="position:fixed; bottom:0; left:0; right:0; z-index:9999; background:rgba(4,13,33,0.95); border-top:2px solid rgba(168,85,247,0.4); padding:10px 16px; display:flex; justify-content:space-between; align-items:center; backdrop-filter:blur(10px);">
+    <div style="display:flex; gap:12px;">
+        <a id="uni-back-btn" href="#" style="display:inline-flex; align-items:center; gap:8px; padding:8px 20px; background:rgba(124,58,237,0.2); border:1px solid #a78bfa; border-radius:24px; color:#e9d5ff; text-decoration:none; font-size:0.9rem; font-weight:bold; cursor:pointer; transition:all 0.3s;">
+            <i class="fa-solid fa-arrow-left"></i> <span id="uni-back-text">上一步</span>
+        </a>
+        <a id="uni-next-btn" href="#" style="display:inline-flex; align-items:center; gap:8px; padding:8px 20px; background:rgba(124,58,237,0.2); border:1px solid #a78bfa; border-radius:24px; color:#e9d5ff; text-decoration:none; font-size:0.9rem; font-weight:bold; cursor:pointer; transition:all 0.3s;">
+            <span id="uni-next-text">下一步</span> <i class="fa-solid fa-arrow-right"></i>
+        </a>
+    </div>
+    <div id="uni-page-marker" style="font-size:0.7rem; color:rgba(224,232,245,0.4);">
+        <i class="fa-regular fa-file-lines"></i> <span id="uni-page-text">覺醒卷</span>
+    </div>
+</div>
 
-<!-- ============================================================ -->
-<!-- 額外 CSS 修復：確保按鈕在任何頁面都正常顯示                  -->
-<!-- ============================================================ -->
+<script>
+(function() {
+    // ================================================================
+    // 強制建立導航按鈕
+    // ================================================================
+    function setupUniversalNav() {
+        var backBtn = document.getElementById('uni-back-btn');
+        var nextBtn = document.getElementById('uni-next-btn');
+
+        // 自動偵測上一步連結
+        var allLinks = document.querySelectorAll('a[href]');
+        var backHref = null;
+        var nextHref = null;
+        var pageText = '覺醒卷';
+
+        // 收集所有頁面連結
+        var stepLinks = [];
+        for (var i = 0; i < allLinks.length; i++) {
+            var href = allLinks[i].getAttribute('href');
+            if (href && href.indexOf('step') !== -1) {
+                stepLinks.push({
+                    href: href,
+                    text: allLinks[i].textContent || ''
+                });
+            }
+        }
+
+        // 找頁碼標記
+        var markerEl = document.querySelector('.page-marker, [class*="page"], [id*="page"]');
+        if (markerEl) {
+            pageText = markerEl.textContent || '覺醒卷';
+        }
+
+        // 設定下一步
+        if (stepLinks.length > 0) {
+            for (var j = 0; j < stepLinks.length; j++) {
+                var link = stepLinks[j];
+                if (link.text.indexOf('下一步') !== -1 || link.text.indexOf('Next') !== -1) {
+                    nextHref = link.href;
+                }
+                if (link.text.indexOf('上一步') !== -1 || link.text.indexOf('Previous') !== -1) {
+                    backHref = link.href;
+                }
+            }
+            // 如果沒找到明確的下一步，用最後一個
+            if (!nextHref && stepLinks.length > 0) {
+                nextHref = stepLinks[stepLinks.length - 1].href;
+            }
+            // 如果沒找到明確的上一步，用第一個
+            if (!backHref && stepLinks.length > 0) {
+                backHref = stepLinks[0].href;
+            }
+        }
+
+        // 設定按鈕連結
+        if (backBtn) {
+            if (backHref) {
+                backBtn.href = backHref;
+            } else {
+                backBtn.href = 'javascript:history.back()';
+            }
+            // 如果有語言切換，更新文字
+            var lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
+            var backText = document.getElementById('uni-back-text');
+            if (backText) {
+                backText.textContent = (lang === 'en') ? 'Previous' : '上一步';
+            }
+            backBtn.style.display = 'inline-flex';
+        }
+
+        if (nextBtn) {
+            if (nextHref) {
+                nextBtn.href = nextHref;
+            } else {
+                nextBtn.href = '#';
+            }
+            var lang2 = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
+            var nextText = document.getElementById('uni-next-text');
+            if (nextText) {
+                nextText.textContent = (lang2 === 'en') ? 'Next' : '下一步';
+            }
+            nextBtn.style.display = 'inline-flex';
+        }
+
+        // 更新頁碼
+        var pageEl = document.getElementById('uni-page-text');
+        if (pageEl) {
+            pageEl.textContent = pageText;
+        }
+
+        console.log('✅ 通用導航按鈕已建立');
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    if (document.readyState === 'complete') {
+        setTimeout(setupUniversalNav, 100);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(setupUniversalNav, 200);
+        });
+    }
+
+    // 語言切換時更新
+    var origSwitch = window.switchLanguage;
+    if (origSwitch) {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(function() {
+                var backText = document.getElementById('uni-back-text');
+                var nextText = document.getElementById('uni-next-text');
+                if (backText) backText.textContent = (lang === 'en') ? 'Previous' : '上一步';
+                if (nextText) nextText.textContent = (lang === 'en') ? 'Next' : '下一步';
+            }, 50);
+        };
+    }
+
+    console.log('✅ 最強力導航按鈕修復模板已載入');
+})();
+</script>
+
 <style>
-    /* 強制顯示 footer */
-    .hud-footer {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        flex-shrink: 0 !important;
-        flex-wrap: wrap !important;
-        gap: 8px !important;
-        padding: clamp(6px, 1vh, 12px) 0 !important;
-        margin-top: auto !important;
-        border-top: 1px solid rgba(168, 85, 247, 0.2) !important;
-        position: relative !important;
-        z-index: 10 !important;
-        min-height: 44px !important;
-        width: 100% !important;
-        justify-content: space-between !important;
-        align-items: center !important;
+    /* 按鈕懸停效果 */
+    #uni-back-btn:hover,
+    #uni-next-btn:hover {
+        background: rgba(124, 58, 237, 0.4) !important;
+        box-shadow: 0 0 30px rgba(124, 58, 237, 0.5) !important;
+        transform: scale(1.02);
     }
-
-    /* 強制顯示按鈕群組 */
-    .footer-btn-group {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        flex-wrap: wrap !important;
-        gap: 6px !important;
-        align-items: center !important;
-        width: auto !important;
-    }
-
-    /* 強制顯示按鈕 */
-    .btn-action {
-        display: inline-flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        padding: clamp(6px, 1vh, 10px) clamp(10px, 1.5vw, 18px) !important;
-        font-size: clamp(0.6rem, 1.2vh, 0.85rem) !important;
-        min-height: clamp(28px, 4vh, 38px) !important;
-        white-space: nowrap !important;
-        border: 1px solid #a78bfa !important;
-        color: #e9d5ff !important;
-        background: rgba(124, 58, 237, 0.15) !important;
-        border-radius: 20px !important;
-        text-decoration: none !important;
-        cursor: pointer !important;
-        pointer-events: auto !important;
-        align-items: center !important;
-        gap: 6px !important;
-        box-shadow: 0 0 15px rgba(124, 58, 237, 0.3) !important;
-    }
-    .btn-action:hover {
-        background: rgba(124, 58, 237, 0.28) !important;
-        box-shadow: 0 0 25px rgba(124, 58, 237, 0.5) !important;
-        transform: translateY(-1px) !important;
-    }
-
-    /* 強制顯示 page-marker */
-    .page-marker {
-        display: inline-flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        font-size: clamp(0.45rem, 1vh, 0.7rem) !important;
-        white-space: nowrap !important;
-        color: rgba(224, 232, 245, 0.35) !important;
-        align-items: center !important;
-        gap: 6px !important;
-    }
-
-    /* 手機版 */
-    @media (max-width: 480px) {
-        .footer-btn-group {
-            gap: 4px !important;
+    /* 手機版調整 */
+    @media (max-width: 600px) {
+        #universal-nav-container {
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 8px 12px !important;
         }
-        .btn-action {
-            padding: 4px 10px !important;
-            font-size: 0.6rem !important;
-            min-height: 24px !important;
+        #universal-nav-container > div:first-child {
+            width: 100%;
+            justify-content: center;
         }
-        .page-marker {
-            font-size: 0.4rem !important;
+        #uni-back-btn,
+        #uni-next-btn {
+            padding: 6px 14px !important;
+            font-size: 0.75rem !important;
+        }
+        #uni-page-marker {
+            font-size: 0.55rem !important;
         }
     }
 </style>
