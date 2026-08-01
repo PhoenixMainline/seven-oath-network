@@ -348,6 +348,104 @@
         // 暴露切換函數給全局
         window.switchLanguage = switchLanguage;
     </script>
+<!-- ============================================================ -->
+<!-- 將「進入」按鈕改為英文版修復模板                            -->
+<!-- 貼在 </body> 前即可                                            -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    // ================================================================
+    // 將所有「進入」按鈕根據語言切換為對應文字
+    // ================================================================
+    function fixEnterButtons() {
+        // 取得所有 .unit-link 按鈕
+        var buttons = document.querySelectorAll('.unit-link');
+        var currentLang = window.currentLang || 'zh';
+        
+        for (var i = 0; i < buttons.length; i++) {
+            var btn = buttons[i];
+            var html = btn.innerHTML;
+            
+            if (currentLang === 'en') {
+                // 英文版：將「進入」改為「Enter」
+                if (html.indexOf('進入') !== -1) {
+                    html = html.replace('進入', 'Enter');
+                    btn.innerHTML = html;
+                }
+                // 如果已經有箭頭，保留
+                if (html.indexOf('Enter') === -1 && html.indexOf('進入') === -1) {
+                    // 如果沒有任何文字，加入 Enter
+                    btn.innerHTML = 'Enter <i class="fa-solid fa-arrow-right"></i>';
+                }
+            } else {
+                // 中文版：將「Enter」改回「進入」
+                if (html.indexOf('Enter') !== -1 && html.indexOf('進入') === -1) {
+                    html = html.replace('Enter', '進入');
+                    btn.innerHTML = html;
+                }
+                // 如果沒有任何文字，加入 進入
+                if (html.indexOf('進入') === -1 && html.indexOf('Enter') === -1) {
+                    btn.innerHTML = '進入 <i class="fa-solid fa-arrow-right"></i>';
+                }
+            }
+        }
+        
+        console.log('✅ 已更新「進入」按鈕為 ' + (currentLang === 'en' ? 'Enter' : '進入'));
+    }
 
+    // ================================================================
+    // 監聽語言切換事件
+    // ================================================================
+    // 保存原始的 switchLanguage 函數
+    var origSwitchLanguage = window.switchLanguage;
+    
+    if (origSwitchLanguage) {
+        window.switchLanguage = function(lang) {
+            // 呼叫原始函數
+            origSwitchLanguage(lang);
+            // 更新按鈕文字
+            setTimeout(fixEnterButtons, 50);
+        };
+        console.log('✅ 已擴充 switchLanguage 函數，支援按鈕文字切換');
+    } else {
+        // 如果沒有 switchLanguage，直接綁定
+        console.warn('未找到 switchLanguage 函數，直接綁定');
+        // 監聽語言切換按鈕點擊
+        var langBtns = document.querySelectorAll('.lang-btn');
+        for (var i = 0; i < langBtns.length; i++) {
+            langBtns[i].addEventListener('click', function() {
+                setTimeout(fixEnterButtons, 100);
+            });
+        }
+    }
+
+    // ================================================================
+    // 頁面載入完成後執行
+    // ================================================================
+    if (document.readyState === 'complete') {
+        setTimeout(fixEnterButtons, 200);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(fixEnterButtons, 300);
+        });
+    }
+})();
+</script>
+
+<!-- ============================================================ -->
+<!-- 備用 CSS：確保按鈕文字顯示正確                              -->
+<!-- ============================================================ -->
+<style>
+    /* 確保按鈕文字正確顯示 */
+    .unit-link {
+        white-space: nowrap !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+    }
+    .unit-link i {
+        margin-left: 2px !important;
+    }
+</style>
 </body>
 </html>
