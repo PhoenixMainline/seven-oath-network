@@ -190,7 +190,7 @@
         }
         .info-table tr:last-child td { border-bottom: none; }
 
-        /* ===== 提交表單樣式（放在最底部，完全展開） ===== */
+        /* ===== 提交表單樣式 ===== */
         .form-submit-container {
             margin-top: 20px;
             padding: 24px 20px;
@@ -198,7 +198,6 @@
             border: 1px solid rgba(168, 85, 247, 0.3);
             border-radius: 16px;
             width: 100%;
-            display: block !important;
         }
         .form-submit-container .form-title {
             font-size: 1.1rem;
@@ -285,20 +284,14 @@
             border: 1px solid rgba(168, 85, 247, 0.3);
         }
         .btn-reset:hover { background: rgba(124, 58, 237, 0.3); }
-        .btn-close-preview {
-            background: rgba(232, 96, 74, 0.15);
-            color: #e0dcc8;
-            border: 1px solid rgba(232, 96, 74, 0.3);
-        }
-        .btn-close-preview:hover { background: rgba(232, 96, 74, 0.25); }
 
+        /* ===== 預覽區 ===== */
         .preview-submit-container {
             margin-top: 20px;
             padding: 20px;
             background: rgba(0, 0, 0, 0.5);
             border: 2px solid rgba(168, 85, 247, 0.2);
             border-radius: 12px;
-            display: block !important;
             width: 100%;
         }
         .preview-submit-container .preview-header {
@@ -458,7 +451,6 @@
                     </div>
                 </div>
 
-                <!-- ===== 代理誓印 × 執行帳號規範表格 ===== -->
                 <div class="hud-card">
                     <div class="card-title"><i class="fa-solid fa-table" style="color:#a78bfa;"></i><span id="step2TableTitle">【代理誓印 × 執行帳號規範】</span></div>
                     <div style="overflow-x:auto;">
@@ -481,7 +473,6 @@
                     </div>
                 </div>
 
-                <!-- ===== 授權誓讀階段 ===== -->
                 <div class="hud-card" style="border:1px solid rgba(168,85,247,0.4);">
                     <div class="card-title"><i class="fa-solid fa-book-open" style="color:#a78bfa;"></i><span id="step2Sec3">【三】授權誓讀階段</span></div>
                     <div class="instruction-box">
@@ -500,7 +491,6 @@
                     </div>
                 </div>
 
-                <!-- ===== 接續進程 ===== -->
                 <div class="hud-card">
                     <div class="card-title"><i class="fa-solid fa-arrow-right" style="color:#a78bfa;"></i><span id="step2Sec4">【四】接續進程</span></div>
                     <div style="margin-bottom:12px;">
@@ -515,7 +505,6 @@
                     </div>
                 </div>
 
-                <!-- ===== ① 驗證階段（啟動觸發）置中 ===== -->
                 <div class="hud-card center-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.2);">
                     <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-shield-halved" style="color:#a78bfa;"></i><span id="step2VerifyTitle">🧭 ① 驗證階段（啟動觸發）</span></div>
                     <div class="instruction-box" style="align-items:center;">
@@ -538,12 +527,10 @@
                     </div>
                 </div>
 
-                <!-- ===== ② 回傳誓證（確認誓印）置中 ===== -->
                 <div class="hud-card center-card" style="background:linear-gradient(135deg,rgba(88,28,135,0.5),rgba(30,27,75,0.6)); border:1px solid rgba(168,85,247,0.5);">
                     <div class="card-title" style="justify-content:center; color:#e9d5ff;"><i class="fa-solid fa-certificate" style="color:#a78bfa;"></i><span id="step2ReturnTitle">📩 ② 回傳誓證（確認誓印）</span></div>
                     <div style="background:rgba(0,230,118,0.12); border-left:4px solid #00e676; padding:14px 16px; border-radius:10px; margin-bottom:18px; width:100%; text-align:center;"><div style="color:#00e676; font-size:1.1rem; font-weight:bold;" id="step2Success">✅ 顯示：「誓印通過」</div></div>
 
-                    <!-- 提交程序 -->
                     <div style="margin-top:18px; margin-bottom:18px; padding:14px 16px; background:rgba(124,58,237,0.12); border-left:4px solid #00e676; border-radius:8px; width:100%; text-align:left;">
                         <div style="color: #00e676; font-weight: bold; font-size: 1rem; margin-bottom: 10px;">📋 【提交程序】</div>
                         <div style="color: #e0e7ff; font-size: 0.9rem; line-height: 1.8;">
@@ -592,7 +579,6 @@
                     </div>
                 </div>
 
-                <!-- ===== 顯示：「誓印未通過」→ 補誓程序 ===== -->
                 <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.2);">
                     <div style="background:rgba(0,230,118,0.12); border-left:4px solid #00e676; padding:14px 16px; border-radius:10px; margin-bottom:16px;">
                         <div style="color:#00e676; font-size:1.1rem; font-weight:bold;"><span id="step2NotPassedTitle">⚠️ 顯示：「誓印未通過」</span></div>
@@ -606,7 +592,6 @@
                     </div>
                 </div>
 
-                <!-- ===== 收束條文 ===== -->
                 <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15);">
                     <div class="card-title"><i class="fa-solid fa-bookmark" style="color:#a78bfa;"></i><span id="step2ClosureTitle">【收束條文】</span></div>
                     <div class="instruction-box">
@@ -618,12 +603,11 @@
             </div>
 
             <!-- ============================================================ -->
-            <!-- 提交表單（放在最底部，全部展開，不被蓋掉）                  -->
+            <!-- 提交表單（使用您確認可以正常運作的版本）                    -->
             <!-- ============================================================ -->
             <div class="form-submit-container">
                 <div class="form-title">📋 《被代理誓印 × 對頻紀錄 × 誓資補綴綜合作業表》提交表單</div>
 
-                <!-- 一、誓印基本資料 -->
                 <div class="form-section-title">一、誓印基本資料</div>
 
                 <div class="form-row">
@@ -645,7 +629,6 @@
                     </select>
                 </div>
 
-                <!-- 二、誓資補綴內容 -->
                 <div class="form-section-title">二、誓資補綴內容</div>
 
                 <div class="form-row">
@@ -663,7 +646,6 @@
                     <input type="text" id="form_date" placeholder="西曆日期（天律紀元）" value="西曆 2025 年 10 月 9 日（天律紀元 3015.7.4）">
                 </div>
 
-                <!-- 三、對頻紀錄 -->
                 <div class="form-section-title">三、對頻紀錄</div>
 
                 <div class="form-row">
@@ -679,7 +661,6 @@
                     </select>
                 </div>
 
-                <!-- 四、主印核定 -->
                 <div class="form-section-title">四、主印核定</div>
 
                 <div class="form-row">
@@ -702,19 +683,21 @@
                     <textarea id="form_notes" rows="2" placeholder="請輸入系統備註">已同步入《宇宙智能誓導平台》冊記軌跡</textarea>
                 </div>
 
-                <!-- 按鈕 -->
                 <div class="form-actions">
-                    <button class="btn-preview" onclick="generateSubmitPreview()"><i class="fa-solid fa-eye"></i> 更新預覽</button>
+                    <button class="btn-preview" onclick="generateSubmitPreview()"><i class="fa-solid fa-eye"></i> 預覽表單</button>
                     <button class="btn-reset" onclick="resetSubmitForm()"><i class="fa-solid fa-rotate-left"></i> 重置</button>
-                    <button class="btn-close-preview" onclick="hideSubmitPreview()"><i class="fa-solid fa-times"></i> 關閉預覽</button>
+                    <button class="btn-reset" onclick="hideSubmitPreview()"><i class="fa-solid fa-times"></i> 關閉預覽</button>
                 </div>
 
-                <!-- 預覽區 -->
                 <div class="preview-submit-container" id="previewSubmitContainer">
                     <div class="preview-header">📋 《被代理誓印 × 對頻紀錄 × 誓資補綴綜合作業表》</div>
                     <table class="preview-table" id="previewSubmitTable">
                         <thead>
-                            <tr><th style="width:18%;">區塊</th><th style="width:24%;">欄位名稱</th><th style="width:58%;">執行文字</th></tr>
+                            <tr>
+                                <th style="width:18%;">區塊</th>
+                                <th style="width:24%;">欄位名稱</th>
+                                <th style="width:58%;">執行文字</th>
+                            </tr>
                         </thead>
                         <tbody id="previewSubmitBody"></tbody>
                     </table>
@@ -741,7 +724,6 @@
         var timerState = 'initial';
         var isTimerRunning = false;
 
-        // 簡化版語言包（僅保留必要項目）
         var langPack = {
             zh: {
                 homeBtn: "首頁 ->",
@@ -791,40 +773,23 @@
                 else if (timerState === 'counting') label.textContent = p.timerCounting;
                 else if (timerState === 'complete') label.textContent = p.timerComplete;
             }
-            // 同時更新所有 step2 的 ID 文字（簡化版）
-            var ids = ['step2Title', 'step2Unlock', 'step2Sub', 'step2Col1', 'step2Col2', 'step2Row1', 'step2Row2',
-                'step2Sec1', 'step2Desc1', 'step2Desc2', 'step2Desc3', 'step2List1', 'step2List2', 'step2List3',
-                'step2Desc4', 'step2List4', 'step2List5', 'step2List6', 'step2Sec2', 'step2CondTitle',
-                'step2Cond1', 'step2Cond2', 'step2ProcTitle', 'step2Proc1', 'step2Proc2', 'step2Proc3',
-                'step2Note', 'step2NoteText', 'step2TableTitle', 'step2TblCol1', 'step2TblCol2', 'step2TblCol3',
-                'step2TblCol4', 'step2TblRow1Col1', 'step2TblRow1Col2', 'step2TblRow1Col3', 'step2TblRow1Col4',
-                'step2TblRow2Col1', 'step2TblRow2Col2', 'step2TblRow2Col3', 'step2TblRow2Col4',
-                'step2TblRow3Col1', 'step2TblRow3Col2', 'step2TblRow3Col3', 'step2TblRow3Col4',
-                'step2TblRow4Col1', 'step2TblRow4Col2', 'step2TblRow4Col3', 'step2TblRow4Col4',
-                'step2Sec3', 'step2Sec3Desc1', 'step2Sec3Desc2', 'step2Proclamation', 'step2Note2',
-                'step2Sec4', 'step2LoginTitle', 'step2Login1', 'step2Login2', 'step2ScanTitle', 'step2Scan1',
-                'step2Scan2', 'step2VerifyTitle', 'step2Verify1', 'step2InputLabel', 'step2Command',
-                'step2TriggerNote', 'step2QrTitle', 'step2BtnScan', 'step2Result', 'step2CameraGuide',
-                'step2ReturnTitle', 'step2Success', 'step2Return1', 'step2Return2', 'step2CmdTitle',
-                'step2Cmd1', 'step2Cmd2', 'step2Cmd3', 'step2ReturnInputLabel', 'step2ReturnCommand',
-                'step2ReturnNote', 'step2ReturnTriggerNote', 'step2ReturnQrTitle', 'step2ReturnBtnScan',
-                'step2ReturnResult', 'step2ReturnCameraGuide', 'step2NotPassedTitle', 'step2NotPassed1',
-                'step2NotPassed2', 'step2NotPassed3', 'step2NotPassed4', 'step2NotPassed5',
-                'step2ClosureTitle', 'step2Closure1', 'step2Closure2', 'step2Closure3'
-            ];
-            // 簡化：只更新部分關鍵文字，其他由 HTML 內建
         }
 
         function openHudDialog(msg) {
             document.getElementById('hudDialogText').textContent = msg;
             document.getElementById('hudDialog').classList.add('active');
         }
-        function closeHudDialog() { document.getElementById('hudDialog').classList.remove('active'); }
+
+        function closeHudDialog() {
+            document.getElementById('hudDialog').classList.remove('active');
+        }
 
         function startTimer() {
             if (isTimerRunning) return;
-            var s = document.getElementById('btnStart'), r = document.getElementById('btnRestart');
-            var l = document.getElementById('timerLabel'), n = document.getElementById('timerNumber');
+            var s = document.getElementById('btnStart'),
+                r = document.getElementById('btnRestart');
+            var l = document.getElementById('timerLabel'),
+                n = document.getElementById('timerNumber');
             var p = langPack[currentLang];
             s.disabled = true;
             s.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="btnStartText">' + p.btnStartText + '</span>';
@@ -840,9 +805,12 @@
                 countdownSeconds--;
                 n.textContent = countdownSeconds;
                 if (countdownSeconds <= 0) {
-                    clearInterval(countdownTimer); countdownTimer = null;
-                    countdownSeconds = 0; timerState = 'complete';
-                    n.textContent = '✔'; n.classList.add('complete');
+                    clearInterval(countdownTimer);
+                    countdownTimer = null;
+                    countdownSeconds = 0;
+                    timerState = 'complete';
+                    n.textContent = '✔';
+                    n.classList.add('complete');
                     l.textContent = p.timerComplete;
                     s.disabled = false;
                     s.innerHTML = '<i class="fa-solid fa-check"></i> <span id="btnStartText">' + p.timerComplete + '</span>';
@@ -852,16 +820,24 @@
         }
 
         function resetTimer() {
-            clearInterval(countdownTimer); countdownTimer = null;
-            var s = document.getElementById('btnStart'), l = document.getElementById('timerLabel'), n = document.getElementById('timerNumber'), r = document.getElementById('btnRestart');
+            clearInterval(countdownTimer);
+            countdownTimer = null;
+            var s = document.getElementById('btnStart'),
+                l = document.getElementById('timerLabel'),
+                n = document.getElementById('timerNumber'),
+                r = document.getElementById('btnRestart');
             var p = langPack[currentLang];
-            timerState = 'initial'; countdownSeconds = 10; isTimerRunning = false;
-            n.textContent = countdownSeconds; l.textContent = p.timerLabel; n.classList.remove('complete');
-            s.disabled = false; s.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">' + p.btnStartText + '</span>';
+            timerState = 'initial';
+            countdownSeconds = 10;
+            isTimerRunning = false;
+            n.textContent = countdownSeconds;
+            l.textContent = p.timerLabel;
+            n.classList.remove('complete');
+            s.disabled = false;
+            s.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">' + p.btnStartText + '</span>';
             r.style.display = 'none';
         }
 
-        // 掃描器函數
         function startQRScanner(containerId, resultId, guideId) {
             var container = document.getElementById(containerId);
             if (!container) return;
@@ -880,9 +856,9 @@
             if (typeof Html5Qrcode === 'undefined' || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                 if (guide) {
                     guide.style.display = 'block';
-                    guide.innerHTML = (currentLang === 'en')
-                        ? '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.'
-                        : '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                    guide.innerHTML = (currentLang === 'en') ?
+                        '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.' :
+                        '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
                 }
                 return;
             }
@@ -895,24 +871,26 @@
                             resultEl.style.display = 'block';
                             resultEl.innerHTML = decodedText;
                         }
-                        instance.stop().then(function() { window._currentScanner = null; }).catch(function() { window._currentScanner = null; });
+                        instance.stop().then(function() { window._currentScanner = null; }).catch(function() {
+                            window._currentScanner = null;
+                        });
                     },
                     function() {}
                 ).catch(function() {
                     if (guide) {
                         guide.style.display = 'block';
-                        guide.innerHTML = (currentLang === 'en')
-                            ? '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.'
-                            : '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                        guide.innerHTML = (currentLang === 'en') ?
+                            '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.' :
+                            '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
                     }
                     window._currentScanner = null;
                 });
             } catch (e) {
                 if (guide) {
                     guide.style.display = 'block';
-                    guide.innerHTML = (currentLang === 'en')
-                        ? '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.'
-                        : '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                    guide.innerHTML = (currentLang === 'en') ?
+                        '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.' :
+                        '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
                 }
                 window._currentScanner = null;
             }
@@ -921,6 +899,7 @@
         window.startQRScannerStep8 = function() {
             startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
         };
+
         window.startQRScannerStep9 = function() {
             startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
         };
@@ -963,10 +942,13 @@
                     currentSection = row.section;
                     html += '<tr><td class="section-header" colspan="3">' + currentSection + '</td></tr>';
                 }
-                html += '<tr><td class="label-cell">' + (row.section === currentSection ? '' : '') + '</td>';
+                html += '<tr>';
+                html += '<td class="label-cell">' + (row.section === currentSection ? '' : '') + '</td>';
                 html += '<td class="label-cell">' + row.label + '</td>';
-                html += '<td class="value-cell">' + row.value + '</td></tr>';
+                html += '<td class="value-cell">' + row.value + '</td>';
+                html += '</tr>';
             }
+
             document.getElementById('previewSubmitBody').innerHTML = html;
             document.getElementById('previewSubmitContainer').style.display = 'block';
             document.getElementById('previewSubmitContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -984,19 +966,17 @@
             document.getElementById('form_signature').value = 'Lyria Aurion';
             document.getElementById('form_approval').value = '✅ 通過';
             document.getElementById('form_notes').value = '';
-            document.getElementById('previewSubmitContainer').style.display = 'block';
-            setTimeout(window.generateSubmitPreview, 100);
+            document.getElementById('previewSubmitContainer').style.display = 'none';
         };
 
         window.hideSubmitPreview = function() {
             document.getElementById('previewSubmitContainer').style.display = 'none';
         };
 
-        // ===== 頁面載入 =====
         window.onload = function() {
             switchLanguage('zh');
             document.getElementById('btnRestart').style.display = 'none';
-            // 綁定掃描按鈕
+
             var btn8 = document.getElementById('btnScanQRStep8');
             if (btn8) {
                 btn8.onclick = function(e) {
@@ -1011,9 +991,10 @@
                     startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
                 };
             }
-            // 產生表單預覽
+
             setTimeout(window.generateSubmitPreview, 300);
         };
+
         window.switchLanguage = switchLanguage;
         window.startQRScanner = startQRScanner;
     </script>
@@ -1022,6 +1003,7 @@
     <script>
         (function() {
             var BLOCK_KEYWORDS = ['無法啟動相機', '請允許相機權限', 'Unable to start camera', 'Unable to launch the feature', '相機權限', 'Camera permission', 'Could not start video source'];
+
             function shouldBlock(msg) {
                 if (typeof msg !== 'string') return false;
                 return BLOCK_KEYWORDS.some(function(k) { return msg.indexOf(k) !== -1; });
