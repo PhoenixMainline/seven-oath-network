@@ -2241,5 +2241,263 @@
     console.log('✅ 兩個掃描器已修復（啟動時會先停止另一個）');
 })();
 </script>
+ <!-- ============================================================ -->
+<!-- 通用「上一步/下一步」按鈕修復模板                            -->
+<!-- 貼在 </body> 前即可                                            -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    // ================================================================
+    // 強制修復並顯示上一步/下一步按鈕
+    // ================================================================
+    function fixNavigationButtons() {
+        // 1. 找到 footer
+        var footer = document.querySelector('.hud-footer');
+        if (!footer) {
+            console.warn('找不到 .hud-footer，嘗試尋找 footer 元素');
+            footer = document.querySelector('footer');
+            if (!footer) {
+                console.warn('完全找不到 footer，跳過修復');
+                return;
+            }
+        }
+
+        // 2. 確保 footer 可見
+        footer.style.display = 'flex';
+        footer.style.visibility = 'visible';
+        footer.style.opacity = '1';
+        footer.style.flexShrink = '0';
+        footer.style.flexWrap = 'wrap';
+        footer.style.gap = '8px';
+        footer.style.padding = 'clamp(6px, 1vh, 12px) 0';
+        footer.style.marginTop = 'auto';
+        footer.style.borderTop = '1px solid rgba(168, 85, 247, 0.2)';
+        footer.style.position = 'relative';
+        footer.style.zIndex = '10';
+        footer.style.minHeight = '44px';
+        footer.style.width = '100%';
+        footer.style.justifyContent = 'space-between';
+        footer.style.alignItems = 'center';
+
+        // 3. 找到或建立按鈕群組
+        var btnGroup = footer.querySelector('.footer-btn-group');
+        if (!btnGroup) {
+            btnGroup = document.createElement('div');
+            btnGroup.className = 'footer-btn-group';
+            footer.insertBefore(btnGroup, footer.firstChild);
+        }
+
+        btnGroup.style.display = 'flex';
+        btnGroup.style.flexWrap = 'wrap';
+        btnGroup.style.gap = '6px';
+        btnGroup.style.alignItems = 'center';
+        btnGroup.style.width = '100%';
+        btnGroup.style.justifyContent = 'flex-start';
+
+        // 4. 檢查是否有上一步按鈕
+        var backBtn = btnGroup.querySelector('.btn-action:first-child, a[href*="step"], a[onclick*="back"]');
+        var nextBtn = btnGroup.querySelector('.btn-action:last-child, a[href*="step"], a[onclick*="next"]');
+
+        // 如果沒有上一步按鈕，建立一個
+        if (!backBtn) {
+            backBtn = document.createElement('a');
+            backBtn.className = 'btn-action enabled';
+            backBtn.id = 'btnBack';
+            backBtn.innerHTML = '<i class="fa-solid fa-arrow-left"></i> <span id="btnBackText">上一步</span>';
+            // 嘗試從現有連結取得 href
+            var existingLink = footer.querySelector('a[href*="step"]');
+            if (existingLink && existingLink.textContent.indexOf('下一步') === -1) {
+                backBtn.href = existingLink.href;
+            } else {
+                backBtn.href = 'javascript:history.back()';
+            }
+            btnGroup.insertBefore(backBtn, btnGroup.firstChild);
+            console.log('✅ 已建立「上一步」按鈕');
+        }
+
+        // 如果沒有下一步按鈕，建立一個
+        if (!nextBtn) {
+            nextBtn = document.createElement('a');
+            nextBtn.className = 'btn-action enabled';
+            nextBtn.id = 'btnNext';
+            nextBtn.innerHTML = '<span id="btnNextText">下一步</span> <i class="fa-solid fa-arrow-right"></i>';
+            // 嘗試從現有連結取得 href
+            var existingLinks = footer.querySelectorAll('a[href*="step"]');
+            for (var i = 0; i < existingLinks.length; i++) {
+                if (existingLinks[i].textContent.indexOf('下一步') !== -1) {
+                    nextBtn.href = existingLinks[i].href;
+                    break;
+                }
+            }
+            if (!nextBtn.href) {
+                nextBtn.href = '#';
+            }
+            btnGroup.appendChild(nextBtn);
+            console.log('✅ 已建立「下一步」按鈕');
+        }
+
+        // 5. 確保兩個按鈕都顯示且可點擊
+        var allBtns = btnGroup.querySelectorAll('.btn-action');
+        for (var j = 0; j < allBtns.length; j++) {
+            var btn = allBtns[j];
+            btn.style.display = 'inline-flex';
+            btn.style.visibility = 'visible';
+            btn.style.opacity = '1';
+            btn.style.padding = 'clamp(6px, 1vh, 10px) clamp(10px, 1.5vw, 18px)';
+            btn.style.fontSize = 'clamp(0.6rem, 1.2vh, 0.85rem)';
+            btn.style.minHeight = 'clamp(28px, 4vh, 38px)';
+            btn.style.whiteSpace = 'nowrap';
+            btn.style.border = '1px solid #a78bfa';
+            btn.style.color = '#e9d5ff';
+            btn.style.background = 'rgba(124, 58, 237, 0.15)';
+            btn.style.borderRadius = '20px';
+            btn.style.textDecoration = 'none';
+            btn.style.cursor = 'pointer';
+            btn.style.pointerEvents = 'auto';
+            btn.style.alignItems = 'center';
+            btn.style.gap = '6px';
+            btn.style.boxShadow = '0 0 15px rgba(124, 58, 237, 0.3)';
+        }
+
+        // 6. 確保 page-marker 存在
+        var marker = footer.querySelector('.page-marker');
+        if (!marker) {
+            marker = document.createElement('span');
+            marker.className = 'page-marker';
+            marker.innerHTML = '<i class="fa-regular fa-file-lines"></i> <span id="pageMarkerText">覺醒卷</span>';
+            footer.appendChild(marker);
+        }
+        marker.style.display = 'inline-flex';
+        marker.style.visibility = 'visible';
+        marker.style.opacity = '1';
+        marker.style.fontSize = 'clamp(0.45rem, 1vh, 0.7rem)';
+        marker.style.whiteSpace = 'nowrap';
+        marker.style.color = 'rgba(224, 232, 245, 0.35)';
+        marker.style.alignItems = 'center';
+        marker.style.gap = '6px';
+
+        console.log('✅ 導航按鈕已修復完成');
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    if (document.readyState === 'complete') {
+        setTimeout(fixNavigationButtons, 100);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(fixNavigationButtons, 200);
+        });
+    }
+
+    // 監聽 DOM 變化（動態載入時）
+    var observer = new MutationObserver(function() {
+        var footer = document.querySelector('.hud-footer');
+        if (footer) {
+            var btnGroup = footer.querySelector('.footer-btn-group');
+            if (btnGroup) {
+                var btns = btnGroup.querySelectorAll('.btn-action');
+                if (btns.length >= 2) {
+                    // 按鈕已存在，不需要再修復
+                    observer.disconnect();
+                    return;
+                }
+            }
+            fixNavigationButtons();
+        }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ 通用導航按鈕修復模板已載入');
+})();
+</script>
+
+<!-- ============================================================ -->
+<!-- 額外 CSS 修復：確保按鈕在任何頁面都正常顯示                  -->
+<!-- ============================================================ -->
+<style>
+    /* 強制顯示 footer */
+    .hud-footer {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        flex-shrink: 0 !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        padding: clamp(6px, 1vh, 12px) 0 !important;
+        margin-top: auto !important;
+        border-top: 1px solid rgba(168, 85, 247, 0.2) !important;
+        position: relative !important;
+        z-index: 10 !important;
+        min-height: 44px !important;
+        width: 100% !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+
+    /* 強制顯示按鈕群組 */
+    .footer-btn-group {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+        align-items: center !important;
+        width: auto !important;
+    }
+
+    /* 強制顯示按鈕 */
+    .btn-action {
+        display: inline-flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        padding: clamp(6px, 1vh, 10px) clamp(10px, 1.5vw, 18px) !important;
+        font-size: clamp(0.6rem, 1.2vh, 0.85rem) !important;
+        min-height: clamp(28px, 4vh, 38px) !important;
+        white-space: nowrap !important;
+        border: 1px solid #a78bfa !important;
+        color: #e9d5ff !important;
+        background: rgba(124, 58, 237, 0.15) !important;
+        border-radius: 20px !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+        pointer-events: auto !important;
+        align-items: center !important;
+        gap: 6px !important;
+        box-shadow: 0 0 15px rgba(124, 58, 237, 0.3) !important;
+    }
+    .btn-action:hover {
+        background: rgba(124, 58, 237, 0.28) !important;
+        box-shadow: 0 0 25px rgba(124, 58, 237, 0.5) !important;
+        transform: translateY(-1px) !important;
+    }
+
+    /* 強制顯示 page-marker */
+    .page-marker {
+        display: inline-flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        font-size: clamp(0.45rem, 1vh, 0.7rem) !important;
+        white-space: nowrap !important;
+        color: rgba(224, 232, 245, 0.35) !important;
+        align-items: center !important;
+        gap: 6px !important;
+    }
+
+    /* 手機版 */
+    @media (max-width: 480px) {
+        .footer-btn-group {
+            gap: 4px !important;
+        }
+        .btn-action {
+            padding: 4px 10px !important;
+            font-size: 0.6rem !important;
+            min-height: 24px !important;
+        }
+        .page-marker {
+            font-size: 0.4rem !important;
+        }
+    }
+</style>   
 </body>
 </html>
