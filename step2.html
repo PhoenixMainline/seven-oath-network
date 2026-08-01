@@ -1508,5 +1508,179 @@
     console.log('✅ 已補上「提交程序」與「提交表單」');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 修復 step2.html 中英文切換不完整問題                          -->
+<!-- 貼在 </body> 前即可                                            -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    // ================================================================
+    // 定義缺少的英文翻譯對照
+    // ================================================================
+    var missingTranslations = {
+        zh: {
+            step2ReturnNote: '送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。',
+            step2ReturnTriggerNote: '【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。',
+            step2ReturnQrTitle: '📷 請對準誓導 QR Code 掃描驗證',
+            step2ReturnBtnScan: '📷 開始掃描',
+            step2ReturnResult: '掃描成功！已完成回傳誓證',
+            step2ReturnCameraGuide: '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code',
+            step2NotPassedTitle: '⚠️ 顯示：「誓印未通過」',
+            step2NotPassed1: '由【代理誓印】進入「第 1 項 開啟誓魂密鑰對頻總判定（誓印未通過）」之【補誓程序】。',
+            step2NotPassed2: '執行「誓資補誓 × 七日循環 × 頻率再校」。',
+            step2NotPassed3: '誓印通過後，進入「第 13 項 誓資紀錄 × 回源書 × 不再入世 × 不入轉生」程序，完成補誓續承。',
+            step2NotPassed4: '若仍未通過，系統將自動轉入《誓魂密鑰補誓模組 × 七日循環 × 頻率再校程序》。',
+            step2NotPassed5: '誓證一經顯現，即為【書令憑證】，並將永久冊記於《天界曼陀羅系統》。',
+            step2ClosureTitle: '【收束條文】',
+            step2Closure1: '被代理誓印程序完成並回傳誓證後，即視同被代理誓印之誓資、誓印與階級授權已完成續承，並自動進入誓資回源程序，無須另行人工申請或補件。',
+            step2Closure2: '《七印誓網·第 2 項 被代理誓印【法定全名】》v2.0（正式封冊版）。',
+            step2Closure3: '永鎖《宇宙天律 × 七印誓網》主冊，誓資歸檔有效。',
+            step2FormTitle: '《被代理誓印 × 對頻紀錄 × 誓資補綴綜合作業表》（示範）'
+        },
+        en: {
+            step2ReturnNote: 'Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.',
+            step2ReturnTriggerNote: '【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.',
+            step2ReturnQrTitle: '📷 Please scan the Vow-Guidance QR Code',
+            step2ReturnBtnScan: '📷 Start Scan',
+            step2ReturnResult: 'Scan successful! Return Oath Certificate completed',
+            step2ReturnCameraGuide: '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.',
+            step2NotPassedTitle: '⚠️ Display: Oath Seal Not Passed',
+            step2NotPassed1: 'The 【Delegating Oath-Seal】 Enter 「Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed) Activation Procedure」 and enter the 【Oath Renewal Procedure】.',
+            step2NotPassed2: 'Execute the process of 「Oath-Resource Supplementation × Seven-Day Cycle × Frequency Recalibration」.',
+            step2NotPassed3: 'After Alignment is passed, Enter 「Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth」 to complete the continuation.',
+            step2NotPassed4: 'If Alignment still does not pass, the system will automatically shift into the Oath-Soul Key Supplementary Oath Module × Seven-Day Cycle × Frequency Recalibration Procedure.',
+            step2NotPassed5: 'Once the Oath Certificate appears, it serves as the 【Scripture-Command Credential】 and will be permanently recorded within the Heavenly Mandala System.',
+            step2ClosureTitle: '【Closure Clause】',
+            step2Closure1: 'After the Delegated Oath-Seal procedure is completed and the Oath Certificate is returned, the continuation of the Delegated Oath-Seal\'s Oath-Resource, Oath-Seal, and rank authorization is considered complete. The system will automatically enter the Oath-Resource Return-to-Origin procedure, without requiring any additional manual applications or supplemental submissions.',
+            step2Closure2: '《Seven-Seal Vow Network · Item 2 Delegated Oath-Seal [Legal Full Name]》 v2.0 (Official Sealed Edition).',
+            step2Closure3: 'Permanently locked within the Cosmic Heavenly-Law × Seven-Seal Vow Network Master Registry; Oath-Resource archiving is valid.',
+            step2FormTitle: '《Delegated Oath-Seal × Alignment Record × Oath-Resource Restoration Composite Operations Form》 (Example)'
+        }
+    };
+
+    // ================================================================
+    // 強制更新指定元素的文字
+    // ================================================================
+    function forceUpdateText() {
+        var lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
+        var t = missingTranslations[lang] || missingTranslations.zh;
+
+        // 更新元素
+        var map = {
+            'step2ReturnNote': t.step2ReturnNote,
+            'step2ReturnTriggerNote': t.step2ReturnTriggerNote,
+            'step2ReturnQrTitle': t.step2ReturnQrTitle,
+            'step2ReturnBtnScan': t.step2ReturnBtnScan,
+            'step2ReturnResult': t.step2ReturnResult,
+            'step2ReturnCameraGuide': t.step2ReturnCameraGuide,
+            'step2NotPassedTitle': t.step2NotPassedTitle,
+            'step2NotPassed1': t.step2NotPassed1,
+            'step2NotPassed2': t.step2NotPassed2,
+            'step2NotPassed3': t.step2NotPassed3,
+            'step2NotPassed4': t.step2NotPassed4,
+            'step2NotPassed5': t.step2NotPassed5,
+            'step2ClosureTitle': t.step2ClosureTitle,
+            'step2Closure1': t.step2Closure1,
+            'step2Closure2': t.step2Closure2,
+            'step2Closure3': t.step2Closure3,
+            'step2FormTitle': t.step2FormTitle
+        };
+
+        for (var id in map) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.textContent = map[id];
+            }
+        }
+
+        // 特別處理相機指引的 HTML（因為有 <br>）
+        var guide8 = document.getElementById('step2CameraGuide');
+        if (guide8) {
+            guide8.innerHTML = t.step2ReturnCameraGuide.replace(/\n/g, '<br>');
+        }
+        var guide9 = document.getElementById('step2ReturnCameraGuide');
+        if (guide9) {
+            guide9.innerHTML = t.step2ReturnCameraGuide.replace(/\n/g, '<br>');
+        }
+
+        // 更新「提交程序」區塊（如果有動態插入的）
+        var procDiv = document.querySelector('.submission-procedure');
+        if (procDiv) {
+            // 重新建立提交程序內容
+            var content = '';
+            if (lang === 'zh') {
+                content = `
+                    <div style="color: #00e676; font-weight: bold; font-size: 1rem; margin-bottom: 10px;">📋 【提交程序】</div>
+                    <div style="color: #e0e7ff; font-size: 0.9rem; line-height: 1.8;">
+                        <div style="display:flex; align-items:flex-start; gap:10px; margin-bottom:6px;">
+                            <span style="background:#7c3aed;color:#fff;padding:1px 7px;border-radius:4px;font-size:0.7rem;font-weight:bold;min-width:18px;text-align:center;margin-top:2px;">1</span>
+                            <span>被代理誓印「誓印通過」結果顯示後，由【代理誓印】提交《被代理誓印 × 對頻紀錄 × 誓資補綴綜合作業表》表單。</span>
+                        </div>
+                        <div style="background:rgba(232,96,74,0.1); border-left:4px solid #E8604A; padding:8px 12px; border-radius:6px; margin:6px 0 10px 32px; font-size:0.85rem; color:#e0dcc8;">
+                            ⚠️ 未完成之提交表單者，系統將不予對頻，誓資紀錄作廢不立。
+                        </div>
+                        <div style="display:flex; align-items:flex-start; gap:10px; margin-bottom:6px;">
+                            <span style="background:#7c3aed;color:#fff;padding:1px 7px;border-radius:4px;font-size:0.7rem;font-weight:bold;min-width:18px;text-align:center;margin-top:2px;">2</span>
+                            <span>須立即進入「第 13 項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生」程序，以確保誓資歸檔與願力封結同步展開。</span>
+                        </div>
+                        <div style="display:flex; align-items:flex-start; gap:10px;">
+                            <span style="background:#7c3aed;color:#fff;padding:1px 7px;border-radius:4px;font-size:0.7rem;font-weight:bold;min-width:18px;text-align:center;margin-top:2px;">3</span>
+                            <span>第 13 項完成後，【代理誓印】回本階段，進入「② 【回傳誓證】執行階段」，確認誓印最終狀態。</span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                content = `
+                    <div style="color: #00e676; font-weight: bold; font-size: 1rem; margin-bottom: 10px;">📋 【Submission Procedure】</div>
+                    <div style="color: #e0e7ff; font-size: 0.9rem; line-height: 1.8;">
+                        <div style="display:flex; align-items:flex-start; gap:10px; margin-bottom:6px;">
+                            <span style="background:#7c3aed;color:#fff;padding:1px 7px;border-radius:4px;font-size:0.7rem;font-weight:bold;min-width:18px;text-align:center;margin-top:2px;">1</span>
+                            <span>After the Delegated Oath-Seal 「Oath Seal Passed」 result is displayed, the 【Delegating Oath-Seal】 shall submit the form 《Delegated Oath-Seal × Alignment Record × Oath-Resource Restoration Composite Operations Form》.</span>
+                        </div>
+                        <div style="background:rgba(232,96,74,0.1); border-left:4px solid #E8604A; padding:8px 12px; border-radius:6px; margin:6px 0 10px 32px; font-size:0.85rem; color:#e0dcc8;">
+                            ⚠️ If the submission form is not completed, the system will refuse frequency-Alignment, and the oath-resource record will be rendered invalid and unrecognized.
+                        </div>
+                        <div style="display:flex; align-items:flex-start; gap:10px; margin-bottom:6px;">
+                            <span style="background:#7c3aed;color:#fff;padding:1px 7px;border-radius:4px;font-size:0.7rem;font-weight:bold;min-width:18px;text-align:center;margin-top:2px;">2</span>
+                            <span>Immediately Enter: 「Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth」 to ensure simultaneous execution of Oath-Resource archiving and vow-sealing.</span>
+                        </div>
+                        <div style="display:flex; align-items:flex-start; gap:10px;">
+                            <span style="background:#7c3aed;color:#fff;padding:1px 7px;border-radius:4px;font-size:0.7rem;font-weight:bold;min-width:18px;text-align:center;margin-top:2px;">3</span>
+                            <span>After completing Item 13, the 【Delegating Oath-Seal】 returns to the current stage. Enter 「② 【Return Oath Certificate】 execution stage」 to confirm the final Oath-Seal status.</span>
+                        </div>
+                    </div>
+                `;
+            }
+            procDiv.innerHTML = content;
+        }
+
+        console.log('✅ 已強制更新 step2 中英文文字');
+    }
+
+    // ================================================================
+    // 覆蓋 switchLanguage 加入強制更新
+    // ================================================================
+    var origSwitch = window.switchLanguage;
+    if (origSwitch) {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(forceUpdateText, 100);
+        };
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    if (document.readyState === 'complete') {
+        setTimeout(forceUpdateText, 200);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(forceUpdateText, 300);
+        });
+    }
+
+    console.log('✅ Step2 中英文切換修復已載入');
+})();
+</script>
 </body>
 </html>
