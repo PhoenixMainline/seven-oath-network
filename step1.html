@@ -524,7 +524,7 @@
                 step1QrTitle: "📷 Please scan the 【Vow-Guidance QR Code】 to complete Execution Command",
                 step1BtnScan: "📷 Start Scan",
                 step1Result: "Scan successful! Execution Command completed",
-                step1CameraGuide: "📷 Unable to start camera\n⚙️ Go to Phone Settings → App Management → Permissions → Camera → Allow\n→ Open with 🌐 Browser (Chrome / Yahoo / Edge....)\n⚠️ If still not working, please manually scan the physical book QR Code with a scanner",
+                step1CameraGuide: "📷 Unable to launch the feature ⚙️ Open your phone's \"Settings\" → App Management → Permissions → Camera → Change setting to \"Allow\" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.",
                 step1ReturnTitle: "📩 ② Return Oath Certificate (Oath Confirmation)",
                 step1Success: "✅ Display：「Oath Seal Passed」",
                 step1Return1: "❶ Enter 📩 ②【Return Oath Certificate】execution stage.",
@@ -540,7 +540,7 @@
                 step1ReturnQrTitle: "📷 Please scan the 【Vow-Guidance QR Code】 to complete Return Oath Certificate",
                 step1ReturnBtnScan: "📷 Start Scan",
                 step1ReturnResult: "Scan successful! Return Oath Certificate completed",
-                step1ReturnCameraGuide: "📷 Unable to start camera ⚙️ Go to Phone Settings → App Management → Permissions → Camera → Allow → Open with 🌐 Browser (Chrome / Yahoo / Edge....) ⚠️ If still not working, please manually scan the physical book QR Code with a scanner",
+                step1ReturnCameraGuide: "📷 Unable to launch the feature ⚙️ Open your phone's \"Settings\" → App Management → Permissions → Camera → Change setting to \"Allow\" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.",
                 step1NotPassedTitle: "⚠️ Display：「Oath Seal Not Passed」",
                 step1NotPassed1: "Enter Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed) Activation Procedure and enter the [Oath Renewal Procedure].",
                 step1NotPassed2: "Initiate the process of Repentance Oath Renewal × Seven-Day Cycle × Frequency Recalibration. Only after correction may the oath-seal activation be attempted again.",
@@ -714,11 +714,20 @@
         // ===== QR 掃描 Step8 =====
         window.startQRScannerStep8 = function() {
             var container = document.getElementById('qr-reader-container-step8');
-            if (!container || typeof Html5Qrcode === 'undefined') { alert('無法啟動掃描'); return; }
+            if (!container || typeof Html5Qrcode === 'undefined') {
+                var guide = document.getElementById('cameraGuideStep8');
+                if (guide) {
+                    guide.style.display = 'block';
+                    guide.innerHTML = (currentLang === 'en') 
+                        ? '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.'
+                        : '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                }
+                return;
+            }
             if (html5QrCodeStep8) { html5QrCodeStep8.stop().catch(function() {}); html5QrCodeStep8 = null; }
             container.innerHTML = '';
             var guide = document.getElementById('cameraGuideStep8');
-            if (guide) guide.style.display = 'block';
+            if (guide) guide.style.display = 'none';
             html5QrCodeStep8 = new Html5Qrcode('qr-reader-container-step8');
             html5QrCodeStep8.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 220, height: 220 } },
                 function(text) {
@@ -731,17 +740,34 @@
                     }).catch(function() {});
                 },
                 function() {}
-            ).catch(function() { alert('無法啟動相機，請允許相機權限'); });
+            ).catch(function() {
+                var guide = document.getElementById('cameraGuideStep8');
+                if (guide) {
+                    guide.style.display = 'block';
+                    guide.innerHTML = (currentLang === 'en') 
+                        ? '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.'
+                        : '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                }
+            });
         };
 
         // ===== QR 掃描 Step9 =====
         window.startQRScannerStep9 = function() {
             var container = document.getElementById('qr-reader-container-step9');
-            if (!container || typeof Html5Qrcode === 'undefined') { alert('無法啟動掃描'); return; }
+            if (!container || typeof Html5Qrcode === 'undefined') {
+                var guide = document.getElementById('cameraGuideStep9');
+                if (guide) {
+                    guide.style.display = 'block';
+                    guide.innerHTML = (currentLang === 'en') 
+                        ? '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.'
+                        : '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                }
+                return;
+            }
             if (html5QrCodeStep9) { html5QrCodeStep9.stop().catch(function() {}); html5QrCodeStep9 = null; }
             container.innerHTML = '';
             var guide = document.getElementById('cameraGuideStep9');
-            if (guide) guide.style.display = 'block';
+            if (guide) guide.style.display = 'none';
             html5QrCodeStep9 = new Html5Qrcode('qr-reader-container-step9');
             html5QrCodeStep9.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 220, height: 220 } },
                 function(text) {
@@ -754,7 +780,15 @@
                     }).catch(function() {});
                 },
                 function() {}
-            ).catch(function() { alert('無法啟動相機，請允許相機權限'); });
+            ).catch(function() {
+                var guide = document.getElementById('cameraGuideStep9');
+                if (guide) {
+                    guide.style.display = 'block';
+                    guide.innerHTML = (currentLang === 'en') 
+                        ? '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.'
+                        : '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                }
+            });
         };
 
         window.onload = function() {
@@ -872,11 +906,19 @@
                 console.warn('啟動掃描器失敗:', err);
                 if (guide) {
                     guide.style.display = 'block';
-                    guide.innerHTML = '📷 無法啟動相機<br>⚙️ 請允許相機權限後重新點擊「開始掃描」';
+                    guide.innerHTML = (currentLang === 'en') 
+                        ? '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.'
+                        : '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
                 }
             });
         } catch (e) {
             console.error('掃描器初始化失敗:', e);
+            if (guide) {
+                guide.style.display = 'block';
+                guide.innerHTML = (currentLang === 'en') 
+                    ? '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.'
+                    : '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+            }
         }
     }
 
