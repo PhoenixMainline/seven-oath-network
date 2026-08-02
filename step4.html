@@ -1136,5 +1136,204 @@
 
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 掃描器功能修復 - 貼在 </body> 前即可                          -->
+<!-- ============================================================ -->
+
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js">
+</script>
+
+<script>
+(function() {
+    'use strict';
+
+    // ================================================================
+    // 中英文錯誤訊息
+    // ================================================================
+    var zhText = '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+    var enText = '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
+
+    function getErrorText() {
+        return (typeof currentLang !== 'undefined' && currentLang === 'en') ? enText : zhText;
+    }
+
+    // ================================================================
+    // 掃描器核心 - 直接綁定頁面上現有的按鈕
+    // ================================================================
+    function startScanner(containerId, resultId, guideId) {
+        var container = document.getElementById(containerId);
+        if (!container) {
+            console.warn('❌ 找不到容器:', containerId);
+            return;
+        }
+
+        // 停止舊掃描器
+        if (window._scanner) {
+            try { window._scanner.stop().catch(function() {}); } catch (e) {}
+            window._scanner = null;
+        }
+
+        container.innerHTML = '';
+        container.classList.remove('scanning');
+
+        var guide = document.getElementById(guideId);
+        var resultEl = document.getElementById(resultId);
+
+        if (guide) { guide.style.display = 'none';
+            guide.innerHTML = ''; }
+        if (resultEl) { resultEl.style.display = 'none';
+            resultEl.innerHTML = ''; }
+
+        if (typeof Html5Qrcode === 'undefined') {
+            if (guide) { guide.style.display = 'block';
+                guide.innerHTML = getErrorText(); }
+            return;
+        }
+
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            if (guide) { guide.style.display = 'block';
+                guide.innerHTML = getErrorText(); }
+            return;
+        }
+
+        try {
+            var scanner = new Html5Qrcode(containerId);
+            window._scanner = scanner;
+
+            container.classList.add('scanning');
+
+            scanner.start({ facingMode: "environment" }, { fps: 15, qrbox: { width: 200, height: 200 } },
+                function(text) {
+                    if (resultEl) {
+                        resultEl.style.display = 'block';
+                        resultEl.innerHTML = '✅ ' + text;
+                    }
+                    container.classList.remove('scanning');
+                    scanner.stop().then(function() {
+                        window._scanner = null;
+                    }).catch(function() {
+                        window._scanner = null;
+                    });
+                },
+                function() {}
+            ).catch(function() {
+                container.classList.remove('scanning');
+                if (guide) { guide.style.display = 'block';
+                    guide.innerHTML = getErrorText(); }
+                window._scanner = null;
+            });
+
+        } catch (e) {
+            container.classList.remove('scanning');
+            if (guide) { guide.style.display = 'block';
+                guide.innerHTML = getErrorText(); }
+            window._scanner = null;
+        }
+    }
+
+    // ================================================================
+    // 綁定 Step8 按鈕
+    // ================================================================
+    function bindButton() {
+        var btn = document.getElementById('btnScanQRStep8');
+        if (btn) {
+            var newBtn = btn.cloneNode(true);
+            btn.parentNode.replaceChild(newBtn, btn);
+            newBtn.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                startScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+            };
+            console.log('✅ 掃描按鈕已綁定');
+        } else {
+            console.warn('⚠️ 找不到按鈕 #btnScanQRStep8');
+        }
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    if (document.readyState === 'complete') {
+        setTimeout(bindButton, 300);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(bindButton, 400);
+        });
+    }
+
+    window.startQRScanner = startScanner;
+
+    console.log('✅ 掃描器模組已載入');
+
+})();
+</script>
+
+<style>
+    /* 掃描框 - 掃描時顯示 */
+    #qr-reader-container-step8.scanning::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 55%;
+        height: 55%;
+        border: 2px solid rgba(74, 108, 247, 0.8);
+        border-radius: 8px;
+        pointer-events: none;
+        animation: pulse 1.5s ease-in-out infinite;
+        z-index: 10;
+    }
+
+    @keyframes pulse {
+        0%,
+        100% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: translate(-50%, -50%) scale(1.05);
+            opacity: 0.5;
+        }
+    }
+
+    /* 相機畫面填滿容器 */
+    #qr-reader-container-step8 video {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        border-radius: 12px;
+    }
+
+    /* 錯誤訊息樣式 */
+    #cameraGuideStep8 {
+        display: none;
+        color: #e74c3c;
+        text-align: left;
+        padding: 12px 16px;
+        font-size: 14px;
+        background: rgba(232, 96, 74, 0.08);
+        border-left: 4px solid #E8604A;
+        border-radius: 8px;
+        margin-top: 10px;
+        line-height: 1.8;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+    /* 掃描結果 */
+    #qrScanResultStep8 {
+        display: none;
+        color: #00e676;
+        text-align: center;
+        padding: 12px;
+        font-size: 15px;
+        background: rgba(0, 230, 118, 0.08);
+        border: 1px solid rgba(0, 230, 118, 0.2);
+        border-radius: 8px;
+        margin-top: 10px;
+        word-break: break-all;
+    }
+</style>
 </body>
 </html>
