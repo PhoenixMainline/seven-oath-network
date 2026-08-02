@@ -2087,5 +2087,114 @@
         display: inline-block !important;
     }
 </style>
+<!-- ============================================================ -->
+<!-- 直接修改 generateSubmitPreview 函數（支援中英文）             -->
+<!-- 貼在 </body> 前，取代原有的 generateSubmitPreview 函數       -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    // 覆蓋原有的 generateSubmitPreview 函數
+    window.generateSubmitPreview = function() {
+        var lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
+
+        // 中英文對照
+        var labels = {
+            zh: {
+                section1: '一、誓印基本資料',
+                section2: '二、誓資補綴內容',
+                section3: '三、對頻紀錄',
+                section4: '四、主印核定',
+                systemNotes: '系統備註',
+                fullname: '被代理誓印【法定全名】',
+                sealrank: '誓印印別',
+                status: '封頻狀態',
+                registry: '誓資補綴冊編號',
+                content: '補綴內容',
+                date: '補綴日期',
+                time: '對頻執行時間',
+                result: '對頻結果',
+                signature: '主印授印簽章',
+                approval: '核定結果',
+                notes: '系統備註',
+                hintSeal: '※請填寫被代理誓魂之印別',
+                hintSign: '（請勿修改此欄，天律認章用）'
+            },
+            en: {
+                section1: 'I. Basic Oath-Seal Information',
+                section2: 'II. Oath-Resource Restoration Details',
+                section3: 'III. Alignment Record',
+                section4: 'IV. Primary Seal Authorization',
+                systemNotes: 'System Notes',
+                fullname: 'Delegated Oath-Seal [Legal Full Name]',
+                sealrank: 'Oath-Seal Rank',
+                status: 'Frequency-Seal Status',
+                registry: 'Oath-Resource Restoration Registry Number',
+                content: 'Restoration Content',
+                date: 'Restoration Date',
+                time: 'Alignment Execution Time',
+                result: 'Alignment Result',
+                signature: 'Main Seal Authorization Signature',
+                approval: 'Authorization Result',
+                notes: 'System Notes',
+                hintSeal: '※ Please fill in the Oath-Seal rank of the Delegated Oath-Soul, not the delegator\'s information.',
+                hintSign: '(Do not modify this field; used for Heavenly-Law recognition)'
+            }
+        };
+
+        var l = labels[lang] || labels.zh;
+
+        // 取得表單資料
+        var data = {
+            fullname: document.getElementById('form_fullname').value || '________',
+            sealrank: document.getElementById('form_sealrank').value || '________',
+            status: document.getElementById('form_status').value,
+            registry: document.getElementById('form_registry').value || '________',
+            content: document.getElementById('form_content').value || '________',
+            date: document.getElementById('form_date').value || '________',
+            time: document.getElementById('form_time').value || '________',
+            result: document.getElementById('form_result').value,
+            signature: document.getElementById('form_signature').value || 'Lyria Aurion',
+            approval: document.getElementById('form_approval').value,
+            notes: document.getElementById('form_notes').value || '________'
+        };
+
+        // 建立表格列
+        var rows = [
+            { section: l.section1, label: l.fullname, value: data.fullname },
+            { section: l.section1, label: l.sealrank, value: data.sealrank + ' ' + l.hintSeal },
+            { section: l.section1, label: l.status, value: data.status },
+            { section: l.section2, label: l.registry, value: data.registry },
+            { section: l.section2, label: l.content, value: data.content },
+            { section: l.section2, label: l.date, value: data.date },
+            { section: l.section3, label: l.time, value: data.time },
+            { section: l.section3, label: l.result, value: data.result },
+            { section: l.section4, label: l.signature, value: data.signature + ' ' + l.hintSign },
+            { section: l.section4, label: l.approval, value: data.approval },
+            { section: l.systemNotes, label: l.notes, value: data.notes }
+        ];
+
+        var html = '';
+        var currentSection = '';
+        for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            if (row.section !== currentSection) {
+                currentSection = row.section;
+                html += '<tr><td class="section-header" colspan="3">' + currentSection + '</td></tr>';
+            }
+            html += '<tr>';
+            html += '<td class="label-cell"></td>';
+            html += '<td class="label-cell">' + row.label + '</td>';
+            html += '<td class="value-cell">' + row.value + '</td>';
+            html += '</tr>';
+        }
+
+        document.getElementById('previewSubmitBody').innerHTML = html;
+        document.getElementById('previewSubmitContainer').style.display = 'block';
+        document.getElementById('previewSubmitContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    console.log('✅ generateSubmitPreview 函數已更新，支援中英文切換');
+})();
+</script>
 </body>
 </html>
