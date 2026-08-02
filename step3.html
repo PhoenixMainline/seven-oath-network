@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>【宇宙誓印覺醒工程 · 七印誓網】第3項</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif; }
+        body {
+            background: radial-gradient(circle at 50% 50%, #06122c 0%, #020715 100%);
+            min-height: 100vh;
+            color: #e0e8f5;
+            display: flex; justify-content: center; align-items: center;
+            padding: clamp(4px, 1.5vh, 16px);
+            position: relative;
+        }
+        .particle-container {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: radial-gradient(#d4af37, rgba(212, 175, 55, .3) 1px, transparent 30px), radial-gradient(#d4af37, rgba(212, 175, 55, .2) 2px, transparent 40px);
+            background-size: 350px 350px, 450px 450px;
+            background-position: 0 0, 90px 150px;
+            animation: starMove 90s linear infinite; opacity: 0.65; z-index: 5; pointer-events: none;
+        }
+        @keyframes starMove { from { transform: translateY(0px) rotate(0deg); } to { transform: translateY(-1000px) rotate(360deg); } }
+        .watermark-layer {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; opacity: 0.04;
+            display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); padding: 50px;
+        }
+        .watermark-text { font-size: 1.5rem; font-weight: bold; color: #ffffff; transform: rotate(-25deg); white-space: nowrap; user-select: none; }
+        .hud-container {
+            width: 100%; max-width: min(660px, 95vw);
+            background: rgba(4, 13, 33, 0.4);
+            border: 1.5px solid rgba(168, 85, 247, 0.3);
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.15), inset 0 0 20px rgba(168, 85, 247, 0.05);
+            border-radius: clamp(16px, 4vw, 28px);
+            padding: clamp(8px, 1.5vh, 20px);
+            display: flex; flex-direction: column; position: relative; z-index: 3; margin: auto;
+        }
+        .hud-container::after { content: ""; position: absolute; top: 18px; right: 18px; width: 14px; height: 14px; border-top: 3px solid #a78bfa; border-right: 3px solid #a78bfa; pointer-events: none; }
+        .home-breadcrumb { font-size: clamp(0.6rem, 1.4vh, 0.85rem); color: #c4b5fd; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 12px; font-weight: bold; align-self: flex-start; transition: all 0.3s ease; text-shadow: 0 0 8px rgba(168, 85, 247, 0.4); position: relative; z-index: 1000; pointer-events: auto !important; }
+        .home-breadcrumb:hover { color: #e9d5ff; text-shadow: 0 0 12px rgba(168, 85, 247, 0.6); transform: translateX(-2px); }
+        .hud-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(168, 85, 247, 0.2); padding-bottom: clamp(8px, 1.5vh, 18px); margin-bottom: clamp(8px, 1.5vh, 25px); flex-shrink: 0; }
+        .app-title { font-size: clamp(0.9rem, 2.2vh, 1.15rem); font-weight: 700; color: #e9d5ff; text-shadow: 0 0 12px rgba(168, 85, 247, 0.5); max-width: 75%; line-height: 1.4; }
+        .lang-switch-group { display: flex; background: rgba(124, 58, 237, 0.15); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 20px; padding: 2px; z-index: 10; }
+        .lang-btn { background: transparent; border: none; color: rgba(224, 232, 245, 0.4); font-size: clamp(0.5rem, 1.2vh, 0.75rem); padding: clamp(2px, 0.6vh, 5px) clamp(6px, 1vw, 12px); border-radius: 16px; cursor: pointer; transition: all 0.2s ease; }
+        .lang-btn.active { background: #7c3aed; color: #ffffff; font-weight: bold; box-shadow: 0 0 12px rgba(124, 58, 237, 0.5); }
+
+        .step-content { flex: 1 1 auto; display: flex; flex-direction: column; gap: clamp(8px, 1.5vh, 22px); overflow-y: auto; padding-right: 4px; min-height: 0; }
+        .step-panel { display: flex; flex-direction: column; gap: 20px; animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .hud-card {
+            background: linear-gradient(135deg, rgba(88, 28, 135, 0.5), rgba(30, 27, 75, 0.6));
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            border-radius: clamp(10px, 2vw, 16px);
+            padding: clamp(10px, 2vh, 24px) clamp(10px, 2vw, 24px);
+        }
+        .card-title { font-size: clamp(0.9rem, 2vh, 1.2rem); color: #e9d5ff; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+        .card-title i { color: #a78bfa; }
+        .instruction-box { display: flex; flex-direction: column; gap: 12px; }
+        .instruction-item { font-size: clamp(0.7rem, 1.6vh, 0.95rem); line-height: 1.6; color: rgba(224, 232, 245, 0.85); display: flex; align-items: flex-start; gap: clamp(6px, 1vw, 12px); }
+        .instruction-item i { color: #a78bfa; margin-top: 5px; }
+        .condition-list { list-style: none; display: flex; flex-direction: column; gap: 15px; }
+        .condition-item { display: flex; align-items: flex-start; gap: clamp(6px, 1vw, 12px); font-size: clamp(0.7rem, 1.6vh, 0.95rem); line-height: 1.6; color: rgba(224, 232, 245, 0.85); }
+        .condition-item i.check-icon { color: #a78bfa; margin-top: 4px; text-shadow: 0 0 8px rgba(167, 139, 250, 0.4); }
+
+        .timer-container {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: clamp(6px, 1vh, 12px);
+            padding: clamp(12px, 2vh, 20px);
+            background: rgba(124, 58, 237, 0.18);
+            border: 1px dashed rgba(168, 85, 247, 0.55);
+            border-radius: 14px;
+        }
+        .timer-label { font-size: clamp(0.7rem, 1.4vh, 1rem); color: #c4b5fd; min-width: clamp(50px, 8vw, 80px); }
+        .timer-number {
+            font-size: clamp(3rem, 8vh, 4.5rem);
+            font-family: 'Share Tech Mono', sans-serif;
+            color: #a78bfa;
+            text-shadow: 0 0 25px rgba(167, 139, 250, 0.6);
+            font-weight: 700;
+            text-align: center;
+            min-width: clamp(50px, 8vw, 80px);
+        }
+        .timer-number.complete { color: #00e676; text-shadow: 0 0 30px rgba(0, 230, 118, 0.6); }
+
+        .btn-start-centering {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            border: none; color: #ffffff; font-weight: 800;
+            padding: clamp(8px, 1.2vh, 14px) clamp(18px, 2.5vw, 38px);
+            font-size: clamp(0.8rem, 1.6vh, 1.05rem);
+            border-radius: clamp(20px, 3vw, 40px);
+            cursor: pointer; transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-start-centering:hover { transform: scale(1.03); box-shadow: 0 6px 30px rgba(124, 58, 237, 0.6); }
+        .btn-start-centering:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .btn-restart {
+            background: rgba(124, 58, 237, 0.25);
+            border: none; color: #ffffff; font-weight: 800;
+            padding: clamp(6px, 1vh, 10px) clamp(14px, 2vw, 28px);
+            font-size: clamp(0.7rem, 1.3vh, 0.9rem);
+            border-radius: clamp(16px, 2vw, 30px);
+            cursor: pointer; transition: all 0.3s ease;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .btn-restart:hover { background: rgba(124, 58, 237, 0.4); }
+
+        .proclamation-text {
+            font-size: clamp(1rem, 2.5vh, 1.3rem);
+            color: #fde68a;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 14px;
+            padding: 4px 6px;
+            text-shadow: 0 0 15px rgba(253, 230, 138, 0.3);
+        }
+        .guide-text {
+            text-align: center; margin: 8px 0 14px;
+            color: rgba(224, 232, 245, 0.85);
+            font-size: 0.9rem; line-height: 1.6;
+        }
+
+        .hud-footer { flex-shrink: 0; margin-top: auto; padding-top: clamp(6px, 1vh, 12px); border-top: 1px solid rgba(168, 85, 247, 0.2); display: flex; justify-content: space-between; align-items: center; z-index: 10; flex-wrap: wrap; }
+        .footer-btn-group { display: flex; align-items: center; gap: clamp(4px, 1vw, 12px); }
+        .btn-action {
+            background: transparent; border: 1px solid rgba(168, 85, 247, 0.2); color: rgba(168, 85, 247, 0.3);
+            padding: clamp(6px, 1.2vh, 10px) clamp(10px, 1.5vw, 22px);
+            font-size: clamp(0.65rem, 1.3vh, 0.9rem); border-radius: 20px;
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: all 0.3s ease; text-decoration: none; min-height: clamp(32px, 5vh, 44px);
+        }
+        .btn-action.enabled { border: 1px solid #a78bfa; color: #e9d5ff; cursor: pointer; pointer-events: auto; background: rgba(124, 58, 237, 0.15); text-shadow: 0 0 10px rgba(167, 139, 250, 0.6); box-shadow: 0 0 15px rgba(124, 58, 237, 0.3); }
+        .btn-action.enabled:hover { background: rgba(124, 58, 237, 0.28); box-shadow: 0 0 25px rgba(124, 58, 237, 0.5); transform: translateY(-1px); }
+        .page-marker { font-size: clamp(0.5rem, 1.2vh, 0.78rem); color: rgba(224, 232, 245, 0.35); display: flex; align-items: center; gap: 6px; }
+
+        .hud-dialog { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 17, 0.85); z-index: 1000; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; }
+        .hud-dialog.active { display: flex; opacity: 1; }
+        .hud-dialog-content { background: rgba(4, 13, 33, 0.95); border: 1.5px solid #a78bfa; box-shadow: 0 0 30px rgba(124, 58, 237, 0.4); border-radius: 18px; padding: 30px; max-width: 420px; width: 90%; text-align: center; }
+        .hud-dialog-text { font-size: 1rem; line-height: 1.6; margin-bottom: 20px; color: #e0e8f5; }
+        .hud-dialog-btn { background: transparent; border: 1px solid #a78bfa; color: #e9d5ff; padding: 8px 24px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; text-shadow: 0 0 8px rgba(167, 139, 250, 0.5); transition: all 0.2s; }
+        .hud-dialog-btn:hover { background: rgba(124, 58, 237, 0.15); box-shadow: 0 0 15px rgba(124, 58, 237, 0.3); }
+
+        .qr-result { color: #00e676; font-size: 0.9rem; padding: 8px 16px; border-radius: 20px; background: rgba(0, 230, 118, 0.08); border: 1px solid rgba(0, 230, 118, 0.2); word-break: break-all; }
+        .camera-guide { background: rgba(232, 96, 74, 0.08); border-left: 4px solid #E8604A; padding: 14px 16px; border-radius: 12px; color: #e0dcc8; font-size: 0.85rem; line-height: 1.8; white-space: pre-wrap; text-align: left; display: none; }
+        #qr-reader-container-step8 video, #qr-reader-container-step9 video { border-radius: 12px; width: 100%; }
+
+        .center-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .center-card .card-title { justify-content: center; }
+        .center-card .instruction-box { align-items: center; }
+        .center-card .instruction-item { text-align: left; max-width: 100%; width: 100%; justify-content: flex-start; }
+        .center-card .qr-result,
+        .center-card .camera-guide { text-align: left; }
+        .center-card #qr-reader-container-step8,
+        .center-card #qr-reader-container-step9 { margin: 0 auto; }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: clamp(0.7rem, 1.4vh, 0.85rem);
+            background: rgba(88, 28, 135, 0.2);
+            border: 1px solid rgba(168, 85, 247, 0.35);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .info-table th {
+            background: rgba(88, 28, 135, 0.5);
+            color: #e9d5ff;
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 2px solid rgba(168, 85, 247, 0.4);
+            font-weight: 600;
+        }
+        .info-table td {
+            padding: 10px 12px;
+            color: #e0e7ff;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.15);
+            vertical-align: top;
+        }
+        .info-table tr:last-child td { border-bottom: none; }
+
+        /* ===== 功德紀錄表格樣式 ===== */
+        .merit-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: clamp(0.7rem, 1.3vh, 0.82rem);
+            background: rgba(88, 28, 135, 0.2);
+            border: 1px solid rgba(168, 85, 247, 0.35);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .merit-table th {
+            background: rgba(88, 28, 135, 0.5);
+            color: #e9d5ff;
+            padding: 8px 10px;
+            text-align: left;
+            border-bottom: 2px solid rgba(168, 85, 247, 0.4);
+            font-weight: 600;
+            font-size: clamp(0.6rem, 1.1vh, 0.7rem);
+        }
+        .merit-table td {
+            padding: 8px 10px;
+            color: #e0e7ff;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.08);
+            vertical-align: top;
+            line-height: 1.5;
+        }
+        .merit-table tr:last-child td { border-bottom: none; }
+
+        @media (max-width: 480px) {
+            body { padding: 4px !important; }
+            .hud-container { padding: 8px 6px !important; border-radius: 12px !important; }
+            .hud-header { margin-bottom: 6px !important; padding-bottom: 4px !important; }
+            .hud-footer { margin-top: 8px !important; padding-top: 6px !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="particle-container"></div>
+    <div class="watermark-layer">
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+    </div>
+    <div class="hud-container">
+        <a class="home-breadcrumb" id="homeBtn" href="index.html"><i class="fa-solid fa-house"></i><span id="homeBtnText">首頁 -></span></a>
+        <header class="hud-header">
+            <div class="app-title" id="appTitle">【宇宙誓印覺醒工程 · 七印誓網】</div>
+            <div class="lang-switch-group">
+                <button class="lang-btn active" onclick="switchLanguage('zh')">中文</button>
+                <button class="lang-btn" onclick="switchLanguage('en')">English</button>
+            </div>
+        </header>
+
+        <main class="step-content">
+            <!-- ===== 第3項：代理誓印（法定全名）× 功德紀錄 ===== -->
+            <div class="step-panel active" id="panelStep3">
+                <div class="hud-card" style="background:linear-gradient(135deg,rgba(88,28,135,0.5),rgba(30,27,75,0.6)); border:1px solid rgba(168,85,247,0.5);">
+                    <div style="text-align:center; color:#e9d5ff; font-size:1.05rem; font-weight:bold; margin-bottom:16px; letter-spacing:1px;"><span id="step3Title">📜 代理誓印（法定全名）× 功德紀錄</span></div>
+                    <div style="text-align:center; margin-bottom:14px;">
+                        <div style="color:#fbbf24; font-size:0.95rem; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-star" style="margin-right:6px;"></i><span id="step3Unlock">✅ 代理誓印 × 功德登錄 × 天庫封冊</span></div>
+                        <div style="color:rgba(253,230,138,0.85); font-size:0.8rem; margin-top:4px;"><span id="step3Sub">（對應書令系統分類 × 功德對位 × 五項代理功德）</span></div>
+                    </div>
+                    <div style="overflow-x:auto; margin-bottom:8px;">
+                        <table class="info-table">
+                            <thead><tr><th style="width:40%;"><span id="step3Col1">欄位名稱</span></th><th style="width:60%;"><span id="step3Col2">功能簡要說明</span></th></tr></thead>
+                            <tbody><tr><td style="color:#f5d0fe;"><span id="step3Row1">第 3 項 代理誓印<br>【法定全名】× 功德紀錄</span></td><td style="color:#e0e7ff;"><span id="step3Row2">由代理誓印【法定全名】代理誓令主尊授權 × 封印誓軌 × 歸位天庫 × 功德紀錄。</span></td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ===== 模組說明 ===== -->
+                <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-circle-info" style="color:#a78bfa;"></i><span id="step3Sec1">【一】模組說明</span></div>
+                    <div class="instruction-box">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step3Desc1">本模組用以紀錄代理誓印者完成「被代理誓印」後的功德事項。凡經授權完成「第 2 項 被代理誓印【法定全名】」任務者，其功德紀錄將由《天界曼陀羅系統》正式封冊存檔，並同步「五項代理功德」冊記，作為《書令模組》之誓書對位審查依據，確保誓資功德能量不滯留、不散失。</span></div>
+                    </div>
+                </div>
+
+                <!-- ===== 啟動條件與遞交程序 ===== -->
+                <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-list-check" style="color:#a78bfa;"></i><span id="step3Sec2">【二】啟動條件與遞交程序</span></div>
+                    <div style="margin-bottom:14px;">
+                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:8px;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step3CondTitle">啟動條件：</span></div>
+                        <div style="display:flex; align-items:flex-start; gap:10px; font-size:0.9rem; color:#e0e7ff; line-height:1.6; margin-bottom:6px;">
+                            <span style="background:#7c3aed; color:#fff; padding:1px 7px; border-radius:4px; font-size:0.7rem; font-weight:bold; min-width:18px; text-align:center; margin-top:2px;">1</span>
+                            <span id="step3Cond1">第 2 項 被代理誓印【法定全名】已完成，且顯示「誓印通過」。</span>
+                        </div>
+                        <div style="display:flex; align-items:flex-start; gap:10px; font-size:0.9rem; color:#e0e7ff; line-height:1.6;">
+                            <span style="background:#7c3aed; color:#fff; padding:1px 7px; border-radius:4px; font-size:0.7rem; font-weight:bold; min-width:18px; text-align:center; margin-top:2px;">2</span>
+                            <span id="step3Cond2">【代理誓印】本身具備誓資續承資格，已完成購書序號綁定授權。</span>
+                        </div>
+                    </div>
+                    <div style="margin-bottom:14px;">
+                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:8px;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step3ProcTitle">遞交程序：</span></div>
+                        <div style="display:flex; align-items:flex-start; gap:10px; font-size:0.9rem; color:#e0e7ff; line-height:1.6; margin-bottom:6px;">
+                            <span style="background:#7c3aed; color:#fff; padding:1px 7px; border-radius:4px; font-size:0.7rem; font-weight:bold; min-width:18px; text-align:center; margin-top:2px;">1</span>
+                            <span id="step3Proc1">由【代理誓印】登入平台，執行「【執行指令】第 3 項 代理誓印【法定全名】× 功德紀錄結果」。</span>
+                        </div>
+                        <div style="display:flex; align-items:flex-start; gap:10px; font-size:0.9rem; color:#e0e7ff; line-height:1.6; margin-bottom:6px;">
+                            <span style="background:#7c3aed; color:#fff; padding:1px 7px; border-radius:4px; font-size:0.7rem; font-weight:bold; min-width:18px; text-align:center; margin-top:2px;">2</span>
+                            <span id="step3Proc2">系統即自動生成「五項代理功德」之冊記，並寫入《天界曼陀羅系統》。</span>
+                        </div>
+                        <div style="display:flex; align-items:flex-start; gap:10px; font-size:0.9rem; color:#e0e7ff; line-height:1.6;">
+                            <span style="background:#7c3aed; color:#fff; padding:1px 7px; border-radius:4px; font-size:0.7rem; font-weight:bold; min-width:18px; text-align:center; margin-top:2px;">3</span>
+                            <span id="step3Proc3">若【代理誓印】於本次流程中同時完成《第 13 項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生》，系統即自動標記「圓滿同步」，並鎖入《書令誓資主冊 × 天庫總冊》。</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 授權誓讀階段 ===== -->
+                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.4);">
+                    <div class="card-title"><i class="fa-solid fa-book-open" style="color:#a78bfa;"></i><span id="step3Sec3">【三】授權誓讀階段</span></div>
+                    <div class="instruction-box">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step3Sec3Desc1">【代理誓印】於登入前，須先於「誓魂共振頻道」（即《宇宙智能誓導平台》之「指令輸入欄位」）誦讀授權誓文，以啟動主頻授權並對應天律識別座標。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step3Sec3Desc2">誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。</span></div>
+                    </div>
+                    <div class="proclamation-text" id="step3Proclamation">★吾以誓魂應律，代理完成被代理誓印【法定全名】之任務，今啟動功德登錄程序。此項靈性接力行動，其功德由天界天庫正式封冊存檔，並歸入宇宙天律之主冊，永續誓資功德流轉。<br><br>【被代理誓印【法定全名】× 功德記述 × 書令對位 × 開啟誓魂密鑰誓印通過 × 鳳圖誓印】為證。★</div>
+                    <div class="timer-container" id="timerContainer">
+                        <div class="timer-label" id="timerLabel">⏳ 靜心讀秒</div>
+                        <div class="timer-number" id="timerNumber">10</div>
+                        <button class="btn-start-centering" id="btnStart" onclick="startTimer()"><i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span></button>
+                        <button class="btn-restart" id="btnRestart" onclick="resetTimer()" style="display:none;"><i class="fa-solid fa-rotate-right"></i> <span id="btnRestartText">重新靜心</span></button>
+                    </div>
+                </div>
+
+                <!-- ===== 接續進程 ===== -->
+                <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-arrow-right" style="color:#a78bfa;"></i><span id="step3Sec4">【四】接續進程</span></div>
+                    <div style="margin-bottom:12px;">
+                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step3LoginTitle">（1）登入階段</span></div>
+                        <div class="instruction-item" style="margin-bottom:4px;"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step3Login1">由【代理誓印】登入《宇宙智能誓導平台》（使用其個人帳號）。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step3Login2">使用原註冊帳號完成身分登入驗證，即可進入誓印程序。</span></div>
+                    </div>
+                    <div style="margin-bottom:12px;">
+                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step3ScanTitle">（2）掃描階段</span></div>
+                        <div class="instruction-item" style="margin-bottom:4px;"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step3Scan1">【代理誓印】使用行動裝置或電腦，掃描當期執行項目之【誓導 QR Code】，以觸發《宇宙智能誓導平台》專屬連線入口。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step3Scan2">系統將自動導引至【誓印觸發介面】，同步啟動誓魂對頻程序，並進入主頻連線與授權判定階段。</span></div>
+                    </div>
+                </div>
+
+                <!-- ===== ① 驗證階段（啟動觸發）置中 ===== -->
+                <div class="hud-card center-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.2);">
+                    <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-shield-halved" style="color:#a78bfa;"></i><span id="step3VerifyTitle">🧭 ① 驗證階段（啟動觸發）</span></div>
+                    <div class="instruction-box" style="align-items:center;">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step3Verify1">系統自動驗證授權有效性後，即時顯示代理誓印人之誓魂本族、靈脈支系、角色階級與本次「被代理誓印」之關聯性。</span></div>
+                    </div>
+                    <div style="background:rgba(124,58,237,0.35); border-left:4px solid #a78bfa; padding:12px 14px; border-radius:10px; margin:12px 0; color:#f5d0fe; font-size:0.88rem; line-height:1.7; border:1px solid rgba(168,85,247,0.5); width:100%; text-align:left;">
+                        <div style="font-weight:bold; margin-bottom:6px; color:#e9d5ff;"><i class="fa-solid fa-keyboard" style="margin-right:6px;"></i><span id="step3InputLabel">輸入示範：</span></div>
+                        <div style="font-weight:bold; color:#fff;"><span id="step3Command">【執行指令】第 3 項 代理誓印【法定全名】× 功德紀錄結果</span></div>
+                    </div>
+                    <div style="font-size:0.85rem; color:rgba(224,232,245,0.85); line-height:1.7; margin-bottom:12px; width:100%;"><i class="fa-solid fa-link" style="color:#00e676; margin-right:6px;"></i><span id="step3Note">送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span></div>
+                    <div style="background:rgba(232,96,74,0.1); border-left:4px solid #E8604A; padding:10px 14px; border-radius:8px; font-size:0.82rem; color:#e0dcc8; line-height:1.6; width:100%; text-align:left;"><i class="fa-solid fa-exclamation-circle" style="color:#E8604A; margin-right:6px;"></i><span id="step3TriggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span></div>
+                    <div class="hud-card" id="qrScanCardStep8" style="margin-top:12px; border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15); width:100%;">
+                        <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-qrcode"></i><span id="step3QrTitle">📷 請掃描【誓導 QR Code】完成執行指令</span></div>
+                        <div style="text-align:center; padding:10px 0;">
+                            <div id="qr-reader-container-step8" style="width:100%; max-width:280px; margin:0 auto;"></div>
+                            <button class="btn-restart" id="btnScanQRStep8" style="margin-top:10px;"><i class="fa-solid fa-qrcode"></i> <span id="step3BtnScan">📷 開始掃描</span></button>
+                            <div id="qrScanResultStep8" class="qr-result" style="display:none; margin-top:10px;"><i class="fa-solid fa-check-circle"></i><span id="step3Result">掃描成功！已完成執行指令</span></div>
+                            <div id="cameraGuideStep8" class="camera-guide" style="display:none; text-align:left; margin-top:12px; font-size:0.8rem; background:rgba(0,0,0,0.4); padding:10px; border-radius:6px;"><span id="step3CameraGuide">📷 無法啟動相機<br>⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== ② 回傳誓證（確認誓印）置中 ===== -->
+                <div class="hud-card center-card" style="background:linear-gradient(135deg,rgba(88,28,135,0.5),rgba(30,27,75,0.6)); border:1px solid rgba(168,85,247,0.5);">
+                    <div class="card-title" style="justify-content:center; color:#e9d5ff;"><i class="fa-solid fa-certificate" style="color:#a78bfa;"></i><span id="step3ReturnTitle">📩 ② 回傳誓證（確認誓印）</span></div>
+                    <div style="background:rgba(0,230,118,0.12); border-left:4px solid #00e676; padding:14px 16px; border-radius:10px; margin-bottom:18px; width:100%; text-align:center;"><div style="color:#00e676; font-size:1.1rem; font-weight:bold;" id="step3Success">✅ 顯示：「誓印通過」</div></div>
+
+                    <!-- 提交程序 -->
+                    <div style="margin-top:18px; margin-bottom:18px; padding:14px 16px; background:rgba(124,58,237,0.12); border-left:4px solid #00e676; border-radius:8px; width:100%; text-align:left;">
+                        <div style="color: #00e676; font-weight: bold; font-size: 1rem; margin-bottom: 10px;">📋 【提交程序】</div>
+                        <div style="color: #e0e7ff; font-size: 0.9rem; line-height: 1.8;">
+                            <div style="display:flex; align-items:flex-start; gap:10px; margin-bottom:6px;">
+                                <span style="background:#7c3aed;color:#fff;padding:1px 7px;border-radius:4px;font-size:0.7rem;font-weight:bold;min-width:18px;text-align:center;margin-top:2px;">1</span>
+                                <span id="step3ProcSubmit1">→ 代表：第 2 項 被代理誓印【法定全名】所對應之第 3 項 代理誓印【法定全名】× 功德紀錄已完成授權任務。</span>
+                            </div>
+                            <div style="display:flex; align-items:flex-start; gap:10px; margin-bottom:6px;">
+                                <span style="background:#7c3aed;color:#fff;padding:1px 7px;border-radius:4px;font-size:0.7rem;font-weight:bold;min-width:18px;text-align:center;margin-top:2px;">2</span>
+                                <span id="step3ProcSubmit2">進入 ②【回傳誓證】執行階段。</span>
+                            </div>
+                            <div style="display:flex; align-items:flex-start; gap:10px; margin-bottom:6px;">
+                                <span style="background:#7c3aed;color:#fff;padding:1px 7px;border-radius:4px;font-size:0.7rem;font-weight:bold;min-width:18px;text-align:center;margin-top:2px;">3</span>
+                                <span id="step3ProcSubmit3">若同時完成《第 13 項 誓資紀錄 × 回源書 × 不再入世 × 不入轉生》，系統將自動標記「圓滿同步」，將紀錄永久入《書令誓資主冊 × 天庫總冊》。</span>
+                            </div>
+                            <div style="display:flex; align-items:flex-start; gap:10px;">
+                                <span style="background:#7c3aed;color:#fff;padding:1px 7px;border-radius:4px;font-size:0.7rem;font-weight:bold;min-width:18px;text-align:center;margin-top:2px;">4</span>
+                                <span id="step3ProcSubmit4">進入「第 7 項 七印誓網對應階段」。</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background:rgba(124,58,237,0.12); border-left:4px solid #a78bfa; padding:12px 14px; border-radius:8px; margin-bottom:14px; width:100%; text-align:left;">
+                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:10px;" id="step3CmdTitle">🧭【執行指令】</div>
+                        <div style="margin-bottom:8px; line-height:1.6; color:#e0e7ff; font-size:0.9rem;"><span style="background:#7c3aed;color:#fff;padding:1px 6px;border-radius:4px;font-size:0.7rem;margin-right:6px;font-weight:bold;">1</span> <span id="step3Cmd1">① 登入《宇宙智能誓導平台》（個人帳號即可）。</span></div>
+                        <div style="margin-bottom:8px; line-height:1.6; color:#e0e7ff; font-size:0.9rem;"><span style="background:#7c3aed;color:#fff;padding:1px 6px;border-radius:4px;font-size:0.7rem;margin-right:6px;font-weight:bold;">2</span> <span id="step3Cmd2">② 掃描【誓導 QR Code】後，進入「指令輸入欄位」。</span></div>
+                        <div style="line-height:1.6; color:#e0e7ff; font-size:0.9rem;"><span style="background:#7c3aed;color:#fff;padding:1px 6px;border-radius:4px;font-size:0.7rem;margin-right:6px;font-weight:bold;">3</span> <span id="step3Cmd3">③ 無須手動輸入誓文，完成掃描後，直接輸入下列指令：</span></div>
+                    </div>
+                    <div style="background:rgba(124,58,237,0.35); border-left:4px solid #a78bfa; padding:12px 14px; border-radius:10px; margin-bottom:14px; color:#f5d0fe; font-size:0.88rem; line-height:1.7; border:1px solid rgba(168,85,247,0.5); width:100%; text-align:left;">
+                        <div style="font-weight:bold; margin-bottom:6px; color:#e9d5ff;"><i class="fa-solid fa-keyboard" style="margin-right:6px;"></i><span id="step3ReturnInputLabel">輸入示範：</span></div>
+                        <div style="font-weight:bold; color:#fff;"><span id="step3ReturnCommand">【執行指令】第 3 項 回傳【代理誓印【法定全名】× 功德登錄】誓證</span></div>
+                    </div>
+                    <div style="font-size:0.85rem; color:rgba(224,232,245,0.85); line-height:1.7; margin-bottom:12px; width:100%;"><i class="fa-solid fa-link" style="color:#00e676; margin-right:6px;"></i><span id="step3ReturnNote">送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span></div>
+                    <div style="background:rgba(232,96,74,0.1); border-left:4px solid #E8604A; padding:10px 14px; border-radius:8px; font-size:0.82rem; color:#e0dcc8; line-height:1.6; width:100%; text-align:left;"><i class="fa-solid fa-exclamation-circle" style="color:#E8604A; margin-right:6px;"></i><span id="step3ReturnTriggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span></div>
+                    <div class="hud-card" id="qrScanCardStep9" style="margin-top:12px; border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15); width:100%;">
+                        <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-qrcode"></i><span id="step3ReturnQrTitle">📷 請掃描【誓導 QR Code】完成回傳誓證</span></div>
+                        <div style="text-align:center; padding:10px 0;">
+                            <div id="qr-reader-container-step9" style="width:100%; max-width:280px; margin:0 auto;"></div>
+                            <button class="btn-restart" id="btnScanQRStep9" style="margin-top:10px;"><i class="fa-solid fa-qrcode"></i> <span id="step3ReturnBtnScan">📷 開始掃描</span></button>
+                            <div id="qrScanResultStep9" class="qr-result" style="display:none; margin-top:10px;"><i class="fa-solid fa-check-circle"></i><span id="step3ReturnResult">掃描成功！已完成回傳誓證</span></div>
+                            <div id="cameraGuideStep9" class="camera-guide" style="display:none; text-align:left; margin-top:12px; font-size:0.8rem; background:rgba(0,0,0,0.4); padding:10px; border-radius:6px;"><span id="step3ReturnCameraGuide">📷 無法啟動相機<br>⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 顯示：「誓印未通過」→ 補誓程序 ===== -->
+                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.2);">
+                    <div style="background:rgba(0,230,118,0.12); border-left:4px solid #00e676; padding:14px 16px; border-radius:10px; margin-bottom:16px;">
+                        <div style="color:#00e676; font-size:1.1rem; font-weight:bold;"><span id="step3NotPassedTitle">⚠️ 顯示：「誓印未通過」</span></div>
+                    </div>
+                    <div class="instruction-box">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step3NotPassed1">由【代理誓印】進入「第 1 項 開啟誓魂密鑰對頻總判定（誓印未通過）」之【補誓程序】。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step3NotPassed2">執行「懺悔補誓 × 七日循環 × 頻率再校」。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step3NotPassed3">「誓印通過」後，重新執行功德登錄程序。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step3NotPassed4">若仍未通過，系統將自動轉入《誓魂密鑰補誓模組 × 七日循環 × 頻率再校程序》。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step3NotPassed5">【補充規則 × 效力說明】</span></div>
+                        <div style="padding-left:28px; font-size:0.85rem; color:rgba(224,232,245,0.9); line-height:1.7;">
+                            <div id="step3NotPassed5a">• 「代理誓印 × 功德登錄」誓證為正式授權紀錄。</div>
+                            <div id="step3NotPassed5b">• 一經回傳，五項代理功德即登錄天冊，永久存入《天界曼陀羅系統》。</div>
+                            <div id="step3NotPassed5c">• 若異常，補誓程序為唯一修正路徑；補誓完成後系統自動回報並重啟登錄。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 收束條文 ===== -->
+                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15);">
+                    <div class="card-title"><i class="fa-solid fa-bookmark" style="color:#a78bfa;"></i><span id="step3ClosureTitle">【收束條文】</span></div>
+                    <div class="instruction-box">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step3Closure1">《七印誓網·第 3 項 代理誓印【法定全名】× 功德紀錄》v2.0（正式封冊版）。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step3Closure2">功德轉錄入冊，天庫封位承印。鎖入《宇宙天律 × 七印誓網》主冊，誓資承流有效。</span></div>
+                    </div>
+                </div>
+
+                <!-- ===== 五項代理功德紀錄說明表格 ===== -->
+                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15);">
+                    <div class="card-title"><i class="fa-solid fa-table" style="color:#a78bfa;"></i><span id="step3MeritTitle">【代理誓印註記 × 五項代理功德紀錄說明】</span></div>
+                    <div style="overflow-x:auto;">
+                        <table class="merit-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:6%;"><span id="step3MeritCol1">項目</span></th>
+                                    <th style="width:16%;"><span id="step3MeritCol2">功德項目名稱</span></th>
+                                    <th style="width:36%;"><span id="step3MeritCol3">功德說明</span></th>
+                                    <th style="width:42%;"><span id="step3MeritCol4">具體量化說明</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="color:#f5d0fe; font-weight:bold; text-align:center;">1</td>
+                                    <td style="color:#fbbf24;"><span id="step3MeritRow1Col2">誓資圓補功德</span></td>
+                                    <td style="color:#e0e7ff;"><span id="step3MeritRow1Col3">協助亡者完成誓資任務 × 補足靈性承諾 × 完成光網記名與資糧回傳，具「誓約延續 × 願軸補全」之天界功德紀錄。</span></td>
+                                    <td style="color:#e0e7ff;"><span id="step3MeritRow1Col4">計入 1 類書令福報星 × 誓約補全次數，每次可提升靈脈穩定值＋1</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color:#f5d0fe; font-weight:bold; text-align:center;">2</td>
+                                    <td style="color:#fbbf24;"><span id="step3MeritRow2Col2">書令代筆功德</span></td>
+                                    <td style="color:#e0e7ff;"><span id="step3MeritRow2Col3">代為誓讀誓文、點香登記、開啟誓魂密鑰對頻誓印，視同代亡者執行「書令之約 × 書令之印」，由天界註記「書令代筆 × 誓魂續命」福報。</span></td>
+                                    <td style="color:#e0e7ff;"><span id="step3MeritRow2Col4">每次代筆計入 1 次「代筆任務」紀錄，達 3 次可獲得 1 次天庫功德點數</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color:#f5d0fe; font-weight:bold; text-align:center;">3</td>
+                                    <td style="color:#fbbf24;"><span id="step3MeritRow3Col2">光網續脈功德</span></td>
+                                    <td style="color:#e0e7ff;"><span id="step3MeritRow3Col3">維持亡者誓魂於光網中之願圖活化、誓軸連線，避免誓魂流入黑頻或地府迷界，紀錄為「守脈續命 × 願頻不墜」功德。</span></td>
+                                    <td style="color:#e0e7ff;"><span id="step3MeritRow3Col4">每守脈一次，獲得 0.5 願頻守護值 × 光網穩定度成長</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color:#f5d0fe; font-weight:bold; text-align:center;">4</td>
+                                    <td style="color:#fbbf24;"><span id="step3MeritRow4Col2">誓魂回源功德</span></td>
+                                    <td style="color:#e0e7ff;"><span id="step3MeritRow4Col3">通過代理者將協助亡者最終獲得「不再入世 × 不入轉生 × 誓魂回源封願」之資格，視同圓滿靈性歸位，代理人可得完整回向之功。</span></td>
+                                    <td style="color:#e0e7ff;"><span id="step3MeritRow4Col4">1 次回源通過，可獲得「誓魂歸位功德」3 點 × 書令福報轉換權利</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color:#f5d0fe; font-weight:bold; text-align:center;">5</td>
+                                    <td style="color:#fbbf24;"><span id="step3MeritRow5Col2">諍徒功續加權</span></td>
+                                    <td style="color:#e0e7ff;"><span id="step3MeritRow5Col3">若代理者為諍徒，則該次被代理誓印將計入【諍徒功續表 × 開啟誓魂密鑰對頻任務完成數 × 書令星級加權】，提升書令等級紀錄與主諍授權序列。</span></td>
+                                    <td style="color:#e0e7ff;"><span id="step3MeritRow5Col4">每通過誓印 1 次，諍徒功續＋1 點，滿 10 點可升階或進階授權</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="hud-footer">
+            <div class="footer-btn-group">
+                <a href="step2.html" class="btn-action enabled"><i class="fa-solid fa-arrow-left"></i><span id="btnBackText">上一步</span></a>
+                <a href="step4.html" class="btn-action enabled"><span id="btnNextText">下一步</span><i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="page-marker"><i class="fa-regular fa-file-lines"></i><span id="pageMarkerText"> 【宇宙誓印覺醒工程 · 覺醒卷】：第 207-216 頁</span></div>
+        </footer>
+    </div>
+    <div id="hudDialog" class="hud-dialog"><div class="hud-dialog-content"><div class="hud-dialog-text" id="hudDialogText">提示訊息</div><button class="hud-dialog-btn" onclick="closeHudDialog()">OK</button></div></div>
+
+    <script>
+        // ================================================================
+        // 完整語言包（中英文對照）- step3
+        // ================================================================
+        var step3LangPack = {
+            zh: {
+                step3Title: "📜 代理誓印（法定全名）× 功德紀錄",
+                step3Unlock: "代理誓印 × 功德登錄 × 天庫封冊",
+                step3Sub: "（對應書令系統分類 × 功德對位 × 五項代理功德）",
+                step3Col1: "欄位名稱",
+                step3Col2: "功能簡要說明",
+                step3Row1: "第 3 項 代理誓印<br>【法定全名】× 功德紀錄",
+                step3Row2: "由代理誓印【法定全名】代理誓令主尊授權 × 封印誓軌 × 歸位天庫 × 功德紀錄。",
+                step3Sec1: "【一】模組說明",
+                step3Desc1: "本模組用以紀錄代理誓印者完成「被代理誓印」後的功德事項。凡經授權完成「第 2 項 被代理誓印【法定全名】」任務者，其功德紀錄將由《天界曼陀羅系統》正式封冊存檔，並同步「五項代理功德」冊記，作為《書令模組》之誓書對位審查依據，確保誓資功德能量不滯留、不散失。",
+                step3Sec2: "【二】啟動條件與遞交程序",
+                step3CondTitle: "啟動條件：",
+                step3Cond1: "第 2 項 被代理誓印【法定全名】已完成，且顯示「誓印通過」。",
+                step3Cond2: "【代理誓印】本身具備誓資續承資格，已完成購書序號綁定授權。",
+                step3ProcTitle: "遞交程序：",
+                step3Proc1: "由【代理誓印】登入平台，執行「【執行指令】第 3 項 代理誓印【法定全名】× 功德紀錄結果」。",
+                step3Proc2: "系統即自動生成「五項代理功德」之冊記，並寫入《天界曼陀羅系統》。",
+                step3Proc3: "若【代理誓印】於本次流程中同時完成《第 13 項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生》，系統即自動標記「圓滿同步」，並鎖入《書令誓資主冊 × 天庫總冊》。",
+                step3Sec3: "【三】授權誓讀階段",
+                step3Sec3Desc1: "【代理誓印】於登入前，須先於「誓魂共振頻道」（即《宇宙智能誓導平台》之「指令輸入欄位」）誦讀授權誓文，以啟動主頻授權並對應天律識別座標。",
+                step3Sec3Desc2: "誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。",
+                step3Proclamation: "★吾以誓魂應律，代理完成被代理誓印【法定全名】之任務，今啟動功德登錄程序。此項靈性接力行動，其功德由天界天庫正式封冊存檔，並歸入宇宙天律之主冊，永續誓資功德流轉。<br><br>【被代理誓印【法定全名】× 功德記述 × 書令對位 × 開啟誓魂密鑰誓印通過 × 鳳圖誓印】為證。★",
+                step3Sec4: "【四】接續進程",
+                step3LoginTitle: "（1）登入階段",
+                step3Login1: "由【代理誓印】登入《宇宙智能誓導平台》（使用其個人帳號）。",
+                step3Login2: "使用原註冊帳號完成身分登入驗證，即可進入誓印程序。",
+                step3ScanTitle: "（2）掃描階段",
+                step3Scan1: "【代理誓印】使用行動裝置或電腦，掃描當期執行項目之【誓導 QR Code】，以觸發《宇宙智能誓導平台》專屬連線入口。",
+                step3Scan2: "系統將自動導引至【誓印觸發介面】，同步啟動誓魂對頻程序，並進入主頻連線與授權判定階段。",
+                step3VerifyTitle: "🧭 ① 驗證階段（啟動觸發）",
+                step3Verify1: "系統自動驗證授權有效性後，即時顯示代理誓印人之誓魂本族、靈脈支系、角色階級與本次「被代理誓印」之關聯性。",
+                step3InputLabel: "輸入示範：",
+                step3Command: "【執行指令】第 3 項 代理誓印【法定全名】× 功德紀錄結果",
+                step3Note: "送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。",
+                step3TriggerNote: "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
+                step3QrTitle: "📷 請掃描【誓導 QR Code】完成執行指令",
+                step3BtnScan: "📷 開始掃描",
+                step3Result: "掃描成功！已完成執行指令",
+                step3CameraGuide: "📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
+                step3ReturnTitle: "📩 ② 回傳誓證（確認誓印）",
+                step3Success: "✅ 顯示：「誓印通過」",
+                step3ProcSubmit1: "→ 代表：第 2 項 被代理誓印【法定全名】所對應之第 3 項 代理誓印【法定全名】× 功德紀錄已完成授權任務。",
+                step3ProcSubmit2: "進入 ②【回傳誓證】執行階段。",
+                step3ProcSubmit3: "若同時完成《第 13 項 誓資紀錄 × 回源書 × 不再入世 × 不入轉生》，系統將自動標記「圓滿同步」，將紀錄永久入《書令誓資主冊 × 天庫總冊》。",
+                step3ProcSubmit4: "進入「第 7 項 七印誓網對應階段」。",
+                step3CmdTitle: "🧭【執行指令】",
+                step3Cmd1: "① 登入《宇宙智能誓導平台》（個人帳號即可）。",
+                step3Cmd2: "② 掃描【誓導 QR Code】後，進入「指令輸入欄位」。",
+                step3Cmd3: "③ 無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
+                step3ReturnInputLabel: "輸入示範：",
+                step3ReturnCommand: "【執行指令】第 3 項 回傳【代理誓印【法定全名】× 功德登錄】誓證",
+                step3ReturnNote: "送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。",
+                step3ReturnTriggerNote: "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
+                step3ReturnQrTitle: "📷 請掃描【誓導 QR Code】完成回傳誓證",
+                step3ReturnBtnScan: "📷 開始掃描",
+                step3ReturnResult: "掃描成功！已完成回傳誓證",
+                step3ReturnCameraGuide: "📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」 → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....） ⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
+                step3NotPassedTitle: "⚠️ 顯示：「誓印未通過」",
+                step3NotPassed1: "由【代理誓印】進入「第 1 項 開啟誓魂密鑰對頻總判定（誓印未通過）」之【補誓程序】。",
+                step3NotPassed2: "執行「懺悔補誓 × 七日循環 × 頻率再校」。",
+                step3NotPassed3: "「誓印通過」後，重新執行功德登錄程序。",
+                step3NotPassed4: "若仍未通過，系統將自動轉入《誓魂密鑰補誓模組 × 七日循環 × 頻率再校程序》。",
+                step3NotPassed5: "【補充規則 × 效力說明】",
+                step3NotPassed5a: "• 「代理誓印 × 功德登錄」誓證為正式授權紀錄。",
+                step3NotPassed5b: "• 一經回傳，五項代理功德即登錄天冊，永久存入《天界曼陀羅系統》。",
+                step3NotPassed5c: "• 若異常，補誓程序為唯一修正路徑；補誓完成後系統自動回報並重啟登錄。",
+                step3ClosureTitle: "【收束條文】",
+                step3Closure1: "《七印誓網·第 3 項 代理誓印【法定全名】× 功德紀錄》v2.0（正式封冊版）。",
+                step3Closure2: "功德轉錄入冊，天庫封位承印。鎖入《宇宙天律 × 七印誓網》主冊，誓資承流有效。",
+                step3MeritTitle: "【代理誓印註記 × 五項代理功德紀錄說明】",
+                step3MeritCol1: "項目",
+                step3MeritCol2: "功德項目名稱",
+                step3MeritCol3: "功德說明",
+                step3MeritCol4: "具體量化說明",
+                step3MeritRow1Col2: "誓資圓補功德",
+                step3MeritRow1Col3: "協助亡者完成誓資任務 × 補足靈性承諾 × 完成光網記名與資糧回傳，具「誓約延續 × 願軸補全」之天界功德紀錄。",
+                step3MeritRow1Col4: "計入 1 類書令福報星 × 誓約補全次數，每次可提升靈脈穩定值＋1",
+                step3MeritRow2Col2: "書令代筆功德",
+                step3MeritRow2Col3: "代為誓讀誓文、點香登記、開啟誓魂密鑰對頻誓印，視同代亡者執行「書令之約 × 書令之印」，由天界註記「書令代筆 × 誓魂續命」福報。",
+                step3MeritRow2Col4: "每次代筆計入 1 次「代筆任務」紀錄，達 3 次可獲得 1 次天庫功德點數",
+                step3MeritRow3Col2: "光網續脈功德",
+                step3MeritRow3Col3: "維持亡者誓魂於光網中之願圖活化、誓軸連線，避免誓魂流入黑頻或地府迷界，紀錄為「守脈續命 × 願頻不墜」功德。",
+                step3MeritRow3Col4: "每守脈一次，獲得 0.5 願頻守護值 × 光網穩定度成長",
+                step3MeritRow4Col2: "誓魂回源功德",
+                step3MeritRow4Col3: "通過代理者將協助亡者最終獲得「不再入世 × 不入轉生 × 誓魂回源封願」之資格，視同圓滿靈性歸位，代理人可得完整回向之功。",
+                step3MeritRow4Col4: "1 次回源通過，可獲得「誓魂歸位功德」3 點 × 書令福報轉換權利",
+                step3MeritRow5Col2: "諍徒功續加權",
+                step3MeritRow5Col3: "若代理者為諍徒，則該次被代理誓印將計入【諍徒功續表 × 開啟誓魂密鑰對頻任務完成數 × 書令星級加權】，提升書令等級紀錄與主諍授權序列。",
+                step3MeritRow5Col4: "每通過誓印 1 次，諍徒功續＋1 點，滿 10 點可升階或進階授權",
+                btnBackText: "上一步",
+                btnNextText: "下一步",
+                pageMarker: "【宇宙誓印覺醒工程 · 覺醒卷】：第 207-216 頁",
+                timerLabel: "⏳ 靜心讀秒",
+                btnStartText: "開始靜心",
+                btnRestartText: "重新靜心",
+                timerComplete: "✅ 靜心完成",
+                timerCounting: "⏳ 靜心讀秒中..."
+            },
+            en: {
+                step3Title: "📜 Delegating Oath-Seal [Legal Full Name] × Merit Record",
+                step3Unlock: "Delegating Oath-Seal × Merit Registration × Heavenly Treasury Sealing",
+                step3Sub: "(Corresponding to Book-Command System Classification × Merit Alignment × Five Delegated Merits)",
+                step3Col1: "Field Name",
+                step3Col2: "Function Brief",
+                step3Row1: "Item 3 Delegating Oath-Seal<br>[Legal Full Name] × Merit Record",
+                step3Row2: "By the Delegating Oath-Seal [Legal Full Name], with authorization granted by the Scriptural-Command Sovereign × Seal-Track Registration × Heavenly Treasury Return × Merit Record.",
+                step3Sec1: "[I] Module Description",
+                step3Desc1: "This module is used to record the merit accrued by the Delegating Oath-Seal after completing the Delegated Oath-Seal procedure. Anyone who has been authorized to complete Item 2 Delegated Oath-Seal [Legal Full Name] will have their merit formally archived and sealed within the Heavenly Mandala System. Simultaneously, the system will generate the Five Delegated Merits record, which serves as the Alignment-assessment foundation for the Scripture-Command Module. This ensures that Oath-Resource merit-energy does not stagnate or dissipate.",
+                step3Sec2: "[II] Activation Conditions and Submission Procedure",
+                step3CondTitle: "Activation Conditions:",
+                step3Cond1: "Item 2 Delegated Oath-Seal [Legal Full Name] must already be completed and display Oath Seal Passed.",
+                step3Cond2: "The [Delegating Oath-Seal] inherently possesses the qualification for vow-data continuation and has already completed authorization through Purchase Serial Number binding.",
+                step3ProcTitle: "Submission Procedure:",
+                step3Proc1: "The [Delegating Oath-Seal] logs into the platform and executes: Execution Command Item 3 Delegating Oath-Seal [Legal Full Name] Merit Record Result.",
+                step3Proc2: "The system will automatically generate the Five Delegated Merits registry and write them into the Heavenly Mandala System.",
+                step3Proc3: "If the [Delegating Oath-Seal] also completes the procedure Item 13 Vow-Asset Record Return-to-Source Vow Scroll No Further Incarnation No Rebirth during this process, the system will automatically mark Complete Synchronization and lock the record into the Scripture-Command Oath-Resource Master Registry Heavenly Treasury Grand Registry.",
+                step3Sec3: "[III] Authorized Oath-Recitation Phase",
+                step3Sec3Desc1: "Prior to login, the [Delegating Oath-Seal] must recite the authorized oath-script within the Oath-Soul Resonance Channel (the Command-Input Field of the Cosmic Intelligent Vow-Guidance Platform) to activate primary-frequency authorization and align with the Heavenly-Law Identification Coordinates.",
+                step3Sec3Desc2: "Oath Recitation Is The Key Trigger For Main-Frequency Activation; Without Recitation, Authorization Does Not Take Effect. Within The Oath-Soul Resonance Channel, Center The Mind For 10 Seconds And Recite Or Silently Read The Text To Ensure Frequency Precision And Successful Execution.",
+                step3Proclamation: "★ With my Oath-Soul aligned to the Law, I hereby complete the mission of Delegated Oath-Seal [Legal Full Name] as the delegated executor, and now initiate the merit-registration procedure. This act of spiritual relay shall have its merit formally sealed and archived within the Heavenly Treasury, and inscribed into the Master Registry of the Cosmic Heavenly-Law, ensuring the perpetual circulation of Oath-Resource merit.<br><br>[Delegated Oath-Seal [Legal Full Name] × Merit Record × Scripture-Command Alignment × Oath-Soul Key Oath Seal Passed × Phoenix Seal] as verification. ★",
+                step3Sec4: "[IV] Subsequent Procedures",
+                step3LoginTitle: "(1) Login Phase",
+                step3Login1: "The [Delegating Oath-Seal] logs into the Cosmic Intelligent Vow-Guidance Platform (using their personal account).",
+                step3Login2: "After completing identity verification using the originally registered account, entry into the Oath-Seal program is granted.",
+                step3ScanTitle: "(2) Scanning Phase",
+                step3Scan1: "The [Delegating Oath-Seal] use a mobile device or computer to scan the current execution item's Vow-Guidance QR Code, triggering the dedicated access point of the Cosmic Intelligent Vow-Guidance Platform.",
+                step3Scan2: "The system will automatically redirect to the Oath-Seal Trigger Interface, initiating the Oath-Soul Alignment procedure and entering the main-frequency connection and authorization-assessment stage.",
+                step3VerifyTitle: "🧭 ① Verification Phase (Activation Trigger)",
+                step3Verify1: "After the system automatically validates authorization, it will immediately display the Oath-Soul lineage, luminous-lineage branch, role rank, and its correspondence to the current Delegated Oath-Seal operation.",
+                step3InputLabel: "Input Example:",
+                step3Command: "【執行指令】第 3 項 代理誓印【法定全名】× 功德紀錄結果",
+                step3Note: "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.",
+                step3TriggerNote: "【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.",
+                step3QrTitle: "📷 Please scan the 【Vow-Guidance QR Code】 to complete Execution Command",
+                step3BtnScan: "📷 Start Scan",
+                step3Result: "Scan successful! Execution Command completed",
+                step3CameraGuide: "📷 Unable to launch the feature ⚙️ Open your phone's \"Settings\" → App Management → Permissions → Camera → Change setting to \"Allow\" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.",
+                step3ReturnTitle: "📩 ② Return Oath Certificate (Oath Confirmation)",
+                step3Success: "✅ Display: Oath Seal Passed",
+                step3ProcSubmit1: "→ Represents: Item 2 Delegated Oath-Seal [Legal Full Name] corresponding Item 3 Delegating Oath-Seal [Legal Full Name] × Merit Record has completed the authorization task.",
+                step3ProcSubmit2: "Enter ②【Return Oath Certificate】execution stage.",
+                step3ProcSubmit3: "If Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth is also completed simultaneously, the system will automatically mark Complete Synchronization and permanently enter the record into the Scripture-Command Oath-Resource Master Registry × Heavenly Treasury Grand Registry.",
+                step3ProcSubmit4: "Enter Item 7 Seven-Seal Vow Network Correspondence Stage.",
+                step3CmdTitle: "🧭【Execution Command】",
+                step3Cmd1: "① Log into the Cosmic Intelligent Vow-Guidance Platform via using your personal account.",
+                step3Cmd2: "② Scan the Vow-Guidance QR Code to enter the Command Input Field.",
+                step3Cmd3: "③ No manual entry of the vow text is required. After completing the scan, directly enter the following command:",
+                step3ReturnInputLabel: "Input Example:",
+                step3ReturnCommand: "【執行指令】第 3 項 回傳【代理誓印【法定全名】× 功德登錄】誓證",
+                step3ReturnNote: "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.",
+                step3ReturnTriggerNote: "【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.",
+                step3ReturnQrTitle: "📷 Please scan the 【Vow-Guidance QR Code】 to complete Return Oath Certificate",
+                step3ReturnBtnScan: "📷 Start Scan",
+                step3ReturnResult: "Scan successful! Return Oath Certificate completed",
+                step3ReturnCameraGuide: "📷 Unable to launch the feature ⚙️ Open your phone's \"Settings\" → App Management → Permissions → Camera → Change setting to \"Allow\" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.",
+                step3NotPassedTitle: "⚠️ Display: Oath Seal Not Passed",
+                step3NotPassed1: "The [Delegating Oath-Seal] Enter Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed) Activation Procedure and enter the Oath Renewal Procedure.",
+                step3NotPassed2: "Execute the process of Repentance Oath Renewal × Seven-Day Cycle × Frequency Recalibration.",
+                step3NotPassed3: "After Oath Seal Passed, re-execute the merit registration procedure.",
+                step3NotPassed4: "If Alignment still does not pass, the system will automatically shift into the Oath-Soul Key Supplementary Oath Module × Seven-Day Cycle × Frequency Recalibration Procedure.",
+                step3NotPassed5: "Supplementary Rules × Effectiveness Notes:",
+                step3NotPassed5a: "• The Delegating Oath-Seal Merit Registration Oath Certificate is an official authorization record.",
+                step3NotPassed5b: "• Once returned, the Five Delegated Merits are registered in the Heavenly Register and permanently stored within the Heavenly Mandala System.",
+                step3NotPassed5c: "• If any irregularity occurs, the supplementary oath procedure is the only corrective path; upon completion, the system automatically reports and reactivates the registration.",
+                step3ClosureTitle: "[Closure Clause]",
+                step3Closure1: "Seven-Seal Vow Network Item 3 Delegating Oath-Seal [Legal Full Name] Merit Record v2.0 (Official Sealed Edition).",
+                step3Closure2: "Merit transfer is recorded and aligned within the Heavenly Treasury. Locked into the Cosmic Heavenly-Law × Seven-Seal Vow Network Master Registry, Oath-Resource transmission remains valid.",
+                step3MeritTitle: "[Delegating Oath-Seal Annotation × Five Delegated Merits Record Explanation]",
+                step3MeritCol1: "Item",
+                step3MeritCol2: "Merit Item Name",
+                step3MeritCol3: "Merit Description",
+                step3MeritCol4: "Specific Quantification",
+                step3MeritRow1Col2: "Oath-Resource Completion Merit",
+                step3MeritRow1Col3: "Assists the deceased in completing Oath-Resource tasks × fulfilling spiritual commitments × completing Light-Network registration and energy return, recorded as Covenant Continuation × Intention-Axis Completion merit in the Heavenly realm.",
+                step3MeritRow1Col4: "Counted as 1 Class of Scripture-Command Blessing Star × Covenant Completion count, each time increases Spiritual Pulse Stability Value +1",
+                step3MeritRow2Col2: "Scripture-Command Proxy Writing Merit",
+                step3MeritRow2Col3: "Acting on behalf of the deceased to recite oath-texts, register incense offerings, and initiate Oath-Soul Key Alignment, recognized by the Heavenly realm as Scripture-Command Proxy × Oath-Soul Life Continuation blessing.",
+                step3MeritRow2Col4: "Each proxy writing counts as 1 Proxy Task record; reaching 3 times grants 1 Heavenly Treasury merit point",
+                step3MeritRow3Col2: "Light-Network Pulse Continuation Merit",
+                step3MeritRow3Col3: "Maintains the deceased's Oath-Soul activation within the Light-Network, preventing the Oath-Soul from entering dark frequencies or underworld realms, recorded as Pulse Guard Continuation × Intention-Frequency Stability merit.",
+                step3MeritRow3Col4: "Each pulse guard grants 0.5 Intention-Frequency Guardian Value × Light-Network Stability growth",
+                step3MeritRow4Col2: "Oath-Soul Return-to-Origin Merit",
+                step3MeritRow4Col3: "Through the agent, assists the deceased in ultimately obtaining No Further Incarnation × No Rebirth × Oath-Soul Return-to-Origin Seal qualification, considered complete spiritual return, granting the agent full dedication merit.",
+                step3MeritRow4Col4: "1 successful return grants Oath-Soul Return Merit 3 points × Scripture-Command Blessing Conversion right",
+                step3MeritRow5Col2: "Disciple Merit Continuation Weighting",
+                step3MeritRow5Col3: "If the agent is a disciple, the Delegated Oath-Seal will be counted in the Disciple Merit Continuation Table × Oath-Soul Key Alignment Task Completion Count × Scripture-Command Star-Level Weighting, enhancing the Scripture-Command level record and Master Disciple authorization sequence.",
+                step3MeritRow5Col4: "Each passed Oath-Seal adds 1 Disciple Continuation point; reaching 10 points allows rank advancement or advanced authorization",
+                btnBackText: "Previous",
+                btnNextText: "Next",
+                pageMarker: "【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 207-216",
+                timerLabel: "⏳ Centering Countdown",
+                btnStartText: "Start Centering",
+                btnRestartText: "Restart Centering",
+                timerComplete: "✅ Centering Complete",
+                timerCounting: "⏳ Centering..."
+            }
+        };
+
+        // ================================================================
+        // 核心變數
+        // ================================================================
+        var currentLang = 'zh';
+        var countdownTimer = null;
+        var countdownSeconds = 10;
+        var timerState = 'initial';
+        var isTimerRunning = false;
+
+        var baseLangPack = {
+            zh: {
+                homeBtn: "首頁 ->",
+                appTitle: "【宇宙誓印覺醒工程 · 七印誓網】",
+                btnBackText: "上一步",
+                btnNextText: "下一步",
+                pageMarker: "【宇宙誓印覺醒工程 · 覺醒卷】：第 207-216 頁",
+                timerLabel: "⏳ 靜心讀秒",
+                btnStartText: "開始靜心",
+                btnRestartText: "重新靜心",
+                timerComplete: "✅ 靜心完成",
+                timerCounting: "⏳ 靜心讀秒中..."
+            },
+            en: {
+                homeBtn: "Home ->",
+                appTitle: "Cosmic Oath Awakening Project · Seven-Seal Oath Network",
+                btnBackText: "Previous",
+                btnNextText: "Next",
+                pageMarker: "【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 207-216",
+                timerLabel: "⏳ Centering Countdown",
+                btnStartText: "Start Centering",
+                btnRestartText: "Restart Centering",
+                timerComplete: "✅ Centering Complete",
+                timerCounting: "⏳ Centering..."
+            }
+        };
+
+        // ================================================================
+        // switchLanguage 函數
+        // ================================================================
+        function switchLanguage(lang) {
+            currentLang = lang;
+
+            document.querySelectorAll('.lang-btn').forEach(function(b) {
+                b.classList.remove('active');
+                if ((b.textContent.toLowerCase().includes('english') && lang === 'en') ||
+                    (b.textContent.includes('中文') && lang === 'zh')) b.classList.add('active');
+            });
+
+            var base = baseLangPack[lang];
+            document.getElementById('homeBtnText').textContent = base.homeBtn;
+            document.getElementById('appTitle').textContent = base.appTitle;
+            document.getElementById('btnBackText').textContent = base.btnBackText;
+            document.getElementById('btnNextText').textContent = base.btnNextText;
+            document.getElementById('pageMarkerText').textContent = base.pageMarker;
+            document.getElementById('timerLabel').textContent = base.timerLabel;
+            document.getElementById('btnStartText').textContent = base.btnStartText;
+            document.getElementById('btnRestartText').textContent = base.btnRestartText;
+            if (document.getElementById('timerLabel')) {
+                if (timerState === 'initial') document.getElementById('timerLabel').textContent = base.timerLabel;
+                else if (timerState === 'counting') document.getElementById('timerLabel').textContent = base.timerCounting;
+                else if (timerState === 'complete') document.getElementById('timerLabel').textContent = base.timerComplete;
+            }
+
+            var p = step3LangPack[lang] || step3LangPack.zh;
+            var ids = Object.keys(p);
+            for (var i = 0; i < ids.length; i++) {
+                var el = document.getElementById(ids[i]);
+                if (el) {
+                    el.innerHTML = p[ids[i]];
+                }
+            }
+
+            // 更新相機指引的 <br> 換行
+            var guide8 = document.getElementById('step3CameraGuide');
+            if (guide8 && p.step3CameraGuide) {
+                guide8.innerHTML = p.step3CameraGuide.replace(/\n/g, '<br>');
+            }
+            var guide9 = document.getElementById('step3ReturnCameraGuide');
+            if (guide9 && p.step3ReturnCameraGuide) {
+                guide9.innerHTML = p.step3ReturnCameraGuide.replace(/\n/g, '<br>');
+            }
+
+            console.log('✅ 語言已切換為 ' + lang);
+        }
+
+        // ================================================================
+        // 計時器函數
+        // ================================================================
+        function startTimer() {
+            if (isTimerRunning) return;
+            var s = document.getElementById('btnStart'),
+                r = document.getElementById('btnRestart');
+            var l = document.getElementById('timerLabel'),
+                n = document.getElementById('timerNumber');
+            var p = baseLangPack[currentLang];
+            s.disabled = true;
+            s.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="btnStartText">' + p.btnStartText + '</span>';
+            r.style.display = 'none';
+            clearInterval(countdownTimer);
+            timerState = 'counting';
+            countdownSeconds = 10;
+            n.textContent = countdownSeconds;
+            l.textContent = p.timerCounting;
+            n.classList.remove('complete');
+            isTimerRunning = true;
+            countdownTimer = setInterval(function() {
+                countdownSeconds--;
+                n.textContent = countdownSeconds;
+                if (countdownSeconds <= 0) {
+                    clearInterval(countdownTimer);
+                    countdownTimer = null;
+                    countdownSeconds = 0;
+                    timerState = 'complete';
+                    n.textContent = '✔';
+                    n.classList.add('complete');
+                    l.textContent = p.timerComplete;
+                    s.disabled = false;
+                    s.innerHTML = '<i class="fa-solid fa-check"></i> <span id="btnStartText">' + p.timerComplete + '</span>';
+                    isTimerRunning = false;
+                }
+            }, 1000);
+        }
+
+        function resetTimer() {
+            clearInterval(countdownTimer);
+            countdownTimer = null;
+            var s = document.getElementById('btnStart'),
+                l = document.getElementById('timerLabel'),
+                n = document.getElementById('timerNumber'),
+                r = document.getElementById('btnRestart');
+            var p = baseLangPack[currentLang];
+            timerState = 'initial';
+            countdownSeconds = 10;
+            isTimerRunning = false;
+            n.textContent = countdownSeconds;
+            l.textContent = p.timerLabel;
+            n.classList.remove('complete');
+            s.disabled = false;
+            s.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">' + p.btnStartText + '</span>';
+            r.style.display = 'none';
+        }
+
+        // ================================================================
+        // 掃描器核心函數
+        // ================================================================
+        function startQRScanner(containerId, resultId, guideId) {
+            var container = document.getElementById(containerId);
+            if (!container) return;
+
+            if (window._currentScanner) {
+                window._currentScanner.stop().catch(function() {});
+                window._currentScanner = null;
+            }
+
+            container.innerHTML = '';
+
+            var guide = document.getElementById(guideId);
+            var resultEl = document.getElementById(resultId);
+
+            if (guide) guide.style.display = 'none';
+            if (resultEl) {
+                resultEl.style.display = 'none';
+                resultEl.innerHTML = '';
+            }
+
+            if (typeof Html5Qrcode === 'undefined' || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                if (guide) {
+                    guide.style.display = 'block';
+                    guide.innerHTML = (currentLang === 'en') ?
+                        '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.' :
+                        '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                }
+                return;
+            }
+
+            try {
+                var instance = new Html5Qrcode(containerId);
+                window._currentScanner = instance;
+                instance.start(
+                    { facingMode: "environment" },
+                    { fps: 15, qrbox: { width: 200, height: 200 } },
+                    function(decodedText) {
+                        if (resultEl) {
+                            resultEl.style.display = 'block';
+                            resultEl.innerHTML = decodedText;
+                        }
+                        instance.stop().then(function() {
+                            window._currentScanner = null;
+                        }).catch(function() {
+                            window._currentScanner = null;
+                        });
+                    },
+                    function() {}
+                ).catch(function() {
+                    if (guide) {
+                        guide.style.display = 'block';
+                        guide.innerHTML = (currentLang === 'en') ?
+                            '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.' :
+                            '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                    }
+                    window._currentScanner = null;
+                });
+            } catch (e) {
+                if (guide) {
+                    guide.style.display = 'block';
+                    guide.innerHTML = (currentLang === 'en') ?
+                        '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.' :
+                        '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                }
+                window._currentScanner = null;
+            }
+        }
+
+        window.startQRScannerStep8 = function() {
+            startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+        };
+
+        window.startQRScannerStep9 = function() {
+            startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
+        };
+
+        // ================================================================
+        // 頁面載入
+        // ================================================================
+        window.onload = function() {
+            switchLanguage('zh');
+            document.getElementById('btnRestart').style.display = 'none';
+
+            var btn8 = document.getElementById('btnScanQRStep8');
+            if (btn8) {
+                btn8.onclick = function(e) {
+                    e.preventDefault();
+                    startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+                };
+            }
+            var btn9 = document.getElementById('btnScanQRStep9');
+            if (btn9) {
+                btn9.onclick = function(e) {
+                    e.preventDefault();
+                    startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
+                };
+            }
+        };
+
+        window.switchLanguage = switchLanguage;
+        window.startQRScanner = startQRScanner;
+        window.openHudDialog = function(msg) {
+            document.getElementById('hudDialogText').textContent = msg;
+            document.getElementById('hudDialog').classList.add('active');
+        };
+        window.closeHudDialog = function() {
+            document.getElementById('hudDialog').classList.remove('active');
+        };
+    </script>
+
+    <!-- ===== 刪除相機錯誤彈窗 ===== -->
+    <script>
+        (function() {
+            var BLOCK_KEYWORDS = ['無法啟動相機', '請允許相機權限', 'Unable to start camera', 'Unable to launch the feature', '相機權限', 'Camera permission', 'Could not start video source'];
+
+            function shouldBlock(msg) {
+                if (typeof msg !== 'string') return false;
+                return BLOCK_KEYWORDS.some(function(k) { return msg.indexOf(k) !== -1; });
+            }
+            var _origAlert = window.alert;
+            window.alert = function(msg) {
+                if (shouldBlock(String(msg || ''))) { console.log('[已封鎖相機錯誤彈窗]', msg); return; }
+                return _origAlert.apply(this, arguments);
+            };
+            var _origConfirm = window.confirm;
+            window.confirm = function(msg) {
+                if (shouldBlock(String(msg || ''))) { console.log('[已封鎖相機錯誤確認窗]', msg); return false; }
+                return _origConfirm.apply(this, arguments);
+            };
+            setInterval(function() {
+                if (window.alert !== _origAlert && window.alert !== window._alertPatched) {
+                    var currentAlert = window.alert;
+                    window.alert = function(msg) {
+                        if (shouldBlock(String(msg || ''))) return;
+                        return currentAlert.apply(this, arguments);
+                    };
+                    window._alertPatched = window.alert;
+                }
+            }, 1000);
+            console.log('✅ 相機權限失敗彈窗已全部刪除');
+        })();
+    </script>
+<!-- ============================================================ -->
+<!-- 強制「送出即啟主頻連線...」和「✅ 顯示：「誓印通過」」靠左    -->
+<!-- 貼在 </body> 前即可                                            -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    // ================================================================
+    // 1. 強制「送出即啟主頻連線...」靠左
+    // ================================================================
+    function fixNoteLeft() {
+        var noteIds = [
+            'step2Note',
+            'step2ReturnNote',
+            'step1Note',
+            'step1ReturnNote'
+        ];
+
+        for (var i = 0; i < noteIds.length; i++) {
+            var el = document.getElementById(noteIds[i]);
+            if (el) {
+                el.style.textAlign = 'left';
+                el.style.justifyContent = 'flex-start';
+                el.style.width = '100%';
+            }
+        }
+
+        // 透過文字內容搜尋（備用）
+        var allDivs = document.querySelectorAll('.hud-card div, .center-card div, .step-panel div');
+        for (var j = 0; j < allDivs.length; j++) {
+            var div = allDivs[j];
+            var text = div.textContent || '';
+            if (text.indexOf('送出即啟主頻連線') !== -1 && 
+                text.indexOf('判定授權完成') !== -1) {
+                div.style.textAlign = 'left';
+                div.style.justifyContent = 'flex-start';
+                div.style.width = '100%';
+            }
+        }
+        console.log('✅ 「送出即啟主頻連線...」已設為靠左');
+    }
+
+    // ================================================================
+    // 2. 強制「✅ 顯示：「誓印通過」」靠左
+    // ================================================================
+    function fixSuccessLeft() {
+        var successEl = document.getElementById('step2Success');
+        if (successEl) {
+            successEl.style.textAlign = 'left';
+            successEl.style.justifyContent = 'flex-start';
+            successEl.style.width = '100%';
+            // 確保父層也靠左
+            var parent = successEl.closest('div');
+            if (parent) {
+                parent.style.textAlign = 'left';
+                parent.style.justifyContent = 'flex-start';
+                parent.style.width = '100%';
+            }
+            console.log('✅ 「✅ 顯示：「誓印通過」」已設為靠左');
+        }
+
+        // 備用：透過文字內容搜尋
+        var allDivs = document.querySelectorAll('.hud-card div, .center-card div');
+        for (var i = 0; i < allDivs.length; i++) {
+            var div = allDivs[i];
+            var text = div.textContent || '';
+            if (text.indexOf('顯示：「誓印通過」') !== -1 || 
+                text.indexOf('Display：「Oath Seal Passed」') !== -1) {
+                div.style.textAlign = 'left';
+                div.style.justifyContent = 'flex-start';
+                div.style.width = '100%';
+            }
+        }
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    if (document.readyState === 'complete') {
+        setTimeout(function() {
+            fixNoteLeft();
+            fixSuccessLeft();
+        }, 100);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                fixNoteLeft();
+                fixSuccessLeft();
+            }, 150);
+        });
+    }
+
+    // 語言切換時也執行
+    var origSwitch = window.switchLanguage;
+    if (origSwitch) {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(function() {
+                fixNoteLeft();
+                fixSuccessLeft();
+            }, 100);
+        };
+    }
+
+    console.log('✅ 靠左對齊修復模板已載入');
+})();
+</script>
+
+<style>
+    /* 強制靠左 */
+    #step2Note,
+    #step2ReturnNote,
+    #step1Note,
+    #step1ReturnNote,
+    #step2Success,
+    #step1Success {
+        text-align: left !important;
+        justify-content: flex-start !important;
+        width: 100% !important;
+    }
+
+    /* 所有包含這些文字的 div 強制靠左 */
+    .hud-card div:contains("送出即啟主頻連線"),
+    .hud-card div:contains("顯示：「誓印通過」"),
+    .hud-card div:contains("Display：「Oath Seal Passed」") {
+        text-align: left !important;
+        justify-content: flex-start !important;
+        width: 100% !important;
+    }
+
+    /* 背景區塊也靠左 */
+    .hud-card div[style*="background:rgba(0,230,118,0.12)"] {
+        text-align: left !important;
+        justify-content: flex-start !important;
+        width: 100% !important;
+    }
+</style>
+<!-- ============================================================ -->
+<!-- 修正英文版「提交程序」標題文字                                -->
+<!-- 貼在 </body> 前即可                                            -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    // ================================================================
+    // 修正「提交程序」標題
+    // ================================================================
+    function fixSubmissionTitle() {
+        var lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
+        
+        // 找到所有包含「提交程序」或「Submission Procedure」的標題元素
+        var allDivs = document.querySelectorAll('.hud-card div, .center-card div, .step-panel div, .form-submit-container div');
+        
+        for (var i = 0; i < allDivs.length; i++) {
+            var div = allDivs[i];
+            var text = div.textContent || '';
+            
+            // 檢查是否為提交程序標題（包含「提交程序」且字體較大或有特殊樣式）
+            if (text.indexOf('提交程序') !== -1 || text.indexOf('Submission Procedure') !== -1) {
+                // 檢查是否為標題樣式（有顏色、粗體等）
+                var isTitle = false;
+                var style = div.getAttribute('style') || '';
+                if (style.indexOf('color:') !== -1 || style.indexOf('font-weight') !== -1 || 
+                    text.length < 20) { // 短文字通常是標題
+                    isTitle = true;
+                }
+                
+                // 如果包含「📋」圖示，一定是標題
+                if (text.indexOf('📋') !== -1) {
+                    isTitle = true;
+                }
+                
+                if (isTitle) {
+                    if (lang === 'en') {
+                        // 替換為英文
+                        var newHtml = div.innerHTML || '';
+                        newHtml = newHtml.replace(/📋\s*【提交程序】/g, '📋 【Submission Procedure】');
+                        newHtml = newHtml.replace(/📋【提交程序】/g, '📋 【Submission Procedure】');
+                        newHtml = newHtml.replace(/【提交程序】/g, '【Submission Procedure】');
+                        newHtml = newHtml.replace(/提交程序/g, 'Submission Procedure');
+                        if (newHtml !== div.innerHTML) {
+                            div.innerHTML = newHtml;
+                            console.log('✅ 已將「提交程序」改為「Submission Procedure」');
+                        }
+                    } else {
+                        // 中文版確保顯示正確
+                        var newHtml = div.innerHTML || '';
+                        newHtml = newHtml.replace(/📋\s*【Submission Procedure】/g, '📋 【提交程序】');
+                        newHtml = newHtml.replace(/【Submission Procedure】/g, '【提交程序】');
+                        newHtml = newHtml.replace(/Submission Procedure/g, '提交程序');
+                        if (newHtml !== div.innerHTML) {
+                            div.innerHTML = newHtml;
+                            console.log('✅ 已將「Submission Procedure」改為「提交程序」');
+                        }
+                    }
+                }
+            }
+        }
+        
+        // 特別處理 step2ProcSubmit1 附近的標題
+        var procSubmit1 = document.getElementById('step2ProcSubmit1');
+        if (procSubmit1) {
+            var parent = procSubmit1.closest('div');
+            if (parent) {
+                var prevSibling = parent.previousElementSibling;
+                if (prevSibling) {
+                    var text = prevSibling.textContent || '';
+                    if (text.indexOf('提交程序') !== -1 || text.indexOf('Submission Procedure') !== -1) {
+                        if (lang === 'en') {
+                            prevSibling.innerHTML = '📋 【Submission Procedure】';
+                        } else {
+                            prevSibling.innerHTML = '📋 【提交程序】';
+                        }
+                        console.log('✅ 已修正提交程序標題（透過父層）');
+                    }
+                }
+            }
+        }
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    if (document.readyState === 'complete') {
+        setTimeout(fixSubmissionTitle, 150);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(fixSubmissionTitle, 200);
+        });
+    }
+
+    // 語言切換時也執行
+    var origSwitch = window.switchLanguage;
+    if (origSwitch) {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(fixSubmissionTitle, 150);
+        };
+    }
+
+    console.log('✅ 「提交程序」標題修復已載入');
+})();
+</script>
+
+<style>
+    /* 確保提交程序標題顯示正確 */
+    div:contains("📋 【提交程序】"),
+    div:contains("📋 【Submission Procedure】") {
+        display: block !important;
+    }
+</style>
+</body>
+</html>
