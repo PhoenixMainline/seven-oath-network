@@ -2197,36 +2197,119 @@
 })();
 </script>
 <!-- ============================================================ -->
-<!-- 強制修復兩個相機掃描按鈕（step8 + step9）                    -->
+<!-- 修復兩個相機掃描按鈕（step8 + step9）                          -->
 <!-- 貼在 </body> 前即可                                            -->
 <!-- ============================================================ -->
 <script>
 (function() {
     // ================================================================
-    // 強制重新綁定掃描按鈕
+    // 啟動掃描器核心函數
     // ================================================================
-    function fixScanButtons() {
-        // 1. 確保掃描函數存在
-        if (typeof window.startQRScannerStep8 !== 'function') {
-            window.startQRScannerStep8 = function() {
-                startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
-            };
-        }
-        if (typeof window.startQRScannerStep9 !== 'function') {
-            window.startQRScannerStep9 = function() {
-                startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
-            };
+    function startQRScanner(containerId, resultId, guideId) {
+        var container = document.getElementById(containerId);
+        if (!container) {
+            console.warn('找不到容器:', containerId);
+            return;
         }
 
-        // 2. 找到按鈕並強制綁定
+        // 停止舊掃描器
+        if (window._currentScanner) {
+            window._currentScanner.stop().catch(function() {});
+            window._currentScanner = null;
+        }
+
+        container.innerHTML = '';
+
+        var guide = document.getElementById(guideId);
+        var resultEl = document.getElementById(resultId);
+
+        if (guide) guide.style.display = 'none';
+        if (resultEl) {
+            resultEl.style.display = 'none';
+            resultEl.innerHTML = '';
+        }
+
+        // 檢查是否支援相機
+        if (typeof Html5Qrcode === 'undefined') {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.innerHTML = (currentLang === 'en') ?
+                    '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.' :
+                    '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+            }
+            return;
+        }
+
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.innerHTML = (currentLang === 'en') ?
+                    '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.' :
+                    '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+            }
+            return;
+        }
+
+        try {
+            var instance = new Html5Qrcode(containerId);
+            window._currentScanner = instance;
+            instance.start(
+                { facingMode: "environment" },
+                { fps: 15, qrbox: { width: 200, height: 200 } },
+                function(decodedText) {
+                    if (resultEl) {
+                        resultEl.style.display = 'block';
+                        resultEl.innerHTML = decodedText;
+                    }
+                    instance.stop().then(function() {
+                        window._currentScanner = null;
+                    }).catch(function() {
+                        window._currentScanner = null;
+                    });
+                },
+                function() {}
+            ).catch(function() {
+                if (guide) {
+                    guide.style.display = 'block';
+                    guide.innerHTML = (currentLang === 'en') ?
+                        '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.' :
+                        '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                }
+                window._currentScanner = null;
+            });
+        } catch (e) {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.innerHTML = (currentLang === 'en') ?
+                    '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.' :
+                    '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+            }
+            window._currentScanner = null;
+        }
+    }
+
+    // ================================================================
+    // Step8 掃描器
+    // ================================================================
+    window.startQRScannerStep8 = function() {
+        startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+    };
+
+    // ================================================================
+    // Step9 掃描器
+    // ================================================================
+    window.startQRScannerStep9 = function() {
+        startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
+    };
+
+    // ================================================================
+    // 重新綁定按鈕
+    // ================================================================
+    function bindScanButtons() {
         var btn8 = document.getElementById('btnScanQRStep8');
-        var btn9 = document.getElementById('btnScanQRStep9');
-
         if (btn8) {
-            // 移除所有事件
             var newBtn8 = btn8.cloneNode(true);
             btn8.parentNode.replaceChild(newBtn8, btn8);
-            // 綁定事件
             newBtn8.onclick = function(e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -2234,9 +2317,10 @@
             };
             newBtn8.style.cursor = 'pointer';
             newBtn8.style.pointerEvents = 'auto';
-            console.log('✅ btnScanQRStep8 已重新綁定');
+            console.log('✅ btnScanQRStep8 已綁定');
         }
 
+        var btn9 = document.getElementById('btnScanQRStep9');
         if (btn9) {
             var newBtn9 = btn9.cloneNode(true);
             btn9.parentNode.replaceChild(newBtn9, btn9);
@@ -2247,134 +2331,22 @@
             };
             newBtn9.style.cursor = 'pointer';
             newBtn9.style.pointerEvents = 'auto';
-            console.log('✅ btnScanQRStep9 已重新綁定');
+            console.log('✅ btnScanQRStep9 已綁定');
         }
-
-        // 如果按鈕不存在，嘗試用文字內容找
-        if (!btn8 || !btn9) {
-            var allBtns = document.querySelectorAll('button, .btn-restart, [class*="scan"]');
-            allBtns.forEach(function(btn) {
-                var text = btn.textContent || '';
-                if (text.indexOf('開始掃描') !== -1 || text.indexOf('掃描 QR') !== -1) {
-                    // 判斷是哪個按鈕
-                    var parent = btn.closest('#qrScanCardStep8, #qrScanCardStep9');
-                    if (parent) {
-                        if (parent.id === 'qrScanCardStep8') {
-                            btn.onclick = function(e) {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                window.startQRScannerStep8();
-                            };
-                            console.log('✅ 透過文字找到 btnScanQRStep8');
-                        } else if (parent.id === 'qrScanCardStep9') {
-                            btn.onclick = function(e) {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                window.startQRScannerStep9();
-                            };
-                            console.log('✅ 透過文字找到 btnScanQRStep9');
-                        }
-                    }
-                }
-            });
-        }
-    }
-
-    // ================================================================
-    // 啟動掃描器核心函數（確保存在）
-    // ================================================================
-    if (typeof window.startQRScanner !== 'function') {
-        window.startQRScanner = function(containerId, resultId, guideId) {
-            var container = document.getElementById(containerId);
-            if (!container) {
-                console.warn('找不到容器:', containerId);
-                return;
-            }
-
-            // 停止舊掃描器
-            if (window._currentScanner) {
-                window._currentScanner.stop().catch(function() {});
-                window._currentScanner = null;
-            }
-
-            container.innerHTML = '';
-
-            var guide = document.getElementById(guideId);
-            var resultEl = document.getElementById(resultId);
-
-            if (guide) guide.style.display = 'none';
-            if (resultEl) {
-                resultEl.style.display = 'none';
-                resultEl.innerHTML = '';
-            }
-
-            if (typeof Html5Qrcode === 'undefined' || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                if (guide) {
-                    guide.style.display = 'block';
-                    guide.innerHTML = (currentLang === 'en') ?
-                        '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.' :
-                        '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
-                }
-                return;
-            }
-
-            try {
-                var instance = new Html5Qrcode(containerId);
-                window._currentScanner = instance;
-                instance.start(
-                    { facingMode: "environment" },
-                    { fps: 15, qrbox: { width: 200, height: 200 } },
-                    function(decodedText) {
-                        if (resultEl) {
-                            resultEl.style.display = 'block';
-                            resultEl.innerHTML = decodedText;
-                        }
-                        instance.stop().then(function() {
-                            window._currentScanner = null;
-                        }).catch(function() {
-                            window._currentScanner = null;
-                        });
-                    },
-                    function() {}
-                ).catch(function() {
-                    if (guide) {
-                        guide.style.display = 'block';
-                        guide.innerHTML = (currentLang === 'en') ?
-                            '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.' :
-                            '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
-                    }
-                    window._currentScanner = null;
-                });
-            } catch (e) {
-                if (guide) {
-                    guide.style.display = 'block';
-                    guide.innerHTML = (currentLang === 'en') ?
-                        '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.' :
-                        '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
-                }
-                window._currentScanner = null;
-            }
-        };
     }
 
     // ================================================================
     // 執行
     // ================================================================
     if (document.readyState === 'complete') {
-        setTimeout(fixScanButtons, 300);
+        setTimeout(bindScanButtons, 300);
     } else {
         window.addEventListener('load', function() {
-            setTimeout(fixScanButtons, 400);
+            setTimeout(bindScanButtons, 400);
         });
     }
 
-    // 監聽 DOM 變化
-    var observer = new MutationObserver(function() {
-        fixScanButtons();
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    console.log('✅ 相機掃描按鈕修復已載入');
+    console.log('✅ 相機掃描修復已載入');
 })();
 </script>
 </body>
