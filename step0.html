@@ -226,7 +226,7 @@
                         <div id="qr-reader-container" style="width:100%; max-width:280px; margin:0 auto;"></div>
                         <button class="btn-restart" id="btnScanQR" onclick="startQRScanner('step3')" style="margin-top:10px;"><i class="fa-solid fa-qrcode"></i> <span id="btnScanText">📷 掃描 QR Code</span></button>
                         <div id="qrScanResult" class="qr-result" style="display:none; margin-top:10px;"><i class="fa-solid fa-check-circle"></i><span id="qrResultText">掃描成功！</span></div>
-                        <div id="cameraGuide" class="camera-guide" style="display:none; text-align:left; margin-top:12px;"><span id="cameraGuideText">📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」 → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code</span></div>
+                        <div id="cameraGuide" class="camera-guide" style="display:none; text-align:left; margin-top:12px;"><span id="cameraGuideText">📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code</span></div>
                     </div>
                 </div>
                 <div class="hud-card">
@@ -237,7 +237,7 @@
                         </div>
                     </div>
                     <div class="instruction-box">
-                        <div id="inst3_note_box_zh" style="display:block; color:rgba(224,232,245,0.85); font-size:0.85rem; line-height:1.8; background:rgba(6,18,44,0.4); padding:10px 14px; border-radius:8px;">📡 送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。<br>🧭【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</div>
+                        <div id="inst3_note_box_zh" style="display:block; color:rgba(224,232,245,0.85); font-size:0.85rem; line-height:1.8; background:rgba(6,18,44,0.4); padding:10px 14px; border-radius:8px;">📡 送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。<br>🧭 【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</div>
                         <div id="inst3_note_box_en" style="display:none; color:rgba(224,232,245,0.85); font-size:0.85rem; line-height:1.8; background:rgba(6,18,44,0.4); padding:10px 14px; border-radius:8px;">📡 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.<br>🧭 The【Trigger Command】is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.</div>
                     </div>
                 </div>
@@ -270,7 +270,7 @@
                     </div>
                     <div class="instruction-box">
                         <div style="background:rgba(6,18,44,0.4); padding:12px 14px; border-radius:8px; display:flex; flex-direction:column; gap:8px;">
-                            <div id="inst4_example_box" style="color:#e0e8f5;font-size:0.95rem;line-height:1.8;white-space:pre-line;">📡 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.🧭 【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.</div>
+                            <div id="inst4_example_box" style="color:#e0e8f5;font-size:0.95rem;line-height:1.8;white-space:pre-line;">📡 送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。\n🧭 【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</div>
                             <div id="inst4_en_rule" style="display:none; color:rgba(224,232,245,0.75); font-size:0.8rem; margin-top:4px;">• Trigger language is unified in Chinese to ensure precise syntax and symbol accuracy of the oath-seal command, preventing activation failure.</div>
                         </div>
                     </div>
@@ -360,6 +360,7 @@ var langPack = {
         cameraGuideTextStep4: '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」 → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code',
         cardTitleText4b: '輸入規範注意事項：',
         inst4_note_2_text: '僅輸入【購書序號】誓導碼，不可增刪符號。',
+        inst4_example_box: '📡 送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。\n🧭 【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。',
         cardTitleText5: '【五】誓頻啟動 × 系統同步階段',
         inst5_1: '啟動後 → 選擇啟動文版本 → 輸入：「您安排就好」',
         inst5_2: '系統即回傳【鳳凰誓印文】，其內容依誓印者當下之真實頻率判定為準。',
@@ -414,6 +415,7 @@ var langPack = {
         cameraGuideTextStep4: '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.',
         cardTitleText4b: 'Input Protocol Notes:',
         inst4_note_2_text: 'Enter only the 【Purchase Serial Number】 Vow-Guidance Code, without adding or removing any characters.',
+        inst4_example_box: '📡 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.\n🧭 【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.',
         cardTitleText5: '【5】Oath-Frequency Activation × System Synchronization Phase',
         inst5_1: 'After activation → select the Oath-Text Version → enter: 「You may arrange it」',
         inst5_2: 'The system will return the 【Phoenix Oath Seal Text】, with its content determined according to the practitioner\'s authentic frequency at that moment.',
@@ -490,6 +492,7 @@ function switchLanguage(lang) {
     setText('cameraGuideTextStep4', p.cameraGuideTextStep4);
     setText('cardTitleText4b', p.cardTitleText4b);
     setText('inst4_note_2_text', p.inst4_note_2_text);
+    setText('inst4_example_box', p.inst4_example_box);
 
     var enRule = document.getElementById('inst4_en_rule');
     if (enRule) enRule.style.display = (lang === 'en') ? 'block' : 'none';
