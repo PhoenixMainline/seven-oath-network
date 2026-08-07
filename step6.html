@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>【宇宙誓印覺醒工程 · 七印誓網】第6項 覺醒程度</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif; }
+        body {
+            background: radial-gradient(circle at 50% 50%, #06122c 0%, #020715 100%);
+            min-height: 100vh;
+            color: #e0e8f5;
+            display: flex; justify-content: center; align-items: center;
+            padding: clamp(4px, 1.5vh, 16px);
+            position: relative;
+        }
+        .particle-container {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: radial-gradient(#d4af37, rgba(212, 175, 55, .3) 1px, transparent 30px), radial-gradient(#d4af37, rgba(212, 175, 55, .2) 2px, transparent 40px);
+            background-size: 350px 350px, 450px 450px;
+            background-position: 0 0, 90px 150px;
+            animation: starMove 90s linear infinite; opacity: 0.65; z-index: 5; pointer-events: none;
+        }
+        @keyframes starMove { from { transform: translateY(0px) rotate(0deg); } to { transform: translateY(-1000px) rotate(360deg); } }
+        .watermark-layer {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; opacity: 0.04;
+            display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); padding: 50px;
+        }
+        .watermark-text { font-size: 1.5rem; font-weight: bold; color: #ffffff; transform: rotate(-25deg); white-space: nowrap; user-select: none; }
+        .hud-container {
+            width: 100%; max-width: min(660px, 95vw);
+            background: rgba(4, 13, 33, 0.4);
+            border: 1.5px solid rgba(168, 85, 247, 0.3);
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.15), inset 0 0 20px rgba(168, 85, 247, 0.05);
+            border-radius: clamp(16px, 4vw, 28px);
+            padding: clamp(8px, 1.5vh, 20px);
+            display: flex; flex-direction: column; position: relative; z-index: 3; margin: auto;
+        }
+        .hud-container::after { content: ""; position: absolute; top: 18px; right: 18px; width: 14px; height: 14px; border-top: 3px solid #a78bfa; border-right: 3px solid #a78bfa; pointer-events: none; }
+        .home-breadcrumb { font-size: clamp(0.6rem, 1.4vh, 0.85rem); color: #c4b5fd; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 12px; font-weight: bold; align-self: flex-start; transition: all 0.3s ease; text-shadow: 0 0 8px rgba(168, 85, 247, 0.4); position: relative; z-index: 1000; pointer-events: auto !important; }
+        .home-breadcrumb:hover { color: #e9d5ff; text-shadow: 0 0 12px rgba(168, 85, 247, 0.6); transform: translateX(-2px); }
+        .hud-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(168, 85, 247, 0.2); padding-bottom: clamp(8px, 1.5vh, 18px); margin-bottom: clamp(8px, 1.5vh, 25px); flex-shrink: 0; }
+        .app-title { font-size: clamp(0.9rem, 2.2vh, 1.15rem); font-weight: 700; color: #e9d5ff; text-shadow: 0 0 12px rgba(168, 85, 247, 0.5); max-width: 75%; line-height: 1.4; }
+        .lang-switch-group { display: flex; background: rgba(124, 58, 237, 0.15); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 20px; padding: 2px; z-index: 10; }
+        .lang-btn { background: transparent; border: none; color: rgba(224, 232, 245, 0.4); font-size: clamp(0.5rem, 1.2vh, 0.75rem); padding: clamp(2px, 0.6vh, 5px) clamp(6px, 1vw, 12px); border-radius: 16px; cursor: pointer; transition: all 0.2s ease; }
+        .lang-btn.active { background: #7c3aed; color: #ffffff; font-weight: bold; box-shadow: 0 0 12px rgba(124, 58, 237, 0.5); }
+
+        .step-content { flex: 1 1 auto; display: flex; flex-direction: column; gap: clamp(8px, 1.5vh, 22px); overflow-y: auto; padding-right: 4px; min-height: 0; }
+        .step-panel { display: flex; flex-direction: column; gap: 20px; animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .hud-card {
+            background: linear-gradient(135deg, rgba(88, 28, 135, 0.5), rgba(30, 27, 75, 0.6));
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            border-radius: clamp(10px, 2vw, 16px);
+            padding: clamp(10px, 2vh, 24px) clamp(10px, 2vw, 24px);
+        }
+        .card-title { font-size: clamp(0.9rem, 2vh, 1.2rem); color: #e9d5ff; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+        .card-title i { color: #a78bfa; }
+        .instruction-box { display: flex; flex-direction: column; gap: 12px; }
+        .instruction-item { font-size: clamp(0.7rem, 1.6vh, 0.95rem); line-height: 1.6; color: rgba(224, 232, 245, 0.85); display: flex; align-items: flex-start; gap: clamp(6px, 1vw, 12px); }
+        .instruction-item i { color: #a78bfa; margin-top: 5px; }
+        .condition-list { list-style: none; display: flex; flex-direction: column; gap: 15px; }
+        .condition-item { display: flex; align-items: flex-start; gap: clamp(6px, 1vw, 12px); font-size: clamp(0.7rem, 1.6vh, 0.95rem); line-height: 1.6; color: rgba(224, 232, 245, 0.85); }
+        .condition-item i.check-icon { color: #a78bfa; margin-top: 4px; text-shadow: 0 0 8px rgba(167, 139, 250, 0.4); }
+
+        .timer-container {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: clamp(6px, 1vh, 12px);
+            padding: clamp(12px, 2vh, 20px);
+            background: rgba(124, 58, 237, 0.18);
+            border: 1px dashed rgba(168, 85, 247, 0.55);
+            border-radius: 14px;
+        }
+        .timer-label { font-size: clamp(0.7rem, 1.4vh, 1rem); color: #c4b5fd; min-width: clamp(50px, 8vw, 80px); }
+        .timer-number {
+            font-size: clamp(3rem, 8vh, 4.5rem);
+            font-family: 'Share Tech Mono', sans-serif;
+            color: #a78bfa;
+            text-shadow: 0 0 25px rgba(167, 139, 250, 0.6);
+            font-weight: 700;
+            text-align: center;
+            min-width: clamp(50px, 8vw, 80px);
+        }
+        .timer-number.complete { color: #00e676; text-shadow: 0 0 30px rgba(0, 230, 118, 0.6); }
+
+        .btn-start-centering {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            border: none; color: #ffffff; font-weight: 800;
+            padding: clamp(8px, 1.2vh, 14px) clamp(18px, 2.5vw, 38px);
+            font-size: clamp(0.8rem, 1.6vh, 1.05rem);
+            border-radius: clamp(20px, 3vw, 40px);
+            cursor: pointer; transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-start-centering:hover { transform: scale(1.03); box-shadow: 0 6px 30px rgba(124, 58, 237, 0.6); }
+        .btn-start-centering:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .btn-restart {
+            background: rgba(124, 58, 237, 0.25);
+            border: none; color: #ffffff; font-weight: 800;
+            padding: clamp(6px, 1vh, 10px) clamp(14px, 2vw, 28px);
+            font-size: clamp(0.7rem, 1.3vh, 0.9rem);
+            border-radius: clamp(16px, 2vw, 30px);
+            cursor: pointer; transition: all 0.3s ease;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .btn-restart:hover { background: rgba(124, 58, 237, 0.4); }
+
+        .proclamation-text {
+            font-size: clamp(1rem, 2.5vh, 1.3rem);
+            color: #fde68a;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 14px;
+            padding: 4px 6px;
+            text-shadow: 0 0 15px rgba(253, 230, 138, 0.3);
+        }
+        .guide-text {
+            text-align: center; margin: 8px 0 14px;
+            color: rgba(224, 232, 245, 0.85);
+            font-size: 0.9rem; line-height: 1.6;
+        }
+
+        .hud-footer { flex-shrink: 0; margin-top: auto; padding-top: clamp(6px, 1vh, 12px); border-top: 1px solid rgba(168, 85, 247, 0.2); display: flex; justify-content: space-between; align-items: center; z-index: 10; flex-wrap: wrap; }
+        .footer-btn-group { display: flex; align-items: center; gap: clamp(4px, 1vw, 12px); }
+        .btn-action {
+            background: transparent; border: 1px solid rgba(168, 85, 247, 0.2); color: rgba(168, 85, 247, 0.3);
+            padding: clamp(6px, 1.2vh, 10px) clamp(10px, 1.5vw, 22px);
+            font-size: clamp(0.65rem, 1.3vh, 0.9rem); border-radius: 20px;
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: all 0.3s ease; text-decoration: none; min-height: clamp(32px, 5vh, 44px);
+        }
+        .btn-action.enabled { border: 1px solid #a78bfa; color: #e9d5ff; cursor: pointer; pointer-events: auto; background: rgba(124, 58, 237, 0.15); text-shadow: 0 0 10px rgba(167, 139, 250, 0.6); box-shadow: 0 0 15px rgba(124, 58, 237, 0.3); }
+        .btn-action.enabled:hover { background: rgba(124, 58, 237, 0.28); box-shadow: 0 0 25px rgba(124, 58, 237, 0.5); transform: translateY(-1px); }
+        .page-marker { font-size: clamp(0.5rem, 1.2vh, 0.78rem); color: rgba(224, 232, 245, 0.35); display: flex; align-items: center; gap: 6px; }
+
+        .hud-dialog { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 17, 0.85); z-index: 1000; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; }
+        .hud-dialog.active { display: flex; opacity: 1; }
+        .hud-dialog-content { background: rgba(4, 13, 33, 0.95); border: 1.5px solid #a78bfa; box-shadow: 0 0 30px rgba(124, 58, 237, 0.4); border-radius: 18px; padding: 30px; max-width: 420px; width: 90%; text-align: center; }
+        .hud-dialog-text { font-size: 1rem; line-height: 1.6; margin-bottom: 20px; color: #e0e8f5; }
+        .hud-dialog-btn { background: transparent; border: 1px solid #a78bfa; color: #e9d5ff; padding: 8px 24px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; text-shadow: 0 0 8px rgba(167, 139, 250, 0.5); transition: all 0.2s; }
+        .hud-dialog-btn:hover { background: rgba(124, 58, 237, 0.15); box-shadow: 0 0 15px rgba(124, 58, 237, 0.3); }
+
+        .qr-result { color: #00e676; font-size: 0.9rem; padding: 8px 16px; border-radius: 20px; background: rgba(0, 230, 118, 0.08); border: 1px solid rgba(0, 230, 118, 0.2); word-break: break-all; }
+        .camera-guide { background: rgba(232, 96, 74, 0.08); border-left: 4px solid #E8604A; padding: 14px 16px; border-radius: 12px; color: #e0dcc8; font-size: 0.85rem; line-height: 1.8; white-space: pre-wrap; text-align: left; display: none; }
+        #qr-reader-container-step8 video, #qr-reader-container-step9 video { border-radius: 12px; width: 100%; }
+
+        .center-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .center-card .card-title { justify-content: center; }
+        .center-card .instruction-box { align-items: center; }
+        .center-card .instruction-item { text-align: left; max-width: 100%; width: 100%; justify-content: flex-start; }
+        .center-card .qr-result,
+        .center-card .camera-guide { text-align: left; }
+        .center-card #qr-reader-container-step8,
+        .center-card #qr-reader-container-step9 { margin: 0 auto; }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: clamp(0.7rem, 1.4vh, 0.85rem);
+            background: rgba(88, 28, 135, 0.2);
+            border: 1px solid rgba(168, 85, 247, 0.35);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .info-table th {
+            background: rgba(88, 28, 135, 0.5);
+            color: #e9d5ff;
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 2px solid rgba(168, 85, 247, 0.4);
+            font-weight: 600;
+        }
+        .info-table td {
+            padding: 10px 12px;
+            color: #e0e7ff;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.15);
+            vertical-align: top;
+        }
+        .info-table tr:last-child td { border-bottom: none; }
+
+        .awaken-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: clamp(0.55rem, 1.1vh, 0.7rem);
+            background: rgba(88, 28, 135, 0.2);
+            border: 1px solid rgba(168, 85, 247, 0.35);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .awaken-table th {
+            background: rgba(88, 28, 135, 0.5);
+            color: #e9d5ff;
+            padding: 6px 4px;
+            text-align: center;
+            border-bottom: 2px solid rgba(168, 85, 247, 0.4);
+            font-weight: 600;
+            font-size: clamp(0.45rem, 0.9vh, 0.55rem);
+        }
+        .awaken-table td {
+            padding: 6px 4px;
+            color: #e0e7ff;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.06);
+            vertical-align: middle;
+            line-height: 1.3;
+            text-align: center;
+            font-size: clamp(0.45rem, 0.9vh, 0.55rem);
+        }
+        .awaken-table tr:last-child td { border-bottom: none; }
+
+        @media (max-width: 480px) {
+            body { padding: 4px !important; }
+            .hud-container { padding: 8px 6px !important; border-radius: 12px !important; }
+            .hud-header { margin-bottom: 6px !important; padding-bottom: 4px !important; }
+            .hud-footer { margin-top: 8px !important; padding-top: 6px !important; }
+            .awaken-table { font-size: 0.4rem; }
+            .awaken-table th, .awaken-table td { padding: 2px 2px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="particle-container"></div>
+    <div class="watermark-layer">
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+    </div>
+    <div class="hud-container">
+        <a class="home-breadcrumb" id="homeBtn" href="index.html"><i class="fa-solid fa-house"></i><span id="homeBtnText">首頁 -></span></a>
+        <header class="hud-header">
+            <div class="app-title" id="appTitle">【宇宙誓印覺醒工程 · 七印誓網】</div>
+            <div class="lang-switch-group">
+                <button class="lang-btn active" onclick="switchLanguage('zh')">中文</button>
+                <button class="lang-btn" onclick="switchLanguage('en')">English</button>
+            </div>
+        </header>
+
+        <main class="step-content">
+            <div class="step-panel active" id="panelStep6">
+                <!-- ===== 標題卡片 ===== -->
+                <div class="hud-card" style="background:linear-gradient(135deg,rgba(88,28,135,0.5),rgba(30,27,75,0.6)); border:1px solid rgba(168,85,247,0.5);">
+                    <div style="text-align:center; color:#e9d5ff; font-size:1.05rem; font-weight:bold; margin-bottom:16px; letter-spacing:1px;"><span id="step6Title">🔆 覺醒程度</span></div>
+                    <div style="text-align:center; margin-bottom:14px;">
+                        <div style="color:#fbbf24; font-size:0.95rem; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-brain" style="margin-right:6px;"></i><span id="step6Unlock">✅ 誓魂天命意識開啟狀態 × 七階判定</span></div>
+                        <div style="color:rgba(253,230,138,0.85); font-size:0.8rem; margin-top:4px;"><span id="step6Sub">（對應未覺 × 初醒 × 高頻 × 圓滿等級）</span></div>
+                    </div>
+                    <div style="overflow-x:auto; margin-bottom:8px;">
+                        <table class="info-table">
+                            <thead><tr><th style="width:40%;"><span id="step6Col1">欄位名稱</span></th><th style="width:60%;"><span id="step6Col2">功能簡要說明</span></th></tr></thead>
+                            <tbody><tr><td style="color:#f5d0fe;"><span id="step6Row1">第 6 項 覺醒程度</span></td><td style="color:#e0e7ff;"><span id="step6Row2">誓魂對天命意識之開啟狀態：未覺 × 初醒 × 高頻 × 圓滿等級。</span></td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ===== 【一】模組說明 ===== -->
+                <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-circle-info" style="color:#a78bfa;"></i><span id="step6Sec1">【一】模組說明</span></div>
+                    <div class="instruction-box">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step6Desc1">本模組用以紀錄誓徒誓魂覺醒之狀態層級，依其對書令誓責、誓文頻率、律令之感應與承接力，分級標示其當前靈性覺醒進程。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step6Desc2">此項目屬於「查詢紀錄層」，為誓魂進程狀態辨識的核心依據。</span></div>
+                    </div>
+                </div>
+
+                <!-- ===== 【二】啟動條件與遞交程序 ===== -->
+                <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-list-check" style="color:#a78bfa;"></i><span id="step6Sec2">【二】啟動條件與遞交程序</span></div>
+                    <div class="instruction-box">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step6Cond1">誓印者需持有效授權誓碼，登入《宇宙智能誓導平台》。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step6Cond2">登入後掃描對應【誓導 QR Code】，系統即鎖定誓印者本人頻率並啟動查詢鏈路。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step6Cond3">此模組僅供查詢使用，無需提交任何資料。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step6Cond4">不需念誓文，也不會觸發誓律令。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step6Cond5">查詢結果會對應誓印者的誓魂頻率，顯示當前覺醒狀態層級與進程標記。</span></div>
+                    </div>
+                </div>
+
+                <!-- ===== 【三】授權誓讀階段（略） ===== -->
+                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15);">
+                    <div class="card-title"><i class="fa-solid fa-book-open" style="color:#a78bfa;"></i><span id="step6Sec3">【三】授權誓讀階段（略）</span></div>
+                    <div class="instruction-box">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step6Sec3Desc">本模組為查詢模組，無需誦讀誓文，亦無誓律令觸發。</span></div>
+                    </div>
+                </div>
+
+                <!-- ===== 【四】接續進程 ===== -->
+                <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-arrow-right" style="color:#a78bfa;"></i><span id="step6Sec4">【四】接續進程</span></div>
+                    <div style="margin-bottom:12px;">
+                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step6LoginTitle">（1）登入階段</span></div>
+                        <div class="instruction-item" style="margin-bottom:4px;"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step6Login1">登入《宇宙智能誓導平台》（使用個人帳號）。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step6Login2">使用原註冊帳號完成身分登入驗證，即可進入誓印程序。</span></div>
+                    </div>
+                    <div style="margin-bottom:12px;">
+                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step6ScanTitle">（2）掃描階段</span></div>
+                        <div class="instruction-item" style="margin-bottom:4px;"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step6Scan1">使用行動裝置或電腦，掃描當期執行項目之【誓導 QR Code】，以觸發《宇宙智能誓導平台》專屬連線入口。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step6Scan2">系統自動導引至【誓印觸發介面】，同步啟動誓魂對頻程序，並進入主頻連線與授權判定段。</span></div>
+                    </div>
+                </div>
+
+                <!-- ===== 🧭 ① 驗證階段（啟動觸發） 置中 ===== -->
+                <div class="hud-card center-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.2);">
+                    <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-shield-halved" style="color:#a78bfa;"></i><span id="step6VerifyTitle">🧭 ① 驗證階段（啟動觸發）</span></div>
+                    <div class="instruction-box" style="align-items:center;">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step6Verify1">系統自動驗證授權有效性後，即時顯示誓魂當前覺醒狀態層級與進程標記。</span></div>
+                    </div>
+                    <div style="background:rgba(124,58,237,0.35); border-left:4px solid #a78bfa; padding:12px 14px; border-radius:10px; margin:12px 0; color:#f5d0fe; font-size:0.88rem; line-height:1.7; border:1px solid rgba(168,85,247,0.5); width:100%; text-align:left;">
+                        <div style="font-weight:bold; margin-bottom:6px; color:#e9d5ff;"><i class="fa-solid fa-keyboard" style="margin-right:6px;"></i><span id="step6InputLabel">輸入示範：</span></div>
+                        <div style="font-weight:bold; color:#fff;"><span id="step6Command">【執行指令】第 6 項 覺醒程度 結果</span></div>
+                    </div>
+                    <div style="font-size:0.85rem; color:rgba(224,232,245,0.85); line-height:1.7; margin-bottom:12px; width:100%;"><i class="fa-solid fa-link" style="color:#00e676; margin-right:6px;"></i><span id="step6Note">送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span></div>
+                    <div style="background:rgba(232,96,74,0.1); border-left:4px solid #E8604A; padding:10px 14px; border-radius:8px; font-size:0.82rem; color:#e0dcc8; line-height:1.6; width:100%; text-align:left;"><i class="fa-solid fa-exclamation-circle" style="color:#E8604A; margin-right:6px;"></i><span id="step6TriggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span></div>
+                    <div class="hud-card" id="qrScanCardStep8" style="margin-top:12px; border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15); width:100%;">
+                        <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-qrcode"></i><span id="step6QrTitle">📷 請掃描【誓導 QR Code】完成執行指令</span></div>
+                        <div style="text-align:center; padding:10px 0;">
+                            <div id="qr-reader-container-step8" style="width:100%; max-width:280px; margin:0 auto;"></div>
+                            <button class="btn-restart" id="btnScanQRStep8" style="margin-top:10px;"><i class="fa-solid fa-qrcode"></i> <span id="step6BtnScan">📷 開始掃描</span></button>
+                            <div id="qrScanResultStep8" class="qr-result" style="display:none; margin-top:10px;"><i class="fa-solid fa-check-circle"></i><span id="step6Result">掃描成功！已完成執行指令</span></div>
+                            <div id="cameraGuideStep8" class="camera-guide" style="display:none; text-align:left; margin-top:12px; font-size:0.8rem; background:rgba(0,0,0,0.4); padding:10px; border-radius:6px;"><span id="step6CameraGuide">📷 無法啟動相機<br>⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 📩 ② 回傳誓證（略） ===== -->
+                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15);">
+                    <div class="card-title"><i class="fa-solid fa-certificate" style="color:#a78bfa;"></i><span id="step6ReturnTitle">📩 ② 回傳誓證（略）</span></div>
+                    <div class="instruction-box">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step6ReturnDesc">【查詢模組不產生誓證】</span></div>
+                    </div>
+                </div>
+
+                <!-- ===== 【收束條文】 ===== -->
+                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15);">
+                    <div class="card-title"><i class="fa-solid fa-bookmark" style="color:#a78bfa;"></i><span id="step6ClosureTitle">【收束條文】</span></div>
+                    <div class="instruction-box">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step6Closure1">《七印誓網·第 6 項 覺醒程度》v2.0（正式封冊版）。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step6Closure2">永鎖《宇宙天律 × 七印誓網》主冊，誓魂覺醒明晰，進程定位確立。</span></div>
+                    </div>
+                </div>
+
+                <!-- ===== 【誓魂等級總表 × 七階誓魂覺醒程度】 ===== -->
+                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15);">
+                    <div class="card-title"><i class="fa-solid fa-table" style="color:#a78bfa;"></i><span id="step6RankTitle">【誓魂等級總表 × 七階誓魂覺醒程度 × 九界判定】</span></div>
+                    <div style="overflow-x:auto;">
+                        <table class="awaken-table" id="awakenTable">
+                            <thead>
+                                <tr>
+                                    <th style="width:12%;"><span id="step6RankCol1">等級</span></th>
+                                    <th style="width:14%;"><span id="step6RankCol2">內部識別標記</span></th>
+                                    <th style="width:10%;"><span id="step6RankCol3">是否入地獄</span></th>
+                                    <th style="width:12%;"><span id="step6RankCol4">是否為地府職員</span></th>
+                                    <th style="width:14%;"><span id="step6RankCol5">等待時間範圍</span></th>
+                                    <th style="width:10%;"><span id="step6RankCol6">是否可轉世</span></th>
+                                    <th style="width:14%;"><span id="step6RankCol7">覺醒程度</span></th>
+                                    <th style="width:14%;"><span id="step6RankCol8">判定主體</span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="awakenTableBody">
+                                <!-- 由 JavaScript 動態產生 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ===== 補充說明 ===== -->
+                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15);">
+                    <div class="card-title"><i class="fa-solid fa-circle-info" style="color:#a78bfa;"></i><span id="step6NoteTitle">【誓魂等級總表補充說明】</span></div>
+                    <div class="instruction-box">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step6Note1">七階誓魂覺醒判定 × 特例條件 × 宇宙審核程序</span></div>
+                        <div class="instruction-item" style="margin-top:8px; color:#c4b5fd; font-weight:bold;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step6NoteTitle1">【一】誓魂等級與後續命運的判定原則</span></div>
+                        <div class="instruction-item" style="padding-left:24px;"><span id="step6NoteDesc1">當誓魂完成其現世生命旅程後，其能否轉世、將在何處等待、需等待多久，皆須依據其所屬【七階誓魂覺醒程度】進行判定，並交由【判定主體】進行最終裁決。</span></div>
+                        <div class="instruction-item" style="margin-top:8px; color:#c4b5fd; font-weight:bold;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step6NoteTitle2">【二】在世者與特例情況說明</span></div>
+                        <div class="instruction-item" style="padding-left:24px;"><span id="step6NoteDesc2">尚在人世的誓魂，通常位於第一階至第三階以及第七階（特例）範疇中。其中所稱第七階（特例）係指：雖然第七階「墮頻迷靈」多為亡靈狀態，但有極少數人仍身在人界，因遭長期靈術操控、黑頻植入假記憶或假願圖，自認為擁有「神職」、「使命」，實則已墮入黑頻。</span></div>
+                        <div class="instruction-item" style="margin-top:8px; color:#c4b5fd; font-weight:bold;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step6NoteTitle3">【三】第七階（特例）人世誓魂的主要特徵</span></div>
+                        <div class="instruction-item" style="padding-left:24px;"><span id="step6NoteDesc3">1. 誓魂已與本體分離，處於「靈肉失衡 × 黑頻接」狀態。</span></div>
+                        <div class="instruction-item" style="padding-left:24px;"><span id="step6NoteDesc4">2. 無法開啟誓魂密鑰對頻七印誓網 × 無誓資冊封紀錄。</span></div>
+                        <div class="instruction-item" style="padding-left:24px;"><span id="step6NoteDesc5">3. 以假誓、假頻、假誓證進行傳播或自封神職者。</span></div>
+                        <div class="instruction-item" style="padding-left:24px;"><span id="step6NoteDesc6">4. 常與靈術、降頭、邪術者有所關聯，誤導他人並使其靈頻失準。</span></div>
+                        <div class="instruction-item" style="margin-top:8px; color:#c4b5fd; font-weight:bold;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step6NoteTitle4">【四】臨界覺醒者——第二階 潛在覺醒中</span></div>
+                        <div class="instruction-item" style="padding-left:24px;"><span id="step6NoteDesc7">若誓魂目前處於尚未覺醒的臨界邊界階段，須於現世完成《宇宙誓印覺醒工程 × 七印誓網》開啟誓魂密鑰對頻程序，方可取得「最終誓魂自由資格」條件。完成後可進入最終終審階段：《回源願書 × 不再入世 × 不入轉生》。</span></div>
+                        <div class="instruction-item" style="margin-top:8px; color:#c4b5fd; font-weight:bold;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step6NoteTitle5">【五】第四至第七階之誓魂現況</span></div>
+                        <div class="instruction-item" style="padding-left:24px;"><span id="step6NoteDesc8">第四階至第六階誓魂：多已入地府狀態。第七階「墮頻迷靈」：雖未入地獄，但因深受靈術干擾與偽神認知影響，為最難喚醒的靈性階層之一。此類誓魂唯有透過啟動《宇宙誓印覺醒工程 × 七印誓網》方有機會重啟誓資進程，重新回歸正軌，擁有覺醒與回源的契機。</span></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="hud-footer">
+            <div class="footer-btn-group">
+                <a href="step5.html" class="btn-action enabled"><i class="fa-solid fa-arrow-left"></i><span id="btnBackText">上一步</span></a>
+                <a href="step7.html" class="btn-action enabled"><span id="btnNextText">下一步</span><i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="page-marker"><i class="fa-regular fa-file-lines"></i><span id="pageMarkerText"> 【宇宙誓印覺醒工程 · 覺醒卷】：第 233-244 頁</span></div>
+        </footer>
+    </div>
+    <div id="hudDialog" class="hud-dialog"><div class="hud-dialog-content"><div class="hud-dialog-text" id="hudDialogText">提示訊息</div><button class="hud-dialog-btn" onclick="closeHudDialog()">OK</button></div></div>
+
+    <script>
+        // ================================================================
+        // 覺醒等級資料
+        // ================================================================
+        var awakenData = {
+            zh: [
+                { level: '一階', mark: '書令之靈 × 書令主尊誥徒 × 書令願人', hell: '☑', staff: '☐', wait: '3天-49天', rebirth: '☑', awaken: '完全覺醒', judge: '書令天律 × 天律官' },
+                { level: '二階', mark: '善德之靈 × 高功德誓魂 × 善靈', hell: '☑', staff: '☐', wait: '49天-300天', rebirth: '☑', awaken: '潛在覺醒中', judge: '地府紀錄官 × 天律官' },
+                { level: '三階', mark: '自然離世之靈 × 一般亡靈 × 無願者', hell: '△', staff: '☐', wait: '1-3年或更長', rebirth: '☑', awaken: '未覺醒', judge: '地府書記官 × 初殿閻王' },
+                { level: '四階', mark: '微業之靈 × 初階惡靈 × 小罪之靈', hell: '☑', staff: '☑', wait: '5-30年', rebirth: '△', awaken: '低頻自省中', judge: '地獄執刑官 × 誥徒或書令主導特赦引' },
+                { level: '五階', mark: '重業之靈 × 業重者 × 中階惡靈', hell: '☑', staff: '☑', wait: '30-100年', rebirth: '△', awaken: '完全封閉', judge: '十殿閻王 × 天律判官 × 書令檢錄' },
+                { level: '六階', mark: '封印之靈 × 書令逆徒 × 鳳圖封鎖對象', hell: '☑', staff: '☑', wait: '永久禁轉', rebirth: '☒', awaken: '無資格', judge: '天津高層 × 鳳凰書網封印系統' },
+                { level: '七階', mark: '墮頻迷靈 × 黑頻執行者 × 偽神認知者', hell: '☒', staff: '☒', wait: '不定', rebirth: '☒', awaken: '墮入黑頻', judge: '鳳凰書網 × 書令主尊 × 天律高層' }
+            ],
+            en: [
+                { level: 'Tier 1', mark: 'Scripture-Command Oath-Soul × Book-Decree Sovereign Disciple × Book-Decree Intent-Holder', hell: '☑', staff: '☐', wait: '3-49 days', rebirth: '☑', awaken: 'Fully Awakened', judge: 'Scripture-Command Heavenly Registry × Heavenly Law Officer' },
+                { level: 'Tier 2', mark: 'Virtuous Benevolent Oath-Soul × High-Merit Oath-Souls × Benevolent Spirits', hell: '☑', staff: '☐', wait: '49-300 days', rebirth: '☑', awaken: 'Potential Awakening', judge: 'Underworld Recording Officer × Heavenly-Law Officer' },
+                { level: 'Tier 3', mark: 'Natural Departed Oath-Soul × Ordinary Deceased × No-Vow Individuals', hell: '△', staff: '☐', wait: '1-3 years or longer', rebirth: '☑', awaken: 'Unawakened', judge: 'Underworld Registry Clerk × First Judge of the Underworld' },
+                { level: 'Tier 4', mark: 'Minor-Karma Oath-Soul × Initial Evil Spirit × Small-Sin Spirit', hell: '☑', staff: '☑', wait: '5-30 years', rebirth: '△', awaken: 'Low-Frequency Self-Reflection', judge: 'Hell Execution Officer × Oath-Discipline or Book-Decree Intervention' },
+                { level: 'Tier 5', mark: 'Heavy-Karma Oath-Soul × Heavy-Karma Spirit × Mid-Level Evil Spirit', hell: '☑', staff: '☑', wait: '30-100 years', rebirth: '△', awaken: 'Completely Sealed', judge: 'Ten Kings of Hell × Heavenly-Law Judge × Scripture-Command Reviewer' },
+                { level: 'Tier 6', mark: 'Sealed Oath-Soul × Scripture-Command Rebel × Phoenix-Seal Blocked Entity', hell: '☑', staff: '☑', wait: 'Permanent Sealing', rebirth: '☒', awaken: 'No Qualification', judge: 'Heavenly High Council × Phoenix Book-Net Sealing System' },
+                { level: 'Tier 7', mark: 'Fallen-Frequency Lost Oath-Soul × Black-Frequency Executor × False-Cognition Individual', hell: '☒', staff: '☒', wait: 'Indeterminate', rebirth: '☒', awaken: 'Fallen to Black-Frequency', judge: 'Phoenix Book-Net × Book-Decree Sovereign × Heavenly-Law High Council' }
+            ]
+        };
+
+        // ================================================================
+        // 渲染覺醒等級表格
+        // ================================================================
+        function renderAwakenTable(lang) {
+            var data = awakenData[lang] || awakenData.zh;
+            var tbody = document.getElementById('awakenTableBody');
+            if (!tbody) return;
+
+            var html = '';
+            var tierColors = ['#fbbf24', '#a78bfa', '#60a5fa', '#34d399', '#f472b6', '#fb923c', '#e74c3c'];
+            for (var i = 0; i < data.length; i++) {
+                var row = data[i];
+                var color = tierColors[i] || '#a78bfa';
+                html += '<tr>';
+                html += '<td style="color:' + color + '; font-weight:bold;">' + row.level + '</td>';
+                html += '<td style="color:#e0e7ff; font-size:clamp(0.4rem,0.8vh,0.5rem);">' + row.mark + '</td>';
+                html += '<td>' + row.hell + '</td>';
+                html += '<td>' + row.staff + '</td>';
+                html += '<td style="color:#e0e7ff;">' + row.wait + '</td>';
+                html += '<td>' + row.rebirth + '</td>';
+                html += '<td style="color:' + color + '; font-weight:bold;">' + row.awaken + '</td>';
+                html += '<td style="color:#e0e7ff; font-size:clamp(0.4rem,0.8vh,0.5rem);">' + row.judge + '</td>';
+                html += '</tr>';
+            }
+            tbody.innerHTML = html;
+        }
+
+        // ================================================================
+        // 語言內容
+        // ================================================================
+        var langContent = {
+            zh: {
+                homeBtn: "首頁 ->",
+                appTitle: "【宇宙誓印覺醒工程 · 七印誓網】",
+                step6Title: "🔆 覺醒程度",
+                step6Unlock: "誓魂天命意識開啟狀態 × 七階判定",
+                step6Sub: "（對應未覺 × 初醒 × 高頻 × 圓滿等級）",
+                step6Col1: "欄位名稱",
+                step6Col2: "功能簡要說明",
+                step6Row1: "第 6 項 覺醒程度",
+                step6Row2: "誓魂對天命意識之開啟狀態：未覺 × 初醒 × 高頻 × 圓滿等級。",
+                step6Sec1: "【一】模組說明",
+                step6Desc1: "本模組用以紀錄誓徒誓魂覺醒之狀態層級，依其對書令誓責、誓文頻率、律令之感應與承接力，分級標示其當前靈性覺醒進程。",
+                step6Desc2: "此項目屬於「查詢紀錄層」，為誓魂進程狀態辨識的核心依據。",
+                step6Sec2: "【二】啟動條件與遞交程序",
+                step6Cond1: "誓印者需持有效授權誓碼，登入《宇宙智能誓導平台》。",
+                step6Cond2: "登入後掃描對應【誓導 QR Code】，系統即鎖定誓印者本人頻率並啟動查詢鏈路。",
+                step6Cond3: "此模組僅供查詢使用，無需提交任何資料。",
+                step6Cond4: "不需念誓文，也不會觸發誓律令。",
+                step6Cond5: "查詢結果會對應誓印者的誓魂頻率，顯示當前覺醒狀態層級與進程標記。",
+                step6Sec3: "【三】授權誓讀階段（略）",
+                step6Sec3Desc: "本模組為查詢模組，無需誦讀誓文，亦無誓律令觸發。",
+                step6Sec4: "【四】接續進程",
+                step6LoginTitle: "（1）登入階段",
+                step6Login1: "登入《宇宙智能誓導平台》（使用個人帳號）。",
+                step6Login2: "使用原註冊帳號完成身分登入驗證，即可進入誓印程序。",
+                step6ScanTitle: "（2）掃描階段",
+                step6Scan1: "使用行動裝置或電腦，掃描當期執行項目之【誓導 QR Code】，以觸發《宇宙智能誓導平台》專屬連線入口。",
+                step6Scan2: "系統自動導引至【誓印觸發介面】，同步啟動誓魂對頻程序，並進入主頻連線與授權判定段。",
+                step6VerifyTitle: "🧭 ① 驗證階段（啟動觸發）",
+                step6Verify1: "系統自動驗證授權有效性後，即時顯示誓魂當前覺醒狀態層級與進程標記。",
+                step6InputLabel: "輸入示範：",
+                step6Command: "【執行指令】第 6 項 覺醒程度 結果",
+                step6Note: "送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。",
+                step6TriggerNote: "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
+                step6QrTitle: "📷 請掃描【誓導 QR Code】完成執行指令",
+                step6BtnScan: "📷 開始掃描",
+                step6Result: "掃描成功！已完成執行指令",
+                step6CameraGuide: "📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
+                step6ReturnTitle: "📩 ② 回傳誓證（略）",
+                step6ReturnDesc: "【查詢模組不產生誓證】",
+                step6ClosureTitle: "【收束條文】",
+                step6Closure1: "《七印誓網·第 6 項 覺醒程度》v2.0（正式封冊版）。",
+                step6Closure2: "永鎖《宇宙天律 × 七印誓網》主冊，誓魂覺醒明晰，進程定位確立。",
+                step6RankTitle: "【誓魂等級總表 × 七階誓魂覺醒程度 × 九界判定】",
+                step6RankCol1: "等級",
+                step6RankCol2: "內部識別標記",
+                step6RankCol3: "是否入地獄",
+                step6RankCol4: "是否為地府職員",
+                step6RankCol5: "等待時間範圍",
+                step6RankCol6: "是否可轉世",
+                step6RankCol7: "覺醒程度",
+                step6RankCol8: "判定主體",
+                step6NoteTitle: "【誓魂等級總表補充說明】",
+                step6Note1: "七階誓魂覺醒判定 × 特例條件 × 宇宙審核程序",
+                step6NoteTitle1: "【一】誓魂等級與後續命運的判定原則",
+                step6NoteDesc1: "當誓魂完成其現世生命旅程後，其能否轉世、將在何處等待、需等待多久，皆須依據其所屬【七階誓魂覺醒程度】進行判定，並交由【判定主體】進行最終裁決。",
+                step6NoteTitle2: "【二】在世者與特例情況說明",
+                step6NoteDesc2: "尚在人世的誓魂，通常位於第一階至第三階以及第七階（特例）範疇中。其中所稱第七階（特例）係指：雖然第七階「墮頻迷靈」多為亡靈狀態，但有極少數人仍身在人界，因遭長期靈術操控、黑頻植入假記憶或假願圖，自認為擁有「神職」、「使命」，實則已墮入黑頻。",
+                step6NoteTitle3: "【三】第七階（特例）人世誓魂的主要特徵",
+                step6NoteDesc3: "1. 誓魂已與本體分離，處於「靈肉失衡 × 黑頻接」狀態。",
+                step6NoteDesc4: "2. 無法開啟誓魂密鑰對頻七印誓網 × 無誓資冊封紀錄。",
+                step6NoteDesc5: "3. 以假誓、假頻、假誓證進行傳播或自封神職者。",
+                step6NoteDesc6: "4. 常與靈術、降頭、邪術者有所關聯，誤導他人並使其靈頻失準。",
+                step6NoteTitle4: "【四】臨界覺醒者——第二階 潛在覺醒中",
+                step6NoteDesc7: "若誓魂目前處於尚未覺醒的臨界邊界階段，須於現世完成《宇宙誓印覺醒工程 × 七印誓網》開啟誓魂密鑰對頻程序，方可取得「最終誓魂自由資格」條件。完成後可進入最終終審階段：《回源願書 × 不再入世 × 不入轉生》。",
+                step6NoteTitle5: "【五】第四至第七階之誓魂現況",
+                step6NoteDesc8: "第四階至第六階誓魂：多已入地府狀態。第七階「墮頻迷靈」：雖未入地獄，但因深受靈術干擾與偽神認知影響，為最難喚醒的靈性階層之一。此類誓魂唯有透過啟動《宇宙誓印覺醒工程 × 七印誓網》方有機會重啟誓資進程，重新回歸正軌，擁有覺醒與回源的契機。",
+                btnBackText: "上一步",
+                btnNextText: "下一步",
+                pageMarkerText: "【宇宙誓印覺醒工程 · 覺醒卷】：第 233-244 頁",
+                timerLabel: "⏳ 靜心讀秒",
+                btnStartText: "開始靜心",
+                btnRestartText: "重新靜心",
+                timerComplete: "✅ 靜心完成",
+                timerCounting: "⏳ 靜心讀秒中..."
+            },
+            en: {
+                homeBtn: "Home ->",
+                appTitle: "Cosmic Oath Awakening Project · Seven-Seal Vow Network",
+                step6Title: "🔆 Awakening Level",
+                step6Unlock: "Oath-Soul Destiny-Awareness Activation State × Seven-Tier Assessment",
+                step6Sub: "(Corresponding to Unawakened × Initial × High-Frequency × Complete)",
+                step6Col1: "Field Name",
+                step6Col2: "Function Brief",
+                step6Row1: "Item 6 Awakening Level",
+                step6Row2: "Indicates the Oath-Soul's level of destiny-awareness activation: Unawakened × Initial × High-Frequency × Complete.",
+                step6Sec1: "[I] Module Description",
+                step6Desc1: "This module records the awakening-tier of the Oath-Soul, categorized by the degree of responsiveness to scripture-command responsibility, oath-frequency, and law-reception capacity.",
+                step6Desc2: "It belongs to the Record-Query Layer and serves as a core reference for identifying the Oath-Soul's developmental stage.",
+                step6Sec2: "[II] Activation Conditions and Submission Procedure",
+                step6Cond1: "The oath-seeker must hold a valid authorized Vow-Guidance Code and log in to the Cosmic Intelligent Vow-Guidance Platform.",
+                step6Cond2: "After login, scan the corresponding [Vow-Guidance QR Code]. The system will lock onto the seeker's personal frequency and activate the query chain.",
+                step6Cond3: "This module is for query use only; no data submission is required.",
+                step6Cond4: "No oath-recitation is needed, and this module does not trigger oath-law activation.",
+                step6Cond5: "The query result will correspond to the seeker's Oath-Soul frequency, showing the current awakening-tier and stage marker.",
+                step6Sec3: "[III] Authorized Oath-Recitation Phase (Omitted)",
+                step6Sec3Desc: "This module is for inquiry only; no oath recitation is required, and no Oath-Law effects will be triggered.",
+                step6Sec4: "[IV] Subsequent Procedures",
+                step6LoginTitle: "(1) Login Phase",
+                step6Login1: "Log into the Cosmic Intelligent Vow-Guidance Platform using a personal account.",
+                step6Login2: "Using the originally registered account to complete identity verification grants access to the oath-seal procedure.",
+                step6ScanTitle: "(2) Scanning Phase",
+                step6Scan1: "The oath-sealer shall use a mobile device or computer to scan the current execution item's [Vow-Guidance QR Code], triggering the dedicated access point of the Cosmic Intelligent Vow-Guidance Platform.",
+                step6Scan2: "The system will automatically redirect to the Oath-Seal Trigger Interface, initiating the Oath-Soul Alignment procedure and entering the main-frequency connection and authorization-assessment stage.",
+                step6VerifyTitle: "🧭 ① Verification Phase (Activation Trigger)",
+                step6Verify1: "After the system automatically validates authorization, it immediately displays the current awakening-stage level of the Oath-Soul and the corresponding progress markers.",
+                step6InputLabel: "Input Example:",
+                step6Command: "【執行指令】第 6 項 覺醒程度 結果",
+                step6Note: "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.",
+                step6TriggerNote: "【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.",
+                step6QrTitle: "📷 Please scan the 【Vow-Guidance QR Code】 to complete Execution Command",
+                step6BtnScan: "📷 Start Scan",
+                step6Result: "Scan successful! Execution Command completed",
+                step6CameraGuide: "📷 Unable to launch the feature ⚙️ Open your phone's \"Settings\" → App Management → Permissions → Camera → Change setting to \"Allow\" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.",
+                step6ReturnTitle: "📩 ② Return Oath Certificate (Omitted)",
+                step6ReturnDesc: "[This inquiry module does not generate an Oath Certificate]",
+                step6ClosureTitle: "[Closure Clause]",
+                step6Closure1: "《Seven-Seal Vow Network · Item 6 Awakening Level》 v2.0 (Official Sealed Edition)",
+                step6Closure2: "Permanently locked into the Cosmic Heavenly-Law × Seven-Seal Vow Network Master Registry. Awakening-tier clearly defined, progression-position established.",
+                step6RankTitle: "[Oath-Soul Level Master Table × Seven-Tier Awakening Degrees × Nine-Realms Assessment]",
+                step6RankCol1: "Level",
+                step6RankCol2: "Internal Identification Marker",
+                step6RankCol3: "Entered Underworld",
+                step6RankCol4: "Underworld Staff",
+                step6RankCol5: "Waiting Time Range",
+                step6RankCol6: "Eligible for Rebirth",
+                step6RankCol7: "Awakening Degree",
+                step6RankCol8: "Assessment Authority",
+                step6NoteTitle: "[Oath-Soul Level Master Table Supplementary Notes]",
+                step6Note1: "Seven-Tier Oath-Soul Awakening Assessment × Special Cases × Cosmic Review Procedure",
+                step6NoteTitle1: "[I] Principles for Determining Oath-Soul Levels and Subsequent Destiny",
+                step6NoteDesc1: "When an Oath-Soul completes its earthly life journey, its eligibility for reincarnation, the domain in which it will wait, and the duration of that waiting period must all be determined according to its corresponding [Seven-Tier Oath-Soul Awakening Level], and the final judgment shall be rendered by the designated [Assessment Authority].",
+                step6NoteTitle2: "[II] Explanation for Living Individuals and Special-Case Scenarios",
+                step6NoteDesc2: "Oath-Souls still living in the human world generally fall within Tier One to Tier Three, as well as Tier Seven (Special Case). The term Tier Seven (Special Case) refers to the following: Although most Tier Seven Fallen-Frequency Lost Oath-Souls exist in a departed state, a very small number remain physically present in the human realm. Due to prolonged spiritual manipulation and black-frequency implantation of false memories or false vow-maps, they mistakenly believe themselves to possess [divine office] or mission, yet in truth they have already fallen into black-frequency influence.",
+                step6NoteTitle3: "[III] Primary Characteristics of Tier Seven (Special-Case) Human-World Oath-Souls",
+                step6NoteDesc3: "1. The Oath-Soul has separated from the physical body and is in a state of Spirit-Body Imbalance × Black-Frequency Attachment.",
+                step6NoteDesc4: "2. Unable to open the Oath-Soul Key-Alignment within the Seven-Seal Vow Network × no oath-resource registry records exist.",
+                step6NoteDesc5: "3. Individuals who spread or self-assign false oaths × false frequencies × false oath-certificates.",
+                step6NoteDesc6: "4. Often associated with sorcery, spellcraft, or corrupt ritual practices, misleading others and destabilizing their spiritual frequencies.",
+                step6NoteTitle4: "[IV] Threshold Awakeners — Tier Two Potential Awakening",
+                step6NoteDesc7: "If an Oath-Soul currently resides within an unawakened threshold boundary, it must complete, within the human world, the Cosmic Vow-Seal Awakening Project × Seven-Seal Vow Network by opening the Oath-Soul Key-Alignment procedure, in order to obtain the condition of Final Oath-Soul Liberation Eligibility. Upon completion, it may enter the final adjudication stage: Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth.",
+                step6NoteTitle5: "[V] Current Status of Tier Four to Tier Seven Oath-Souls",
+                step6NoteDesc8: "Tier Four to Tier Six Oath-Souls: Most are already within the underworld state. Tier Seven Fallen-Frequency Lost Oath-Souls: Although not in hell, they are deeply affected by sorcery interference and false-divinity cognition, making them one of the most difficult spiritual strata to awaken. Such Oath-Souls can only regain progress by initiating the Cosmic Vow-Seal Awakening Project × Seven-Seal Vow Network, thereby reopening their oath-resource pathway, returning to correct Alignment, and regaining the possibility of awakening and returning to source.",
+                btnBackText: "Previous",
+                btnNextText: "Next",
+                pageMarkerText: "【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 233-244",
+                timerLabel: "⏳ Centering Countdown",
+                btnStartText: "Start Centering",
+                btnRestartText: "Restart Centering",
+                timerComplete: "✅ Centering Complete",
+                timerCounting: "⏳ Centering..."
+            }
+        };
+
+        // ================================================================
+        // 核心變數
+        // ================================================================
+        var currentLang = 'zh';
+        var countdownTimer = null;
+        var countdownSeconds = 10;
+        var timerState = 'initial';
+        var isTimerRunning = false;
+
+        // ================================================================
+        // 套用語言到頁面
+        // ================================================================
+        function applyLanguage(lang) {
+            var c = langContent[lang] || langContent.zh;
+
+            var map = {
+                'homeBtnText': c.homeBtn,
+                'appTitle': c.appTitle,
+                'step6Title': c.step6Title,
+                'step6Unlock': c.step6Unlock,
+                'step6Sub': c.step6Sub,
+                'step6Col1': c.step6Col1,
+                'step6Col2': c.step6Col2,
+                'step6Row1': c.step6Row1,
+                'step6Row2': c.step6Row2,
+                'step6Sec1': c.step6Sec1,
+                'step6Desc1': c.step6Desc1,
+                'step6Desc2': c.step6Desc2,
+                'step6Sec2': c.step6Sec2,
+                'step6Cond1': c.step6Cond1,
+                'step6Cond2': c.step6Cond2,
+                'step6Cond3': c.step6Cond3,
+                'step6Cond4': c.step6Cond4,
+                'step6Cond5': c.step6Cond5,
+                'step6Sec3': c.step6Sec3,
+                'step6Sec3Desc': c.step6Sec3Desc,
+                'step6Sec4': c.step6Sec4,
+                'step6LoginTitle': c.step6LoginTitle,
+                'step6Login1': c.step6Login1,
+                'step6Login2': c.step6Login2,
+                'step6ScanTitle': c.step6ScanTitle,
+                'step6Scan1': c.step6Scan1,
+                'step6Scan2': c.step6Scan2,
+                'step6VerifyTitle': c.step6VerifyTitle,
+                'step6Verify1': c.step6Verify1,
+                'step6InputLabel': c.step6InputLabel,
+                'step6Command': c.step6Command,
+                'step6Note': c.step6Note,
+                'step6TriggerNote': c.step6TriggerNote,
+                'step6QrTitle': c.step6QrTitle,
+                'step6BtnScan': c.step6BtnScan,
+                'step6Result': c.step6Result,
+                'step6CameraGuide': c.step6CameraGuide,
+                'step6ReturnTitle': c.step6ReturnTitle,
+                'step6ReturnDesc': c.step6ReturnDesc,
+                'step6ClosureTitle': c.step6ClosureTitle,
+                'step6Closure1': c.step6Closure1,
+                'step6Closure2': c.step6Closure2,
+                'step6RankTitle': c.step6RankTitle,
+                'step6RankCol1': c.step6RankCol1,
+                'step6RankCol2': c.step6RankCol2,
+                'step6RankCol3': c.step6RankCol3,
+                'step6RankCol4': c.step6RankCol4,
+                'step6RankCol5': c.step6RankCol5,
+                'step6RankCol6': c.step6RankCol6,
+                'step6RankCol7': c.step6RankCol7,
+                'step6RankCol8': c.step6RankCol8,
+                'step6NoteTitle': c.step6NoteTitle,
+                'step6Note1': c.step6Note1,
+                'step6NoteTitle1': c.step6NoteTitle1,
+                'step6NoteDesc1': c.step6NoteDesc1,
+                'step6NoteTitle2': c.step6NoteTitle2,
+                'step6NoteDesc2': c.step6NoteDesc2,
+                'step6NoteTitle3': c.step6NoteTitle3,
+                'step6NoteDesc3': c.step6NoteDesc3,
+                'step6NoteDesc4': c.step6NoteDesc4,
+                'step6NoteDesc5': c.step6NoteDesc5,
+                'step6NoteDesc6': c.step6NoteDesc6,
+                'step6NoteTitle4': c.step6NoteTitle4,
+                'step6NoteDesc7': c.step6NoteDesc7,
+                'step6NoteTitle5': c.step6NoteTitle5,
+                'step6NoteDesc8': c.step6NoteDesc8,
+                'btnBackText': c.btnBackText,
+                'btnNextText': c.btnNextText,
+                'pageMarkerText': c.pageMarkerText,
+                'timerLabel': c.timerLabel,
+                'btnStartText': c.btnStartText,
+                'btnRestartText': c.btnRestartText
+            };
+
+            for (var id in map) {
+                var el = document.getElementById(id);
+                if (el) {
+                    el.innerHTML = map[id];
+                }
+            }
+
+            // 渲染覺醒等級表格
+            renderAwakenTable(lang);
+
+            // 更新相機指引換行
+            var guide = document.getElementById('step6CameraGuide');
+            if (guide && c.step6CameraGuide) {
+                guide.innerHTML = c.step6CameraGuide.replace(/\n/g, '<br>');
+            }
+
+            // 更新計時器
+            var label = document.getElementById('timerLabel');
+            if (label) {
+                if (timerState === 'initial') label.textContent = c.timerLabel;
+                else if (timerState === 'counting') label.textContent = c.timerCounting;
+                else if (timerState === 'complete') label.textContent = c.timerComplete;
+            }
+
+            // 更新語言按鈕
+            document.querySelectorAll('.lang-btn').forEach(function(b) {
+                b.classList.remove('active');
+                if ((b.textContent.toLowerCase().includes('english') && lang === 'en') ||
+                    (b.textContent.includes('中文') && lang === 'zh')) {
+                    b.classList.add('active');
+                }
+            });
+
+            currentLang = lang;
+            console.log('✅ step6 已切換為 ' + lang);
+        }
+
+        // ================================================================
+        // switchLanguage
+        // ================================================================
+        function switchLanguage(lang) {
+            applyLanguage(lang);
+        }
+
+        // ================================================================
+        // 計時器
+        // ================================================================
+        function startTimer() {
+            if (isTimerRunning) return;
+            var s = document.getElementById('btnStart'),
+                r = document.getElementById('btnRestart');
+            var l = document.getElementById('timerLabel'),
+                n = document.getElementById('timerNumber');
+            var c = langContent[currentLang] || langContent.zh;
+            s.disabled = true;
+            s.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="btnStartText">' + c.btnStartText + '</span>';
+            r.style.display = 'none';
+            clearInterval(countdownTimer);
+            timerState = 'counting';
+            countdownSeconds = 10;
+            n.textContent = countdownSeconds;
+            l.textContent = c.timerCounting;
+            n.classList.remove('complete');
+            isTimerRunning = true;
+            countdownTimer = setInterval(function() {
+                countdownSeconds--;
+                n.textContent = countdownSeconds;
+                if (countdownSeconds <= 0) {
+                    clearInterval(countdownTimer);
+                    countdownTimer = null;
+                    countdownSeconds = 0;
+                    timerState = 'complete';
+                    n.textContent = '✔';
+                    n.classList.add('complete');
+                    l.textContent = c.timerComplete;
+                    s.disabled = false;
+                    s.innerHTML = '<i class="fa-solid fa-check"></i> <span id="btnStartText">' + c.timerComplete + '</span>';
+                    isTimerRunning = false;
+                }
+            }, 1000);
+        }
+
+        function resetTimer() {
+            clearInterval(countdownTimer);
+            countdownTimer = null;
+            var s = document.getElementById('btnStart'),
+                l = document.getElementById('timerLabel'),
+                n = document.getElementById('timerNumber'),
+                r = document.getElementById('btnRestart');
+            var c = langContent[currentLang] || langContent.zh;
+            timerState = 'initial';
+            countdownSeconds = 10;
+            isTimerRunning = false;
+            n.textContent = countdownSeconds;
+            l.textContent = c.timerLabel;
+            n.classList.remove('complete');
+            s.disabled = false;
+            s.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">' + c.btnStartText + '</span>';
+            r.style.display = 'none';
+        }
+
+        // ================================================================
+        // 掃描器
+        // ================================================================
+        function startQRScanner(containerId, resultId, guideId) {
+            var container = document.getElementById(containerId);
+            if (!container) return;
+
+            if (window._currentScanner) {
+                window._currentScanner.stop().catch(function() {});
+                window._currentScanner = null;
+            }
+
+            container.innerHTML = '';
+
+            var guide = document.getElementById(guideId);
+            var resultEl = document.getElementById(resultId);
+
+            if (guide) guide.style.display = 'none';
+            if (resultEl) {
+                resultEl.style.display = 'none';
+                resultEl.innerHTML = '';
+            }
+
+            if (typeof Html5Qrcode === 'undefined' || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                if (guide) {
+                    guide.style.display = 'block';
+                    var c = langContent[currentLang] || langContent.zh;
+                    guide.innerHTML = c.step6CameraGuide.replace(/\n/g, '<br>');
+                }
+                return;
+            }
+
+            try {
+                var instance = new Html5Qrcode(containerId);
+                window._currentScanner = instance;
+                instance.start(
+                    { facingMode: "environment" },
+                    { fps: 15, qrbox: { width: 200, height: 200 } },
+                    function(decodedText) {
+                        if (resultEl) {
+                            resultEl.style.display = 'block';
+                            resultEl.innerHTML = decodedText;
+                        }
+                        instance.stop().then(function() {
+                            window._currentScanner = null;
+                        }).catch(function() {
+                            window._currentScanner = null;
+                        });
+                    },
+                    function() {}
+                ).catch(function() {
+                    if (guide) {
+                        guide.style.display = 'block';
+                        var c2 = langContent[currentLang] || langContent.zh;
+                        guide.innerHTML = c2.step6CameraGuide.replace(/\n/g, '<br>');
+                    }
+                    window._currentScanner = null;
+                });
+            } catch (e) {
+                if (guide) {
+                    guide.style.display = 'block';
+                    var c3 = langContent[currentLang] || langContent.zh;
+                    guide.innerHTML = c3.step6CameraGuide.replace(/\n/g, '<br>');
+                }
+                window._currentScanner = null;
+            }
+        }
+
+        window.startQRScannerStep8 = function() {
+            startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+        };
+
+        // ================================================================
+        // 頁面載入
+        // ================================================================
+        window.onload = function() {
+            applyLanguage('zh');
+            document.getElementById('btnRestart').style.display = 'none';
+
+            var btn8 = document.getElementById('btnScanQRStep8');
+            if (btn8) {
+                btn8.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+                };
+                console.log('✅ btnScanQRStep8 已綁定');
+            } else {
+                console.warn('⚠️ btnScanQRStep8 不存在');
+            }
+        };
+
+        window.switchLanguage = switchLanguage;
+        window.startQRScanner = startQRScanner;
+        window.openHudDialog = function(msg) {
+            document.getElementById('hudDialogText').textContent = msg;
+            document.getElementById('hudDialog').classList.add('active');
+        };
+        window.closeHudDialog = function() {
+            document.getElementById('hudDialog').classList.remove('active');
+        };
+    </script>
+
+    <!-- ===== 刪除相機錯誤彈窗 ===== -->
+    <script>
+        (function() {
+            var BLOCK_KEYWORDS = ['無法啟動相機', '請允許相機權限', 'Unable to start camera', 'Unable to launch the feature', '相機權限', 'Camera permission', 'Could not start video source'];
+
+            function shouldBlock(msg) {
+                if (typeof msg !== 'string') return false;
+                return BLOCK_KEYWORDS.some(function(k) { return msg.indexOf(k) !== -1; });
+            }
+            var _origAlert = window.alert;
+            window.alert = function(msg) {
+                if (shouldBlock(String(msg || ''))) { console.log('[已封鎖相機錯誤彈窗]', msg); return; }
+                return _origAlert.apply(this, arguments);
+            };
+            var _origConfirm = window.confirm;
+            window.confirm = function(msg) {
+                if (shouldBlock(String(msg || ''))) { console.log('[已封鎖相機錯誤確認窗]', msg); return false; }
+                return _origConfirm.apply(this, arguments);
+            };
+            setInterval(function() {
+                if (window.alert !== _origAlert && window.alert !== window._alertPatched) {
+                    var currentAlert = window.alert;
+                    window.alert = function(msg) {
+                        if (shouldBlock(String(msg || ''))) return;
+                        return currentAlert.apply(this, arguments);
+                    };
+                    window._alertPatched = window.alert;
+                }
+            }, 1000);
+            console.log('✅ 相機權限失敗彈窗已全部刪除');
+        })();
+    </script>
+
+    <!-- ============================================================ -->
+    <!-- 將「送出即啟主頻連線...」等設為靠左對齊                      -->
+    <!-- 貼在 </body> 前即可                                            -->
+    <!-- ============================================================ -->
+    <script>
+    (function() {
+        function fixLeftAlign() {
+            var ids = ['step6Note', 'step6TriggerNote', 'step6Success', 'step6NotPassedTitle'];
+            for (var i = 0; i < ids.length; i++) {
+                var el = document.getElementById(ids[i]);
+                if (el) {
+                    el.style.textAlign = 'left';
+                    el.style.justifyContent = 'flex-start';
+                    el.style.width = '100%';
+                }
+            }
+
+            var allDivs = document.querySelectorAll('.hud-card div, .center-card div, .step-panel div');
+            for (var j = 0; j < allDivs.length; j++) {
+                var div = allDivs[j];
+                var text = div.textContent || '';
+                if (text.indexOf('送出即啟主頻連線') !== -1 && text.indexOf('判定授權完成') !== -1) {
+                    div.style.textAlign = 'left';
+                    div.style.justifyContent = 'flex-start';
+                    div.style.width = '100%';
+                }
+                if (text.indexOf('顯示：「誓印通過」') !== -1 || text.indexOf('Display: Oath Seal Passed') !== -1) {
+                    div.style.textAlign = 'left';
+                    div.style.justifyContent = 'flex-start';
+                    div.style.width = '100%';
+                }
+                if (text.indexOf('顯示：「誓印未通過」') !== -1 || text.indexOf('Display: Oath Seal Not Passed') !== -1) {
+                    div.style.textAlign = 'left';
+                    div.style.justifyContent = 'flex-start';
+                    div.style.width = '100%';
+                }
+            }
+        }
+
+        if (document.readyState === 'complete') {
+            setTimeout(fixLeftAlign, 100);
+        } else {
+            window.addEventListener('load', function() {
+                setTimeout(fixLeftAlign, 150);
+            });
+        }
+
+        var origSwitch = window.switchLanguage;
+        if (origSwitch) {
+            window.switchLanguage = function(lang) {
+                origSwitch(lang);
+                setTimeout(fixLeftAlign, 100);
+            };
+        }
+    })();
+    </script>
+
+    <style>
+        #step6Note,
+        #step6TriggerNote,
+        #step6Success,
+        #step6NotPassedTitle {
+            text-align: left !important;
+            justify-content: flex-start !important;
+            width: 100% !important;
+        }
+        .hud-card div:contains("送出即啟主頻連線"),
+        .hud-card div:contains("顯示：「誓印通過」"),
+        .hud-card div:contains("顯示：「誓印未通過」"),
+        .hud-card div:contains("Display: Oath Seal Passed"),
+        .hud-card div:contains("Display: Oath Seal Not Passed") {
+            text-align: left !important;
+            justify-content: flex-start !important;
+            width: 100% !important;
+        }
+        .hud-card div[style*="background:rgba(0,230,118,0.12)"] {
+            text-align: left !important;
+            justify-content: flex-start !important;
+            width: 100% !important;
+        }
+    </style>
+
+    <!-- ============================================================ -->
+    <!-- 掃描器功能修復模組                                            -->
+    <!-- 貼在 </body> 前即可                                            -->
+    <!-- ============================================================ -->
+    <script>
+    (function() {
+        'use strict';
+
+        var zhText = '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+        var enText = '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
+
+        function getErrorText() {
+            return (typeof currentLang !== 'undefined' && currentLang === 'en') ? enText : zhText;
+        }
+
+        function startScanner(containerId, resultId, guideId) {
+            var container = document.getElementById(containerId);
+            if (!container) {
+                console.warn('❌ 找不到容器:', containerId);
+                return;
+            }
+
+            if (window._scanner) {
+                try { window._scanner.stop().catch(function() {}); } catch (e) {}
+                window._scanner = null;
+            }
+
+            container.innerHTML = '';
+            container.classList.remove('scanning');
+
+            var guide = document.getElementById(guideId);
+            var resultEl = document.getElementById(resultId);
+
+            if (guide) { guide.style.display = 'none'; guide.innerHTML = ''; }
+            if (resultEl) { resultEl.style.display = 'none'; resultEl.innerHTML = ''; }
+
+            if (typeof Html5Qrcode === 'undefined') {
+                if (guide) { guide.style.display = 'block'; guide.innerHTML = getErrorText(); }
+                return;
+            }
+
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                if (guide) { guide.style.display = 'block'; guide.innerHTML = getErrorText(); }
+                return;
+            }
+
+            try {
+                var scanner = new Html5Qrcode(containerId);
+                window._scanner = scanner;
+
+                container.classList.add('scanning');
+
+                scanner.start({ facingMode: "environment" }, { fps: 15, qrbox: { width: 200, height: 200 } },
+                    function(text) {
+                        if (resultEl) {
+                            resultEl.style.display = 'block';
+                            resultEl.innerHTML = '✅ ' + text;
+                        }
+                        container.classList.remove('scanning');
+                        scanner.stop().then(function() {
+                            window._scanner = null;
+                        }).catch(function() {
+                            window._scanner = null;
+                        });
+                    },
+                    function() {}
+                ).catch(function() {
+                    container.classList.remove('scanning');
+                    if (guide) { guide.style.display = 'block'; guide.innerHTML = getErrorText(); }
+                    window._scanner = null;
+                });
+
+            } catch (e) {
+                container.classList.remove('scanning');
+                if (guide) { guide.style.display = 'block'; guide.innerHTML = getErrorText(); }
+                window._scanner = null;
+            }
+        }
+
+        function bindButtons() {
+            var btn8 = document.getElementById('btnScanQRStep8');
+            if (btn8) {
+                var newBtn = btn8.cloneNode(true);
+                btn8.parentNode.replaceChild(newBtn, btn8);
+                newBtn.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    startScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+                };
+                console.log('✅ btnScanQRStep8 已綁定');
+            }
+        }
+
+        if (document.readyState === 'complete') {
+            setTimeout(bindButtons, 300);
+        } else {
+            window.addEventListener('load', function() {
+                setTimeout(bindButtons, 400);
+            });
+        }
+
+        window.startQRScanner = startScanner;
+        console.log('✅ 掃描器模組已載入');
+    })();
+    </script>
+
+    <style>
+        #qr-reader-container-step8.scanning::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 55%;
+            height: 55%;
+            border: 2px solid rgba(74, 108, 247, 0.8);
+            border-radius: 8px;
+            pointer-events: none;
+            animation: pulse 1.5s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.5; }
+        }
+
+        #qr-reader-container-step8 video {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            border-radius: 12px;
+        }
+
+        #cameraGuideStep8 {
+            display: none;
+            color: #e74c3c;
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 14px;
+            background: rgba(232, 96, 74, 0.08);
+            border-left: 4px solid #E8604A;
+            border-radius: 8px;
+            margin-top: 10px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        #qrScanResultStep8 {
+            display: none;
+            color: #00e676;
+            text-align: center;
+            padding: 12px;
+            font-size: 15px;
+            background: rgba(0, 230, 118, 0.08);
+            border: 1px solid rgba(0, 230, 118, 0.2);
+            border-radius: 8px;
+            margin-top: 10px;
+            word-break: break-all;
+        }
+    </style>
+</body>
+</html>
