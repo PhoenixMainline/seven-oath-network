@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>【宇宙誓印覺醒工程 · 七印誓網】第7項 七印誓網對應階段</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif; }
+        body {
+            background: radial-gradient(circle at 50% 50%, #06122c 0%, #020715 100%);
+            min-height: 100vh;
+            color: #e0e8f5;
+            display: flex; justify-content: center; align-items: center;
+            padding: clamp(4px, 1.5vh, 16px);
+            position: relative;
+        }
+        .particle-container {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: radial-gradient(#d4af37, rgba(212, 175, 55, .3) 1px, transparent 30px), radial-gradient(#d4af37, rgba(212, 175, 55, .2) 2px, transparent 40px);
+            background-size: 350px 350px, 450px 450px;
+            background-position: 0 0, 90px 150px;
+            animation: starMove 90s linear infinite; opacity: 0.65; z-index: 5; pointer-events: none;
+        }
+        @keyframes starMove { from { transform: translateY(0px) rotate(0deg); } to { transform: translateY(-1000px) rotate(360deg); } }
+        .watermark-layer {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; opacity: 0.04;
+            display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); padding: 50px;
+        }
+        .watermark-text { font-size: 1.5rem; font-weight: bold; color: #ffffff; transform: rotate(-25deg); white-space: nowrap; user-select: none; }
+        .hud-container {
+            width: 100%; max-width: min(660px, 95vw);
+            background: rgba(4, 13, 33, 0.4);
+            border: 1.5px solid rgba(168, 85, 247, 0.3);
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.15), inset 0 0 20px rgba(168, 85, 247, 0.05);
+            border-radius: clamp(16px, 4vw, 28px);
+            padding: clamp(8px, 1.5vh, 20px);
+            display: flex; flex-direction: column; position: relative; z-index: 3; margin: auto;
+        }
+        .hud-container::after { content: ""; position: absolute; top: 18px; right: 18px; width: 14px; height: 14px; border-top: 3px solid #a78bfa; border-right: 3px solid #a78bfa; pointer-events: none; }
+        .home-breadcrumb { font-size: clamp(0.6rem, 1.4vh, 0.85rem); color: #c4b5fd; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 12px; font-weight: bold; align-self: flex-start; transition: all 0.3s ease; text-shadow: 0 0 8px rgba(168, 85, 247, 0.4); position: relative; z-index: 1000; pointer-events: auto !important; }
+        .home-breadcrumb:hover { color: #e9d5ff; text-shadow: 0 0 12px rgba(168, 85, 247, 0.6); transform: translateX(-2px); }
+        .hud-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(168, 85, 247, 0.2); padding-bottom: clamp(8px, 1.5vh, 18px); margin-bottom: clamp(8px, 1.5vh, 25px); flex-shrink: 0; }
+        .app-title { font-size: clamp(0.9rem, 2.2vh, 1.15rem); font-weight: 700; color: #e9d5ff; text-shadow: 0 0 12px rgba(168, 85, 247, 0.5); max-width: 75%; line-height: 1.4; }
+        .lang-switch-group { display: flex; background: rgba(124, 58, 237, 0.15); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 20px; padding: 2px; z-index: 10; }
+        .lang-btn { background: transparent; border: none; color: rgba(224, 232, 245, 0.4); font-size: clamp(0.5rem, 1.2vh, 0.75rem); padding: clamp(2px, 0.6vh, 5px) clamp(6px, 1vw, 12px); border-radius: 16px; cursor: pointer; transition: all 0.2s ease; }
+        .lang-btn.active { background: #7c3aed; color: #ffffff; font-weight: bold; box-shadow: 0 0 12px rgba(124, 58, 237, 0.5); }
+
+        .step-content { flex: 1 1 auto; display: flex; flex-direction: column; gap: clamp(8px, 1.5vh, 22px); overflow-y: auto; padding-right: 4px; min-height: 0; }
+        .step-panel { display: flex; flex-direction: column; gap: 20px; animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .hud-card {
+            background: linear-gradient(135deg, rgba(88, 28, 135, 0.5), rgba(30, 27, 75, 0.6));
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            border-radius: clamp(10px, 2vw, 16px);
+            padding: clamp(10px, 2vh, 24px) clamp(10px, 2vw, 24px);
+        }
+        .card-title { font-size: clamp(0.9rem, 2vh, 1.2rem); color: #e9d5ff; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+        .card-title i { color: #a78bfa; }
+        .instruction-box { display: flex; flex-direction: column; gap: 12px; }
+        .instruction-item { font-size: clamp(0.7rem, 1.6vh, 0.95rem); line-height: 1.6; color: rgba(224, 232, 245, 0.85); display: flex; align-items: flex-start; gap: clamp(6px, 1vw, 12px); }
+        .instruction-item i { color: #a78bfa; margin-top: 5px; }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: clamp(0.7rem, 1.4vh, 0.85rem);
+            background: rgba(88, 28, 135, 0.2);
+            border: 1px solid rgba(168, 85, 247, 0.35);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .info-table th {
+            background: rgba(88, 28, 135, 0.5);
+            color: #e9d5ff;
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 2px solid rgba(168, 85, 247, 0.4);
+            font-weight: 600;
+        }
+        .info-table td {
+            padding: 10px 12px;
+            color: #e0e7ff;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.15);
+            vertical-align: top;
+        }
+        .info-table tr:last-child td { border-bottom: none; }
+
+        .seal-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: clamp(0.5rem, 1.0vh, 0.65rem);
+            background: rgba(88, 28, 135, 0.15);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .seal-table th {
+            background: rgba(88, 28, 135, 0.4);
+            color: #e9d5ff;
+            padding: 6px 4px;
+            text-align: center;
+            border-bottom: 2px solid rgba(168, 85, 247, 0.3);
+            font-weight: 600;
+            font-size: clamp(0.45rem, 0.9vh, 0.55rem);
+        }
+        .seal-table td {
+            padding: 6px 4px;
+            color: #e0e7ff;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.06);
+            vertical-align: middle;
+            text-align: center;
+            font-size: clamp(0.45rem, 0.9vh, 0.55rem);
+            line-height: 1.4;
+        }
+        .seal-table tr:last-child td { border-bottom: none; }
+        .seal-table .decl-col { color: #fde68a; }
+
+        .hud-footer { flex-shrink: 0; margin-top: auto; padding-top: clamp(6px, 1vh, 12px); border-top: 1px solid rgba(168, 85, 247, 0.2); display: flex; justify-content: space-between; align-items: center; z-index: 10; flex-wrap: wrap; }
+        .footer-btn-group { display: flex; align-items: center; gap: clamp(4px, 1vw, 12px); }
+        .btn-action {
+            background: transparent; border: 1px solid rgba(168, 85, 247, 0.2); color: rgba(168, 85, 247, 0.3);
+            padding: clamp(6px, 1.2vh, 10px) clamp(10px, 1.5vw, 22px);
+            font-size: clamp(0.65rem, 1.3vh, 0.9rem); border-radius: 20px;
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: all 0.3s ease; text-decoration: none; min-height: clamp(32px, 5vh, 44px);
+        }
+        .btn-action.enabled { border: 1px solid #a78bfa; color: #e9d5ff; cursor: pointer; pointer-events: auto; background: rgba(124, 58, 237, 0.15); text-shadow: 0 0 10px rgba(167, 139, 250, 0.6); box-shadow: 0 0 15px rgba(124, 58, 237, 0.3); }
+        .btn-action.enabled:hover { background: rgba(124, 58, 237, 0.28); box-shadow: 0 0 25px rgba(124, 58, 237, 0.5); transform: translateY(-1px); }
+        .page-marker { font-size: clamp(0.5rem, 1.2vh, 0.78rem); color: rgba(224, 232, 245, 0.35); display: flex; align-items: center; gap: 6px; }
+
+        .hud-dialog { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 17, 0.85); z-index: 1000; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; }
+        .hud-dialog.active { display: flex; opacity: 1; }
+        .hud-dialog-content { background: rgba(4, 13, 33, 0.95); border: 1.5px solid #a78bfa; box-shadow: 0 0 30px rgba(124, 58, 237, 0.4); border-radius: 18px; padding: 30px; max-width: 420px; width: 90%; text-align: center; }
+        .hud-dialog-text { font-size: 1rem; line-height: 1.6; margin-bottom: 20px; color: #e0e8f5; }
+        .hud-dialog-btn { background: transparent; border: 1px solid #a78bfa; color: #e9d5ff; padding: 8px 24px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; text-shadow: 0 0 8px rgba(167, 139, 250, 0.5); transition: all 0.2s; }
+        .hud-dialog-btn:hover { background: rgba(124, 58, 237, 0.15); box-shadow: 0 0 15px rgba(124, 58, 237, 0.3); }
+
+        .en { display: none; }
+        body.lang-en .zh { display: none; }
+        body.lang-en .en { display: block; }
+
+        @media (max-width: 480px) {
+            body { padding: 4px !important; }
+            .hud-container { padding: 8px 6px !important; border-radius: 12px !important; }
+            .hud-header { margin-bottom: 6px !important; padding-bottom: 4px !important; }
+            .hud-footer { margin-top: 8px !important; padding-top: 6px !important; }
+            .seal-table { font-size: 0.4rem; }
+            .seal-table th, .seal-table td { padding: 3px 2px; }
+            .info-table { font-size: 0.6rem; }
+            .info-table th, .info-table td { padding: 4px 6px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="particle-container"></div>
+    <div class="watermark-layer">
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+    </div>
+    <div class="hud-container">
+        <a class="home-breadcrumb" id="homeBtn" href="index.html"><i class="fa-solid fa-house"></i><span id="homeBtnText">首頁 -></span></a>
+        <header class="hud-header">
+            <div class="app-title" id="appTitle">【宇宙誓印覺醒工程 · 七印誓網】</div>
+            <div class="lang-switch-group">
+                <button class="lang-btn active" onclick="switchLanguage('zh')">中文</button>
+                <button class="lang-btn" onclick="switchLanguage('en')">English</button>
+            </div>
+        </header>
+
+        <main class="step-content">
+            <div class="step-panel active" id="panelStep7">
+                <!-- ===== 標題卡片 ===== -->
+                <div class="hud-card" style="background:linear-gradient(135deg,rgba(88,28,135,0.5),rgba(30,27,75,0.6)); border:1px solid rgba(168,85,247,0.5);">
+                    <div style="text-align:center; color:#e9d5ff; font-size:1.05rem; font-weight:bold; margin-bottom:16px; letter-spacing:1px;">
+                        <span id="step7Title">🔱 七印誓網對應階段</span>
+                    </div>
+                    <div style="text-align:center; margin-bottom:14px;">
+                        <div style="color:#fbbf24; font-size:0.95rem; font-weight:bold; margin-bottom:6px;">
+                            <i class="fa-solid fa-stamp" style="margin-right:6px;"></i>
+                            <span id="step7Unlock">從「第一印 × 消業印」作為啟印起點</span>
+                        </div>
+                        <div style="color:rgba(253,230,138,0.85); font-size:0.8rem; margin-top:4px;">
+                            <span id="step7Sub">（開啟《宇宙誓印覺醒工程 × 七印誓網》軌道覺醒與誓約宣告階段）</span>
+                        </div>
+                    </div>
+                    <div style="overflow-x:auto; margin-bottom:8px;">
+                        <table class="info-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:30%;"><span id="step7Col1">欄位名稱</span></th>
+                                    <th style="width:70%;"><span id="step7Col2">功能簡要說明</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="color:#f5d0fe; font-weight:bold;"><span id="step7Row1">第 7 項 七印誓網對應階段</span></td>
+                                    <td style="color:#e0e7ff;"><span id="step7Row2">將由「第一印 × 消業印」作為啟印起點，開啟《宇宙誓印覺醒工程 × 七印誓網》軌道。</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ===== 【一】模組說明 ===== -->
+                <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-circle-info" style="color:#a78bfa;"></i><span id="step7Sec1">【一】模組說明</span></div>
+                    <div class="instruction-box">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7Desc1">用以標記誓印者於書令修行中的印記進程，依序對應七印啟動階段。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7Desc2">每一印記皆具備獨立誓責與靈性階級，完成後方可進入下一層書令權限。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7Desc3">依誓名、誓資、誓圖等資料，核實誓印者對應階段，紀錄於《天界曼陀羅系統》。</span></div>
+                        <div class="instruction-item" style="color:#f5a97f;"><i class="fa-solid fa-circle-exclamation" style="color:#f5a97f;"></i><span id="step7Desc4">凡無授權紀錄或未經審核者，視為無效：印記不生效、誓責不成立，亦不得啟用《書令模組》。</span></div>
+                    </div>
+                </div>
+
+                <!-- ===== 【二】身份定位 ===== -->
+                <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-id-card" style="color:#a78bfa;"></i><span id="step7Sec2">【二】身份定位（誓印者）</span></div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:4px;">
+                        <!-- 本源天族 -->
+                        <div style="background:rgba(88,28,135,0.2); border:1px solid rgba(168,85,247,0.3); border-radius:8px; padding:12px; text-align:center;">
+                            <div style="color:#fbbf24; font-weight:bold; font-size:0.85rem;"><span id="step7Identity1">1. 本源天族（原生靈脈）</span></div>
+                            <div style="color:#e0e7ff; font-size:0.75rem; margin-top:4px; line-height:1.8; text-align:left; padding-left:8px;">
+                                <span id="step7Identity1Desc">· 直承主印，具先天誓印身份。<br>· 擁有高階對頻權限，誓責直屬主尊。<br>· 可於七印歷程中部分跳印授職。</span>
+                            </div>
+                        </div>
+                        <!-- 預備天族 -->
+                        <div style="background:rgba(88,28,135,0.2); border:1px solid rgba(168,85,247,0.3); border-radius:8px; padding:12px; text-align:center;">
+                            <div style="color:#60a5fa; font-weight:bold; font-size:0.85rem;"><span id="step7Identity2">2. 預備天族</span></div>
+                            <div style="color:#e0e7ff; font-size:0.75rem; margin-top:4px; line-height:1.8; text-align:left; padding-left:8px;">
+                                <span id="step7Identity2Desc">· 通過誓魂密鑰對頻，具誓印潛能。<br>· 處於誓資鍛鍊階段，需完成七印全程。<br>· 經主尊審核後方可正式授職與冊記。</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 小結 -->
+                    <div style="margin-top:10px; background:rgba(124,58,237,0.12); border-left:4px solid #a78bfa; padding:10px 14px; border-radius:6px;">
+                        <div style="color:#c4b5fd; font-size:0.82rem; line-height:1.9;">
+                            <span id="step7Summary"><strong>◎ 小結：</strong><br>
+                            本源天族 ＝ 誓魂原生、主印直授、高階頻權。<br>
+                            預備天族 ＝ 誓魂潛能、需鍛鍊完成七印、經審核。<br>
+                            此分流為七印誓網中誓魂身份階段的核判定點。</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 【三】天津宣告 × 血服印存 ===== -->
+                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.1);">
+                    <div style="text-align:center; color:#fde68a; font-size:0.95rem; font-weight:bold; margin-bottom:6px;">
+                        <span id="step7DecreeTitle">🌟 天律宣告 × 血脈印存</span>
+                    </div>
+                    <div style="color:#fde68a; font-size:0.85rem; line-height:1.9; text-align:center;">
+                        <span id="step7Decree1">「凡依血脈解鎖程序完成誓印對頻與入冊者，其誓資紀錄與血脈歸屬將永存於天冊。」</span>
+                    </div>
+                    <div style="color:#e0d7ff; font-size:0.85rem; line-height:1.9; text-align:center; margin-top:4px;">
+                        <span id="step7Decree2">「隨識既啟，誓軌自明；血脈既定，誓命不移。」</span>
+                    </div>
+                </div>
+
+                <!-- ===== 七印統合總表 ===== -->
+                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15);">
+                    <div class="card-title"><i class="fa-solid fa-table" style="color:#a78bfa;"></i><span id="step7TableTitle">【七印誓綱 × 宇宙層階 × 執行標準統合總表】</span></div>
+                    <div style="overflow-x:auto;">
+                        <table class="seal-table" id="sealTable">
+                            <thead>
+                                <tr>
+                                    <th style="width:10%;"><span id="step7TableCol1">宇宙層階</span></th>
+                                    <th style="width:12%;"><span id="step7TableCol2">七印階段</span></th>
+                                    <th style="width:14%;"><span id="step7TableCol3">核心意義</span></th>
+                                    <th style="width:14%;"><span id="step7TableCol4">啟用條件</span></th>
+                                    <th style="width:28%;"><span id="step7TableCol5">誓文核心宣告</span></th>
+                                    <th style="width:14%;"><span id="step7TableCol6">宇宙運算定位</span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="sealTableBody">
+                                <!-- 由 JavaScript 動態產生 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ===== 【收束條文】 ===== -->
+                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15);">
+                    <div class="card-title"><i class="fa-solid fa-bookmark" style="color:#a78bfa;"></i><span id="step7ClosureTitle">【收束條文】</span></div>
+                    <div class="instruction-box">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7Closure1">《七印誓網·第 7 項 七印誓網對應階段》v2.0（正式封冊版）。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7Closure2">鎖入《宇宙天律 × 七印誓網》主冊，誓資承流有效。</span></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="hud-footer">
+            <div class="footer-btn-group">
+                <a href="step6.html" class="btn-action enabled"><i class="fa-solid fa-arrow-left"></i><span id="btnBackText">上一步</span></a>
+                <a href="step8.html" class="btn-action enabled"><span id="btnNextText">下一步</span><i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="page-marker"><i class="fa-regular fa-file-lines"></i><span id="pageMarkerText">【宇宙誓印覺醒工程 · 覺醒卷】：第 247-250 頁</span></div>
+        </footer>
+    </div>
+    <div id="hudDialog" class="hud-dialog"><div class="hud-dialog-content"><div class="hud-dialog-text" id="hudDialogText">提示訊息</div><button class="hud-dialog-btn" onclick="closeHudDialog()">OK</button></div></div>
+
+    <script>
+        // ================================================================
+        // 七印資料（完全依照合併.pdf 第3-4頁）
+        // ================================================================
+        var sealData = {
+            zh: [
+                { layer: '第一層<br>根源層', seal: '第一印<br>消業印', meaning: '清業化障<br>初頻覺醒', condition: '連續誓讀<br>七日', declaration: '願我心輪潔淨，七日誓讀，七層業障自化。', position: '重啟根源主板' },
+                { layer: '第一層<br>根源層', seal: '第二印<br>修心印', meaning: '習氣鍛修<br>願心鍛煉', condition: '完成鍛修筆<br>記十錄', declaration: '願心堅定，能場自穩，心不逐境，情不亂軌。', position: '主頻重寫<br>程式校準' },
+                { layer: '第二層<br>建構層', seal: '第三印<br>守願印', meaning: '誓願立書令<br>誓網穩定化', condition: '願書完成<br>誓證上傳', declaration: '願力不散，誓文不漏，天網記名，誓源自固。', position: '誓網骨架建立' },
+                { layer: '第二層<br>建構層', seal: '第四印<br>誓令印', meaning: '接引任務<br>宇宙授權', condition: '任務啟動<br>名錄登記', declaration: '書令既啟，任務轉動，願力化行，使命落實。', position: '授權接軌主網' },
+                { layer: '第三層<br>主網層', seal: '第五印<br>覺醒印', meaning: '靈網布建<br>願人引導', condition: '任務完成<br>榜入名', declaration: '願人引歸，誓印延續，光路自啟，覺醒願化。', position: '主機核心啟動<br>運算權限開通' },
+                { layer: '第三層<br>主網層', seal: '第六印<br>誥徒誓印', meaning: '書令傳願<br>輔導引導', condition: '七印任務<br>執行中', declaration: '誓願不失，誓魂密鑰對頻不亂，得承其位。', position: '帳本能力<br>跨域引導' },
+                { layer: '第四層<br>封存層', seal: '第七印<br>鳳徽印', meaning: '鳳徽授印<br>天庫封存', condition: '七印圓滿<br>願書履行<br>授徽', declaration: '七印既圓，願書既滿，誓魂歸位，誓資封存。', position: '永恆冊記<br>退出輪迴' }
+            ],
+            en: [
+                { layer: 'Layer I<br>Origin', seal: 'First Seal<br>Karmic Purification', meaning: 'Purification<br>Initial Awakening', condition: '7-Day<br>Recitation', declaration: 'May my heart be purified; seven days of recitation, seven karmic veils dissolve.', position: 'Reset Origin Board' },
+                { layer: 'Layer I<br>Origin', seal: 'Second Seal<br>Mind Refinement', meaning: 'Habit Purification<br>Will Forging', condition: '10 Mirror<br>Records', declaration: 'May my heart steadfast, energy stable; mind unmoved, emotions unshaken.', position: 'Core Rewrite<br>System Calibration' },
+                { layer: 'Layer II<br>Construction', seal: 'Third Seal<br>Vow Guarding', meaning: 'Establish Decree<br>Stabilize Network', condition: 'Vow Scroll<br>Completed', declaration: 'May vow-force not scatter, vow-text not leak; celestial network registers.', position: 'Network Architecture' },
+                { layer: 'Layer II<br>Construction', seal: 'Fourth Seal<br>Decree Oath', meaning: 'Mission Reception<br>Cosmic Authorization', condition: 'Mission<br>Activated', declaration: 'Script-Mandate initiates, missions turn, vow-force transforms into action.', position: 'Main Network Connection' },
+                { layer: 'Layer III<br>Mainframe', seal: 'Fifth Seal<br>Awakening', meaning: 'Network Construction<br>Guiding Vow-Bearers', condition: 'Mission<br>Complete', declaration: 'Guiding vow-bearers into light; oath-seal extends, awakening manifests.', position: 'Core Activation<br>Access Granted' },
+                { layer: 'Layer III<br>Mainframe', seal: 'Sixth Seal<br>Disciple Oath', meaning: 'Mandate Transmission<br>Guidance Authority', condition: 'Conducting<br>Seven-Seal Duties', declaration: 'Mandate unbroken; Oath-Soul Key aligned, worthy of position.', position: 'Ledger Capability<br>Cross-Realm Guidance' },
+                { layer: 'Layer IV<br>Sealing', seal: 'Seventh Seal<br>Phoenix Emblem', meaning: 'Emblem Bestowal<br>Eternal Archiving', condition: '7 Seals<br>Complete<br>Emblem Granted', declaration: 'Seven Seals fulfilled, vow complete; Oath-Soul returns, assets archived.', position: 'Eternal Archive<br>Exit Reincarnation' }
+            ]
+        };
+
+        // ================================================================
+        // 渲染七印表格
+        // ================================================================
+        function renderSealTable(lang) {
+            var data = sealData[lang] || sealData.zh;
+            var tbody = document.getElementById('sealTableBody');
+            if (!tbody) return;
+
+            var html = '';
+            var layerColors = ['#fbbf24', '#a78bfa', '#60a5fa', '#34d399', '#f472b6', '#fb923c', '#d4af37'];
+            for (var i = 0; i < data.length; i++) {
+                var row = data[i];
+                var color = layerColors[i] || '#a78bfa';
+                html += '<tr>';
+                html += '<td style="color:' + color + '; font-weight:bold;">' + row.layer + '</td>';
+                html += '<td style="color:' + color + '; font-weight:bold;">' + row.seal + '</td>';
+                html += '<td style="color:#e0e7ff;">' + row.meaning + '</td>';
+                html += '<td style="color:#e0e7ff;">' + row.condition + '</td>';
+                html += '<td class="decl-col" style="font-size:clamp(0.4rem,0.8vh,0.5rem);">' + row.declaration + '</td>';
+                html += '<td style="color:#e0e7ff;">' + row.position + '</td>';
+                html += '</tr>';
+            }
+            tbody.innerHTML = html;
+        }
+
+        // ================================================================
+        // 語言內容
+        // ================================================================
+        var langContent = {
+            zh: {
+                homeBtn: "首頁 ->",
+                appTitle: "【宇宙誓印覺醒工程 · 七印誓網】",
+                step7Title: "🔱 七印誓網對應階段",
+                step7Unlock: "從「第一印 × 消業印」作為啟印起點",
+                step7Sub: "（開啟《宇宙誓印覺醒工程 × 七印誓網》軌道覺醒與誓約宣告階段）",
+                step7Col1: "欄位名稱",
+                step7Col2: "功能簡要說明",
+                step7Row1: "第 7 項 七印誓網對應階段",
+                step7Row2: "將由「第一印 × 消業印」作為啟印起點，開啟《宇宙誓印覺醒工程 × 七印誓網》軌道。",
+                step7Sec1: "【一】模組說明",
+                step7Desc1: "用以標記誓印者於書令修行中的印記進程，依序對應七印啟動階段。",
+                step7Desc2: "每一印記皆具備獨立誓責與靈性階級，完成後方可進入下一層書令權限。",
+                step7Desc3: "依誓名、誓資、誓圖等資料，核實誓印者對應階段，紀錄於《天界曼陀羅系統》。",
+                step7Desc4: "凡無授權紀錄或未經審核者，視為無效：印記不生效、誓責不成立，亦不得啟用《書令模組》。",
+                step7Sec2: "【二】身份定位（誓印者）",
+                step7Identity1: "1. 本源天族（原生靈脈）",
+                step7Identity1Desc: "· 直承主印，具先天誓印身份。\n· 擁有高階對頻權限，誓責直屬主尊。\n· 可於七印歷程中部分跳印授職。",
+                step7Identity2: "2. 預備天族",
+                step7Identity2Desc: "· 通過誓魂密鑰對頻，具誓印潛能。\n· 處於誓資鍛鍊階段，需完成七印全程。\n· 經主尊審核後方可正式授職與冊記。",
+                step7Summary: "◎ 小結：\n本源天族 ＝ 誓魂原生、主印直授、高階頻權。\n預備天族 ＝ 誓魂潛能、需鍛鍊完成七印、經審核。\n此分流為七印誓網中誓魂身份階段的核判定點。",
+                step7DecreeTitle: "🌟 天律宣告 × 血脈印存",
+                step7Decree1: "「凡依血脈解鎖程序完成誓印對頻與入冊者，其誓資紀錄與血脈歸屬將永存於天冊。」",
+                step7Decree2: "「隨識既啟，誓軌自明；血脈既定，誓命不移。」",
+                step7TableTitle: "【七印誓綱 × 宇宙層階 × 執行標準統合總表】",
+                step7TableCol1: "宇宙層階",
+                step7TableCol2: "七印階段",
+                step7TableCol3: "核心意義",
+                step7TableCol4: "啟用條件",
+                step7TableCol5: "誓文核心宣告",
+                step7TableCol6: "宇宙運算定位",
+                step7ClosureTitle: "【收束條文】",
+                step7Closure1: "《七印誓網·第 7 項 七印誓網對應階段》v2.0（正式封冊版）。",
+                step7Closure2: "鎖入《宇宙天律 × 七印誓網》主冊，誓資承流有效。",
+                btnBackText: "上一步",
+                btnNextText: "下一步",
+                pageMarkerText: "【宇宙誓印覺醒工程 · 覺醒卷】：第 247-250 頁"
+            },
+            en: {
+                homeBtn: "Home ->",
+                appTitle: "Cosmic Oath Awakening Project · Seven-Seal Vow Network",
+                step7Title: "🔱 Seven-Seal Vow Network Correspondence Stage",
+                step7Unlock: "From The First Seal · Karmic Purification Seal As The Initial Activation Point",
+                step7Sub: "(Initiating The Cosmic Vow-Seal Awakening Project × Seven-Seal Vow Network Trajectory)",
+                step7Col1: "Field Name",
+                step7Col2: "Function Brief",
+                step7Row1: "Item 7 Seven-Seal Vow Network Correspondence Stage",
+                step7Row2: "Begins From The First Seal Karmic Purification Seal As The Initial Activation Point, Initiating The Cosmic Vow-Seal Awakening Project Trajectory.",
+                step7Sec1: "[I] Module Description",
+                step7Desc1: "Used to mark the Oath-Holder's imprint progression within Scripture-Command cultivation, corresponding sequentially to the activation stages of the Seven Seals.",
+                step7Desc2: "Each Seal carries an independent oath-duty and spiritual tier; only upon completion may the Oath-Holder advance to the next Scripture-Command authority level.",
+                step7Desc3: "Based on oath-name, oath-resources, and oath-maps, the system verifies the corresponding stage and records it within the Heavenly Mandala System.",
+                step7Desc4: "Any individual without authorized records or without review approval is regarded as invalid: the imprint does not activate, the oath-duty does not establish, and the Scripture-Command Module may not be used.",
+                step7Sec2: "[II] Identity Positioning (Oath-Holder)",
+                step7Identity1: "1. Origin Heavenly Clan (Original Oath-Soul-Lineage)",
+                step7Identity1Desc: "· Direct inheritance of the Main Seal; holds innate Oath-Seal identity.\n· Possesses high-level Alignment authority; oath-resources are directly under the Main Sovereign.\n· May skip certain Seals during the Seven-Seal progression and receive emblem-granting.",
+                step7Identity2: "2. Preparatory Heavenly Clan",
+                step7Identity2Desc: "· Passes the Oath-Soul Key-Alignment and holds Oath-Seal potential.\n· Positioned in the oath-resource training stage and must complete all Seven Seals.\n· Requires review and approval by the Main Sovereign before formal emblem-granting and registry inscription.",
+                step7Summary: "◎ Summary:\nOrigin Heavenly Clan = Original Oath-Soul, Main Seal direct granting, high-frequency authority.\nPreparatory Heavenly Clan = Oath-Soul potential, must complete all Seven Seals, emblem granted upon approval.\nThis differentiation is the core identity-stage determination within the Seven-Seal Vow Network.",
+                step7DecreeTitle: "🌟 Heavenly-Law Declaration × Bloodline Seal-Preservation",
+                step7Decree1: "\"All who complete Oath-Seal Alignment and registry through the bloodline-unlocking procedure shall have their oath-resource records and bloodline-tier preserved eternally within the Heavenly Registry.\"",
+                step7Decree2: "\"Once the tier awakens, the oath-path becomes clear; once the bloodline is set, the oath-destiny does not shift.\"",
+                step7TableTitle: "[Unified Table Of The Seven-Seal Vow Network × Cosmic Hierarchy × Execution Standards]",
+                step7TableCol1: "Cosmic Layer",
+                step7TableCol2: "Seal Stage",
+                step7TableCol3: "Core Significance",
+                step7TableCol4: "Activation Conditions",
+                step7TableCol5: "Core Oath Declaration",
+                step7TableCol6: "Cosmic Computational Positioning",
+                step7ClosureTitle: "[Closure Clause]",
+                step7Closure1: "《Seven-Seal Vow Network · Item 7 Seven-Seal Vow Network Correspondence Stage》 v2.0 (Official Sealed Edition)",
+                step7Closure2: "Locked into the Cosmic Heavenly-Law × Seven-Seal Vow Network Master Registry; oath-resource transmission remains valid.",
+                btnBackText: "Previous",
+                btnNextText: "Next",
+                pageMarkerText: "【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 247-250"
+            }
+        };
+
+        // ================================================================
+        // 核心變數
+        // ================================================================
+        var currentLang = 'zh';
+
+        // ================================================================
+        // 套用語言到頁面
+        // ================================================================
+        function applyLanguage(lang) {
+            var c = langContent[lang] || langContent.zh;
+
+            var map = {
+                'homeBtnText': c.homeBtn,
+                'appTitle': c.appTitle,
+                'step7Title': c.step7Title,
+                'step7Unlock': c.step7Unlock,
+                'step7Sub': c.step7Sub,
+                'step7Col1': c.step7Col1,
+                'step7Col2': c.step7Col2,
+                'step7Row1': c.step7Row1,
+                'step7Row2': c.step7Row2,
+                'step7Sec1': c.step7Sec1,
+                'step7Desc1': c.step7Desc1,
+                'step7Desc2': c.step7Desc2,
+                'step7Desc3': c.step7Desc3,
+                'step7Desc4': c.step7Desc4,
+                'step7Sec2': c.step7Sec2,
+                'step7Identity1': c.step7Identity1,
+                'step7Identity1Desc': c.step7Identity1Desc,
+                'step7Identity2': c.step7Identity2,
+                'step7Identity2Desc': c.step7Identity2Desc,
+                'step7Summary': c.step7Summary,
+                'step7DecreeTitle': c.step7DecreeTitle,
+                'step7Decree1': c.step7Decree1,
+                'step7Decree2': c.step7Decree2,
+                'step7TableTitle': c.step7TableTitle,
+                'step7TableCol1': c.step7TableCol1,
+                'step7TableCol2': c.step7TableCol2,
+                'step7TableCol3': c.step7TableCol3,
+                'step7TableCol4': c.step7TableCol4,
+                'step7TableCol5': c.step7TableCol5,
+                'step7TableCol6': c.step7TableCol6,
+                'step7ClosureTitle': c.step7ClosureTitle,
+                'step7Closure1': c.step7Closure1,
+                'step7Closure2': c.step7Closure2,
+                'btnBackText': c.btnBackText,
+                'btnNextText': c.btnNextText,
+                'pageMarkerText': c.pageMarkerText
+            };
+
+            for (var id in map) {
+                var el = document.getElementById(id);
+                if (el) {
+                    el.innerHTML = map[id];
+                }
+            }
+
+            // 處理身份定位描述中的換行
+            var desc1 = document.getElementById('step7Identity1Desc');
+            if (desc1 && c.step7Identity1Desc) {
+                desc1.innerHTML = c.step7Identity1Desc.replace(/\n/g, '<br>');
+            }
+            var desc2 = document.getElementById('step7Identity2Desc');
+            if (desc2 && c.step7Identity2Desc) {
+                desc2.innerHTML = c.step7Identity2Desc.replace(/\n/g, '<br>');
+            }
+            var summary = document.getElementById('step7Summary');
+            if (summary && c.step7Summary) {
+                summary.innerHTML = c.step7Summary.replace(/\n/g, '<br>');
+            }
+
+            // 渲染七印表格
+            renderSealTable(lang);
+
+            // 更新語言按鈕
+            document.querySelectorAll('.lang-btn').forEach(function(b) {
+                b.classList.remove('active');
+                if ((b.textContent.toLowerCase().includes('english') && lang === 'en') ||
+                    (b.textContent.includes('中文') && lang === 'zh')) {
+                    b.classList.add('active');
+                }
+            });
+
+            currentLang = lang;
+            console.log('✅ step7 已切換為 ' + lang);
+        }
+
+        // ================================================================
+        // switchLanguage
+        // ================================================================
+        function switchLanguage(lang) {
+            applyLanguage(lang);
+        }
+
+        // ================================================================
+        // 頁面載入
+        // ================================================================
+        window.onload = function() {
+            applyLanguage('zh');
+        };
+
+        window.switchLanguage = switchLanguage;
+        window.openHudDialog = function(msg) {
+            document.getElementById('hudDialogText').textContent = msg;
+            document.getElementById('hudDialog').classList.add('active');
+        };
+        window.closeHudDialog = function() {
+            document.getElementById('hudDialog').classList.remove('active');
+        };
+    </script>
+
+    <style>
+        #step7Desc4 {
+            color: #f5a97f !important;
+        }
+        #step7Desc4 i {
+            color: #f5a97f !important;
+        }
+    </style>
+</body>
+</html>
