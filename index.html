@@ -1043,5 +1043,168 @@
         }
     })();
 </script>
+<style>
+    /* ===== 七印誓網專屬：深紫底色 + 金色字體 ===== */
+
+    /* 主項：七印啟動階段 */
+    .seven-seal-row {
+        background: linear-gradient(135deg, rgba(88, 28, 135, 0.60), rgba(88, 28, 135, 0.25)) !important;
+        border-left: 4px solid #ffd700 !important;
+    }
+    .seven-seal-row td {
+        background: rgba(88, 28, 135, 0.30) !important;
+        color: #ffd700 !important;
+    }
+    .seven-seal-row td .col-segment,
+    .seven-seal-row td .col-no,
+    .seven-seal-row td .col-field,
+    .seven-seal-row td .col-func {
+        color: #ffd700 !important;
+        font-weight: 500 !important;
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.08) !important;
+    }
+    .seven-seal-row td .col-segment {
+        font-weight: 700 !important;
+    }
+    .seven-seal-row td .col-no {
+        font-weight: 700 !important;
+    }
+    .seven-seal-row td .col-field {
+        font-weight: 500 !important;
+    }
+    .seven-seal-row td .col-func {
+        font-weight: 400 !important;
+        color: #f0d890 !important;
+    }
+    .seven-seal-row:hover td {
+        background: rgba(88, 28, 135, 0.50) !important;
+    }
+
+    /* 子項：第一印～第七印 */
+    .seven-seal-sub {
+        background: rgba(88, 28, 135, 0.25) !important;
+    }
+    .seven-seal-sub td {
+        background: rgba(88, 28, 135, 0.12) !important;
+        color: #ffd700 !important;
+    }
+    .seven-seal-sub td .col-segment,
+    .seven-seal-sub td .col-no,
+    .seven-seal-sub td .col-field,
+    .seven-seal-sub td .col-func {
+        color: #ffd700 !important;
+    }
+    .seven-seal-sub td .col-no {
+        font-weight: 600 !important;
+    }
+    .seven-seal-sub td .col-field {
+        color: #ffed4a !important;
+    }
+    .seven-seal-sub td .col-func {
+        color: #f0d890 !important;
+    }
+    .seven-seal-sub:hover td {
+        background: rgba(88, 28, 135, 0.30) !important;
+    }
+
+    /* 分段標籤 */
+    .segment-seven {
+        color: #ffd700 !important;
+        font-weight: 700 !important;
+        border-left-color: #ffd700 !important;
+    }
+
+    /* 模組標題 */
+    .module-seven-title {
+        color: #ffd700 !important;
+        text-shadow: 0 0 30px rgba(255, 215, 0, 0.2) !important;
+    }
+
+    /* 連結按鈕 */
+    .seven-seal-row .unit-link {
+        background: rgba(88, 28, 135, 0.40) !important;
+        border-color: rgba(255, 215, 0, 0.35) !important;
+        color: #ffd700 !important;
+        font-weight: 600 !important;
+    }
+    .seven-seal-row .unit-link i {
+        color: #ffd700 !important;
+    }
+    .seven-seal-row .unit-link:hover {
+        background: rgba(88, 28, 135, 0.60) !important;
+        border-color: #ffd700 !important;
+        color: #ffffff !important;
+        box-shadow: 0 0 30px rgba(88, 28, 135, 0.30) !important;
+    }
+    .seven-seal-row .unit-link:hover i {
+        color: #ffffff !important;
+    }
+
+    /* 階層圖標 */
+    .seven-seal-row i.fa-seal {
+        color: #ffd700 !important;
+    }
+</style>
+
+<script>
+    (function() {
+        function highlightSevenSealRows() {
+            var rows = document.querySelectorAll('#tableBody2 tr');
+            var sevenSealPhrases = ['七印啟動階段', 'Seven-Seal Activation Phase', '第一印', '第二印', '第三印', '第四印', '第五印', '第六印', '第七印',
+                'First Seal', 'Second Seal', 'Third Seal', 'Fourth Seal', 'Fifth Seal', 'Sixth Seal', 'Seventh Seal'
+            ];
+
+            rows.forEach(function(row) {
+                var cells = row.querySelectorAll('td');
+                if (cells.length < 2) return;
+
+                var segmentText = cells[0] ? cells[0].textContent.trim() : '';
+                var noText = cells[1] ? cells[1].textContent.trim() : '';
+
+                var isSevenSeal = false;
+
+                for (var i = 0; i < sevenSealPhrases.length; i++) {
+                    if (segmentText.indexOf(sevenSealPhrases[i]) !== -1) {
+                        isSevenSeal = true;
+                        break;
+                    }
+                    if (noText.indexOf(sevenSealPhrases[i]) !== -1) {
+                        isSevenSeal = true;
+                        break;
+                    }
+                }
+
+                if (noText.indexOf('第') !== -1 && noText.indexOf('印') !== -1) {
+                    isSevenSeal = true;
+                }
+
+                if (isSevenSeal) {
+                    row.classList.add('seven-seal-row');
+                    if (noText.indexOf('第') !== -1 && noText.indexOf('印') !== -1 && noText.indexOf('項') === -1) {
+                        row.classList.add('seven-seal-sub');
+                    }
+                }
+            });
+
+            console.log('✅ 七印誓網區塊已套用深紫底色 + 金色字體');
+        }
+
+        if (document.readyState === 'complete') {
+            setTimeout(highlightSevenSealRows, 100);
+        } else {
+            window.addEventListener('load', function() {
+                setTimeout(highlightSevenSealRows, 200);
+            });
+        }
+
+        var origSwitch = window.switchLanguage;
+        if (origSwitch) {
+            window.switchLanguage = function(lang) {
+                origSwitch(lang);
+                setTimeout(highlightSevenSealRows, 150);
+            };
+        }
+    })();
+</script>
 </body>
 </html>
