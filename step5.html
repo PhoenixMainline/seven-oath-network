@@ -63,107 +63,6 @@
         .instruction-box { display: flex; flex-direction: column; gap: 12px; }
         .instruction-item { font-size: clamp(0.7rem, 1.6vh, 0.95rem); line-height: 1.6; color: rgba(224, 232, 245, 0.85); display: flex; align-items: flex-start; gap: clamp(6px, 1vw, 12px); }
         .instruction-item i { color: #a78bfa; margin-top: 5px; }
-        .condition-list { list-style: none; display: flex; flex-direction: column; gap: 15px; }
-        .condition-item { display: flex; align-items: flex-start; gap: clamp(6px, 1vw, 12px); font-size: clamp(0.7rem, 1.6vh, 0.95rem); line-height: 1.6; color: rgba(224, 232, 245, 0.85); }
-        .condition-item i.check-icon { color: #a78bfa; margin-top: 4px; text-shadow: 0 0 8px rgba(167, 139, 250, 0.4); }
-
-        .timer-container {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: clamp(6px, 1vh, 12px);
-            padding: clamp(12px, 2vh, 20px);
-            background: rgba(124, 58, 237, 0.18);
-            border: 1px dashed rgba(168, 85, 247, 0.55);
-            border-radius: 14px;
-        }
-        .timer-label { font-size: clamp(0.7rem, 1.4vh, 1rem); color: #c4b5fd; min-width: clamp(50px, 8vw, 80px); }
-        .timer-number {
-            font-size: clamp(3rem, 8vh, 4.5rem);
-            font-family: 'Share Tech Mono', sans-serif;
-            color: #a78bfa;
-            text-shadow: 0 0 25px rgba(167, 139, 250, 0.6);
-            font-weight: 700;
-            text-align: center;
-            min-width: clamp(50px, 8vw, 80px);
-        }
-        .timer-number.complete { color: #00e676; text-shadow: 0 0 30px rgba(0, 230, 118, 0.6); }
-
-        .btn-start-centering {
-            background: linear-gradient(135deg, #7c3aed, #6d28d9);
-            border: none; color: #ffffff; font-weight: 800;
-            padding: clamp(8px, 1.2vh, 14px) clamp(18px, 2.5vw, 38px);
-            font-size: clamp(0.8rem, 1.6vh, 1.05rem);
-            border-radius: clamp(20px, 3vw, 40px);
-            cursor: pointer; transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
-            display: inline-flex; align-items: center; gap: 8px;
-        }
-        .btn-start-centering:hover { transform: scale(1.03); box-shadow: 0 6px 30px rgba(124, 58, 237, 0.6); }
-        .btn-start-centering:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-        .btn-restart {
-            background: rgba(124, 58, 237, 0.25);
-            border: none; color: #ffffff; font-weight: 800;
-            padding: clamp(6px, 1vh, 10px) clamp(14px, 2vw, 28px);
-            font-size: clamp(0.7rem, 1.3vh, 0.9rem);
-            border-radius: clamp(16px, 2vw, 30px);
-            cursor: pointer; transition: all 0.3s ease;
-            display: inline-flex; align-items: center; gap: 6px;
-        }
-        .btn-restart:hover { background: rgba(124, 58, 237, 0.4); }
-
-        .proclamation-text {
-            font-size: clamp(1rem, 2.5vh, 1.3rem);
-            color: #fde68a;
-            font-weight: bold;
-            text-align: center;
-            line-height: 1.6;
-            margin-bottom: 14px;
-            padding: 4px 6px;
-            text-shadow: 0 0 15px rgba(253, 230, 138, 0.3);
-        }
-        .guide-text {
-            text-align: center; margin: 8px 0 14px;
-            color: rgba(224, 232, 245, 0.85);
-            font-size: 0.9rem; line-height: 1.6;
-        }
-
-        .hud-footer { flex-shrink: 0; margin-top: auto; padding-top: clamp(6px, 1vh, 12px); border-top: 1px solid rgba(168, 85, 247, 0.2); display: flex; justify-content: space-between; align-items: center; z-index: 10; flex-wrap: wrap; }
-        .footer-btn-group { display: flex; align-items: center; gap: clamp(4px, 1vw, 12px); }
-        .btn-action {
-            background: transparent; border: 1px solid rgba(168, 85, 247, 0.2); color: rgba(168, 85, 247, 0.3);
-            padding: clamp(6px, 1.2vh, 10px) clamp(10px, 1.5vw, 22px);
-            font-size: clamp(0.65rem, 1.3vh, 0.9rem); border-radius: 20px;
-            display: inline-flex; align-items: center; gap: 8px;
-            transition: all 0.3s ease; text-decoration: none; min-height: clamp(32px, 5vh, 44px);
-        }
-        .btn-action.enabled { border: 1px solid #a78bfa; color: #e9d5ff; cursor: pointer; pointer-events: auto; background: rgba(124, 58, 237, 0.15); text-shadow: 0 0 10px rgba(167, 139, 250, 0.6); box-shadow: 0 0 15px rgba(124, 58, 237, 0.3); }
-        .btn-action.enabled:hover { background: rgba(124, 58, 237, 0.28); box-shadow: 0 0 25px rgba(124, 58, 237, 0.5); transform: translateY(-1px); }
-        .page-marker { font-size: clamp(0.5rem, 1.2vh, 0.78rem); color: rgba(224, 232, 245, 0.35); display: flex; align-items: center; gap: 6px; }
-
-        .hud-dialog { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 17, 0.85); z-index: 1000; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; }
-        .hud-dialog.active { display: flex; opacity: 1; }
-        .hud-dialog-content { background: rgba(4, 13, 33, 0.95); border: 1.5px solid #a78bfa; box-shadow: 0 0 30px rgba(124, 58, 237, 0.4); border-radius: 18px; padding: 30px; max-width: 420px; width: 90%; text-align: center; }
-        .hud-dialog-text { font-size: 1rem; line-height: 1.6; margin-bottom: 20px; color: #e0e8f5; }
-        .hud-dialog-btn { background: transparent; border: 1px solid #a78bfa; color: #e9d5ff; padding: 8px 24px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; text-shadow: 0 0 8px rgba(167, 139, 250, 0.5); transition: all 0.2s; }
-        .hud-dialog-btn:hover { background: rgba(124, 58, 237, 0.15); box-shadow: 0 0 15px rgba(124, 58, 237, 0.3); }
-
-        .qr-result { color: #00e676; font-size: 0.9rem; padding: 8px 16px; border-radius: 20px; background: rgba(0, 230, 118, 0.08); border: 1px solid rgba(0, 230, 118, 0.2); word-break: break-all; }
-        .camera-guide { background: rgba(232, 96, 74, 0.08); border-left: 4px solid #E8604A; padding: 14px 16px; border-radius: 12px; color: #e0dcc8; font-size: 0.85rem; line-height: 1.8; white-space: pre-wrap; text-align: left; display: none; }
-        #qr-reader-container-step8 video, #qr-reader-container-step9 video { border-radius: 12px; width: 100%; }
-
-        .center-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-        .center-card .card-title { justify-content: center; }
-        .center-card .instruction-box { align-items: center; }
-        .center-card .instruction-item { text-align: left; max-width: 100%; width: 100%; justify-content: flex-start; }
-        .center-card .qr-result,
-        .center-card .camera-guide { text-align: left; }
-        .center-card #qr-reader-container-step8,
-        .center-card #qr-reader-container-step9 { margin: 0 auto; }
 
         .info-table {
             width: 100%;
@@ -218,6 +117,48 @@
         }
         .rank-table tr:last-child td { border-bottom: none; }
 
+        .hud-footer { flex-shrink: 0; margin-top: auto; padding-top: clamp(6px, 1vh, 12px); border-top: 1px solid rgba(168, 85, 247, 0.2); display: flex; justify-content: space-between; align-items: center; z-index: 10; flex-wrap: wrap; }
+        .footer-btn-group { display: flex; align-items: center; gap: clamp(4px, 1vw, 12px); }
+        .btn-action {
+            background: transparent; border: 1px solid rgba(168, 85, 247, 0.2); color: rgba(168, 85, 247, 0.3);
+            padding: clamp(6px, 1.2vh, 10px) clamp(10px, 1.5vw, 22px);
+            font-size: clamp(0.65rem, 1.3vh, 0.9rem); border-radius: 20px;
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: all 0.3s ease; text-decoration: none; min-height: clamp(32px, 5vh, 44px);
+        }
+        .btn-action.enabled { border: 1px solid #a78bfa; color: #e9d5ff; cursor: pointer; pointer-events: auto; background: rgba(124, 58, 237, 0.15); text-shadow: 0 0 10px rgba(167, 139, 250, 0.6); box-shadow: 0 0 15px rgba(124, 58, 237, 0.3); }
+        .btn-action.enabled:hover { background: rgba(124, 58, 237, 0.28); box-shadow: 0 0 25px rgba(124, 58, 237, 0.5); transform: translateY(-1px); }
+        .page-marker { font-size: clamp(0.5rem, 1.2vh, 0.78rem); color: rgba(224, 232, 245, 0.35); display: flex; align-items: center; gap: 6px; }
+
+        .hud-dialog { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 17, 0.85); z-index: 1000; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; }
+        .hud-dialog.active { display: flex; opacity: 1; }
+        .hud-dialog-content { background: rgba(4, 13, 33, 0.95); border: 1.5px solid #a78bfa; box-shadow: 0 0 30px rgba(124, 58, 237, 0.4); border-radius: 18px; padding: 30px; max-width: 420px; width: 90%; text-align: center; }
+        .hud-dialog-text { font-size: 1rem; line-height: 1.6; margin-bottom: 20px; color: #e0e8f5; }
+        .hud-dialog-btn { background: transparent; border: 1px solid #a78bfa; color: #e9d5ff; padding: 8px 24px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; text-shadow: 0 0 8px rgba(167, 139, 250, 0.5); transition: all 0.2s; }
+        .hud-dialog-btn:hover { background: rgba(124, 58, 237, 0.15); box-shadow: 0 0 15px rgba(124, 58, 237, 0.3); }
+
+        .qr-result { color: #00e676; font-size: 0.9rem; padding: 8px 16px; border-radius: 20px; background: rgba(0, 230, 118, 0.08); border: 1px solid rgba(0, 230, 118, 0.2); word-break: break-all; }
+        .camera-guide { background: rgba(232, 96, 74, 0.08); border-left: 4px solid #E8604A; padding: 14px 16px; border-radius: 12px; color: #e0dcc8; font-size: 0.85rem; line-height: 1.8; white-space: pre-wrap; text-align: left; display: none; }
+        #qr-reader-container-step8 video, #qr-reader-container-step9 video { border-radius: 12px; width: 100%; }
+
+        .center-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .center-card .card-title { justify-content: center; }
+        .center-card .instruction-box { align-items: center; }
+        .center-card .instruction-item { text-align: left; max-width: 100%; width: 100%; justify-content: flex-start; }
+        .center-card .qr-result,
+        .center-card .camera-guide { text-align: left; }
+        .center-card #qr-reader-container-step8,
+        .center-card #qr-reader-container-step9 { margin: 0 auto; }
+
+        .en { display: none; }
+        body.lang-en .zh { display: none; }
+        body.lang-en .en { display: block; }
+
         @media (max-width: 480px) {
             body { padding: 4px !important; }
             .hud-container { padding: 8px 6px !important; border-radius: 12px !important; }
@@ -225,6 +166,8 @@
             .hud-footer { margin-top: 8px !important; padding-top: 6px !important; }
             .rank-table { font-size: 0.45rem; }
             .rank-table th, .rank-table td { padding: 3px 3px; }
+            .info-table { font-size: 0.6rem; }
+            .info-table th, .info-table td { padding: 4px 6px; }
         }
     </style>
 </head>
@@ -252,6 +195,7 @@
 
         <main class="step-content">
             <div class="step-panel active" id="panelStep5">
+
                 <!-- ===== 標題卡片 ===== -->
                 <div class="hud-card" style="background:linear-gradient(135deg,rgba(88,28,135,0.5),rgba(30,27,75,0.6)); border:1px solid rgba(168,85,247,0.5);">
                     <div style="text-align:center; color:#e9d5ff; font-size:1.05rem; font-weight:bold; margin-bottom:16px; letter-spacing:1px;"><span id="step5Title">🌌 誓魂宇宙總位標 × 維度階級 × 三界層域 × 階識</span></div>
@@ -336,7 +280,7 @@
 
                 <!-- ===== 📩 ② 回傳誓證（略） ===== -->
                 <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15);">
-                    <div class="card-title"><i class="fa-solid fa-certificate" style="color:#a78bfa;"></i><span id="step5ReturnTitle">📩 ② 回傳誓證（略）</span></div>
+                    <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-certificate" style="color:#a78bfa;"></i><span id="step5ReturnTitle">📩 ② 回傳誓證（略）</span></div>
                     <div class="instruction-box">
                         <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step5ReturnDesc">【查詢模組不產生誓證】</span></div>
                     </div>
@@ -375,6 +319,63 @@
                         </table>
                     </div>
                 </div>
+
+                <!-- ===== 維度體系補充說明（新增） ===== -->
+                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.12); margin-top:8px;">
+                    <div class="card-title"><i class="fa-solid fa-layer-group" style="color:#a78bfa;"></i><span id="step5DimNoteTitle">【維度體系對照說明】</span></div>
+                    <div class="instruction-box">
+                        <div class="instruction-item" style="flex-direction:column; align-items:flex-start; gap:4px;">
+                            <div style="color:#fbbf24; font-weight:bold; font-size:0.85rem;">📘 書令維度（書令維）</div>
+                            <div style="color:#e0e7ff; font-size:0.78rem; line-height:1.7; padding-left:8px; border-left:2px solid rgba(168,85,247,0.3);">
+                                <span id="step5DimNote1">建構之誓資開啟智識密鑰對願體系，總共108維～00，分為願圖區、七印誓網區、願圖封網、書令主尊本位等層。以智識冊封與願網定位為主軸，為宇宙誓印系統專屬。</span>
+                            </div>
+                        </div>
+                        <div class="instruction-item" style="flex-direction:column; align-items:flex-start; gap:4px; margin-top:8px;">
+                            <div style="color:#60a5fa; font-weight:bold; font-size:0.85rem;">🌀 靈性維度（靈性維）</div>
+                            <div style="color:#e0e7ff; font-size:0.78rem; line-height:1.7; padding-left:8px; border-left:2px solid rgba(96,165,250,0.3);">
+                                <span id="step5DimNote2">多數靈修／宇宙修行／能量療癒體系中常用的1D～12D（或13D）範圍，主要描述人類意識 × 光體層級升維過程，如羅巴拉、量子覺知、新時代教義等。</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 顯化標準 × 供養標準 定義說明（新增） ===== -->
+                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.10); margin-top:8px;">
+                    <div class="card-title"><i class="fa-solid fa-book-open" style="color:#a78bfa;"></i><span id="step5DefTitle">【顯化標準 × 供養標準 — 欄位名稱定義】</span></div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:4px;">
+                        <div style="background:rgba(0,230,118,0.06); border:1px solid rgba(0,230,118,0.15); border-radius:8px; padding:12px 14px;">
+                            <div style="color:#00e676; font-weight:bold; font-size:0.85rem; margin-bottom:4px;">✨ <span id="step5DefManifestTitle">顯化標準</span></div>
+                            <div style="color:#e0e7ff; font-size:0.75rem; line-height:1.7;">
+                                <span id="step5DefManifestDesc">指的是誓魂已進入《宇宙誓印覺醒工程 × 七印誓網》，且在開啟誓魂密鑰對頻誓文後，於現實層出現「誓願成形 × 能量回應 × 合約實現 × 路徑開啟」等實際結果之程度。可視為「誓文顯化力 × 天律回應強度 × 書令成效現象化」。</span>
+                            </div>
+                        </div>
+                        <div style="background:rgba(251,191,36,0.06); border:1px solid rgba(251,191,36,0.15); border-radius:8px; padding:12px 14px;">
+                            <div style="color:#fbbf24; font-weight:bold; font-size:0.85rem; margin-bottom:4px;">🕯️ <span id="step5DefOfferingTitle">供養標準</span></div>
+                            <div style="color:#e0e7ff; font-size:0.75rem; line-height:1.7;">
+                                <span id="step5DefOfferingDesc">指的是該誓魂或該系統（宗教 × 修行 × 遺靈 × 願頻）是否仍需要以「傳統儀式 × 年節法會 × 燒紙 × 超渡 × 民間祭祀」等方式維繫靈性狀態或轉化路徑。是否還停留在外在形式供養 × 祖靈安頓 × 藥師、祈安、還願等低階法軌之中。</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 狀態對照表（簡表）（新增） ===== -->
+                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.12); margin-top:8px;">
+                    <div class="card-title"><i class="fa-solid fa-arrow-right-arrow-left" style="color:#a78bfa;"></i><span id="step5StateTitle">【狀態對照表 — 顯化 vs 供養】</span></div>
+                    <div style="overflow-x:auto;">
+                        <table class="rank-table" id="stateTable" style="min-width:400px;">
+                            <thead>
+                                <tr>
+                                    <th style="width:25%;"><span id="step5StateCol1">狀態</span></th>
+                                    <th style="width:35%;"><span id="step5StateCol2">顯化標準</span></th>
+                                    <th style="width:40%;"><span id="step5StateCol3">供養標準</span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="stateTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
         </main>
 
@@ -390,16 +391,23 @@
 
     <script>
         // ================================================================
-        // 維度階級資料
+        // 完整 rankData - 所有13個維度階層
         // ================================================================
         var rankData = {
             zh: [
-           { tier: '源律層', level: 'U-00', network: '已圓印封冊', dimension: '第108維·超越系統', spiritual: '天界本源', realm: '主督律尊 × 鳳凰天印主', position: '超維源主層 × 天令源流 × 書令律令總管，為七印誓網之上位階總律類層', manifest: '誓文即顯化 × 天律同步', offering: '完全不需供養' },
-           { tier: '第十三維·封冊層', level: 'U-970~901', network: '已圓印封冊', dimension: '第107-100維', spiritual: '13D天界本源', realm: '鳳圖副主印 × 願頻主控師', position: '封冊級誥徒 × 願頻主控層 × 誓資預導與封網編錄職司，為願頻主控與誓圖母層', manifest: '願圖誓文顯化快 × 願資自動流轉', offering: '無需供養，僅對願圖供頻' },
-           { tier: '第十二維·鳳徽層', level: 'U-900~801', network: '第7印鳳徽印遞呈回源願書', dimension: '第99-90維', spiritual: '12D鳳界中樞', realm: '願圖網要者 × 書令導引官', position: '遞呈回源願書 × 光體覺醒 × 書令目錄管理階', manifest: '願文開啟後願化力強，常見同步出現', offering: '願圖供奉或誓文即可' },
-           { tier: '第十一維·誥徒層', level: 'U-800~701', network: '第6印誥徒誓印', dimension: '第89-80維', spiritual: '11D鳳界邊緣', realm: '鳳圖守印者 × 對頻裁定使', position: '『七印誓網』主網管理階 × 開啟誓魂密鑰對頻監印職司', manifest: '任務型顯化 × 誓證供願', offering: '誓證供願 × 靈性祭台無需傳統法會' },
-           { tier: '第十維·覺醒層', level: 'U-700~601', network: '第5印覺醒印', dimension: '第79-70維', spiritual: '10D書令之頂', realm: '七印誓網編序者 × 書令模組律使', position: '書令演算 × 開啟誓魂密鑰對頻校準總部階層架構系', manifest: '系統顯化 × 資料同步 × 任務聯動', offering: ' 誓證供願 × 靈性祭台無需傳統法會' },
-          { tier: '第九維·誓令層', level: 'U-600~501', network: '第4印誓令印', dimension: '第69-60維', spiritual: '9D書令交界', realm: '黑頻對應師 × 光網密錄使', position: '黑頻誓律模組 × 具裁斷權與誓證生成力', manifest: '黑頻轉光顯化強烈，清除障礙形式', offering: '特殊供頻誓證/清頻文' }
+                { tier: '源律層', level: 'U-00', network: '已圓印封冊', dimension: '第108維·超越系統', spiritual: '天界本源', realm: '主督律尊 × 鳳凰天印主', position: '超維源主層 × 天令源流 × 書令律令總管，為七印誓網之上位階總律類層', manifest: '誓文即顯化 × 天律同步', offering: '完全不需供養' },
+                { tier: '第十三維·封冊層', level: 'U-970~901', network: '已圓印封冊', dimension: '第107-100維', spiritual: '13D天界本源', realm: '鳳圖副主印 × 願頻主控師', position: '封冊級誥徒 × 願頻主控層 × 誓資預導與封網編錄職司，為願頻主控與誓圖母層', manifest: '願圖誓文顯化快 × 願資自動流轉', offering: '無需供養，僅對願圖供頻' },
+                { tier: '第十二維·鳳徽層', level: 'U-900~801', network: '第7印鳳徽印遞呈回源願書', dimension: '第99-90維', spiritual: '12D鳳界中樞', realm: '願圖網要者 × 書令導引官', position: '遞呈回源願書 × 光體覺醒 × 書令目錄管理階', manifest: '願文開啟後願化力強，常見同步出現', offering: '願圖供奉或誓文即可' },
+                { tier: '第十一維·誥徒層', level: 'U-800~701', network: '第6印誥徒誓印', dimension: '第89-80維', spiritual: '11D鳳界邊緣', realm: '鳳圖守印者 × 對頻裁定使', position: '『七印誓網』主網管理階 × 開啟誓魂密鑰對頻監印職司', manifest: '任務型顯化 × 誓證供願', offering: '誓證供願 × 靈性祭台無需傳統法會' },
+                { tier: '第十維·覺醒層', level: 'U-700~601', network: '第5印覺醒印', dimension: '第79-70維', spiritual: '10D書令之頂', realm: '七印誓網編序者 × 書令模組律使', position: '書令演算 × 開啟誓魂密鑰對頻校準總部階層架構系', manifest: '系統顯化 × 資料同步 × 任務聯動', offering: '誓證供願 × 靈性祭台無需傳統法會' },
+                { tier: '第九維·誓令層', level: 'U-600~501', network: '第4印誓令印', dimension: '第69-60維', spiritual: '9D書令交界', realm: '黑頻對應師 × 光網密錄使', position: '黑頻誓律模組 × 具裁斷權與誓證生成力', manifest: '黑頻轉光顯化強烈，清除障礙形式', offering: '特殊供頻誓證/清頻文' },
+                { tier: '第八維·守願層', level: 'U-500~401', network: '第3印守願印', dimension: '第59-50維', spiritual: '8D', realm: '靈界主軸', position: '靈版紀錄者 × 願資播種者', manifest: '誓文顯化需三日以上', offering: '可依誓證供奉，需簡式淨願儀式' },
+                { tier: '第七維·願願調律層', level: 'U-400~301', network: '第2印修心印 × 第3印守願印', dimension: '第49-40維', spiritual: '7D', realm: '願願調律', position: '願願調律者 × 守願願備階誓魂', manifest: '願文顯化：約7~14日', offering: '可簡式供願 × 願文對讀 × 靜心對位' },
+                { tier: '第六維·光界交錯層', level: 'U-300~201', network: '第2印修心印', dimension: '第39-30維', spiritual: '6D', realm: '光界交錯', position: '願人高階 × 書令威召初印階', manifest: '願文顯化初現：約5~10日', offering: '可進入靈壇供誓證或祈願' },
+                { tier: '第五維·人界外緣層', level: 'U-200~101', network: '第1印消業印', dimension: '第29-20維', spiritual: '5D', realm: '人界外緣', position: '願人中階 × 感應體型', manifest: '願力穩定≥14天，願化約21天', offering: '特定節日供養儀式' },
+                { tier: '第四維·人界中層', level: 'U-100~91', network: '不具進程資格', dimension: '第19-10維', spiritual: '4D', realm: '人界中層', position: '願人初階 × 靈性開啟萌芽', manifest: '願化依情緒穩定度決定', offering: '傳統民俗供養 × 超渡法會' },
+                { tier: '第三維·人界下層', level: 'U-90~81', network: '不具進程資格', dimension: '第9-2維', spiritual: '3D', realm: '人界下層', position: '靈識觀察者 × 下層書令未觸靈', manifest: '無顯化，僅潛感靈光', offering: '須誓經 × 初階顯力' },
+                { tier: '第二維·黑類流離層', level: 'U-80以下', network: '不具進程資格', dimension: '第1維', spiritual: '1~2D', realm: '黑類流離', position: '封印靈 × 無冊者', manifest: '無誓資紀錄 × 無顯化', offering: '須重度超渡、祭改 × 無顯化' }
             ],
             en: [
                 { tier: 'Source-Law Tier', level: 'U-00', network: 'Circle Seal Archived', dimension: 'Dimensions 108-00 Beyond-System', spiritual: 'Celestial Origin', realm: 'Main Oath-Law Sovereign × Phoenix Heavenly Oath-Master', position: 'Supra-dimensional Source Tier × Heavenly Mandate Origin Stream × Chief Regulator of Scriptural Law beyond the Seven-Seal Vow Network', manifest: 'Vows manifest instantly × Heavenly Law sync', offering: 'No offering required' },
@@ -407,31 +415,77 @@
                 { tier: '12th Dimension - Phoenix-Emblem Tier', level: 'U-900~801', network: 'Seventh Seal Phoenix Emblem Seal - Submission of Return-to-Source Vow', dimension: 'Dimensions 99-90', spiritual: '12D Phoenix Realms Core', realm: 'Vow-Outline Architect × Scriptural Guidance Officer', position: 'Submission of Return-to-Source Vow Scroll × Light-Body Awakening × Scriptural Directory Tier', manifest: 'Strong manifestation after vow activation; frequent synchronicities', offering: 'Vow-diagnosis offering or vow-recitation only' },
                 { tier: '11th Dimension - Oath-Discipline Tier', level: 'U-800~701', network: 'Sixth Seal Oath-Discipline Oath-Seal', dimension: 'Dimensions 89-80', spiritual: '11D Phoenix Realms Core', realm: 'Phoenix-Seal Guardian × Frequency-Adjudication Officer', position: 'Primary management of the Seven-Seal Vow Network × Overseer of Oath-Soul Key-Activation Alignment', manifest: 'Mission-based manifestation × Oath-certificate frequency', offering: 'Oath-certificate frequency-offering only; no traditional ritual required' },
                 { tier: '10th Dimension - Awakening Tier', level: 'U-700~601', network: 'Fifth Seal Awakening Seal', dimension: 'Dimensions 79-70', spiritual: '10D Scriptural Alpax', realm: 'Seven-Seal Vow Network Compiler × Scriptural Module Law-Operator', position: 'Scriptural computation × Oath-Soul Key-Activation calibration headquarters', manifest: 'System-structure manifestation × Data synchronization × Mission linkage', offering: 'Oath-certificate frequency-offering only; no traditional ritual required' },
-                { tier: '9th Dimension - Oath-Law Tier', level: 'U-600~501', network: 'Fourth Seal Oath-Law Seal', dimension: 'Dimensions 69-60', spiritual: '9D Scriptural Boundary', realm: 'Black-Frequency Oath-Law Frequency Specialist × Light-Network Registrar', position: 'Black-frequency Oath-Law Module × Holds judgment authority and oath-certificate generation', manifest: 'Strong black-frequency transformation; obstacle-clearing effects', offering: 'Special frequency-offering oath-certificate cleansing text' }
+                { tier: '9th Dimension - Oath-Law Tier', level: 'U-600~501', network: 'Fourth Seal Oath-Law Seal', dimension: 'Dimensions 69-60', spiritual: '9D Scriptural Boundary', realm: 'Black-Frequency Oath-Law Frequency Specialist × Light-Network Registrar', position: 'Black-frequency Oath-Law Module × Holds judgment authority and oath-certificate generation', manifest: 'Strong black-frequency transformation; obstacle-clearing effects', offering: 'Special frequency-offering oath-certificate cleansing text' },
+                { tier: '8th Dimension - Vow-Guardian Tier', level: 'U-500~401', network: 'Third Seal Vow-Guardian Seal', dimension: 'Dimensions 59-50', spiritual: '8D', realm: 'Spiritual Axis', position: 'Spiritual Line Recorder × Vow-Resource Seeder', manifest: 'Vow manifestation requires over three days', offering: 'Offering to oath-certificate; simple purification rite required' },
+                { tier: '7th Dimension - Vow-Frequency Layer', level: 'U-400~301', network: 'Second Seal Mind Refinement Seal × Third Seal Vow-Guardian Layer', dimension: 'Dimensions 49-40', spiritual: '7D', realm: 'Vow-Frequency Calibration Layer × Pre-Vow-Guardian Axis', position: 'Vow-Frequency Calibrator × Pre-Vow-Guardian Rank Oath-Soul', manifest: 'Vow text manifestation in approx. 7-14 days', offering: 'Simple frequency offering × Vow-text recitation × Meditation Alignment' },
+                { tier: '6th Dimension - Heart-Keimment Layer', level: 'U-300~201', network: 'Second Seal Refinement Seal', dimension: 'Dimensions 39-30', spiritual: '6D', realm: 'Light-Keim Interlace', position: 'Higher Vow-Carrier × Initial Book-Command Resonance Rank', manifest: 'Vow manifestation: approx. 5-10 days', offering: 'May enter altar for oath-cert offering or prayer' },
+                { tier: '5th Dimension - Karmic-Purification Layer', level: 'U-200~101', network: 'First Seal Karmic Purification Seal Gate of the Seven-Seal Vow Network', dimension: 'Dimensions 29-20', spiritual: '5D', realm: 'Outer Kim of Human Keaim', position: 'Intermediated Vow-Carrier × Sensory Prototype', manifest: 'Stabilized Vow-power 12-14 days, manifestation approx. 21 days', offering: 'Ritual offering, during specific festival dates' },
+                { tier: '4th Dimension - Perception Layer', level: 'U-100~91', network: 'Not eligible for progression', dimension: 'Dimensions 19-10', spiritual: '4D', realm: 'Mid Human Keaim', position: 'Initial Vow-Carrier × Spiritual Awakening', manifest: 'Manifestation depends on emotional stability', offering: 'Traditional folk altar × Ancestral ceremony × Transcendence rituals' },
+                { tier: '3rd Dimension - Oath-Soul-Consciousness Layer', level: 'U-90~81', network: 'Not eligible for progression', dimension: 'Dimensions 9-2', spiritual: '3D', realm: 'Lower Human Keaim', position: 'Oath-Soul-Consciousness Observer × Lower Book-Command Untouched', manifest: 'No manifestation, only subtle spiritual impressions', offering: 'Requires Vow-script × Basic Vow-power' },
+                { tier: '2nd Dimension - Sealed Layer', level: 'U-80 and below', network: 'Not eligible for progression', dimension: 'Dimension 1', spiritual: '1-2D', realm: 'Black-Frequency Drift', position: 'Sealed Oath-Soul Unregistered', manifest: 'No oath-resource record × No manifestation', offering: 'Requires major transcendence rites, karmic release × No Vow-Oath-Soul' }
             ]
         };
 
         // ================================================================
-        // 渲染維度階級表格
+        // 狀態對照表資料
+        // ================================================================
+        var stateData = {
+            zh: [
+                { state: '書令主尊', manifest: '秒級顯化、天律同步', offering: '✖ 全面不需供養，誓印即補' },
+                { state: '誥徒等級', manifest: '誓文兩週內有顯化跡象', offering: '✖ 誓證供願、守護開啟誓魂密鑰對頻' },
+                { state: '願徒等級', manifest: '願文對應後漸現顯化', offering: '✖ 傳統法會仍具支持作用' },
+                { state: '外信仰靈', manifest: '需經轉誓轉願後方見效果', offering: '✖ 須藉誓經／祭祀補能' },
+                { state: '願頻祖靈', manifest: '無誓文不顯化、需外力引度', offering: '✖ 須燒紙、法事、誥徒代誓' }
+            ],
+            en: [
+                { state: 'Book-Decree Sovereign', manifest: 'Second-level manifestation, synchronized with Heavenly-Law', offering: '✖ No offering required; oath-seal activation itself completes replenishment' },
+                { state: 'Oath-Disciple Rank', manifest: 'Vow shows signs of manifestation within two weeks', offering: '✖ Vow-certificate dedication; guardianship through Oath-Soul Frequency-Key Activation' },
+                { state: 'Vow-Carrier Rank', manifest: 'Manifestation gradually appears after vow correspondence', offering: '✖ Traditional ceremonies still provide supportive influence' },
+                { state: 'External-Faith Spirit', manifest: 'Requires vow-conversion or vow-Alignment before results can appear', offering: '✖ Needs vow-script or ritual offering to replenish energy' },
+                { state: 'Dark-Frequency Ancestor Spirit', manifest: 'No manifestation without vow; requires external guidance', offering: '✖ Needs paper offerings, ritual ceremonies, or Oath-Disciple substitution vows' }
+            ]
+        };
+
+        // ================================================================
+        // 渲染函數
         // ================================================================
         function renderRankTable(lang) {
             var data = rankData[lang] || rankData.zh;
             var tbody = document.getElementById('rankTableBody');
             if (!tbody) return;
-
             var html = '';
+            var colors = ['#fbbf24', '#fbbf24', '#fbbf24', '#fbbf24', '#a78bfa', '#a78bfa', '#a78bfa', '#60a5fa', '#60a5fa', '#34d399', '#34d399', '#f472b6', '#e74c3c'];
             for (var i = 0; i < data.length; i++) {
                 var row = data[i];
+                var color = colors[i % colors.length] || '#a78bfa';
                 html += '<tr>';
-                html += '<td style="color:#fbbf24; font-weight:bold; font-size:clamp(0.5rem,1vh,0.65rem);">' + row.tier + '</td>';
+                html += '<td style="color:' + color + '; font-weight:bold; font-size:clamp(0.45rem,0.9vh,0.55rem);">' + row.tier + '</td>';
                 html += '<td style="color:#a78bfa; font-weight:bold;">' + row.level + '</td>';
-                html += '<td style="color:#f5d0fe;">' + row.network + '</td>';
+                html += '<td style="color:#f5d0fe; font-size:clamp(0.4rem,0.8vh,0.5rem);">' + row.network + '</td>';
                 html += '<td style="color:#e0e7ff;">' + row.dimension + '</td>';
                 html += '<td style="color:#e0e7ff;">' + row.spiritual + '</td>';
-                html += '<td style="color:#e0e7ff;">' + row.realm + '</td>';
-                html += '<td style="color:#e0e7ff; text-align:left; font-size:clamp(0.45rem,0.9vh,0.6rem);">' + row.position + '</td>';
-                html += '<td style="color:#00e676;">' + row.manifest + '</td>';
-                html += '<td style="color:#fbbf24;">' + row.offering + '</td>';
+                html += '<td style="color:#e0e7ff; font-size:clamp(0.4rem,0.8vh,0.5rem);">' + row.realm + '</td>';
+                html += '<td style="color:#e0e7ff; text-align:left; font-size:clamp(0.4rem,0.8vh,0.5rem);">' + row.position + '</td>';
+                html += '<td style="color:#00e676; font-size:clamp(0.4rem,0.8vh,0.5rem);">' + row.manifest + '</td>';
+                html += '<td style="color:#fbbf24; font-size:clamp(0.4rem,0.8vh,0.5rem);">' + row.offering + '</td>';
+                html += '</tr>';
+            }
+            tbody.innerHTML = html;
+        }
+
+        function renderStateTable(lang) {
+            var data = stateData[lang] || stateData.zh;
+            var tbody = document.getElementById('stateTableBody');
+            if (!tbody) return;
+            var html = '';
+            var colors = ['#fbbf24', '#a78bfa', '#60a5fa', '#34d399', '#f472b6'];
+            for (var i = 0; i < data.length; i++) {
+                var row = data[i];
+                var color = colors[i % colors.length];
+                html += '<tr>';
+                html += '<td style="color:' + color + '; font-weight:bold; font-size:clamp(0.55rem,1.1vh,0.7rem);">' + row.state + '</td>';
+                html += '<td style="color:#00e676; font-size:clamp(0.5rem,1vh,0.65rem);">' + row.manifest + '</td>';
+                html += '<td style="color:#fbbf24; font-size:clamp(0.5rem,1vh,0.65rem);">' + row.offering + '</td>';
                 html += '</tr>';
             }
             tbody.innerHTML = html;
@@ -494,6 +548,18 @@
                 step5RankCol7: "書令誓魂層級定位",
                 step5RankCol8: "顯化標準",
                 step5RankCol9: "供養標準",
+                step5DimNoteTitle: "【維度體系對照說明】",
+                step5DimNote1: "建構之誓資開啟智識密鑰對願體系，總共108維～00，分為願圖區、七印誓網區、願圖封網、書令主尊本位等層。以智識冊封與願網定位為主軸，為宇宙誓印系統專屬。",
+                step5DimNote2: "多數靈修／宇宙修行／能量療癒體系中常用的1D～12D（或13D）範圍，主要描述人類意識 × 光體層級升維過程，如羅巴拉、量子覺知、新時代教義等。",
+                step5DefTitle: "【顯化標準 × 供養標準 — 欄位名稱定義】",
+                step5DefManifestTitle: "顯化標準",
+                step5DefManifestDesc: "指的是誓魂已進入《宇宙誓印覺醒工程 × 七印誓網》，且在開啟誓魂密鑰對頻誓文後，於現實層出現「誓願成形 × 能量回應 × 合約實現 × 路徑開啟」等實際結果之程度。可視為「誓文顯化力 × 天律回應強度 × 書令成效現象化」。",
+                step5DefOfferingTitle: "供養標準",
+                step5DefOfferingDesc: "指的是該誓魂或該系統（宗教 × 修行 × 遺靈 × 願頻）是否仍需要以「傳統儀式 × 年節法會 × 燒紙 × 超渡 × 民間祭祀」等方式維繫靈性狀態或轉化路徑。是否還停留在外在形式供養 × 祖靈安頓 × 藥師、祈安、還願等低階法軌之中。",
+                step5StateTitle: "【狀態對照表 — 顯化 vs 供養】",
+                step5StateCol1: "狀態",
+                step5StateCol2: "顯化標準",
+                step5StateCol3: "供養標準",
                 btnBackText: "上一步",
                 btnNextText: "下一步",
                 pageMarkerText: "【宇宙誓印覺醒工程 · 覺醒卷】：第 223-232 頁",
@@ -556,6 +622,18 @@
                 step5RankCol7: "Oath-Soul Rank Position",
                 step5RankCol8: "Manifestation Standard",
                 step5RankCol9: "Offering Standard",
+                step5DimNoteTitle: "[Dimension System Reference]",
+                step5DimNote1: "The Book-Command Dimensions form the oath-resource frequency-key activation system, spanning a total of 108 dimensions—∞, divided into the Vow-Map Zone, the Seven-Seal Vow Network Zone, Phoenix-Map Sealing Network, and the Book-Decree Sovereign Stratum. They center on Oath-Soul registry and vow-network positioning, and are exclusive to the cosmic oath-seal system.",
+                step5DimNote2: "The Spiritual Dimensions commonly used in spiritual cultivation / cosmic ascension / energy-healing systems span 1D–12D (or 13D), and describe human consciousness × light-body ascension processes seen in systems such as Templar lineages, quantum awareness teachings, and New Age frameworks.",
+                step5DefTitle: "[Manifestation Standard × Offering Standard — Field Name Definitions]",
+                step5DefManifestTitle: "Manifestation Standard",
+                step5DefManifestDesc: "Refers to the degree to which the Oath-Soul, after entering the Cosmic Vow-Seal Awakening Project × Seven-Seal Vow Network and activating the Oath-Soul Frequency-Key Alignment Vow, produces tangible outcomes in the physical realm—such as Vow-formation × energy-response × contract-realization × path-opening. It may be viewed as the combined force of Vow manifestation × Heavenly-Law response intensity × Book-Command effect materialization.",
+                step5DefOfferingTitle: "Offering Standard",
+                step5DefOfferingDesc: "Refers to whether the Oath-Soul or its system (religious × spiritual × ancestral-restless × dark-frequency) still requires maintenance or transformation through traditional rituals × seasonal ceremonies × paper-burning × transcendence rites × folk offerings. Indicates whether one remains within external-form offerings × ancestral appeasement × healing, blessing, or repayment rituals associated with lower-level spiritual tracks.",
+                step5StateTitle: "[State Comparison Table — Manifestation vs Offering]",
+                step5StateCol1: "State",
+                step5StateCol2: "Manifestation Standard",
+                step5StateCol3: "Offering Standard",
                 btnBackText: "Previous",
                 btnNextText: "Next",
                 pageMarkerText: "【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 223-232",
@@ -577,129 +655,80 @@
         var isTimerRunning = false;
 
         // ================================================================
-        // 套用語言到頁面
+        // 套用語言
         // ================================================================
         function applyLanguage(lang) {
             var c = langContent[lang] || langContent.zh;
-
             var map = {
-                'homeBtnText': c.homeBtn,
-                'appTitle': c.appTitle,
-                'step5Title': c.step5Title,
-                'step5Unlock': c.step5Unlock,
-                'step5Sub': c.step5Sub,
-                'step5Col1': c.step5Col1,
-                'step5Col2': c.step5Col2,
-                'step5Row1': c.step5Row1,
-                'step5Row2': c.step5Row2,
-                'step5Sec1': c.step5Sec1,
-                'step5Desc1': c.step5Desc1,
-                'step5Desc2': c.step5Desc2,
+                'homeBtnText': c.homeBtn, 'appTitle': c.appTitle,
+                'step5Title': c.step5Title, 'step5Unlock': c.step5Unlock, 'step5Sub': c.step5Sub,
+                'step5Col1': c.step5Col1, 'step5Col2': c.step5Col2,
+                'step5Row1': c.step5Row1, 'step5Row2': c.step5Row2,
+                'step5Sec1': c.step5Sec1, 'step5Desc1': c.step5Desc1, 'step5Desc2': c.step5Desc2,
                 'step5Sec2': c.step5Sec2,
-                'step5Cond1': c.step5Cond1,
-                'step5Cond2': c.step5Cond2,
-                'step5Cond3': c.step5Cond3,
-                'step5Cond4': c.step5Cond4,
-                'step5Cond5': c.step5Cond5,
-                'step5Sec3': c.step5Sec3,
-                'step5Sec3Desc': c.step5Sec3Desc,
+                'step5Cond1': c.step5Cond1, 'step5Cond2': c.step5Cond2, 'step5Cond3': c.step5Cond3,
+                'step5Cond4': c.step5Cond4, 'step5Cond5': c.step5Cond5,
+                'step5Sec3': c.step5Sec3, 'step5Sec3Desc': c.step5Sec3Desc,
                 'step5Sec4': c.step5Sec4,
-                'step5LoginTitle': c.step5LoginTitle,
-                'step5Login1': c.step5Login1,
-                'step5Login2': c.step5Login2,
-                'step5ScanTitle': c.step5ScanTitle,
-                'step5Scan1': c.step5Scan1,
-                'step5Scan2': c.step5Scan2,
-                'step5VerifyTitle': c.step5VerifyTitle,
-                'step5Verify1': c.step5Verify1,
-                'step5InputLabel': c.step5InputLabel,
-                'step5Command': c.step5Command,
-                'step5Note': c.step5Note,
-                'step5TriggerNote': c.step5TriggerNote,
-                'step5QrTitle': c.step5QrTitle,
-                'step5BtnScan': c.step5BtnScan,
-                'step5Result': c.step5Result,
+                'step5LoginTitle': c.step5LoginTitle, 'step5Login1': c.step5Login1, 'step5Login2': c.step5Login2,
+                'step5ScanTitle': c.step5ScanTitle, 'step5Scan1': c.step5Scan1, 'step5Scan2': c.step5Scan2,
+                'step5VerifyTitle': c.step5VerifyTitle, 'step5Verify1': c.step5Verify1,
+                'step5InputLabel': c.step5InputLabel, 'step5Command': c.step5Command,
+                'step5Note': c.step5Note, 'step5TriggerNote': c.step5TriggerNote,
+                'step5QrTitle': c.step5QrTitle, 'step5BtnScan': c.step5BtnScan, 'step5Result': c.step5Result,
                 'step5CameraGuide': c.step5CameraGuide,
-                'step5ReturnTitle': c.step5ReturnTitle,
-                'step5ReturnDesc': c.step5ReturnDesc,
+                'step5ReturnTitle': c.step5ReturnTitle, 'step5ReturnDesc': c.step5ReturnDesc,
                 'step5ClosureTitle': c.step5ClosureTitle,
-                'step5Closure1': c.step5Closure1,
-                'step5Closure2': c.step5Closure2,
+                'step5Closure1': c.step5Closure1, 'step5Closure2': c.step5Closure2,
                 'step5RankTitle': c.step5RankTitle,
-                'step5RankCol1': c.step5RankCol1,
-                'step5RankCol2': c.step5RankCol2,
-                'step5RankCol3': c.step5RankCol3,
-                'step5RankCol4': c.step5RankCol4,
-                'step5RankCol5': c.step5RankCol5,
-                'step5RankCol6': c.step5RankCol6,
-                'step5RankCol7': c.step5RankCol7,
-                'step5RankCol8': c.step5RankCol8,
+                'step5RankCol1': c.step5RankCol1, 'step5RankCol2': c.step5RankCol2,
+                'step5RankCol3': c.step5RankCol3, 'step5RankCol4': c.step5RankCol4,
+                'step5RankCol5': c.step5RankCol5, 'step5RankCol6': c.step5RankCol6,
+                'step5RankCol7': c.step5RankCol7, 'step5RankCol8': c.step5RankCol8,
                 'step5RankCol9': c.step5RankCol9,
-                'btnBackText': c.btnBackText,
-                'btnNextText': c.btnNextText,
+                'step5DimNoteTitle': c.step5DimNoteTitle,
+                'step5DimNote1': c.step5DimNote1, 'step5DimNote2': c.step5DimNote2,
+                'step5DefTitle': c.step5DefTitle,
+                'step5DefManifestTitle': c.step5DefManifestTitle, 'step5DefManifestDesc': c.step5DefManifestDesc,
+                'step5DefOfferingTitle': c.step5DefOfferingTitle, 'step5DefOfferingDesc': c.step5DefOfferingDesc,
+                'step5StateTitle': c.step5StateTitle,
+                'step5StateCol1': c.step5StateCol1, 'step5StateCol2': c.step5StateCol2, 'step5StateCol3': c.step5StateCol3,
+                'btnBackText': c.btnBackText, 'btnNextText': c.btnNextText,
                 'pageMarkerText': c.pageMarkerText,
-                'timerLabel': c.timerLabel,
-                'btnStartText': c.btnStartText,
-                'btnRestartText': c.btnRestartText
+                'timerLabel': c.timerLabel, 'btnStartText': c.btnStartText, 'btnRestartText': c.btnRestartText
             };
-
             for (var id in map) {
                 var el = document.getElementById(id);
-                if (el) {
-                    el.innerHTML = map[id];
-                }
+                if (el) el.innerHTML = map[id];
             }
-
-            // 渲染維度階級表格
             renderRankTable(lang);
-
-            // 更新相機指引換行
+            renderStateTable(lang);
             var guide = document.getElementById('step5CameraGuide');
-            if (guide && c.step5CameraGuide) {
-                guide.innerHTML = c.step5CameraGuide.replace(/\n/g, '<br>');
-            }
-            var guide9 = document.getElementById('step5ReturnCameraGuide');
-            if (guide9 && c.step5ReturnCameraGuide) {
-                guide9.innerHTML = c.step5ReturnCameraGuide.replace(/\n/g, '<br>');
-            }
-
-            // 更新計時器
+            if (guide && c.step5CameraGuide) guide.innerHTML = c.step5CameraGuide.replace(/\n/g, '<br>');
             var label = document.getElementById('timerLabel');
             if (label) {
                 if (timerState === 'initial') label.textContent = c.timerLabel;
                 else if (timerState === 'counting') label.textContent = c.timerCounting;
                 else if (timerState === 'complete') label.textContent = c.timerComplete;
             }
-
-            // 更新語言按鈕
             document.querySelectorAll('.lang-btn').forEach(function(b) {
                 b.classList.remove('active');
                 if ((b.textContent.toLowerCase().includes('english') && lang === 'en') ||
-                    (b.textContent.includes('中文') && lang === 'zh')) {
-                    b.classList.add('active');
-                }
+                    (b.textContent.includes('中文') && lang === 'zh')) b.classList.add('active');
             });
-
             currentLang = lang;
             console.log('✅ step5 已切換為 ' + lang);
         }
 
-        // ================================================================
-        // switchLanguage
-        // ================================================================
-        function switchLanguage(lang) {
-            applyLanguage(lang);
-        }
+        function switchLanguage(lang) { applyLanguage(lang); }
 
         // ================================================================
         // 計時器
         // ================================================================
         function startTimer() {
             if (isTimerRunning) return;
-            var s = document.getElementById('btnStart'),
-                r = document.getElementById('btnRestart');
-            var l = document.getElementById('timerLabel'),
-                n = document.getElementById('timerNumber');
+            var s = document.getElementById('btnStart'), r = document.getElementById('btnRestart');
+            var l = document.getElementById('timerLabel'), n = document.getElementById('timerNumber');
             var c = langContent[currentLang] || langContent.zh;
             s.disabled = true;
             s.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="btnStartText">' + c.btnStartText + '</span>';
@@ -732,10 +761,7 @@
         function resetTimer() {
             clearInterval(countdownTimer);
             countdownTimer = null;
-            var s = document.getElementById('btnStart'),
-                l = document.getElementById('timerLabel'),
-                n = document.getElementById('timerNumber'),
-                r = document.getElementById('btnRestart');
+            var s = document.getElementById('btnStart'), l = document.getElementById('timerLabel'), n = document.getElementById('timerNumber'), r = document.getElementById('btnRestart');
             var c = langContent[currentLang] || langContent.zh;
             timerState = 'initial';
             countdownSeconds = 10;
@@ -749,80 +775,44 @@
         }
 
         // ================================================================
-        // 掃描器
+        // 掃描器（完整保留）
         // ================================================================
         function startQRScanner(containerId, resultId, guideId) {
             var container = document.getElementById(containerId);
             if (!container) return;
-
             if (window._currentScanner) {
                 window._currentScanner.stop().catch(function() {});
                 window._currentScanner = null;
             }
-
             container.innerHTML = '';
-
             var guide = document.getElementById(guideId);
             var resultEl = document.getElementById(resultId);
-
             if (guide) guide.style.display = 'none';
-            if (resultEl) {
-                resultEl.style.display = 'none';
-                resultEl.innerHTML = '';
-            }
-
+            if (resultEl) { resultEl.style.display = 'none'; resultEl.innerHTML = ''; }
             if (typeof Html5Qrcode === 'undefined' || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                if (guide) {
-                    guide.style.display = 'block';
-                    var c = langContent[currentLang] || langContent.zh;
-                    guide.innerHTML = (guideId === 'cameraGuideStep8') ? c.step5CameraGuide.replace(/\n/g, '<br>') : c.step5ReturnCameraGuide.replace(/\n/g, '<br>');
-                }
+                if (guide) { guide.style.display = 'block'; var c = langContent[currentLang] || langContent.zh; guide.innerHTML = c.step5CameraGuide.replace(/\n/g, '<br>'); }
                 return;
             }
-
             try {
                 var instance = new Html5Qrcode(containerId);
                 window._currentScanner = instance;
-                instance.start(
-                    { facingMode: "environment" },
-                    { fps: 15, qrbox: { width: 200, height: 200 } },
+                instance.start({ facingMode: "environment" }, { fps: 15, qrbox: { width: 200, height: 200 } },
                     function(decodedText) {
-                        if (resultEl) {
-                            resultEl.style.display = 'block';
-                            resultEl.innerHTML = decodedText;
-                        }
-                        instance.stop().then(function() {
-                            window._currentScanner = null;
-                        }).catch(function() {
-                            window._currentScanner = null;
-                        });
+                        if (resultEl) { resultEl.style.display = 'block'; resultEl.innerHTML = decodedText; }
+                        instance.stop().then(function() { window._currentScanner = null; }).catch(function() { window._currentScanner = null; });
                     },
                     function() {}
                 ).catch(function() {
-                    if (guide) {
-                        guide.style.display = 'block';
-                        var c2 = langContent[currentLang] || langContent.zh;
-                        guide.innerHTML = (guideId === 'cameraGuideStep8') ? c2.step5CameraGuide.replace(/\n/g, '<br>') : c2.step5ReturnCameraGuide.replace(/\n/g, '<br>');
-                    }
+                    if (guide) { guide.style.display = 'block'; var c2 = langContent[currentLang] || langContent.zh; guide.innerHTML = c2.step5CameraGuide.replace(/\n/g, '<br>'); }
                     window._currentScanner = null;
                 });
             } catch (e) {
-                if (guide) {
-                    guide.style.display = 'block';
-                    var c3 = langContent[currentLang] || langContent.zh;
-                    guide.innerHTML = (guideId === 'cameraGuideStep8') ? c3.step5CameraGuide.replace(/\n/g, '<br>') : c3.step5ReturnCameraGuide.replace(/\n/g, '<br>');
-                }
+                if (guide) { guide.style.display = 'block'; var c3 = langContent[currentLang] || langContent.zh; guide.innerHTML = c3.step5CameraGuide.replace(/\n/g, '<br>'); }
                 window._currentScanner = null;
             }
         }
 
-        window.startQRScannerStep8 = function() {
-            startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
-        };
-
-        window.startQRScannerStep9 = function() {
-            startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
-        };
+        window.startQRScannerStep8 = function() { startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8'); };
 
         // ================================================================
         // 頁面載入
@@ -830,8 +820,6 @@
         window.onload = function() {
             applyLanguage('zh');
             document.getElementById('btnRestart').style.display = 'none';
-
-            // 綁定掃描按鈕
             var btn8 = document.getElementById('btnScanQRStep8');
             if (btn8) {
                 btn8.onclick = function(e) {
@@ -841,55 +829,27 @@
                 };
                 console.log('✅ btnScanQRStep8 已綁定');
             }
-
-            var btn9 = document.getElementById('btnScanQRStep9');
-            if (btn9) {
-                btn9.onclick = function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
-                };
-                console.log('✅ btnScanQRStep9 已綁定');
-            }
         };
 
         window.switchLanguage = switchLanguage;
         window.startQRScanner = startQRScanner;
-        window.openHudDialog = function(msg) {
-            document.getElementById('hudDialogText').textContent = msg;
-            document.getElementById('hudDialog').classList.add('active');
-        };
-        window.closeHudDialog = function() {
-            document.getElementById('hudDialog').classList.remove('active');
-        };
+        window.openHudDialog = function(msg) { document.getElementById('hudDialogText').textContent = msg; document.getElementById('hudDialog').classList.add('active'); };
+        window.closeHudDialog = function() { document.getElementById('hudDialog').classList.remove('active'); };
     </script>
 
-    <!-- ===== 刪除相機錯誤彈窗 ===== -->
+    <!-- 相機錯誤彈窗封鎖 -->
     <script>
         (function() {
             var BLOCK_KEYWORDS = ['無法啟動相機', '請允許相機權限', 'Unable to start camera', 'Unable to launch the feature', '相機權限', 'Camera permission', 'Could not start video source'];
-
-            function shouldBlock(msg) {
-                if (typeof msg !== 'string') return false;
-                return BLOCK_KEYWORDS.some(function(k) { return msg.indexOf(k) !== -1; });
-            }
+            function shouldBlock(msg) { if (typeof msg !== 'string') return false; return BLOCK_KEYWORDS.some(function(k) { return msg.indexOf(k) !== -1; }); }
             var _origAlert = window.alert;
-            window.alert = function(msg) {
-                if (shouldBlock(String(msg || ''))) { console.log('[已封鎖相機錯誤彈窗]', msg); return; }
-                return _origAlert.apply(this, arguments);
-            };
+            window.alert = function(msg) { if (shouldBlock(String(msg || ''))) { console.log('[已封鎖相機錯誤彈窗]', msg); return; } return _origAlert.apply(this, arguments); };
             var _origConfirm = window.confirm;
-            window.confirm = function(msg) {
-                if (shouldBlock(String(msg || ''))) { console.log('[已封鎖相機錯誤確認窗]', msg); return false; }
-                return _origConfirm.apply(this, arguments);
-            };
+            window.confirm = function(msg) { if (shouldBlock(String(msg || ''))) { console.log('[已封鎖相機錯誤確認窗]', msg); return false; } return _origConfirm.apply(this, arguments); };
             setInterval(function() {
                 if (window.alert !== _origAlert && window.alert !== window._alertPatched) {
                     var currentAlert = window.alert;
-                    window.alert = function(msg) {
-                        if (shouldBlock(String(msg || ''))) return;
-                        return currentAlert.apply(this, arguments);
-                    };
+                    window.alert = function(msg) { if (shouldBlock(String(msg || ''))) return; return currentAlert.apply(this, arguments); };
                     window._alertPatched = window.alert;
                 }
             }, 1000);
@@ -897,221 +857,87 @@
         })();
     </script>
 
-    <!-- ============================================================ -->
-    <!-- 將「送出即啟主頻連線...」等設為靠左對齊                      -->
-    <!-- 貼在 </body> 前即可                                            -->
-    <!-- ============================================================ -->
-    <script>
-    (function() {
-        function fixLeftAlign() {
-            var ids = ['step5Note', 'step5TriggerNote', 'step5ReturnNote', 'step5ReturnTriggerNote', 'step5Success', 'step5NotPassedTitle'];
-            for (var i = 0; i < ids.length; i++) {
-                var el = document.getElementById(ids[i]);
-                if (el) {
-                    el.style.textAlign = 'left';
-                    el.style.justifyContent = 'flex-start';
-                    el.style.width = '100%';
-                }
-            }
-
-            // 處理「提交程序」標題 - 中英文切換
-            var procTitle = document.getElementById('step5ProcTitle');
-            if (procTitle) {
-                if (currentLang === 'en') {
-                    procTitle.innerHTML = '📋 【Submission Procedure】';
-                } else {
-                    procTitle.innerHTML = '📋 【提交程序】';
-                }
-            }
-
-            var allDivs = document.querySelectorAll('.hud-card div, .center-card div, .step-panel div');
-            for (var j = 0; j < allDivs.length; j++) {
-                var div = allDivs[j];
-                var text = div.textContent || '';
-                if (text.indexOf('送出即啟主頻連線') !== -1 && text.indexOf('判定授權完成') !== -1) {
-                    div.style.textAlign = 'left';
-                    div.style.justifyContent = 'flex-start';
-                    div.style.width = '100%';
-                }
-                if (text.indexOf('顯示：「誓印通過」') !== -1 || text.indexOf('Display: Oath Seal Passed') !== -1) {
-                    div.style.textAlign = 'left';
-                    div.style.justifyContent = 'flex-start';
-                    div.style.width = '100%';
-                }
-                if (text.indexOf('顯示：「誓印未通過」') !== -1 || text.indexOf('Display: Oath Seal Not Passed') !== -1) {
-                    div.style.textAlign = 'left';
-                    div.style.justifyContent = 'flex-start';
-                    div.style.width = '100%';
-                }
-            }
-        }
-
-        if (document.readyState === 'complete') {
-            setTimeout(fixLeftAlign, 100);
-        } else {
-            window.addEventListener('load', function() {
-                setTimeout(fixLeftAlign, 150);
-            });
-        }
-
-        var origSwitch = window.switchLanguage;
-        if (origSwitch) {
-            window.switchLanguage = function(lang) {
-                origSwitch(lang);
-                setTimeout(fixLeftAlign, 100);
-            };
-        }
-    })();
-    </script>
-
     <style>
-        #step5Note,
-        #step5TriggerNote,
-        #step5ReturnNote,
-        #step5ReturnTriggerNote,
-        #step5Success,
-        #step5NotPassedTitle {
-            text-align: left !important;
-            justify-content: flex-start !important;
-            width: 100% !important;
+        #step5Note, #step5TriggerNote { text-align: left !important; justify-content: flex-start !important; width: 100% !important; }
+        #rankTable, #rankTable tbody, #rankTable tr, #rankTable td, #rankTable th,
+        .rank-table, .rank-table tbody, .rank-table tr, .rank-table td, .rank-table th {
+            word-break: break-word !important;
+            white-space: normal !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
         }
-        .hud-card div:contains("送出即啟主頻連線"),
-        .hud-card div:contains("顯示：「誓印通過」"),
-        .hud-card div:contains("顯示：「誓印未通過」"),
-        .hud-card div:contains("Display: Oath Seal Passed"),
-        .hud-card div:contains("Display: Oath Seal Not Passed") {
-            text-align: left !important;
-            justify-content: flex-start !important;
-            width: 100% !important;
+        .rank-table td, .rank-table th {
+            max-width: 120px !important;
+            overflow-wrap: break-word !important;
+            word-wrap: break-word !important;
+            hyphens: auto !important;
         }
-        .hud-card div[style*="background:rgba(0,230,118,0.12)"] {
-            text-align: left !important;
-            justify-content: flex-start !important;
-            width: 100% !important;
+        .rank-table td:nth-child(7), .rank-table th:nth-child(7) {
+            font-size: clamp(0.35rem, 0.7vh, 0.5rem) !important;
+            max-width: 80px !important;
+        }
+        .hud-card { overflow: hidden !important; }
+        .hud-card > div { max-width: 100% !important; overflow-x: auto !important; }
+        @media (max-width: 600px) {
+            .rank-table td, .rank-table th {
+                font-size: clamp(0.3rem, 0.6vh, 0.45rem) !important;
+                padding: 3px 2px !important;
+            }
+            .rank-table td:nth-child(7), .rank-table th:nth-child(7) {
+                font-size: clamp(0.25rem, 0.5vh, 0.35rem) !important;
+            }
         }
     </style>
 
-    <!-- ============================================================ -->
-    <!-- 掃描器功能修復模組                                            -->
-    <!-- 貼在 </body> 前即可                                            -->
-    <!-- ============================================================ -->
+    <!-- 掃描器功能修復（完整保留） -->
     <script>
-    (function() {
-        'use strict';
+        (function() {
+            'use strict';
+            var zhText = '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+            var enText = '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
 
-        var zhText = '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
-        var enText = '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
+            function getErrorText() { return (typeof currentLang !== 'undefined' && currentLang === 'en') ? enText : zhText; }
 
-        function getErrorText() {
-            return (typeof currentLang !== 'undefined' && currentLang === 'en') ? enText : zhText;
-        }
-
-        function startScanner(containerId, resultId, guideId) {
-            var container = document.getElementById(containerId);
-            if (!container) {
-                console.warn('❌ 找不到容器:', containerId);
-                return;
-            }
-
-            if (window._scanner) {
-                try { window._scanner.stop().catch(function() {}); } catch (e) {}
-                window._scanner = null;
-            }
-
-            container.innerHTML = '';
-            container.classList.remove('scanning');
-
-            var guide = document.getElementById(guideId);
-            var resultEl = document.getElementById(resultId);
-
-            if (guide) { guide.style.display = 'none'; guide.innerHTML = ''; }
-            if (resultEl) { resultEl.style.display = 'none'; resultEl.innerHTML = ''; }
-
-            if (typeof Html5Qrcode === 'undefined') {
-                if (guide) { guide.style.display = 'block'; guide.innerHTML = getErrorText(); }
-                return;
-            }
-
-            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                if (guide) { guide.style.display = 'block'; guide.innerHTML = getErrorText(); }
-                return;
-            }
-
-            try {
-                var scanner = new Html5Qrcode(containerId);
-                window._scanner = scanner;
-
-                container.classList.add('scanning');
-
-                scanner.start({ facingMode: "environment" }, { fps: 15, qrbox: { width: 200, height: 200 } },
-                    function(text) {
-                        if (resultEl) {
-                            resultEl.style.display = 'block';
-                            resultEl.innerHTML = '✅ ' + text;
-                        }
-                        container.classList.remove('scanning');
-                        scanner.stop().then(function() {
-                            window._scanner = null;
-                        }).catch(function() {
-                            window._scanner = null;
-                        });
-                    },
-                    function() {}
-                ).catch(function() {
-                    container.classList.remove('scanning');
-                    if (guide) { guide.style.display = 'block'; guide.innerHTML = getErrorText(); }
-                    window._scanner = null;
-                });
-
-            } catch (e) {
+            function startScanner(containerId, resultId, guideId) {
+                var container = document.getElementById(containerId);
+                if (!container) { console.warn('❌ 找不到容器:', containerId); return; }
+                if (window._scanner) { try { window._scanner.stop().catch(function() {}); } catch (e) {} window._scanner = null; }
+                container.innerHTML = '';
                 container.classList.remove('scanning');
-                if (guide) { guide.style.display = 'block'; guide.innerHTML = getErrorText(); }
-                window._scanner = null;
+                var guide = document.getElementById(guideId);
+                var resultEl = document.getElementById(resultId);
+                if (guide) { guide.style.display = 'none'; guide.innerHTML = ''; }
+                if (resultEl) { resultEl.style.display = 'none'; resultEl.innerHTML = ''; }
+                if (typeof Html5Qrcode === 'undefined') { if (guide) { guide.style.display = 'block'; guide.innerHTML = getErrorText(); } return; }
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { if (guide) { guide.style.display = 'block'; guide.innerHTML = getErrorText(); } return; }
+                try {
+                    var scanner = new Html5Qrcode(containerId);
+                    window._scanner = scanner;
+                    container.classList.add('scanning');
+                    scanner.start({ facingMode: "environment" }, { fps: 15, qrbox: { width: 200, height: 200 } },
+                        function(text) { if (resultEl) { resultEl.style.display = 'block'; resultEl.innerHTML = '✅ ' + text; } container.classList.remove('scanning'); scanner.stop().then(function() { window._scanner = null; }).catch(function() { window._scanner = null; }); },
+                        function() {}
+                    ).catch(function() { container.classList.remove('scanning'); if (guide) { guide.style.display = 'block'; guide.innerHTML = getErrorText(); } window._scanner = null; });
+                } catch (e) { container.classList.remove('scanning'); if (guide) { guide.style.display = 'block'; guide.innerHTML = getErrorText(); } window._scanner = null; }
             }
-        }
 
-        function bindButtons() {
-            var btn8 = document.getElementById('btnScanQRStep8');
-            if (btn8) {
-                var newBtn = btn8.cloneNode(true);
-                btn8.parentNode.replaceChild(newBtn, btn8);
-                newBtn.onclick = function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    startScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
-                };
-                console.log('✅ btnScanQRStep8 已綁定');
+            function bindButtons() {
+                var btn8 = document.getElementById('btnScanQRStep8');
+                if (btn8) {
+                    var newBtn = btn8.cloneNode(true);
+                    btn8.parentNode.replaceChild(newBtn, btn8);
+                    newBtn.onclick = function(e) { e.preventDefault(); e.stopPropagation(); startScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8'); };
+                    console.log('✅ btnScanQRStep8 已綁定');
+                }
             }
-
-            var btn9 = document.getElementById('btnScanQRStep9');
-            if (btn9) {
-                var newBtn2 = btn9.cloneNode(true);
-                btn9.parentNode.replaceChild(newBtn2, btn9);
-                newBtn2.onclick = function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    startScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
-                };
-                console.log('✅ btnScanQRStep9 已綁定');
-            }
-        }
-
-        if (document.readyState === 'complete') {
-            setTimeout(bindButtons, 300);
-        } else {
-            window.addEventListener('load', function() {
-                setTimeout(bindButtons, 400);
-            });
-        }
-
-        window.startQRScanner = startScanner;
-        console.log('✅ 掃描器模組已載入');
-    })();
+            if (document.readyState === 'complete') { setTimeout(bindButtons, 300); } else { window.addEventListener('load', function() { setTimeout(bindButtons, 400); }); }
+            window.startQRScanner = startScanner;
+            console.log('✅ 掃描器模組已載入');
+        })();
     </script>
 
     <style>
-        #qr-reader-container-step8.scanning::after,
-        #qr-reader-container-step9.scanning::after {
+        #qr-reader-container-step8.scanning::after {
             content: '';
             position: absolute;
             top: 50%;
@@ -1125,22 +951,17 @@
             animation: pulse 1.5s ease-in-out infinite;
             z-index: 10;
         }
-
         @keyframes pulse {
             0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
             50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.5; }
         }
-
-        #qr-reader-container-step8 video,
-        #qr-reader-container-step9 video {
+        #qr-reader-container-step8 video {
             width: 100% !important;
             height: 100% !important;
             object-fit: cover !important;
             border-radius: 12px;
         }
-
-        #cameraGuideStep8,
-        #cameraGuideStep9 {
+        #cameraGuideStep8 {
             display: none;
             color: #e74c3c;
             text-align: left;
@@ -1154,9 +975,7 @@
             white-space: pre-wrap;
             word-break: break-word;
         }
-
-        #qrScanResultStep8,
-        #qrScanResultStep9 {
+        #qrScanResultStep8 {
             display: none;
             color: #00e676;
             text-align: center;
