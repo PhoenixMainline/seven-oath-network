@@ -988,5 +988,96 @@
             word-break: break-all;
         }
     </style>
+<!-- ========================================== -->
+<!-- 🛠️ 樣式與文字修正套用模組 (貼在 </body> 前) -->
+<!-- ========================================== -->
+<style>
+    /* 1. 修正「送出即啟...」文字靠左對齊，並調整圖示樣式 */
+    .hud-card.center-card > div[style*="font-size:0.85rem"] {
+        text-align: left !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 6px !important;
+    }
+
+    #step5Note {
+        text-align: left !important;
+        display: inline-block !important;
+    }
+
+    /* 2. 相機掃描區塊排版優化：標題與按鈕圖示樣式 */
+    #qrScanCardStep8 .card-title {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+
+    #qrScanCardStep8 .card-title i.fa-qrcode {
+        font-size: 1rem;
+        color: #a78bfa;
+    }
+
+    #btnScanQRStep8 {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        background: rgba(124, 58, 237, 0.4);
+        border: 1px solid rgba(168, 85, 247, 0.5);
+        color: #e9d5ff;
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    #btnScanQRStep8:hover {
+        background: rgba(124, 58, 237, 0.6);
+        box-shadow: 0 0 15px rgba(124, 58, 237, 0.5);
+    }
+</style>
+
+<script>
+(function() {
+    // A. 修正「送出即啟...」的文字與圖示內容 (修正為 🔗)
+    var noteIcon = document.querySelector('#step5Note')?.previousElementSibling;
+    if (noteIcon) {
+        noteIcon.className = 'fa-solid fa-link';
+        noteIcon.style.color = '#00e676';
+    }
+
+    var noteText = document.getElementById('step5Note');
+    if (noteText) {
+        noteText.innerHTML = '送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。';
+    }
+
+    // B. 更新多語言辭典內對應的文字
+    if (typeof langContent !== 'undefined') {
+        if (langContent.zh) {
+            langContent.zh.step5Note = "送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。";
+            langContent.zh.step5QrTitle = "📷 請掃描【誓導 QR Code】完成執行指令";
+            langContent.zh.step5BtnScan = "📷 開始掃描";
+        }
+        if (langContent.en) {
+            langContent.en.step5Note = "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.";
+        }
+    }
+
+    // C. 相機掃描卡片標題 HTML 結構微調 (加入兩顆 icon 對應圖片寫法)
+    var qrTitleEl = document.getElementById('step5QrTitle');
+    if (qrTitleEl && qrTitleEl.parentElement) {
+        qrTitleEl.parentElement.innerHTML = '<i class="fa-solid fa-qrcode" style="color:#a78bfa;"></i> <span id="step5QrTitle">📷 請掃描【誓導 QR Code】完成執行指令</span>';
+    }
+
+    // D. 掃描按鈕內 HTML 結構微調
+    var btnScan = document.getElementById('btnScanQRStep8');
+    if (btnScan) {
+        btnScan.innerHTML = '<i class="fa-solid fa-qrcode"></i> <span id="step5BtnScan">📷 開始掃描</span>';
+    }
+})();
+</script>
 </body>
 </html>
