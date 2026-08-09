@@ -1435,11 +1435,148 @@
         }
     })();
 </script>
-<style>
+    <style>
     /* 首頁隱藏「上一步 / 下一步」按鈕 */
     .hud-footer .footer-btn-group {
         display: none !important;
     }
 </style>
+<!-- ============================================================ -->
+<!-- 統一：兩句圖示與文字強制同一列（不換行、不分離）              -->
+<!-- 1. 送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。      -->
+<!-- 2. 【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。  -->
+<!-- ============================================================ -->
+<style>
+    .hud-card [id*="Note"],
+    .hud-card [id*="Success"],
+    .hud-card [id*="Trigger"],
+    .hud-card [id*="trigger"],
+    .camera-guide,
+    .hud-card div[style*="border-left"] {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        gap: 8px !important;
+        width: 100% !important;
+        text-align: left !important;
+        box-sizing: border-box !important;
+    }
+
+    .hud-card [id*="Note"] i,
+    .hud-card [id*="Success"] i,
+    .hud-card [id*="Trigger"] i,
+    .hud-card [id*="trigger"] i,
+    .camera-guide i,
+    .hud-card div[style*="border-left"] i {
+        flex-shrink: 0 !important;
+        margin: 0 !important;
+        margin-top: 3px !important;
+        line-height: 1 !important;
+    }
+</style>
+
+<script>
+(function () {
+    var KEYWORDS = [
+        // 第一句
+        '送出即啟主頻連線',
+        '判定授權完成',
+        '誓印對頻律網顯化',
+        'Primary Frequency Link',
+        'authorization is recognized',
+        'Oath-Seal Alignment Network',
+        // 第二句
+        '觸發指令',
+        '正式天令格式',
+        '須照文輸入',
+        '不可更動',
+        'Trigger Command',
+        'Heavenly Decree',
+        'without modification',
+        'must input exactly'
+    ];
+
+    function unifySameLine() {
+        var nodes = document.querySelectorAll(
+            '.hud-card div, .instruction-item, .instruction-box div, .camera-guide, [id*="Note"], [id*="Success"], [id*="Trigger"], [id*="trigger"]'
+        );
+
+        nodes.forEach(function (el) {
+            var text = (el.textContent || '').trim();
+            if (!text) return;
+
+            var hit = KEYWORDS.some(function (k) { return text.indexOf(k) !== -1; });
+            if (!hit) return;
+
+            // 本層：橫向排列
+            el.style.setProperty('display', 'flex', 'important');
+            el.style.setProperty('flex-direction', 'row', 'important');
+            el.style.setProperty('flex-wrap', 'nowrap', 'important');
+            el.style.setProperty('align-items', 'flex-start', 'important');
+            el.style.setProperty('justify-content', 'flex-start', 'important');
+            el.style.setProperty('gap', '8px', 'important');
+            el.style.setProperty('width', '100%', 'important');
+            el.style.setProperty('text-align', 'left', 'important');
+
+            // 子元素：圖示不縮小、文字可換行但不與圖示分行成兩塊
+            Array.prototype.forEach.call(el.children, function (child) {
+                var isIcon = child.tagName === 'I' ||
+                    (child.className && String(child.className).indexOf('fa-') !== -1);
+                if (isIcon) {
+                    child.style.setProperty('flex-shrink', '0', 'important');
+                    child.style.setProperty('margin', '0', 'important');
+                    child.style.setProperty('margin-top', '3px', 'important');
+                    child.style.setProperty('display', 'inline-block', 'important');
+                } else {
+                    child.style.setProperty('display', 'inline', 'important');
+                    child.style.setProperty('white-space', 'normal', 'important');
+                    child.style.setProperty('flex', '1 1 auto', 'important');
+                }
+            });
+
+            // 父層若為置中 flex，改靠左
+            var parent = el.parentElement;
+            if (parent) {
+                parent.style.setProperty('text-align', 'left', 'important');
+                parent.style.setProperty('align-items', 'flex-start', 'important');
+                parent.style.setProperty('justify-content', 'flex-start', 'important');
+            }
+        });
+    }
+
+    function run() {
+        unifySameLine();
+        setTimeout(unifySameLine, 120);
+        setTimeout(unifySameLine, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 語系切換後再套一次
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (lang) {
+            orig(lang);
+            setTimeout(unifySameLine, 60);
+            setTimeout(unifySameLine, 200);
+        };
+    }
+
+    // 動態內容變動時補跑
+    var observer = new MutationObserver(function () {
+        clearTimeout(window.__unifySameLineTimer);
+        window.__unifySameLineTimer = setTimeout(unifySameLine, 80);
+    });
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 兩句圖示與文字已統一強制同一列');
+})();
+</script>
 </body>
 </html>
