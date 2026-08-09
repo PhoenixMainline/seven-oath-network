@@ -1948,5 +1948,236 @@
         }
     }
 </style>
+<!-- ============================================================ -->
+<!-- 公版：首頁「外部連結按鈕」批次新增模組                         -->
+<!-- 貼在 </body> 前即可                                            -->
+<!-- ============================================================ -->
+
+<style>
+    /* 外部瀏覽器按鈕樣式 - 與中英文切換同一行 */
+    .btn-external-browser {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 14px;
+        background: rgba(0, 230, 118, 0.12);
+        border: 1px solid rgba(0, 230, 118, 0.3);
+        border-radius: 20px;
+        color: #00e676;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif;
+        margin-left: 8px;
+    }
+    .btn-external-browser:hover {
+        background: rgba(0, 230, 118, 0.2);
+        box-shadow: 0 0 20px rgba(0, 230, 118, 0.2);
+        transform: scale(1.02);
+    }
+    .btn-external-browser i {
+        font-size: 0.8rem;
+    }
+
+    /* 表格內按鈕樣式 */
+    .btn-external-sm {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 10px;
+        background: rgba(124, 58, 237, 0.2);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        border-radius: 14px;
+        color: #c4b5fd;
+        font-size: 0.65rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif;
+        white-space: nowrap;
+    }
+    .btn-external-sm:hover {
+        background: rgba(124, 58, 237, 0.35);
+        box-shadow: 0 0 15px rgba(124, 58, 237, 0.2);
+    }
+    .btn-external-sm i {
+        font-size: 0.6rem;
+    }
+
+    /* 手機版調整 */
+    @media (max-width: 480px) {
+        .btn-external-browser {
+            font-size: 0.55rem;
+            padding: 3px 8px;
+            gap: 4px;
+            margin-left: 4px;
+        }
+        .btn-external-browser i {
+            font-size: 0.55rem;
+        }
+        .btn-external-sm {
+            font-size: 0.55rem;
+            padding: 2px 6px;
+            gap: 3px;
+        }
+        .btn-external-sm i {
+            font-size: 0.5rem;
+        }
+    }
+</style>
+
+<script>
+    // ================================================================
+    // 【設定區】請在此填入你要新增的項目
+    // ================================================================
+    var stepList = [
+        // 格式：{ step: '編號', name: '顯示名稱', url: '要連結的網址' }
+        // 範例：
+        // { step: '第0項', name: '誓導平台登入', url: 'https://你的網址.com' },
+        // { step: '第1項', name: '對頻總判定', url: 'https://你的網址.com' },
+        
+        // 👇 請從這裡開始填寫你的項目
+        { step: '第0項', name: '誓導平台登入', url: '' },
+        { step: '第1項', name: '對頻總判定', url: '' },
+        { step: '第2項', name: '被代理誓印', url: '' },
+        { step: '第3項', name: '代理誓印與功德', url: '' },
+        { step: '第4項', name: '誓魂本族與角色', url: '' },
+        { step: '第5項', name: '宇宙總位標與維度', url: '' },
+        { step: '第6項', name: '覺醒程度', url: '' },
+        { step: '第7項', name: '七印誓網對應階段', url: '' },
+        // 👆 請在這裡結束
+    ];
+
+    // ================================================================
+    // 【執行程式】請勿修改以下內容
+    // ================================================================
+
+    // 1. 在標頭區加入「瀏覽器開啟」按鈕
+    function addHeaderButton() {
+        var langGroup = document.querySelector('.lang-switch-group');
+        if (!langGroup) return;
+        if (document.querySelector('.btn-external-browser')) return;
+
+        var btn = document.createElement('a');
+        btn.className = 'btn-external-browser';
+        btn.href = '#';
+        btn.setAttribute('role', 'button');
+        btn.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>🌐 瀏覽器開啟</span>';
+
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            var url = window.location.href;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(function() {
+                    alert('✅ 網址已複製！\n請貼到外部瀏覽器（Chrome / Safari）開啟。\n\n📋 ' + url);
+                }).catch(function() { fallbackCopy(url); });
+            } else {
+                fallbackCopy(url);
+            }
+        });
+
+        langGroup.parentNode.insertBefore(btn, langGroup.nextSibling);
+        console.log('✅ 標頭按鈕已新增');
+    }
+
+    function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+            document.execCommand('copy');
+            alert('✅ 網址已複製！\n請貼到外部瀏覽器（Chrome / Safari）開啟。\n\n📋 ' + text);
+        } catch (e) {
+            alert('⚠️ 請手動複製以下網址：\n\n📋 ' + text);
+        }
+        document.body.removeChild(ta);
+    }
+
+    // 2. 在表格的「連結」欄位中加入按鈕
+    function addTableButtons() {
+        if (!stepList || stepList.length === 0) {
+            console.log('📌 stepList 為空，請填入項目資料');
+            return;
+        }
+
+        var rows = document.querySelectorAll('.info-table tbody tr, table tbody tr');
+        var addedCount = 0;
+
+        rows.forEach(function(row) {
+            var cells = row.querySelectorAll('td');
+            if (cells.length < 3) return;
+
+            // 尋找「連結」欄位（通常在第3欄，或包含「進入 →」文字）
+            var linkCell = null;
+            var stepCell = null;
+            var nameCell = null;
+
+            for (var i = 0; i < cells.length; i++) {
+                var text = cells[i].textContent.trim();
+                if (text.indexOf('進入 →') !== -1 || text.indexOf('進入→') !== -1) {
+                    linkCell = cells[i];
+                }
+                // 尋找編號欄位（包含「第」和「項」）
+                if (text.indexOf('第') !== -1 && text.indexOf('項') !== -1) {
+                    stepCell = cells[i];
+                }
+            }
+
+            if (!linkCell) return;
+
+            // 從 stepList 中比對
+            var stepText = stepCell ? stepCell.textContent.trim() : '';
+            var matched = null;
+
+            for (var j = 0; j < stepList.length; j++) {
+                var item = stepList[j];
+                if (!item.url) continue;
+                if (stepText.indexOf(item.step) !== -1) {
+                    matched = item;
+                    break;
+                }
+            }
+
+            if (!matched) return;
+
+            // 清空原本的「進入 →」文字
+            linkCell.innerHTML = '';
+
+            // 建立按鈕
+            var btn = document.createElement('a');
+            btn.className = 'btn-external-sm';
+            btn.href = matched.url;
+            btn.target = '_blank';
+            btn.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i> 前往操作';
+            linkCell.appendChild(btn);
+
+            addedCount++;
+        });
+
+        console.log('✅ 已新增 ' + addedCount + ' 個表格按鈕');
+    }
+
+    // 3. 頁面載入執行
+    if (document.readyState === 'complete') {
+        setTimeout(function() {
+            addHeaderButton();
+            addTableButtons();
+        }, 100);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                addHeaderButton();
+                addTableButtons();
+            }, 200);
+        });
+    }
+</script>
 </body>
 </html>
