@@ -1220,5 +1220,17 @@
         }
     })();
 </script>
+<!-- ============================================================ -->
+<!-- 移除右上角藍色角標（.hud-container::after）                 -->
+<!-- ============================================================ -->
+<style>
+    .hud-container::after {
+        display: none !important;
+        content: none !important;
+        border: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+</style>
 </body>
 </html>
