@@ -1206,5 +1206,19 @@
         }
     })();
 </script>
+<script>
+    (function() {
+        // 刪除標題中的多餘「」或括號符號
+        var titleEl = document.querySelector('.header h1');
+        if (titleEl) {
+            var text = titleEl.textContent;
+            // 刪除多餘的「」或﹁﹂符號
+            text = text.replace(/[「」﹁﹂\{\}\[\]]/g, '');
+            // 確保文字正確
+            titleEl.textContent = text;
+            console.log('✅ 已刪除標題多餘符號');
+        }
+    })();
+</script>
 </body>
 </html>
