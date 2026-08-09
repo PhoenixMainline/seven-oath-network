@@ -1473,5 +1473,47 @@
         }
     })();
 </script>
+<!-- ============================================================ -->
+<!-- 英文版標題統一：【Cosmic Vow-seal Awakening Project × Seven-Seal Vow Network】 -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var TITLE_ZH = '【宇宙誓印覺醒工程 · 七印誓網】';
+    var TITLE_EN = '【Cosmic Vow-seal Awakening Project × Seven-Seal Vow Network】';
+
+    function applyAppTitle(lang) {
+        var el = document.getElementById('appTitle');
+        if (!el) return;
+        el.textContent = (lang === 'en') ? TITLE_EN : TITLE_ZH;
+    }
+
+    // 攔截既有語系切換
+    var orig = window.switchLanguage;
+    window.switchLanguage = function (lang) {
+        if (typeof orig === 'function') orig(lang);
+        else if (typeof window.currentLang !== 'undefined') window.currentLang = lang;
+        setTimeout(function () { applyAppTitle(lang); }, 30);
+    };
+
+    // 頁面載入時依目前語系套一次
+    function init() {
+        var lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
+        // 從按鈕狀態判斷目前語系
+        var activeBtn = document.querySelector('.lang-btn.active');
+        if (activeBtn) {
+            var t = (activeBtn.textContent || '').toLowerCase();
+            if (t.indexOf('english') !== -1 || t.indexOf('en') !== -1) lang = 'en';
+            else lang = 'zh';
+        }
+        applyAppTitle(lang);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () { setTimeout(init, 80); });
+    } else {
+        setTimeout(init, 80);
+    }
+})();
+</script>
 </body>
 </html>
