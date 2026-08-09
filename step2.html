@@ -2580,5 +2580,143 @@
         });
     }
 </script>
+<style>
+    /* 外部瀏覽器按鈕樣式 */
+    .btn-external-browser {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 14px;
+        background: rgba(0, 230, 118, 0.12);
+        border: 1px solid rgba(0, 230, 118, 0.3);
+        border-radius: 20px;
+        color: #00e676;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif;
+        margin-left: 8px;
+    }
+    .btn-external-browser:hover {
+        background: rgba(0, 230, 118, 0.2);
+        box-shadow: 0 0 20px rgba(0, 230, 118, 0.2);
+        transform: scale(1.02);
+    }
+    .btn-external-browser i {
+        font-size: 0.8rem;
+    }
+
+    /* 手機版調整 */
+    @media (max-width: 480px) {
+        .btn-external-browser {
+            font-size: 0.6rem;
+            padding: 3px 10px;
+            gap: 4px;
+            margin-left: 4px;
+        }
+        .btn-external-browser i {
+            font-size: 0.6rem;
+        }
+    }
+</style>
+
+<script>
+    (function() {
+        // 在標頭區加入外部瀏覽器按鈕
+        function addExternalBrowserButton() {
+            var langGroup = document.querySelector('.lang-switch-group');
+            if (!langGroup) {
+                console.warn('⚠️ 找不到 .lang-switch-group');
+                return;
+            }
+
+            if (document.querySelector('.btn-external-browser')) return;
+
+            var btn = document.createElement('a');
+            btn.className = 'btn-external-browser';
+            btn.href = '#';
+            btn.setAttribute('role', 'button');
+            btn.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>🌐 瀏覽器開啟</span>';
+
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                openInExternalBrowser();
+            });
+
+            langGroup.parentNode.insertBefore(btn, langGroup.nextSibling);
+            console.log('✅ 外部瀏覽器按鈕已新增');
+        }
+
+        // 強制開啟外部瀏覽器
+        function openInExternalBrowser() {
+            var url = window.location.href;
+            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+            // Android 使用 intent:// 強制跳轉 Chrome
+            if (/android/i.test(userAgent)) {
+                try {
+                    var intentUrl = 'intent://' + window.location.host + window.location.pathname + window.location.search + '#Intent;scheme=https;package=com.android.chrome;end;';
+                    window.location.href = intentUrl;
+                    console.log('✅ Android: 嘗試強制跳轉 Chrome');
+                    return;
+                } catch (e) {
+                    console.warn('⚠️ intent 跳轉失敗，嘗試備用方法');
+                }
+            }
+
+            // iOS 嘗試用 chrome:// 協定
+            if (/iphone|ipad|ipod/i.test(userAgent)) {
+                try {
+                    var chromeUrl = 'chrome://' + window.location.host + window.location.pathname + window.location.search;
+                    window.location.href = chromeUrl;
+                    console.log('✅ iOS: 嘗試強制跳轉 Chrome');
+                    return;
+                } catch (e) {
+                    console.warn('⚠️ chrome:// 跳轉失敗');
+                }
+            }
+
+            // 備用方法：複製網址並提示
+            var fallbackUrl = window.location.href;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(fallbackUrl).then(function() {
+                    alert('⚠️ 無法自動跳轉外部瀏覽器\n\n📋 網址已複製，請手動貼到 Chrome / Safari 開啟：\n\n' + fallbackUrl);
+                }).catch(function() {
+                    fallbackCopy(fallbackUrl);
+                });
+            } else {
+                fallbackCopy(fallbackUrl);
+            }
+        }
+
+        // 複製網址備用方法
+        function fallbackCopy(text) {
+            var textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                alert('⚠️ 無法自動跳轉外部瀏覽器\n\n📋 網址已複製，請手動貼到 Chrome / Safari 開啟：\n\n' + text);
+            } catch (e) {
+                alert('⚠️ 請手動複製以下網址，貼到外部瀏覽器開啟：\n\n📋 ' + text);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        if (document.readyState === 'complete') {
+            setTimeout(addExternalBrowserButton, 100);
+        } else {
+            window.addEventListener('load', function() {
+                setTimeout(addExternalBrowserButton, 200);
+            });
+        }
+    })();
+</script>
 </body>
 </html>
