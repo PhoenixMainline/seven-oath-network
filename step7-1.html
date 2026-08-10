@@ -1960,5 +1960,290 @@
         flex: 1 !important;
     }
 </style>
+<!-- ============================================================ -->
+<!-- 七日表單：英文 Day 1–7 + 真實日期輸入欄（type=date）          -->
+<!-- ============================================================ -->
+<style>
+    .day-date-input {
+        padding: 6px 10px !important;
+        background: rgba(0, 0, 0, 0.35) !important;
+        border: 1px solid rgba(168, 85, 247, 0.35) !important;
+        border-radius: 6px !important;
+        color: #e0e8f5 !important;
+        font-size: 0.8rem !important;
+        font-family: inherit !important;
+        min-width: 140px !important;
+        outline: none !important;
+    }
+    .day-date-input:focus {
+        border-color: #a78bfa !important;
+        box-shadow: 0 0 12px rgba(167, 139, 250, 0.2) !important;
+    }
+    /* 讓日期選擇器在深色背景可讀 */
+    .day-date-input::-webkit-calendar-picker-indicator {
+        filter: invert(0.85);
+        cursor: pointer;
+    }
+</style>
+
+<script>
+(function () {
+    function getLang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var active = document.querySelector('.lang-btn.active');
+        if (active && /english|en/i.test(active.textContent || '')) return 'en';
+        return 'zh';
+    }
+
+    function dayLabel(n, lang) {
+        return (lang === 'en') ? ('Day ' + n) : ('第' + n + '日');
+    }
+
+    function dateHint(lang) {
+        return (lang === 'en') ? 'Select date' : '請選擇日期';
+    }
+
+    function ensureDateInputsAndLabels() {
+        var lang = getLang();
+
+        for (var d = 1; d <= 7; d++) {
+            // 找到含有「第N日」或「Day N」的標題列
+            var titleDiv = null;
+            var candidates = document.querySelectorAll(
+                '.form-submit-container div, .hud-card div, [class*="form"] div'
+            );
+
+            for (var i = 0; i < candidates.length; i++) {
+                var el = candidates[i];
+                // 只處理「短標題列」本體（避免整塊表單）
+                if (el.children && el.children.length > 3) continue;
+                var t = (el.textContent || '').trim();
+                var zhHit = t.indexOf('第' + d + '日') !== -1;
+                var enHit = t.indexOf('Day ' + d) !== -1 || t.indexOf('Day' + d) !== -1;
+                if ((zhHit || enHit) && t.length < 40) {
+                    titleDiv = el;
+                    break;
+                }
+            }
+
+            // 也可用 id 後備
+            if (!titleDiv) {
+                var labelSpan = document.getElementById('step7_1Day' + d + 'Label');
+                if (labelSpan && labelSpan.parentElement) titleDiv = labelSpan.parentElement;
+            }
+
+            if (!titleDiv) continue;
+
+            // 保留既有日期值
+            var existingDate = titleDiv.querySelector('input.day-date-input, input[type="date"][data-day="' + d + '"]');
+            var keptValue = existingDate ? existingDate.value : '';
+
+            // 重建標題列：日標 + 日期輸入
+            var star = (d === 7) ? '⭐ ' : '';
+            var labelId = 'step7_1Day' + d + 'Label';
+
+            titleDiv.innerHTML =
+                star + dayLabel(d, lang) +
+                ' <input type="date" class="day-date-input" data-day="' + d + '" id="dayDate' + d + '" title="' + dateHint(lang) + '">' +
+                ' <span id="' + labelId + '" style="display:none;"></span>';
+
+            var dateInput = titleDiv.querySelector('input.day-date-input');
+            if (dateInput && keptValue) dateInput.value = keptValue;
+
+            // 樣式微調標題列
+            titleDiv.style.setProperty('display', 'flex', 'important');
+            titleDiv.style.setProperty('align-items', 'center', 'important');
+            titleDiv.style.setProperty('flex-wrap', 'wrap', 'important');
+            titleDiv.style.setProperty('gap', '10px', 'important');
+            titleDiv.style.setProperty('color', d === 7 ? '#fbbf24' : '#c4b5fd', 'important');
+            titleDiv.style.setProperty('font-weight', 'bold', 'important');
+            titleDiv.style.setProperty('font-size', '0.9rem', 'important');
+            titleDiv.style.setProperty('margin-bottom', '6px', 'important');
+        }
+
+        // 同步 checkbox / placeholder 常見英文（若頁面語系包沒改到）
+        if (lang === 'en') {
+            var map = {
+                '完成': 'Completed',
+                '未完成': 'Not Completed',
+                '心念': 'Mental',
+                '口誦': 'Vocal'
+            };
+            document.querySelectorAll('.day-check + span, label span[id*="Day"]').forEach(function (sp) {
+                var t = (sp.textContent || '').trim();
+                if (map[t]) sp.textContent = map[t];
+            });
+            document.querySelectorAll('input.day-note').forEach(function (inp) {
+                if (!inp.dataset.phLocked) {
+                    inp.placeholder = 'Notes / Sensory Record';
+                }
+            });
+            document.querySelectorAll('input.day-summary').forEach(function (inp) {
+                if (!inp.dataset.phLocked) {
+                    inp.placeholder = 'Reflection / Sensory Summary (20–50 words)';
+                }
+            });
+        } else {
+            var mapZh = {
+                'Completed': '完成',
+                'Not Completed': '未完成',
+                'Mental': '心念',
+                'Vocal': '口誦'
+            };
+            document.querySelectorAll('.day-check + span, label span[id*="Day"]').forEach(function (sp) {
+                var t = (sp.textContent || '').trim();
+                if (mapZh[t]) sp.textContent = mapZh[t];
+            });
+            document.querySelectorAll('input.day-note').forEach(function (inp) {
+                if (!inp.dataset.phLocked) inp.placeholder = '備註/感應紀錄';
+            });
+            document.querySelectorAll('input.day-summary').forEach(function (inp) {
+                if (!inp.dataset.phLocked) inp.placeholder = '心得/感應摘要(20~50字內)';
+            });
+        }
+
+        console.log('✅ 七日日標 + 日期輸入欄已套用（' + lang + '）');
+    }
+
+    function run() {
+        ensureDateInputsAndLabels();
+        setTimeout(ensureDateInputsAndLabels, 150);
+        setTimeout(ensureDateInputsAndLabels, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 語系切換時同步
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (lang) {
+            orig(lang);
+            setTimeout(ensureDateInputsAndLabels, 80);
+            setTimeout(ensureDateInputsAndLabels, 250);
+        };
+    }
+
+    // 動態重渲染時再補
+    var observer = new MutationObserver(function () {
+        clearTimeout(window.__dayFormTimer);
+        window.__dayFormTimer = setTimeout(ensureDateInputsAndLabels, 120);
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 英文版標題對應：提交表單 / 使用說明 / 七日誓讀紀錄            -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var MAP = {
+        zh: {
+            formTitle: '📋 第一印 消業印《七日誓讀紀錄表》提交表單',
+            helpTitle: '使用說明',
+            sectionTitle: '📋 七日誓讀紀錄'
+        },
+        en: {
+            formTitle: '📋 First Seal Karmic Purification Seal 《Seven-Day Oath Recitation Record》 Submission Form',
+            helpTitle: 'Instructions for Use',
+            sectionTitle: '📋 Seven-Day Oath Recitation Record'
+        }
+    };
+
+    function getLang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var active = document.querySelector('.lang-btn.active');
+        if (active && /english|en/i.test(active.textContent || '')) return 'en';
+        return 'zh';
+    }
+
+    function applyTitles() {
+        var lang = getLang();
+        var pack = MAP[lang] || MAP.zh;
+
+        // 1) 表單大標題
+        var formTitles = document.querySelectorAll('.form-title, .form-submit-container .form-title');
+        formTitles.forEach(function (el) {
+            var t = (el.textContent || '').trim();
+            if (
+                t.indexOf('七日誓讀紀錄表') !== -1 ||
+                t.indexOf('提交表單') !== -1 ||
+                t.indexOf('Seven-Day Oath Recitation Record') !== -1 ||
+                t.indexOf('Submission Form') !== -1 ||
+                t.indexOf('第一印') !== -1 ||
+                t.indexOf('First Seal') !== -1
+            ) {
+                el.textContent = pack.formTitle;
+            }
+        });
+
+        // 2) 使用說明
+        var all = document.querySelectorAll('.form-submit-container div, .form-submit-container span, .hud-card div, .hud-card span');
+        all.forEach(function (el) {
+            var t = (el.textContent || '').trim();
+            // 只改短標題，避免整段說明被蓋掉
+            if (t === '使用說明' || t === 'Instructions for Use' || t === '📌 使用說明' || t === '📌 Instructions for Use') {
+                // 保留前面圖示（若有）
+                var icon = el.querySelector('i');
+                if (icon) {
+                    el.innerHTML = icon.outerHTML + ' ' + pack.helpTitle;
+                } else if (/^📌/.test(t) || el.textContent.indexOf('📌') !== -1) {
+                    el.textContent = '📌 ' + pack.helpTitle;
+                } else {
+                    el.textContent = pack.helpTitle;
+                }
+            }
+        });
+
+        // 3) 七日誓讀紀錄（section title）
+        var sections = document.querySelectorAll('.form-section-title, .form-submit-container div');
+        sections.forEach(function (el) {
+            var t = (el.textContent || '').trim();
+            if (
+                t === '📋 七日誓讀紀錄' ||
+                t === '七日誓讀紀錄' ||
+                t === '📋 Seven-Day Oath Recitation Record' ||
+                t === 'Seven-Day Oath Recitation Record' ||
+                (t.indexOf('七日誓讀紀錄') !== -1 && t.length < 20) ||
+                (t.indexOf('Seven-Day Oath Recitation Record') !== -1 && t.length < 40)
+            ) {
+                el.textContent = pack.sectionTitle;
+            }
+        });
+    }
+
+    function run() {
+        applyTitles();
+        setTimeout(applyTitles, 120);
+        setTimeout(applyTitles, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (lang) {
+            orig(lang);
+            setTimeout(applyTitles, 60);
+            setTimeout(applyTitles, 200);
+        };
+    }
+
+    var observer = new MutationObserver(function () {
+        clearTimeout(window.__formTitleTimer);
+        window.__formTitleTimer = setTimeout(applyTitles, 100);
+    });
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 提交表單 / 使用說明 / 七日誓讀紀錄 標題已對應中英');
+})();
+</script>
 </body>
 </html>
