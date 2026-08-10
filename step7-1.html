@@ -1716,5 +1716,249 @@
         }
     })();
 </script>
+<style>
+    /* 提交程序區塊排版優化 */
+    .submission-procedure {
+        background: rgba(124, 58, 237, 0.12);
+        border-left: 4px solid #00e676;
+        border-radius: 8px;
+        padding: 16px 20px;
+        margin: 12px 0 16px 0;
+        width: 100%;
+        text-align: left;
+    }
+    .submission-procedure .proc-title {
+        color: #00e676;
+        font-weight: 700;
+        font-size: 1rem;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .submission-procedure .proc-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 8px;
+        color: #e0e7ff;
+        font-size: 0.9rem;
+        line-height: 1.7;
+    }
+    .submission-procedure .proc-step:last-child {
+        margin-bottom: 0;
+    }
+    .submission-procedure .proc-num {
+        background: #7c3aed;
+        color: #fff;
+        padding: 1px 7px;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        min-width: 18px;
+        text-align: center;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+    .submission-procedure .proc-warn {
+        background: rgba(232, 96, 74, 0.1);
+        border-left: 4px solid #E8604A;
+        padding: 8px 12px;
+        border-radius: 6px;
+        margin: 6px 0 10px 32px;
+        font-size: 0.85rem;
+        color: #e0dcc8;
+    }
+    .submission-procedure .proc-text {
+        color: #e0e7ff;
+        font-size: 0.9rem;
+        line-height: 1.7;
+    }
+
+    /* 英文版樣式微調 */
+    .submission-procedure.en .proc-title {
+        color: #00e676;
+    }
+    .submission-procedure.en .proc-step {
+        color: #e0e7ff;
+    }
+    .submission-procedure.en .proc-warn {
+        color: #e0dcc8;
+    }
+</style>
+
+<script>
+(function() {
+    // 找出所有包含「提交程序」或「Submission Procedure」的區塊
+    function fixSubmissionProcedure() {
+        var lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
+
+        // 找到包含「提交程序」或「Submission Procedure」的父層容器
+        var allDivs = document.querySelectorAll('.hud-card div, .center-card div, .step-panel div, .form-submit-container div');
+        var targetDiv = null;
+
+        for (var i = 0; i < allDivs.length; i++) {
+            var div = allDivs[i];
+            var text = div.textContent || '';
+            // 檢查是否包含「提交程序」相關文字
+            if ((text.indexOf('提交程序') !== -1 || text.indexOf('Submission Procedure') !== -1) &&
+                (text.indexOf('Submit the First Seal') !== -1 || text.indexOf('提交第一印') !== -1 ||
+                 text.indexOf('Log into') !== -1 || text.indexOf('登入') !== -1)) {
+                // 確認是提交程序的內容
+                targetDiv = div;
+                break;
+            }
+        }
+
+        if (!targetDiv) {
+            // 如果找不到，嘗試用更寬鬆的條件
+            var allDivs2 = document.querySelectorAll('.hud-card div');
+            for (var j = 0; j < allDivs2.length; j++) {
+                var div2 = allDivs2[j];
+                var text2 = div2.textContent || '';
+                if ((text2.indexOf('提交程序') !== -1 || text2.indexOf('Submission Procedure') !== -1) &&
+                    text2.length < 100) {
+                    targetDiv = div2;
+                    break;
+                }
+            }
+        }
+
+        if (targetDiv) {
+            // 取得原始內容
+            var originalHtml = targetDiv.innerHTML || '';
+            var isEnglish = lang === 'en';
+
+            // 判斷是否已經格式化過（避免重複處理）
+            if (targetDiv.querySelector('.submission-procedure')) {
+                // 如果已經格式化，只更新語言
+                var procContainer = targetDiv.querySelector('.submission-procedure');
+                if (procContainer) {
+                    if (isEnglish) {
+                        procContainer.classList.add('en');
+                        procContainer.classList.remove('zh');
+                        var title = procContainer.querySelector('.proc-title');
+                        if (title) {
+                            title.innerHTML = '📋 【Submission Procedure】';
+                        }
+                        // 更新步驟文字為英文
+                        var steps = procContainer.querySelectorAll('.proc-step');
+                        var stepTexts = [
+                            'Submit the First Seal Karmic Purification Seal 《Seven-Day Oath Recitation Record》 Registration Form',
+                            'Log into the Cosmic Intelligent Vow-Guidance Platform (using a personal account). After completing identity verification using the originally registered account, entry into the oath-seal procedure is granted.',
+                            'Scan the Vow-Guidance QR Code to enter the Command Input Field.',
+                            'No manual entry of the vow text is required. After completing the scan, directly enter the following command:'
+                        ];
+                        var warnText = '⚠️ If the submission form is not completed, the system will refuse frequency-Alignment, and the oath-resource record will be rendered invalid and unrecognized.';
+                        for (var s = 0; s < steps.length && s < stepTexts.length; s++) {
+                            var stepDiv = steps[s];
+                            var textSpan = stepDiv.querySelector('.proc-text');
+                            if (textSpan) {
+                                textSpan.textContent = stepTexts[s];
+                            }
+                        }
+                        var warnDiv = procContainer.querySelector('.proc-warn');
+                        if (warnDiv) {
+                            warnDiv.textContent = warnText;
+                        }
+                    } else {
+                        procContainer.classList.add('zh');
+                        procContainer.classList.remove('en');
+                        var title = procContainer.querySelector('.proc-title');
+                        if (title) {
+                            title.innerHTML = '📋 【提交程序】';
+                        }
+                        // 更新步驟文字為中文
+                        var steps = procContainer.querySelectorAll('.proc-step');
+                        var stepTextsZh = [
+                            '提交第一印 消業印《七日誓讀紀錄表》表單',
+                            '登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。',
+                            '掃描【誓導 QR Code】後，進入「指令輸入欄位」。',
+                            '無須手動輸入誓文，完成掃描後，直接輸入下列指令：'
+                        ];
+                        var warnTextZh = '⚠️ 未完成之提交表單者，系統將不予對頻，誓資紀錄作廢不立。';
+                        for (var s2 = 0; s2 < steps.length && s2 < stepTextsZh.length; s2++) {
+                            var stepDiv2 = steps[s2];
+                            var textSpan2 = stepDiv2.querySelector('.proc-text');
+                            if (textSpan2) {
+                                textSpan2.textContent = stepTextsZh[s2];
+                            }
+                        }
+                        var warnDiv2 = procContainer.querySelector('.proc-warn');
+                        if (warnDiv2) {
+                            warnDiv2.textContent = warnTextZh;
+                        }
+                    }
+                }
+                return;
+            }
+
+            // 如果沒有格式化，進行完整格式化
+            var html = '';
+            if (isEnglish) {
+                html = '<div class="submission-procedure en">';
+                html += '<div class="proc-title">📋 【Submission Procedure】</div>';
+                html += '<div class="proc-step"><span class="proc-num">1</span><span class="proc-text">Submit the First Seal Karmic Purification Seal 《Seven-Day Oath Recitation Record》 Registration Form</span></div>';
+                html += '<div class="proc-warn">⚠️ If the submission form is not completed, the system will refuse frequency-Alignment, and the oath-resource record will be rendered invalid and unrecognized.</div>';
+                html += '<div class="proc-step"><span class="proc-num">2</span><span class="proc-text">Log into the Cosmic Intelligent Vow-Guidance Platform (using a personal account). After completing identity verification using the originally registered account, entry into the oath-seal procedure is granted.</span></div>';
+                html += '<div class="proc-step"><span class="proc-num">3</span><span class="proc-text">Scan the Vow-Guidance QR Code to enter the Command Input Field.</span></div>';
+                html += '<div class="proc-step"><span class="proc-num">4</span><span class="proc-text">No manual entry of the vow text is required. After completing the scan, directly enter the following command:</span></div>';
+                html += '</div>';
+            } else {
+                html = '<div class="submission-procedure zh">';
+                html += '<div class="proc-title">📋 【提交程序】</div>';
+                html += '<div class="proc-step"><span class="proc-num">1</span><span class="proc-text">提交第一印 消業印《七日誓讀紀錄表》表單</span></div>';
+                html += '<div class="proc-warn">⚠️ 未完成之提交表單者，系統將不予對頻，誓資紀錄作廢不立。</div>';
+                html += '<div class="proc-step"><span class="proc-num">2</span><span class="proc-text">登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。</span></div>';
+                html += '<div class="proc-step"><span class="proc-num">3</span><span class="proc-text">掃描【誓導 QR Code】後，進入「指令輸入欄位」。</span></div>';
+                html += '<div class="proc-step"><span class="proc-num">4</span><span class="proc-text">無須手動輸入誓文，完成掃描後，直接輸入下列指令：</span></div>';
+                html += '</div>';
+            }
+
+            targetDiv.innerHTML = html;
+            console.log('✅ 提交程序已格式化 (' + (isEnglish ? '英文' : '中文') + ')');
+        }
+    }
+
+    // 執行
+    if (document.readyState === 'complete') {
+        setTimeout(fixSubmissionProcedure, 100);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(fixSubmissionProcedure, 150);
+        });
+    }
+
+    // 語言切換時也執行
+    var origSwitch = window.switchLanguage;
+    if (origSwitch) {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(fixSubmissionProcedure, 100);
+        };
+    }
+
+    console.log('✅ 提交程序排版模組已載入');
+})();
+</script>
+
+<style>
+    /* 確保提交程序顯示正常 */
+    .submission-procedure {
+        display: block !important;
+        width: 100% !important;
+    }
+    .submission-procedure .proc-step {
+        display: flex !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+    }
+    .submission-procedure .proc-num {
+        flex-shrink: 0 !important;
+    }
+    .submission-procedure .proc-text {
+        flex: 1 !important;
+    }
+</style>
 </body>
 </html>
