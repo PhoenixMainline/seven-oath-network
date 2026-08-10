@@ -2245,5 +2245,101 @@
     console.log('✅ 提交表單 / 使用說明 / 七日誓讀紀錄 標題已對應中英');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 還原程序對應第7日文案，並防止被日期欄補丁誤改                -->
+<!-- 正確：第7日：誓印鎖定（誓魂印軌入冊 × 清業化障序程啟動）      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var PROC3_ZH = '• 第7日：誓印鎖定（誓魂印軌入冊 × 清業化障序程啟動）';
+    var PROC3_EN = '• Day 7: Seal locking (Oath-Soul seal inscription × full activation of karmic-cleansing protocol)';
+
+    var PROC1_ZH = '• 第1~3日：對頻啟動（誓魂與母頻同步）';
+    var PROC2_ZH = '• 第4~6日：能層淨化（舊頻釋放 × 消業運轉）';
+    var PROC1_EN = '• Day 1-3: Alignment (synchronization of the Oath-Soul and the mother frequency)';
+    var PROC2_EN = '• Day 4-6: Energetic purification (release of old frequency × karmic-cleansing activation)';
+
+    function getLang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var active = document.querySelector('.lang-btn.active');
+        if (active && /english|en/i.test(active.textContent || '')) return 'en';
+        return 'zh';
+    }
+
+    function restoreProcLines() {
+        var lang = getLang();
+
+        // 精準用 id 還原
+        var p1 = document.getElementById('step7_1Proc1');
+        var p2 = document.getElementById('step7_1Proc2');
+        var p3 = document.getElementById('step7_1Proc3');
+
+        if (p1) p1.textContent = (lang === 'en') ? PROC1_EN : PROC1_ZH;
+        if (p2) p2.textContent = (lang === 'en') ? PROC2_EN : PROC2_ZH;
+        if (p3) {
+            // 清掉誤插入的 date input
+            p3.innerHTML = '';
+            p3.textContent = (lang === 'en') ? PROC3_EN : PROC3_ZH;
+        }
+
+        // 保險：凡是程序區裡被塞進 type=date 的，一律清掉並還原文
+        var procBoxes = document.querySelectorAll('#step7_1Proc1, #step7_1Proc2, #step7_1Proc3');
+        procBoxes.forEach(function (el) {
+            var dateInputs = el.querySelectorAll('input[type="date"], .day-date-input');
+            dateInputs.forEach(function (inp) { inp.remove(); });
+        });
+
+        // 再掃一次：若某行同時出現「第7日」又帶日期輸入，且在程序區，強制還原
+        document.querySelectorAll('.hud-card div, .instruction-box div').forEach(function (el) {
+            var t = (el.textContent || '').trim();
+            var hasDate = el.querySelector('input[type="date"], .day-date-input');
+            if (!hasDate) return;
+
+            // 程序對應區特徵：提到對頻/能層/誓印鎖定 或 本身是 proc id
+            var isProcContext =
+                el.id === 'step7_1Proc3' ||
+                (t.indexOf('誓印鎖定') !== -1) ||
+                (t.indexOf('Seal locking') !== -1) ||
+                (t.indexOf('對頻啟動') !== -1 && t.indexOf('第7') !== -1);
+
+            if (isProcContext) {
+                el.innerHTML = '';
+                el.textContent = (lang === 'en') ? PROC3_EN : PROC3_ZH;
+            }
+        });
+    }
+
+    function run() {
+        restoreProcLines();
+        setTimeout(restoreProcLines, 150);
+        setTimeout(restoreProcLines, 500);
+        setTimeout(restoreProcLines, 1000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (lang) {
+            orig(lang);
+            setTimeout(restoreProcLines, 80);
+            setTimeout(restoreProcLines, 250);
+        };
+    }
+
+    // 若其他補丁又改回來，持續守住
+    var observer = new MutationObserver(function () {
+        clearTimeout(window.__restoreProcTimer);
+        window.__restoreProcTimer = setTimeout(restoreProcLines, 100);
+    });
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 程序對應第7日文案已還原為：誓印鎖定（誓魂印軌入冊 × 清業化障序程啟動）');
+})();
+</script>
 </body>
 </html>
