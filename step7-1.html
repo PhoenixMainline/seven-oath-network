@@ -2341,5 +2341,211 @@
     console.log('✅ 程序對應第7日文案已還原為：誓印鎖定（誓魂印軌入冊 × 清業化障序程啟動）');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 修正：第7日補日期欄 + 預覽日期正確顯示                        -->
+<!-- ============================================================ -->
+<style>
+    .day-date-fix,
+    input.day-date-input,
+    input.sd2-date,
+    input.sd-date {
+        min-width: 140px !important;
+        padding: 6px 10px !important;
+        background: rgba(0,0,0,.35) !important;
+        border: 1px solid rgba(168,85,247,.35) !important;
+        border-radius: 6px !important;
+        color: #e0e8f5 !important;
+        font-size: .8rem !important;
+    }
+    input.day-date-fix::-webkit-calendar-picker-indicator,
+    input.day-date-input::-webkit-calendar-picker-indicator,
+    input.sd2-date::-webkit-calendar-picker-indicator,
+    input.sd-date::-webkit-calendar-picker-indicator {
+        filter: invert(.85);
+        cursor: pointer;
+    }
+</style>
+
+<script>
+(function () {
+    function fixDay7DateAndPreview() {
+        // ========== 1) 所有日標題列補上真正的日期輸入 ==========
+        // 涵蓋舊卡片式 + 新表格式
+        var titleNodes = document.querySelectorAll(
+            '.form-submit-container div, .hud-card div, .sd2-table td.day, .sd2-table .day7, .seven-day-table .day-cell'
+        );
+
+        // 舊卡片式：找「第N日」標題列
+        for (var d = 1; d <= 7; d++) {
+            // A. 卡片標題列（例如：⭐ 第7日 （請填寫日期））
+            var labels = document.querySelectorAll('[id="step7_1Day' + d + 'Label"], [id*="Day' + d + 'Label"]');
+            labels.forEach(function (span) {
+                var parent = span.parentElement;
+                if (!parent) return;
+
+                // 已有 date input 就跳過
+                var exist = parent.querySelector('input[type="date"]');
+                if (exist) return;
+
+                // 建立日期欄
+                var inp = document.createElement('input');
+                inp.type = 'date';
+                inp.className = 'day-date-fix';
+                inp.setAttribute('data-day', String(d));
+                inp.id = 'dayDate' + d;
+                inp.style.marginLeft = '8px';
+
+                // 把「（請填寫日期）」隱藏，改放真正日期欄
+                span.style.display = 'none';
+                parent.appendChild(inp);
+
+                // 標題列排版
+                parent.style.display = 'flex';
+                parent.style.alignItems = 'center';
+                parent.style.flexWrap = 'wrap';
+                parent.style.gap = '8px';
+            });
+
+            // B. 若標題文字直接寫在 div（沒有 Label id）
+            document.querySelectorAll('.form-submit-container div, .hud-card > div, .hud-card div').forEach(function (el) {
+                if (el.querySelector('input, textarea, table')) return; // 跳過容器
+                var t = (el.textContent || '').trim();
+                var hitZh = t.indexOf('第' + d + '日') !== -1 || t.indexOf('第 ' + d + ' 日') !== -1;
+                var hitEn = t.indexOf('Day ' + d) !== -1;
+                if (!(hitZh || hitEn) || t.length > 40) return;
+
+                if (el.querySelector('input[type="date"]')) return;
+
+                var inp2 = document.createElement('input');
+                inp2.type = 'date';
+                inp2.className = 'day-date-fix';
+                inp2.setAttribute('data-day', String(d));
+                inp2.id = 'dayDate' + d;
+                el.appendChild(inp2);
+
+                el.style.display = 'flex';
+                el.style.alignItems = 'center';
+                el.style.flexWrap = 'wrap';
+                el.style.gap = '8px';
+            });
+        }
+
+        // ========== 2) 修正預覽：日期欄要吃到 input[type=date] ==========
+        function readDate(d) {
+            var selectors = [
+                'input.day-date-fix[data-day="' + d + '"]',
+                'input.day-date-input[data-day="' + d + '"]',
+                'input.sd2-date[data-day="' + d + '"]',
+                'input.sd-date[data-day="' + d + '"]',
+                '#dayDate' + d,
+                'input[type="date"][data-day="' + d + '"]'
+            ];
+            for (var i = 0; i < selectors.length; i++) {
+                var el = document.querySelector(selectors[i]);
+                if (el && el.value) return el.value;
+            }
+            return '';
+        }
+
+        // 覆蓋 / 補強預覽函式
+        var prevPreview = window.generateDayPreview || window.generateSubmitPreview || window.preview;
+
+        window.generateDayPreview = function () {
+            // 先跑原預覽（若有）
+            if (typeof prevPreview === 'function') {
+                try { prevPreview(); } catch (e) {}
+            }
+
+            // 再強制把預覽表的「日期」欄位寫進去
+            var body =
+                document.getElementById('sd2PreviewBody') ||
+                document.getElementById('sevenDayPreviewBody') ||
+                document.getElementById('sdPreviewBody') ||
+                document.querySelector('.sd2-preview tbody, .seven-day-preview tbody, #previewSubmitBody');
+
+            // 若預覽表是「日次/日期/...」結構，逐列補日期
+            if (body) {
+                var rows = body.querySelectorAll('tr');
+                rows.forEach(function (tr, idx) {
+                    var day = idx + 1;
+                    if (day > 7) return;
+                    var tds = tr.querySelectorAll('td');
+                    // 常見結構：0日次, 1日期, ...
+                    if (tds.length >= 2) {
+                        var val = readDate(day);
+                        tds[1].textContent = val || '—';
+                    }
+                });
+            }
+
+            // 也處理你截圖那種預覽表（欄位：日次 日期 完成狀態 ...）
+            document.querySelectorAll('table').forEach(function (table) {
+                var head = (table.querySelector('thead') || table).textContent || '';
+                if (head.indexOf('日次') === -1 && head.indexOf('Day') === -1) return;
+                if (head.indexOf('日期') === -1 && head.indexOf('Date') === -1) return;
+
+                var trs = table.querySelectorAll('tbody tr');
+                trs.forEach(function (tr, idx) {
+                    var day = idx + 1;
+                    if (day > 7) return;
+                    var tds = tr.querySelectorAll('td');
+                    if (tds.length >= 2) {
+                        var val = readDate(day);
+                        if (val) tds[1].textContent = val;
+                    }
+                });
+            });
+        };
+
+        // 綁到現有按鈕
+        ['sd2Preview', 'btnSevenDayPreview', 'sdPreviewBtn'].forEach(function (id) {
+            var btn = document.getElementById(id);
+            if (btn) btn.onclick = function (e) {
+                e.preventDefault();
+                window.generateDayPreview();
+            };
+        });
+
+        // 文字含「預覽表單」的按鈕也綁
+        document.querySelectorAll('button, .btn-preview, .sd2-btn-preview').forEach(function (btn) {
+            var t = (btn.textContent || '').trim();
+            if (t.indexOf('預覽') !== -1 || /preview/i.test(t)) {
+                btn.addEventListener('click', function () {
+                    setTimeout(window.generateDayPreview, 30);
+                });
+            }
+        });
+
+        console.log('✅ 第7日日期欄已補上，預覽日期欄已修正');
+    }
+
+    function run() {
+        fixDay7DateAndPreview();
+        setTimeout(fixDay7DateAndPreview, 150);
+        setTimeout(fixDay7DateAndPreview, 500);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (lang) {
+            orig(lang);
+            setTimeout(fixDay7DateAndPreview, 100);
+            setTimeout(fixDay7DateAndPreview, 300);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__fixDay7Timer);
+        window.__fixDay7Timer = setTimeout(fixDay7DateAndPreview, 120);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+})();
+</script>
 </body>
 </html>
