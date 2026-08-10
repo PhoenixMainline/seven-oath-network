@@ -560,7 +560,7 @@
                         <div id="step7_1FormHelp5" style="color:#fde68a;">• 七日圓滿後上傳表單，即可完成冊記。</div>
                     </div>
 
-                    <div class="form-section-title">📋 七日誓讀紀錄</div>
+                    <div class="form-section-title">📋 第一印 消業印《七日誓讀紀錄表》表單</div>
 
                     <!-- 第1日 -->
                     <div style="background:rgba(88,28,135,0.15); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
@@ -2149,7 +2149,7 @@
         en: {
             formTitle: '📋 First Seal Karmic Purification Seal 《Seven-Day Oath Recitation Record》 Submission Form',
             helpTitle: 'Instructions for Use',
-            sectionTitle: '📋 Seven-Day Oath Recitation Record'
+            sectionTitle: '📋 First Seal Karmic Purification Seal 《Seven-Day Oath Recitation Record》 Form'
         }
     };
 
@@ -2877,6 +2877,166 @@
     }
 
     console.log('✅ 預覽日期欄位已修正 - 可讀取 type="date" 輸入框');
+})();
+</script>
+<script>
+(function() {
+    // ================================================================
+    // 示範資料（來自你提供的截圖）
+    // ================================================================
+    var exampleData = {
+        zh: [
+            { date: '2025/10/04', status: '完成', method: '心念', note: '誦讀時胸口有溫熱感，心情安定許多。', summary: '心緒沉靜，像是回到自己誓魂的起點。' },
+            { date: '2025/10/05', status: '完成', method: '口誦', note: '念到第三段時，突然眼淚流下來，像是釋放壓力。', summary: '情緒被淨化，悲傷轉為柔軟的力量，內心更敞開。' },
+            { date: '2025/10/06', status: '完成', method: '心念', note: '今天雖然很累，但靜下來誦讀後，感覺頭腦清晰。', summary: '精神恢復平穩，誓文像能量脈流，淨化了混亂思緒。' },
+            { date: '2025/10/07', status: '完成', method: '口誦', note: '聲音讀出來時，有共鳴感，像是被空間回應。', summary: '空間能量振動明顯，誓文似與周圍氣場共鳴流轉。' },
+            { date: '2025/10/08', status: '完成', method: '心念', note: '感覺與內在願力連結更穩固，內心安定。', summary: '願力清晰如光軸，覺得自己被引導走向更高秩序。' },
+            { date: '2025/10/09', status: '完成', method: '口誦', note: '誦讀時背後微微發熱，像被加持。', summary: '能量流暢，全身輕盈，像有溫柔力量在背後支持。' },
+            { date: '2025/10/10', status: '完成', method: '心念', note: '七日圓滿，內心有達成感，也感覺更有力量。', summary: '七日修持圓滿，心念穩定如光柱，靈脈清明且平靜。' }
+        ],
+        en: [
+            { date: '2025/10/04', status: 'Completed', method: 'Mental', note: 'Warm sensation in the chest during recitation; mood became more settled.', summary: 'Felt surrounded by light; mind quieted, as if returning to the origin of my Oath-Soul.' },
+            { date: '2025/10/05', status: 'Completed', method: 'Vocal', note: 'Tears flowed during the third passage, like releasing pressure.', summary: 'Emotions were purified; sadness transformed into gentle strength, and the heart opened further.' },
+            { date: '2025/10/06', status: 'Completed', method: 'Mental', note: 'Felt tired today, but after settling down for recitation, the mind became clear.', summary: 'Mental state stabilized; the oath text felt like a current of energy cleansing scattered thoughts.' },
+            { date: '2025/10/07', status: 'Completed', method: 'Vocal', note: 'Audible recitation created resonance, as if the space responded.', summary: 'Spatial energy vibration was distinct; the oath text seemed to resonate with the surrounding field.' },
+            { date: '2025/10/08', status: 'Completed', method: 'Mental', note: 'Stronger connection to inner intention; inner calmness increased.', summary: 'Intention clear like a beam of light; felt guided toward higher order.' },
+            { date: '2025/10/09', status: 'Completed', method: 'Vocal', note: 'Back felt lightly warm during recitation, as if blessed.', summary: 'Energy flowed smoothly; body felt light, as if gently supported from behind.' },
+            { date: '2025/10/10', status: 'Completed', method: 'Mental', note: 'Completion brought a sense of fulfillment; felt strengthened.', summary: 'Seven-day practice completed; mind steady like a pillar of light, Oath-Soul-line clear and calm.' }
+        ]
+    };
+
+    // ================================================================
+    // 讀取日期輸入框的值
+    // ================================================================
+    function getDateValue(day) {
+        var selectors = [
+            'input[type="date"][data-day="' + day + '"]',
+            '#dayDate' + day,
+            'input.day-date-fix[data-day="' + day + '"]',
+            'input.day-date-input[data-day="' + day + '"]'
+        ];
+        for (var i = 0; i < selectors.length; i++) {
+            var el = document.querySelector(selectors[i]);
+            if (el && el.value) return el.value;
+        }
+        return '';
+    }
+
+    // ================================================================
+    // 判斷是否為示範模式（所有選項都未被選取時，顯示示範資料）
+    // ================================================================
+    function isExampleMode() {
+        var checks = document.querySelectorAll('.day-check');
+        for (var i = 0; i < checks.length; i++) {
+            if (checks[i].checked) return false;
+        }
+        return true;
+    }
+
+    // ================================================================
+    // 生成預覽（整合示範資料）
+    // ================================================================
+    window.generateDayPreview = function() {
+        var lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
+        var useExample = isExampleMode();
+
+        var days = [1, 2, 3, 4, 5, 6, 7];
+        var html = '';
+        var exampleList = exampleData[lang] || exampleData.zh;
+
+        for (var i = 0; i < days.length; i++) {
+            var d = days[i];
+            var dayLabel = (lang === 'en') ? 'Day ' + d : '第' + d + '日';
+
+            // 讀取日期
+            var dateVal = getDateValue(d);
+
+            // 讀取 checkbox 狀態
+            var complete = document.querySelector('.day-check[data-day="' + d + '"][data-type="complete"]');
+            var incomplete = document.querySelector('.day-check[data-day="' + d + '"][data-type="incomplete"]');
+            var mental = document.querySelector('.day-check[data-day="' + d + '"][data-type="mental"]');
+            var vocal = document.querySelector('.day-check[data-day="' + d + '"][data-type="vocal"]');
+            var note = document.querySelector('.day-note[data-day="' + d + '"]');
+            var summary = document.querySelector('.day-summary[data-day="' + d + '"]');
+
+            var statusText, methodText, noteVal, summaryVal;
+
+            if (useExample && i < exampleList.length) {
+                // 使用示範資料
+                var ex = exampleList[i];
+                statusText = ex.status;
+                methodText = ex.method;
+                noteVal = ex.note;
+                summaryVal = ex.summary;
+                // 如果日期欄位沒有值，填入示範日期
+                if (!dateVal) dateVal = ex.date;
+            } else {
+                // 使用實際輸入
+                statusText = (complete && complete.checked) ? (lang === 'en' ? '✅ Completed' : '✅ 完成') : 
+                              (incomplete && incomplete.checked) ? (lang === 'en' ? '❌ Not Completed' : '❌ 未完成') : '—';
+                methodText = (mental && mental.checked) ? (lang === 'en' ? 'Mental' : '心念') : 
+                              (vocal && vocal.checked) ? (lang === 'en' ? 'Vocal' : '口誦') : '—';
+                noteVal = note ? note.value || '—' : '—';
+                summaryVal = summary ? summary.value || '—' : '—';
+            }
+
+            html += '<tr>';
+            html += '<td>' + dayLabel + '</td>';
+            html += '<td>' + (dateVal || '—') + '</td>';
+            html += '<td>' + statusText + '</td>';
+            html += '<td>' + methodText + '</td>';
+            html += '<td>' + noteVal + '</td>';
+            html += '<td>' + summaryVal + '</td>';
+            html += '</tr>';
+        }
+
+        var previewBody = document.getElementById('previewDayBody');
+        if (previewBody) {
+            previewBody.innerHTML = html;
+        }
+
+        var previewContainer = document.getElementById('previewDayContainer');
+        if (previewContainer) {
+            previewContainer.style.display = 'block';
+            previewContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
+    // ================================================================
+    // 頁面載入時自動生成預覽
+    // ================================================================
+    if (document.readyState === 'complete') {
+        setTimeout(window.generateDayPreview, 100);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(window.generateDayPreview, 200);
+        });
+    }
+
+    // ================================================================
+    // 語言切換時重新生成預覽
+    // ================================================================
+    var origSwitch = window.switchLanguage;
+    if (origSwitch) {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(window.generateDayPreview, 100);
+        };
+    }
+
+    // ================================================================
+    // 監聽 checkbox 和 input 變化
+    // ================================================================
+    document.addEventListener('change', function(e) {
+        if (e.target.classList && e.target.classList.contains('day-check')) {
+            setTimeout(window.generateDayPreview, 50);
+        }
+        if (e.target.classList && e.target.classList.contains('day-date-input')) {
+            setTimeout(window.generateDayPreview, 50);
+        }
+    });
+
+    console.log('✅ 預覽功能已整合示範資料（可切換中英文）');
 })();
 </script>
 </body>
