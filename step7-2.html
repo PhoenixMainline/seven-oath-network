@@ -2133,5 +2133,215 @@
             console.log('✅ 兩句圖示與文字已統一強制同一列');
         })();
     </script>
-</body>
+<!-- ============================================================ -->
+<!-- 相機失敗提示：僅失敗時顯示 + 統一文案與換行                    -->
+<!-- ============================================================ -->
+<style>
+    .camera-guide {
+        display: none !important; /* 預設隱藏，失敗時再打開 */
+        background: rgba(232, 96, 74, 0.08) !important;
+        border-left: 4px solid #E8604A !important;
+        padding: 14px 16px !important;
+        border-radius: 12px !important;
+        color: #e0dcc8 !important;
+        font-size: 0.85rem !important;
+        line-height: 1.8 !important;
+        white-space: normal !important;
+        text-align: left !important;
+        margin-top: 12px !important;
+    }
+    .camera-guide.show-fail {
+        display: block !important;
+    }
+</style>
+
+<script>
+(function () {
+    var FAIL_ZH =
+        '📷 無法啟動相機<br>' +
+        '⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用<br>' +
+        '🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>' +
+        '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+
+    var FAIL_EN =
+        '📷 Unable to launch the camera<br>' +
+        '⚙️ Open phone “Settings” → App Management → Permissions → Camera → set to “Allow” → then use<br>' +
+        '🌐 a browser (Chrome / Yahoo / Edge....)<br>' +
+        '⚠️ If it still does not work, please manually scan the physical book QR Code with a scanner app';
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function failHtml() {
+        return (lang() === 'en') ? FAIL_EN : FAIL_ZH;
+    }
+
+    function hideAllGuides() {
+        document.querySelectorAll('.camera-guide, [id*="cameraGuide"], [id*="CameraGuide"]').forEach(function (el) {
+            el.classList.remove('show-fail');
+            el.style.display = 'none';
+        });
+    }
+
+    function showGuide(guideIdOrEl) {
+        var el = (typeof guideIdOrEl === 'string')
+            ? document.getElementById(guideIdOrEl)
+            : guideIdOrEl;
+        if (!el) return;
+        el.innerHTML = failHtml();
+        el.classList.add('show-fail');
+        el.style.display = 'block';
+    }
+
+    // 統一掃描核心：只有失敗才顯示提示
+    function startUnifiedScanner(containerId, resultId, guideId) {
+        var container = document.getElementById(containerId);
+        var resultEl = document.getElementById(resultId);
+        var guide = document.getElementById(guideId);
+
+        if (guide) {
+            guide.classList.remove('show-fail');
+            guide.style.display = 'none';
+            guide.innerHTML = '';
+        }
+        if (resultEl) {
+            resultEl.style.display = 'none';
+            resultEl.innerHTML = '';
+        }
+
+        // 停止舊掃描
+        if (window._currentScanner && typeof window._currentScanner.stop === 'function') {
+            try { window._currentScanner.stop().catch(function () {}); } catch (e) {}
+            window._currentScanner = null;
+        }
+        if (container) container.innerHTML = '';
+
+        if (typeof Html5Qrcode === 'undefined' ||
+            !navigator.mediaDevices ||
+            !navigator.mediaDevices.getUserMedia) {
+            showGuide(guideId);
+            return;
+        }
+
+        try {
+            var instance = new Html5Qrcode(containerId);
+            window._currentScanner = instance;
+            instance.start(
+                { facingMode: 'environment' },
+                { fps: 15, qrbox: { width: 200, height: 200 } },
+                function (decodedText) {
+                    if (resultEl) {
+                        resultEl.style.display = 'block';
+                        resultEl.innerHTML = decodedText;
+                    }
+                    if (guide) {
+                        guide.classList.remove('show-fail');
+                        guide.style.display = 'none';
+                    }
+                    instance.stop().then(function () {
+                        window._currentScanner = null;
+                    }).catch(function () {
+                        window._currentScanner = null;
+                    });
+                },
+                function () { /* 掃描中忽略 */ }
+            ).catch(function () {
+                // 真正啟動失敗才顯示
+                showGuide(guideId);
+                window._currentScanner = null;
+            });
+        } catch (e) {
+            showGuide(guideId);
+            window._currentScanner = null;
+        }
+    }
+
+    // 覆蓋既有函式
+    window.startQRScanner = function (containerId, resultId, guideId) {
+        startUnifiedScanner(containerId, resultId, guideId);
+    };
+    window.startQRScannerStep8 = function () {
+        startUnifiedScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+    };
+    window.startQRScannerStep9 = function () {
+        startUnifiedScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
+    };
+
+    // 重新綁定按鈕（避免舊 onclick 把提示提前打開）
+    function rebind() {
+        hideAllGuides();
+
+        var map = [
+            { btn: 'btnScanQRStep8', fn: window.startQRScannerStep8 },
+            { btn: 'btnScanQRStep9', fn: window.startQRScannerStep9 },
+            { btn: 'btnScanQR', fn: function () {
+                startUnifiedScanner('qr-reader-container', 'qrScanResult', 'cameraGuide');
+            }}
+        ];
+
+        map.forEach(function (item) {
+            var btn = document.getElementById(item.btn);
+            if (!btn) return;
+            var neo = btn.cloneNode(true);
+            btn.parentNode.replaceChild(neo, btn);
+            neo.onclick = function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                item.fn();
+            };
+            neo.style.pointerEvents = 'auto';
+            neo.style.cursor = 'pointer';
+        });
+    }
+
+    // 同步 langPack 文案（若有）
+    function syncLangPack() {
+        if (typeof langPack === 'undefined') return;
+        ['zh', 'en'].forEach(function (l) {
+            if (!langPack[l]) return;
+            Object.keys(langPack[l]).forEach(function (k) {
+                if (/cameraGuide|CameraGuide|CameraFail|cameraFail/i.test(k)) {
+                    langPack[l][k] = (l === 'en')
+                        ? FAIL_EN.replace(/<br>/g, ' ')
+                        : FAIL_ZH.replace(/<br>/g, ' ');
+                }
+            });
+        });
+    }
+
+    function run() {
+        hideAllGuides();
+        rebind();
+        syncLangPack();
+        setTimeout(function () {
+            hideAllGuides();
+            rebind();
+        }, 200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            // 語言切換時：若當前有顯示失敗提示，更新文案；否則維持隱藏
+            document.querySelectorAll('.camera-guide.show-fail').forEach(function (el) {
+                el.innerHTML = failHtml();
+            });
+            syncLangPack();
+        };
+    }
+
+    console.log('✅ 相機失敗提示：僅失敗時顯示，文案已統一');
+})();
+</script>
+    </body>
 </html>
