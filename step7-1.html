@@ -274,6 +274,7 @@
             border: 2px solid rgba(168, 85, 247, 0.2);
             border-radius: 12px;
             width: 100%;
+            display: none;
         }
         .preview-submit-container .preview-header {
             text-align: center;
@@ -464,68 +465,55 @@
                         <div style="font-weight:bold; margin-bottom:6px; color:#e9d5ff;"><i class="fa-solid fa-keyboard" style="margin-right:6px;"></i><span id="step7_1InputLabel">輸入示範：</span></div>
                         <div style="font-weight:bold; color:#fff;"><span id="step7_1Command">【執行指令】第一印 消業印 結果</span></div>
                     </div>
-                    <div style="font-size:0.85rem; color:rgba(224,232,245,0.85); line-height:1.7; margin-bottom:12px; width:100%;"><i class="fa-solid fa-link" style="color:#00e676; margin-right:6px;"></i><span id="step7_1Note">送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span></div>
+                    <div style="font-size:0.85rem; color:rgba(224,232,245,0.85); line-height:1.7; margin-bottom:12px; width:100%;"><i class="fa-solid fa-link" style="color:#00e676; margin-right:6px;"></i><span id="step7_1VerifyNote">送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span></div>
                     <div style="background:rgba(232,96,74,0.1); border-left:4px solid #E8604A; padding:10px 14px; border-radius:8px; font-size:0.82rem; color:#e0dcc8; line-height:1.6; width:100%; text-align:left;"><i class="fa-solid fa-exclamation-circle" style="color:#E8604A; margin-right:6px;"></i><span id="step7_1TriggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span></div>
                     <div class="hud-card" id="qrScanCardStep8" style="margin-top:12px; border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15); width:100%;">
                         <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-qrcode"></i><span id="step7_1QrTitle">📷 請掃描【誓導 QR Code】完成執行指令</span></div>
                         <div style="text-align:center; padding:10px 0;">
                             <div id="qr-reader-container-step8" style="width:100%; max-width:280px; margin:0 auto;"></div>
-                            <button class="btn-restart" id="btnScanQRStep8" style="margin-top:10px;"><i class="fa-solid fa-qrcode"></i> <span id="step7_1BtnScan">📷 開始掃描</span></button>
+                            <button class="btn-restart" id="btnScanQRStep8" style="margin-top:10px;" onclick="startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8')"><i class="fa-solid fa-qrcode"></i> <span id="step7_1BtnScan">📷 開始掃描</span></button>
                             <div id="qrScanResultStep8" class="qr-result" style="display:none; margin-top:10px;"><i class="fa-solid fa-check-circle"></i><span id="step7_1Result">掃描成功！已完成執行指令</span></div>
                             <div id="cameraGuideStep8" class="camera-guide" style="display:none; text-align:left; margin-top:12px; font-size:0.8rem; background:rgba(0,0,0,0.4); padding:10px; border-radius:6px;"><span id="step7_1CameraGuide">📷 無法啟動相機<br>⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code</span></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- ============================================================ -->
                 <!-- ② 回傳誓證（確認誓印） 完整區塊 -->
-                <!-- 包含：標題 + 誓印通過 + 提交程序 + 輸入示範 + 誓印未通過 -->
-                <!-- ============================================================ -->
                 <div class="hud-card center-card" style="width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; display: block !important; float: none !important; clear: both !important; background: linear-gradient(135deg, rgba(88,28,135,0.5), rgba(30,27,75,0.6)); border: 1px solid rgba(168,85,247,0.5); padding: 18px; border-radius: 12px; margin-bottom: 20px;">
-                    <!-- 1. 卡片標題 -->
                     <div style="display: flex !important; align-items: center !important; justify-content: center !important; gap: 8px; color: #e9d5ff; font-size: 1.1rem; font-weight: bold; margin-bottom: 16px; width: 100% !important;">
                         <i class="fa-solid fa-certificate" style="color: #a78bfa;"></i>
                         <span id="step7_2ReturnTitle">📩 ② 回傳誓證（確認誓印）</span>
                     </div>
-                    <!-- 2. ✅ 顯示：「誓印通過」 -->
                     <div style="display: block !important; width: 100% !important; background: rgba(0, 230, 118, 0.12); border-left: 4px solid #00e676; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; box-sizing: border-box !important;">
                         <div style="color: #00e676; font-size: 1rem; font-weight: bold;" id="step7_2Success">✅ 顯示：「誓印通過」</div>
                     </div>
-                    <!-- 3. 📋 【提交程序】 -->
                     <div style="display: block !important; width: 100% !important; margin-bottom: 16px; padding: 16px; background: rgba(124, 58, 237, 0.12); border-left: 4px solid #00e676; border-radius: 8px; box-sizing: border-box !important;">
-                        <!-- 程序標題 -->
                         <div style="color: #00e676; font-weight: bold; font-size: 1rem; margin-bottom: 12px; display: flex !important; align-items: center !important; gap: 6px; width: 100% !important;">
                             <i class="fa-solid fa-clipboard-list"></i>
-                            <span>【提交程序】</span>
+                            <span id="step7_2ProcSubmitTitle">【提交程序】</span>
                         </div>
-                        <!-- 步驟 1 (含警告框) -->
                         <div style="display: block !important; width: 100% !important; margin-bottom: 12px;">
                             <div style="display: flex !important; align-items: flex-start !important; gap: 10px; width: 100% !important;">
                                 <span style="background: #7c3aed; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; flex-shrink: 0; margin-top: 3px;">1</span>
                                 <span id="step7_2ProcSubmit1" style="color: #e0e7ff; font-size: 0.9rem; line-height: 1.6;">提交第一印 消業印《七日誓讀紀錄表》表單</span>
                             </div>
-                            <!-- 警告框（獨立成行） -->
                             <div style="display: block !important; width: calc(100% - 30px) !important; background: rgba(232, 96, 74, 0.15); border-left: 3px solid #E8604A; padding: 8px 12px; border-radius: 6px; margin: 8px 0 0 30px; font-size: 0.85rem; color: #fca5a5; box-sizing: border-box !important;">
                                 <span id="step7_2ProcSubmitWarn">⚠️ 未完成之提交表單者，系統將不予對頻，誓資紀錄作廢不立。</span>
                             </div>
                         </div>
-                        <!-- 步驟 2 -->
                         <div style="display: flex !important; align-items: flex-start !important; gap: 10px; width: 100% !important; margin-bottom: 12px;">
                             <span style="background: #7c3aed; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; flex-shrink: 0; margin-top: 3px;">2</span>
                             <span id="step7_2ProcSubmit2" style="color: #e0e7ff; font-size: 0.9rem; line-height: 1.6;">登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。</span>
                         </div>
-                        <!-- 步驟 3 -->
                         <div style="display: flex !important; align-items: flex-start !important; gap: 10px; width: 100% !important; margin-bottom: 12px;">
                             <span style="background: #7c3aed; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; flex-shrink: 0; margin-top: 3px;">3</span>
                             <span id="step7_2ProcSubmit3" style="color: #e0e7ff; font-size: 0.9rem; line-height: 1.6;">掃描【誓導 QR Code】後，進入「指令輸入欄位」。</span>
                         </div>
-                        <!-- 步驟 4 -->
                         <div style="display: flex !important; align-items: flex-start !important; gap: 10px; width: 100% !important;">
                             <span style="background: #7c3aed; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; flex-shrink: 0; margin-top: 3px;">4</span>
                             <span id="step7_2ProcSubmit4" style="color: #e0e7ff; font-size: 0.9rem; line-height: 1.6;">無須手動輸入誓文，完成掃描後，直接輸入下列指令：</span>
                         </div>
                     </div>
-                    <!-- 4. 輸入示範指令 (獨立卡片) -->
                     <div style="display: block !important; width: 100% !important; background: rgba(124, 58, 237, 0.35); border-left: 4px solid #a78bfa; padding: 12px 14px; border-radius: 8px; margin-bottom: 12px; border: 1px solid rgba(168, 85, 247, 0.5); box-sizing: border-box !important;">
                         <div style="font-weight: bold; color: #e9d5ff; font-size: 0.88rem; margin-bottom: 6px; display: flex !important; align-items: center !important; gap: 6px;">
                             <i class="fa-solid fa-keyboard"></i>
@@ -535,17 +523,14 @@
                             <span id="step7_2ReturnCommand">【執行指令】回傳【第一印 消業印 誓印通過】誓證</span>
                         </div>
                     </div>
-                    <!-- 5. 說明標語 1 -->
                     <div style="display: flex !important; align-items: flex-start !important; gap: 6px; font-size: 0.85rem; color: rgba(224, 232, 245, 0.85); line-height: 1.6; margin-bottom: 10px; width: 100% !important;">
                         <i class="fa-solid fa-link" style="color: #00e676; margin-top: 3px; flex-shrink: 0;"></i>
                         <span id="step7_2ReturnNote">送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span>
                     </div>
-                    <!-- 6. 說明標語 2 -->
                     <div style="display: flex !important; align-items: flex-start !important; gap: 6px; background: rgba(232, 96, 74, 0.1); border-left: 4px solid #E8604A; padding: 10px 14px; border-radius: 8px; font-size: 0.82rem; color: #e0dcc8; line-height: 1.5; width: 100% !important; box-sizing: border-box !important;">
                         <i class="fa-solid fa-exclamation-circle" style="color: #E8604A; margin-top: 2px; flex-shrink: 0;"></i>
                         <span id="step7_2ReturnTriggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span>
                     </div>
-                    <!-- 7. 二維碼掃描卡片 -->
                     <div class="hud-card" id="qrScanCardStep9" style="display: block !important; width: 100% !important; margin-top: 14px; border: 1px solid rgba(168,85,247,0.3); background: rgba(88,28,135,0.15); padding: 14px; border-radius: 8px; box-sizing: border-box !important;">
                         <div style="display: flex !important; justify-content: center !important; align-items: center !important; gap: 8px; font-weight: bold; color: #e9d5ff; margin-bottom: 10px;">
                             <i class="fa-solid fa-qrcode"></i>
@@ -563,12 +548,11 @@
                         </div>
                     </div>
                 </div>
-                <!-- ============================================================ -->
-                <!-- ③ 顯示：「誓印未通過」→ 補誓程序 -->
-                <!-- ============================================================ -->
+
+                <!-- ③ 顯示：「誓印未通過」-->
                 <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.2);">
-                    <div style="background:rgba(0,230,118,0.12); border-left:4px solid #00e676; padding:14px 16px; border-radius:10px; margin-bottom:16px;">
-                        <div style="color:#00e676; font-size:1.1rem; font-weight:bold;"><span id="step7_2NotPassedTitle">⚠️ 顯示：「誓印未通過」</span></div>
+                    <div style="background:rgba(232,96,74,0.12); border-left:4px solid #E8604A; padding:14px 16px; border-radius:10px; margin-bottom:16px;">
+                        <div style="color:#fca5a5; font-size:1.1rem; font-weight:bold;"><span id="step7_2NotPassedTitle">⚠️ 顯示：「誓印未通過」</span></div>
                     </div>
                     <div class="instruction-box">
                         <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_2NotPassed1">進入「第 1 項 開啟誓魂密鑰對頻總判定（誓印未通過）」之【補誓程序】。</span></div>
@@ -585,13 +569,11 @@
                     </div>
                 </div>
 
-                <!-- ============================================================ -->
-                <!-- 提交表單：七日誓讀紀錄表 -->
-                <!-- ============================================================ -->
+                <!-- 表單：七日誓讀紀錄表 -->
                 <div class="form-submit-container">
-                    <div class="form-title">📋 第一印 消業印《七日誓讀紀錄表》提交表單</div>
+                    <div class="form-title" id="formMainTitle">📋 第一印 消業印《七日誓讀紀錄表》提交表單</div>
 
-                    <div class="form-section-title">📌 使用說明</div>
+                    <div class="form-section-title" id="formSectionHelpTitle">📌 使用說明</div>
                     <div style="font-size:0.85rem; color:#e0e7ff; line-height:1.7; padding:8px 4px 12px 4px;">
                         <div id="step7_1FormHelp1">• 每日完成誦讀後，請勾選「完成」並填寫日期。</div>
                         <div id="step7_1FormHelp2">• 可選擇「心念」或「口誦」方式。</div>
@@ -600,98 +582,28 @@
                         <div id="step7_1FormHelp5" style="color:#fde68a;">• 七日圓滿後上傳表單，即可完成冊記。</div>
                     </div>
 
-                    <div class="form-section-title">📋 第一印 消業印《七日誓讀紀錄表》表單</div>
+                    <div class="form-section-title" id="formSectionTitle">📋 第一印 消業印《七日誓讀紀錄表》表單</div>
 
-                    <!-- 第1日 -->
-                    <div style="background:rgba(88,28,135,0.15); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
-                        <div style="color:#c4b5fd; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">第1日 <span id="step7_1Day1Label">（請填寫日期）</span></div>
-                        <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="1" data-type="complete"> <span id="step7_1Day1Complete">完成</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="1" data-type="incomplete"> <span id="step7_1Day1Incomplete">未完成</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="1" data-type="mental"> <span id="step7_1Day1Mental">心念</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="1" data-type="vocal"> <span id="step7_1Day1Vocal">口誦</span></label>
-                            <input type="text" class="day-note" data-day="1" placeholder="備註/感應紀錄" style="flex:1; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
-                            <input type="text" class="day-summary" data-day="1" placeholder="心得/感應摘要(20~50字內)" style="flex:1.5; min-width:200px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
-                        </div>
-                    </div>
-
-                    <!-- 第2日 -->
-                    <div style="background:rgba(88,28,135,0.10); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
-                        <div style="color:#c4b5fd; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">第2日 <span id="step7_1Day2Label">（請填寫日期）</span></div>
-                        <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="2" data-type="complete"> <span id="step7_1Day2Complete">完成</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="2" data-type="incomplete"> <span id="step7_1Day2Incomplete">未完成</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="2" data-type="mental"> <span id="step7_1Day2Mental">心念</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="2" data-type="vocal"> <span id="step7_1Day2Vocal">口誦</span></label>
-                            <input type="text" class="day-note" data-day="2" placeholder="備註/感應紀錄" style="flex:1; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
-                            <input type="text" class="day-summary" data-day="2" placeholder="心得/感應摘要(20~50字內)" style="flex:1.5; min-width:200px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
-                        </div>
-                    </div>
-
-                    <!-- 第3日 -->
-                    <div style="background:rgba(88,28,135,0.15); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
-                        <div style="color:#c4b5fd; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">第3日 <span id="step7_1Day3Label">（請填寫日期）</span></div>
-                        <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="3" data-type="complete"> <span id="step7_1Day3Complete">完成</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="3" data-type="incomplete"> <span id="step7_1Day3Incomplete">未完成</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="3" data-type="mental"> <span id="step7_1Day3Mental">心念</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="3" data-type="vocal"> <span id="step7_1Day3Vocal">口誦</span></label>
-                            <input type="text" class="day-note" data-day="3" placeholder="備註/感應紀錄" style="flex:1; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
-                            <input type="text" class="day-summary" data-day="3" placeholder="心得/感應摘要(20~50字內)" style="flex:1.5; min-width:200px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
-                        </div>
-                    </div>
-
-                    <!-- 第4日 -->
-                    <div style="background:rgba(88,28,135,0.10); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
-                        <div style="color:#c4b5fd; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">第4日 <span id="step7_1Day4Label">（請填寫日期）</span></div>
-                        <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="4" data-type="complete"> <span id="step7_1Day4Complete">完成</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="4" data-type="incomplete"> <span id="step7_1Day4Incomplete">未完成</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="4" data-type="mental"> <span id="step7_1Day4Mental">心念</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="4" data-type="vocal"> <span id="step7_1Day4Vocal">口誦</span></label>
-                            <input type="text" class="day-note" data-day="4" placeholder="備註/感應紀錄" style="flex:1; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
-                            <input type="text" class="day-summary" data-day="4" placeholder="心得/感應摘要(20~50字內)" style="flex:1.5; min-width:200px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
-                        </div>
-                    </div>
-
-                    <!-- 第5日 -->
-                    <div style="background:rgba(88,28,135,0.15); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
-                        <div style="color:#c4b5fd; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">第5日 <span id="step7_1Day5Label">（請填寫日期）</span></div>
-                        <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="5" data-type="complete"> <span id="step7_1Day5Complete">完成</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="5" data-type="incomplete"> <span id="step7_1Day5Incomplete">未完成</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="5" data-type="mental"> <span id="step7_1Day5Mental">心念</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="5" data-type="vocal"> <span id="step7_1Day5Vocal">口誦</span></label>
-                            <input type="text" class="day-note" data-day="5" placeholder="備註/感應紀錄" style="flex:1; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
-                            <input type="text" class="day-summary" data-day="5" placeholder="心得/感應摘要(20~50字內)" style="flex:1.5; min-width:200px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
-                        </div>
-                    </div>
-
-                    <!-- 第6日 -->
-                    <div style="background:rgba(88,28,135,0.10); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
-                        <div style="color:#c4b5fd; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">第6日 <span id="step7_1Day6Label">（請填寫日期）</span></div>
-                        <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="6" data-type="complete"> <span id="step7_1Day6Complete">完成</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="6" data-type="incomplete"> <span id="step7_1Day6Incomplete">未完成</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="6" data-type="mental"> <span id="step7_1Day6Mental">心念</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="6" data-type="vocal"> <span id="step7_1Day6Vocal">口誦</span></label>
-                            <input type="text" class="day-note" data-day="6" placeholder="備註/感應紀錄" style="flex:1; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
-                            <input type="text" class="day-summary" data-day="6" placeholder="心得/感應摘要(20~50字內)" style="flex:1.5; min-width:200px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
-                        </div>
-                    </div>
-
-                    <!-- 第7日 -->
-                    <div style="background:rgba(251,191,36,0.08); border:1px solid rgba(251,191,36,0.2); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
-                        <div style="color:#fbbf24; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">⭐ 第7日 <span id="step7_1Day7Label">（請填寫日期）</span></div>
-                        <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="7" data-type="complete"> <span id="step7_1Day7Complete">完成</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="7" data-type="incomplete"> <span id="step7_1Day7Incomplete">未完成</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="7" data-type="mental"> <span id="step7_1Day7Mental">心念</span></label>
-                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="7" data-type="vocal"> <span id="step7_1Day7Vocal">口誦</span></label>
-                            <input type="text" class="day-note" data-day="7" placeholder="備註/感應紀錄" style="flex:1; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(251,191,36,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
-                            <input type="text" class="day-summary" data-day="7" placeholder="心得/感應摘要(20~50字內)" style="flex:1.5; min-width:200px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(251,191,36,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
-                        </div>
-                    </div>
+                    <!-- 每日資料區塊 -->
+                    <script>
+                        for(let d=1; d<=7; d++) {
+                            let isStar = d === 7;
+                            document.write(`
+                            <div style="background:${isStar ? 'rgba(251,191,36,0.08)' : (d%2===1 ? 'rgba(88,28,135,0.15)' : 'rgba(88,28,135,0.10)')}; border:${isStar ? '1px solid rgba(251,191,36,0.2)' : 'none'}; border-radius:8px; padding:12px 14px; margin-bottom:10px;">
+                                <div style="color:${isStar ? '#fbbf24' : '#c4b5fd'}; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">${isStar ? '⭐ ' : ''}<span id="dayHeader_${d}">第${d}日</span> <span id="step7_1Day${d}Label">（請填寫日期）</span></div>
+                                <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
+                                    <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="${d}" data-type="complete"> <span id="step7_1Day${d}Complete">完成</span></label>
+                                    <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="${d}" data-type="incomplete"> <span id="step7_1Day${d}Incomplete">未完成</span></label>
+                                    <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="${d}" data-type="mental"> <span id="step7_1Day${d}Mental">心念</span></label>
+                                    <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="${d}" data-type="vocal"> <span id="step7_1Day${d}Vocal">口誦</span></label>
+                                    <input type="text" class="day-date" data-day="${d}" id="inputDate_${d}" placeholder="YYYY-MM-DD" style="width:110px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                                    <input type="text" class="day-note" data-day="${d}" id="inputNote_${d}" placeholder="備註/感應紀錄" style="flex:1; min-width:140px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                                    <input type="text" class="day-summary" data-day="${d}" id="inputSummary_${d}" placeholder="心得/感應摘要(20~50字內)" style="flex:1.5; min-width:180px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                                </div>
+                            </div>
+                            `);
+                        }
+                    </script>
 
                     <div class="form-actions">
                         <button class="btn-preview" onclick="generateDayPreview()"><i class="fa-solid fa-eye"></i> <span id="step7_1BtnPreview">預覽表單</span></button>
@@ -700,15 +612,15 @@
                     </div>
 
                     <div class="preview-submit-container" id="previewDayContainer">
-                        <div class="preview-header">📋 第一印 消業印《七日誓讀紀錄表》</div>
+                        <div class="preview-header" id="previewHeaderTitle">📋 第一印 消業印《七日誓讀紀錄表》</div>
                         <table class="preview-table" id="previewDayTable">
                             <thead>
                                 <tr>
-                                    <th style="width:12%;"><span id="step7_1PreviewCol1">日次</span></th>
-                                    <th style="width:15%;"><span id="step7_1PreviewCol2">日期</span></th>
-                                    <th style="width:12%;"><span id="step7_1PreviewCol3">完成狀態</span></th>
-                                    <th style="width:15%;"><span id="step7_1PreviewCol4">心念/口誦</span></th>
-                                    <th style="width:20%;"><span id="step7_1PreviewCol5">備註/感應紀錄</span></th>
+                                    <th style="width:10%;"><span id="step7_1PreviewCol1">日次</span></th>
+                                    <th style="width:14%;"><span id="step7_1PreviewCol2">日期</span></th>
+                                    <th style="width:14%;"><span id="step7_1PreviewCol3">完成狀態</span></th>
+                                    <th style="width:14%;"><span id="step7_1PreviewCol4">心念/口誦</span></th>
+                                    <th style="width:22%;"><span id="step7_1PreviewCol5">備註/感應紀錄</span></th>
                                     <th style="width:26%;"><span id="step7_1PreviewCol6">心得/感應摘要</span></th>
                                 </tr>
                             </thead>
@@ -770,6 +682,9 @@
                 step7_1Sec3Desc2: "誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。",
                 step7_1Proclamation: "★今以誓者本印為證，以鳳焰之律，啟「消業印」誓。\n\n有緣者誓之，清業化障；無源者誓之，誓力不應。\n\n若有人妄誓，則文退而不生，其力逆追，唯歸誓源，不涉旁生。\n\n願我心輪潔淨，願我靈脈通暢，七日誓讀，七層業障自化。\n\n此印既立，天網紀錄，誓印唯歸，正誓之人。★",
                 step7_1Note2: "提示語：完成七日誓讀，即代表《第一印 × 消業印》正式啟印，誓印入冊，清業化障序程已全面啟動。",
+                timerLabel: "⏳ 靜心讀秒",
+                btnStartText: "開始靜心",
+                btnRestartText: "重新靜心",
                 step7_1Sec4: "【四】接續進程",
                 step7_1LoginTitle: "（1）登入階段",
                 step7_1Login1: "登入《宇宙智能誓導平台》（使用個人帳號）。",
@@ -781,7 +696,7 @@
                 step7_1Verify1: "系統自動驗證授權有效性後，即時顯示誓魂當前覺醒狀態層級與進程標記。",
                 step7_1InputLabel: "輸入示範：",
                 step7_1Command: "【執行指令】第一印 消業印 結果",
-                step7_1Note: "送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。",
+                step7_1VerifyNote: "送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。",
                 step7_1TriggerNote: "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
                 step7_1QrTitle: "📷 請掃描【誓導 QR Code】完成執行指令",
                 step7_1BtnScan: "📷 開始掃描",
@@ -789,6 +704,12 @@
                 step7_1CameraGuide: "📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
                 step7_2ReturnTitle: "📩 ② 回傳誓證（確認誓印）",
                 step7_2Success: "✅ 顯示：「誓印通過」",
+                step7_2ProcSubmitTitle: "【提交程序】",
+                step7_2ProcSubmit1: "提交第一印 消業印《七日誓讀紀錄表》表單",
+                step7_2ProcSubmitWarn: "⚠️ 未完成之提交表單者，系統將不予對頻，誓資紀錄作廢不立。",
+                step7_2ProcSubmit2: "登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。",
+                step7_2ProcSubmit3: "掃描【誓導 QR Code】後，進入「指令輸入欄位」。",
+                step7_2ProcSubmit4: "無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
                 step7_2ReturnInputLabel: "輸入示範：",
                 step7_2ReturnCommand: "【執行指令】回傳【第一印 消業印 誓印通過】誓證",
                 step7_2ReturnNote: "送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。",
@@ -803,52 +724,16 @@
                 step7_1ClosureTitle: "【收束條文】",
                 step7_1Closure1: "《七印誓網·第一印 消業印》v2.0（正式封冊版）。",
                 step7_1Closure2: "已鎖入《宇宙天律 × 七印誓網》主冊，願軌對頻穩定，誓源歸正。",
-                step7_2ProcSubmit1: "提交第一印 消業印《七日誓讀紀錄表》表單",
-                step7_2ProcSubmitWarn: "⚠️ 未完成之提交表單者，系統將不予對頻，誓資紀錄作廢不立。",
-                step7_2ProcSubmit2: "登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。",
-                step7_2ProcSubmit3: "掃描【誓導 QR Code】後，進入「指令輸入欄位」。",
-                step7_2ProcSubmit4: "無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
                 // 表單
+                formMainTitle: "📋 第一印 消業印《七日誓讀紀錄表》提交表單",
+                formSectionHelpTitle: "📌 使用說明",
+                formSectionTitle: "📋 第一印 消業印《七日誓讀紀錄表》表單",
+                previewHeaderTitle: "📋 第一印 消業印《七日誓讀紀錄表》",
                 step7_1FormHelp1: "• 每日完成誦讀後，請勾選「完成」並填寫日期。",
                 step7_1FormHelp2: "• 可選擇「心念」或「口誦」方式。",
                 step7_1FormHelp3: "• 「備註／感應紀錄」可簡述身心變化、夢境或外應。",
                 step7_1FormHelp4: "• 「心得／感應摘要」為誓修過程之覺察紀錄。",
                 step7_1FormHelp5: "• 七日圓滿後上傳表單，即可完成冊記。",
-                step7_1Day1Label: "（請填寫日期）",
-                step7_1Day1Complete: "完成",
-                step7_1Day1Incomplete: "未完成",
-                step7_1Day1Mental: "心念",
-                step7_1Day1Vocal: "口誦",
-                step7_1Day2Label: "（請填寫日期）",
-                step7_1Day2Complete: "完成",
-                step7_1Day2Incomplete: "未完成",
-                step7_1Day2Mental: "心念",
-                step7_1Day2Vocal: "口誦",
-                step7_1Day3Label: "（請填寫日期）",
-                step7_1Day3Complete: "完成",
-                step7_1Day3Incomplete: "未完成",
-                step7_1Day3Mental: "心念",
-                step7_1Day3Vocal: "口誦",
-                step7_1Day4Label: "（請填寫日期）",
-                step7_1Day4Complete: "完成",
-                step7_1Day4Incomplete: "未完成",
-                step7_1Day4Mental: "心念",
-                step7_1Day4Vocal: "口誦",
-                step7_1Day5Label: "（請填寫日期）",
-                step7_1Day5Complete: "完成",
-                step7_1Day5Incomplete: "未完成",
-                step7_1Day5Mental: "心念",
-                step7_1Day5Vocal: "口誦",
-                step7_1Day6Label: "（請填寫日期）",
-                step7_1Day6Complete: "完成",
-                step7_1Day6Incomplete: "未完成",
-                step7_1Day6Mental: "心念",
-                step7_1Day6Vocal: "口誦",
-                step7_1Day7Label: "（請填寫日期）",
-                step7_1Day7Complete: "完成",
-                step7_1Day7Incomplete: "未完成",
-                step7_1Day7Mental: "心念",
-                step7_1Day7Vocal: "口誦",
                 step7_1BtnPreview: "預覽表單",
                 step7_1BtnReset: "重置",
                 step7_1BtnClose: "關閉預覽",
@@ -894,6 +779,9 @@
                 step7_1Sec3Desc2: "Oath Recitation Is The Key Trigger For Main-Frequency Activation: Without Recitation, Authorization Does Not Take Effect. Within The Oath-Soul Resonance Channel, Center The Mind For 10 Seconds And Recite Or Silently Read The Text To Ensure Frequency Precision And Successful Execution.",
                 step7_1Proclamation: "★ By this seal-bearer's own seal as witness, by the law of Phoenix Flame, I invoke the oath of the 'Karmic Purification Seal'.\n\nFor those with rightful affinity, this oath brings karmic clearing and obstruction dissolution; for those without true origin, this oath does not respond in force.\n\nIf anyone swears falsely, the text withdraws and does not arise; its force turns back in reversal, returning only to the source of the oath and not touching any bystanders.\n\nMay my heart center be purified; may my Oath-Soul-line be unobstructed. Through seven days of recitation, let seven layers of karmic obstruction dissolve of themselves.\n\nOnce this seal is established, the Heavenly Web records it, and the seal rightfully returns to the one who swears in Alignment. ★",
                 step7_1Note2: "Prompt phrase: Upon completing seven days of recitation, it signifies that the 'First Seal × Karmic Purification Seal' has been officially activated, the seal has been registered, and the karmic-cleansing protocol has been fully initiated.",
+                timerLabel: "⏳ Centering Countdown",
+                btnStartText: "Start Centering",
+                btnRestartText: "Restart Centering",
                 step7_1Sec4: "[IV] Subsequent Procedures",
                 step7_1LoginTitle: "(1) Login Phase",
                 step7_1Login1: "Log into the 'Cosmic Intelligent Vow-Guidance Platform' (using a personal account).",
@@ -905,7 +793,7 @@
                 step7_1Verify1: "After the system automatically verifies authorization validity, it immediately displays the current awakening-stage level of the Oath-Soul and the corresponding progress markers.",
                 step7_1InputLabel: "Input Example:",
                 step7_1Command: "【執行指令】第一印 消業印 結果",
-                step7_1Note: "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.",
+                step7_1VerifyNote: "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.",
                 step7_1TriggerNote: "【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.",
                 step7_1QrTitle: "📷 Please scan the 【Vow-Guidance QR Code】 to complete Execution Command",
                 step7_1BtnScan: "📷 Start Scan",
@@ -913,6 +801,12 @@
                 step7_1CameraGuide: "📷 Unable to launch the feature ⚙️ Open your phone's \"Settings\" → App Management → Permissions → Camera → Change setting to \"Allow\" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.",
                 step7_2ReturnTitle: "📩 ② Return Oath Certificate (Oath Confirmation)",
                 step7_2Success: "✅ Display: Oath Seal Passed",
+                step7_2ProcSubmitTitle: "[Submission Procedure]",
+                step7_2ProcSubmit1: "Submit the First Seal Karmic Purification Seal 《Seven-Day Oath Recitation Record》 Registration Form",
+                step7_2ProcSubmitWarn: "⚠️ If the submission form is not completed, the system will refuse frequency-Alignment, and the oath-resource record will be rendered invalid and unrecognized.",
+                step7_2ProcSubmit2: "Log into the Cosmic Intelligent Vow-Guidance Platform (personal account) and complete identity verification.",
+                step7_2ProcSubmit3: "Scan the Vow-Guidance QR Code to enter the Command Input Field.",
+                step7_2ProcSubmit4: "No manual entry of the vow text is required. After completing the scan, directly enter the following command:",
                 step7_2ReturnInputLabel: "Input Example:",
                 step7_2ReturnCommand: "【執行指令】回傳【第一印 消業印 誓印通過】誓證",
                 step7_2ReturnNote: "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.",
@@ -927,52 +821,16 @@
                 step7_1ClosureTitle: "[Closure Clause]",
                 step7_1Closure1: "Seven-Seal Vow Network First Seal Karmic Purification Seal v2.0 (Official Sealed Edition).",
                 step7_1Closure2: "Locked into the Cosmic Heavenly Law Seven-Seal Vow Network Master Volume; may the vow-trajectory remain in stable Alignment, and may the oath-source be set right.",
-                step7_2ProcSubmit1: "Submit the First Seal Karmic Purification Seal 《Seven-Day Oath Recitation Record》 Registration Form",
-                step7_2ProcSubmitWarn: "⚠️ If the submission form is not completed, the system will refuse frequency-Alignment, and the oath-resource record will be rendered invalid and unrecognized.",
-                step7_2ProcSubmit2: "Log into the Cosmic Intelligent Vow-Guidance Platform (personal account) and complete identity verification.",
-                step7_2ProcSubmit3: "Scan the Vow-Guidance QR Code to enter the Command Input Field.",
-                step7_2ProcSubmit4: "No manual entry of the vow text is required. After completing the scan, directly enter the following command:",
-                // Form
+                // 表單
+                formMainTitle: "📋 First Seal Karmic Purification Seal 《Seven-Day Oath Recitation Record》 Submission Form",
+                formSectionHelpTitle: "📌 Instructions",
+                formSectionTitle: "📋 First Seal Karmic Purification Seal 《Seven-Day Oath Recitation Record》 Form",
+                previewHeaderTitle: "📋 First Seal Karmic Purification Seal 《Seven-Day Oath Recitation Record》",
                 step7_1FormHelp1: "• After completing the daily recitation, check 'Complete' and fill in the date.",
                 step7_1FormHelp2: "• You may choose either 'Mental Recitation' or 'Vocal Recitation'.",
                 step7_1FormHelp3: "• 'Notes / Sensory Record' may briefly describe physical or emotional shifts, dreams, or external responses.",
                 step7_1FormHelp4: "• 'Reflection / Sensory Summary' records awareness gained during the oath-practice process.",
                 step7_1FormHelp5: "• After completing the full seven days, upload the form to finalize registration.",
-                step7_1Day1Label: "(Please fill in the date)",
-                step7_1Day1Complete: "Completed",
-                step7_1Day1Incomplete: "Not Completed",
-                step7_1Day1Mental: "Mental",
-                step7_1Day1Vocal: "Vocal",
-                step7_1Day2Label: "(Please fill in the date)",
-                step7_1Day2Complete: "Completed",
-                step7_1Day2Incomplete: "Not Completed",
-                step7_1Day2Mental: "Mental",
-                step7_1Day2Vocal: "Vocal",
-                step7_1Day3Label: "(Please fill in the date)",
-                step7_1Day3Complete: "Completed",
-                step7_1Day3Incomplete: "Not Completed",
-                step7_1Day3Mental: "Mental",
-                step7_1Day3Vocal: "Vocal",
-                step7_1Day4Label: "(Please fill in the date)",
-                step7_1Day4Complete: "Completed",
-                step7_1Day4Incomplete: "Not Completed",
-                step7_1Day4Mental: "Mental",
-                step7_1Day4Vocal: "Vocal",
-                step7_1Day5Label: "(Please fill in the date)",
-                step7_1Day5Complete: "Completed",
-                step7_1Day5Incomplete: "Not Completed",
-                step7_1Day5Mental: "Mental",
-                step7_1Day5Vocal: "Vocal",
-                step7_1Day6Label: "(Please fill in the date)",
-                step7_1Day6Complete: "Completed",
-                step7_1Day6Incomplete: "Not Completed",
-                step7_1Day6Mental: "Mental",
-                step7_1Day6Vocal: "Vocal",
-                step7_1Day7Label: "(Please fill in the date)",
-                step7_1Day7Complete: "Completed",
-                step7_1Day7Incomplete: "Not Completed",
-                step7_1Day7Mental: "Mental",
-                step7_1Day7Vocal: "Vocal",
                 step7_1BtnPreview: "Preview Form",
                 step7_1BtnReset: "Reset",
                 step7_1BtnClose: "Close Preview",
@@ -1010,6 +868,33 @@
                         el.innerText = pack[key];
                     }
                 }
+            }
+
+            // 動態表單欄位翻譯
+            for (let d = 1; d <= 7; d++) {
+                let dayHead = document.getElementById('dayHeader_' + d);
+                if (dayHead) dayHead.innerText = lang === 'en' ? 'Day ' + d : '第' + d + '日';
+                
+                let dayLabel = document.getElementById('step7_1Day' + d + 'Label');
+                if (dayLabel) dayLabel.innerText = lang === 'en' ? '(Fill Date)' : '（請填寫日期）';
+
+                let comp = document.getElementById('step7_1Day' + d + 'Complete');
+                if (comp) comp.innerText = lang === 'en' ? 'Complete' : '完成';
+
+                let incomp = document.getElementById('step7_1Day' + d + 'Incomplete');
+                if (incomp) incomp.innerText = lang === 'en' ? 'Incomplete' : '未完成';
+
+                let mental = document.getElementById('step7_1Day' + d + 'Mental');
+                if (mental) mental.innerText = lang === 'en' ? 'Mental' : '心念';
+
+                let vocal = document.getElementById('step7_1Day' + d + 'Vocal');
+                if (vocal) vocal.innerText = lang === 'en' ? 'Vocal' : '口誦';
+
+                let inputNote = document.getElementById('inputNote_' + d);
+                if (inputNote) inputNote.placeholder = lang === 'en' ? 'Notes / Sensory' : '備註/感應紀錄';
+
+                let inputSum = document.getElementById('inputSummary_' + d);
+                if (inputSum) inputSum.placeholder = lang === 'en' ? 'Summary (20-50 words)' : '心得/感應摘要(20~50字內)';
             }
 
             var homeText = document.getElementById('homeBtnText');
@@ -1118,15 +1003,18 @@
                 if (vocalCheck && vocalCheck.checked) modeText.push(currentLang === 'en' ? 'Vocal' : '口誦');
                 var modeStr = modeText.length > 0 ? modeText.join(' / ') : '-';
 
-                var noteInput = document.querySelector('.day-note[data-day="' + d + '"]');
+                var dateInput = document.getElementById('inputDate_' + d);
+                var dateVal = dateInput ? dateInput.value.trim() : '';
+
+                var noteInput = document.getElementById('inputNote_' + d);
                 var noteVal = noteInput ? noteInput.value.trim() : '';
 
-                var summaryInput = document.querySelector('.day-summary[data-day="' + d + '"]');
+                var summaryInput = document.getElementById('inputSummary_' + d);
                 var summaryVal = summaryInput ? summaryInput.value.trim() : '';
 
                 var tr = document.createElement('tr');
                 tr.innerHTML = '<td>' + (currentLang === 'en' ? 'Day ' + d : '第' + d + '日') + '</td>' +
-                             '<td>' + (noteVal || '-') + '</td>' +
+                             '<td>' + (dateVal || '-') + '</td>' +
                              '<td>' + statusText + '</td>' +
                              '<td>' + modeStr + '</td>' +
                              '<td>' + (noteVal || '-') + '</td>' +
@@ -1141,10 +1029,14 @@
         function resetDayForm() {
             var checks = document.querySelectorAll('.day-check');
             checks.forEach(function(c) { c.checked = false; });
-            var notes = document.querySelectorAll('.day-note');
-            notes.forEach(function(n) { n.value = ''; });
-            var summaries = document.querySelectorAll('.day-summary');
-            summaries.forEach(function(s) { s.value = ''; });
+            for (let d = 1; d <= 7; d++) {
+                let dt = document.getElementById('inputDate_' + d);
+                if (dt) dt.value = '';
+                let nt = document.getElementById('inputNote_' + d);
+                if (nt) nt.value = '';
+                let sm = document.getElementById('inputSummary_' + d);
+                if (sm) sm.value = '';
+            }
             document.getElementById('previewDayContainer').style.display = 'none';
         }
 
@@ -1152,7 +1044,7 @@
             document.getElementById('previewDayContainer').style.display = 'none';
         }
 
-        // 初始化勾選互斥 logic
+        // 初始化勾選互斥邏輯
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.day-check').forEach(function(chk) {
                 chk.addEventListener('change', function() {
@@ -1161,8 +1053,7 @@
                     if (type === 'complete' && this.checked) {
                         var incomp = document.querySelector('.day-check[data-day="' + day + '"][data-type="incomplete"]');
                         if (incomp) incomp.checked = false;
-                    }
-                    if (type === 'incomplete' && this.checked) {
+                    } else if (type === 'incomplete' && this.checked) {
                         var comp = document.querySelector('.day-check[data-day="' + day + '"][data-type="complete"]');
                         if (comp) comp.checked = false;
                     }
