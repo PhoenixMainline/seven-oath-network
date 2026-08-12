@@ -2343,5 +2343,148 @@
     console.log('✅ 相機失敗提示：僅失敗時顯示，文案已統一');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 修正 step7-2 表單標題為英文（Second Seal Mind Refinement Seal） -->
+<!-- ============================================================ -->
+<style>
+    /* 確保表單標題正確顯示 */
+    .form-title {
+        text-align: center !important;
+        font-size: 1.1rem !important;
+        font-weight: 700 !important;
+        color: #e9d5ff !important;
+        margin-bottom: 18px !important;
+        text-shadow: 0 0 15px rgba(168, 85, 247, 0.3) !important;
+        line-height: 1.5 !important;
+    }
+    /* 英文版標題換行 */
+    .form-title.en-title {
+        font-size: 1rem !important;
+        word-break: break-word !important;
+    }
+</style>
+
+<script>
+(function() {
+    // ================================================================
+    // 中英文對照標題
+    // ================================================================
+    var formTitles = {
+        zh: '📋 第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》提交表單',
+        en: 'Second Seal Mind Refinement Seal\n《Mirror-Refinement Insight × Habit Calibration × Oath Practice Record Sheet》\nSubmission Form'
+    };
+
+    // ================================================================
+    // 取得語系
+    // ================================================================
+    function getLang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var active = document.querySelector('.lang-btn.active');
+        if (active && /english|en/i.test(active.textContent || '')) return 'en';
+        return 'zh';
+    }
+
+    // ================================================================
+    // 更新表單標題
+    // ================================================================
+    function updateFormTitle() {
+        var lang = getLang();
+        var titleEl = document.querySelector('.form-submit-container .form-title, #formMainTitle, .form-title');
+        
+        if (titleEl) {
+            var titleText = (lang === 'en') ? formTitles.en : formTitles.zh;
+            // 英文版時，將換行符轉為 <br>
+            if (lang === 'en') {
+                titleEl.innerHTML = titleText.replace(/\n/g, '<br>');
+                titleEl.classList.add('en-title');
+            } else {
+                titleEl.textContent = titleText;
+                titleEl.classList.remove('en-title');
+            }
+            console.log('✅ 表單標題已更新為：' + (lang === 'en' ? '英文' : '中文'));
+        } else {
+            // 如果找不到，用備用方式
+            var allTitles = document.querySelectorAll('.form-title, .form-submit-container .form-title');
+            allTitles.forEach(function(el) {
+                var titleText = (lang === 'en') ? formTitles.en : formTitles.zh;
+                if (lang === 'en') {
+                    el.innerHTML = titleText.replace(/\n/g, '<br>');
+                    el.classList.add('en-title');
+                } else {
+                    el.textContent = titleText;
+                    el.classList.remove('en-title');
+                }
+            });
+        }
+    }
+
+    // ================================================================
+    // 修正使用說明（section title）也改為英文
+    // ================================================================
+    function updateSectionTitles() {
+        var lang = getLang();
+        
+        // 使用說明標題
+        var helpTitle = document.querySelector('.form-section-title:first-child, #formSectionHelpTitle');
+        if (helpTitle) {
+            helpTitle.textContent = (lang === 'en') ? '📌 Instructions for Use' : '📌 使用說明';
+        }
+
+        // 表單標題（第二個 section title）
+        var sectionTitles = document.querySelectorAll('.form-section-title');
+        if (sectionTitles.length >= 2) {
+            sectionTitles[1].textContent = (lang === 'en') 
+                ? '📋 Second Seal Mind-Refinement Seal 《Mirror-Refinement Insight × Habit Calibration × Oath Practice Record Sheet》 Form'
+                : '📋 第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》表單';
+        }
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    function run() {
+        updateFormTitle();
+        updateSectionTitles();
+        setTimeout(updateFormTitle, 150);
+        setTimeout(updateSectionTitles, 150);
+        setTimeout(updateFormTitle, 400);
+        setTimeout(updateSectionTitles, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // ================================================================
+    // 語系切換時重新執行
+    // ================================================================
+    var origSwitch = window.switchLanguage;
+    if (typeof origSwitch === 'function') {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(updateFormTitle, 80);
+            setTimeout(updateSectionTitles, 80);
+            setTimeout(updateFormTitle, 250);
+            setTimeout(updateSectionTitles, 250);
+        };
+    }
+
+    // ================================================================
+    // 監聽動態變化
+    // ================================================================
+    var observer = new MutationObserver(function() {
+        clearTimeout(window.__formTitleTimer);
+        window.__formTitleTimer = setTimeout(function() {
+            updateFormTitle();
+            updateSectionTitles();
+        }, 150);
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ step7-2 表單標題英文修正模組已載入');
+})();
+</script>
     </body>
 </html>
