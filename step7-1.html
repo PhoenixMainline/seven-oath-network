@@ -1227,5 +1227,336 @@
     console.log('✅ 外部瀏覽器開啟功能模組已載入');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- step7-1 七日誓讀紀錄表：日期改為「下拉式日期點選」          -->
+<!-- 比照 step7-2 的 sd2-date 寫法 (type="date")                  -->
+<!-- ============================================================ -->
+<style>
+    /* 日期輸入框統一風格 */
+    .day-date-input {
+        padding: 6px 10px !important;
+        background: rgba(0, 0, 0, 0.35) !important;
+        border: 1px solid rgba(168, 85, 247, 0.35) !important;
+        border-radius: 6px !important;
+        color: #e0e8f5 !important;
+        font-size: 0.8rem !important;
+        font-family: inherit !important;
+        min-width: 140px !important;
+        outline: none !important;
+        cursor: pointer !important;
+    }
+    .day-date-input:focus {
+        border-color: #a78bfa !important;
+        box-shadow: 0 0 12px rgba(167, 139, 250, 0.2) !important;
+    }
+    /* 讓日期選擇器在深色背景可讀 */
+    .day-date-input::-webkit-calendar-picker-indicator {
+        filter: invert(0.85);
+        cursor: pointer;
+    }
+    /* 日期標題列排版 */
+    .day-title-row {
+        display: flex !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+        margin-bottom: 6px !important;
+        font-weight: bold !important;
+        font-size: 0.9rem !important;
+    }
+    .day-title-row .day-label {
+        color: #c4b5fd !important;
+    }
+    .day-title-row .day-label.day7 {
+        color: #fbbf24 !important;
+    }
+</style>
+
+<script>
+(function() {
+    // ================================================================
+    // 取得目前語系
+    // ================================================================
+    function getLang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var active = document.querySelector('.lang-btn.active');
+        if (active && /english|en/i.test(active.textContent || '')) return 'en';
+        return 'zh';
+    }
+
+    // ================================================================
+    // 日期標籤文字
+    // ================================================================
+    function dayLabel(n, lang) {
+        return (lang === 'en') ? ('Day ' + n) : ('第' + n + '日');
+    }
+
+    function dateHint(lang) {
+        return (lang === 'en') ? 'Select date' : '請選擇日期';
+    }
+
+    // ================================================================
+    // 將舊的日期文字輸入框(placeholder="YYYY-MM-DD") 替換為 type="date"
+    // 並將標題列改為 step7-2 風格
+    // ================================================================
+    function convertDateInputsToDatePicker() {
+        var lang = getLang();
+
+        // ----- 1. 找到所有「第N日」標題列，加上日期輸入框 -----
+        for (var d = 1; d <= 7; d++) {
+            var titleDiv = null;
+
+            // 方法 A：透過 id 找標題列
+            var labelSpan = document.getElementById('step7_1Day' + d + 'Label');
+            if (labelSpan && labelSpan.parentElement) {
+                titleDiv = labelSpan.parentElement;
+            }
+
+            // 方法 B：如果找不到，用文字搜尋
+            if (!titleDiv) {
+                var allDivs = document.querySelectorAll('.form-submit-container div, .hud-card div');
+                for (var i = 0; i < allDivs.length; i++) {
+                    var el = allDivs[i];
+                    if (el.children && el.children.length > 4) continue;
+                    var t = (el.textContent || '').trim();
+                    var zhHit = t.indexOf('第' + d + '日') !== -1;
+                    var enHit = t.indexOf('Day ' + d) !== -1 || t.indexOf('Day' + d) !== -1;
+                    if ((zhHit || enHit) && t.length < 40) {
+                        titleDiv = el;
+                        break;
+                    }
+                }
+            }
+
+            if (!titleDiv) continue;
+
+            // 檢查是否已經有 type="date" 輸入框
+            var existingDate = titleDiv.querySelector('input[type="date"]');
+            if (existingDate) {
+                // 已存在，確保它被正確標記和樣式
+                existingDate.className = 'day-date-input';
+                existingDate.setAttribute('data-day', d);
+                continue;
+            }
+
+            // 保留既有日期值（如果有舊的 text input 或 hidden input）
+            var oldInput = titleDiv.querySelector('input[type="text"][placeholder*="YYYY-MM-DD"], input.day-date, input[data-day="' + d + '"]');
+            var keptValue = oldInput ? oldInput.value : '';
+
+            // 移除舊的日期輸入框（如果有）
+            if (oldInput) oldInput.remove();
+
+            // 建立 type="date" 輸入框
+            var inp = document.createElement('input');
+            inp.type = 'date';
+            inp.className = 'day-date-input';
+            inp.setAttribute('data-day', String(d));
+            inp.id = 'dayDate_' + d;
+            inp.title = dateHint(lang);
+            if (keptValue) inp.value = keptValue;
+
+            // 找到標題文字節點，把日期輸入框放在標題文字後面
+            var labelText = (d === 7) ? '⭐ ' + dayLabel(d, lang) : dayLabel(d, lang);
+            
+            // 清空原本內容，重建
+            var star = (d === 7) ? '⭐ ' : '';
+            var dayLabelId = 'step7_1Day' + d + 'Label';
+            
+            // 保留原本的 checkbox 和 input 在下一層，所以只改標題列本身
+            // 檢查 titleDiv 內是否已有日期輸入框以外的內容需要保留
+            var checkboxes = titleDiv.querySelectorAll('label, .day-check, input[type="checkbox"]');
+            var noteInputs = titleDiv.querySelectorAll('.day-note, .day-summary, input[type="text"]');
+            
+            // 只改標題列的文字部分，保留其他元素
+            // 找到純文字節點（標題文字）替換
+            var textNodes = [];
+            var childNodes = titleDiv.childNodes;
+            for (var i = 0; i < childNodes.length; i++) {
+                if (childNodes[i].nodeType === 3) {
+                    textNodes.push(childNodes[i]);
+                }
+            }
+            
+            // 如果有純文字節點，替換第一個
+            if (textNodes.length > 0) {
+                textNodes[0].textContent = star + dayLabel(d, lang) + ' ';
+            } else {
+                // 沒有純文字節點，在前面插入
+                var span = document.createElement('span');
+                span.textContent = star + dayLabel(d, lang) + ' ';
+                span.style.color = (d === 7) ? '#fbbf24' : '#c4b5fd';
+                span.style.fontWeight = 'bold';
+                titleDiv.insertBefore(span, titleDiv.firstChild);
+            }
+
+            // 插入日期輸入框
+            var dateInput = titleDiv.querySelector('input[type="date"]');
+            if (!dateInput) {
+                var insertAfter = titleDiv.querySelector('span') || titleDiv.firstChild;
+                if (insertAfter) {
+                    titleDiv.insertBefore(inp, insertAfter.nextSibling);
+                } else {
+                    titleDiv.insertBefore(inp, titleDiv.firstChild);
+                }
+            }
+
+            // 更新 class
+            titleDiv.className = 'day-title-row';
+            titleDiv.style.display = 'flex';
+            titleDiv.style.alignItems = 'center';
+            titleDiv.style.flexWrap = 'wrap';
+            titleDiv.style.gap = '10px';
+            titleDiv.style.marginBottom = '6px';
+            titleDiv.style.color = (d === 7) ? '#fbbf24' : '#c4b5fd';
+            titleDiv.style.fontWeight = 'bold';
+            titleDiv.style.fontSize = '0.9rem';
+
+            // 如果有舊的 Label span，隱藏或移除
+            var oldLabel = document.getElementById('step7_1Day' + d + 'Label');
+            if (oldLabel) oldLabel.style.display = 'none';
+        }
+
+        // ----- 2. 處理英語標籤同步 -----
+        if (lang === 'en') {
+            // checkbox 文字
+            var map = {
+                '完成': 'Completed',
+                '未完成': 'Not Completed',
+                '心念': 'Mental',
+                '口誦': 'Vocal'
+            };
+            document.querySelectorAll('.day-check + span, label span[id*="Day"]').forEach(function(sp) {
+                var t = (sp.textContent || '').trim();
+                if (map[t]) sp.textContent = map[t];
+            });
+            document.querySelectorAll('input.day-note').forEach(function(inp) {
+                if (!inp.dataset.phLocked) {
+                    inp.placeholder = 'Notes / Sensory Record';
+                }
+            });
+            document.querySelectorAll('input.day-summary').forEach(function(inp) {
+                if (!inp.dataset.phLocked) {
+                    inp.placeholder = 'Reflection / Sensory Summary (20–50 words)';
+                }
+            });
+        } else {
+            var mapZh = {
+                'Completed': '完成',
+                'Not Completed': '未完成',
+                'Mental': '心念',
+                'Vocal': '口誦'
+            };
+            document.querySelectorAll('.day-check + span, label span[id*="Day"]').forEach(function(sp) {
+                var t = (sp.textContent || '').trim();
+                if (mapZh[t]) sp.textContent = mapZh[t];
+            });
+            document.querySelectorAll('input.day-note').forEach(function(inp) {
+                if (!inp.dataset.phLocked) inp.placeholder = '備註/感應紀錄';
+            });
+            document.querySelectorAll('input.day-summary').forEach(function(inp) {
+                if (!inp.dataset.phLocked) inp.placeholder = '心得/感應摘要(20~50字內)';
+            });
+        }
+
+        // ----- 3. 修正預覽函數，讀取 type="date" 的值 -----
+        window.generateDayPreview = function() {
+            var lang = getLang();
+            var days = [1, 2, 3, 4, 5, 6, 7];
+            var html = '';
+
+            for (var i = 0; i < days.length; i++) {
+                var d = days[i];
+                var complete = document.querySelector('.day-check[data-day="' + d + '"][data-type="complete"]');
+                var incomplete = document.querySelector('.day-check[data-day="' + d + '"][data-type="incomplete"]');
+                var mental = document.querySelector('.day-check[data-day="' + d + '"][data-type="mental"]');
+                var vocal = document.querySelector('.day-check[data-day="' + d + '"][data-type="vocal"]');
+                var note = document.querySelector('.day-note[data-day="' + d + '"]');
+                var summary = document.querySelector('.day-summary[data-day="' + d + '"]');
+
+                // 讀取日期（從 type="date" 輸入框）
+                var dateInput = document.querySelector('input[type="date"][data-day="' + d + '"], #dayDate_' + d);
+                var dateVal = dateInput ? dateInput.value : '';
+
+                // 如果 dateVal 是空，再試試看舊的 id
+                if (!dateVal) {
+                    var oldDate = document.getElementById('dayDate' + d);
+                    if (oldDate) dateVal = oldDate.value;
+                }
+
+                var statusText = (complete && complete.checked) ? '✅ 完成' : (incomplete && incomplete.checked) ? '❌ 未完成' : '—';
+                var methodText = (mental && mental.checked) ? '心念' : (vocal && vocal.checked) ? '口誦' : '—';
+                var noteVal = note ? note.value || '—' : '—';
+                var summaryVal = summary ? summary.value || '—' : '—';
+
+                if (lang === 'en') {
+                    statusText = (complete && complete.checked) ? '✅ Completed' : (incomplete && incomplete.checked) ? '❌ Not Completed' : '—';
+                    methodText = (mental && mental.checked) ? 'Mental' : (vocal && vocal.checked) ? 'Vocal' : '—';
+                }
+
+                var dayLabel = (lang === 'en') ? 'Day ' + d : '第' + d + '日';
+                html += '<tr>';
+                html += '<td>' + dayLabel + '</td>';
+                html += '<td>' + (dateVal || '—') + '</td>';
+                html += '<td>' + statusText + '</td>';
+                html += '<td>' + methodText + '</td>';
+                html += '<td>' + noteVal + '</td>';
+                html += '<td>' + summaryVal + '</td>';
+                html += '</tr>';
+            }
+
+            var previewBody = document.getElementById('previewDayBody');
+            if (previewBody) {
+                previewBody.innerHTML = html;
+            }
+
+            var previewContainer = document.getElementById('previewDayContainer');
+            if (previewContainer) {
+                previewContainer.style.display = 'block';
+                previewContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        };
+
+        console.log('✅ 七日誓讀日期欄位已改為下拉式日期點選 (type="date")');
+    }
+
+    // ================================================================
+    // 執行轉換
+    // ================================================================
+    function run() {
+        convertDateInputsToDatePicker();
+        setTimeout(convertDateInputsToDatePicker, 150);
+        setTimeout(convertDateInputsToDatePicker, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // ================================================================
+    // 語系切換時重新同步
+    // ================================================================
+    var origSwitch = window.switchLanguage;
+    if (typeof origSwitch === 'function') {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(convertDateInputsToDatePicker, 80);
+            setTimeout(convertDateInputsToDatePicker, 250);
+        };
+    }
+
+    // ================================================================
+    // 動態變化時重新補強
+    // ================================================================
+    var observer = new MutationObserver(function() {
+        clearTimeout(window.__datePickerTimer);
+        window.__datePickerTimer = setTimeout(convertDateInputsToDatePicker, 120);
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ step7-1 日期欄位轉換模組已載入');
+})();
+</script>
 </body>
 </html>
