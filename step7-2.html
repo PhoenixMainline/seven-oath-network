@@ -2427,7 +2427,7 @@
         // 使用說明標題
         var helpTitle = document.querySelector('.form-section-title:first-child, #formSectionHelpTitle');
         if (helpTitle) {
-            helpTitle.textContent = (lang === 'en') ? '📌 Instructions for Use' : '📌 使用說明';
+            helpTitle.textContent = (lang === 'en') ? '📌 Instructions for Use' : '📌  Instructions for Use';
         }
 
         // 表單標題（第二個 section title）
@@ -2486,5 +2486,362 @@
     console.log('✅ step7-2 表單標題英文修正模組已載入');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- step7-2：英文版「第N錄」→ Entry N（與書本 Sample 一致）       -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function applyEntryLabels() {
+        var isEn = lang() === 'en';
+
+        // 1) 常見標題節點
+        var nodes = document.querySelectorAll(
+            '.day-label, .day-title, .entry-label, .entry-title, ' +
+            '[class*="day"], [class*="entry"], [id*="day"], [id*="Day"], [id*="entry"], [id*="Entry"], ' +
+            'label, span, div, strong, b, h3, h4'
+        );
+
+        nodes.forEach(function (el) {
+            if (!el || el.children.length > 3) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 40) return;
+
+            // 「第N錄」或「第 N 錄」
+            var m = t.match(/^第\s*([1-9]|10)\s*錄(.*)$/);
+            if (m) {
+                if (isEn) {
+                    var rest = (m[2] || '').trim();
+                    // 保留後面的 (Please fill...) 若有
+                    el.textContent = rest
+                        ? ('Entry ' + m[1] + ' ' + rest)
+                        : ('Entry ' + m[1]);
+                }
+                return;
+            }
+
+            // 混寫：Entry N + 第N錄 → 英文只留 Entry N
+            if (isEn && /Entry\s*([1-9]|10)/i.test(t) && /第\s*([1-9]|10)\s*錄/.test(t)) {
+                el.textContent = t
+                    .replace(/第\s*([1-9]|10)\s*錄/g, '')
+                    .replace(/\s{2,}/g, ' ')
+                    .trim();
+            }
+
+            // 中文模式：若被改成 Entry N，還原
+            if (!isEn) {
+                var m2 = t.match(/^Entry\s*([1-9]|10)(.*)$/i);
+                if (m2) {
+                    var rest2 = (m2[2] || '').trim();
+                    el.textContent = rest2
+                        ? ('第' + m2[1] + '錄 ' + rest2)
+                        : ('第' + m2[1] + '錄');
+                }
+            }
+        });
+
+        // 2) data-day 精準處理 1–10
+        for (var d = 1; d <= 10; d++) {
+            var list = document.querySelectorAll(
+                '[data-day="' + d + '"] .day-label, ' +
+                '[data-day="' + d + '"] .entry-label, ' +
+                '#entryLabel' + d + ', #dayLabel' + d + ', #entryTitle' + d
+            );
+            list.forEach(function (n) {
+                var suffix = '';
+                var raw = (n.textContent || '');
+                // 保留括號提示
+                var tip = raw.match(/(\([^)]*\))/);
+                if (tip) suffix = ' ' + tip[1];
+
+                n.textContent = isEn
+                    ? ('Entry ' + d + suffix)
+                    : ('第' + d + '錄' + suffix);
+            });
+        }
+
+        // 3) 純文字節點備援
+        if (isEn) {
+            var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+            var texts = [];
+            while (walker.nextNode()) texts.push(walker.currentNode);
+            texts.forEach(function (tn) {
+                var v = tn.nodeValue || '';
+                if (!/第\s*([1-9]|10)\s*錄/.test(v)) return;
+                // 若同一父層已有 Entry，刪中文；否則替換
+                var parentTxt = (tn.parentElement && tn.parentElement.textContent) || v;
+                if (/Entry\s*([1-9]|10)/i.test(parentTxt)) {
+                    tn.nodeValue = v.replace(/第\s*([1-9]|10)\s*錄/g, '');
+                } else {
+                    tn.nodeValue = v.replace(/第\s*([1-9]|10)\s*錄/g, function (_, n) {
+                        return 'Entry ' + n;
+                    });
+                }
+            });
+        }
+    }
+
+    function run() {
+        applyEntryLabels();
+        setTimeout(applyEntryLabels, 100);
+        setTimeout(applyEntryLabels, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(applyEntryLabels, 60);
+            setTimeout(applyEntryLabels, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__entryLabel72);
+        window.__entryLabel72 = setTimeout(applyEntryLabels, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ step7-2 英文版 Entry 1–10 標籤已就緒');
+})();
+</script>
+ <!-- ============================================================ -->
+<!-- 「使用說明」↔ Instructions for Use（依語言切換）              -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function applyHelpTitle() {
+        var isEn = lang() === 'en';
+        var zh = '使用說明';
+        var en = 'Instructions for Use';
+
+        // 1) 常見 ID / class
+        var ids = [
+            'step7_2HelpTitle',
+            'step7_1HelpTitle',
+            'helpTitle',
+            'formHelpTitle',
+            'instructionsTitle'
+        ];
+        ids.forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = isEn ? en : zh;
+        });
+
+        // 2) 掃小節點文字
+        document.querySelectorAll(
+            '.form-section-title, .card-title, .help-title, span, div, label, strong, b, h3, h4'
+        ).forEach(function (el) {
+            if (!el || el.children.length > 2) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 30) return;
+
+            if (t === '使用說明' || t === '📘 使用說明' || t === '使用說明：' ||
+                t === 'Instructions for Use' || t === '📘 Instructions for Use') {
+                // 保留前綴 icon 文字
+                var prefix = '';
+                if (/^📘/.test(t) || (el.previousElementSibling && el.previousElementSibling.tagName === 'I')) {
+                    /* icon 在別的節點就不動 */
+                }
+                el.textContent = isEn ? en : zh;
+            }
+
+            // 混寫：同時有中英
+            if (/使用說明/.test(t) && /Instructions for Use/i.test(t)) {
+                el.textContent = isEn ? en : zh;
+            }
+        });
+
+        // 3) 純文字節點備援
+        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+        var nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach(function (tn) {
+            var v = tn.nodeValue || '';
+            if (isEn && /使用說明/.test(v) && !/Instructions for Use/i.test(v)) {
+                tn.nodeValue = v.replace(/使用說明/g, en);
+            }
+            if (!isEn && /Instructions for Use/i.test(v) && !/使用說明/.test(v)) {
+                tn.nodeValue = v.replace(/Instructions for Use/gi, zh);
+            }
+        });
+    }
+
+    function run() {
+        applyHelpTitle();
+        setTimeout(applyHelpTitle, 100);
+        setTimeout(applyHelpTitle, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(applyHelpTitle, 60);
+            setTimeout(applyHelpTitle, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__helpTitleTimer);
+        window.__helpTitleTimer = setTimeout(applyHelpTitle, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 使用說明 / Instructions for Use 語言切換已就緒');
+})();
+</script>   
+<!-- ============================================================ -->
+<!-- 「送出即啟主頻連線…」↔ 英文譯文（依語言切換）                  -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var ZH = '送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。';
+    var ZH2 = '送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。';
+    var EN = 'Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.';
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function apply() {
+        var isEn = lang() === 'en';
+        var target = isEn ? EN : ZH;
+
+        // 1) 常見 ID
+        ['step7_1ReturnNote', 'step7_2ReturnNote', 'step7_1Note', 'step7_2Note'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = target;
+        });
+
+        // 2) 掃小節點
+        document.querySelectorAll(
+            '.hud-card div, .instruction-item, .note, span, p, label'
+        ).forEach(function (el) {
+            if (!el || el.children.length > 3) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 160) return;
+
+            var hitZh = t.indexOf('送出即啟主頻連線') !== -1 ||
+                        t.indexOf('判定授權完成') !== -1 ||
+                        t.indexOf('對頻律網顯化') !== -1;
+            var hitEn = t.indexOf('Primary Frequency Link') !== -1 ||
+                        t.indexOf('Oath-Soul Alignment Network') !== -1 ||
+                        t.indexOf('authorization is recognized') !== -1;
+
+            if (hitZh || hitEn) {
+                // 若節點內只有文字 + 一個 icon，保留 icon
+                var icon = el.querySelector('i');
+                if (icon && el.childNodes.length <= 3) {
+                    // 清掉文字節點再寫入
+                    Array.prototype.slice.call(el.childNodes).forEach(function (n) {
+                        if (n.nodeType === 3) n.nodeValue = '';
+                    });
+                    // 找到非 icon 的文字容器
+                    var textSpan = null;
+                    el.childNodes.forEach(function (n) {
+                        if (n.nodeType === 1 && n !== icon && n.tagName === 'SPAN') textSpan = n;
+                    });
+                    if (textSpan) {
+                        textSpan.textContent = target;
+                    } else {
+                        var span = document.createElement('span');
+                        span.textContent = target;
+                        el.appendChild(span);
+                    }
+                } else {
+                    el.textContent = target;
+                }
+            }
+        });
+
+        // 3) 純文字節點備援
+        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+        var nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach(function (tn) {
+            var v = tn.nodeValue || '';
+            if (isEn) {
+                if (/送出即啟主頻連線/.test(v)) {
+                    tn.nodeValue = v
+                        .replace(ZH, EN)
+                        .replace(ZH2, EN)
+                        .replace(/送出即啟主頻連線，判定授權完成\s*→\s*誓[印魂]對頻律網顯化。?/g, EN);
+                }
+            } else {
+                if (/Primary Frequency Link/.test(v)) {
+                    tn.nodeValue = v.replace(EN, ZH);
+                }
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__freqNoteTimer);
+        window.__freqNoteTimer = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 主頻連線說明中英切換已就緒');
+})();
+</script>
+ <!-- ============================================================ -->
+<!-- 刪除右上角多餘 L 型框框符號（.hud-container::after）          -->
+<!-- ============================================================ -->
+<style>
+    .hud-container::after {
+        display: none !important;
+        content: none !important;
+        border: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+</style>
     </body>
 </html>
