@@ -1715,5 +1715,195 @@
     console.log('✅ step7-2 載入示範 已就緒');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- step7-1 七日誓讀：單一「載入示範」+ 書本 p.263–264 資料       -->
+<!-- ============================================================ -->
+<style>
+.btn-load-demo-71{
+    background:rgba(0,230,118,0.12)!important;
+    border:1px solid rgba(0,230,118,0.35)!important;
+    color:#00e676!important;
+    padding:10px 22px!important;
+    border-radius:24px!important;
+    font-size:.9rem!important;
+    font-weight:700!important;
+    cursor:pointer!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    gap:8px!important;
+}
+.btn-load-demo-71:hover{
+    background:rgba(0,230,118,0.22)!important;
+    box-shadow:0 0 20px rgba(0,230,118,.25)!important;
+}
+</style>
+
+<script>
+(function(){
+    var DEMO={
+        zh:[
+            {date:'2025-10-04',status:'complete',method:'mental',note:'誦讀時胸口有溫熱感，心情安定許多。',summary:'感覺被光包圍，心緒沉靜，像是回到自己誓魂的起點。'},
+            {date:'2025-10-05',status:'complete',method:'vocal',note:'念到第三段時，突然眼淚流下來，像是釋放壓力。',summary:'情緒被淨化，悲傷轉為柔軟的力量，內心更敞開。'},
+            {date:'2025-10-06',status:'complete',method:'mental',note:'今天雖然很累，但靜下來誦讀後，感覺頭腦清晰。',summary:'精神恢復平穩，誓文像能量脈流，淨化了混亂思緒。'},
+            {date:'2025-10-07',status:'complete',method:'vocal',note:'聲音誦出來時，有共鳴感，像是被空間回應。',summary:'空間能量振動明顯，誓文似與周圍氣場共鳴流轉。'},
+            {date:'2025-10-08',status:'complete',method:'mental',note:'感覺與內在願力連結更穩固，內心安定。',summary:'願力清晰如光軸，覺得自己被引導走向更高秩序。'},
+            {date:'2025-10-09',status:'complete',method:'vocal',note:'誦讀時背後微微發熱，像被加持。',summary:'能量流暢，全身輕盈，像有溫柔力量在背後支持。'},
+            {date:'2025-10-10',status:'complete',method:'mental',note:'七日圓滿，內心有達成感，也感覺更有力量。',summary:'七日修持圓滿，心念穩定如光柱，靈脈清明且平靜。'}
+        ],
+        en:[
+            {date:'2025-10-04',status:'complete',method:'mental',note:'Warm sensation in the chest during recitation; mood became more settled.',summary:'Felt surrounded by light; mind quieted, as if returning to the origin of my Oath-Soul.'},
+            {date:'2025-10-05',status:'complete',method:'vocal',note:'Tears flowed during the third passage, like releasing pressure.',summary:'Emotions were purified; sadness transformed into gentle strength, and the heart opened further.'},
+            {date:'2025-10-06',status:'complete',method:'mental',note:'Felt tired today, but after settling down for recitation, the mind became clear.',summary:'Mental state stabilized; the oath text felt like a current of energy cleansing scattered thoughts.'},
+            {date:'2025-10-07',status:'complete',method:'vocal',note:'Audible recitation created resonance, as if the space responded.',summary:'Spatial energy vibration was distinct; the oath text seemed to resonate with the surrounding field.'},
+            {date:'2025-10-08',status:'complete',method:'mental',note:'Stronger connection to inner intention; inner calmness increased.',summary:'Intention clear like a beam of light; felt guided toward higher order.'},
+            {date:'2025-10-09',status:'complete',method:'vocal',note:'Back felt lightly warm during recitation, as if blessed.',summary:'Energy flowed smoothly; body felt light, as if gently supported from behind.'},
+            {date:'2025-10-10',status:'complete',method:'mental',note:'Completion brought a sense of fulfillment; felt strengthened.',summary:'Seven-day practice completed; mind steady like a pillar of light, Oath-Soul-line clear and calm.'}
+        ]
+    };
+
+    function lang(){
+        if(typeof currentLang!=='undefined') return currentLang;
+        var a=document.querySelector('.lang-btn.active');
+        return (a&&/english|en/i.test(a.textContent||''))?'en':'zh';
+    }
+
+    function setDate(day,val){
+        [
+            'input[type="date"][data-day="'+day+'"]',
+            'input.day-date-input[data-day="'+day+'"]',
+            'input.day-date-fix[data-day="'+day+'"]',
+            '#dayDate'+day,
+            'input[name="dayDate'+day+'"]'
+        ].forEach(function(s){
+            var el=document.querySelector(s);
+            if(el) el.value=val;
+        });
+    }
+
+    function setCheck(day,type,on){
+        var el=document.querySelector('.day-check[data-day="'+day+'"][data-type="'+type+'"]');
+        if(el) el.checked=!!on;
+        // 備援：label 文字比對
+        var labels=document.querySelectorAll('label, .form-row, .day-row, tr');
+        // 若頁面用 checkbox 無 data-type，略過
+    }
+
+    function setText(day,cls,val){
+        [
+            '.'+cls+'[data-day="'+day+'"]',
+            'textarea.'+cls+'[data-day="'+day+'"]',
+            'input.'+cls+'[data-day="'+day+'"]',
+            '#'+cls+day
+        ].forEach(function(s){
+            var el=document.querySelector(s);
+            if(el) el.value=val;
+        });
+    }
+
+    window.loadDayDemo=function(){
+        var list=DEMO[lang()]||DEMO.zh;
+        for(var i=0;i<list.length&&i<7;i++){
+            var d=i+1, item=list[i];
+            setDate(d,item.date);
+
+            // 完成 / 未完成
+            setCheck(d,'complete', item.status==='complete');
+            setCheck(d,'incomplete', item.status!=='complete');
+
+            // 心念 / 口誦
+            setCheck(d,'mental', item.method==='mental');
+            setCheck(d,'vocal',  item.method==='vocal');
+
+            // 簽名
+            setCheck(d,'sign', true);
+
+            // 備註、心得
+            setText(d,'day-note', item.note);
+            setText(d,'day-summary', item.summary);
+        }
+
+        // 觸發預覽
+        if(typeof generateDayPreview==='function') setTimeout(generateDayPreview,80);
+        else if(typeof window.generateDayPreview==='function') setTimeout(window.generateDayPreview,80);
+
+        console.log('✅ 已載入書本示範資料 p.263–264（'+lang()+'）');
+    };
+
+    function onlyOneButton(){
+        var all=Array.prototype.slice.call(document.querySelectorAll('button,a'));
+        var demos=all.filter(function(el){
+            var t=(el.textContent||'').replace(/\s+/g,'');
+            return t.indexOf('載入示範')!==-1||t.indexOf('LoadDemo')!==-1||/Load\s*Demo/i.test(t);
+        });
+
+        // 找放按鈕的容器
+        var actions=document.querySelector('.form-actions,.seven-day-actions,.sd2-actions');
+        if(!actions){
+            for(var i=0;i<all.length;i++){
+                var t=(all[i].textContent||'');
+                if(t.indexOf('預覽')!==-1||t.indexOf('Preview')!==-1){
+                    actions=all[i].parentElement;
+                    break;
+                }
+            }
+        }
+
+        // 刪光舊的
+        demos.forEach(function(b){
+            if(b.parentNode) b.parentNode.removeChild(b);
+        });
+
+        if(!actions) return;
+
+        // 只建一顆
+        var btn=document.createElement('button');
+        btn.type='button';
+        btn.className='btn-reset btn-load-demo-71';
+        btn.id='btnLoadDayDemo';
+        btn.innerHTML='<i class="fa-solid fa-file-import"></i> <span id="step7_1BtnDemo">'+(lang()==='en'?'Load Demo':'載入示範')+'</span>';
+        btn.onclick=function(e){
+            e.preventDefault();
+            window.loadDayDemo();
+        };
+        actions.appendChild(btn);
+    }
+
+    function run(){
+        onlyOneButton();
+        setTimeout(onlyOneButton,150);
+        setTimeout(onlyOneButton,400);
+    }
+
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run);
+    else run();
+
+    var orig=window.switchLanguage;
+    if(typeof orig==='function'){
+        window.switchLanguage=function(l){
+            orig(l);
+            setTimeout(function(){
+                onlyOneButton();
+            },80);
+        };
+    }
+
+    var obs=new MutationObserver(function(){
+        clearTimeout(window.__demoBtn71);
+        window.__demoBtn71=setTimeout(function(){
+            // 若又冒出第二顆就清
+            var n=document.querySelectorAll('.btn-load-demo-71, button[id*="Demo"], button[id*="demo"]');
+            var cnt=0;
+            document.querySelectorAll('button').forEach(function(b){
+                var t=(b.textContent||'').replace(/\s+/g,'');
+                if(t.indexOf('載入示範')!==-1||/LoadDemo|Load\s*Demo/i.test(t)) cnt++;
+            });
+            if(cnt>1) onlyOneButton();
+        },120);
+    });
+    obs.observe(document.body,{childList:true,subtree:true});
+
+    console.log('✅ step7-1 單一載入示範 + 書本資料已就緒');
+})();
+</script>
 </body>
 </html>
