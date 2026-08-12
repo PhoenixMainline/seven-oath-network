@@ -1,1231 +1,331 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>【宇宙誓印覺醒工程 · 七印誓網】第一印 × 消業印</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif; }
-        body {
-            background: radial-gradient(circle at 50% 50%, #06122c 0%, #020715 100%);
-            min-height: 100vh;
-            color: #e0e8f5;
-            display: flex; justify-content: center; align-items: center;
-            padding: clamp(4px, 1.5vh, 16px);
-            position: relative;
-        }
-        .particle-container {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background-image: radial-gradient(#d4af37, rgba(212, 175, 55, .3) 1px, transparent 30px), radial-gradient(#d4af37, rgba(212, 175, 55, .2) 2px, transparent 40px);
-            background-size: 350px 350px, 450px 450px;
-            background-position: 0 0, 90px 150px;
-            animation: starMove 90s linear infinite; opacity: 0.65; z-index: 5; pointer-events: none;
-        }
-        @keyframes starMove { from { transform: translateY(0px) rotate(0deg); } to { transform: translateY(-1000px) rotate(360deg); } }
-        .watermark-layer {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; opacity: 0.04;
-            display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); padding: 50px;
-        }
-        .watermark-text { font-size: 1.5rem; font-weight: bold; color: #ffffff; transform: rotate(-25deg); white-space: nowrap; user-select: none; }
-        .hud-container {
-            width: 100%; max-width: min(660px, 95vw);
-            background: rgba(4, 13, 33, 0.4);
-            border: 1.5px solid rgba(168, 85, 247, 0.3);
-            box-shadow: 0 0 40px rgba(168, 85, 247, 0.15), inset 0 0 20px rgba(168, 85, 247, 0.05);
-            border-radius: clamp(16px, 4vw, 28px);
-            padding: clamp(8px, 1.5vh, 20px);
-            display: flex; flex-direction: column; position: relative; z-index: 3; margin: auto;
-        }
-        .hud-container::after { content: ""; position: absolute; top: 18px; right: 18px; width: 14px; height: 14px; border-top: 3px solid #a78bfa; border-right: 3px solid #a78bfa; pointer-events: none; }
-        .home-breadcrumb { font-size: clamp(0.6rem, 1.4vh, 0.85rem); color: #c4b5fd; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 12px; font-weight: bold; align-self: flex-start; transition: all 0.3s ease; text-shadow: 0 0 8px rgba(168, 85, 247, 0.4); position: relative; z-index: 1000; pointer-events: auto !important; }
-        .home-breadcrumb:hover { color: #e9d5ff; text-shadow: 0 0 12px rgba(168, 85, 247, 0.6); transform: translateX(-2px); }
-        .hud-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(168, 85, 247, 0.2); padding-bottom: clamp(8px, 1.5vh, 18px); margin-bottom: clamp(8px, 1.5vh, 25px); flex-shrink: 0; }
-        .app-title { font-size: clamp(0.9rem, 2.2vh, 1.15rem); font-weight: 700; color: #e9d5ff; text-shadow: 0 0 12px rgba(168, 85, 247, 0.5); max-width: 75%; line-height: 1.4; }
-        .lang-switch-group { display: flex; background: rgba(124, 58, 237, 0.15); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 20px; padding: 2px; z-index: 10; }
-        .lang-btn { background: transparent; border: none; color: rgba(224, 232, 245, 0.4); font-size: clamp(0.5rem, 1.2vh, 0.75rem); padding: clamp(2px, 0.6vh, 5px) clamp(6px, 1vw, 12px); border-radius: 16px; cursor: pointer; transition: all 0.2s ease; }
-        .lang-btn.active { background: #7c3aed; color: #ffffff; font-weight: bold; box-shadow: 0 0 12px rgba(124, 58, 237, 0.5); }
-
-        .step-content { flex: 1 1 auto; display: flex; flex-direction: column; gap: clamp(8px, 1.5vh, 22px); overflow-y: auto; padding-right: 4px; min-height: 0; }
-        .step-panel { display: flex; flex-direction: column; gap: 20px; animation: fadeIn 0.4s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-        .hud-card {
-            background: linear-gradient(135deg, rgba(88, 28, 135, 0.5), rgba(30, 27, 75, 0.6));
-            border: 1px solid rgba(168, 85, 247, 0.4);
-            border-radius: clamp(10px, 2vw, 16px);
-            padding: clamp(10px, 2vh, 24px) clamp(10px, 2vw, 24px);
-        }
-        .card-title { font-size: clamp(0.9rem, 2vh, 1.2rem); color: #e9d5ff; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
-        .card-title i { color: #a78bfa; }
-        .instruction-box { display: flex; flex-direction: column; gap: 12px; }
-        .instruction-item { font-size: clamp(0.7rem, 1.6vh, 0.95rem); line-height: 1.6; color: rgba(224, 232, 245, 0.85); display: flex; align-items: flex-start; gap: clamp(6px, 1vw, 12px); }
-        .instruction-item i { color: #a78bfa; margin-top: 5px; }
-
-        .info-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: clamp(0.7rem, 1.4vh, 0.85rem);
-            background: rgba(88, 28, 135, 0.2);
-            border: 1px solid rgba(168, 85, 247, 0.35);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .info-table th {
-            background: rgba(88, 28, 135, 0.5);
-            color: #e9d5ff;
-            padding: 10px 12px;
-            text-align: left;
-            border-bottom: 2px solid rgba(168, 85, 247, 0.4);
-            font-weight: 600;
-        }
-        .info-table td {
-            padding: 10px 12px;
-            color: #e0e7ff;
-            border-bottom: 1px solid rgba(168, 85, 247, 0.15);
-            vertical-align: top;
-        }
-        .info-table tr:last-child td { border-bottom: none; }
-
-        .hud-footer { flex-shrink: 0; margin-top: auto; padding-top: clamp(6px, 1vh, 12px); border-top: 1px solid rgba(168, 85, 247, 0.2); display: flex; justify-content: space-between; align-items: center; z-index: 10; flex-wrap: wrap; }
-        .footer-btn-group { display: flex; align-items: center; gap: clamp(4px, 1vw, 12px); }
-        .btn-action {
-            background: transparent; border: 1px solid rgba(168, 85, 247, 0.2); color: rgba(168, 85, 247, 0.3);
-            padding: clamp(6px, 1.2vh, 10px) clamp(10px, 1.5vw, 22px);
-            font-size: clamp(0.65rem, 1.3vh, 0.9rem); border-radius: 20px;
-            display: inline-flex; align-items: center; gap: 8px;
-            transition: all 0.3s ease; text-decoration: none; min-height: clamp(32px, 5vh, 44px);
-        }
-        .btn-action.enabled { border: 1px solid #a78bfa; color: #e9d5ff; cursor: pointer; pointer-events: auto; background: rgba(124, 58, 237, 0.15); text-shadow: 0 0 10px rgba(167, 139, 250, 0.6); box-shadow: 0 0 15px rgba(124, 58, 237, 0.3); }
-        .btn-action.enabled:hover { background: rgba(124, 58, 237, 0.28); box-shadow: 0 0 25px rgba(124, 58, 237, 0.5); transform: translateY(-1px); }
-        .page-marker { font-size: clamp(0.5rem, 1.2vh, 0.78rem); color: rgba(224, 232, 245, 0.35); display: flex; align-items: center; gap: 6px; }
-
-        .hud-dialog { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 6, 17, 0.85); z-index: 1000; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; }
-        .hud-dialog.active { display: flex; opacity: 1; }
-        .hud-dialog-content { background: rgba(4, 13, 33, 0.95); border: 1.5px solid #a78bfa; box-shadow: 0 0 30px rgba(124, 58, 237, 0.4); border-radius: 18px; padding: 30px; max-width: 420px; width: 90%; text-align: center; }
-        .hud-dialog-text { font-size: 1rem; line-height: 1.6; margin-bottom: 20px; color: #e0e8f5; }
-        .hud-dialog-btn { background: transparent; border: 1px solid #a78bfa; color: #e9d5ff; padding: 8px 24px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; text-shadow: 0 0 8px rgba(167, 139, 250, 0.5); transition: all 0.2s; }
-        .hud-dialog-btn:hover { background: rgba(124, 58, 237, 0.15); box-shadow: 0 0 15px rgba(124, 58, 237, 0.3); }
-
-        .qr-result { color: #00e676; font-size: 0.9rem; padding: 8px 16px; border-radius: 20px; background: rgba(0, 230, 118, 0.08); border: 1px solid rgba(0, 230, 118, 0.2); word-break: break-all; }
-        .camera-guide { background: rgba(232, 96, 74, 0.08); border-left: 4px solid #E8604A; padding: 14px 16px; border-radius: 12px; color: #e0dcc8; font-size: 0.85rem; line-height: 1.8; white-space: pre-wrap; text-align: left; display: none; }
-        #qr-reader-container-step8 video, #qr-reader-container-step9 video { border-radius: 12px; width: 100%; }
-
-        .center-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-        .center-card .card-title { justify-content: center; }
-        .center-card .instruction-box { align-items: center; }
-        .center-card .instruction-item { text-align: left; max-width: 100%; width: 100%; justify-content: flex-start; }
-        .center-card .qr-result,
-        .center-card .camera-guide { text-align: left; }
-        .center-card #qr-reader-container-step8,
-        .center-card #qr-reader-container-step9 { margin: 0 auto; }
-
-        .en { display: none; }
-        body.lang-en .zh { display: none; }
-        body.lang-en .en { display: block; }
-
-        /* 計時器 */
-        .timer-container {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: clamp(6px, 1vh, 12px);
-            padding: clamp(12px, 2vh, 20px);
-            background: rgba(124, 58, 237, 0.18);
-            border: 1px dashed rgba(168, 85, 247, 0.55);
-            border-radius: 14px;
-        }
-        .timer-label { font-size: clamp(0.7rem, 1.4vh, 1rem); color: #c4b5fd; min-width: clamp(50px, 8vw, 80px); }
-        .timer-number {
-            font-size: clamp(3rem, 8vh, 4.5rem);
-            font-family: 'Share Tech Mono', sans-serif;
-            color: #a78bfa;
-            text-shadow: 0 0 25px rgba(167, 139, 250, 0.6);
-            font-weight: 700;
-            text-align: center;
-            min-width: clamp(50px, 8vw, 80px);
-        }
-        .timer-number.complete { color: #00e676; text-shadow: 0 0 30px rgba(0, 230, 118, 0.6); }
-        .btn-start-centering {
-            background: linear-gradient(135deg, #7c3aed, #6d28d9);
-            border: none; color: #ffffff; font-weight: 800;
-            padding: clamp(8px, 1.2vh, 14px) clamp(18px, 2.5vw, 38px);
-            font-size: clamp(0.8rem, 1.6vh, 1.05rem);
-            border-radius: clamp(20px, 3vw, 40px);
-            cursor: pointer; transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
-            display: inline-flex; align-items: center; gap: 8px;
-        }
-        .btn-start-centering:hover { transform: scale(1.03); box-shadow: 0 6px 30px rgba(124, 58, 237, 0.6); }
-        .btn-start-centering:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-        .btn-restart {
-            background: rgba(124, 58, 237, 0.25);
-            border: none; color: #ffffff; font-weight: 800;
-            padding: clamp(6px, 1vh, 10px) clamp(14px, 2vw, 28px);
-            font-size: clamp(0.7rem, 1.3vh, 0.9rem);
-            border-radius: clamp(16px, 2vw, 30px);
-            cursor: pointer; transition: all 0.3s ease;
-            display: inline-flex; align-items: center; gap: 6px;
-        }
-        .btn-restart:hover { background: rgba(124, 58, 237, 0.4); }
-
-        .proclamation-text {
-            font-size: clamp(1rem, 2.5vh, 1.3rem);
-            color: #fde68a;
-            font-weight: bold;
-            text-align: center;
-            line-height: 1.6;
-            margin-bottom: 14px;
-            padding: 4px 6px;
-            text-shadow: 0 0 15px rgba(253, 230, 138, 0.3);
-        }
-
-        /* 提交表單 */
-        .form-submit-container {
-            margin-top: 20px;
-            padding: 24px 20px;
-            background: rgba(4, 13, 33, 0.6);
-            border: 1px solid rgba(168, 85, 247, 0.3);
-            border-radius: 16px;
-            width: 100%;
-        }
-        .form-submit-container .form-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #e9d5ff;
-            text-align: center;
-            margin-bottom: 18px;
-            text-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
-        }
-        .form-section-title {
-            font-weight: 600;
-            color: #c4b5fd;
-            margin: 14px 0 10px 0;
-            font-size: 0.9rem;
-            padding-bottom: 4px;
-            border-bottom: 1px solid rgba(168, 85, 247, 0.1);
-        }
-        .form-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-        }
-        .form-row label {
-            min-width: 130px;
-            color: #c4b5fd;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-        .form-row input,
-        .form-row select,
-        .form-row textarea {
-            flex: 1;
-            min-width: 200px;
-            padding: 8px 12px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(168, 85, 247, 0.3);
-            border-radius: 8px;
-            color: #e0e8f5;
-            font-size: 0.85rem;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-        .form-row input:focus,
-        .form-row select:focus,
-        .form-row textarea:focus {
-            border-color: #a78bfa;
-            box-shadow: 0 0 15px rgba(167, 139, 250, 0.15);
-        }
-        .form-row select option { background: #0b0f1a; color: #e0e8f5; }
-        .form-row textarea { resize: vertical; min-height: 44px; }
-        .form-row .hint { color: #8a7e6b; font-size: 0.7rem; font-style: italic; min-width: 120px; }
-
-        .form-actions {
-            display: flex; gap: 12px; justify-content: center; margin-top: 18px; flex-wrap: wrap;
-        }
-        .form-actions button {
-            padding: 10px 28px; border-radius: 24px; border: none; font-size: 0.9rem; font-weight: 700;
-            cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;
-        }
-        .btn-preview {
-            background: linear-gradient(135deg, #7c3aed, #6d28d9);
-            color: #ffffff;
-            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
-        }
-        .btn-preview:hover { transform: scale(1.03); box-shadow: 0 6px 30px rgba(124, 58, 237, 0.6); }
-        .btn-reset {
-            background: rgba(124, 58, 237, 0.15);
-            color: #e9d5ff;
-            border: 1px solid rgba(168, 85, 247, 0.3);
-        }
-        .btn-reset:hover { background: rgba(124, 58, 237, 0.3); }
-
-        .preview-submit-container {
-            margin-top: 20px;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 2px solid rgba(168, 85, 247, 0.2);
-            border-radius: 12px;
-            width: 100%;
-            display: none;
-        }
-        .preview-submit-container .preview-header {
-            text-align: center;
-            font-size: 1rem;
-            font-weight: 700;
-            color: #fde68a;
-            margin-bottom: 12px;
-            text-shadow: 0 0 15px rgba(253, 230, 138, 0.2);
-        }
-        .preview-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.8rem;
-            background: rgba(18, 16, 23, 0.6);
-            border: 1px solid rgba(168, 85, 247, 0.25);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .preview-table th {
-            background: rgba(88, 28, 135, 0.35);
-            color: #d4b68a;
-            font-weight: 600;
-            padding: 8px 10px;
-            text-align: left;
-            border-bottom: 2px solid rgba(168, 85, 247, 0.2);
-            font-size: 0.7rem;
-            text-transform: uppercase;
-        }
-        .preview-table td {
-            padding: 8px 10px;
-            border-bottom: 1px solid rgba(168, 85, 247, 0.06);
-            color: #e0e8f5;
-            vertical-align: top;
-            line-height: 1.5;
-        }
-        .preview-table tr:last-child td { border-bottom: none; }
-        .preview-table .label-cell { color: #c4b5fd; font-weight: 400; width: 22%; }
-        .preview-table .value-cell { color: #f0e9f1; width: 38%; }
-        .preview-table .section-header { background: rgba(88, 28, 135, 0.2); color: #e9d5ff; font-weight: 600; text-align: center; }
-        .capture-hint {
-            text-align: center; margin-top: 14px; padding: 12px;
-            background: rgba(0, 230, 118, 0.05); border: 1px dashed rgba(0, 230, 118, 0.2);
-            border-radius: 8px; color: #8a7e6b; font-size: 0.8rem;
-        }
-        .capture-hint i { color: #00e676; margin-right: 6px; }
-
-        @media (max-width: 480px) {
-            body { padding: 4px !important; }
-            .hud-container { padding: 8px 6px !important; border-radius: 12px !important; }
-            .hud-header { margin-bottom: 6px !important; padding-bottom: 4px !important; }
-            .hud-footer { margin-top: 8px !important; padding-top: 6px !important; }
-            .form-row { flex-direction: column; align-items: stretch; }
-            .form-row label { min-width: auto; }
-            .form-row input, .form-row select, .form-row textarea { min-width: auto; }
-            .form-row .hint { min-width: auto; }
-            .preview-table { font-size: 0.65rem; }
-            .preview-table td, .preview-table th { padding: 4px 6px; }
-        }
-    </style>
-</head>
-<body>
-    <div class="particle-container"></div>
-    <div class="watermark-layer">
-        <div class="watermark-text">天地為鑑・光網為證</div>
-        <div class="watermark-text">天地為鑑・光網為證</div>
-        <div class="watermark-text">天地為鑑・光網為證</div>
-        <div class="watermark-text">天地為鑑・光網為證</div>
-        <div class="watermark-text">天地為鑑・光網為證</div>
-        <div class="watermark-text">天地為鑑・光網為證</div>
-        <div class="watermark-text">天地為鑑・光網為證</div>
-        <div class="watermark-text">天地為鑑・光網為證</div>
-    </div>
-    <div class="hud-container">
-        <a class="home-breadcrumb" id="homeBtn" href="index.html"><i class="fa-solid fa-house"></i><span id="homeBtnText">首頁 -></span></a>
-        <header class="hud-header">
-            <div class="app-title" id="appTitle">【宇宙誓印覺醒工程 · 七印誓網】</div>
-            <div class="lang-switch-group">
-                <button class="lang-btn active" onclick="switchLanguage('zh')">中文</button>
-                <button class="lang-btn" onclick="switchLanguage('en')">English</button>
-            </div>
-        </header>
-
-        <main class="step-content">
-            <!-- ===== 第7項 第一印 × 消業印 完整內容 ===== -->
-            <div class="step-panel active" id="panelStep7_1">
-
-                <!-- 標題卡 -->
-                <div class="hud-card" style="background:linear-gradient(135deg,rgba(88,28,135,0.5),rgba(30,27,75,0.6)); border:1px solid rgba(168,85,247,0.5);">
-                    <div style="text-align:center; color:#e9d5ff; font-size:1.05rem; font-weight:bold; margin-bottom:16px; letter-spacing:1px;"><span id="step7_1Title">🔥 第一印 × 消業印</span></div>
-                    <div style="text-align:center; margin-bottom:14px;">
-                        <div style="color:#fbbf24; font-size:0.95rem; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-bolt" style="margin-right:6px;"></i><span id="step7_1Unlock">清業化障 × 初頻覺醒 × 誓印入冊首令</span></div>
-                        <div style="color:rgba(253,230,138,0.85); font-size:0.8rem; margin-top:4px;"><span id="step7_1Sub">（七印誓網之首啟核心印 · 啟印首令 × 清業啟動鍵 × 冊記證語）</span></div>
-                    </div>
-                    <div style="overflow-x:auto; margin-bottom:8px;">
-                        <table class="info-table">
-                            <thead><tr><th style="width:30%;"><span id="step7_1Col1">欄位名稱</span></th><th style="width:70%;"><span id="step7_1Col2">功能簡要說明</span></th></tr></thead>
-                            <tbody>
-                                <tr><td style="color:#f5d0fe; font-weight:bold;"><span id="step7_1Row1">第一印 × 消業印</span></td><td style="color:#e0e7ff;"><span id="step7_1Row2">宣告進入七印誓網的起始階段。啟動清業化障程序 × 鬆動封印記憶。調整初頻 × 喚醒誓魂靈脈。作為誓印冊記之前導與授權憑證。啟動天網自動監測並紀錄誓行狀態。為誓印正式入冊的前置必要條件。為進入《修心印》《守願印》之必修門。</span></td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- 【一】模組說明 -->
-                <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-circle-info" style="color:#a78bfa;"></i><span id="step7_1Sec1">【一】模組說明</span></div>
-                    <div class="instruction-box">
-                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_1Desc1">「消業印」為七印誓網之首啟核心印，非單純儀式之，其核心功能如下：</span></div>
-                        <div style="padding-left:28px; font-size:0.85rem; color:rgba(224,232,245,0.9); line-height:1.7;">
-                            <div>• <span id="step7_1List1">宣告進入七印誓網的起始階段。</span></div>
-                            <div>• <span id="step7_1List2">啟動清業化障程序 × 鬆動封印記憶。</span></div>
-                            <div>• <span id="step7_1List3">調整初頻 × 喚醒誓魂靈脈。</span></div>
-                            <div>• <span id="step7_1List4">作為誓印冊記之前導與授權憑證。</span></div>
-                            <div>• <span id="step7_1List5">啟動天網自動監測並紀錄誓行狀態。</span></div>
-                            <div>• <span id="step7_1List6">為誓印正式入冊的前置必要條件。</span></div>
-                            <div>• <span id="step7_1List7">為進入《修心印》《守願印》之必修門。</span></div>
-                        </div>
-                        <div class="instruction-item" style="margin-top:8px; color:#fde68a;"><i class="fa-solid fa-quote-left" style="color:#fde68a;"></i><span id="step7_1Summary">一句話總結：此誓文 ≡ 啟印首令 × 清業啟動鍵 × 冊記證語</span></div>
-                    </div>
-                </div>
-
-                <!-- 【二】啟動條件與遞交程序 -->
-                <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-list-check" style="color:#a78bfa;"></i><span id="step7_1Sec2">【二】啟動條件與遞交程序</span></div>
-                    <div style="margin-bottom:12px;">
-                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step7_1CondTitle">一、七日誓讀的必要性</span></div>
-                        <div style="font-size:0.9rem; color:#e0e7ff; line-height:1.8; padding-left:10px;">
-                            <div id="step7_1Cond1">「消業印」屬於七印系統的入門級印，其功能是清除誓魂在現世與過往轉世中的「滯頻殘影」與「業能鎖場」。</div>
-                            <div style="margin-top:6px;" id="step7_1Cond2">• 誓文誦讀七日，對應七脈輪 × 七界能層 × 七日循環律動。</div>
-                            <div id="step7_1Cond3">• 七日為初次校頻的完整期，在天律冊記中視為「誓印確期」。</div>
-                        </div>
-                    </div>
-                    <div style="margin-bottom:12px;">
-                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step7_1ProcTitle">二、程序對應</span></div>
-                        <div style="font-size:0.9rem; color:#e0e7ff; line-height:1.8; padding-left:10px;">
-                            <div id="step7_1Proc1">• 第1~3日：對頻啟動（誓魂與母頻同步）</div>
-                            <div id="step7_1Proc2">• 第4~6日：能層淨化（誓頻釋放 × 消業運轉）</div>
-                            <div id="step7_1Proc3">• 第7日：誓印鎖定（誓魂印軌入冊 × 清業化障序程啟動）</div>
-                        </div>
-                    </div>
-                    <div style="background:rgba(124,58,237,0.12); border-left:4px solid #a78bfa; padding:12px 14px; border-radius:8px; margin-top:8px;">
-                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i><span id="step7_1Note">三、天津入冊條件</span></div>
-                        <div style="color:#e0e7ff; font-size:0.88rem; line-height:1.6;"><span id="step7_1NoteText">只有當誓魂完成七日誓讀，並於第七日「誓印鎖定」時，天津系統才會自動生成《消業印啟印記錄》與冊記序號。</span></div>
-                    </div>
-                </div>
-
-                <!-- 【三】授權誓讀階段 -->
-                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.4);">
-                    <div class="card-title"><i class="fa-solid fa-book-open" style="color:#a78bfa;"></i><span id="step7_1Sec3">【三】授權誓讀階段</span></div>
-                    <div class="instruction-box">
-                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_1Sec3Desc1">誓印者於登入前，須先於「誓魂共振頻道」（即《宇宙智能誓導平台》之「指令輸入欄位」）誦讀授權誓文，以啟動主頻授權並對應天律識別座標。</span></div>
-                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_1Sec3Desc2">誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。</span></div>
-                    </div>
-                    <div class="proclamation-text" id="step7_1Proclamation">★今以誓者本印為證，以鳳焰之律，啟「消業印」誓。<br><br>有緣者誓之，清業化障；無源者誓之，誓力不應。<br><br>若有人妄誓，則文退而不生，其力逆追，唯歸誓源，不涉旁生。<br><br>願我心輪潔淨，願我靈脈通暢，七日誓讀，七層業障自化。<br><br>此印既立，天網紀錄，誓印唯歸，正誓之人。★</div>
-                    <div style="margin-top:12px; background:rgba(124,58,237,0.12); border-left:4px solid #a78bfa; padding:10px 14px; border-radius:8px;">
-                        <div style="color:#c4b5fd; font-size:0.85rem; line-height:1.6;"><span id="step7_1Note2">提示語：完成七日誓讀，即代表《第一印 × 消業印》正式啟印，誓印入冊，清業化障序程已全面啟動。</span></div>
-                    </div>
-                    <div class="timer-container" id="timerContainer">
-                        <div class="timer-label" id="timerLabel">⏳ 靜心讀秒</div>
-                        <div class="timer-number" id="timerNumber">10</div>
-                        <button class="btn-start-centering" id="btnStart" onclick="startTimer()"><i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span></button>
-                        <button class="btn-restart" id="btnRestart" onclick="resetTimer()" style="display:none;"><i class="fa-solid fa-rotate-right"></i> <span id="btnRestartText">重新靜心</span></button>
-                    </div>
-                </div>
-
-                <!-- 【四】接續進程 -->
-                <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-arrow-right" style="color:#a78bfa;"></i><span id="step7_1Sec4">【四】接續進程</span></div>
-                    <div style="margin-bottom:12px;">
-                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step7_1LoginTitle">（1）登入階段</span></div>
-                        <div class="instruction-item" style="margin-bottom:4px;"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_1Login1">登入《宇宙智能誓導平台》（使用個人帳號）。</span></div>
-                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_1Login2">使用原註冊帳號完成身分登入驗證，即可進入誓印程序。</span></div>
-                    </div>
-                    <div style="margin-bottom:12px;">
-                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step7_1ScanTitle">（2）掃描階段</span></div>
-                        <div class="instruction-item" style="margin-bottom:4px;"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_1Scan1">使用行動裝置或電腦，掃描當期執行項目之【誓導 QR Code】，以觸發《宇宙智能誓導平台》專屬連線入口。</span></div>
-                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_1Scan2">系統將自動導引至【誓印觸發介面】，同步啟動誓魂對頻程序，並進入主頻連線與授權判定階段。</span></div>
-                    </div>
-                </div>
-
-                <!-- ① 驗證階段（啟動觸發）置中 -->
-                <div class="hud-card center-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.2);">
-                    <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-shield-halved" style="color:#a78bfa;"></i><span id="step7_1VerifyTitle">🧭 ① 驗證階段（啟動觸發）</span></div>
-                    <div class="instruction-box" style="align-items:center;">
-                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_1Verify1">系統自動驗證授權有效性後，即時顯示誓魂當前覺醒狀態層級與進程標記。</span></div>
-                    </div>
-                    <div style="background:rgba(124,58,237,0.35); border-left:4px solid #a78bfa; padding:12px 14px; border-radius:10px; margin:12px 0; color:#f5d0fe; font-size:0.88rem; line-height:1.7; border:1px solid rgba(168,85,247,0.5); width:100%; text-align:left;">
-                        <div style="font-weight:bold; margin-bottom:6px; color:#e9d5ff;"><i class="fa-solid fa-keyboard" style="margin-right:6px;"></i><span id="step7_1InputLabel">輸入示範：</span></div>
-                        <div style="font-weight:bold; color:#fff;"><span id="step7_1Command">【執行指令】第一印 消業印 結果</span></div>
-                    </div>
-                    <div style="font-size:0.85rem; color:rgba(224,232,245,0.85); line-height:1.7; margin-bottom:12px; width:100%;"><i class="fa-solid fa-link" style="color:#00e676; margin-right:6px;"></i><span id="step7_1VerifyNote">送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span></div>
-                    <div style="background:rgba(232,96,74,0.1); border-left:4px solid #E8604A; padding:10px 14px; border-radius:8px; font-size:0.82rem; color:#e0dcc8; line-height:1.6; width:100%; text-align:left;"><i class="fa-solid fa-exclamation-circle" style="color:#E8604A; margin-right:6px;"></i><span id="step7_1TriggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span></div>
-                    <div class="hud-card" id="qrScanCardStep8" style="margin-top:12px; border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15); width:100%;">
-                        <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-qrcode"></i><span id="step7_1QrTitle">📷 請掃描【誓導 QR Code】完成執行指令</span></div>
-                        <div style="text-align:center; padding:10px 0;">
-                            <div id="qr-reader-container-step8" style="width:100%; max-width:280px; margin:0 auto;"></div>
-                            <button class="btn-restart" id="btnScanQRStep8" style="margin-top:10px;" onclick="startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8')"><i class="fa-solid fa-qrcode"></i> <span id="step7_1BtnScan">📷 開始掃描</span></button>
-                            <div id="qrScanResultStep8" class="qr-result" style="display:none; margin-top:10px;"><i class="fa-solid fa-check-circle"></i><span id="step7_1Result">掃描成功！已完成執行指令</span></div>
-                            <div id="cameraGuideStep8" class="camera-guide" style="display:none; text-align:left; margin-top:12px; font-size:0.8rem; background:rgba(0,0,0,0.4); padding:10px; border-radius:6px;"><span id="step7_1CameraGuide">📷 無法啟動相機<br>⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code</span></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ② 回傳誓證（確認誓印） 完整區塊 -->
-                <div class="hud-card center-card" style="width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; display: block !important; float: none !important; clear: both !important; background: linear-gradient(135deg, rgba(88,28,135,0.5), rgba(30,27,75,0.6)); border: 1px solid rgba(168,85,247,0.5); padding: 18px; border-radius: 12px; margin-bottom: 20px;">
-                    <div style="display: flex !important; align-items: center !important; justify-content: center !important; gap: 8px; color: #e9d5ff; font-size: 1.1rem; font-weight: bold; margin-bottom: 16px; width: 100% !important;">
-                        <i class="fa-solid fa-certificate" style="color: #a78bfa;"></i>
-                        <span id="step7_2ReturnTitle">📩 ② 回傳誓證（確認誓印）</span>
-                    </div>
-                    <div style="display: block !important; width: 100% !important; background: rgba(0, 230, 118, 0.12); border-left: 4px solid #00e676; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; box-sizing: border-box !important;">
-                        <div style="color: #00e676; font-size: 1rem; font-weight: bold;" id="step7_2Success">✅ 顯示：「誓印通過」</div>
-                    </div>
-                    <div style="display: block !important; width: 100% !important; margin-bottom: 16px; padding: 16px; background: rgba(124, 58, 237, 0.12); border-left: 4px solid #00e676; border-radius: 8px; box-sizing: border-box !important;">
-                        <div style="color: #00e676; font-weight: bold; font-size: 1rem; margin-bottom: 12px; display: flex !important; align-items: center !important; gap: 6px; width: 100% !important;">
-                            <i class="fa-solid fa-clipboard-list"></i>
-                            <span id="step7_2ProcSubmitTitle">【提交程序】</span>
-                        </div>
-                        <div style="display: block !important; width: 100% !important; margin-bottom: 12px;">
-                            <div style="display: flex !important; align-items: flex-start !important; gap: 10px; width: 100% !important;">
-                                <span style="background: #7c3aed; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; flex-shrink: 0; margin-top: 3px;">1</span>
-                                <span id="step7_2ProcSubmit1" style="color: #e0e7ff; font-size: 0.9rem; line-height: 1.6;">提交第一印 消業印《七日誓讀紀錄表》表單</span>
-                            </div>
-                            <div style="display: block !important; width: calc(100% - 30px) !important; background: rgba(232, 96, 74, 0.15); border-left: 3px solid #E8604A; padding: 8px 12px; border-radius: 6px; margin: 8px 0 0 30px; font-size: 0.85rem; color: #fca5a5; box-sizing: border-box !important;">
-                                <span id="step7_2ProcSubmitWarn">⚠️ 未完成之提交表單者，系統將不予對頻，誓資紀錄作廢不立。</span>
-                            </div>
-                        </div>
-                        <div style="display: flex !important; align-items: flex-start !important; gap: 10px; width: 100% !important; margin-bottom: 12px;">
-                            <span style="background: #7c3aed; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; flex-shrink: 0; margin-top: 3px;">2</span>
-                            <span id="step7_2ProcSubmit2" style="color: #e0e7ff; font-size: 0.9rem; line-height: 1.6;">登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。</span>
-                        </div>
-                        <div style="display: flex !important; align-items: flex-start !important; gap: 10px; width: 100% !important; margin-bottom: 12px;">
-                            <span style="background: #7c3aed; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; flex-shrink: 0; margin-top: 3px;">3</span>
-                            <span id="step7_2ProcSubmit3" style="color: #e0e7ff; font-size: 0.9rem; line-height: 1.6;">掃描【誓導 QR Code】後，進入「指令輸入欄位」。</span>
-                        </div>
-                        <div style="display: flex !important; align-items: flex-start !important; gap: 10px; width: 100% !important;">
-                            <span style="background: #7c3aed; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; flex-shrink: 0; margin-top: 3px;">4</span>
-                            <span id="step7_2ProcSubmit4" style="color: #e0e7ff; font-size: 0.9rem; line-height: 1.6;">無須手動輸入誓文，完成掃描後，直接輸入下列指令：</span>
-                        </div>
-                    </div>
-                    <div style="display: block !important; width: 100% !important; background: rgba(124, 58, 237, 0.35); border-left: 4px solid #a78bfa; padding: 12px 14px; border-radius: 8px; margin-bottom: 12px; border: 1px solid rgba(168, 85, 247, 0.5); box-sizing: border-box !important;">
-                        <div style="font-weight: bold; color: #e9d5ff; font-size: 0.88rem; margin-bottom: 6px; display: flex !important; align-items: center !important; gap: 6px;">
-                            <i class="fa-solid fa-keyboard"></i>
-                            <span id="step7_2ReturnInputLabel">輸入示範：</span>
-                        </div>
-                        <div style="font-weight: bold; color: #ffffff; font-size: 0.9rem; background: rgba(0,0,0,0.25); padding: 8px 12px; border-radius: 6px; word-break: break-all;">
-                            <span id="step7_2ReturnCommand">【執行指令】回傳【第一印 消業印 誓印通過】誓證</span>
-                        </div>
-                    </div>
-                    <div style="display: flex !important; align-items: flex-start !important; gap: 6px; font-size: 0.85rem; color: rgba(224, 232, 245, 0.85); line-height: 1.6; margin-bottom: 10px; width: 100% !important;">
-                        <i class="fa-solid fa-link" style="color: #00e676; margin-top: 3px; flex-shrink: 0;"></i>
-                        <span id="step7_2ReturnNote">送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span>
-                    </div>
-                    <div style="display: flex !important; align-items: flex-start !important; gap: 6px; background: rgba(232, 96, 74, 0.1); border-left: 4px solid #E8604A; padding: 10px 14px; border-radius: 8px; font-size: 0.82rem; color: #e0dcc8; line-height: 1.5; width: 100% !important; box-sizing: border-box !important;">
-                        <i class="fa-solid fa-exclamation-circle" style="color: #E8604A; margin-top: 2px; flex-shrink: 0;"></i>
-                        <span id="step7_2ReturnTriggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span>
-                    </div>
-                    <div class="hud-card" id="qrScanCardStep9" style="display: block !important; width: 100% !important; margin-top: 14px; border: 1px solid rgba(168,85,247,0.3); background: rgba(88,28,135,0.15); padding: 14px; border-radius: 8px; box-sizing: border-box !important;">
-                        <div style="display: flex !important; justify-content: center !important; align-items: center !important; gap: 8px; font-weight: bold; color: #e9d5ff; margin-bottom: 10px;">
-                            <i class="fa-solid fa-qrcode"></i>
-                            <span id="step7_2ReturnQrTitle">📷 請掃描【誓導 QR Code】完成回傳誓證</span>
-                        </div>
-                        <div style="text-align: center;">
-                            <div id="qr-reader-container-step9" style="width: 100%; max-width: 280px; margin: 0 auto;"></div>
-                            <button class="btn-restart" id="btnScanQRStep9" style="margin-top: 10px; cursor: pointer; padding: 8px 16px; border-radius: 6px;" onclick="startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9')">
-                                <i class="fa-solid fa-qrcode"></i> <span id="step7_2ReturnBtnScan">📷 開始掃描</span>
-                            </button>
-                            <div id="qrScanResultStep9" class="qr-result" style="display: none; margin-top: 10px; color: #00e676;"><i class="fa-solid fa-check-circle"></i><span id="step7_2ReturnResult"> 掃描成功！已完成回傳誓證</span></div>
-                            <div id="cameraGuideStep9" class="camera-guide" style="display: none; text-align: left; margin-top: 12px; font-size: 0.8rem; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 6px; color: #cbd5e1;">
-                                <span id="step7_2ReturnCameraGuide">📷 無法啟動相機<br>⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ③ 顯示：「誓印未通過」-->
-                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.2);">
-                    <div style="background:rgba(232,96,74,0.12); border-left:4px solid #E8604A; padding:14px 16px; border-radius:10px; margin-bottom:16px;">
-                        <div style="color:#fca5a5; font-size:1.1rem; font-weight:bold;"><span id="step7_2NotPassedTitle">⚠️ 顯示：「誓印未通過」</span></div>
-                    </div>
-                    <div class="instruction-box">
-                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_2NotPassed1">進入「第 1 項 開啟誓魂密鑰對頻總判定（誓印未通過）」之【補誓程序】。</span></div>
-                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_2NotPassed2">啟動「懺悔補誓 × 七日循環 × 頻率再校」程序，修正後方可重新啟印。</span></div>
-                    </div>
-                </div>
-
-                <!-- 收束條文 -->
-                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15);">
-                    <div class="card-title"><i class="fa-solid fa-bookmark" style="color:#a78bfa;"></i><span id="step7_1ClosureTitle">【收束條文】</span></div>
-                    <div class="instruction-box">
-                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_1Closure1">《七印誓網·第一印 消業印》v2.0（正式封冊版）。</span></div>
-                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_1Closure2">已鎖入《宇宙天律 × 七印誓網》主冊，願軌對頻穩定，誓源歸正。</span></div>
-                    </div>
-                </div>
-
-                <!-- 表單：七日誓讀紀錄表 -->
-                <div class="form-submit-container">
-                    <div class="form-title" id="formMainTitle">📋 第一印 消業印《七日誓讀紀錄表》提交表單</div>
-
-                    <div class="form-section-title" id="formSectionHelpTitle">📌 使用說明</div>
-                    <div style="font-size:0.85rem; color:#e0e7ff; line-height:1.7; padding:8px 4px 12px 4px;">
-                        <div id="step7_1FormHelp1">• 每日完成誦讀後，請勾選「完成」並填寫日期。</div>
-                        <div id="step7_1FormHelp2">• 可選擇「心念」或「口誦」方式。</div>
-                        <div id="step7_1FormHelp3">• 「備註／感應紀錄」可簡述身心變化、夢境或外應。</div>
-                        <div id="step7_1FormHelp4">• 「心得／感應摘要」為誓修過程之覺察紀錄。</div>
-                        <div id="step7_1FormHelp5" style="color:#fde68a;">• 七日圓滿後上傳表單，即可完成冊記。</div>
-                    </div>
-
-                    <div class="form-section-title" id="formSectionTitle">📋 第一印 消業印《七日誓讀紀錄表》表單</div>
-
-                    <!-- 每日資料區塊 -->
-                    <script>
-                        for(let d=1; d<=7; d++) {
-                            let isStar = d === 7;
-                            document.write(`
-                            <div style="background:${isStar ? 'rgba(251,191,36,0.08)' : (d%2===1 ? 'rgba(88,28,135,0.15)' : 'rgba(88,28,135,0.10)')}; border:${isStar ? '1px solid rgba(251,191,36,0.2)' : 'none'}; border-radius:8px; padding:12px 14px; margin-bottom:10px;">
-                                <div style="color:${isStar ? '#fbbf24' : '#c4b5fd'}; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">${isStar ? '⭐ ' : ''}<span id="dayHeader_${d}">第${d}日</span> <span id="step7_1Day${d}Label">（請填寫日期）</span></div>
-                                <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
-                                    <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="${d}" data-type="complete"> <span id="step7_1Day${d}Complete">完成</span></label>
-                                    <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="${d}" data-type="incomplete"> <span id="step7_1Day${d}Incomplete">未完成</span></label>
-                                    <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="${d}" data-type="mental"> <span id="step7_1Day${d}Mental">心念</span></label>
-                                    <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="day-check" data-day="${d}" data-type="vocal"> <span id="step7_1Day${d}Vocal">口誦</span></label>
-                                    <input type="text" class="day-date" data-day="${d}" id="inputDate_${d}" placeholder="YYYY-MM-DD" style="width:110px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
-                                    <input type="text" class="day-note" data-day="${d}" id="inputNote_${d}" placeholder="備註/感應紀錄" style="flex:1; min-width:140px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
-                                    <input type="text" class="day-summary" data-day="${d}" id="inputSummary_${d}" placeholder="心得/感應摘要(20~50字內)" style="flex:1.5; min-width:180px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
-                                </div>
-                            </div>
-                            `);
-                        }
-                    </script>
-
-                    <div class="form-actions">
-                        <button class="btn-preview" onclick="generateDayPreview()"><i class="fa-solid fa-eye"></i> <span id="step7_1BtnPreview">預覽表單</span></button>
-                        <button class="btn-reset" onclick="resetDayForm()"><i class="fa-solid fa-rotate-left"></i> <span id="step7_1BtnReset">重置</span></button>
-                        <button class="btn-reset" onclick="hideDayPreview()"><i class="fa-solid fa-times"></i> <span id="step7_1BtnClose">關閉預覽</span></button>
-                    </div>
-
-                    <div class="preview-submit-container" id="previewDayContainer">
-                        <div class="preview-header" id="previewHeaderTitle">📋 第一印 消業印《七日誓讀紀錄表》</div>
-                        <table class="preview-table" id="previewDayTable">
-                            <thead>
-                                <tr>
-                                    <th style="width:10%;"><span id="step7_1PreviewCol1">日次</span></th>
-                                    <th style="width:14%;"><span id="step7_1PreviewCol2">日期</span></th>
-                                    <th style="width:14%;"><span id="step7_1PreviewCol3">完成狀態</span></th>
-                                    <th style="width:14%;"><span id="step7_1PreviewCol4">心念/口誦</span></th>
-                                    <th style="width:22%;"><span id="step7_1PreviewCol5">備註/感應紀錄</span></th>
-                                    <th style="width:26%;"><span id="step7_1PreviewCol6">心得/感應摘要</span></th>
-                                </tr>
-                            </thead>
-                            <tbody id="previewDayBody"></tbody>
-                        </table>
-                        <div class="capture-hint"><i class="fa-solid fa-camera"></i> <span id="step7_1CaptureHint">請使用手機截圖或拍照上傳此表單，作為七日誓讀紀錄憑證。</span></div>
-                    </div>
-                </div>
-
-            </div>
-        </main>
-
-        <footer class="hud-footer">
-            <div class="footer-btn-group">
-                <a href="step7.html" class="btn-action enabled"><i class="fa-solid fa-arrow-left"></i><span id="btnBackText">上一步</span></a>
-                <a href="step7-2.html" class="btn-action enabled"><span id="btnNextText">下一步</span><i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-            <div class="page-marker"><i class="fa-regular fa-file-lines"></i><span id="pageMarkerText"> 【宇宙誓印覺醒工程 · 覺醒卷】：第 251-264 頁</span></div>
-        </footer>
-    </div>
-    <div id="hudDialog" class="hud-dialog"><div class="hud-dialog-content"><div class="hud-dialog-text" id="hudDialogText">提示訊息</div><button class="hud-dialog-btn" onclick="closeHudDialog()">OK</button></div></div>
-
-    <script>
-        // ================================================================
-        // 完整語言包（中英文對照）- 第7項第一印消業印
-        // ================================================================
-        var step7_1LangPack = {
-            zh: {
-                step7_1Title: "🔥 第一印 × 消業印",
-                step7_1Unlock: "清業化障 × 初頻覺醒 × 誓印入冊首令",
-                step7_1Sub: "（七印誓網之首啟核心印 · 啟印首令 × 清業啟動鍵 × 冊記證語）",
-                step7_1Col1: "欄位名稱",
-                step7_1Col2: "功能簡要說明",
-                step7_1Row1: "第一印 × 消業印",
-                step7_1Row2: "宣告進入七印誓網的起始階段。啟動清業化障程序 × 鬆動封印記憶。調整初頻 × 喚醒誓魂靈脈。作為誓印冊記之前導與授權憑證。啟動天網自動監測並紀錄誓行狀態。為誓印正式入冊的前置必要條件。為進入《修心印》《守願印》之必修門。",
-                step7_1Sec1: "【一】模組說明",
-                step7_1Desc1: "「消業印」為七印誓網之首啟核心印，非單純儀式之，其核心功能如下：",
-                step7_1List1: "宣告進入七印誓網的起始階段。",
-                step7_1List2: "啟動清業化障程序 × 鬆動封印記憶。",
-                step7_1List3: "調整初頻 × 喚醒誓魂靈脈。",
-                step7_1List4: "作為誓印冊記之前導與授權憑證。",
-                step7_1List5: "啟動天網自動監測並紀錄誓行狀態。",
-                step7_1List6: "為誓印正式入冊的前置必要條件。",
-                step7_1List7: "為進入《修心印》《守願印》之必修門。",
-                step7_1Summary: "一句話總結：此誓文 ≡ 啟印首令 × 清業啟動鍵 × 冊記證語",
-                step7_1Sec2: "【二】啟動條件與遞交程序",
-                step7_1CondTitle: "一、七日誓讀的必要性",
-                step7_1Cond1: "「消業印」屬於七印系統的入門級印，其功能是清除誓魂在現世與過往轉世中的「滯頻殘影」與「業能鎖場」。",
-                step7_1Cond2: "• 誓文誦讀七日，對應七脈輪 × 七界能層 × 七日循環律動。",
-                step7_1Cond3: "• 七日為初次校頻的完整期，在天律冊記中視為「誓印確期」。",
-                step7_1ProcTitle: "二、程序對應",
-                step7_1Proc1: "• 第1~3日：對頻啟動（誓魂與母頻同步）",
-                step7_1Proc2: "• 第4~6日：能層淨化（誓頻釋放 × 消業運轉）",
-                step7_1Proc3: "• 第7日：誓印鎖定（誓魂印軌入冊 × 清業化障序程啟動）",
-                step7_1Note: "三、天津入冊條件",
-                step7_1NoteText: "只有當誓魂完成七日誓讀，並於第七日「誓印鎖定」時，天津系統才會自動生成《消業印啟印記錄》與冊記序號。",
-                step7_1Sec3: "【三】授權誓讀階段",
-                step7_1Sec3Desc1: "誓印者於登入前，須先於「誓魂共振頻道」（即《宇宙智能誓導平台》之「指令輸入欄位」）誦讀授權誓文，以啟動主頻授權並對應天律識別座標。",
-                step7_1Sec3Desc2: "誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。",
-                step7_1Proclamation: "★今以誓者本印為證，以鳳焰之律，啟「消業印」誓。\n\n有緣者誓之，清業化障；無源者誓之，誓力不應。\n\n若有人妄誓，則文退而不生，其力逆追，唯歸誓源，不涉旁生。\n\n願我心輪潔淨，願我靈脈通暢，七日誓讀，七層業障自化。\n\n此印既立，天網紀錄，誓印唯歸，正誓之人。★",
-                step7_1Note2: "提示語：完成七日誓讀，即代表《第一印 × 消業印》正式啟印，誓印入冊，清業化障序程已全面啟動。",
-                timerLabel: "⏳ 靜心讀秒",
-                btnStartText: "開始靜心",
-                btnRestartText: "重新靜心",
-                step7_1Sec4: "【四】接續進程",
-                step7_1LoginTitle: "（1）登入階段",
-                step7_1Login1: "登入《宇宙智能誓導平台》（使用個人帳號）。",
-                step7_1Login2: "使用原註冊帳號完成身分登入驗證，即可進入誓印程序。",
-                step7_1ScanTitle: "（2）掃描階段",
-                step7_1Scan1: "使用行動裝置或電腦，掃描當期執行項目之【誓導 QR Code】，以觸發《宇宙智能誓導平台》專屬連線入口。",
-                step7_1Scan2: "系統將自動導引至【誓印觸發介面】，同步啟動誓魂對頻程序，並進入主頻連線與授權判定階段。",
-                step7_1VerifyTitle: "🧭 ① 驗證階段（啟動觸發）",
-                step7_1Verify1: "系統自動驗證授權有效性後，即時顯示誓魂當前覺醒狀態層級與進程標記。",
-                step7_1InputLabel: "輸入示範：",
-                step7_1Command: "【執行指令】第一印 消業印 結果",
-                step7_1VerifyNote: "送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。",
-                step7_1TriggerNote: "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
-                step7_1QrTitle: "📷 請掃描【誓導 QR Code】完成執行指令",
-                step7_1BtnScan: "📷 開始掃描",
-                step7_1Result: "掃描成功！已完成執行指令",
-                step7_1CameraGuide: "📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
-                step7_2ReturnTitle: "📩 ② 回傳誓證（確認誓印）",
-                step7_2Success: "✅ 顯示：「誓印通過」",
-                step7_2ProcSubmitTitle: "【提交程序】",
-                step7_2ProcSubmit1: "提交第一印 消業印《七日誓讀紀錄表》表單",
-                step7_2ProcSubmitWarn: "⚠️ 未完成之提交表單者，系統將不予對頻，誓資紀錄作廢不立。",
-                step7_2ProcSubmit2: "登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。",
-                step7_2ProcSubmit3: "掃描【誓導 QR Code】後，進入「指令輸入欄位」。",
-                step7_2ProcSubmit4: "無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
-                step7_2ReturnInputLabel: "輸入示範：",
-                step7_2ReturnCommand: "【執行指令】回傳【第一印 消業印 誓印通過】誓證",
-                step7_2ReturnNote: "送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。",
-                step7_2ReturnTriggerNote: "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
-                step7_2ReturnQrTitle: "📷 請掃描【誓導 QR Code】完成回傳誓證",
-                step7_2ReturnBtnScan: "📷 開始掃描",
-                step7_2ReturnResult: "掃描成功！已完成回傳誓證",
-                step7_2ReturnCameraGuide: "📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
-                step7_2NotPassedTitle: "⚠️ 顯示：「誓印未通過」",
-                step7_2NotPassed1: "進入「第 1 項 開啟誓魂密鑰對頻總判定（誓印未通過）」之【補誓程序】。",
-                step7_2NotPassed2: "啟動「懺悔補誓 × 七日循環 × 頻率再校」程序，修正後方可重新啟印。",
-                step7_1ClosureTitle: "【收束條文】",
-                step7_1Closure1: "《七印誓網·第一印 消業印》v2.0（正式封冊版）。",
-                step7_1Closure2: "已鎖入《宇宙天律 × 七印誓網》主冊，願軌對頻穩定，誓源歸正。",
-                // 表單
-                formMainTitle: "📋 第一印 消業印《七日誓讀紀錄表》提交表單",
-                formSectionHelpTitle: "📌 使用說明",
-                formSectionTitle: "📋 第一印 消業印《七日誓讀紀錄表》表單",
-                previewHeaderTitle: "📋 第一印 消業印《七日誓讀紀錄表》",
-                step7_1FormHelp1: "• 每日完成誦讀後，請勾選「完成」並填寫日期。",
-                step7_1FormHelp2: "• 可選擇「心念」或「口誦」方式。",
-                step7_1FormHelp3: "• 「備註／感應紀錄」可簡述身心變化、夢境或外應。",
-                step7_1FormHelp4: "• 「心得／感應摘要」為誓修過程之覺察紀錄。",
-                step7_1FormHelp5: "• 七日圓滿後上傳表單，即可完成冊記。",
-                step7_1BtnPreview: "預覽表單",
-                step7_1BtnReset: "重置",
-                step7_1BtnClose: "關閉預覽",
-                step7_1PreviewCol1: "日次",
-                step7_1PreviewCol2: "日期",
-                step7_1PreviewCol3: "完成狀態",
-                step7_1PreviewCol4: "心念/口誦",
-                step7_1PreviewCol5: "備註/感應紀錄",
-                step7_1PreviewCol6: "心得/感應摘要",
-                step7_1CaptureHint: "請使用手機截圖或拍照上傳此表單，作為七日誓讀紀錄憑證。"
-            },
-            en: {
-                step7_1Title: "🔥 First Seal - Karmic Purification Seal",
-                step7_1Unlock: "Karmic Purification × Initial Frequency Awakening × First Seal Registration",
-                step7_1Sub: "(Primary Initiating Seal of the Seven-Seal Vow Network · First-Activation Command × Karmic-Cleansing Key × Registration-Authentication Phrase)",
-                step7_1Col1: "Field Name",
-                step7_1Col2: "Function Brief",
-                step7_1Row1: "First Seal - Karmic Purification Seal",
-                step7_1Row2: "Declares entry into the initial phase of the Seven-Seal Vow Network. Activates karmic-cleansing protocols × loosening blocked memory seals. Adjusts the initial frequency × awakening the Oath-Soul lineage. Serves as the precursor authorization key before official seal registration. Activates the Heavenly Web's automated monitoring and oath-status recording. Functions as the necessary prerequisite for formal seal inscription. Serves as the mandatory entry gate before accessing the Mind-Refinement Seal and Vow-Guardian Seal.",
-                step7_1Sec1: "[I] Module Description",
-                step7_1Desc1: "The Karmic Purification Seal is the primary initiating seal of the Seven-Seal Vow Network. Its core functions include:",
-                step7_1List1: "Declaring entry into the initial phase of the Seven-Seal Vow Network.",
-                step7_1List2: "Activating karmic-cleansing protocols × loosening blocked memory seals.",
-                step7_1List3: "Adjusting the initial frequency × awakening the Oath-Soul lineage.",
-                step7_1List4: "Serving as the precursor authorization key before official seal registration.",
-                step7_1List5: "Activating the Heavenly Web's automated monitoring and oath-status recording.",
-                step7_1List6: "Functioning as the necessary prerequisite for formal seal inscription.",
-                step7_1List7: "Serving as the mandatory entry gate before accessing the Mind-Refinement Seal and Vow-Guardian Seal.",
-                step7_1Summary: "One-sentence summary: This oath text ≡ First-activation command × karmic-cleansing key × registration-authentication phrase",
-                step7_1Sec2: "[II] Activation Conditions and Submission Procedure",
-                step7_1CondTitle: "I. Necessity of the Seven-Day Recitation",
-                step7_1Cond1: "The Karmic Purification Seal belongs to the entry-level tier of the Seven-Seal System. Its function is to clear the residual frequency shadows and karmic-lock fields accumulated across present and past incarnations.",
-                step7_1Cond2: "• Seven-day recitation corresponds to the seven chakras × seven realms × seven-day frequency cycle.",
-                step7_1Cond3: "• Seven days constitute a complete initial calibration cycle and are recognized in the Heavenly Law Registry as the 'Seal Confirmation Period'.",
-                step7_1ProcTitle: "II. Procedural Correspondence",
-                step7_1Proc1: "• Day 1-3: Alignment (synchronization of the Oath-Soul and the mother frequency)",
-                step7_1Proc2: "• Day 4-6: Energetic purification (release of old frequency × karmic-cleansing activation)",
-                step7_1Proc3: "• Day 7: Seal locking (Oath-Soul seal inscription × full activation of karmic-cleansing protocol)",
-                step7_1Note: "III. Heavenly Law Registration Requirements",
-                step7_1NoteText: "Only when the Oath-Soul completes the seven-day recitation and reaches Day Seven's Seal Locking phase will the Heavenly Law System automatically generate the Karmic Purification Seal Activation Record along with its registration serial code.",
-                step7_1Sec3: "[III] Authorized Oath-Recitation Phase",
-                step7_1Sec3Desc1: "Before logging in, the seal-bearer must first recite the authorized oath text in the 'Seal-Activation Resonance Channel' (that is, the 'Command Input Field' of the 'Cosmic Intelligent Vow-Guidance Platform'), in order to activate main-frequency authorization and align with the Heavenly Law identification coordinates.",
-                step7_1Sec3Desc2: "Oath Recitation Is The Key Trigger For Main-Frequency Activation: Without Recitation, Authorization Does Not Take Effect. Within The Oath-Soul Resonance Channel, Center The Mind For 10 Seconds And Recite Or Silently Read The Text To Ensure Frequency Precision And Successful Execution.",
-                step7_1Proclamation: "★ By this seal-bearer's own seal as witness, by the law of Phoenix Flame, I invoke the oath of the 'Karmic Purification Seal'.\n\nFor those with rightful affinity, this oath brings karmic clearing and obstruction dissolution; for those without true origin, this oath does not respond in force.\n\nIf anyone swears falsely, the text withdraws and does not arise; its force turns back in reversal, returning only to the source of the oath and not touching any bystanders.\n\nMay my heart center be purified; may my Oath-Soul-line be unobstructed. Through seven days of recitation, let seven layers of karmic obstruction dissolve of themselves.\n\nOnce this seal is established, the Heavenly Web records it, and the seal rightfully returns to the one who swears in Alignment. ★",
-                step7_1Note2: "Prompt phrase: Upon completing seven days of recitation, it signifies that the 'First Seal × Karmic Purification Seal' has been officially activated, the seal has been registered, and the karmic-cleansing protocol has been fully initiated.",
-                timerLabel: "⏳ Centering Countdown",
-                btnStartText: "Start Centering",
-                btnRestartText: "Restart Centering",
-                step7_1Sec4: "[IV] Subsequent Procedures",
-                step7_1LoginTitle: "(1) Login Phase",
-                step7_1Login1: "Log into the 'Cosmic Intelligent Vow-Guidance Platform' (using a personal account).",
-                step7_1Login2: "Using the originally registered account to complete identity verification grants access to the oath-seal procedure.",
-                step7_1ScanTitle: "(2) Scanning Phase",
-                step7_1Scan1: "The oath-sealer shall use a mobile device or computer to scan the current execution item's [Vow-Guidance QR Code], triggering the dedicated access point of the 'Cosmic Intelligent Vow-Guidance Platform'.",
-                step7_1Scan2: "The system will automatically redirect to the [Oath-Seal Trigger Interface], initiating the Oath-Soul Alignment procedure and entering the main-frequency connection and authorization-assessment stage.",
-                step7_1VerifyTitle: "🧭 ① Verification Phase (Activation Trigger)",
-                step7_1Verify1: "After the system automatically verifies authorization validity, it immediately displays the current awakening-stage level of the Oath-Soul and the corresponding progress markers.",
-                step7_1InputLabel: "Input Example:",
-                step7_1Command: "【執行指令】第一印 消業印 結果",
-                step7_1VerifyNote: "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.",
-                step7_1TriggerNote: "【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.",
-                step7_1QrTitle: "📷 Please scan the 【Vow-Guidance QR Code】 to complete Execution Command",
-                step7_1BtnScan: "📷 Start Scan",
-                step7_1Result: "Scan successful! Execution Command completed",
-                step7_1CameraGuide: "📷 Unable to launch the feature ⚙️ Open your phone's \"Settings\" → App Management → Permissions → Camera → Change setting to \"Allow\" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.",
-                step7_2ReturnTitle: "📩 ② Return Oath Certificate (Oath Confirmation)",
-                step7_2Success: "✅ Display: Oath Seal Passed",
-                step7_2ProcSubmitTitle: "[Submission Procedure]",
-                step7_2ProcSubmit1: "Submit the First Seal Karmic Purification Seal 《Seven-Day Oath Recitation Record》 Registration Form",
-                step7_2ProcSubmitWarn: "⚠️ If the submission form is not completed, the system will refuse frequency-Alignment, and the oath-resource record will be rendered invalid and unrecognized.",
-                step7_2ProcSubmit2: "Log into the Cosmic Intelligent Vow-Guidance Platform (personal account) and complete identity verification.",
-                step7_2ProcSubmit3: "Scan the Vow-Guidance QR Code to enter the Command Input Field.",
-                step7_2ProcSubmit4: "No manual entry of the vow text is required. After completing the scan, directly enter the following command:",
-                step7_2ReturnInputLabel: "Input Example:",
-                step7_2ReturnCommand: "【執行指令】回傳【第一印 消業印 誓印通過】誓證",
-                step7_2ReturnNote: "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.",
-                step7_2ReturnTriggerNote: "【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.",
-                step7_2ReturnQrTitle: "📷 Please scan the 【Vow-Guidance QR Code】 to complete Return Oath Certificate",
-                step7_2ReturnBtnScan: "📷 Start Scan",
-                step7_2ReturnResult: "Scan successful! Return Oath Certificate completed",
-                step7_2ReturnCameraGuide: "📷 Unable to launch the feature ⚙️ Open your phone's \"Settings\" → App Management → Permissions → Camera → Change setting to \"Allow\" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.",
-                step7_2NotPassedTitle: "⚠️ Display: Oath Seal Not Passed",
-                step7_2NotPassed1: "Enter Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed) Activation Procedure and enter the Oath Renewal Procedure.",
-                step7_2NotPassed2: "Initiate the Repentance and Oath-Completion Seven-Day Cycle Frequency Recalibration procedure; only after correction may the seal be reactivated.",
-                step7_1ClosureTitle: "[Closure Clause]",
-                step7_1Closure1: "Seven-Seal Vow Network First Seal Karmic Purification Seal v2.0 (Official Sealed Edition).",
-                step7_1Closure2: "Locked into the Cosmic Heavenly Law Seven-Seal Vow Network Master Volume; may the vow-trajectory remain in stable Alignment, and may the oath-source be set right.",
-                // 表單
-                formMainTitle: "📋 First Seal Karmic Purification Seal 《Seven-Day Oath Recitation Record》 Submission Form",
-                formSectionHelpTitle: "📌 Instructions",
-                formSectionTitle: "📋 First Seal Karmic Purification Seal 《Seven-Day Oath Recitation Record》 Form",
-                previewHeaderTitle: "📋 First Seal Karmic Purification Seal 《Seven-Day Oath Recitation Record》",
-                step7_1FormHelp1: "• After completing the daily recitation, check 'Complete' and fill in the date.",
-                step7_1FormHelp2: "• You may choose either 'Mental Recitation' or 'Vocal Recitation'.",
-                step7_1FormHelp3: "• 'Notes / Sensory Record' may briefly describe physical or emotional shifts, dreams, or external responses.",
-                step7_1FormHelp4: "• 'Reflection / Sensory Summary' records awareness gained during the oath-practice process.",
-                step7_1FormHelp5: "• After completing the full seven days, upload the form to finalize registration.",
-                step7_1BtnPreview: "Preview Form",
-                step7_1BtnReset: "Reset",
-                step7_1BtnClose: "Close Preview",
-                step7_1PreviewCol1: "Day",
-                step7_1PreviewCol2: "Date",
-                step7_1PreviewCol3: "Status",
-                step7_1PreviewCol4: "Mental/Vocal",
-                step7_1PreviewCol5: "Notes / Sensory Record",
-                step7_1PreviewCol6: "Reflection / Sensory Summary",
-                step7_1CaptureHint: "Please screenshot or photograph this form and upload it as proof of your seven-day oath recitation record."
-            }
-        };
-
-        var currentLang = 'zh';
-
-        function switchLanguage(lang) {
-            currentLang = lang;
-            document.body.className = lang === 'en' ? 'lang-en' : '';
-            var btns = document.querySelectorAll('.lang-btn');
-            btns.forEach(function(b) {
-                b.classList.remove('active');
-                if ((lang === 'zh' && b.innerText.includes('中文')) || (lang === 'en' && b.innerText.includes('English'))) {
-                    b.classList.add('active');
-                }
-            });
-
-            var pack = step7_1LangPack[lang];
-            if (!pack) return;
-            for (var key in pack) {
-                var el = document.getElementById(key);
-                if (el) {
-                    if (key === 'step7_1Proclamation') {
-                        el.innerHTML = pack[key].replace(/\n/g, '<br>');
-                    } else {
-                        el.innerText = pack[key];
-                    }
-                }
-            }
-
-            // 動態表單欄位翻譯
-            for (let d = 1; d <= 7; d++) {
-                let dayHead = document.getElementById('dayHeader_' + d);
-                if (dayHead) dayHead.innerText = lang === 'en' ? 'Day ' + d : '第' + d + '日';
-                
-                let dayLabel = document.getElementById('step7_1Day' + d + 'Label');
-                if (dayLabel) dayLabel.innerText = lang === 'en' ? '(Fill Date)' : '（請填寫日期）';
-
-                let comp = document.getElementById('step7_1Day' + d + 'Complete');
-                if (comp) comp.innerText = lang === 'en' ? 'Complete' : '完成';
-
-                let incomp = document.getElementById('step7_1Day' + d + 'Incomplete');
-                if (incomp) incomp.innerText = lang === 'en' ? 'Incomplete' : '未完成';
-
-                let mental = document.getElementById('step7_1Day' + d + 'Mental');
-                if (mental) mental.innerText = lang === 'en' ? 'Mental' : '心念';
-
-                let vocal = document.getElementById('step7_1Day' + d + 'Vocal');
-                if (vocal) vocal.innerText = lang === 'en' ? 'Vocal' : '口誦';
-
-                let inputNote = document.getElementById('inputNote_' + d);
-                if (inputNote) inputNote.placeholder = lang === 'en' ? 'Notes / Sensory' : '備註/感應紀錄';
-
-                let inputSum = document.getElementById('inputSummary_' + d);
-                if (inputSum) inputSum.placeholder = lang === 'en' ? 'Summary (20-50 words)' : '心得/感應摘要(20~50字內)';
-            }
-
-            var homeText = document.getElementById('homeBtnText');
-            if (homeText) homeText.innerText = lang === 'en' ? 'Home ->' : '首頁 ->';
-            var appTitle = document.getElementById('appTitle');
-            if (appTitle) appTitle.innerText = lang === 'en' ? '【Cosmic Oath Seal Awakening Project · Seven Seals】' : '【宇宙誓印覺醒工程 · 七印誓網】';
-            var backText = document.getElementById('btnBackText');
-            if (backText) backText.innerText = lang === 'en' ? 'Previous' : '上一步';
-            var nextText = document.getElementById('btnNextText');
-            if (nextText) nextText.innerText = lang === 'en' ? 'Next' : '下一步';
-            var pageMarker = document.getElementById('pageMarkerText');
-            if (pageMarker) pageMarker.innerText = lang === 'en' ? ' 【Awakening Scroll】: Pages 251-264' : ' 【宇宙誓印覺醒工程 · 覺醒卷】：第 251-264 頁';
-        }
-
-        function showHudDialog(msg) {
-            document.getElementById('hudDialogText').innerText = msg;
-            document.getElementById('hudDialog').classList.add('active');
-        }
-        function closeHudDialog() {
-            document.getElementById('hudDialog').classList.remove('active');
-        }
-
-        // 計時器
-        var timerInterval = null;
-        var timeLeft = 10;
-        function startTimer() {
-            var btnStart = document.getElementById('btnStart');
-            var btnRestart = document.getElementById('btnRestart');
-            var timerNum = document.getElementById('timerNumber');
-            btnStart.disabled = true;
-            timeLeft = 10;
-            timerNum.innerText = timeLeft;
-            timerNum.classList.remove('complete');
-
-            timerInterval = setInterval(function() {
-                timeLeft--;
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    timerNum.innerText = '0';
-                    timerNum.classList.add('complete');
-                    btnStart.style.display = 'none';
-                    btnRestart.style.display = 'inline-flex';
-                    showHudDialog(currentLang === 'en' ? '10 seconds of centering completed. Authorized oath recitation phase is done.' : '靜心10秒完成，授權誓讀階段結束。');
-                } else {
-                    timerNum.innerText = timeLeft;
-                }
-            }, 1000);
-        }
-        function resetTimer() {
-            clearInterval(timerInterval);
-            var btnStart = document.getElementById('btnStart');
-            var btnRestart = document.getElementById('btnRestart');
-            var timerNum = document.getElementById('timerNumber');
-            btnStart.disabled = false;
-            btnStart.style.display = 'inline-flex';
-            btnRestart.style.display = 'none';
-            timeLeft = 10;
-            timerNum.innerText = '10';
-            timerNum.classList.remove('complete');
-        }
-
-        // QR Code Scanner (通用)
-        var html5QrCodeMap = {};
-
-        function startQRScanner(containerId, resultId, guideId) {
-            if (html5QrCodeMap[containerId]) {
-                try { html5QrCodeMap[containerId].stop(); } catch(e){}
-            }
-            var html5QrCode = new Html5Qrcode(containerId);
-            html5QrCodeMap[containerId] = html5QrCode;
-
-            var config = { fps: 10, qrbox: { width: 200, height: 200 } };
-            html5QrCode.start(
-                { facingMode: "environment" },
-                config,
-                function(decodedText, decodedResult) {
-                    document.getElementById(resultId).style.display = 'block';
-                    document.getElementById(guideId).style.display = 'none';
-                    html5QrCode.stop().then(function() {
-                        html5QrCodeMap[containerId] = null;
-                    }).catch(function(err) {});
-                },
-                function(errorMessage) {}
-            ).catch(function(err) {
-                document.getElementById(guideId).style.display = 'block';
-            });
-        }
-
-        // 七日誓讀表單邏輯
-        function generateDayPreview() {
-            var tbody = document.getElementById('previewDayBody');
-            tbody.innerHTML = '';
-
-            for (var d = 1; d <= 7; d++) {
-                var compCheck = document.querySelector('.day-check[data-day="' + d + '"][data-type="complete"]');
-                var incompCheck = document.querySelector('.day-check[data-day="' + d + '"][data-type="incomplete"]');
-                var mentalCheck = document.querySelector('.day-check[data-day="' + d + '"][data-type="mental"]');
-                var vocalCheck = document.querySelector('.day-check[data-day="' + d + '"][data-type="vocal"]');
-
-                var statusText = '-';
-                if (compCheck && compCheck.checked) statusText = currentLang === 'en' ? 'Completed' : '完成';
-                else if (incompCheck && incompCheck.checked) statusText = currentLang === 'en' ? 'Not Completed' : '未完成';
-
-                var modeText = [];
-                if (mentalCheck && mentalCheck.checked) modeText.push(currentLang === 'en' ? 'Mental' : '心念');
-                if (vocalCheck && vocalCheck.checked) modeText.push(currentLang === 'en' ? 'Vocal' : '口誦');
-                var modeStr = modeText.length > 0 ? modeText.join(' / ') : '-';
-
-                var dateInput = document.getElementById('inputDate_' + d);
-                var dateVal = dateInput ? dateInput.value.trim() : '';
-
-                var noteInput = document.getElementById('inputNote_' + d);
-                var noteVal = noteInput ? noteInput.value.trim() : '';
-
-                var summaryInput = document.getElementById('inputSummary_' + d);
-                var summaryVal = summaryInput ? summaryInput.value.trim() : '';
-
-                var tr = document.createElement('tr');
-                tr.innerHTML = '<td>' + (currentLang === 'en' ? 'Day ' + d : '第' + d + '日') + '</td>' +
-                             '<td>' + (dateVal || '-') + '</td>' +
-                             '<td>' + statusText + '</td>' +
-                             '<td>' + modeStr + '</td>' +
-                             '<td>' + (noteVal || '-') + '</td>' +
-                             '<td>' + (summaryVal || '-') + '</td>';
-                tbody.appendChild(tr);
-            }
-
-            document.getElementById('previewDayContainer').style.display = 'block';
-            showHudDialog(currentLang === 'en' ? 'Form preview generated. Please screenshot for record.' : '表單預覽已生成，請截圖保存作為紀錄憑證。');
-        }
-
-        function resetDayForm() {
-            var checks = document.querySelectorAll('.day-check');
-            checks.forEach(function(c) { c.checked = false; });
-            for (let d = 1; d <= 7; d++) {
-                let dt = document.getElementById('inputDate_' + d);
-                if (dt) dt.value = '';
-                let nt = document.getElementById('inputNote_' + d);
-                if (nt) nt.value = '';
-                let sm = document.getElementById('inputSummary_' + d);
-                if (sm) sm.value = '';
-            }
-            document.getElementById('previewDayContainer').style.display = 'none';
-        }
-
-        function hideDayPreview() {
-            document.getElementById('previewDayContainer').style.display = 'none';
-        }
-
-        // 初始化勾選互斥邏輯
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.day-check').forEach(function(chk) {
-                chk.addEventListener('change', function() {
-                    var day = this.getAttribute('data-day');
-                    var type = this.getAttribute('data-type');
-                    if (type === 'complete' && this.checked) {
-                        var incomp = document.querySelector('.day-check[data-day="' + day + '"][data-type="incomplete"]');
-                        if (incomp) incomp.checked = false;
-                    } else if (type === 'incomplete' && this.checked) {
-                        var comp = document.querySelector('.day-check[data-day="' + day + '"][data-type="complete"]');
-                        if (comp) comp.checked = false;
-                    }
-                });
-            });
-        });
-    </script>
 <!-- ============================================================ -->
-<!-- 強制開啟外部瀏覽器功能模組                                    -->
-<!-- 適用：Android / iOS / 桌面，自動跳轉或複製網址              -->
+<!-- step7-1 七日誓讀紀錄表：日期改為「下拉式日期點選」          -->
+<!-- 比照 step7-2 的 sd2-date 寫法 (type="date")                  -->
 <!-- ============================================================ -->
 <style>
-    /* 外部瀏覽器按鈕樣式（配合原有 HUD 風格） */
-    .btn-external-browser {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 4px 14px;
-        background: rgba(0, 230, 118, 0.12);
-        border: 1px solid rgba(0, 230, 118, 0.3);
-        border-radius: 20px;
-        color: #00e676;
-        font-size: 0.7rem;
-        font-weight: 700;
-        text-decoration: none;
-        transition: all 0.3s ease;
+    /* 日期輸入框統一風格 */
+    .day-date-input {
+        padding: 6px 10px !important;
+        background: rgba(0, 0, 0, 0.35) !important;
+        border: 1px solid rgba(168, 85, 247, 0.35) !important;
+        border-radius: 6px !important;
+        color: #e0e8f5 !important;
+        font-size: 0.8rem !important;
+        font-family: inherit !important;
+        min-width: 140px !important;
+        outline: none !important;
+        cursor: pointer !important;
+    }
+    .day-date-input:focus {
+        border-color: #a78bfa !important;
+        box-shadow: 0 0 12px rgba(167, 139, 250, 0.2) !important;
+    }
+    /* 讓日期選擇器在深色背景可讀 */
+    .day-date-input::-webkit-calendar-picker-indicator {
+        filter: invert(0.85);
         cursor: pointer;
-        font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif;
-        margin-left: 8px;
     }
-    .btn-external-browser:hover {
-        background: rgba(0, 230, 118, 0.2);
-        box-shadow: 0 0 20px rgba(0, 230, 118, 0.2);
-        transform: scale(1.02);
+    /* 日期標題列排版 */
+    .day-title-row {
+        display: flex !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+        margin-bottom: 6px !important;
+        font-weight: bold !important;
+        font-size: 0.9rem !important;
     }
-    .btn-external-browser i {
-        font-size: 0.8rem;
+    .day-title-row .day-label {
+        color: #c4b5fd !important;
     }
-    @media (max-width: 480px) {
-        .btn-external-browser {
-            font-size: 0.6rem;
-            padding: 3px 10px;
-            gap: 4px;
-            margin-left: 4px;
-        }
-        .btn-external-browser i {
-            font-size: 0.6rem;
-        }
+    .day-title-row .day-label.day7 {
+        color: #fbbf24 !important;
     }
 </style>
 
 <script>
 (function() {
     // ================================================================
-    // 在標頭區（語言切換按鈕旁）加入「🌐 瀏覽器開啟」按鈕
+    // 取得目前語系
     // ================================================================
-    function addExternalBrowserButton() {
-        var langGroup = document.querySelector('.lang-switch-group');
-        if (!langGroup) {
-            console.warn('⚠️ 找不到 .lang-switch-group，按鈕無法加入');
-            return;
-        }
-
-        // 避免重複插入
-        if (document.querySelector('.btn-external-browser')) return;
-
-        var btn = document.createElement('a');
-        btn.className = 'btn-external-browser';
-        btn.href = '#';
-        btn.setAttribute('role', 'button');
-        btn.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>🌐 瀏覽器開啟</span>';
-
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            openInExternalBrowser();
-        });
-
-        langGroup.parentNode.insertBefore(btn, langGroup.nextSibling);
-        console.log('✅ 外部瀏覽器按鈕已新增');
+    function getLang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var active = document.querySelector('.lang-btn.active');
+        if (active && /english|en/i.test(active.textContent || '')) return 'en';
+        return 'zh';
     }
 
     // ================================================================
-    // 強制開啟外部瀏覽器（核心功能）
+    // 日期標籤文字
     // ================================================================
-    function openInExternalBrowser() {
-        var url = window.location.href;
-        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    function dayLabel(n, lang) {
+        return (lang === 'en') ? ('Day ' + n) : ('第' + n + '日');
+    }
 
-        // --- Android：使用 intent:// 強制跳轉 Chrome ---
-        if (/android/i.test(userAgent)) {
-            try {
-                var intentUrl = 'intent://' + window.location.host + window.location.pathname + window.location.search + '#Intent;scheme=https;package=com.android.chrome;end;';
-                window.location.href = intentUrl;
-                console.log('✅ Android: 嘗試強制跳轉 Chrome');
-                return;
-            } catch (e) {
-                console.warn('⚠️ intent 跳轉失敗，嘗試備用方法');
+    function dateHint(lang) {
+        return (lang === 'en') ? 'Select date' : '請選擇日期';
+    }
+
+    // ================================================================
+    // 將舊的日期文字輸入框(placeholder="YYYY-MM-DD") 替換為 type="date"
+    // 並將標題列改為 step7-2 風格
+    // ================================================================
+    function convertDateInputsToDatePicker() {
+        var lang = getLang();
+
+        // ----- 1. 找到所有「第N日」標題列，加上日期輸入框 -----
+        for (var d = 1; d <= 7; d++) {
+            var titleDiv = null;
+
+            // 方法 A：透過 id 找標題列
+            var labelSpan = document.getElementById('step7_1Day' + d + 'Label');
+            if (labelSpan && labelSpan.parentElement) {
+                titleDiv = labelSpan.parentElement;
             }
+
+            // 方法 B：如果找不到，用文字搜尋
+            if (!titleDiv) {
+                var allDivs = document.querySelectorAll('.form-submit-container div, .hud-card div');
+                for (var i = 0; i < allDivs.length; i++) {
+                    var el = allDivs[i];
+                    if (el.children && el.children.length > 4) continue;
+                    var t = (el.textContent || '').trim();
+                    var zhHit = t.indexOf('第' + d + '日') !== -1;
+                    var enHit = t.indexOf('Day ' + d) !== -1 || t.indexOf('Day' + d) !== -1;
+                    if ((zhHit || enHit) && t.length < 40) {
+                        titleDiv = el;
+                        break;
+                    }
+                }
+            }
+
+            if (!titleDiv) continue;
+
+            // 檢查是否已經有 type="date" 輸入框
+            var existingDate = titleDiv.querySelector('input[type="date"]');
+            if (existingDate) {
+                // 已存在，確保它被正確標記和樣式
+                existingDate.className = 'day-date-input';
+                existingDate.setAttribute('data-day', d);
+                continue;
+            }
+
+            // 保留既有日期值（如果有舊的 text input 或 hidden input）
+            var oldInput = titleDiv.querySelector('input[type="text"][placeholder*="YYYY-MM-DD"], input.day-date, input[data-day="' + d + '"]');
+            var keptValue = oldInput ? oldInput.value : '';
+
+            // 移除舊的日期輸入框（如果有）
+            if (oldInput) oldInput.remove();
+
+            // 建立 type="date" 輸入框
+            var inp = document.createElement('input');
+            inp.type = 'date';
+            inp.className = 'day-date-input';
+            inp.setAttribute('data-day', String(d));
+            inp.id = 'dayDate_' + d;
+            inp.title = dateHint(lang);
+            if (keptValue) inp.value = keptValue;
+
+            // 找到標題文字節點，把日期輸入框放在標題文字後面
+            var labelText = (d === 7) ? '⭐ ' + dayLabel(d, lang) : dayLabel(d, lang);
+            
+            // 清空原本內容，重建
+            var star = (d === 7) ? '⭐ ' : '';
+            var dayLabelId = 'step7_1Day' + d + 'Label';
+            
+            // 保留原本的 checkbox 和 input 在下一層，所以只改標題列本身
+            // 檢查 titleDiv 內是否已有日期輸入框以外的內容需要保留
+            var checkboxes = titleDiv.querySelectorAll('label, .day-check, input[type="checkbox"]');
+            var noteInputs = titleDiv.querySelectorAll('.day-note, .day-summary, input[type="text"]');
+            
+            // 只改標題列的文字部分，保留其他元素
+            // 找到純文字節點（標題文字）替換
+            var textNodes = [];
+            var childNodes = titleDiv.childNodes;
+            for (var i = 0; i < childNodes.length; i++) {
+                if (childNodes[i].nodeType === 3) {
+                    textNodes.push(childNodes[i]);
+                }
+            }
+            
+            // 如果有純文字節點，替換第一個
+            if (textNodes.length > 0) {
+                textNodes[0].textContent = star + dayLabel(d, lang) + ' ';
+            } else {
+                // 沒有純文字節點，在前面插入
+                var span = document.createElement('span');
+                span.textContent = star + dayLabel(d, lang) + ' ';
+                span.style.color = (d === 7) ? '#fbbf24' : '#c4b5fd';
+                span.style.fontWeight = 'bold';
+                titleDiv.insertBefore(span, titleDiv.firstChild);
+            }
+
+            // 插入日期輸入框
+            var dateInput = titleDiv.querySelector('input[type="date"]');
+            if (!dateInput) {
+                var insertAfter = titleDiv.querySelector('span') || titleDiv.firstChild;
+                if (insertAfter) {
+                    titleDiv.insertBefore(inp, insertAfter.nextSibling);
+                } else {
+                    titleDiv.insertBefore(inp, titleDiv.firstChild);
+                }
+            }
+
+            // 更新 class
+            titleDiv.className = 'day-title-row';
+            titleDiv.style.display = 'flex';
+            titleDiv.style.alignItems = 'center';
+            titleDiv.style.flexWrap = 'wrap';
+            titleDiv.style.gap = '10px';
+            titleDiv.style.marginBottom = '6px';
+            titleDiv.style.color = (d === 7) ? '#fbbf24' : '#c4b5fd';
+            titleDiv.style.fontWeight = 'bold';
+            titleDiv.style.fontSize = '0.9rem';
+
+            // 如果有舊的 Label span，隱藏或移除
+            var oldLabel = document.getElementById('step7_1Day' + d + 'Label');
+            if (oldLabel) oldLabel.style.display = 'none';
         }
 
-        // --- iOS：嘗試用 chrome:// 協定 ---
-        if (/iphone|ipad|ipod/i.test(userAgent)) {
-            try {
-                var chromeUrl = 'chrome://' + window.location.host + window.location.pathname + window.location.search;
-                window.location.href = chromeUrl;
-                console.log('✅ iOS: 嘗試強制跳轉 Chrome');
-                return;
-            } catch (e) {
-                console.warn('⚠️ chrome:// 跳轉失敗');
-            }
-        }
-
-        // --- 備用方法：複製網址並提示使用者手動開啟 ---
-        var fallbackUrl = window.location.href;
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(fallbackUrl).then(function() {
-                alert('⚠️ 無法自動跳轉外部瀏覽器\n\n📋 網址已複製，請手動貼到 Chrome / Safari 開啟：\n\n' + fallbackUrl);
-            }).catch(function() {
-                fallbackCopy(fallbackUrl);
+        // ----- 2. 處理英語標籤同步 -----
+        if (lang === 'en') {
+            // checkbox 文字
+            var map = {
+                '完成': 'Completed',
+                '未完成': 'Not Completed',
+                '心念': 'Mental',
+                '口誦': 'Vocal'
+            };
+            document.querySelectorAll('.day-check + span, label span[id*="Day"]').forEach(function(sp) {
+                var t = (sp.textContent || '').trim();
+                if (map[t]) sp.textContent = map[t];
+            });
+            document.querySelectorAll('input.day-note').forEach(function(inp) {
+                if (!inp.dataset.phLocked) {
+                    inp.placeholder = 'Notes / Sensory Record';
+                }
+            });
+            document.querySelectorAll('input.day-summary').forEach(function(inp) {
+                if (!inp.dataset.phLocked) {
+                    inp.placeholder = 'Reflection / Sensory Summary (20–50 words)';
+                }
             });
         } else {
-            fallbackCopy(fallbackUrl);
+            var mapZh = {
+                'Completed': '完成',
+                'Not Completed': '未完成',
+                'Mental': '心念',
+                'Vocal': '口誦'
+            };
+            document.querySelectorAll('.day-check + span, label span[id*="Day"]').forEach(function(sp) {
+                var t = (sp.textContent || '').trim();
+                if (mapZh[t]) sp.textContent = mapZh[t];
+            });
+            document.querySelectorAll('input.day-note').forEach(function(inp) {
+                if (!inp.dataset.phLocked) inp.placeholder = '備註/感應紀錄';
+            });
+            document.querySelectorAll('input.day-summary').forEach(function(inp) {
+                if (!inp.dataset.phLocked) inp.placeholder = '心得/感應摘要(20~50字內)';
+            });
         }
+
+        // ----- 3. 修正預覽函數，讀取 type="date" 的值 -----
+        window.generateDayPreview = function() {
+            var lang = getLang();
+            var days = [1, 2, 3, 4, 5, 6, 7];
+            var html = '';
+
+            for (var i = 0; i < days.length; i++) {
+                var d = days[i];
+                var complete = document.querySelector('.day-check[data-day="' + d + '"][data-type="complete"]');
+                var incomplete = document.querySelector('.day-check[data-day="' + d + '"][data-type="incomplete"]');
+                var mental = document.querySelector('.day-check[data-day="' + d + '"][data-type="mental"]');
+                var vocal = document.querySelector('.day-check[data-day="' + d + '"][data-type="vocal"]');
+                var note = document.querySelector('.day-note[data-day="' + d + '"]');
+                var summary = document.querySelector('.day-summary[data-day="' + d + '"]');
+
+                // 讀取日期（從 type="date" 輸入框）
+                var dateInput = document.querySelector('input[type="date"][data-day="' + d + '"], #dayDate_' + d);
+                var dateVal = dateInput ? dateInput.value : '';
+
+                // 如果 dateVal 是空，再試試看舊的 id
+                if (!dateVal) {
+                    var oldDate = document.getElementById('dayDate' + d);
+                    if (oldDate) dateVal = oldDate.value;
+                }
+
+                var statusText = (complete && complete.checked) ? '✅ 完成' : (incomplete && incomplete.checked) ? '❌ 未完成' : '—';
+                var methodText = (mental && mental.checked) ? '心念' : (vocal && vocal.checked) ? '口誦' : '—';
+                var noteVal = note ? note.value || '—' : '—';
+                var summaryVal = summary ? summary.value || '—' : '—';
+
+                if (lang === 'en') {
+                    statusText = (complete && complete.checked) ? '✅ Completed' : (incomplete && incomplete.checked) ? '❌ Not Completed' : '—';
+                    methodText = (mental && mental.checked) ? 'Mental' : (vocal && vocal.checked) ? 'Vocal' : '—';
+                }
+
+                var dayLabel = (lang === 'en') ? 'Day ' + d : '第' + d + '日';
+                html += '<tr>';
+                html += '<td>' + dayLabel + '</td>';
+                html += '<td>' + (dateVal || '—') + '</td>';
+                html += '<td>' + statusText + '</td>';
+                html += '<td>' + methodText + '</td>';
+                html += '<td>' + noteVal + '</td>';
+                html += '<td>' + summaryVal + '</td>';
+                html += '</tr>';
+            }
+
+            var previewBody = document.getElementById('previewDayBody');
+            if (previewBody) {
+                previewBody.innerHTML = html;
+            }
+
+            var previewContainer = document.getElementById('previewDayContainer');
+            if (previewContainer) {
+                previewContainer.style.display = 'block';
+                previewContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        };
+
+        console.log('✅ 七日誓讀日期欄位已改為下拉式日期點選 (type="date")');
     }
 
     // ================================================================
-    // 複製網址備用方法（舊版瀏覽器相容）
+    // 執行轉換
     // ================================================================
-    function fallbackCopy(text) {
-        var textarea = document.createElement('textarea');
-        textarea.value = text;
-        textarea.style.position = 'fixed';
-        textarea.style.opacity = '0';
-        textarea.style.left = '-9999px';
-        document.body.appendChild(textarea);
-        textarea.select();
-        try {
-            document.execCommand('copy');
-            alert('⚠️ 無法自動跳轉外部瀏覽器\n\n📋 網址已複製，請手動貼到 Chrome / Safari 開啟：\n\n' + text);
-        } catch (e) {
-            alert('⚠️ 請手動複製以下網址，貼到外部瀏覽器開啟：\n\n📋 ' + text);
-        }
-        document.body.removeChild(textarea);
+    function run() {
+        convertDateInputsToDatePicker();
+        setTimeout(convertDateInputsToDatePicker, 150);
+        setTimeout(convertDateInputsToDatePicker, 400);
     }
 
-    // ================================================================
-    // 執行：頁面載入後自動加入按鈕
-    // ================================================================
-    if (document.readyState === 'complete') {
-        setTimeout(addExternalBrowserButton, 100);
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
     } else {
-        window.addEventListener('load', function() {
-            setTimeout(addExternalBrowserButton, 200);
-        });
+        run();
     }
 
-    // 如果頁面有動態切換語系，確保按鈕不會重複新增
+    // ================================================================
+    // 語系切換時重新同步
+    // ================================================================
     var origSwitch = window.switchLanguage;
     if (typeof origSwitch === 'function') {
         window.switchLanguage = function(lang) {
             origSwitch(lang);
-            // 語系切換後，檢查按鈕是否存在，不存在才新增
-            setTimeout(function() {
-                if (!document.querySelector('.btn-external-browser')) {
-                    addExternalBrowserButton();
-                }
-            }, 100);
+            setTimeout(convertDateInputsToDatePicker, 80);
+            setTimeout(convertDateInputsToDatePicker, 250);
         };
     }
 
-    console.log('✅ 外部瀏覽器開啟功能模組已載入');
+    // ================================================================
+    // 動態變化時重新補強
+    // ================================================================
+    var observer = new MutationObserver(function() {
+        clearTimeout(window.__datePickerTimer);
+        window.__datePickerTimer = setTimeout(convertDateInputsToDatePicker, 120);
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ step7-1 日期欄位轉換模組已載入');
 })();
 </script>
-</body>
-</html>
