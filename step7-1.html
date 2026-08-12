@@ -2112,5 +2112,73 @@
     console.log('✅ 滾動修復模組已載入');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 只改「顯示：誓印未通過」文字顏色為亮綠色，背景不變          -->
+<!-- ============================================================ -->
+<style>
+    /* 只改文字顏色，其餘全部保持原樣 */
+    #step7_2NotPassedTitle,
+    #step7_1NotPassedTitle {
+        color: #00e676 !important;
+        /* 只改顏色，不影響其他樣式 */
+    }
+</style>
+
+<script>
+(function() {
+    // ================================================================
+    // 用 JavaScript 只改文字顏色
+    // ================================================================
+    function fixNotPassedColor() {
+        var notPassedTitles = document.querySelectorAll('#step7_2NotPassedTitle, #step7_1NotPassedTitle');
+
+        notPassedTitles.forEach(function(el) {
+            // 只改顏色，其餘保持原樣
+            el.style.color = '#00e676';
+            // 確保不改變其他樣式（背景、邊框等全部保留）
+        });
+
+        console.log('✅ 誓印未通過文字顏色已改為亮綠色');
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    function run() {
+        fixNotPassedColor();
+        setTimeout(fixNotPassedColor, 150);
+        setTimeout(fixNotPassedColor, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // ================================================================
+    // 語系切換時重新執行
+    // ================================================================
+    var origSwitch = window.switchLanguage;
+    if (typeof origSwitch === 'function') {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(fixNotPassedColor, 100);
+            setTimeout(fixNotPassedColor, 300);
+        };
+    }
+
+    // ================================================================
+    // 監聽動態變化
+    // ================================================================
+    var observer = new MutationObserver(function() {
+        clearTimeout(window.__fixNotPassedTimer);
+        window.__fixNotPassedTimer = setTimeout(fixNotPassedColor, 120);
+    });
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 誓印未通過顏色修正模組已載入（只改文字顏色）');
+})();
+</script>
 </body>
 </html>
