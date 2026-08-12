@@ -2328,5 +2328,121 @@
     console.log('✅ 誓印未通過顏色修正模組已載入（只改文字顏色）');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- ① 驗證階段（啟動觸發）、【執行指令】回傳… 靠左；寬度不變     -->
+<!-- ============================================================ -->
+<style>
+    #step7_1VerifyTitle,
+    #step7_1ReturnCommand,
+    #step7_2ReturnCommand {
+        text-align: left !important;
+        justify-content: flex-start !important;
+    }
+</style>
+
+<script>
+(function () {
+    var KEYS = [
+        '驗證階段',
+        '啟動觸發',
+        'Verification Phase',
+        'Activation Trigger',
+        '【執行指令】回傳【第一印 消業印 誓印通過】誓證',
+        '回傳【第一印 消業印 誓印通過】',
+        '【執行指令】回傳'
+    ];
+
+    var IDS = [
+        'step7_1VerifyTitle',
+        'step7_1ReturnCommand',
+        'step7_2ReturnCommand'
+    ];
+
+    function leftEl(el) {
+        if (!el) return;
+
+        el.style.setProperty('text-align', 'left', 'important');
+        el.style.setProperty('justify-content', 'flex-start', 'important');
+        el.style.setProperty('align-items', 'flex-start', 'important');
+        el.style.setProperty('margin-left', '0', 'important');
+        el.style.setProperty('margin-right', '0', 'important');
+
+        var p = el.parentElement;
+        if (p) {
+            var cs = window.getComputedStyle(p);
+            if (cs.display.indexOf('flex') !== -1) {
+                p.style.setProperty('justify-content', 'flex-start', 'important');
+                p.style.setProperty('align-items', 'center', 'important');
+                p.style.setProperty('text-align', 'left', 'important');
+            } else {
+                p.style.setProperty('text-align', 'left', 'important');
+            }
+        }
+
+        // card-title 列也靠左
+        var row = el.closest('.card-title');
+        if (row) {
+            row.style.setProperty('justify-content', 'flex-start', 'important');
+            row.style.setProperty('text-align', 'left', 'important');
+        }
+    }
+
+    function apply() {
+        IDS.forEach(function (id) {
+            leftEl(document.getElementById(id));
+        });
+
+        document.querySelectorAll(
+            '.card-title, .hud-card div, .cmd-box, span, p, label'
+        ).forEach(function (el) {
+            if (!el || (el.children && el.children.length > 6)) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 100) return;
+            var hit = KEYS.some(function (k) { return t.indexOf(k) !== -1; });
+            if (!hit) return;
+
+            leftEl(el);
+
+            // 圖示 + 文字同一列靠左
+            if (el.classList && el.classList.contains('card-title')) {
+                el.style.setProperty('display', 'flex', 'important');
+                el.style.setProperty('flex-direction', 'row', 'important');
+                el.style.setProperty('justify-content', 'flex-start', 'important');
+                el.style.setProperty('align-items', 'center', 'important');
+                el.style.setProperty('gap', '8px', 'important');
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__leftTwo71);
+        window.__leftTwo71 = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 驗證階段 / 執行指令回傳 已靠左（寬度不變）');
+})();
+</script>
 </body>
 </html>
