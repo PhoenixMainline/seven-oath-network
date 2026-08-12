@@ -2113,6 +2113,154 @@
 })();
 </script>
 <!-- ============================================================ -->
+<!-- 指定句子靠左（版面寬度完全不變）                              -->
+<!-- 1. 系統自動驗證授權有效性後…                                  -->
+<!-- 2. 送出即啟主頻連線…                                          -->
+<!-- 3. ✅ 顯示：「誓印通過」                                      -->
+<!-- 4. 【執行指令】回傳【第一印 消業印 誓印通過】誓證              -->
+<!-- ============================================================ -->
+<style>
+    #step7_1Success,
+    #step7_1ReturnCommand,
+    #step7_1ReturnNote,
+    #step7_2Success,
+    #step7_2ReturnCommand,
+    #step7_2ReturnNote {
+        text-align: left !important;
+        justify-content: flex-start !important;
+    }
+</style>
+
+<script>
+(function () {
+    var KEYS = [
+        '系統自動驗證授權有效性後',
+        '即時顯示誓魂當前覺醒狀態',
+        'After the system automatically verifies',
+        'awakening status level',
+        '送出即啟主頻連線',
+        '判定授權完成',
+        '誓印對頻律網顯化',
+        '誓魂對頻律網顯化',
+        'Primary Frequency Link',
+        'authorization is recognized',
+        'Oath-Soul Alignment Network',
+        '顯示：「誓印通過」',
+        '顯示:「誓印通過」',
+        'Display : 「Oath Seal Passed」',
+        'Display: Oath Seal Passed',
+        'Oath Seal Passed',
+        '【執行指令】回傳【第一印 消業印 誓印通過】誓證',
+        '回傳【第一印 消業印 誓印通過】'
+    ];
+
+    var IDS = [
+        'step7_1Success',
+        'step7_1ReturnNote',
+        'step7_1ReturnCommand',
+        'step7_2Success',
+        'step7_2ReturnNote',
+        'step7_2ReturnCommand'
+    ];
+
+    function leftEl(el) {
+        if (!el) return;
+
+        el.style.setProperty('text-align', 'left', 'important');
+        el.style.setProperty('justify-content', 'flex-start', 'important');
+        el.style.setProperty('align-items', 'flex-start', 'important');
+        el.style.setProperty('margin-left', '0', 'important');
+        el.style.setProperty('margin-right', '0', 'important');
+        // 不改 width，避免動到版面寬度
+
+        // 父層若是 flex，改靠左（仍不改寬度）
+        var p = el.parentElement;
+        if (p) {
+            var cs = window.getComputedStyle(p);
+            if (cs.display.indexOf('flex') !== -1) {
+                p.style.setProperty('justify-content', 'flex-start', 'important');
+                p.style.setProperty('align-items', 'flex-start', 'important');
+                p.style.setProperty('text-align', 'left', 'important');
+            } else {
+                p.style.setProperty('text-align', 'left', 'important');
+            }
+        }
+    }
+
+    function apply() {
+        // 1) 指定 ID
+        IDS.forEach(function (id) {
+            leftEl(document.getElementById(id));
+        });
+
+        // 2) 關鍵字匹配（涵蓋沒有 ID 的句子）
+        var nodes = document.querySelectorAll(
+            '.hud-card div, .instruction-item, .instruction-box div, span, p, label, .pass-box, .cmd-box, .note'
+        );
+
+        nodes.forEach(function (el) {
+            if (!el || (el.children && el.children.length > 6)) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 120) return;
+
+            var hit = KEYS.some(function (k) { return t.indexOf(k) !== -1; });
+            if (!hit) return;
+
+            leftEl(el);
+
+            // 圖示 + 文字同一列、靠左
+            el.style.setProperty('display', 'flex', 'important');
+            el.style.setProperty('flex-direction', 'row', 'important');
+            el.style.setProperty('flex-wrap', 'nowrap', 'important');
+            el.style.setProperty('align-items', 'flex-start', 'important');
+            el.style.setProperty('justify-content', 'flex-start', 'important');
+            el.style.setProperty('gap', '8px', 'important');
+
+            Array.prototype.forEach.call(el.children || [], function (child) {
+                var isIcon = child.tagName === 'I' ||
+                    (child.className && String(child.className).indexOf('fa-') !== -1);
+                if (isIcon) {
+                    child.style.setProperty('flex-shrink', '0', 'important');
+                    child.style.setProperty('margin-top', '3px', 'important');
+                } else {
+                    child.style.setProperty('text-align', 'left', 'important');
+                    child.style.setProperty('flex', '1 1 auto', 'important');
+                }
+            });
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__leftAlign71);
+        window.__leftAlign71 = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 指定句子已靠左（寬度不變）');
+})();
+</script>
+<!-- ============================================================ -->
 <!-- 只改「顯示：誓印未通過」文字顏色為亮綠色，背景不變          -->
 <!-- ============================================================ -->
 <style>
