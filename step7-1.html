@@ -1905,5 +1905,127 @@
     console.log('✅ step7-1 單一載入示範 + 書本資料已就緒');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- step7-1 修正英文版日次重複問題                               -->
+<!-- 將「第1日」等中文標籤在英文模式下隱藏，只顯示「Day 1」      -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    function fixDayHeaderDuplication() {
+        var lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
+        var isEn = (lang === 'en');
+
+        // 找到所有日次標題列中的中文部分
+        for (var d = 1; d <= 7; d++) {
+            var dayHeader = document.getElementById('dayHeader_' + d);
+            if (!dayHeader) continue;
+
+            // 取得父層標題列
+            var parentDiv = dayHeader.parentElement;
+            if (!parentDiv) continue;
+
+            // 檢查是否有重複：父層內同時有「Day X」和「第X日」
+            var allText = parentDiv.textContent || '';
+            var hasChinese = allText.indexOf('第') !== -1 && allText.indexOf('日') !== -1;
+            var hasEnglish = /Day\s*[1-7]/i.test(allText);
+
+            if (isEn) {
+                // 英文模式：移除中文部分（保留 dayHeader 的英文內容）
+                // dayHeader 已經被 switchLanguage 改為 "Day X"
+                // 但原始寫死的「第X日」可能還在其他地方
+                
+                // 方法1：用正則替換掉「第X日」文字（在純文字節點中）
+                var childNodes = parentDiv.childNodes;
+                for (var i = 0; i < childNodes.length; i++) {
+                    if (childNodes[i].nodeType === 3) { // 文字節點
+                        var text = childNodes[i].textContent;
+                        // 移除「第X日」或「（請填寫日期）」等中文
+                        text = text.replace(/第[1-7]日/g, '');
+                        text = text.replace(/（請填寫日期）/g, '');
+                        text = text.replace(/\(Fill Date\)/g, '');
+                        childNodes[i].textContent = text;
+                    }
+                }
+
+                // 方法2：如果有 id 是 step7_1DayXLabel 的 span，隱藏它
+                var labelSpan = document.getElementById('step7_1Day' + d + 'Label');
+                if (labelSpan) {
+                    labelSpan.style.display = 'none';
+                }
+
+                // 確保日期輸入框存在
+                var dateInput = parentDiv.querySelector('input[type="date"]');
+                if (!dateInput) {
+                    // 如果沒有日期輸入框，新增一個
+                    var inp = document.createElement('input');
+                    inp.type = 'date';
+                    inp.className = 'day-date-input';
+                    inp.setAttribute('data-day', String(d));
+                    inp.id = 'dayDate_' + d;
+                    inp.style.marginLeft = '8px';
+                    parentDiv.appendChild(inp);
+                }
+
+                // 標題列顏色調整（第7日金色）
+                parentDiv.style.color = (d === 7) ? '#fbbf24' : '#c4b5fd';
+                parentDiv.style.fontWeight = 'bold';
+                parentDiv.style.fontSize = '0.9rem';
+
+            } else {
+                // 中文模式：顯示中文，隱藏重複的英文
+                // 但中文模式通常沒問題，確保 dayHeader 顯示中文
+                var labelSpanZh = document.getElementById('step7_1Day' + d + 'Label');
+                if (labelSpanZh) {
+                    labelSpanZh.style.display = 'inline';
+                }
+                // 如果 dayHeader 是英文，改回中文
+                if (dayHeader.textContent.indexOf('Day') !== -1) {
+                    dayHeader.textContent = '第' + d + '日';
+                }
+            }
+        }
+
+        console.log('✅ 日次標題重複問題已修正（' + lang + '）');
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    function run() {
+        fixDayHeaderDuplication();
+        setTimeout(fixDayHeaderDuplication, 150);
+        setTimeout(fixDayHeaderDuplication, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // ================================================================
+    // 語系切換時重新執行
+    // ================================================================
+    var origSwitch = window.switchLanguage;
+    if (typeof origSwitch === 'function') {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(fixDayHeaderDuplication, 100);
+            setTimeout(fixDayHeaderDuplication, 300);
+        };
+    }
+
+    // ================================================================
+    // 監聽動態變化
+    // ================================================================
+    var observer = new MutationObserver(function() {
+        clearTimeout(window.__fixDayHeaderTimer);
+        window.__fixDayHeaderTimer = setTimeout(fixDayHeaderDuplication, 120);
+    });
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 英文版日次重複修正模組已載入');
+})();
+</script>
 </body>
 </html>
