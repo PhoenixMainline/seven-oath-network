@@ -2486,5 +2486,162 @@
         }
     })();
 </script>
+<!-- ============================================================ -->
+<!-- step7-2：確保「載入示範」按鈕存在並可正常灌入示範資料        -->
+<!-- 貼在 </body> 前即可                                          -->
+<!-- ============================================================ -->
+<style>
+    .btn-load-demo-72 {
+        background: rgba(0, 230, 118, 0.12) !important;
+        border: 1px solid rgba(0, 230, 118, 0.35) !important;
+        color: #00e676 !important;
+        padding: 10px 22px !important;
+        border-radius: 24px !important;
+        font-size: 0.9rem !important;
+        font-weight: 700 !important;
+        cursor: pointer !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        transition: all 0.3s ease !important;
+    }
+    .btn-load-demo-72:hover {
+        background: rgba(0, 230, 118, 0.22) !important;
+        box-shadow: 0 0 20px rgba(0, 230, 118, 0.25) !important;
+        transform: scale(1.03);
+    }
+</style>
+
+<script>
+(function () {
+    // 示範資料（與頁面既有資料對齊）
+    var DEMO = {
+        zh: [
+            { date: '2025-10-04', trigger: '急躁、不耐煩', insight: '意識到急躁只讓自己更耗能，提醒自己放慢呼吸。', phrase: '我願心安如流，隨順當下。' },
+            { date: '2025-10-05', trigger: '自我懷疑', insight: '發現自己容易被外在評價動搖，要回到內心定軸。', phrase: '我堅信自我價值，不隨風搖。' },
+            { date: '2025-10-06', trigger: '焦慮、擔心', insight: '看見焦慮源於想掌控未來，學習交付給願心。', phrase: '我安住於願，信任宇宙引導。' },
+            { date: '2025-10-07', trigger: '比較心', insight: '察覺比較會消耗能量，轉為祝福他人成就。', phrase: '我祝福一切成就，亦安住己道。' },
+            { date: '2025-10-08', trigger: '情緒波動', insight: '情緒來時先覺察不壓抑，讓它自然流動過去。', phrase: '我允許情緒流動，心仍清明。' },
+            { date: '2025-10-09', trigger: '指責他人', insight: '看見指責背後是未被滿足的期待，改為自我負責。', phrase: '我為自己負責，不再外求。' },
+            { date: '2025-10-10', trigger: '難以包容', insight: '覺察不容忍來自恐懼差異，練習寬容與理解。', phrase: '我擁抱差異，以愛涵容一切。' },
+            { date: '2025-10-11', trigger: '執著結果', insight: '明白執著結果會帶來壓力，學習放下掌控。', phrase: '我放下執著，過程即圓滿。' },
+            { date: '2025-10-12', trigger: '逃避責任', insight: '看見逃避藏著對失敗的恐懼，選擇勇敢面對。', phrase: '我勇敢承擔，行動即成長。' },
+            { date: '2025-10-13', trigger: '缺乏耐心', insight: '察覺對過程不耐，學習欣賞每一步進展。', phrase: '我以耐心等候，一切如是展開。' }
+        ],
+        en: [
+            { date: '2025-10-04', trigger: 'Impatience, restlessness', insight: 'Realized impatience only drains energy; reminded myself to slow the breath.', phrase: 'May my heart rest in flow, at ease with the present.' },
+            { date: '2025-10-05', trigger: 'Self-doubt', insight: 'Noticed how easily external judgment sways me; returned to inner axis.', phrase: 'I trust my own worth; I do not sway with the wind.' },
+            { date: '2025-10-06', trigger: 'Anxiety, worry', insight: 'Saw anxiety arises from wanting to control the future; learned to entrust the vow.', phrase: 'I rest in the vow, trusting cosmic guidance.' },
+            { date: '2025-10-07', trigger: 'Comparison', insight: 'Noticed comparison drains energy; turned it into blessing others.', phrase: 'I bless all achievements and rest in my own path.' },
+            { date: '2025-10-08', trigger: 'Emotional swings', insight: 'When emotion arises, observe without suppression; let it flow through.', phrase: 'I allow emotions to flow; the heart remains clear.' },
+            { date: '2025-10-09', trigger: 'Blaming others', insight: 'Saw blame hides unmet expectations; shifted to self-responsibility.', phrase: 'I take responsibility for myself; I no longer seek outside.' },
+            { date: '2025-10-10', trigger: 'Difficulty accepting', insight: 'Intolerance comes from fear of difference; practiced tolerance.', phrase: 'I embrace difference and hold all beings with love.' },
+            { date: '2025-10-11', trigger: 'Attachment to outcome', insight: 'Attachment to results creates pressure; learned to release control.', phrase: 'I release attachment; the journey itself is completion.' },
+            { date: '2025-10-12', trigger: 'Avoiding responsibility', insight: 'Avoidance hides fear of failure; chose to face and act.', phrase: 'I stand courageously; growth comes through action.' },
+            { date: '2025-10-13', trigger: 'Lack of patience', insight: 'Impatience with the process; learned to appreciate each step.', phrase: 'I wait with patience; all is unfolding as it should.' }
+        ]
+    };
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    // 強制提供 loadMirrorDemo
+    window.loadMirrorDemo = function () {
+        var list = DEMO[lang()] || DEMO.zh;
+        for (var i = 0; i < list.length && i < 10; i++) {
+            var d = i + 1;
+            var demo = list[i];
+            var dateEl = document.querySelector('.sd2-date[data-day="' + d + '"]');
+            var triggerEl = document.querySelector('.sd2-trigger[data-day="' + d + '"]');
+            var insightEl = document.querySelector('.sd2-insight[data-day="' + d + '"]');
+            var phraseEl = document.querySelector('.sd2-phrase[data-day="' + d + '"]');
+            var recitedEl = document.querySelector('.sd2-recited[data-day="' + d + '"]');
+            if (dateEl) dateEl.value = demo.date || '';
+            if (triggerEl) triggerEl.value = demo.trigger || '';
+            if (insightEl) insightEl.value = demo.insight || '';
+            if (phraseEl) phraseEl.value = demo.phrase || '';
+            if (recitedEl) recitedEl.checked = true;
+        }
+        if (typeof generateMirrorPreview === 'function') {
+            setTimeout(generateMirrorPreview, 80);
+        }
+        console.log('✅ 已載入示範資料（' + lang() + '）');
+    };
+
+    function ensureButton() {
+        var actions = document.querySelector('.form-actions');
+        if (!actions) {
+            // 備援：找預覽/重置按鈕附近
+            var previewBtn = document.querySelector('button[onclick*="generateMirrorPreview"], #step7_2BtnPreview');
+            if (previewBtn) actions = previewBtn.parentElement;
+        }
+        if (!actions) return;
+
+        // 已有就重綁
+        var exist = document.getElementById('step7_2BtnDemo') ||
+                    actions.querySelector('button[onclick*="loadMirrorDemo"]');
+        if (exist) {
+            var btn = exist.tagName === 'BUTTON' ? exist : exist.closest('button');
+            if (btn) {
+                btn.classList.add('btn-load-demo-72');
+                btn.onclick = function (e) {
+                    e.preventDefault();
+                    window.loadMirrorDemo();
+                };
+                // 更新文字
+                var span = btn.querySelector('span') || btn;
+                if (span.id === 'step7_2BtnDemo' || span === btn) {
+                    // keep
+                }
+                var label = btn.querySelector('#step7_2BtnDemo') || btn.querySelector('span');
+                if (label) label.textContent = (lang() === 'en') ? 'Load Demo' : '載入示範';
+            }
+            return;
+        }
+
+        // 沒有就新增
+        var neo = document.createElement('button');
+        neo.type = 'button';
+        neo.className = 'btn-reset btn-load-demo-72';
+        neo.innerHTML = '<i class="fa-solid fa-file-import"></i> <span id="step7_2BtnDemo">' +
+            ((lang() === 'en') ? 'Load Demo' : '載入示範') + '</span>';
+        neo.onclick = function (e) {
+            e.preventDefault();
+            window.loadMirrorDemo();
+        };
+        actions.appendChild(neo);
+        console.log('✅ 已新增「載入示範」按鈕');
+    }
+
+    function run() {
+        ensureButton();
+        setTimeout(ensureButton, 150);
+        setTimeout(ensureButton, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(function () {
+                ensureButton();
+                var label = document.getElementById('step7_2BtnDemo');
+                if (label) label.textContent = (l === 'en') ? 'Load Demo' : '載入示範';
+            }, 80);
+        };
+    }
+
+    console.log('✅ step7-2 載入示範 已就緒');
+})();
+</script>
 </body>
 </html>
