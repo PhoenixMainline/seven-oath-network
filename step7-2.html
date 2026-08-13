@@ -3459,5 +3459,321 @@
     console.log('✅ 盾牌 + 驗證階段標題整列置中');
 })();
 </script>
+<style>
+    /* ===== 強制掃描結果與相關提示文字為綠色 ===== */
+    .qr-result,
+    #qrScanResultStep8,
+    #qrScanResultStep9,
+    .qr-result *,
+    #qrScanResultStep8 *,
+    #qrScanResultStep9 *,
+    .qr-result i,
+    #qrScanResultStep8 i,
+    #qrScanResultStep9 i,
+    .qr-result span,
+    #qrScanResultStep8 span,
+    #qrScanResultStep9 span,
+    .qr-result div,
+    #qrScanResultStep8 div,
+    #qrScanResultStep9 div {
+        color: #00e676 !important;
+        border-color: rgba(0, 230, 118, 0.2) !important;
+    }
+
+    /* 掃描成功訊息容器 */
+    .qr-result {
+        background: rgba(0, 230, 118, 0.08) !important;
+        border: 1px solid rgba(0, 230, 118, 0.2) !important;
+        border-radius: 20px !important;
+        padding: 8px 16px !important;
+        font-size: 0.9rem !important;
+        word-break: break-all !important;
+    }
+
+    /* 強制所有「顯示：誓印通過」相關文字為綠色 */
+    [id*="Success"],
+    [id*="success"],
+    [id*="通过"],
+    [id*="通過"],
+    [class*="success"],
+    .success-text,
+    .pass-text,
+    .green-text {
+        color: #00e676 !important;
+    }
+
+    /* 確保「誓印未通過」保持紅色/警告色，不被覆蓋 */
+    [id*="NotPassed"],
+    [id*="notpassed"],
+    [id*="未通過"],
+    [id*="未通过"],
+    .not-passed,
+    .fail-text {
+        color: #E8604A !important;
+    }
+
+    /* 掃描按鈕相關文字 */
+    .btn-scan-text,
+    .scan-result-text {
+        color: #00e676 !important;
+    }
+
+    /* QR Code 掃描區域的提示文字 */
+    .qr-scan-hint,
+    .scan-hint {
+        color: #00e676 !important;
+    }
+
+    /* 強制「送出即啟主頻連線…」文字為綠色（但保留其原有樣式） */
+    [id*="Note"][id*="Return"],
+    [id*="ReturnNote"],
+    [id*="returnNote"],
+    .freq-link-text {
+        color: rgba(224, 232, 245, 0.85) !important;
+    }
+    .freq-link-text i,
+    [id*="Note"] i.fa-link,
+    [id*="ReturnNote"] i.fa-link {
+        color: #00e676 !important;
+    }
+
+    /* 掃描結果的勾勾圖示 */
+    .qr-result .fa-check-circle,
+    #qrScanResultStep8 .fa-check-circle,
+    #qrScanResultStep9 .fa-check-circle {
+        color: #00e676 !important;
+    }
+
+    /* 相機引導文字中的綠色強調 */
+    .camera-guide .highlight-green {
+        color: #00e676 !important;
+    }
+</style>
+
+<script>
+    (function() {
+        // ================================================================
+        // 強制掃描結果為綠色（動態監聽）
+        // ================================================================
+
+        // 需要監聽的掃描結果元素 ID
+        var SCAN_RESULT_IDS = ['qrScanResultStep8', 'qrScanResultStep9'];
+
+        // 需要監聽的 Success 相關元素
+        var SUCCESS_IDS = [
+            'step7_2Success', 'step7_3Success',
+            'step7_1Success', 'step7_4Success'
+        ];
+
+        // 強制套用綠色樣式
+        function applyGreenStyles() {
+            // 掃描結果
+            SCAN_RESULT_IDS.forEach(function(id) {
+                var el = document.getElementById(id);
+                if (el) {
+                    el.style.setProperty('color', '#00e676', 'important');
+                    el.style.setProperty('border-color', 'rgba(0, 230, 118, 0.2)', 'important');
+                    el.style.setProperty('background', 'rgba(0, 230, 118, 0.08)', 'important');
+
+                    // 所有子元素也強制綠色
+                    var children = el.querySelectorAll('*');
+                    children.forEach(function(child) {
+                        child.style.setProperty('color', '#00e676', 'important');
+                    });
+                }
+            });
+
+            // Success 元素
+            SUCCESS_IDS.forEach(function(id) {
+                var el = document.getElementById(id);
+                if (el) {
+                    el.style.setProperty('color', '#00e676', 'important');
+                }
+            });
+
+            // 所有 .qr-result 類別
+            document.querySelectorAll('.qr-result').forEach(function(el) {
+                el.style.setProperty('color', '#00e676', 'important');
+                el.style.setProperty('border-color', 'rgba(0, 230, 118, 0.2)', 'important');
+                el.style.setProperty('background', 'rgba(0, 230, 118, 0.08)', 'important');
+                el.querySelectorAll('*').forEach(function(child) {
+                    child.style.setProperty('color', '#00e676', 'important');
+                });
+            });
+
+            // 所有包含「誓印通過」的文字（但排除「未通過」）
+            document.querySelectorAll('[id*="Success"], [id*="success"], [class*="success"]').forEach(function(el) {
+                var text = el.textContent || '';
+                if (text.indexOf('未通過') === -1 && text.indexOf('未通过') === -1) {
+                    el.style.setProperty('color', '#00e676', 'important');
+                }
+            });
+        }
+
+        // ================================================================
+        // 攔截 HTML5-QRCode 的掃描結果顯示
+        // ================================================================
+        var origStartQRScanner = window.startQRScanner;
+        if (typeof origStartQRScanner === 'function') {
+            window.startQRScanner = function(containerId, resultId, guideId) {
+                // 先呼叫原始函數
+                origStartQRScanner(containerId, resultId, guideId);
+
+                // 延遲套用綠色樣式（等待結果出現）
+                setTimeout(function() {
+                    applyGreenStyles();
+                    // 監聽結果元素的變化
+                    var resultEl = document.getElementById(resultId);
+                    if (resultEl) {
+                        var observer = new MutationObserver(function() {
+                            applyGreenStyles();
+                        });
+                        observer.observe(resultEl, { childList: true, subtree: true, characterData: true });
+                    }
+                }, 100);
+            };
+        }
+
+        // ================================================================
+        // 覆蓋 switchLanguage 以重新套用樣式
+        // ================================================================
+        var origSwitch = window.switchLanguage;
+        if (typeof origSwitch === 'function') {
+            window.switchLanguage = function(lang) {
+                origSwitch(lang);
+                setTimeout(applyGreenStyles, 150);
+                setTimeout(applyGreenStyles, 400);
+            };
+        }
+
+        // ================================================================
+        // 初始化
+        // ================================================================
+        function run() {
+            applyGreenStyles();
+
+            // 持續監聽新加入的掃描結果
+            var observer = new MutationObserver(function() {
+                clearTimeout(window.__greenScanTimer);
+                window.__greenScanTimer = setTimeout(applyGreenStyles, 100);
+            });
+            observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+            // 每 2 秒檢查一次（備援機制）
+            setInterval(applyGreenStyles, 2000);
+
+            console.log('✅ 掃描結果強制綠色模組已載入');
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', run);
+        } else {
+            run();
+        }
+    })();
+</script>
+<!-- ============================================================ -->
+<!-- 「第二印 修心印《鏡修省思…》」→ 英文                          -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var ZH = '第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》';
+    var ZH2 = '第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》表單';
+    var ZH3 = '第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》提交表單';
+    var EN = 'Second Seal Mind-Refinement Seal 《Mirror-Refinement Insight × Habit Calibration × Oath Practice Record Sheet》';
+    var EN2 = 'Second Seal Mind-Refinement Seal 《Mirror-Refinement Insight × Habit Calibration × Oath Practice Record Sheet》 Form';
+    var EN3 = 'Second Seal Mind-Refinement Seal 《Mirror-Refinement Insight × Habit Calibration × Oath Practice Record Sheet》 Submission Form';
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function apply() {
+        var isEn = lang() === 'en';
+
+        document.querySelectorAll(
+            '.form-title, .form-section-title, .preview-header, h3, h4, span, div, strong, b'
+        ).forEach(function (el) {
+            if (!el || el.children.length > 3) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 100) return;
+
+            if (/第二印\s*修心印/.test(t) || /Second Seal Mind-Refinement/.test(t) || /Mirror-Refinement Insight/.test(t)) {
+                if (isEn) {
+                    if (/提交表單|Submission Form/.test(t)) {
+                        el.textContent = EN3;
+                    } else if (/表單|Form/.test(t) && !/Submission/.test(t)) {
+                        el.textContent = EN2;
+                    } else {
+                        el.textContent = EN;
+                    }
+                } else {
+                    if (/Submission Form|提交表單/.test(t)) {
+                        el.textContent = ZH3;
+                    } else if (/\bForm\b|表單/.test(t)) {
+                        el.textContent = ZH2;
+                    } else {
+                        el.textContent = ZH;
+                    }
+                }
+            }
+        });
+
+        // 純文字節點備援
+        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+        var nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach(function (tn) {
+            var v = tn.nodeValue || '';
+            if (isEn && /第二印\s*修心印/.test(v)) {
+                tn.nodeValue = v
+                    .replace(ZH3, EN3)
+                    .replace(ZH2, EN2)
+                    .replace(ZH, EN)
+                    .replace(/第二印\s*修心印《鏡修省思\s*[×xX]\s*習氣調頻\s*[×xX]\s*誓文實踐紀錄表》提交表單/g, EN3)
+                    .replace(/第二印\s*修心印《鏡修省思\s*[×xX]\s*習氣調頻\s*[×xX]\s*誓文實踐紀錄表》表單/g, EN2)
+                    .replace(/第二印\s*修心印《鏡修省思\s*[×xX]\s*習氣調頻\s*[×xX]\s*誓文實踐紀錄表》/g, EN);
+            }
+            if (!isEn && /Second Seal Mind-Refinement/.test(v)) {
+                tn.nodeValue = v
+                    .replace(EN3, ZH3)
+                    .replace(EN2, ZH2)
+                    .replace(EN, ZH);
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__seal2TitleTimer);
+        window.__seal2TitleTimer = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 第二印表單標題中英切換已就緒');
+})();
+</script>
     </body>
 </html>
