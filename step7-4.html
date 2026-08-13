@@ -2968,5 +2968,89 @@
     console.log('✅ step7-4 回傳誓證圖示已置中');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 「啟用七印系統」「進入任務冊」→ 英文                          -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var MAP = [
+        ['啟用七印系統', 'Activate Seven-Seal System'],
+        ['是否啟用七印系統', 'Activate Seven-Seal System'],
+        ['進入任務冊', 'Enter Mission Registry'],
+        ['是否進入任務冊', 'Enter Mission Registry'],
+        ['送交天庫存檔', 'Submit to Heavenly-Archive'],
+        ['是否送交天庫存檔', 'Submit to Heavenly-Archive']
+    ];
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function apply() {
+        var isEn = lang() === 'en';
+
+        document.querySelectorAll('label, span, div, p, strong, b, td').forEach(function (el) {
+            if (!el || el.children.length > 3) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 50) return;
+
+            for (var i = 0; i < MAP.length; i++) {
+                var zh = MAP[i][0], en = MAP[i][1];
+                if (isEn && (t === zh || t.indexOf(zh) !== -1) && t.indexOf(en) === -1) {
+                    el.textContent = t === zh ? en : t.split(zh).join(en);
+                    return;
+                }
+                if (!isEn && (t === en || t.indexOf(en) !== -1) && t.indexOf(zh) === -1) {
+                    el.textContent = t === en ? zh : t.split(en).join(zh);
+                    return;
+                }
+            }
+        });
+
+        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+        var nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach(function (tn) {
+            var v = tn.nodeValue || '';
+            for (var i = 0; i < MAP.length; i++) {
+                var zh = MAP[i][0], en = MAP[i][1];
+                if (isEn && v.indexOf(zh) !== -1) tn.nodeValue = v.split(zh).join(en);
+                if (!isEn && v.indexOf(en) !== -1) tn.nodeValue = v.split(en).join(zh);
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__missionLabelTimer);
+        window.__missionLabelTimer = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 啟用七印系統 / 進入任務冊 中英切換已就緒');
+})();
+</script>
 </body>
 </html>
