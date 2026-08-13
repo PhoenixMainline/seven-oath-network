@@ -2534,5 +2534,83 @@
     console.log('✅ 驗證階段 / 回傳誓證 標題字體已統一');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 修復「下一步」按鈕無法做動                                    -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    // ================================================================
+    // 修復「下一步」按鈕
+    // ================================================================
+    function fixNextButton() {
+        // 找到「下一步」按鈕
+        var nextBtn = document.querySelector('a[href="step7-2.html"]');
+        
+        if (!nextBtn) {
+            // 用文字尋找
+            var allLinks = document.querySelectorAll('a');
+            for (var i = 0; i < allLinks.length; i++) {
+                if (allLinks[i].textContent.indexOf('下一步') !== -1 || 
+                    allLinks[i].textContent.indexOf('Next') !== -1) {
+                    nextBtn = allLinks[i];
+                    break;
+                }
+            }
+        }
+
+        if (nextBtn) {
+            // 確保按鈕可以點擊
+            nextBtn.style.pointerEvents = 'auto';
+            nextBtn.style.cursor = 'pointer';
+            nextBtn.style.opacity = '1';
+            nextBtn.style.zIndex = '9999';
+            nextBtn.style.position = 'relative';
+            
+            // 移除任何 disabled 屬性
+            nextBtn.removeAttribute('disabled');
+            
+            // 重新綁定點擊事件
+            nextBtn.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                // 跳轉到 step7-2.html
+                window.location.href = 'step7-2.html';
+                console.log('✅ 下一步按鈕已跳轉');
+            };
+            
+            console.log('✅ 下一步按鈕已修復');
+        } else {
+            console.warn('⚠️ 找不到下一步按鈕');
+        }
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    function run() {
+        fixNextButton();
+        setTimeout(fixNextButton, 150);
+        setTimeout(fixNextButton, 400);
+        setTimeout(fixNextButton, 800);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // ================================================================
+    // 監聽動態變化
+    // ================================================================
+    var observer = new MutationObserver(function() {
+        clearTimeout(window.__nextBtnTimer);
+        window.__nextBtnTimer = setTimeout(fixNextButton, 200);
+    });
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+    console.log('✅ 下一步按鈕修復模組已載入');
+})();
+</script>
 </body>
 </html>
