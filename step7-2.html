@@ -3375,5 +3375,89 @@
     console.log('✅ 驗證階段 / 回傳誓證 標題字體已統一');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 驗證階段：盾牌 + 🧭 + 文字 整列置中（修正 span 撐滿導致分開） -->
+<!-- ============================================================ -->
+<style>
+    /* 不要讓標題 span 撐滿整行 */
+    #step7_2VerifyTitle,
+    #step7_1VerifyTitle {
+        display: inline !important;
+        width: auto !important;
+        text-align: center !important;
+    }
+
+    /* 含驗證階段的 card-title 整列置中 */
+    .hud-card.center-card > .card-title {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        gap: 8px !important;
+        text-align: center !important;
+    }
+</style>
+
+<script>
+(function () {
+    function apply() {
+        var title = document.getElementById('step7_2VerifyTitle') ||
+                    document.getElementById('step7_1VerifyTitle');
+        if (!title) return;
+
+        // span 不要撐滿
+        title.style.setProperty('display', 'inline', 'important');
+        title.style.setProperty('width', 'auto', 'important');
+        title.style.setProperty('text-align', 'center', 'important');
+
+        // 整列 card-title 置中
+        var row = title.closest('.card-title');
+        if (row) {
+            row.style.setProperty('display', 'flex', 'important');
+            row.style.setProperty('flex-direction', 'row', 'important');
+            row.style.setProperty('justify-content', 'center', 'important');
+            row.style.setProperty('align-items', 'center', 'important');
+            row.style.setProperty('width', '100%', 'important');
+            row.style.setProperty('gap', '8px', 'important');
+            row.style.setProperty('text-align', 'center', 'important');
+
+            // 盾牌 icon 不要被擠走
+            Array.prototype.forEach.call(row.querySelectorAll('i'), function (icon) {
+                icon.style.setProperty('flex-shrink', '0', 'important');
+                icon.style.setProperty('margin', '0', 'important');
+            });
+        }
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__centerShieldFix);
+        window.__centerShieldFix = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ 盾牌 + 驗證階段標題整列置中');
+})();
+</script>
     </body>
 </html>
