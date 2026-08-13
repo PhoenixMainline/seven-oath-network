@@ -3193,5 +3193,187 @@
     console.log('✅ 瀏覽器開啟按鈕修復模組已載入');
 })();
 </script> 
+<!-- ============================================================ -->
+<!-- 🧭 ① 驗證階段（啟動觸發）標題置中（含內建符號）               -->
+<!-- ============================================================ -->
+<style>
+    #step7_2VerifyTitle,
+    #step7_1VerifyTitle {
+        text-align: center !important;
+        width: 100% !important;
+        display: block !important;
+    }
+</style>
+
+<script>
+(function () {
+    var IDS = ['step7_2VerifyTitle', 'step7_1VerifyTitle'];
+    var KEYS = ['驗證階段', 'Verification Phase', '啟動觸發', 'Activation Trigger'];
+
+    function centerTitle(el) {
+        if (!el) return;
+
+        el.style.setProperty('text-align', 'center', 'important');
+        el.style.setProperty('width', '100%', 'important');
+        el.style.setProperty('display', 'block', 'important');
+
+        // 標題列（含 icon）置中
+        var row = el.closest('.card-title') || el.parentElement;
+        if (row) {
+            row.style.setProperty('display', 'flex', 'important');
+            row.style.setProperty('flex-direction', 'row', 'important');
+            row.style.setProperty('justify-content', 'center', 'important');
+            row.style.setProperty('align-items', 'center', 'important');
+            row.style.setProperty('text-align', 'center', 'important');
+            row.style.setProperty('width', '100%', 'important');
+            row.style.setProperty('gap', '8px', 'important');
+        }
+
+        // 再上一層也置中
+        var card = el.closest('.hud-card');
+        if (card) {
+            var firstTitle = card.querySelector('.card-title');
+            if (firstTitle && (firstTitle === row || firstTitle.contains(el))) {
+                firstTitle.style.setProperty('justify-content', 'center', 'important');
+                firstTitle.style.setProperty('text-align', 'center', 'important');
+            }
+        }
+    }
+
+    function apply() {
+        IDS.forEach(function (id) {
+            centerTitle(document.getElementById(id));
+        });
+
+        // 關鍵字備援
+        document.querySelectorAll('.card-title, .hud-card > div').forEach(function (el) {
+            if (el.children && el.children.length > 6) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 40) return;
+            var hit = KEYS.some(function (k) { return t.indexOf(k) !== -1; });
+            if (hit) centerTitle(el);
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__centerVerify72);
+        window.__centerVerify72 = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 驗證階段標題（含符號）已置中');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- ① 驗證階段 與 ② 回傳誓證 標題字體一樣大                      -->
+<!-- ============================================================ -->
+<style>
+    #step7_1VerifyTitle,
+    #step7_1ReturnTitle,
+    #step7_2ReturnTitle {
+        font-size: 1.1rem !important;
+        font-weight: bold !important;
+        line-height: 1.4 !important;
+    }
+
+    /* 標題列（含 icon）一併統一 */
+    #step7_1VerifyTitle,
+    #step7_1ReturnTitle,
+    #step7_2ReturnTitle {
+        display: inline !important;
+    }
+</style>
+
+<script>
+(function () {
+    var IDS = ['step7_1VerifyTitle', 'step7_1ReturnTitle', 'step7_2ReturnTitle'];
+    var KEYS = [
+        '驗證階段',
+        'Verification Phase',
+        '回傳誓證',
+        'Return Oath'
+    ];
+
+    function unify(el) {
+        if (!el) return;
+        el.style.setProperty('font-size', '1.1rem', 'important');
+        el.style.setProperty('font-weight', 'bold', 'important');
+        el.style.setProperty('line-height', '1.4', 'important');
+        el.style.setProperty('color', '#e9d5ff', 'important');
+
+        // 父層 card-title 也統一
+        var row = el.closest('.card-title') || el.parentElement;
+        if (row) {
+            row.style.setProperty('font-size', '1.1rem', 'important');
+            row.style.setProperty('font-weight', 'bold', 'important');
+            row.style.setProperty('color', '#e9d5ff', 'important');
+        }
+    }
+
+    function apply() {
+        IDS.forEach(function (id) {
+            unify(document.getElementById(id));
+        });
+
+        // 關鍵字備援
+        document.querySelectorAll('.card-title, .hud-card div, span').forEach(function (el) {
+            if (el.children && el.children.length > 4) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 40) return;
+            var hit = KEYS.some(function (k) { return t.indexOf(k) !== -1; });
+            if (hit) unify(el);
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 300);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__titleSize71);
+        window.__titleSize71 = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 驗證階段 / 回傳誓證 標題字體已統一');
+})();
+</script>
     </body>
 </html>
