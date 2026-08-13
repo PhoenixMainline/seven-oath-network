@@ -3211,5 +3211,160 @@
     console.log('✅ 回傳誓證圖示強制置中（v2）');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- step7-3：修正 ①驗證 / ②回傳 圖示被擠到左邊                    -->
+<!-- 根因：#step7_3ReturnTitle { width:100%; display:block }       -->
+<!-- ============================================================ -->
+<style>
+    #step7_3VerifyTitle,
+    #step7_3ReturnTitle {
+        display: inline !important;
+        width: auto !important;
+        max-width: none !important;
+        flex: 0 0 auto !important;
+        text-align: center !important;
+        font-size: 1.1rem !important;
+        font-weight: bold !important;
+        line-height: 1.4 !important;
+        color: #e9d5ff !important;
+    }
+</style>
+
+<script>
+(function () {
+    function fixTitles() {
+        ['step7_3VerifyTitle', 'step7_3ReturnTitle'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+
+            // 強制 span 不撐滿
+            el.style.setProperty('display', 'inline', 'important');
+            el.style.setProperty('width', 'auto', 'important');
+            el.style.setProperty('max-width', 'none', 'important');
+            el.style.setProperty('flex', '0 0 auto', 'important');
+
+            // 父層整列置中
+            var row = el.parentElement;
+            if (!row) return;
+            row.style.setProperty('display', 'flex', 'important');
+            row.style.setProperty('flex-direction', 'row', 'important');
+            row.style.setProperty('justify-content', 'center', 'important');
+            row.style.setProperty('align-items', 'center', 'important');
+            row.style.setProperty('width', '100%', 'important');
+            row.style.setProperty('gap', '8px', 'important');
+            row.style.setProperty('text-align', 'center', 'important');
+
+            Array.prototype.forEach.call(row.children, function (c) {
+                c.style.setProperty('flex', '0 0 auto', 'important');
+                c.style.setProperty('flex-shrink', '0', 'important');
+                c.style.setProperty('margin-left', '0', 'important');
+                c.style.setProperty('margin-right', '0', 'important');
+            });
+        });
+    }
+
+    function run() {
+        fixTitles();
+        setTimeout(fixTitles, 80);
+        setTimeout(fixTitles, 250);
+        setTimeout(fixTitles, 500);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(fixTitles, 50);
+            setTimeout(fixTitles, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__fixTitle73);
+        window.__fixTitle73 = setTimeout(fixTitles, 60);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+    console.log('✅ step7-3 驗證/回傳標題圖示已置中');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 「誓印未通過」標題改為亮綠色（與「誓印通過」一致）            -->
+<!-- ============================================================ -->
+<style>
+    #step7_3NotPassedTitle,
+    #step7_2NotPassedTitle,
+    #step7_1NotPassedTitle {
+        color: #00e676 !important;
+    }
+</style>
+
+<script>
+(function () {
+    function apply() {
+        ['step7_3NotPassedTitle', 'step7_2NotPassedTitle', 'step7_1NotPassedTitle'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            el.style.setProperty('color', '#00e676', 'important');
+            el.style.setProperty('font-weight', 'bold', 'important');
+
+            // 父層也改綠（避免被外層橘色蓋掉）
+            var p = el.parentElement;
+            if (p) {
+                p.style.setProperty('color', '#00e676', 'important');
+            }
+            // 外層區塊左邊框也改綠（可選，與通過一致）
+            var box = el.closest('[style*="border-left"]') || el.closest('div');
+            if (box && box !== el) {
+                var t = (box.textContent || '');
+                if (t.indexOf('誓印未通過') !== -1 || t.indexOf('Not Passed') !== -1) {
+                    box.style.setProperty('border-left-color', '#00e676', 'important');
+                    box.style.setProperty('background', 'rgba(0, 230, 118, 0.12)', 'important');
+                }
+            }
+        });
+
+        // 關鍵字備援
+        document.querySelectorAll('div, span').forEach(function (el) {
+            if (el.children && el.children.length > 2) return;
+            var t = (el.textContent || '').trim();
+            if (t.indexOf('誓印未通過') !== -1 || t.indexOf('Oath Seal Not Passed') !== -1) {
+                if (t.length < 40) {
+                    el.style.setProperty('color', '#00e676', 'important');
+                    el.style.setProperty('font-weight', 'bold', 'important');
+                }
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+        };
+    }
+
+    console.log('✅ 誓印未通過 已改為亮綠色 #00e676');
+})();
+</script>
 </body>
 </html>
