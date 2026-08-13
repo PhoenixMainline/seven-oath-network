@@ -3010,5 +3010,206 @@
     console.log('✅ 主頻連線說明中英切換已就緒');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- ① 驗證階段、② 回傳誓證：左側圖示 + 文字 整列置中             -->
+<!-- ============================================================ -->
+<style>
+    /* 不要讓標題 span 撐滿，才不會把圖示擠走 */
+    #step7_2VerifyTitle,
+    #step7_1VerifyTitle,
+    #step7_2ReturnTitle,
+    #step7_1ReturnTitle {
+        display: inline !important;
+        width: auto !important;
+        text-align: center !important;
+    }
+</style>
+
+<script>
+(function () {
+    var TITLE_IDS = [
+        'step7_2VerifyTitle',
+        'step7_1VerifyTitle',
+        'step7_2ReturnTitle',
+        'step7_1ReturnTitle'
+    ];
+    var KEYS = [
+        '驗證階段',
+        'Verification Phase',
+        '回傳誓證',
+        'Return Oath',
+        '確認誓印'
+    ];
+
+    function centerRow(row) {
+        if (!row) return;
+        row.style.setProperty('display', 'flex', 'important');
+        row.style.setProperty('flex-direction', 'row', 'important');
+        row.style.setProperty('justify-content', 'center', 'important');
+        row.style.setProperty('align-items', 'center', 'important');
+        row.style.setProperty('width', '100%', 'important');
+        row.style.setProperty('gap', '8px', 'important');
+        row.style.setProperty('text-align', 'center', 'important');
+        row.style.setProperty('margin-left', '0', 'important');
+        row.style.setProperty('margin-right', '0', 'important');
+
+        Array.prototype.forEach.call(row.children || [], function (child) {
+            child.style.setProperty('flex-shrink', '0', 'important');
+            child.style.setProperty('margin-left', '0', 'important');
+            child.style.setProperty('margin-right', '0', 'important');
+            // span 不要撐滿
+            if (child.tagName === 'SPAN' || child.id) {
+                child.style.setProperty('display', 'inline', 'important');
+                child.style.setProperty('width', 'auto', 'important');
+            }
+        });
+    }
+
+    function apply() {
+        // 1) 依 ID
+        TITLE_IDS.forEach(function (id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            el.style.setProperty('display', 'inline', 'important');
+            el.style.setProperty('width', 'auto', 'important');
+            centerRow(el.closest('.card-title') || el.parentElement);
+        });
+
+        // 2) 關鍵字找整列
+        document.querySelectorAll('.card-title').forEach(function (row) {
+            var t = (row.textContent || '').trim();
+            var hit = KEYS.some(function (k) { return t.indexOf(k) !== -1; });
+            if (hit) centerRow(row);
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__centerIconsBoth);
+        window.__centerIconsBoth = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ 驗證階段 / 回傳誓證 圖示+文字整列置中');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- ② 回傳誓證：強制圖示+文字整列置中（壓制 span 撐滿）           -->
+<!-- ============================================================ -->
+<style>
+    #step7_2ReturnTitle,
+    #step7_1ReturnTitle {
+        display: inline !important;
+        width: auto !important;
+        max-width: none !important;
+        flex: 0 0 auto !important;
+        text-align: center !important;
+    }
+
+    /* 回傳誓證標題列 */
+    #step7_2ReturnTitle,
+    #step7_1ReturnTitle {
+        /* 父層由 JS 強制 */
+    }
+</style>
+
+<script>
+(function () {
+    function fix() {
+        var title = document.getElementById('step7_2ReturnTitle') ||
+                    document.getElementById('step7_1ReturnTitle');
+        if (!title) return;
+
+        // span 絕對不要撐滿
+        title.style.cssText += ';display:inline!important;width:auto!important;max-width:none!important;flex:0 0 auto!important;text-align:center!important;';
+
+        var row = title.parentElement;
+        if (!row) return;
+
+        // 整列 flex 置中
+        row.style.cssText += ';display:flex!important;flex-direction:row!important;justify-content:center!important;align-items:center!important;width:100%!important;gap:8px!important;text-align:center!important;';
+
+        // 列內每個子元素（含 fa-certificate）
+        Array.prototype.forEach.call(row.children, function (c) {
+            c.style.setProperty('flex', '0 0 auto', 'important');
+            c.style.setProperty('flex-shrink', '0', 'important');
+            c.style.setProperty('margin-left', '0', 'important');
+            c.style.setProperty('margin-right', '0', 'important');
+            if (c.tagName === 'I') {
+                c.style.setProperty('display', 'inline-block', 'important');
+            }
+            if (c === title || c.tagName === 'SPAN') {
+                c.style.setProperty('display', 'inline', 'important');
+                c.style.setProperty('width', 'auto', 'important');
+            }
+        });
+
+        // 若圖示被移到列外，抓回來
+        var card = row.closest('.hud-card');
+        if (card) {
+            var looseIcon = null;
+            Array.prototype.forEach.call(card.children, function (ch) {
+                if (ch === row) return;
+                if (ch.tagName === 'I' && /fa-certificate|fa-star|fa-seal/.test(ch.className || '')) {
+                    looseIcon = ch;
+                }
+            });
+            if (looseIcon && looseIcon.parentElement !== row) {
+                row.insertBefore(looseIcon, row.firstChild);
+            }
+        }
+    }
+
+    function run() {
+        fix();
+        setTimeout(fix, 80);
+        setTimeout(fix, 250);
+        setTimeout(fix, 600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(fix, 50);
+            setTimeout(fix, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__fixReturnIcon2);
+        window.__fixReturnIcon2 = setTimeout(fix, 60);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+    console.log('✅ 回傳誓證圖示強制置中（v2）');
+})();
+</script>
 </body>
 </html>
