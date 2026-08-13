@@ -3366,5 +3366,110 @@
     console.log('✅ 誓印未通過 已改為亮綠色 #00e676');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 「第三印 守願印《守願印 × 願書》」→ 英文                       -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var ZH = '第三印 守願印《守願印 × 願書》';
+    var ZH2 = '第三印 守願印《守願印 × 願書》提交表單';
+    var ZH3 = '第三印 守願印《守願印 × 願書》表單';
+    var EN = 'Third Seal Vow-Guardian Seal 《Vow-Guardian Seal × Vow-Script》';
+    var EN2 = 'Third Seal Vow-Guardian Seal 《Vow-Guardian Seal × Vow-Script》 Submission Form';
+    var EN3 = 'Third Seal Vow-Guardian Seal 《Vow-Guardian Seal × Vow-Script》 Form';
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function apply() {
+        var isEn = lang() === 'en';
+
+        // 常見標題節點
+        document.querySelectorAll(
+            '.form-title, .form-section-title, .preview-header, h3, h4, span, div, strong, b'
+        ).forEach(function (el) {
+            if (!el || el.children.length > 3) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 80) return;
+
+            // 含「第三印 守願印」
+            if (/第三印\s*守願印/.test(t) || /Third Seal Vow-Guardian/.test(t) || /Third Seal Vow Guardian/.test(t)) {
+                if (isEn) {
+                    if (/提交表單|Submission Form/.test(t)) {
+                        el.textContent = EN2;
+                    } else if (/表單|Form/.test(t) && !/Submission/.test(t)) {
+                        el.textContent = EN3;
+                    } else {
+                        el.textContent = EN;
+                    }
+                } else {
+                    if (/Submission Form|提交表單/.test(t)) {
+                        el.textContent = ZH2;
+                    } else if (/\bForm\b|表單/.test(t)) {
+                        el.textContent = ZH3;
+                    } else {
+                        el.textContent = ZH;
+                    }
+                }
+            }
+        });
+
+        // 純文字節點備援
+        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+        var nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach(function (tn) {
+            var v = tn.nodeValue || '';
+            if (isEn && /第三印\s*守願印/.test(v)) {
+                tn.nodeValue = v
+                    .replace(ZH2, EN2)
+                    .replace(ZH3, EN3)
+                    .replace(ZH, EN)
+                    .replace(/第三印\s*守願印《守願印\s*[×xX]\s*願書》提交表單/g, EN2)
+                    .replace(/第三印\s*守願印《守願印\s*[×xX]\s*願書》表單/g, EN3)
+                    .replace(/第三印\s*守願印《守願印\s*[×xX]\s*願書》/g, EN);
+            }
+            if (!isEn && /Third Seal Vow-?Guardian/.test(v)) {
+                tn.nodeValue = v
+                    .replace(EN2, ZH2)
+                    .replace(EN3, ZH3)
+                    .replace(EN, ZH);
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__seal3TitleTimer);
+        window.__seal3TitleTimer = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 第三印表單標題中英切換已就緒');
+})();
+</script>
 </body>
 </html>
