@@ -2612,5 +2612,198 @@
     console.log('✅ 下一步按鈕修復模組已載入');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 修復 QR Code 掃描：正確顯示掃描到的文字內容                  -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    // ================================================================
+    // 備份原始的 startQRScanner 函數
+    // ================================================================
+    var origStartQRScanner = window.startQRScanner;
+
+    // ================================================================
+    // 覆蓋 startQRScanner 函數
+    // ================================================================
+    window.startQRScanner = function(containerId, resultId, guideId) {
+        var container = document.getElementById(containerId);
+        if (!container) {
+            console.warn('⚠️ 找不到容器:', containerId);
+            return;
+        }
+
+        // 停止舊掃描
+        if (window._currentScanner) {
+            try {
+                window._currentScanner.stop().catch(function() {});
+            } catch(e) {}
+            window._currentScanner = null;
+        }
+
+        container.innerHTML = '';
+        var guide = document.getElementById(guideId);
+        var resultEl = document.getElementById(resultId);
+
+        if (guide) {
+            guide.style.display = 'none';
+            guide.classList.remove('show-fail');
+        }
+        if (resultEl) {
+            resultEl.style.display = 'none';
+            resultEl.innerHTML = '';
+        }
+
+        // 檢查瀏覽器是否支援相機
+        if (typeof Html5Qrcode === 'undefined' || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.classList.add('show-fail');
+                guide.innerHTML = (typeof currentLang !== 'undefined' && currentLang === 'en') ?
+                    '📷 Unable to launch the camera<br>⚙️ Open phone "Settings" → App Management → Permissions → Camera → set to "Allow" → then use<br>🌐 a browser (Chrome / Yahoo / Edge....)<br>⚠️ If it still does not work, please manually scan the physical book QR Code with a scanner app' :
+                    '📷 無法啟動相機<br>⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用<br>🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+            }
+            return;
+        }
+
+        try {
+            var instance = new Html5Qrcode(containerId);
+            window._currentScanner = instance;
+
+            var config = {
+                fps: 15,
+                qrbox: { width: 200, height: 200 }
+            };
+
+            instance.start(
+                { facingMode: "environment" },
+                config,
+                function(decodedText, decodedResult) {
+                    // ===== 成功掃描 =====
+                    console.log('✅ QR Code 掃描成功，內容:', decodedText);
+
+                    if (resultEl) {
+                        // 顯示掃描到的文字內容
+                        resultEl.style.display = 'block';
+                        resultEl.innerHTML = '<i class="fa-solid fa-check-circle"></i> ' + decodedText;
+                        // 加入樣式，讓文字可讀
+                        resultEl.style.color = '#00e676';
+                        resultEl.style.fontSize = '0.9rem';
+                        resultEl.style.wordBreak = 'break-all';
+                        resultEl.style.padding = '8px 12px';
+                        resultEl.style.borderRadius = '6px';
+                        resultEl.style.background = 'rgba(0, 230, 118, 0.08)';
+                        resultEl.style.border = '1px solid rgba(0, 230, 118, 0.2)';
+                    }
+
+                    // 隱藏相機指引
+                    if (guide) {
+                        guide.style.display = 'none';
+                        guide.classList.remove('show-fail');
+                    }
+
+                    // 停止掃描
+                    instance.stop().then(function() {
+                        window._currentScanner = null;
+                        console.log('✅ 掃描器已停止');
+                    }).catch(function() {
+                        window._currentScanner = null;
+                    });
+                },
+                function(errorMessage) {
+                    // 掃描錯誤（忽略，持續掃描）
+                    // console.log('掃描中...', errorMessage);
+                }
+            ).catch(function(err) {
+                console.warn('⚠️ 啟動掃描器失敗:', err);
+                if (guide) {
+                    guide.style.display = 'block';
+                    guide.classList.add('show-fail');
+                    guide.innerHTML = (typeof currentLang !== 'undefined' && currentLang === 'en') ?
+                        '📷 Unable to launch the camera<br>⚙️ Open phone "Settings" → App Management → Permissions → Camera → set to "Allow" → then use<br>🌐 a browser (Chrome / Yahoo / Edge....)<br>⚠️ If it still does not work, please manually scan the physical book QR Code with a scanner app' :
+                        '📷 無法啟動相機<br>⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用<br>🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                }
+                window._currentScanner = null;
+            });
+        } catch (e) {
+            console.error('❌ 掃描器初始化失敗:', e);
+            if (guide) {
+                guide.style.display = 'block';
+                guide.classList.add('show-fail');
+                guide.innerHTML = (typeof currentLang !== 'undefined' && currentLang === 'en') ?
+                    '📷 Unable to launch the camera<br>⚙️ Open phone "Settings" → App Management → Permissions → Camera → set to "Allow" → then use<br>🌐 a browser (Chrome / Yahoo / Edge....)<br>⚠️ If it still does not work, please manually scan the physical book QR Code with a scanner app' :
+                    '📷 無法啟動相機<br>⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用<br>🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+            }
+            window._currentScanner = null;
+        }
+    };
+
+    // ================================================================
+    // 重新綁定 step8 和 step9 的掃描按鈕
+    // ================================================================
+    function rebindScanButtons() {
+        var btn8 = document.getElementById('btnScanQRStep8');
+        if (btn8) {
+            btn8.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+            };
+            btn8.style.pointerEvents = 'auto';
+            btn8.style.cursor = 'pointer';
+        }
+
+        var btn9 = document.getElementById('btnScanQRStep9');
+        if (btn9) {
+            btn9.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
+            };
+            btn9.style.pointerEvents = 'auto';
+            btn9.style.cursor = 'pointer';
+        }
+
+        console.log('✅ QR Code 掃描按鈕已重新綁定');
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    function run() {
+        rebindScanButtons();
+        setTimeout(rebindScanButtons, 150);
+        setTimeout(rebindScanButtons, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // ================================================================
+    // 語系切換時重新綁定
+    // ================================================================
+    var origSwitch = window.switchLanguage;
+    if (typeof origSwitch === 'function') {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(rebindScanButtons, 100);
+            setTimeout(rebindScanButtons, 300);
+        };
+    }
+
+    // ================================================================
+    // 監聽動態變化
+    // ================================================================
+    var observer = new MutationObserver(function() {
+        clearTimeout(window.__qrRebindTimer);
+        window.__qrRebindTimer = setTimeout(rebindScanButtons, 200);
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ QR Code 掃描修復模組已載入');
+})();
+</script>
 </body>
 </html>
