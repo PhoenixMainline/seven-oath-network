@@ -2849,5 +2849,17 @@
     console.log('✅ QR Code 掃描模組已載入（掃描框預設隱藏）');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 刪除右上角多餘 L 型框框符號（.hud-container::after）          -->
+<!-- ============================================================ -->
+<style>
+    .hud-container::after {
+        display: none !important;
+        content: none !important;
+        border: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+</style>
 </body>
 </html>
