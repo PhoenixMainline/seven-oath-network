@@ -697,23 +697,52 @@
     })();
 </script>
 <!-- ============================================================ -->
-<!-- 修復「下一步」按鈕無法做動                                    -->
+<!-- 修正「下一步」按鈕：從 step7-2.html 改為 step7-1.html        -->
 <!-- ============================================================ -->
+<style>
+    /* 確保按鈕可見 */
+    .footer-btn-group .btn-action {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        padding: clamp(6px, 1.2vh, 10px) clamp(10px, 1.5vw, 22px) !important;
+        font-size: clamp(0.65rem, 1.3vh, 0.9rem) !important;
+        border-radius: 20px !important;
+        border: 1px solid #a78bfa !important;
+        color: #e9d5ff !important;
+        cursor: pointer !important;
+        pointer-events: auto !important;
+        background: rgba(124, 58, 237, 0.15) !important;
+        text-shadow: 0 0 10px rgba(167, 139, 250, 0.6) !important;
+        box-shadow: 0 0 15px rgba(124, 58, 237, 0.3) !important;
+        text-decoration: none !important;
+        transition: all 0.3s ease !important;
+        min-height: clamp(32px, 5vh, 44px) !important;
+        z-index: 9999 !important;
+        position: relative !important;
+    }
+    .footer-btn-group .btn-action:hover {
+        background: rgba(124, 58, 237, 0.28) !important;
+        box-shadow: 0 0 25px rgba(124, 58, 237, 0.5) !important;
+        transform: translateY(-1px) !important;
+    }
+</style>
+
 <script>
 (function() {
     // ================================================================
-    // 修復「下一步」按鈕
+    // 修正「下一步」按鈕連結為 step7-1.html
     // ================================================================
     function fixNextButton() {
-        // 找到「下一步」按鈕
+        // 方法1：找 href 包含 step7-2 的按鈕
         var nextBtn = document.querySelector('a[href="step7-2.html"]');
         
         if (!nextBtn) {
-            // 用文字尋找
+            // 方法2：用文字尋找「下一步」按鈕
             var allLinks = document.querySelectorAll('a');
             for (var i = 0; i < allLinks.length; i++) {
-                if (allLinks[i].textContent.indexOf('下一步') !== -1 || 
-                    allLinks[i].textContent.indexOf('Next') !== -1) {
+                var text = allLinks[i].textContent || '';
+                if (text.indexOf('下一步') !== -1 || text.indexOf('Next') !== -1) {
                     nextBtn = allLinks[i];
                     break;
                 }
@@ -721,6 +750,9 @@
         }
 
         if (nextBtn) {
+            // 修正 href 為 step7-1.html
+            nextBtn.href = 'step7-1.html';
+            
             // 確保按鈕可以點擊
             nextBtn.style.pointerEvents = 'auto';
             nextBtn.style.cursor = 'pointer';
@@ -728,21 +760,56 @@
             nextBtn.style.zIndex = '9999';
             nextBtn.style.position = 'relative';
             
-            // 移除任何 disabled 屬性
+            // 移除 disabled 屬性
             nextBtn.removeAttribute('disabled');
             
             // 重新綁定點擊事件
             nextBtn.onclick = function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                // 跳轉到 step7-2.html
-                window.location.href = 'step7-2.html';
-                console.log('✅ 下一步按鈕已跳轉');
+                window.location.href = 'step7-1.html';
+                console.log('✅ 下一步按鈕已跳轉到 step7-1.html');
             };
             
-            console.log('✅ 下一步按鈕已修復');
+            console.log('✅ 下一步按鈕已修正為 step7-1.html');
         } else {
-            console.warn('⚠️ 找不到下一步按鈕');
+            // 如果找不到，重建按鈕
+            var footer = document.querySelector('.hud-footer');
+            if (!footer) return;
+            
+            var btnGroup = footer.querySelector('.footer-btn-group');
+            if (!btnGroup) return;
+            
+            // 移除舊的下一步按鈕（如果存在）
+            var oldNext = btnGroup.querySelector('a[href*="step7-2"]');
+            if (oldNext) oldNext.remove();
+            
+            // 檢查是否已有「下一步」按鈕但 href 不同
+            var existingNext = btnGroup.querySelector('a:last-child');
+            if (existingNext && (existingNext.textContent.indexOf('下一步') !== -1 || existingNext.textContent.indexOf('Next') !== -1)) {
+                // 直接修改 href
+                existingNext.href = 'step7-1.html';
+                existingNext.onclick = function(e) {
+                    e.preventDefault();
+                    window.location.href = 'step7-1.html';
+                };
+                console.log('✅ 已有按鈕，已修正 href 為 step7-1.html');
+                return;
+            }
+            
+            // 建立新的下一步按鈕
+            var newNext = document.createElement('a');
+            newNext.className = 'btn-action enabled';
+            newNext.href = 'step7-1.html';
+            newNext.innerHTML = '<span id="btnNextText">下一步</span> <i class="fa-solid fa-arrow-right"></i>';
+            newNext.style.pointerEvents = 'auto';
+            newNext.style.cursor = 'pointer';
+            newNext.onclick = function(e) {
+                e.preventDefault();
+                window.location.href = 'step7-1.html';
+            };
+            btnGroup.appendChild(newNext);
+            console.log('✅ 已重建下一步按鈕，連結為 step7-1.html');
         }
     }
 
@@ -766,12 +833,12 @@
     // 監聽動態變化
     // ================================================================
     var observer = new MutationObserver(function() {
-        clearTimeout(window.__nextBtnTimer);
-        window.__nextBtnTimer = setTimeout(fixNextButton, 200);
+        clearTimeout(window.__nextBtnFixTimer);
+        window.__nextBtnFixTimer = setTimeout(fixNextButton, 200);
     });
     observer.observe(document.body, { childList: true, subtree: true, attributes: true });
 
-    console.log('✅ 下一步按鈕修復模組已載入');
+    console.log('✅ 下一步按鈕修正模組已載入（指向 step7-1.html）');
 })();
 </script>
 </body>
