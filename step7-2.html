@@ -2843,5 +2843,180 @@
         height: 0 !important;
     }
 </style>
+<!-- ============================================================ -->
+<!-- 修復 step7-2 缺少「上一步」和「下一步」按鈕                  -->
+<!-- ============================================================ -->
+<style>
+    /* 確保頁尾按鈕顯示 */
+    .hud-footer .footer-btn-group {
+        display: flex !important;
+        align-items: center !important;
+        gap: clamp(4px, 1vw, 12px) !important;
+    }
+
+    /* 確保按鈕可見 */
+    .footer-btn-group .btn-action {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        padding: clamp(6px, 1.2vh, 10px) clamp(10px, 1.5vw, 22px) !important;
+        font-size: clamp(0.65rem, 1.3vh, 0.9rem) !important;
+        border-radius: 20px !important;
+        border: 1px solid #a78bfa !important;
+        color: #e9d5ff !important;
+        cursor: pointer !important;
+        pointer-events: auto !important;
+        background: rgba(124, 58, 237, 0.15) !important;
+        text-shadow: 0 0 10px rgba(167, 139, 250, 0.6) !important;
+        box-shadow: 0 0 15px rgba(124, 58, 237, 0.3) !important;
+        text-decoration: none !important;
+        transition: all 0.3s ease !important;
+        min-height: clamp(32px, 5vh, 44px) !important;
+        z-index: 9999 !important;
+        position: relative !important;
+    }
+
+    .footer-btn-group .btn-action:hover {
+        background: rgba(124, 58, 237, 0.28) !important;
+        box-shadow: 0 0 25px rgba(124, 58, 237, 0.5) !important;
+        transform: translateY(-1px) !important;
+    }
+
+    /* 頁尾確保顯示 */
+    .hud-footer {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        padding-top: clamp(6px, 1vh, 12px) !important;
+        border-top: 1px solid rgba(168, 85, 247, 0.2) !important;
+        margin-top: auto !important;
+        z-index: 10 !important;
+    }
+
+    .page-marker {
+        font-size: clamp(0.5rem, 1.2vh, 0.78rem) !important;
+        color: rgba(224, 232, 245, 0.35) !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+    }
+
+    /* 響應式調整 */
+    @media (max-width: 480px) {
+        .hud-footer {
+            flex-direction: column !important;
+            gap: 8px !important;
+        }
+        .footer-btn-group .btn-action {
+            font-size: 0.7rem !important;
+            padding: 6px 14px !important;
+        }
+    }
+</style>
+
+<script>
+(function() {
+    // ================================================================
+    // 重建「上一步」和「下一步」按鈕
+    // ================================================================
+    function rebuildFooterButtons() {
+        var footer = document.querySelector('.hud-footer');
+        if (!footer) {
+            console.warn('⚠️ 找不到 .hud-footer');
+            return;
+        }
+
+        // 檢查是否已有按鈕群組
+        var existingGroup = footer.querySelector('.footer-btn-group');
+        if (existingGroup) {
+            // 檢查按鈕是否存在
+            var hasBack = existingGroup.querySelector('a[href*="step7-1"]');
+            var hasNext = existingGroup.querySelector('a[href*="step7-3"]');
+            if (hasBack && hasNext) {
+                // 確保按鈕可點擊
+                existingGroup.style.display = 'flex';
+                hasBack.style.pointerEvents = 'auto';
+                hasNext.style.pointerEvents = 'auto';
+                console.log('✅ 按鈕已存在，已確保可見');
+                return;
+            }
+            // 如果缺少按鈕，重建
+            existingGroup.remove();
+        }
+
+        // 建立新的按鈕群組
+        var btnGroup = document.createElement('div');
+        btnGroup.className = 'footer-btn-group';
+        btnGroup.style.display = 'flex';
+        btnGroup.style.alignItems = 'center';
+        btnGroup.style.gap = 'clamp(4px, 1vw, 12px)';
+
+        // 上一步按鈕
+        var backBtn = document.createElement('a');
+        backBtn.className = 'btn-action enabled';
+        backBtn.href = 'step7-1.html';
+        backBtn.innerHTML = '<i class="fa-solid fa-arrow-left"></i> <span id="btnBackText">上一步</span>';
+        backBtn.style.pointerEvents = 'auto';
+        backBtn.style.cursor = 'pointer';
+        backBtn.onclick = function(e) {
+            e.preventDefault();
+            window.location.href = 'step7-1.html';
+        };
+
+        // 下一步按鈕
+        var nextBtn = document.createElement('a');
+        nextBtn.className = 'btn-action enabled';
+        nextBtn.href = 'step7-3.html';
+        nextBtn.innerHTML = '<span id="btnNextText">下一步</span> <i class="fa-solid fa-arrow-right"></i>';
+        nextBtn.style.pointerEvents = 'auto';
+        nextBtn.style.cursor = 'pointer';
+        nextBtn.onclick = function(e) {
+            e.preventDefault();
+            window.location.href = 'step7-3.html';
+        };
+
+        btnGroup.appendChild(backBtn);
+        btnGroup.appendChild(nextBtn);
+
+        // 找到頁面標記並插入按鈕群組
+        var pageMarker = footer.querySelector('.page-marker');
+        if (pageMarker) {
+            footer.insertBefore(btnGroup, pageMarker);
+        } else {
+            footer.appendChild(btnGroup);
+        }
+
+        console.log('✅ 上一步/下一步按鈕已重建');
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    function run() {
+        rebuildFooterButtons();
+        setTimeout(rebuildFooterButtons, 150);
+        setTimeout(rebuildFooterButtons, 400);
+        setTimeout(rebuildFooterButtons, 800);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // ================================================================
+    // 監聽動態變化
+    // ================================================================
+    var observer = new MutationObserver(function() {
+        clearTimeout(window.__footerBtnTimer);
+        window.__footerBtnTimer = setTimeout(rebuildFooterButtons, 200);
+    });
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+    console.log('✅ 頁尾按鈕修復模組已載入');
+})();
+</script>
     </body>
 </html>
