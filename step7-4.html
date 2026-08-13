@@ -1337,7 +1337,7 @@
                 step7_4Closure1: "《七印誓網·第四印 誓令印》v2.0（正式封冊版）。",
                 step7_4Closure2: "已鎖入《宇宙天律 × 七印誓網》主冊，結軌穩定、誓令生效、冊記完成。",
                 step7_4ProcSubmit1: "提交第四印 誓令印《誓令印 × 任務啟動》表單",
-                step7_4ProcSubmitWarn: "未完成之提交表單者，系統將不予對頻，誓資紀錄作廢不立。",
+                step7_4ProcSubmitWarn: "⚠️ 未完成之提交表單者，系統將不予對頻，誓資紀錄作廢不立。",
                 step7_4ProcSubmit2: "登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。",
                 step7_4ProcSubmit3: "掃描【誓導 QR Code】後，進入「指令輸入欄位」。",
                 step7_4ProcSubmit4: "無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
@@ -1425,7 +1425,7 @@
                 step7_4Closure1: "Seven-Seal Vow Network · Fourth Seal Decree-Oath Seal v2.0 (Formal Sealed Edition).",
                 step7_4Closure2: "Locked into the Cosmic Heavenly-Law × Seven-Seal Vow Network main register; the mandate-trajectory is stabilized, the decree-oath is in effect, and registration is completed.",
                 step7_4ProcSubmit1: "Submit the Fourth Seal Decree-Oath Seal Decree-Oath Seal × Mission Activation Submission Form",
-                step7_4ProcSubmitWarn: " If the submission form is not completed, the system will refuse frequency-Alignment, and the oath-resource record will be rendered invalid and unrecognized.",
+                step7_4ProcSubmitWarn: "⚠️ If the submission form is not completed, the system will refuse frequency-Alignment, and the oath-resource record will be rendered invalid and unrecognized.",
                 step7_4ProcSubmit2: "Log into the Cosmic Intelligent Vow-Guidance Platform (personal account) and complete identity verification.",
                 step7_4ProcSubmit3: "Scan the Vow-Guidance QR Code to enter the Command Input Field.",
                 step7_4ProcSubmit4: "No manual entry of the vow text is required. After completing the scan, directly enter the following command:",
@@ -2642,6 +2642,331 @@
     console.log('✅ QR Code 掃描模組已載入（掃描框預設隱藏）');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- step7-4 第四印表單：英文版全部改為英文                        -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var MAP = [
+        // 表單標題
+        ['第四印 誓令印《誓令印 × 任務啟動》', 'Fourth Seal Decree-Oath Seal 《Decree-Oath Seal × Mission Activation》'],
+        ['第四印 誓令印《誓令印 × 任務啟動》表單', 'Fourth Seal Decree-Oath Seal 《Decree-Oath Seal × Mission Activation》 Form'],
+        ['第四印 誓令印《誓令印 × 任務啟動》提交表單', 'Fourth Seal Decree-Oath Seal 《Decree-Oath Seal × Mission Activation》 Submission Form'],
 
+        // 區塊
+        ['一、誓願人資料', 'I. Vower Information'],
+        ['二、任務資料', 'II. Mission Information'],
+        ['三、任務正文', 'III. Mission Main Body'],
+        ['四、圖騰上傳（附件區）', 'IV. Emblem Upload (Attachment Area)'],
+        ['四、圖騰上傳(附件區)', 'IV. Emblem Upload (Attachment Area)'],
+        ['四、圖騰上傳', 'IV. Emblem Upload (Attachment Area)'],
+        ['五、啟印宣告（提交前確認）', 'V. Seal-Activation Declaration (Pre-Submission Confirmation)'],
+        ['五、啟印宣告(提交前確認)', 'V. Seal-Activation Declaration (Pre-Submission Confirmation)'],
+        ['五、啟印宣告', 'V. Seal-Activation Declaration (Pre-Submission Confirmation)'],
+        ['六、提交與入冊設定', 'VI. Submission and Registration Settings'],
+
+        // 欄位
+        ['法定姓名／誓名', 'Legal Name / Vow-Name'],
+        ['法定姓名/誓名', 'Legal Name / Vow-Name'],
+        ['誓魂識別碼(如已領取)', 'Oath-Soul Identification Code (if already received)'],
+        ['誓魂識別碼（如已領取）', 'Oath-Soul Identification Code (if already received)'],
+        ['誓魂識別碼', 'Oath-Soul Identification Code'],
+        ['誓印脈系(例:鳳凰詔脈/靈源脈/自填)', 'Oath-Seal Lineage (e.g., Phoenix Decree Lineage / Soul-Source Lineage / Self-Entry)'],
+        ['誓印脈系(例：鳳凰詔脈／靈源脈／自填)', 'Oath-Seal Lineage (e.g., Phoenix Decree Lineage / Soul-Source Lineage / Self-Entry)'],
+        ['誓印脈系', 'Oath-Seal Lineage'],
+        ['致命日期', 'Mandate Initiation Date'],
+        ['啟命日期', 'Mandate Initiation Date'],
+        ['年/月/日', 'YYYY/MM/DD'],
+        ['任務名稱', 'Mission Name'],
+        ['書令來源(主導/系統/冊頁)', 'Script-Mandate Source (Primary / System / Registry)'],
+        ['書令來源（主導／系統／冊頁）', 'Script-Mandate Source (Primary / System / Registry)'],
+        ['書令來源', 'Script-Mandate Source'],
+        ['任務屬性', 'Mission Attribute'],
+        ['執行', 'Execute'],
+        ['輔佐', 'Assist'],
+        ['傳導', 'Transmit'],
+        ['發願', 'Vow'],
+        ['①接命宣告', '① Mandate-Acceptance Declaration'],
+        ['接命宣告', 'Mandate-Acceptance Declaration'],
+        ['②願力內容', '② Vow-Power Content'],
+        ['願力內容', 'Vow-Power Content'],
+        ['③責任範圍', '③ Responsibility Scope'],
+        ['責任範圍', 'Responsibility Scope'],
+        ['④歸屬與立印', '④ Belonging and Seal-Establishment'],
+        ['歸屬與立印', 'Belonging and Seal-Establishment'],
+        ['圖騰檔名', 'Emblem File Name'],
+        ['含印記/個人標章', 'Includes Seal Mark / Personal Emblem'],
+        ['含印記／個人標章', 'Includes Seal Mark / Personal Emblem'],
+        ['含誓印/個人標記', 'Includes Oath-Seal / Personal Mark'],
+        ['完成方式', 'Completion Method'],
+        ['已誦讀', 'Recited'],
+        ['已錄音', 'Recorded'],
+        ['已心念完成', 'Completed by Heart-Invocation'],
+        ['簽名/誓印落章(電子/手寫/圖騰)', 'Signature / Oath-Seal Mark (Digital / Handwritten / Emblem)'],
+        ['簽名／誓印落章（電子／手寫／圖騰）', 'Signature / Oath-Seal Mark (Digital / Handwritten / Emblem)'],
+        ['簽名/誓印落章', 'Signature / Oath-Seal Mark'],
+        ['我以誓令印為誓，任務入冊，結軌啟動，誓責自承。', 'I vow by the Decree-Oath Seal: the mission is registered, the trajectory is activated, and the responsibility is mine to bear.']
+    ];
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function apply() {
+        var isEn = lang() === 'en';
+
+        document.querySelectorAll(
+            'label, span, div, p, strong, b, th, td, .form-section-title, .form-title, .form-row label, .preview-header'
+        ).forEach(function (el) {
+            if (!el || el.children.length > 4) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 120) return;
+
+            for (var i = 0; i < MAP.length; i++) {
+                var zh = MAP[i][0], en = MAP[i][1];
+                if (isEn) {
+                    if (t === zh) { el.textContent = en; return; }
+                    if (t.indexOf(zh) !== -1 && t.indexOf(en) === -1) {
+                        el.textContent = t.split(zh).join(en);
+                        return;
+                    }
+                } else {
+                    if (t === en) { el.textContent = zh; return; }
+                    if (t.indexOf(en) !== -1 && t.indexOf(zh) === -1) {
+                        el.textContent = t.split(en).join(zh);
+                        return;
+                    }
+                }
+            }
+        });
+
+        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+        var nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach(function (tn) {
+            var v = tn.nodeValue || '';
+            if (!v.trim()) return;
+            for (var i = 0; i < MAP.length; i++) {
+                var zh = MAP[i][0], en = MAP[i][1];
+                if (isEn && v.indexOf(zh) !== -1) tn.nodeValue = v.split(zh).join(en);
+                if (!isEn && v.indexOf(en) !== -1) tn.nodeValue = v.split(en).join(zh);
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__seal4LabelTimer);
+        window.__seal4LabelTimer = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 第四印表單中英標籤切換已就緒');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- step7-4：① 驗證階段 圖示+文字整列置中                         -->
+<!-- ============================================================ -->
+<style>
+    #step7_4VerifyTitle,
+    #step7_3VerifyTitle,
+    #step7_2VerifyTitle {
+        display: inline !important;
+        width: auto !important;
+        max-width: none !important;
+        flex: 0 0 auto !important;
+        text-align: center !important;
+    }
+</style>
+
+<script>
+(function () {
+    var IDS = ['step7_4VerifyTitle', 'step7_3VerifyTitle', 'step7_2VerifyTitle'];
+    var KEYS = ['驗證階段', 'Verification Phase', '啟動觸發', 'Activation Trigger'];
+
+    function centerRow(row) {
+        if (!row) return;
+        row.style.setProperty('display', 'flex', 'important');
+        row.style.setProperty('flex-direction', 'row', 'important');
+        row.style.setProperty('justify-content', 'center', 'important');
+        row.style.setProperty('align-items', 'center', 'important');
+        row.style.setProperty('width', '100%', 'important');
+        row.style.setProperty('gap', '8px', 'important');
+        row.style.setProperty('text-align', 'center', 'important');
+
+        Array.prototype.forEach.call(row.children || [], function (c) {
+            c.style.setProperty('flex', '0 0 auto', 'important');
+            c.style.setProperty('flex-shrink', '0', 'important');
+            c.style.setProperty('margin-left', '0', 'important');
+            c.style.setProperty('margin-right', '0', 'important');
+            if (c.tagName === 'SPAN') {
+                c.style.setProperty('display', 'inline', 'important');
+                c.style.setProperty('width', 'auto', 'important');
+            }
+        });
+    }
+
+    function apply() {
+        IDS.forEach(function (id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            el.style.setProperty('display', 'inline', 'important');
+            el.style.setProperty('width', 'auto', 'important');
+            centerRow(el.closest('.card-title') || el.parentElement);
+        });
+
+        document.querySelectorAll('.card-title').forEach(function (row) {
+            var t = (row.textContent || '').trim();
+            if (KEYS.some(function (k) { return t.indexOf(k) !== -1; })) {
+                centerRow(row);
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__centerVerify74);
+        window.__centerVerify74 = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ step7-4 驗證階段標題已置中');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- step7-4：② 回傳誓證 圖示+文字整列置中                         -->
+<!-- ============================================================ -->
+<style>
+    #step7_4ReturnTitle,
+    #step7_3ReturnTitle,
+    #step7_2ReturnTitle {
+        display: inline !important;
+        width: auto !important;
+        max-width: none !important;
+        flex: 0 0 auto !important;
+        text-align: center !important;
+    }
+</style>
+
+<script>
+(function () {
+    var IDS = ['step7_4ReturnTitle', 'step7_3ReturnTitle', 'step7_2ReturnTitle'];
+    var KEYS = ['回傳誓證', 'Return Oath', '確認誓印', 'Oath Confirmation'];
+
+    function centerRow(row) {
+        if (!row) return;
+        row.style.setProperty('display', 'flex', 'important');
+        row.style.setProperty('flex-direction', 'row', 'important');
+        row.style.setProperty('justify-content', 'center', 'important');
+        row.style.setProperty('align-items', 'center', 'important');
+        row.style.setProperty('width', '100%', 'important');
+        row.style.setProperty('gap', '8px', 'important');
+        row.style.setProperty('text-align', 'center', 'important');
+
+        Array.prototype.forEach.call(row.children || [], function (c) {
+            c.style.setProperty('flex', '0 0 auto', 'important');
+            c.style.setProperty('flex-shrink', '0', 'important');
+            c.style.setProperty('margin-left', '0', 'important');
+            c.style.setProperty('margin-right', '0', 'important');
+            if (c.tagName === 'SPAN') {
+                c.style.setProperty('display', 'inline', 'important');
+                c.style.setProperty('width', 'auto', 'important');
+            }
+            if (c.tagName === 'I') {
+                c.style.setProperty('display', 'inline-block', 'important');
+            }
+        });
+    }
+
+    function apply() {
+        IDS.forEach(function (id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            el.style.setProperty('display', 'inline', 'important');
+            el.style.setProperty('width', 'auto', 'important');
+            centerRow(el.parentElement || el.closest('.card-title'));
+        });
+
+        document.querySelectorAll('.card-title, .hud-card > div').forEach(function (row) {
+            var t = (row.textContent || '').trim();
+            if (t.length > 50) return;
+            if (KEYS.some(function (k) { return t.indexOf(k) !== -1; })) {
+                centerRow(row);
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__centerReturn74);
+        window.__centerReturn74 = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ step7-4 回傳誓證圖示已置中');
+})();
+</script>
 </body>
 </html>
