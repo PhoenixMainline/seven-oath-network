@@ -2186,5 +2186,829 @@
             console.log('✅ 兩句圖示與文字已統一強制同一列');
         })();
     </script>
+<!-- ============================================================ -->
+<!-- 🧭 ① 驗證階段（啟動觸發）標題置中（含內建符號）               -->
+<!-- ============================================================ -->
+<style>
+    #step7_2VerifyTitle,
+    #step7_1VerifyTitle {
+        text-align: center !important;
+        width: 100% !important;
+        display: block !important;
+    }
+</style>
+
+<script>
+(function () {
+    var IDS = ['step7_2VerifyTitle', 'step7_1VerifyTitle'];
+    var KEYS = ['驗證階段', 'Verification Phase', '啟動觸發', 'Activation Trigger'];
+
+    function centerTitle(el) {
+        if (!el) return;
+
+        el.style.setProperty('text-align', 'center', 'important');
+        el.style.setProperty('width', '100%', 'important');
+        el.style.setProperty('display', 'block', 'important');
+
+        // 標題列（含 icon）置中
+        var row = el.closest('.card-title') || el.parentElement;
+        if (row) {
+            row.style.setProperty('display', 'flex', 'important');
+            row.style.setProperty('flex-direction', 'row', 'important');
+            row.style.setProperty('justify-content', 'center', 'important');
+            row.style.setProperty('align-items', 'center', 'important');
+            row.style.setProperty('text-align', 'center', 'important');
+            row.style.setProperty('width', '100%', 'important');
+            row.style.setProperty('gap', '8px', 'important');
+        }
+
+        // 再上一層也置中
+        var card = el.closest('.hud-card');
+        if (card) {
+            var firstTitle = card.querySelector('.card-title');
+            if (firstTitle && (firstTitle === row || firstTitle.contains(el))) {
+                firstTitle.style.setProperty('justify-content', 'center', 'important');
+                firstTitle.style.setProperty('text-align', 'center', 'important');
+            }
+        }
+    }
+
+    function apply() {
+        IDS.forEach(function (id) {
+            centerTitle(document.getElementById(id));
+        });
+
+        // 關鍵字備援
+        document.querySelectorAll('.card-title, .hud-card > div').forEach(function (el) {
+            if (el.children && el.children.length > 6) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 40) return;
+            var hit = KEYS.some(function (k) { return t.indexOf(k) !== -1; });
+            if (hit) centerTitle(el);
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__centerVerify72);
+        window.__centerVerify72 = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 驗證階段標題（含符號）已置中');
+})();
+</script>
+  <!-- ============================================================ -->
+<!-- 驗證階段：盾牌 + 🧭 + 文字 整列置中（修正 span 撐滿導致分開） -->
+<!-- ============================================================ -->
+<style>
+    /* 不要讓標題 span 撐滿整行 */
+    #step7_2VerifyTitle,
+    #step7_1VerifyTitle {
+        display: inline !important;
+        width: auto !important;
+        text-align: center !important;
+    }
+
+    /* 含驗證階段的 card-title 整列置中 */
+    .hud-card.center-card > .card-title {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        gap: 8px !important;
+        text-align: center !important;
+    }
+</style>
+
+<script>
+(function () {
+    function apply() {
+        var title = document.getElementById('step7_2VerifyTitle') ||
+                    document.getElementById('step7_1VerifyTitle');
+        if (!title) return;
+
+        // span 不要撐滿
+        title.style.setProperty('display', 'inline', 'important');
+        title.style.setProperty('width', 'auto', 'important');
+        title.style.setProperty('text-align', 'center', 'important');
+
+        // 整列 card-title 置中
+        var row = title.closest('.card-title');
+        if (row) {
+            row.style.setProperty('display', 'flex', 'important');
+            row.style.setProperty('flex-direction', 'row', 'important');
+            row.style.setProperty('justify-content', 'center', 'important');
+            row.style.setProperty('align-items', 'center', 'important');
+            row.style.setProperty('width', '100%', 'important');
+            row.style.setProperty('gap', '8px', 'important');
+            row.style.setProperty('text-align', 'center', 'important');
+
+            // 盾牌 icon 不要被擠走
+            Array.prototype.forEach.call(row.querySelectorAll('i'), function (icon) {
+                icon.style.setProperty('flex-shrink', '0', 'important');
+                icon.style.setProperty('margin', '0', 'important');
+            });
+        }
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__centerShieldFix);
+        window.__centerShieldFix = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ 盾牌 + 驗證階段標題整列置中');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 掃描框預設隱藏，點擊「開始掃描」才顯示                      -->
+<!-- ============================================================ -->
+<style>
+    /* 掃描容器預設隱藏 */
+    #qr-reader-container-step8,
+    #qr-reader-container-step9,
+    #qr-reader-container-step8-inner,
+    #qr-reader-container-step9-inner {
+        display: none !important;
+        width: 100% !important;
+        max-width: 280px !important;
+        margin: 0 auto !important;
+        min-height: 200px !important;
+        background: rgba(0, 0, 0, 0.3) !important;
+        border-radius: 12px !important;
+        overflow: hidden !important;
+        position: relative !important;
+    }
+
+    /* 掃描中顯示 */
+    #qr-reader-container-step8.scanning,
+    #qr-reader-container-step9.scanning,
+    #qr-reader-container-step8.scanning #qr-reader-container-step8-inner,
+    #qr-reader-container-step9.scanning #qr-reader-container-step9-inner {
+        display: block !important;
+    }
+
+    #qr-reader-container-step8 video,
+    #qr-reader-container-step9 video {
+        width: 100% !important;
+        border-radius: 12px !important;
+    }
+
+    /* 掃描結果顯示 */
+    .qr-result {
+        display: none !important;
+    }
+    .qr-result.show {
+        display: block !important;
+    }
+
+    /* 相機引導訊息 */
+    .camera-guide {
+        display: none !important;
+    }
+    .camera-guide.show-fail {
+        display: block !important;
+    }
+
+    /* 按鈕樣式 */
+    .btn-restart {
+        cursor: pointer !important;
+        pointer-events: auto !important;
+        z-index: 100 !important;
+        position: relative !important;
+    }
+</style>
+
+<script>
+(function() {
+    // ================================================================
+    // 掃描狀態追蹤
+    // ================================================================
+    var scannerActive = {
+        step8: false,
+        step9: false
+    };
+
+    // ================================================================
+    // 清理掃描器
+    // ================================================================
+    function cleanupScanner(containerId) {
+        if (window._scannerInstances && window._scannerInstances[containerId]) {
+            try {
+                window._scannerInstances[containerId].stop().catch(function() {});
+            } catch(e) {}
+            delete window._scannerInstances[containerId];
+        }
+        var container = document.getElementById(containerId);
+        if (container) {
+            container.innerHTML = '';
+            container.classList.remove('scanning');
+            // 重設內部容器
+            var inner = document.getElementById(containerId + '-inner');
+            if (inner) inner.innerHTML = '';
+        }
+    }
+
+    // ================================================================
+    // 主要掃描函數（點擊按鈕後觸發）
+    // ================================================================
+    function startQRScanner(containerId, resultId, guideId) {
+        var container = document.getElementById(containerId);
+        if (!container) {
+            console.warn('⚠️ 找不到容器:', containerId);
+            return;
+        }
+
+        var guide = document.getElementById(guideId);
+        var resultEl = document.getElementById(resultId);
+
+        // 隱藏引導和結果
+        if (guide) {
+            guide.style.display = 'none';
+            guide.classList.remove('show-fail');
+        }
+        if (resultEl) {
+            resultEl.style.display = 'none';
+            resultEl.classList.remove('show');
+            resultEl.innerHTML = '';
+        }
+
+        // 如果已經在掃描，先停止
+        if (window._scannerInstances && window._scannerInstances[containerId]) {
+            try {
+                window._scannerInstances[containerId].stop().catch(function() {});
+            } catch(e) {}
+            delete window._scannerInstances[containerId];
+        }
+
+        // 清空容器
+        container.innerHTML = '';
+        container.classList.remove('scanning');
+
+        // 建立內部容器
+        var innerDiv = document.createElement('div');
+        innerDiv.id = containerId + '-inner';
+        innerDiv.style.width = '100%';
+        innerDiv.style.height = 'auto';
+        container.appendChild(innerDiv);
+
+        // 顯示掃描框
+        container.classList.add('scanning');
+
+        // 檢查 Html5Qrcode
+        if (typeof Html5Qrcode === 'undefined') {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.innerHTML = '⚠️ QR Code 掃描庫未載入，請重新整理頁面。';
+            }
+            container.classList.remove('scanning');
+            return;
+        }
+
+        // 檢查相機
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.innerHTML = (typeof currentLang !== 'undefined' && currentLang === 'en') ?
+                    '📷 Camera not supported by this browser.<br>Please use Chrome / Safari / Edge.' :
+                    '📷 您的瀏覽器不支援相機功能。<br>請使用 Chrome / Safari / Edge 瀏覽器開啟。';
+            }
+            container.classList.remove('scanning');
+            return;
+        }
+
+        try {
+            var instance = new Html5Qrcode(innerDiv.id);
+            
+            if (!window._scannerInstances) window._scannerInstances = {};
+            window._scannerInstances[containerId] = instance;
+
+            var config = {
+                fps: 15,
+                qrbox: { width: 200, height: 200 },
+                aspectRatio: 1.0
+            };
+
+            instance.start(
+                { facingMode: "environment" },
+                config,
+                function(decodedText) {
+                    console.log('✅ 掃描成功:', decodedText);
+                    if (resultEl) {
+                        resultEl.style.display = 'block';
+                        resultEl.classList.add('show');
+                        resultEl.innerHTML = '<i class="fa-solid fa-check-circle"></i> ' + decodedText;
+                        resultEl.style.color = '#00e676';
+                        resultEl.style.fontSize = '0.9rem';
+                        resultEl.style.wordBreak = 'break-all';
+                        resultEl.style.padding = '8px 12px';
+                        resultEl.style.borderRadius = '6px';
+                        resultEl.style.background = 'rgba(0, 230, 118, 0.08)';
+                        resultEl.style.border = '1px solid rgba(0, 230, 118, 0.2)';
+                    }
+                    if (guide) {
+                        guide.style.display = 'none';
+                    }
+                    // 停止掃描
+                    instance.stop().catch(function() {});
+                    container.classList.remove('scanning');
+                    delete window._scannerInstances[containerId];
+                },
+                function(error) {
+                    // 掃描中
+                }
+            ).then(function() {
+                console.log('✅ 掃描器已啟動');
+            }).catch(function(err) {
+                console.warn('⚠️ 啟動掃描器失敗:', err);
+                if (guide) {
+                    guide.style.display = 'block';
+                    guide.innerHTML = (typeof currentLang !== 'undefined' && currentLang === 'en') ?
+                        '📷 Unable to start camera.<br>⚙️ Please allow camera permission.<br>🌐 Try Chrome / Safari / Edge.' :
+                        '📷 無法啟動相機。<br>⚙️ 請在瀏覽器中允許相機權限。<br>🌐 請使用 Chrome / Safari / Edge 瀏覽器。';
+                }
+                container.classList.remove('scanning');
+                delete window._scannerInstances[containerId];
+            });
+
+        } catch (e) {
+            console.error('❌ 掃描器初始化失敗:', e);
+            if (guide) {
+                guide.style.display = 'block';
+                guide.innerHTML = (typeof currentLang !== 'undefined' && currentLang === 'en') ?
+                    '📷 Failed to initialize scanner.<br>Please refresh the page and try again.' :
+                    '📷 掃描器初始化失敗。<br>請重新整理頁面後再試。';
+            }
+            container.classList.remove('scanning');
+        }
+    }
+
+    // ================================================================
+    // 綁定按鈕事件
+    // ================================================================
+    function rebindButtons() {
+        // Step8 掃描按鈕
+        var btn8 = document.getElementById('btnScanQRStep8');
+        if (btn8) {
+            var newBtn8 = btn8.cloneNode(true);
+            btn8.parentNode.replaceChild(newBtn8, btn8);
+            newBtn8.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+            };
+            newBtn8.style.pointerEvents = 'auto';
+            newBtn8.style.cursor = 'pointer';
+        }
+
+        // Step9 掃描按鈕
+        var btn9 = document.getElementById('btnScanQRStep9');
+        if (btn9) {
+            var newBtn9 = btn9.cloneNode(true);
+            btn9.parentNode.replaceChild(newBtn9, btn9);
+            newBtn9.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
+            };
+            newBtn9.style.pointerEvents = 'auto';
+            newBtn9.style.cursor = 'pointer';
+        }
+
+        console.log('✅ 掃描按鈕已綁定');
+    }
+
+    // ================================================================
+    // 確保掃描框在頁面載入時隱藏
+    // ================================================================
+    function hideAllScanners() {
+        document.querySelectorAll('#qr-reader-container-step8, #qr-reader-container-step9').forEach(function(el) {
+            el.classList.remove('scanning');
+            el.style.display = 'none';
+        });
+        document.querySelectorAll('.qr-result').forEach(function(el) {
+            el.style.display = 'none';
+            el.classList.remove('show');
+        });
+        document.querySelectorAll('.camera-guide').forEach(function(el) {
+            el.style.display = 'none';
+            el.classList.remove('show-fail');
+        });
+        console.log('✅ 所有掃描框已隱藏');
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    function run() {
+        hideAllScanners();
+        rebindButtons();
+        setTimeout(rebindButtons, 200);
+        setTimeout(rebindButtons, 500);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 語系切換時重新綁定
+    var origSwitch = window.switchLanguage;
+    if (typeof origSwitch === 'function') {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(rebindButtons, 150);
+            setTimeout(rebindButtons, 400);
+        };
+    }
+
+    // 暴露全局函數
+    window.startQRScanner = startQRScanner;
+    window.startQRScannerStep8 = function() {
+        startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+    };
+    window.startQRScannerStep9 = function() {
+        startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
+    };
+
+    console.log('✅ QR Code 掃描模組已載入（掃描框預設隱藏）');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 第三印表單：英文版標籤全部改為書本英文（p.12）               -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    // 中文 → 英文（書本 Third Seal Vow Guardian Seal Form）
+    var MAP = [
+        // 區塊標題
+        ['一、誓願人資料', 'I. Vower Information'],
+        ['二、願書主題', 'II. Vow-Script Theme'],
+        ['三、願書正文', 'III. Vow-Script Main Body'],
+        ['四、願書圖騰上傳（附件區）', 'IV. Vow-Script Emblem Upload (Attachment Area)'],
+        ['四、願書圖騰上傳(附件區)', 'IV. Vow-Script Emblem Upload (Attachment Area)'],
+        ['四、願書圖騰上傳', 'IV. Vow-Script Emblem Upload (Attachment Area)'],
+        ['五、啟印宣告（提交前確認）', 'V. Seal-Activation Declaration (Pre-Submission Confirmation)'],
+        ['五、啟印宣告(提交前確認)', 'V. Seal-Activation Declaration (Pre-Submission Confirmation)'],
+        ['五、啟印宣告', 'V. Seal-Activation Declaration (Pre-Submission Confirmation)'],
+        ['六、提交與入冊設定', 'VI. Submission and Registration Settings'],
+
+        // 欄位
+        ['啟願日期', 'Vow Initiation Date'],
+        ['法定姓名／誓名', 'Legal Name / Vow-Name'],
+        ['法定姓名/誓名', 'Legal Name / Vow-Name'],
+        ['誓魂識別碼', 'Oath-Soul Identification Code'],
+        ['誓印脈系', 'Oath-Seal Lineage'],
+        ['願書主題', 'Vow-Script Theme'],
+        ['願書正文', 'Vow-Script Main Body'],
+        ['圖騰檔名', 'Emblem File Name'],
+        ['檔案格式', 'File Format'],
+        ['含誓印/個人標記', 'Includes Oath-Seal / Personal Mark'],
+        ['含誓印／個人標記', 'Includes Oath-Seal / Personal Mark'],
+        ['是否含誓印/個人標記', 'Includes Oath-Seal / Personal Mark'],
+        ['是否含誓印／個人標記', 'Includes Oath-Seal / Personal Mark'],
+        ['上傳位置', 'Upload Location'],
+        ['願書附件區', 'Vow-Script Attachment Area'],
+        ['天庫圖騰備查區', 'Heavenly-Archive Emblem Record Zone'],
+        ['書令密鑰存檔', 'Script-Mandate Key Archive'],
+        ['完成方式', 'Completion Method'],
+        ['已誦讀', 'Recited'],
+        ['已錄音', 'Recorded'],
+        ['已心念完成', 'Completed by Heart-Invocation'],
+        ['宣告語', 'Declaration Statement'],
+        ['主印授印簽章', 'Main Seal Authorization Signature'],
+        ['是否送交天庫存檔', 'Submit to Heavenly-Archive'],
+        ['是否啟用七印系統流程', 'Activate Seven-Seal System Process'],
+        ['願書狀態', 'Vow-Script Status'],
+        ['草稿', 'Draft'],
+        ['待審', 'Pending Review'],
+        ['已誓印', 'Oath-Sealed'],
+        ['完成入冊', 'Registration Completed'],
+        ['簽名／誓印落章', 'Signature / Oath-Seal Mark'],
+        ['簽名/誓印落章', 'Signature / Oath-Seal Mark']
+    ];
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function applyLabels() {
+        var isEn = lang() === 'en';
+
+        // 掃所有小文字節點
+        var nodes = document.querySelectorAll(
+            'label, span, div, p, strong, b, th, td, .form-section-title, .form-row label, .hud-card div'
+        );
+
+        nodes.forEach(function (el) {
+            if (!el || el.children.length > 4) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 80) return;
+
+            for (var i = 0; i < MAP.length; i++) {
+                var zh = MAP[i][0];
+                var en = MAP[i][1];
+
+                if (isEn) {
+                    // 整段等於中文 → 換成英文
+                    if (t === zh) {
+                        el.textContent = en;
+                        return;
+                    }
+                    // 含中文關鍵字、且尚未翻過
+                    if (t.indexOf(zh) !== -1 && t.indexOf(en) === -1) {
+                        el.textContent = t.split(zh).join(en);
+                        return;
+                    }
+                } else {
+                    // 切回中文
+                    if (t === en) {
+                        el.textContent = zh;
+                        return;
+                    }
+                    if (t.indexOf(en) !== -1 && t.indexOf(zh) === -1) {
+                        el.textContent = t.split(en).join(zh);
+                        return;
+                    }
+                }
+            }
+        });
+
+        // 純文字節點備援
+        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+        var texts = [];
+        while (walker.nextNode()) texts.push(walker.currentNode);
+        texts.forEach(function (tn) {
+            var v = tn.nodeValue || '';
+            if (!v.trim()) return;
+            for (var i = 0; i < MAP.length; i++) {
+                var zh = MAP[i][0];
+                var en = MAP[i][1];
+                if (isEn && v.indexOf(zh) !== -1) {
+                    tn.nodeValue = v.split(zh).join(en);
+                } else if (!isEn && v.indexOf(en) !== -1) {
+                    tn.nodeValue = v.split(en).join(zh);
+                }
+            }
+        });
+    }
+
+    function run() {
+        applyLabels();
+        setTimeout(applyLabels, 100);
+        setTimeout(applyLabels, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(applyLabels, 60);
+            setTimeout(applyLabels, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__seal3LabelTimer);
+        window.__seal3LabelTimer = setTimeout(applyLabels, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 第三印表單中英標籤切換已就緒（書本 p.12）');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 補：送交天庫存檔 / 啟用七印系統流程 → 英文                    -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var MAP = [
+        ['送交天庫存檔', 'Submit to Heavenly-Archive'],
+        ['是否送交天庫存檔', 'Submit to Heavenly-Archive'],
+        ['啟用七印系統流程', 'Activate Seven-Seal System Process'],
+        ['是否啟用七印系統流程', 'Activate Seven-Seal System Process'],
+        ['啟用七印誓網流程', 'Activate Seven-Seal Vow Network Process'],
+        ['是否啟用七印誓網流程', 'Activate Seven-Seal Vow Network Process']
+    ];
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function apply() {
+        var isEn = lang() === 'en';
+
+        document.querySelectorAll('label, span, div, p, strong, b, td, th').forEach(function (el) {
+            if (!el || el.children.length > 3) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 60) return;
+
+            for (var i = 0; i < MAP.length; i++) {
+                var zh = MAP[i][0], en = MAP[i][1];
+                if (isEn && (t === zh || t.indexOf(zh) !== -1) && t.indexOf(en) === -1) {
+                    el.textContent = t === zh ? en : t.split(zh).join(en);
+                    return;
+                }
+                if (!isEn && (t === en || t.indexOf(en) !== -1) && t.indexOf(zh) === -1) {
+                    el.textContent = t === en ? zh : t.split(en).join(zh);
+                    return;
+                }
+            }
+        });
+
+        // 純文字節點
+        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+        var nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach(function (tn) {
+            var v = tn.nodeValue || '';
+            for (var i = 0; i < MAP.length; i++) {
+                var zh = MAP[i][0], en = MAP[i][1];
+                if (isEn && v.indexOf(zh) !== -1) tn.nodeValue = v.split(zh).join(en);
+                if (!isEn && v.indexOf(en) !== -1) tn.nodeValue = v.split(en).join(zh);
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__archiveLabelTimer);
+        window.__archiveLabelTimer = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 天庫存檔 / 七印系統流程 中英切換已就緒');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 「送出即啟主頻連線…」→ 英文譯文                              -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var ZH = '送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。';
+    var ZH2 = '送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。';
+    var EN = 'Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.';
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function apply() {
+        var isEn = lang() === 'en';
+        var target = isEn ? EN : ZH;
+
+        document.querySelectorAll('span, div, p, label').forEach(function (el) {
+            if (!el || el.children.length > 3) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 160) return;
+
+            var hitZh = t.indexOf('送出即啟主頻連線') !== -1 || t.indexOf('對頻律網顯化') !== -1;
+            var hitEn = t.indexOf('Primary Frequency Link') !== -1;
+
+            if (hitZh || hitEn) {
+                var icon = el.querySelector('i');
+                if (icon && el.childNodes.length <= 4) {
+                    Array.prototype.slice.call(el.childNodes).forEach(function (n) {
+                        if (n.nodeType === 3) n.nodeValue = '';
+                    });
+                    var textSpan = null;
+                    el.childNodes.forEach(function (n) {
+                        if (n.nodeType === 1 && n !== icon && n.tagName === 'SPAN') textSpan = n;
+                    });
+                    if (textSpan) {
+                        textSpan.textContent = target;
+                    } else {
+                        var s = document.createElement('span');
+                        s.textContent = target;
+                        el.appendChild(s);
+                    }
+                } else {
+                    el.textContent = target;
+                }
+            }
+        });
+
+        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+        var nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach(function (tn) {
+            var v = tn.nodeValue || '';
+            if (isEn && /送出即啟主頻連線/.test(v)) {
+                tn.nodeValue = v
+                    .replace(ZH, EN)
+                    .replace(ZH2, EN)
+                    .replace(/送出即啟主頻連線，判定授權完成\s*→\s*誓[印魂]對頻律網顯化。?/g, EN);
+            }
+            if (!isEn && /Primary Frequency Link/.test(v)) {
+                tn.nodeValue = v.replace(EN, ZH);
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__freqNote3);
+        window.__freqNote3 = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 主頻連線說明中英切換已就緒');
+})();
+</script>
 </body>
 </html>
