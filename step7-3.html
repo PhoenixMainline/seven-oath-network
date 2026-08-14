@@ -3471,5 +3471,142 @@
     console.log('✅ 第三印表單標題中英切換已就緒');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 相機掃描失敗 → 顯示統一引導文字（中英）                       -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var GUIDE_ZH =
+        '📷 無法啟動相機\n' +
+        '⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n' +
+        '→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n' +
+        '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+
+    var GUIDE_EN =
+        '📷 Unable to launch the feature\n' +
+        '⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"\n' +
+        '→ Open using a web browser (Chrome / Yahoo / Edge...)\n' +
+        '⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function guideText() {
+        return lang() === 'en' ? GUIDE_EN : GUIDE_ZH;
+    }
+
+    // 把引導文字寫進所有 camera-guide 區塊
+    function fillGuide(el) {
+        if (!el) return;
+        el.innerHTML = guideText().replace(/\n/g, '<br>');
+        el.style.display = 'block';
+        el.style.textAlign = 'left';
+        el.style.whiteSpace = 'normal';
+        el.classList.add('show-fail');
+    }
+
+    // 顯示失敗引導、隱藏掃描框
+    function showCameraFail(guideId, containerId) {
+        var guide = guideId ? document.getElementById(guideId) : null;
+        if (!guide) {
+            guide = document.querySelector('.camera-guide');
+        }
+        if (guide) fillGuide(guide);
+
+        if (containerId) {
+            var box = document.getElementById(containerId);
+            if (box) {
+                box.classList.remove('scanning');
+                box.style.display = 'none';
+            }
+        }
+    }
+
+    // 攔截既有 startQRScanner / 掃描失敗
+    function patchScanner() {
+        // 1) 若頁面已有 startQRScanner，包一層 catch 顯示引導
+        if (typeof window.startQRScanner === 'function' && !window._cameraGuidePatched) {
+            var orig = window.startQRScanner;
+            window.startQRScanner = function (containerId, resultId, guideId) {
+                try {
+                    var ret = orig.apply(this, arguments);
+                    // 若回傳 Promise，失敗時顯示引導
+                    if (ret && typeof ret.then === 'function') {
+                        return ret.catch(function (err) {
+                            console.warn('相機啟動失敗', err);
+                            showCameraFail(guideId, containerId);
+                        });
+                    }
+                    return ret;
+                } catch (e) {
+                    console.warn('相機啟動失敗', e);
+                    showCameraFail(guideId, containerId);
+                }
+            };
+            window._cameraGuidePatched = true;
+        }
+
+        // 2) 直接綁定掃描按鈕：失敗就顯示引導
+        [
+            { btn: 'btnScanQRStep8', box: 'qr-reader-container-step8', guide: 'cameraGuideStep8', result: 'qrScanResultStep8' },
+            { btn: 'btnScanQRStep9', box: 'qr-reader-container-step9', guide: 'cameraGuideStep9', result: 'qrScanResultStep9' }
+        ].forEach(function (cfg) {
+            var btn = document.getElementById(cfg.btn);
+            if (!btn || btn._guideBound) return;
+            btn._guideBound = true;
+
+            btn.addEventListener('click', function () {
+                // 稍後檢查：若 2 秒內沒出現 video，視為失敗
+                setTimeout(function () {
+                    var box = document.getElementById(cfg.box);
+                    var hasVideo = box && box.querySelector('video');
+                    if (!hasVideo) {
+                        showCameraFail(cfg.guide, cfg.box);
+                    }
+                }, 2500);
+            }, true);
+        });
+    }
+
+    // 語系切換時，若引導正在顯示，立刻換成對應語言
+    function refreshVisibleGuides() {
+        document.querySelectorAll('.camera-guide').forEach(function (el) {
+            var visible = el.style.display !== 'none' && el.offsetParent !== null;
+            var failed = el.classList.contains('show-fail');
+            if (visible || failed) fillGuide(el);
+        });
+    }
+
+    function run() {
+        patchScanner();
+        setTimeout(patchScanner, 200);
+        setTimeout(patchScanner, 600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var origSwitch = window.switchLanguage;
+    if (typeof origSwitch === 'function') {
+        window.switchLanguage = function (l) {
+            origSwitch(l);
+            setTimeout(patchScanner, 100);
+            setTimeout(refreshVisibleGuides, 120);
+        };
+    }
+
+    // 暴露給其他腳本呼叫
+    window.showCameraFailGuide = showCameraFail;
+    window.getCameraGuideText = guideText;
+
+    console.log('✅ 相機失敗引導文字模組已載入');
+})();
+</script>
 </body>
 </html>
