@@ -3804,5 +3804,191 @@
     console.log('✅ 第三印重複標題已去除');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 強制列出「誓印未通過」①② 兩條（依書本藍圈）                   -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var L1_ZH = '回歸「第二印 修心印」程序，重新執行「鏡修鍛心 × 願軌回正 × 頻率再啟」。';
+    var L1_EN = 'Return to the 「Second Seal Mind-Refinement Seal」 procedure to re-execute 「Mirror-Cultivation Tempering × Vow-Trajectory Re Alignment × Frequency Re-Ignition」.';
+    var L2_ZH = '經補誓與再啟印完成後，方可重新進入「第三印 守願印」啟印程序。';
+    var L2_EN = 'After completing Supplement-Oath and Re-Activation-Seal, re-enter the 「Third Seal Vow-Guardian Seal」 activation procedure.';
+    var TITLE_ZH = '⚠️ 顯示：「誓印未通過」';
+    var TITLE_EN = '⚠️ Display: 「Oath Seal Not Passed」';
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function forceShow() {
+        var isEn = lang() === 'en';
+        var title = document.getElementById('step7_3NotPassedTitle');
+        if (!title) return;
+
+        title.textContent = isEn ? TITLE_EN : TITLE_ZH;
+        title.style.setProperty('color', '#00e676', 'important');
+        title.style.setProperty('font-weight', 'bold', 'important');
+        title.style.setProperty('display', 'inline', 'important');
+
+        var card = title.closest('.hud-card');
+        if (!card) return;
+        card.style.setProperty('display', 'block', 'important');
+        card.style.setProperty('visibility', 'visible', 'important');
+        card.style.setProperty('opacity', '1', 'important');
+        card.style.setProperty('height', 'auto', 'important');
+        card.style.setProperty('max-height', 'none', 'important');
+        card.style.setProperty('overflow', 'visible', 'important');
+
+        // 找 instruction-box，沒有就建
+        var box = card.querySelector('.instruction-box');
+        if (!box) {
+            box = document.createElement('div');
+            box.className = 'instruction-box';
+            card.appendChild(box);
+        }
+        box.style.setProperty('display', 'flex', 'important');
+        box.style.setProperty('flex-direction', 'column', 'important');
+        box.style.setProperty('gap', '12px', 'important');
+        box.style.setProperty('visibility', 'visible', 'important');
+        box.style.setProperty('opacity', '1', 'important');
+        box.style.setProperty('height', 'auto', 'important');
+        box.style.setProperty('max-height', 'none', 'important');
+        box.style.setProperty('overflow', 'visible', 'important');
+
+        // ①
+        var s1 = document.getElementById('step7_3NotPassed1');
+        if (!s1) {
+            var d1 = document.createElement('div');
+            d1.className = 'instruction-item';
+            d1.style.cssText = 'display:flex!important;align-items:flex-start;gap:10px;';
+            d1.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#a78bfa;margin-top:5px;"></i><span id="step7_3NotPassed1"></span>';
+            box.appendChild(d1);
+            s1 = document.getElementById('step7_3NotPassed1');
+        }
+        if (s1) {
+            s1.textContent = isEn ? L1_EN : L1_ZH;
+            s1.style.setProperty('display', 'inline', 'important');
+            var p1 = s1.closest('.instruction-item') || s1.parentElement;
+            if (p1) {
+                p1.style.setProperty('display', 'flex', 'important');
+                p1.style.setProperty('visibility', 'visible', 'important');
+                p1.style.setProperty('opacity', '1', 'important');
+            }
+        }
+
+        // ②
+        var s2 = document.getElementById('step7_3NotPassed2');
+        if (!s2) {
+            var d2 = document.createElement('div');
+            d2.className = 'instruction-item';
+            d2.style.cssText = 'display:flex!important;align-items:flex-start;gap:10px;';
+            d2.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#a78bfa;margin-top:5px;"></i><span id="step7_3NotPassed2"></span>';
+            box.appendChild(d2);
+            s2 = document.getElementById('step7_3NotPassed2');
+        }
+        if (s2) {
+            s2.textContent = isEn ? L2_EN : L2_ZH;
+            s2.style.setProperty('display', 'inline', 'important');
+            var p2 = s2.closest('.instruction-item') || s2.parentElement;
+            if (p2) {
+                p2.style.setProperty('display', 'flex', 'important');
+                p2.style.setProperty('visibility', 'visible', 'important');
+                p2.style.setProperty('opacity', '1', 'important');
+            }
+        }
+    }
+
+    function run() {
+        forceShow();
+        setTimeout(forceShow, 100);
+        setTimeout(forceShow, 350);
+        setTimeout(forceShow, 800);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(forceShow, 80);
+            setTimeout(forceShow, 250);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__forceNotPassed73);
+        window.__forceNotPassed73 = setTimeout(forceShow, 100);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+    console.log('✅ 誓印未通過 ①② 已強制列出');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 移除「誓印未通過」區塊內重複的第三印標題                       -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    function clean() {
+        var card = document.getElementById('step7_3NotPassedTitle');
+        if (card) card = card.closest('.hud-card');
+        if (!card) return;
+
+        // 只清這個未通過卡片內部的重複標題
+        card.querySelectorAll('div, span, p').forEach(function (el) {
+            if (el.children && el.children.length > 2) return;
+            var t = (el.textContent || '').trim();
+            // 完整表單名且不是 ①② 說明
+            if (/第三印\s*守願印《/.test(t) || /Third Seal Vow-Guardian Seal 《/.test(t)) {
+                if (t.length < 80 && t.indexOf('回歸') === -1 && t.indexOf('補誓') === -1 &&
+                    t.indexOf('Return') === -1 && t.indexOf('Supplement') === -1) {
+                    el.style.setProperty('display', 'none', 'important');
+                    // 父層若只剩這句也藏
+                    var p = el.parentElement;
+                    if (p && p !== card && (p.textContent || '').trim().length < 80) {
+                        p.style.setProperty('display', 'none', 'important');
+                    }
+                }
+            }
+        });
+    }
+
+    function run() {
+        clean();
+        setTimeout(clean, 120);
+        setTimeout(clean, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(clean, 80);
+            setTimeout(clean, 250);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__cleanDup73);
+        window.__cleanDup73 = setTimeout(clean, 100);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 未通過區塊內重複第三印標題已清除');
+})();
+</script>
 </body>
 </html>
