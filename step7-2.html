@@ -4013,5 +4013,116 @@
     console.log('✅ 第二印重複標題已去除');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 兩處「送出即啟主頻連線」前方都補綠色連結圖示                   -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var KEY_ZH = '送出即啟主頻連線';
+    var KEY_EN = 'Primary Frequency Link';
+
+    function hasLinkIcon(el) {
+        if (!el) return false;
+        if (el.querySelector && el.querySelector('i.fa-link')) return true;
+        var p = el.parentElement;
+        if (p && p.querySelector) {
+            var icons = p.querySelectorAll('i.fa-link');
+            for (var i = 0; i < icons.length; i++) {
+                // 同一列附近
+                if (p.contains(el) || el.contains(icons[i])) return true;
+            }
+        }
+        return false;
+    }
+
+    function ensureIcon(el) {
+        if (!el) return;
+
+        // 找最適合放 icon 的容器
+        var row = el;
+        if (el.tagName === 'SPAN' && el.parentElement) {
+            var pt = (el.parentElement.textContent || '').trim();
+            if (pt.indexOf(KEY_ZH) !== -1 || pt.indexOf(KEY_EN) !== -1) {
+                row = el.parentElement;
+            }
+        }
+
+        if (hasLinkIcon(row) || hasLinkIcon(el)) return;
+
+        var icon = document.createElement('i');
+        icon.className = 'fa-solid fa-link';
+        icon.style.cssText = 'color:#00e676!important;margin-right:6px;flex-shrink:0;font-size:0.95em;';
+
+        // 插到文字前面
+        if (row === el && el.firstChild) {
+            el.insertBefore(icon, el.firstChild);
+        } else if (row.firstChild) {
+            row.insertBefore(icon, row.firstChild);
+        } else {
+            row.appendChild(icon);
+        }
+
+        row.style.setProperty('display', 'flex', 'important');
+        row.style.setProperty('align-items', 'flex-start', 'important');
+        row.style.setProperty('gap', '6px', 'important');
+        row.style.setProperty('text-align', 'left', 'important');
+        row.style.setProperty('width', '100%', 'important');
+    }
+
+    function apply() {
+        // 掃所有含關鍵字的節點（驗證 + 回傳 兩處都處理）
+        document.querySelectorAll('span, div, p, label').forEach(function (el) {
+            if (!el || (el.children && el.children.length > 6)) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 180) return;
+            if (t.indexOf(KEY_ZH) === -1 && t.indexOf(KEY_EN) === -1) return;
+            // 排除整張大卡片
+            if (el.classList && el.classList.contains('hud-card')) return;
+            ensureIcon(el);
+        });
+
+        // 常見 id 再補一次
+        [
+            'step7_2Note', 'step7_2ReturnNote',
+            'step7_1Note', 'step7_1ReturnNote',
+            'step7_3Note', 'step7_3ReturnNote',
+            'step7_4Note', 'step7_4ReturnNote'
+        ].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) ensureIcon(el);
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+        setTimeout(apply, 800);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 80);
+            setTimeout(apply, 250);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__freqLinkIconTimer);
+        window.__freqLinkIconTimer = setTimeout(apply, 100);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ 兩處主頻連線皆已補上綠色連結圖示');
+})();
+</script>
     </body>
 </html>
