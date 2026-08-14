@@ -3912,5 +3912,106 @@
     console.log('✅ 相機失敗引導文字模組已載入');
 })();
 </script>
+ <!-- ============================================================ -->
+<!-- 第二印：移除重複標題，只保留一個「提交表單」主標題              -->
+<!-- ============================================================ -->
+<style>
+    /* 表單區內多餘的同名標題隱藏（保留 .form-title 主標題） */
+    .form-submit-container .form-section-title {
+        /* 若內容是完整表單名就隱藏，使用說明保留 */
+    }
+</style>
+
+<script>
+(function () {
+    var TITLE_RE = /第二印\s*修心印《鏡修省思/;
+    var TITLE_EN_RE = /Second Seal Mind-Refinement Seal/;
+
+    function isFullTitle(t) {
+        t = (t || '').trim();
+        return TITLE_RE.test(t) || TITLE_EN_RE.test(t);
+    }
+
+    function dedupe() {
+        // 1) 表單區：只留 .form-title，隱藏同名的 form-section-title
+        var formBox = document.querySelector('.form-submit-container');
+        if (formBox) {
+            var mainTitle = formBox.querySelector('.form-title');
+            formBox.querySelectorAll('.form-section-title').forEach(function (el) {
+                var t = (el.textContent || '').trim();
+                // 保留「使用說明 / Instructions」
+                if (/使用說明|Instructions/.test(t)) return;
+                // 隱藏重複的完整表單名
+                if (isFullTitle(t)) {
+                    el.style.setProperty('display', 'none', 'important');
+                }
+            });
+            // 確保主標題可見
+            if (mainTitle) {
+                mainTitle.style.setProperty('display', 'block', 'important');
+            }
+        }
+
+        // 2) 頁面上其他重複的完整標題（非主 form-title、非 preview）
+        var seen = 0;
+        document.querySelectorAll('.form-title, .form-section-title, .hud-card > div, .step-panel > div').forEach(function (el) {
+            if (!el || el.children.length > 2) return;
+            var t = (el.textContent || '').trim();
+            if (!isFullTitle(t)) return;
+            if (t.length > 90) return;
+
+            // 主標題（含「提交表單」）保留第一個
+            if (/提交表單|Submission Form/.test(t)) {
+                if (seen === 0) {
+                    seen = 1;
+                    el.style.setProperty('display', '', 'important');
+                } else {
+                    el.style.setProperty('display', 'none', 'important');
+                }
+                return;
+            }
+
+            // 預覽區標題保留
+            if (el.classList.contains('preview-header') || el.closest('.preview-submit-container')) {
+                return;
+            }
+
+            // 其餘重複的完整標題隱藏
+            if (!el.classList.contains('form-title')) {
+                el.style.setProperty('display', 'none', 'important');
+            }
+        });
+    }
+
+    function run() {
+        dedupe();
+        setTimeout(dedupe, 120);
+        setTimeout(dedupe, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(dedupe, 80);
+            setTimeout(dedupe, 250);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__dedupeTitle72);
+        window.__dedupeTitle72 = setTimeout(dedupe, 100);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ 第二印重複標題已去除');
+})();
+</script>
     </body>
 </html>
