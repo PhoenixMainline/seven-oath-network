@@ -4124,5 +4124,217 @@
     console.log('✅ 兩處主頻連線皆已補上綠色連結圖示');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 確保「⚠️ 顯示：誓印未通過」步驟完整可見（依書本）              -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var TITLE_ZH = '⚠️ 顯示：「誓印未通過」';
+    var TITLE_EN = '⚠️ Display: 「Oath Seal Not Passed」';
+    var L1_ZH = '回歸「第一印 消業印」程序，重新執行「清業化障 × 七日誓讀 × 對頻再啟」。';
+    var L1_EN = 'Return to the 「First Seal Karmic Purification Seal」 procedure and re-execute the 「Karmic-Clearing × Seven-Day Recitation × Alignment Re-Activation」 process.';
+    var L2_ZH = '經補誓與再啟印完成後，方可重新進入「第二印 修心印」啟印程序。';
+    var L2_EN = 'Only after completing the supplemental oath and reactivation may the practitioner re-enter the 「Second Seal Mind-Refinement Seal」 activation procedure.';
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function ensureNotPassedBlock() {
+        var isEn = lang() === 'en';
+        var title = document.getElementById('step7_2NotPassedTitle');
+        var l1 = document.getElementById('step7_2NotPassed1');
+        var l2 = document.getElementById('step7_2NotPassed2');
+
+        // 若已存在：強制顯示 + 更新文字
+        if (title) {
+            title.textContent = isEn ? TITLE_EN : TITLE_ZH;
+            title.style.setProperty('display', 'block', 'important');
+            title.style.setProperty('color', '#00e676', 'important');
+            title.style.setProperty('font-weight', 'bold', 'important');
+            title.style.setProperty('font-size', '1.1rem', 'important');
+
+            var card = title.closest('.hud-card') || title.closest('div');
+            if (card) {
+                card.style.setProperty('display', 'block', 'important');
+                card.style.setProperty('visibility', 'visible', 'important');
+                card.style.setProperty('opacity', '1', 'important');
+            }
+        }
+        if (l1) l1.textContent = isEn ? L1_EN : L1_ZH;
+        if (l2) l2.textContent = isEn ? L2_EN : L2_ZH;
+
+        // 若不存在：在「誓印通過」或回傳區後方插入
+        if (!title) {
+            var anchor =
+                document.getElementById('step7_2Success') ||
+                document.getElementById('step7_2ReturnTitle') ||
+                document.querySelector('#qrScanCardStep9');
+
+            var parent = null;
+            if (anchor) {
+                parent = anchor.closest('.step-panel') || anchor.closest('.step-content') || anchor.parentElement;
+            }
+            if (!parent) parent = document.querySelector('.step-panel') || document.body;
+
+            var box = document.createElement('div');
+            box.className = 'hud-card';
+            box.id = 'step7_2NotPassedCard';
+            box.style.cssText = 'border:1px solid rgba(168,85,247,0.3);background:rgba(88,28,135,0.2);display:block!important;';
+            box.innerHTML =
+                '<div style="background:rgba(0,230,118,0.12);border-left:4px solid #00e676;padding:14px 16px;border-radius:10px;margin-bottom:16px;">' +
+                '  <div style="color:#00e676;font-size:1.1rem;font-weight:bold;">' +
+                '    <span id="step7_2NotPassedTitle">' + (isEn ? TITLE_EN : TITLE_ZH) + '</span>' +
+                '  </div>' +
+                '</div>' +
+                '<div class="instruction-box">' +
+                '  <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i>' +
+                '    <span id="step7_2NotPassed1">' + (isEn ? L1_EN : L1_ZH) + '</span></div>' +
+                '  <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i>' +
+                '    <span id="step7_2NotPassed2">' + (isEn ? L2_EN : L2_ZH) + '</span></div>' +
+                '</div>';
+
+            // 插在回傳誓證卡片後面、收束條文前面
+            var closure = document.getElementById('step7_2ClosureTitle');
+            if (closure && closure.closest('.hud-card')) {
+                var cCard = closure.closest('.hud-card');
+                cCard.parentNode.insertBefore(box, cCard);
+            } else if (anchor && anchor.closest('.hud-card')) {
+                var aCard = anchor.closest('.hud-card');
+                if (aCard.nextSibling) {
+                    aCard.parentNode.insertBefore(box, aCard.nextSibling);
+                } else {
+                    aCard.parentNode.appendChild(box);
+                }
+            } else {
+                parent.appendChild(box);
+            }
+        }
+    }
+
+    function run() {
+        ensureNotPassedBlock();
+        setTimeout(ensureNotPassedBlock, 150);
+        setTimeout(ensureNotPassedBlock, 450);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(ensureNotPassedBlock, 80);
+            setTimeout(ensureNotPassedBlock, 250);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__notPassed72);
+        window.__notPassed72 = setTimeout(ensureNotPassedBlock, 120);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ 誓印未通過步驟已確保顯示');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 「誓印未通過」標題強制亮綠色（與通過一致）                    -->
+<!-- ============================================================ -->
+<style>
+    #step7_2NotPassedTitle,
+    #step7_1NotPassedTitle,
+    #step7_3NotPassedTitle,
+    #step7_4NotPassedTitle,
+    [id*="NotPassedTitle"] {
+        color: #00e676 !important;
+        font-weight: bold !important;
+    }
+
+    /* 蓋掉先前把未通過設成橘色的規則 */
+    [id*="NotPassed"],
+    [id*="notpassed"],
+    [id*="未通過"],
+    .not-passed,
+    .fail-text {
+        color: #00e676 !important;
+    }
+</style>
+
+<script>
+(function () {
+    function apply() {
+        var ids = [
+            'step7_2NotPassedTitle',
+            'step7_1NotPassedTitle',
+            'step7_3NotPassedTitle',
+            'step7_4NotPassedTitle'
+        ];
+        ids.forEach(function (id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            el.style.setProperty('color', '#00e676', 'important');
+            el.style.setProperty('font-weight', 'bold', 'important');
+
+            var p = el.parentElement;
+            if (p) p.style.setProperty('color', '#00e676', 'important');
+
+            // 外層左邊框也改綠
+            var box = el.closest('[style*="border-left"]') || el.closest('div');
+            if (box && box !== el) {
+                var t = box.textContent || '';
+                if (t.indexOf('誓印未通過') !== -1 || t.indexOf('Not Passed') !== -1) {
+                    box.style.setProperty('border-left-color', '#00e676', 'important');
+                    box.style.setProperty('background', 'rgba(0, 230, 118, 0.12)', 'important');
+                }
+            }
+        });
+
+        // 關鍵字備援
+        document.querySelectorAll('div, span').forEach(function (el) {
+            if (el.children && el.children.length > 2) return;
+            var t = (el.textContent || '').trim();
+            if ((t.indexOf('誓印未通過') !== -1 || t.indexOf('Oath Seal Not Passed') !== -1) && t.length < 40) {
+                el.style.setProperty('color', '#00e676', 'important');
+                el.style.setProperty('font-weight', 'bold', 'important');
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__notPassedGreen);
+        window.__notPassedGreen = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+    console.log('✅ 誓印未通過 已強制亮綠色 #00e676');
+})();
+</script>
     </body>
 </html>
