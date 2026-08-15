@@ -3955,7 +3955,81 @@
     obs.observe(document.body, { childList: true, subtree: true, characterData: true });
 
     console.log('✅ 英文版全文對應已鎖定');
+})();          
+</script>   
+ <!-- ============================================================ -->
+<!-- 表單日期欄：致命日期 → 啟願日期（中英）                        -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var ZH = '啟願日期';
+    var EN = 'Vow Activation Date';
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function apply() {
+        var isEn = lang() === 'en';
+        var text = isEn ? EN : ZH;
+
+        // 1) placeholder / value 含「致命日期」的 input / select
+        document.querySelectorAll('input, select, option, label, span, div').forEach(function (el) {
+            // placeholder
+            if (el.placeholder && /致命日期|啟願日期|启愿日期|Activation Date|Fatal/i.test(el.placeholder)) {
+                el.placeholder = text;
+            }
+            // 純文字節點（短標籤）
+            if (el.children && el.children.length > 2) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 30) return;
+            if (/致命日期|啟願日期|启愿日期|Vow Activation Date|Fatal Date/i.test(t)) {
+                el.textContent = text;
+            }
+        });
+
+        // 2) 常見 class / name
+        document.querySelectorAll(
+            'input[placeholder*="日期"], input[name*="date"], input[class*="date"], select[class*="date"]'
+        ).forEach(function (el) {
+            var ph = el.placeholder || '';
+            if (/致命|啟願|启愿|Activation|Fatal/i.test(ph) || ph === '') {
+                el.placeholder = text;
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__dateLabelFix);
+        window.__dateLabelFix = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 致命日期 → 啟願日期 已修正');
 })();
-            </script>   
+        </script>   
 </body>
 </html>
