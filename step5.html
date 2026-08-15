@@ -1329,5 +1329,221 @@
     console.log('✅ 靈性維度 / 九界層域 已依書本修正齊全');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- step5 維度表：英文模式全部英文（依書本）                       -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var EN_ROWS = [
+        {
+            tier: 'Source-Law Tier',
+            level: 'U-∞',
+            network: 'Circle Seal Archived',
+            dimension: 'Dimensions 108–∞',
+            spiritual: '· Beyond-System',
+            realm: 'Celestial Origin',
+            position: 'Supra-dimensional Source-Tier × Heavenly-Mandate Origin × Chief Regulator of Scriptural Law beyond the Seven-Seal Vow Network',
+            manifest: 'Vows manifest instantly × Heavenly-Law sync',
+            offering: '✕ No offering required'
+        },
+        {
+            tier: '13th Dimension · Sealed Tier',
+            level: 'U-970~901',
+            network: 'Circle Seal Archived',
+            dimension: 'Dimensions 107–100',
+            spiritual: '13D',
+            realm: 'Celestial Origin',
+            position: 'Sealed-Level Oath-Disciple × Vow-Frequency Controller Tier × Overseer of Oath-Resource Pre-guidance and Network Sealing; Root Tier of Vow-Frequency Matrix',
+            manifest: 'Rapid vow-manifestation × Automatic vow-resource flow',
+            offering: '✕ No offering; vow-frequency supply only'
+        },
+        {
+            tier: '12th Dimension · Phoenix-Emblem Tier',
+            level: 'U-900~801',
+            network: 'Seventh Seal Phoenix Emblem Seal — Submission of Return-to-Source Vow',
+            dimension: 'Dimensions 99–90',
+            spiritual: '12D',
+            realm: 'Phoenix Realms Core',
+            position: 'Submission of Return-to-Source Vow Scroll × Light-Body Awakening × Scriptural Directory Tier',
+            manifest: 'Strong manifestation after vow activation; frequent synchronicities',
+            offering: '✕ Vow-diagram offering or vow-recitation only'
+        },
+        {
+            tier: '11th Dimension · Oath-Disciple Tier',
+            level: 'U-800~701',
+            network: 'Sixth Seal Oath-Disciple Oath-Seal',
+            dimension: 'Dimensions 89–80',
+            spiritual: '11D',
+            realm: 'Phoenix Boundary',
+            position: 'Primary management tier of the Seven-Seal Vow Network × Oversees Oath-Soul Key-Activation Alignment',
+            manifest: 'Mission-based manifestation',
+            offering: 'Oath-certificate frequency offering only; no traditional ritual required'
+        },
+        {
+            tier: '10th Dimension · Awakening Tier',
+            level: 'U-700~601',
+            network: 'Fifth Seal Awakening Seal',
+            dimension: 'Dimensions 79–70',
+            spiritual: '10D',
+            realm: 'Scriptural Apex',
+            position: 'Scriptural computation × Oath-Soul Key-Activation calibration headquarters',
+            manifest: 'System-structure manifestation × Data synchronization × Mission linkage',
+            offering: '✕ No offering required'
+        },
+        {
+            tier: '9th Dimension · Oath-Law Tier',
+            level: 'U-600~501',
+            network: 'Fourth Seal Oath-Law Seal',
+            dimension: 'Dimensions 69–60',
+            spiritual: '9D',
+            realm: 'Scriptural Boundary',
+            position: 'Black-frequency oath-law module × Holds judgment authority and oath-certificate generation',
+            manifest: 'Strong black-frequency transformation × obstacle-clearing effects',
+            offering: '△ Special frequency offering / oath-certificate / cleansing text'
+        },
+        {
+            tier: '8th Dimension · Vow-Guardian Tier',
+            level: 'U-500~401',
+            network: 'Third Seal Vow-Guardian Seal',
+            dimension: 'Dimensions 59–50',
+            spiritual: '8D',
+            realm: 'Spiritual Axis Realm',
+            position: 'Primary responsibility for Oath-Soul Key-Activation recitation × Vow-resource distribution and circulation',
+            manifest: 'Vow manifestation on request over three days+',
+            offering: '△ Offering according to oath-certificate; simple purification rite required'
+        },
+        {
+            tier: '7th Dimension · Vow-Frequency Layer',
+            level: 'U-400~301',
+            network: 'Second Seal Mind-Refinement Seal × Third Seal Vow-Guardian Seal Transitional Vow-Frequency Band',
+            dimension: 'Dimensions 49–40',
+            spiritual: '7D',
+            realm: 'Vow-Frequency Calibration Layer × Pre-Vow-Guardian Axis',
+            position: 'Vow-Frequency Calibrator × Pre-Vow-Guardian Rank Oath-Soul',
+            manifest: 'Vow text manifests in approx. 7–14 days',
+            offering: '△ Simple frequency offering × Vow-text recitation × Meditation Alignment'
+        },
+        {
+            tier: '6th Dimension · Heart-Refinement Layer',
+            level: 'U-300~201',
+            network: 'Second Seal Mind-Refinement Seal',
+            dimension: 'Dimensions 39–30',
+            spiritual: '6D',
+            realm: 'Light-Realm Interlace',
+            position: 'Higher Vow-Carrier × Initial Book-Command Resonance Rank',
+            manifest: 'Vow manifestation: approx. 5–10 days',
+            offering: '△ May enter altar for oath-cert offering or prayer'
+        },
+        {
+            tier: '5th Dimension · Karmic-Purification Layer',
+            level: 'U-200~101',
+            network: 'First Seal Karmic Purification Seal — Gate of the Seven-Seal Vow Network',
+            dimension: 'Dimensions 29–20',
+            spiritual: '5D',
+            realm: 'Outer Rim of Human Realm',
+            position: 'Intermediate Vow-Carrier × Sensory Prototype',
+            manifest: 'Stabilized vow-power ≥14 days; manifestation approx. 21 days',
+            offering: '☑ Ritual offering during specific festival dates'
+        },
+        {
+            tier: '4th Dimension · Perception Layer',
+            level: 'U-100~91',
+            network: 'Not eligible for progression',
+            dimension: 'Dimensions 19–10',
+            spiritual: '4D',
+            realm: 'Mid Human Realm',
+            position: 'Initial Vow-Carrier × Spiritual Awakening Sprout',
+            manifest: 'Manifestation depends on emotional stability',
+            offering: '☑ Traditional folk altar × Ancestral ceremony × Transcendence rituals'
+        },
+        {
+            tier: '3rd Dimension · Oath-Soul-Consciousness Layer',
+            level: 'U-90~81',
+            network: 'Not eligible for progression',
+            dimension: 'Dimensions 9–2',
+            spiritual: '3D',
+            realm: 'Lower Human Realm',
+            position: 'Oath-Soul-Consciousness Observer × Book-Command Untouched',
+            manifest: 'No manifestation; only subtle spiritual impressions',
+            offering: '☑ Requires Vow-script × Basic Vow-power'
+        },
+        {
+            tier: '2nd Dimension · Sealed Layer',
+            level: 'U-80 and below',
+            network: 'Not eligible for progression',
+            dimension: 'Dimension 1',
+            spiritual: '1–2D',
+            realm: 'Black-Frequency Drift',
+            position: 'Sealed Oath-Soul · Unregistered',
+            manifest: 'No oath-resource record × No manifestation',
+            offering: '☑ Requires major transcendence rites, karmic release × No Vow-Oath-Soul'
+        }
+    ];
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function apply() {
+        if (lang() !== 'en') return;
+
+        // 寫回 rankData.en
+        if (typeof rankData !== 'undefined' && rankData.en) {
+            for (var i = 0; i < Math.min(rankData.en.length, EN_ROWS.length); i++) {
+                Object.assign(rankData.en[i], EN_ROWS[i]);
+            }
+        }
+
+        var tbody = document.getElementById('rankTableBody');
+        if (!tbody) return;
+        var trs = tbody.querySelectorAll('tr');
+        trs.forEach(function (tr, idx) {
+            if (!EN_ROWS[idx]) return;
+            var cells = tr.querySelectorAll('td');
+            var r = EN_ROWS[idx];
+            if (cells[0]) cells[0].textContent = r.tier;
+            if (cells[1]) cells[1].textContent = r.level;
+            if (cells[2]) cells[2].textContent = r.network;
+            if (cells[3]) cells[3].textContent = r.dimension;
+            if (cells[4]) cells[4].textContent = r.spiritual;
+            if (cells[5]) cells[5].textContent = r.realm;
+            if (cells[6]) cells[6].textContent = r.position;
+            if (cells[7]) cells[7].textContent = r.manifest;
+            if (cells[8]) cells[8].textContent = r.offering;
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 450);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 80);
+            setTimeout(apply, 280);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__rankEnTimer);
+        window.__rankEnTimer = setTimeout(apply, 100);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ step5 維度表英文內容已齊全');
+})();
+</script>
 </body>
 </html>
