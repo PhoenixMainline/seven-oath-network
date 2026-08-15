@@ -3190,5 +3190,132 @@
     console.log('✅ 相機引導：僅失敗顯示、成功隱藏');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 輸入示範：標籤與指令之間禁止空格、整段靠左                    -->
+<!-- ============================================================ -->
+<style>
+    /* 強制外層直向/緊密，子元素無 margin */
+    #step7_1InputLabel,
+    #step7_2ReturnInputLabel {
+        margin: 0 !important;
+        padding: 0 !important;
+        display: inline !important;
+    }
+    #step7_1Command,
+    #step7_2ReturnCommand {
+        margin: 0 !important;
+        padding: 0 !important;
+        display: inline !important;
+        background: transparent !important;
+    }
+</style>
+
+<script>
+(function () {
+    function killGap(labelId, cmdId) {
+        var label = document.getElementById(labelId);
+        var cmd = document.getElementById(cmdId);
+        if (!label || !cmd) return;
+
+        // 外層
+        var outer = label.parentElement;
+        while (outer && !outer.contains(cmd) && outer !== document.body) {
+            outer = outer.parentElement;
+        }
+        if (!outer || outer === document.body) return;
+
+        // 1) 外層靠左、無 gap
+        outer.style.setProperty('display', 'block', 'important');
+        outer.style.setProperty('text-align', 'left', 'important');
+        outer.style.setProperty('gap', '0', 'important');
+        outer.style.setProperty('column-gap', '0', 'important');
+        outer.style.setProperty('row-gap', '0', 'important');
+
+        // 2) 清掉所有空白文字節點（這是空格來源）
+        function stripSpaces(node) {
+            var kids = Array.prototype.slice.call(node.childNodes);
+            kids.forEach(function (n) {
+                if (n.nodeType === 3 && /^\s*$/.test(n.nodeValue || '')) {
+                    n.nodeValue = '';
+                } else if (n.nodeType === 1) {
+                    stripSpaces(n);
+                }
+            });
+        }
+        stripSpaces(outer);
+
+        // 3) label / cmd 本體與父層全部歸零
+        [label, cmd].forEach(function (el) {
+            el.style.setProperty('margin', '0', 'important');
+            el.style.setProperty('padding', '0', 'important');
+            el.style.setProperty('display', 'inline', 'important');
+            var p = el.parentElement;
+            if (p && p !== outer) {
+                p.style.setProperty('margin', '0', 'important');
+                p.style.setProperty('padding', '0', 'important');
+                p.style.setProperty('display', 'inline', 'important');
+                p.style.setProperty('background', 'transparent', 'important');
+                p.style.setProperty('gap', '0', 'important');
+            }
+        });
+
+        // 4) 若 label 與 cmd 中間還有其他元素，也歸零
+        var between = false;
+        Array.prototype.forEach.call(outer.childNodes, function (n) {
+            if (n === label || (n.nodeType === 1 && n.contains && n.contains(label))) {
+                between = true;
+                return;
+            }
+            if (n === cmd || (n.nodeType === 1 && n.contains && n.contains(cmd))) {
+                between = false;
+                return;
+            }
+            if (between) {
+                if (n.nodeType === 3) n.nodeValue = '';
+                if (n.nodeType === 1) {
+                    n.style && n.style.setProperty('margin', '0', 'important');
+                    n.style && n.style.setProperty('padding', '0', 'important');
+                    n.style && n.style.setProperty('display', 'inline', 'important');
+                }
+            }
+        });
+    }
+
+    function apply() {
+        killGap('step7_1InputLabel', 'step7_1Command');
+        killGap('step7_2ReturnInputLabel', 'step7_2ReturnCommand');
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 80);
+        setTimeout(apply, 250);
+        setTimeout(apply, 600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__killGapTimer);
+        window.__killGapTimer = setTimeout(apply, 60);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 輸入示範中間空格已清除、靠左');
+})();
+</script>
 </body>
 </html>
