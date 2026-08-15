@@ -3317,5 +3317,85 @@
     console.log('✅ 輸入示範中間空格已清除、靠左');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- QR 掃描標題：回傳區寫法與驗證區一致                            -->
+<!-- ============================================================ -->
+<style>
+    #step7_1QrTitle,
+    #step7_2ReturnQrTitle {
+        display: inline !important;
+        text-align: center !important;
+        font-size: 0.95rem !important;
+        font-weight: bold !important;
+        color: #e9d5ff !important;
+        line-height: 1.5 !important;
+        word-break: keep-all !important;
+    }
+</style>
+
+<script>
+(function () {
+    function unifyQrTitle(titleId) {
+        var el = document.getElementById(titleId);
+        if (!el) return;
+
+        // 標題列（含 icon）
+        var row = el.parentElement;
+        if (row) {
+            row.style.setProperty('display', 'flex', 'important');
+            row.style.setProperty('flex-direction', 'row', 'important');
+            row.style.setProperty('justify-content', 'center', 'important');
+            row.style.setProperty('align-items', 'center', 'important');
+            row.style.setProperty('gap', '8px', 'important');
+            row.style.setProperty('width', '100%', 'important');
+            row.style.setProperty('text-align', 'center', 'important');
+            row.style.setProperty('flex-wrap', 'wrap', 'important');
+            row.style.setProperty('margin-bottom', '10px', 'important');
+        }
+
+        el.style.setProperty('display', 'inline', 'important');
+        el.style.setProperty('text-align', 'center', 'important');
+        el.style.setProperty('font-size', '0.95rem', 'important');
+        el.style.setProperty('font-weight', 'bold', 'important');
+        el.style.setProperty('color', '#e9d5ff', 'important');
+        el.style.setProperty('line-height', '1.5', 'important');
+        el.style.setProperty('word-break', 'keep-all', 'important');
+        el.style.setProperty('overflow-wrap', 'break-word', 'important');
+    }
+
+    function apply() {
+        unifyQrTitle('step7_1QrTitle');
+        unifyQrTitle('step7_2ReturnQrTitle');
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 120);
+        setTimeout(apply, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 80);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__qrTitleUnify);
+        window.__qrTitleUnify = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ QR 掃描標題左右寫法已統一');
+})();
+</script>
 </body>
 </html>
