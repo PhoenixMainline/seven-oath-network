@@ -4262,5 +4262,116 @@
     console.log('✅ QR 掃描標題左右寫法已統一');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- QR 掃描標題：漂亮置中寫法（與截圖一致）                        -->
+<!-- ============================================================ -->
+<style>
+    #step7_1QrTitle,
+    #step7_2ReturnQrTitle {
+        display: inline !important;
+        text-align: center !important;
+        font-size: 0.95rem !important;
+        font-weight: bold !important;
+        color: #e9d5ff !important;
+        line-height: 1.55 !important;
+        word-break: keep-all !important;
+        overflow-wrap: break-word !important;
+    }
+
+    /* 標題列置中 */
+    #qrScanCardStep8 .card-title,
+    #qrScanCardStep9 > div:first-child,
+    #step7_1QrTitle.parent,
+    #step7_2ReturnQrTitle.parent {
+        justify-content: center !important;
+        text-align: center !important;
+    }
+</style>
+
+<script>
+(function () {
+    function prettyTitle(titleId, fallbackText) {
+        var el = document.getElementById(titleId);
+        if (!el) return;
+
+        // 標題列
+        var row = el.closest('.card-title') || el.parentElement;
+        if (row) {
+            row.style.setProperty('display', 'flex', 'important');
+            row.style.setProperty('flex-direction', 'row', 'important');
+            row.style.setProperty('justify-content', 'center', 'important');
+            row.style.setProperty('align-items', 'center', 'important');
+            row.style.setProperty('flex-wrap', 'wrap', 'important');
+            row.style.setProperty('gap', '8px', 'important');
+            row.style.setProperty('width', '100%', 'important');
+            row.style.setProperty('text-align', 'center', 'important');
+            row.style.setProperty('margin-bottom', '10px', 'important');
+            row.style.setProperty('padding', '0', 'important');
+        }
+
+        // 標題文字
+        el.style.setProperty('display', 'inline', 'important');
+        el.style.setProperty('text-align', 'center', 'important');
+        el.style.setProperty('font-size', '0.95rem', 'important');
+        el.style.setProperty('font-weight', 'bold', 'important');
+        el.style.setProperty('color', '#e9d5ff', 'important');
+        el.style.setProperty('line-height', '1.55', 'important');
+        el.style.setProperty('word-break', 'keep-all', 'important');
+        el.style.setProperty('overflow-wrap', 'break-word', 'important');
+        el.style.setProperty('max-width', '100%', 'important');
+
+        // 只保留一個相機 icon，拿掉多餘裝飾
+        if (row) {
+            var icons = row.querySelectorAll('i');
+            var kept = false;
+            icons.forEach(function (ic) {
+                if (!kept && (ic.classList.contains('fa-qrcode') || ic.classList.contains('fa-camera'))) {
+                    kept = true;
+                    ic.style.setProperty('color', '#a78bfa', 'important');
+                    ic.style.setProperty('margin', '0', 'important');
+                } else if (ic !== el) {
+                    // 多餘的 QR 裝飾圖示隱藏
+                    if (!ic.classList.contains('fa-qrcode') && !ic.classList.contains('fa-camera')) {
+                        ic.style.setProperty('display', 'none', 'important');
+                    }
+                }
+            });
+        }
+    }
+
+    function apply() {
+        prettyTitle('step7_1QrTitle');
+        prettyTitle('step7_2ReturnQrTitle');
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 120);
+        setTimeout(apply, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 80);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__prettyQrTitle);
+        window.__prettyQrTitle = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ QR 標題已改為漂亮置中寫法');
+})();
+</script>
 </body>
 </html>
