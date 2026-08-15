@@ -4336,5 +4336,103 @@
     console.log('✅ 誓印未通過 已強制亮綠色 #00e676');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 誓印未通過：僅標題亮綠，①② 說明改回一般色                    -->
+<!-- ============================================================ -->
+<style>
+    /* 標題維持亮綠 */
+    #step7_2NotPassedTitle,
+    #step7_1NotPassedTitle,
+    #step7_3NotPassedTitle,
+    #step7_4NotPassedTitle {
+        color: #00e676 !important;
+        font-weight: bold !important;
+    }
+
+    /* ①② 說明與一般 instruction 同色，不要綠 */
+    #step7_2NotPassed1,
+    #step7_2NotPassed2,
+    #step7_1NotPassed1,
+    #step7_1NotPassed2,
+    #step7_3NotPassed1,
+    #step7_3NotPassed2,
+    #step7_4NotPassed1,
+    #step7_4NotPassed2 {
+        color: rgba(224, 232, 245, 0.85) !important;
+        font-weight: normal !important;
+    }
+
+    /* 其父層 instruction-item 也不要被蓋成綠 */
+    #step7_2NotPassed1,
+    #step7_2NotPassed2,
+    #step7_1NotPassed1,
+    #step7_1NotPassed2,
+    #step7_3NotPassed1,
+    #step7_3NotPassed2,
+    #step7_4NotPassed1,
+    #step7_4NotPassed2 {
+        color: rgba(224, 232, 245, 0.85) !important;
+    }
+</style>
+
+<script>
+(function () {
+    function apply() {
+        // 標題綠
+        ['step7_2NotPassedTitle', 'step7_1NotPassedTitle', 'step7_3NotPassedTitle', 'step7_4NotPassedTitle'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('color', '#00e676', 'important');
+                el.style.setProperty('font-weight', 'bold', 'important');
+            }
+        });
+
+        // 說明一般色
+        [
+            'step7_2NotPassed1', 'step7_2NotPassed2',
+            'step7_1NotPassed1', 'step7_1NotPassed2',
+            'step7_3NotPassed1', 'step7_3NotPassed2',
+            'step7_4NotPassed1', 'step7_4NotPassed2'
+        ].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            el.style.setProperty('color', 'rgba(224, 232, 245, 0.85)', 'important');
+            el.style.setProperty('font-weight', 'normal', 'important');
+            var item = el.closest('.instruction-item');
+            if (item) {
+                item.style.setProperty('color', 'rgba(224, 232, 245, 0.85)', 'important');
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__notPassedColor);
+        window.__notPassedColor = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+    console.log('✅ 未通過說明已改回一般色，標題維持亮綠');
+})();
+</script>
     </body>
 </html>
