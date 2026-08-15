@@ -3508,5 +3508,80 @@
     console.log('✅ QR 標題已改為漂亮置中寫法');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- QR 掃描標題：字重統一（全部一樣細）                          -->
+<!-- ============================================================ -->
+<style>
+    #step7_1QrTitle,
+    #step7_2ReturnQrTitle,
+    #step7_1QrTitle *,
+    #step7_2ReturnQrTitle * {
+        font-weight: 400 !important;
+        font-size: 0.95rem !important;
+        color: #e9d5ff !important;
+    }
+
+    /* 標題列內所有文字、icon 旁文字都不加粗 */
+    #qrScanCardStep8 .card-title,
+    #qrScanCardStep8 .card-title *,
+    #qrScanCardStep9 > div:first-child,
+    #qrScanCardStep9 > div:first-child * {
+        font-weight: 400 !important;
+    }
+</style>
+
+<script>
+(function () {
+    function thinTitle(id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+
+        el.style.setProperty('font-weight', '400', 'important');
+        el.style.setProperty('font-size', '0.95rem', 'important');
+        el.style.setProperty('color', '#e9d5ff', 'important');
+
+        var row = el.closest('.card-title') || el.parentElement;
+        if (row) {
+            row.style.setProperty('font-weight', '400', 'important');
+            row.querySelectorAll('*').forEach(function (c) {
+                c.style.setProperty('font-weight', '400', 'important');
+            });
+        }
+    }
+
+    function apply() {
+        thinTitle('step7_1QrTitle');
+        thinTitle('step7_2ReturnQrTitle');
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__thinQrTitle);
+        window.__thinQrTitle = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+    console.log('✅ QR 標題字重已統一為細體');
+})();
+</script>
 </body>
 </html>
