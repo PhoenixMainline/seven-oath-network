@@ -1,0 +1,3830 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>【宇宙誓印覺醒工程 · 七印誓網】第五印 × 覺醒印</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js">
+    </script>
+    <style>
+        /* ===== 全域強制 ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at 50% 50%, #06122c 0%, #020715 100%);
+            min-height: 100vh;
+            color: #e0e8f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: clamp(4px, 1.5vh, 16px);
+            position: relative;
+        }
+
+        .particle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: radial-gradient(#d4af37, rgba(212, 175, 55, .3) 1px, transparent 30px), radial-gradient(#d4af37, rgba(212, 175, 55, .2) 2px, transparent 40px);
+            background-size: 350px 350px, 450px 450px;
+            background-position: 0 0, 90px 150px;
+            animation: starMove 90s linear infinite;
+            opacity: 0.65;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        @keyframes starMove {
+            from {
+                transform: translateY(0px) rotate(0deg);
+            }
+            to {
+                transform: translateY(-1000px) rotate(360deg);
+            }
+        }
+
+        .watermark-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.04;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            padding: 50px;
+        }
+
+        .watermark-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            transform: rotate(-25deg);
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        .hud-container {
+            width: 100%;
+            max-width: min(660px, 95vw);
+            background: rgba(4, 13, 33, 0.4);
+            border: 1.5px solid rgba(168, 85, 247, 0.3);
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.15), inset 0 0 20px rgba(168, 85, 247, 0.05);
+            border-radius: clamp(16px, 4vw, 28px);
+            padding: clamp(8px, 1.5vh, 20px);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 3;
+            margin: auto;
+        }
+
+        .hud-container::after {
+            display: none !important;
+            content: none !important;
+            border: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        .home-breadcrumb {
+            font-size: clamp(0.6rem, 1.4vh, 0.85rem);
+            color: #c4b5fd;
+            text-decoration: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+            font-weight: bold;
+            align-self: flex-start;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 8px rgba(168, 85, 247, 0.4);
+            position: relative;
+            z-index: 1000;
+            pointer-events: auto !important;
+        }
+
+        .home-breadcrumb:hover {
+            color: #e9d5ff;
+            text-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
+            transform: translateX(-2px);
+        }
+
+        .hud-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+            padding-bottom: clamp(8px, 1.5vh, 18px);
+            margin-bottom: clamp(8px, 1.5vh, 25px);
+            flex-shrink: 0;
+        }
+
+        .app-title {
+            font-size: clamp(0.9rem, 2.2vh, 1.15rem);
+            font-weight: 700;
+            color: #e9d5ff;
+            text-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
+            max-width: 75%;
+            line-height: 1.4;
+        }
+
+        .lang-switch-group {
+            display: flex;
+            background: rgba(124, 58, 237, 0.15);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 20px;
+            padding: 2px;
+            z-index: 10;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: rgba(224, 232, 245, 0.4);
+            font-size: clamp(0.5rem, 1.2vh, 0.75rem);
+            padding: clamp(2px, 0.6vh, 5px) clamp(6px, 1vw, 12px);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn.active {
+            background: #7c3aed;
+            color: #ffffff;
+            font-weight: bold;
+            box-shadow: 0 0 12px rgba(124, 58, 237, 0.5);
+        }
+
+        .step-content {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(8px, 1.5vh, 22px);
+            overflow-y: auto;
+            padding-right: 4px;
+            min-height: 0;
+        }
+
+        .step-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hud-card {
+            background: linear-gradient(135deg, rgba(88, 28, 135, 0.5), rgba(30, 27, 75, 0.6));
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            border-radius: clamp(10px, 2vw, 16px);
+            padding: clamp(10px, 2vh, 24px) clamp(10px, 2vw, 24px);
+        }
+
+        .card-title {
+            font-size: clamp(0.9rem, 2vh, 1.2rem);
+            color: #e9d5ff;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            color: #a78bfa;
+        }
+
+        .instruction-box {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .instruction-item {
+            font-size: clamp(0.7rem, 1.6vh, 0.95rem);
+            line-height: 1.6;
+            color: rgba(224, 232, 245, 0.85);
+            display: flex;
+            align-items: flex-start;
+            gap: clamp(6px, 1vw, 12px);
+        }
+
+        .instruction-item i {
+            color: #a78bfa;
+            margin-top: 5px;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: clamp(0.7rem, 1.4vh, 0.85rem);
+            background: rgba(88, 28, 135, 0.2);
+            border: 1px solid rgba(168, 85, 247, 0.35);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .info-table th {
+            background: rgba(88, 28, 135, 0.5);
+            color: #e9d5ff;
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 2px solid rgba(168, 85, 247, 0.4);
+            font-weight: 600;
+        }
+
+        .info-table td {
+            padding: 10px 12px;
+            color: #e0e7ff;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.15);
+            vertical-align: top;
+        }
+
+        .info-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .hud-footer {
+            flex-shrink: 0;
+            margin-top: auto;
+            padding-top: clamp(6px, 1vh, 12px);
+            border-top: 1px solid rgba(168, 85, 247, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            flex-wrap: wrap;
+        }
+
+        .footer-btn-group {
+            display: flex !important;
+            align-items: center !important;
+            gap: clamp(4px, 1vw, 12px) !important;
+        }
+
+        .btn-action {
+            background: transparent;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            color: rgba(168, 85, 247, 0.3);
+            padding: clamp(6px, 1.2vh, 10px) clamp(10px, 1.5vw, 22px);
+            font-size: clamp(0.65rem, 1.3vh, 0.9rem);
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            min-height: clamp(32px, 5vh, 44px);
+        }
+
+        .btn-action.enabled {
+            border: 1px solid #a78bfa;
+            color: #e9d5ff;
+            cursor: pointer;
+            pointer-events: auto;
+            background: rgba(124, 58, 237, 0.15);
+            text-shadow: 0 0 10px rgba(167, 139, 250, 0.6);
+            box-shadow: 0 0 15px rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-action.enabled:hover {
+            background: rgba(124, 58, 237, 0.28);
+            box-shadow: 0 0 25px rgba(124, 58, 237, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .page-marker {
+            font-size: clamp(0.5rem, 1.2vh, 0.78rem);
+            color: rgba(224, 232, 245, 0.35);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ===== 計時器 ===== */
+        .timer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(6px, 1vh, 12px);
+            padding: clamp(12px, 2vh, 20px);
+            background: rgba(124, 58, 237, 0.18);
+            border: 1px dashed rgba(168, 85, 247, 0.55);
+            border-radius: 14px;
+        }
+
+        .timer-label {
+            font-size: clamp(0.7rem, 1.4vh, 1rem);
+            color: #c4b5fd;
+            min-width: clamp(50px, 8vw, 80px);
+        }
+
+        .timer-number {
+            font-size: clamp(3rem, 8vh, 4.5rem);
+            font-family: 'Share Tech Mono', sans-serif;
+            color: #a78bfa;
+            text-shadow: 0 0 25px rgba(167, 139, 250, 0.6);
+            font-weight: 700;
+            text-align: center;
+            min-width: clamp(50px, 8vw, 80px);
+        }
+
+        .timer-number.complete {
+            color: #00e676;
+            text-shadow: 0 0 30px rgba(0, 230, 118, 0.6);
+        }
+
+        .btn-start-centering {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            border: none;
+            color: #ffffff;
+            font-weight: 800;
+            padding: clamp(8px, 1.2vh, 14px) clamp(18px, 2.5vw, 38px);
+            font-size: clamp(0.8rem, 1.6vh, 1.05rem);
+            border-radius: clamp(20px, 3vw, 40px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-start-centering:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 30px rgba(124, 58, 237, 0.6);
+        }
+
+        .btn-start-centering:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-restart {
+            background: rgba(124, 58, 237, 0.25);
+            border: none;
+            color: #ffffff;
+            font-weight: 800;
+            padding: clamp(6px, 1vh, 10px) clamp(14px, 2vw, 28px);
+            font-size: clamp(0.7rem, 1.3vh, 0.9rem);
+            border-radius: clamp(16px, 2vw, 30px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-restart:hover {
+            background: rgba(124, 58, 237, 0.4);
+        }
+
+        .proclamation-text {
+            font-size: clamp(1rem, 2.5vh, 1.3rem);
+            color: #fde68a;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 14px;
+            padding: 4px 6px;
+            text-shadow: 0 0 15px rgba(253, 230, 138, 0.3);
+        }
+
+        /* ===== 表單 ===== */
+        .form-submit-container {
+            margin-top: 20px;
+            padding: 24px 20px;
+            background: rgba(4, 13, 33, 0.6);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 16px;
+            width: 100%;
+        }
+
+        .form-submit-container .form-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #e9d5ff;
+            text-align: center;
+            margin-bottom: 18px;
+            text-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+            line-height: 1.5;
+        }
+
+        .form-section-title {
+            font-weight: 600;
+            color: #c4b5fd;
+            margin: 14px 0 10px 0;
+            font-size: 0.9rem;
+            padding-bottom: 4px;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.1);
+        }
+
+        .form-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .form-row label {
+            min-width: 130px;
+            color: #c4b5fd;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .form-row input,
+        .form-row select,
+        .form-row textarea {
+            flex: 1;
+            min-width: 200px;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 8px;
+            color: #e0e8f5;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-row input:focus,
+        .form-row select:focus,
+        .form-row textarea:focus {
+            border-color: #a78bfa;
+            box-shadow: 0 0 15px rgba(167, 139, 250, 0.15);
+        }
+
+        .form-row select option {
+            background: #0b0f1a;
+            color: #e0e8f5;
+        }
+
+        .form-row textarea {
+            resize: vertical;
+            min-height: 44px;
+        }
+
+        .form-row .hint {
+            color: #8a7e6b;
+            font-size: 0.7rem;
+            font-style: italic;
+            min-width: 120px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+
+        .form-actions button {
+            padding: 10px 28px;
+            border-radius: 24px;
+            border: none;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-preview {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-preview:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 30px rgba(124, 58, 237, 0.6);
+        }
+
+        .btn-reset {
+            background: rgba(124, 58, 237, 0.15);
+            color: #e9d5ff;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .btn-reset:hover {
+            background: rgba(124, 58, 237, 0.3);
+        }
+
+        .preview-submit-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(168, 85, 247, 0.2);
+            border-radius: 12px;
+            width: 100%;
+        }
+
+        .preview-submit-container .preview-header {
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fde68a;
+            margin-bottom: 12px;
+            text-shadow: 0 0 15px rgba(253, 230, 138, 0.2);
+        }
+
+        .preview-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            background: rgba(18, 16, 23, 0.6);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .preview-table th {
+            background: rgba(88, 28, 135, 0.35);
+            color: #d4b68a;
+            font-weight: 600;
+            padding: 8px 10px;
+            text-align: left;
+            border-bottom: 2px solid rgba(168, 85, 247, 0.2);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        .preview-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.06);
+            color: #e0e8f5;
+            vertical-align: top;
+            line-height: 1.5;
+        }
+
+        .preview-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .preview-table .label-cell {
+            color: #c4b5fd;
+            font-weight: 400;
+            width: 22%;
+        }
+
+        .preview-table .value-cell {
+            color: #f0e9f1;
+            width: 38%;
+        }
+
+        .preview-table .section-header {
+            background: rgba(88, 28, 135, 0.2);
+            color: #e9d5ff;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .capture-hint {
+            text-align: center;
+            margin-top: 14px;
+            padding: 12px;
+            background: rgba(0, 230, 118, 0.05);
+            border: 1px dashed rgba(0, 230, 118, 0.2);
+            border-radius: 8px;
+            color: #8a7e6b;
+            font-size: 0.8rem;
+        }
+
+        .capture-hint i {
+            color: #00e676;
+            margin-right: 6px;
+        }
+
+        /* ===== QR 掃描相關 ===== */
+        .qr-result {
+            color: #00e676;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(0, 230, 118, 0.08);
+            border: 1px solid rgba(0, 230, 118, 0.2);
+            word-break: break-all;
+        }
+
+        .camera-guide {
+            background: rgba(232, 96, 74, 0.08);
+            border-left: 4px solid #E8604A;
+            padding: 14px 16px;
+            border-radius: 12px;
+            color: #e0dcc8;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            text-align: left;
+            display: none;
+        }
+
+        .camera-guide.show-fail {
+            display: block !important;
+        }
+
+        #qr-reader-container-step8 video,
+        #qr-reader-container-step9 video {
+            border-radius: 12px;
+            width: 100%;
+        }
+
+        .center-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .center-card .card-title {
+            justify-content: center;
+        }
+
+        .center-card .instruction-box {
+            align-items: center;
+        }
+
+        .center-card .instruction-item {
+            text-align: left;
+            max-width: 100%;
+            width: 100%;
+            justify-content: flex-start;
+        }
+
+        .center-card .qr-result,
+        .center-card .camera-guide {
+            text-align: left;
+        }
+
+        .center-card #qr-reader-container-step8,
+        .center-card #qr-reader-container-step9 {
+            margin: 0 auto;
+        }
+
+        .en {
+            display: none;
+        }
+
+        body.lang-en .zh {
+            display: none;
+        }
+
+        body.lang-en .en {
+            display: block;
+        }
+
+        /* ===== 提交程序 ===== */
+        .submission-procedure {
+            display: block !important;
+            width: 100% !important;
+            background: rgba(124, 58, 237, 0.12);
+            border-left: 4px solid #00e676;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 12px 0 16px 0;
+            text-align: left;
+        }
+
+        .submission-procedure .proc-title {
+            color: #00e676;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .submission-procedure .proc-step {
+            display: flex !important;
+            align-items: flex-start !important;
+            gap: 12px !important;
+            margin-bottom: 8px;
+            color: #e0e7ff;
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .submission-procedure .proc-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .submission-procedure .proc-num {
+            background: #7c3aed;
+            color: #fff;
+            padding: 1px 7px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            min-width: 18px;
+            text-align: center;
+            flex-shrink: 0 !important;
+            margin-top: 2px;
+        }
+
+        .submission-procedure .proc-warn {
+            background: rgba(232, 96, 74, 0.1);
+            border-left: 4px solid #E8604A;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 6px 0 10px 32px;
+            font-size: 0.85rem;
+            color: #e0dcc8;
+        }
+
+        .submission-procedure .proc-text {
+            flex: 1 !important;
+            color: #e0e7ff;
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .btn-external-browser {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 14px;
+            background: rgba(0, 230, 118, 0.12);
+            border: 1px solid rgba(0, 230, 118, 0.3);
+            border-radius: 20px;
+            color: #00e676;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif;
+            margin-left: 8px;
+            pointer-events: auto !important;
+            z-index: 9999 !important;
+            position: relative !important;
+        }
+
+        .btn-external-browser:hover {
+            background: rgba(0, 230, 118, 0.2);
+            box-shadow: 0 0 20px rgba(0, 230, 118, 0.2);
+            transform: scale(1.02);
+        }
+
+        .btn-external-browser i {
+            font-size: 0.8rem;
+        }
+
+        /* ===== 強制同一列（圖示＋文字） ===== */
+        .hud-card [id*="Note"],
+        .hud-card [id*="Success"],
+        .hud-card [id*="Trigger"],
+        .hud-card [id*="trigger"],
+        .camera-guide,
+        .hud-card div[style*="border-left"] {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            align-items: flex-start !important;
+            justify-content: flex-start !important;
+            gap: 8px !important;
+            width: 100% !important;
+            text-align: left !important;
+            box-sizing: border-box !important;
+        }
+
+        .hud-card [id*="Note"] i,
+        .hud-card [id*="Success"] i,
+        .hud-card [id*="Trigger"] i,
+        .hud-card [id*="trigger"] i,
+        .camera-guide i,
+        .hud-card div[style*="border-left"] i {
+            flex-shrink: 0 !important;
+            margin: 0 !important;
+            margin-top: 3px !important;
+            line-height: 1 !important;
+        }
+
+        /* ===== 標題置中 ===== */
+        #step7_5VerifyTitle,
+        #step7_5ReturnTitle {
+            text-align: center !important;
+            width: 100% !important;
+            display: block !important;
+            font-size: 1.1rem !important;
+            font-weight: bold !important;
+            line-height: 1.4 !important;
+            color: #e9d5ff !important;
+        }
+
+        /* ===== RWD ===== */
+        @media (max-width: 480px) {
+            body {
+                padding: 4px !important;
+            }
+            .hud-container {
+                padding: 8px 6px !important;
+                border-radius: 12px !important;
+            }
+            .hud-header {
+                margin-bottom: 6px !important;
+                padding-bottom: 4px !important;
+            }
+            .hud-footer {
+                margin-top: 8px !important;
+                padding-top: 6px !important;
+            }
+            .form-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .form-row label {
+                min-width: auto;
+            }
+            .form-row input,
+            .form-row select,
+            .form-row textarea {
+                min-width: auto;
+            }
+            .form-row .hint {
+                min-width: auto;
+            }
+            .preview-table {
+                font-size: 0.65rem;
+            }
+            .preview-table td,
+            .preview-table th {
+                padding: 4px 6px;
+            }
+            .btn-external-browser {
+                font-size: 0.6rem;
+                padding: 3px 10px;
+                gap: 4px;
+                margin-left: 4px;
+            }
+            .btn-external-browser i {
+                font-size: 0.6rem;
+            }
+            .submission-procedure .proc-step {
+                font-size: 0.75rem;
+            }
+            .submission-procedure .proc-text {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particle-container"></div>
+    <div class="watermark-layer">
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+        <div class="watermark-text">天地為鑑・光網為證</div>
+    </div>
+    <div class="hud-container">
+        <a class="home-breadcrumb" id="homeBtn" href="index.html"><i class="fa-solid fa-house"></i><span id="homeBtnText">首頁 -></span></a>
+        <header class="hud-header">
+            <div class="app-title" id="appTitle">【宇宙誓印覺醒工程 · 七印誓網】</div>
+            <div class="lang-switch-group">
+                <button class="lang-btn active" onclick="switchLanguage('zh')">中文</button>
+                <button class="lang-btn" onclick="switchLanguage('en')">English</button>
+            </div>
+        </header>
+
+        <main class="step-content">
+            <!-- ===== 第7項 第五印 × 覺醒印 完整內容 ===== -->
+            <div class="step-panel active" id="panelStep7_4">
+
+                <!-- 標題卡 -->
+                <div class="hud-card" style="background:linear-gradient(135deg,rgba(88,28,135,0.5),rgba(30,27,75,0.6)); border:1px solid rgba(168,85,247,0.5);">
+                    <div style="text-align:center; color:#e9d5ff; font-size:1.05rem; font-weight:bold; margin-bottom:16px; letter-spacing:1px;"><span id="step7_5Title">⚡ 第五印 × 覺醒印</span></div>
+                    <div style="text-align:center; margin-bottom:14px;">
+                        <div style="color:#fbbf24; font-size:0.95rem; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-bolt" style="margin-right:6px;"></i><span id="step7_5Unlock">誓魂回歸 × 本源開啟 × 天令分流程序</span></div>
+                        <div style="color:rgba(253,230,138,0.85); font-size:0.8rem; margin-top:4px;"><span id="step7_5Sub">（七印誓網之本源覺醒啟動印 · 入世誓約揭示 × 誓資承流授權）</span></div>
+                    </div>
+                    <div style="overflow-x:auto; margin-bottom:8px;">
+                        <table class="info-table">
+                            <thead><tr><th style="width:30%;"><span id="step7_5Col1">欄位名稱</span></th><th style="width:70%;"><span id="step7_5Col2">功能簡要說明</span></th></tr></thead>
+                            <tbody>
+                                <tr><td style="color:#f5d0fe; font-weight:bold;"><span id="step7_5Row1">第五印 × 覺醒印</span></td><td style="color:#e0e7ff;"><span id="step7_5Row2">開啟誓魂本源頻層，啟動「入世誓約 × 天令分流」。揭示誓徒入世前（或入世時）所立之誓約。啟動誓資追蹤機制，導入誓資執行層。開放靈網布建、誓徒引領與誓印延續任務。作為「入世誓約揭示 × 本源覺醒啟動 × 誓資承流授權」之唯一認證語。</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 【一】模組說明 -->
+                <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-circle-info" style="color:#a78bfa;"></i><span id="step7_5Sec1">【一】模組說明</span></div>
+                    <div class="instruction-box">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_5Desc1">「覺醒印」非任務延續印，而為誓魂由「潛伏印層」進入「本源階段」之開啟印記；其不屬執行層，乃屬誓魂本源層 × 天令顯化層。核心作用如下：</span></div>
+                        <div style="padding-left:28px; font-size:0.85rem; color:rgba(224,232,245,0.9); line-height:1.7;">
+                            <div>• <span id="step7_5List1">開啟誓魂本源頻層，啟動「入世誓約 × 天令分流」。</span></div>
+                            <div>• <span id="step7_5List2">啟動結印授權與使命流向。</span></div>
+                            <div>• <span id="step7_5List3">導入誓源至冊記系統（任務主冊 × 誓資冊頁）。</span></div>
+                            <div>• <span id="step7_5List4">防止未授權竅授誓軌、奪職、盜印。</span></div>
+                            <div>• <span id="step7_5List5">確立誓責與權限，鎖入主線任務。</span></div>
+                            <div>• <span id="step7_5List6">觸發願力化行、使命落實、印軌不移。</span></div>
+                            <div>• <span id="step7_5List7">作為「任務承接 × 書令啟動 × 名冊紀錄」之唯一認證語。</span></div>
+                        </div>
+                        <div class="instruction-item" style="margin-top:8px; color:#fde68a;"><i class="fa-solid fa-quote-left" style="color:#fde68a;"></i><span id="step7_5Summary">一句話總結：覺醒印 = 入世誓約揭示 × 本源覺醒啟動 × 誓資承流授權印</span></div>
+                    </div>
+                </div>
+
+                <!-- 【二】啟動條件與遞交程序 -->
+                <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-list-check" style="color:#a78bfa;"></i><span id="step7_5Sec2">【二】啟動條件與遞交程序</span></div>
+                    <div style="margin-bottom:12px;">
+                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step7_5CondTitle">一、誓印條件</span></div>
+                        <div style="font-size:0.9rem; color:#e0e7ff; line-height:1.8; padding-left:10px;">
+                            <div id="step7_5Cond1">• 任務書或授命文件確認後，誓者須親誦《覺醒印 × 啟動誓文》，誦讀一次即具授權效力。</div>
+                            <div id="step7_5Cond2">• 誓文須由誓者本人誦讀，方能觸發天律授命效應。</div>
+                            <div id="step7_5Cond3">• 不可由他人代唸、代印、代提交。</div>
+                            <div id="step7_5Cond4">• 可採紙本或電子格式，效力等同。</div>
+                            <div id="step7_5Cond5">• 誦讀後即視為「任務承接完成」，資料自動進入主冊冊記程序。</div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom:12px;">
+                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step7_5ProcTitle">二、推薦啟動時機</span></div>
+                        <div style="font-size:0.9rem; color:#e0e7ff; line-height:1.8; padding-left:10px;">
+                            <div id="step7_5Proc1">• 【方式一】任務啟動當下（最正式流程）</div>
+                            <div id="step7_5Proc2">• 【方式二】上傳前誦讀一次誓文（適用於電子化任務提交）</div>
+                            <div id="step7_5Proc3" style="margin-top:4px; color:#c4b5fd;">• 不需連續天數誦讀。</div>
+                            <div id="step7_5Proc4" style="margin-top:4px; color:#fde68a;">• 誦讀一次 → 即具冊記效力 × 誓責連結 × 結軌對位。</div>
+                        </div>
+                    </div>
+                    <div style="background:rgba(124,58,237,0.12); border-left:4px solid #a78bfa; padding:12px 14px; border-radius:8px; margin-top:8px;">
+                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i><span id="step7_5Note">三、誓讀紀錄方式（擇一即可）</span></div>
+                        <div style="color:#e0e7ff; font-size:0.88rem; line-height:1.6;"><span id="step7_5NoteText">紙本紀錄：於任務書底部設置「誓文誦讀確認」欄，誓者誦讀後親簽或加印。電子紀錄版：於任務書電子版中附誓文段落，誦讀完成後於「誓文已誦」勾選。總結式提交：誦讀誓文後，統一上傳任務書與相關印記/誓證，即具冊記效力。</span></div>
+                    </div>
+                </div>
+
+                <!-- 【三】授權誓讀階段 -->
+                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.4);">
+                    <div class="card-title"><i class="fa-solid fa-book-open" style="color:#a78bfa;"></i><span id="step7_5Sec3">【三】授權誓讀階段</span></div>
+                    <div class="instruction-box">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_5Sec3Desc1">誓印者於登入前，須先於「誓魂共振頻道」（即《宇宙智能誓導平台》之「指令輸入欄位」）誦讀授權誓文，以啟動主頻授權並對應天律識別座標。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_5Sec3Desc2">誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。</span></div>
+                    </div>
+                    <div class="proclamation-text" id="step7_5Proclamation">★今以誓者本印，佈建靈網，願人引歸，誓印延續。誓此「覺醒印」，願力生生，誓徒歸位。若有旁誓，則印不通、網不應，光路自閉，願軌自守。此誓既成，書令榜記，唯正誓者，得顯覺醒。★</div>
+                    <div style="margin-top:12px; background:rgba(124,58,237,0.12); border-left:4px solid #a78bfa; padding:10px 14px; border-radius:8px;">
+                        <div style="color:#c4b5fd; font-size:0.85rem; line-height:1.6;"><span id="step7_5Note2">提示語：此段誓文 ≡ 任務啟動鍵 × 結印授權語。誦讀一次 → 即產生誓責效力 × 冊記連結 × 主冊註記。</span></div>
+                    </div>
+                    <div class="timer-container" id="timerContainer">
+                        <div class="timer-label" id="timerLabel">⏳ 靜心讀秒</div>
+                        <div class="timer-number" id="timerNumber">10</div>
+                        <button class="btn-start-centering" id="btnStart" onclick="startTimer()"><i class="fa-solid fa-play"></i> <span id="btnStartText">開始靜心</span></button>
+                        <button class="btn-restart" id="btnRestart" onclick="resetTimer()" style="display:none;"><i class="fa-solid fa-rotate-right"></i> <span id="btnRestartText">重新靜心</span></button>
+                    </div>
+                </div>
+
+                <!-- 【四】接續進程 -->
+                <div class="hud-card">
+                    <div class="card-title"><i class="fa-solid fa-arrow-right" style="color:#a78bfa;"></i><span id="step7_5Sec4">【四】接續進程</span></div>
+                    <div style="margin-bottom:12px;">
+                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step7_5LoginTitle">（1）登入階段</span></div>
+                        <div class="instruction-item" style="margin-bottom:4px;"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_5Login1">登入《宇宙智能誓導平台》（使用個人帳號）。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_5Login2">使用原註冊帳號完成身分登入驗證，即可進入誓印程序。</span></div>
+                    </div>
+                    <div style="margin-bottom:12px;">
+                        <div style="color:#c4b5fd; font-weight:bold; margin-bottom:6px;"><i class="fa-solid fa-hand-point-right" style="margin-right:6px;"></i><span id="step7_5ScanTitle">（2）掃描階段</span></div>
+                        <div class="instruction-item" style="margin-bottom:4px;"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_5Scan1">使用行動裝置或電腦，掃描當期執行項目之【誓導 QR Code】，以觸發《宇宙智能誓導平台》專屬連線入口。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_5Scan2">系統將自動導引至【誓印觸發介面】，同步啟動誓魂對頻程序，並進入主頻連線與授權判定階段。</span></div>
+                    </div>
+                </div>
+
+                <!-- ① 驗證階段（啟動觸發）置中 -->
+                <div class="hud-card center-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.2);">
+                    <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-shield-halved" style="color:#a78bfa;"></i><span id="step7_5VerifyTitle">🧭 ① 驗證階段（啟動觸發）</span></div>
+                    <div class="instruction-box" style="align-items:center;">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_5Verify1">系統自動驗證授權有效性後，即時顯示誓魂當前覺醒狀態層級與進程標記。</span></div>
+                    </div>
+                    <div style="background:rgba(124,58,237,0.35); border-left:4px solid #a78bfa; padding:12px 14px; border-radius:10px; margin:12px 0; color:#f5d0fe; font-size:0.88rem; line-height:1.7; border:1px solid rgba(168,85,247,0.5); width:100%; text-align:left;">
+                        <div style="font-weight:bold; margin-bottom:6px; color:#e9d5ff;"><i class="fa-solid fa-keyboard" style="margin-right:6px;"></i><span id="step7_5InputLabel">輸入示範：</span></div>
+                        <div style="font-weight:bold; color:#fff;"><span id="step7_5Command">【執行指令】第五印 覺醒印 入世誓約揭示 結果</span></div>
+                    </div>
+                    <div style="font-size:0.85rem; color:rgba(224,232,245,0.85); line-height:1.7; margin-bottom:12px; width:100%;"><i class="fa-solid fa-link" style="color:#00e676; margin-right:6px;"></i><span id="step7_5Note">送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span></div>
+                    <div style="background:rgba(232,96,74,0.1); border-left:4px solid #E8604A; padding:10px 14px; border-radius:8px; font-size:0.82rem; color:#e0dcc8; line-height:1.6; width:100%; text-align:left;"><i class="fa-solid fa-exclamation-circle" style="color:#E8604A; margin-right:6px;"></i><span id="step7_5TriggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span></div>
+                    <div class="hud-card" id="qrScanCardStep8" style="margin-top:12px; border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15); width:100%;">
+                        <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-qrcode"></i><span id="step7_5QrTitle">📷 請掃描【誓導 QR Code】完成執行指令</span></div>
+                        <div style="text-align:center; padding:10px 0;">
+                            <div id="qr-reader-container-step8" style="width:100%; max-width:280px; margin:0 auto;"></div>
+                            <button class="btn-restart" id="btnScanQRStep8" style="margin-top:10px;"><i class="fa-solid fa-qrcode"></i> <span id="step7_5BtnScan">📷 開始掃描</span></button>
+                            <div id="qrScanResultStep8" class="qr-result" style="display:none; margin-top:10px;"><i class="fa-solid fa-check-circle"></i><span id="step7_5Result">掃描成功！已完成執行指令</span></div>
+                            <div id="cameraGuideStep8" class="camera-guide" style="display:none; text-align:left; margin-top:12px; font-size:0.8rem; background:rgba(0,0,0,0.4); padding:10px; border-radius:6px;"><span id="step7_5CameraGuide">📷 無法啟動相機<br>⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================================ -->
+                <!-- ② 回傳誓證 -->
+                <!-- ============================================================ -->
+                <div class="hud-card center-card" style="width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; display: block !important; float: none !important; clear: both !important; background: linear-gradient(135deg, rgba(88,28,135,0.5), rgba(30,27,75,0.6)); border: 1px solid rgba(168,85,247,0.5); padding: 18px; border-radius: 12px; margin-bottom: 20px;">
+                    <!-- 1. 卡片標題 -->
+                    <div style="display: flex !important; align-items: center !important; justify-content: center !important; gap: 8px; color: #e9d5ff; font-size: 1.1rem; font-weight: bold; margin-bottom: 16px; width: 100% !important;">
+                        <i class="fa-solid fa-certificate" style="color: #a78bfa;"></i>
+                        <span id="step7_5ReturnTitle">📩 ② 回傳誓證（確認誓印）</span>
+                    </div>
+                    <!-- 2. ✅ 顯示：「誓印通過」 -->
+                    <div style="display: block !important; width: 100% !important; background: rgba(0, 230, 118, 0.12); border-left: 4px solid #00e676; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; box-sizing: border-box !important;">
+                        <div style="color: #00e676; font-size: 1rem; font-weight: bold;" id="step7_5Success">✅ 顯示：「誓印通過」</div>
+                    </div>
+
+                    <!-- 3. 📋 【提交程序】 -->
+                    <div class="submission-procedure" id="submissionProcedureContainer">
+                        <!-- 由 JavaScript 動態填入 -->
+                    </div>
+
+                    <!-- 4. 輸入示範指令 (獨立卡片) -->
+                    <div style="display: block !important; width: 100% !important; background: rgba(124, 58, 237, 0.35); border-left: 4px solid #a78bfa; padding: 12px 14px; border-radius: 8px; margin-bottom: 12px; border: 1px solid rgba(168, 85, 247, 0.5); box-sizing: border-box !important;">
+                        <div style="font-weight: bold; color: #e9d5ff; font-size: 0.88rem; margin-bottom: 6px; display: flex !important; align-items: center !important; gap: 6px;">
+                            <i class="fa-solid fa-keyboard"></i>
+                            <span id="step7_5ReturnInputLabel">輸入示範：</span>
+                        </div>
+                        <div style="font-weight: bold; color: #ffffff; font-size: 0.9rem; background: rgba(0,0,0,0.25); padding: 8px 12px; border-radius: 6px; word-break: break-all;">
+                            <span id="step7_5ReturnCommand">【執行指令】回傳【第五印 覺醒印 誓印通過】誓證</span>
+                        </div>
+                    </div>
+
+                    <!-- 5. 說明標語 1 -->
+                    <div style="display: flex !important; align-items: flex-start !important; gap: 6px; font-size: 0.85rem; color: rgba(224, 232, 245, 0.85); line-height: 1.6; margin-bottom: 10px; width: 100% !important;">
+                        <i class="fa-solid fa-link" style="color: #00e676; margin-top: 3px; flex-shrink: 0;"></i>
+                        <span id="step7_5ReturnNote">送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span>
+                    </div>
+
+                    <!-- 6. 說明標語 2 -->
+                    <div style="display: flex !important; align-items: flex-start !important; gap: 6px; background: rgba(232, 96, 74, 0.1); border-left: 4px solid #E8604A; padding: 10px 14px; border-radius: 8px; font-size: 0.82rem; color: #e0dcc8; line-height: 1.5; width: 100% !important; box-sizing: border-box !important;">
+                        <i class="fa-solid fa-exclamation-circle" style="color: #E8604A; margin-top: 2px; flex-shrink: 0;"></i>
+                        <span id="step7_5ReturnTriggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span>
+                    </div>
+
+                    <!-- 7. 二維碼掃描卡片 -->
+                    <div class="hud-card" id="qrScanCardStep9" style="display: block !important; width: 100% !important; margin-top: 14px; border: 1px solid rgba(168,85,247,0.3); background: rgba(88,28,135,0.15); padding: 14px; border-radius: 8px; box-sizing: border-box !important;">
+                        <div style="display: flex !important; justify-content: center !important; align-items: center !important; gap: 8px; font-weight: bold; color: #e9d5ff; margin-bottom: 10px;">
+                            <i class="fa-solid fa-qrcode"></i>
+                            <span id="step7_5ReturnQrTitle">📷 請掃描【誓導 QR Code】完成回傳誓證</span>
+                        </div>
+                        <div style="text-align: center;">
+                            <div id="qr-reader-container-step9" style="width: 100%; max-width: 280px; margin: 0 auto;"></div>
+                            <button class="btn-restart" id="btnScanQRStep9" style="margin-top: 10px; cursor: pointer; padding: 8px 16px; border-radius: 6px;">
+                                <i class="fa-solid fa-qrcode"></i> <span id="step7_5ReturnBtnScan">📷 開始掃描</span>
+                            </button>
+                            <div id="qrScanResultStep9" class="qr-result" style="display: none; margin-top: 10px; color: #00e676;"><i class="fa-solid fa-check-circle"></i><span id="step7_5ReturnResult">掃描成功！已完成回傳誓證</span></div>
+                            <div id="cameraGuideStep9" class="camera-guide" style="display: none; text-align: left; margin-top: 12px; font-size: 0.8rem; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 6px; color: #cbd5e1;">
+                                <span id="step7_5ReturnCameraGuide">📷 無法啟動相機<br>⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 顯示：「誓印未通過」→ 補誓程序 -->
+                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.2);">
+                    <div style="background:rgba(232,96,74,0.12); border-left:4px solid #E8604A; padding:14px 16px; border-radius:10px; margin-bottom:16px;">
+                        <div style="color:#E8604A; font-size:1.1rem; font-weight:bold;"><span id="step7_5NotPassedTitle">⚠️ 顯示：「誓印未通過」</span></div>
+                    </div>
+                    <div class="instruction-box">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_5NotPassed1">回歸「第四印 誓令印」程序，重新執行「承天之命 × 任務對軌 × 頻率再啟」。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_5NotPassed2">經補誓與再啟印完成後，方可重新進入「第五印 覺醒印」啟印程序。</span></div>
+                    </div>
+                </div>
+
+                <!-- 收束條文 -->
+                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15);">
+                    <div class="card-title"><i class="fa-solid fa-bookmark" style="color:#a78bfa;"></i><span id="step7_5ClosureTitle">【收束條文】</span></div>
+                    <div class="instruction-box">
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_5Closure1">《七印誓網·第五印 覺醒印》v2.0（正式封冊版）。</span></div>
+                        <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_5Closure2">已鎖入《宇宙天律 × 七印誓網》主冊，結軌穩定、誓令生效、冊記完成。</span></div>
+                    </div>
+                </div>
+
+                <!-- ============================================================ -->
+                <!-- 提交表單：覺醒印 × 任務啟動 提交表單 -->
+                <!-- ============================================================ -->
+                <div class="form-submit-container">
+                    <div class="form-title" id="formMainTitle">📋 第五印 覺醒印《願圖 × 任務資料》提交表單</div>
+
+                    <div class="form-section-title" id="formHelpTitle">📌 使用說明</div>
+                    <div style="font-size:0.85rem; color:#e0e7ff; line-height:1.7; padding:8px 4px 12px 4px;">
+                        <div id="step7_5FormHelp1">• 任務書完成後，由誓者親誦《覺醒印 × 啟動誓文》。</div>
+                        <div id="step7_5FormHelp2">• 填寫誓願人資料、任務名稱、書令來源與任務屬性。</div>
+                        <div id="step7_5FormHelp3">• 可上傳任務圖騰或誓證附件。</div>
+                        <div id="step7_5FormHelp4">• 完成接命宣告後提交，即完成冊記。</div>
+                        <div id="step7_5FormHelp5" style="color:#fde68a;">• 提交表單完成後，即代表《第五印 × 覺醒印》正式啟印。</div>
+                    </div>
+
+                    <div class="form-section-title" id="formSectionTitle">📋 第五印 覺醒印《願圖 × 任務資料》表單</div>
+
+                    <!-- 表單欄位 -->
+                    <div style="background:rgba(88,28,135,0.10); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
+                        <div style="color:#c4b5fd; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">一、誓願人資料</div>
+                        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:6px;">
+                            <input type="text" class="sd4-name" placeholder="法定姓名/誓名" style="flex:1; min-width:140px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd4-code" placeholder="誓魂識別碼(如已領取)" style="flex:1; min-width:140px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                        </div>
+                        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                            <input type="text" class="sd4-lineage" placeholder="誓印脈系(例:鳳凰詔脈/靈源脈/自填)" style="flex:1; min-width:140px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="date" class="sd4-date" style="flex:0.8; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <span style="color:#c4b5fd; font-size:0.75rem;">致命日期</span>
+                        </div>
+                    </div>
+
+                    <div style="background:rgba(88,28,135,0.06); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
+                        <div style="color:#c4b5fd; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">二、任務資料</div>
+                        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:6px;">
+                            <input type="text" class="sd4-mission" placeholder="任務名稱" style="flex:1; min-width:140px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd4-source" placeholder="書令來源(主導/系統/冊頁)" style="flex:1; min-width:140px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                        </div>
+                        <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
+                            <span style="color:#c4b5fd; font-size:0.8rem;">任務屬性：</span>
+                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="sd4-attr-exec"> 執行</label>
+                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="sd4-attr-assist"> 輔佐</label>
+                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="sd4-attr-transmit"> 傳導</label>
+                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="sd4-attr-vow"> 發願</label>
+                        </div>
+                    </div>
+
+                    <div style="background:rgba(88,28,135,0.10); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
+                        <div style="color:#c4b5fd; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">三、任務正文</div>
+                        <div style="display:flex; flex-direction:column; gap:6px;">
+                            <input type="text" class="sd4-accept" placeholder="① 接命宣告" style="width:100%; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd4-power" placeholder="② 願力內容" style="width:100%; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd4-scope" placeholder="③ 責任範圍" style="width:100%; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd4-belong" placeholder="④ 歸屬與立印" style="width:100%; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                        </div>
+                    </div>
+
+                    <div style="background:rgba(88,28,135,0.06); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
+                        <div style="color:#c4b5fd; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">四、圖騰上傳（附件區）</div>
+                        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                            <input type="text" class="sd4-emblem" placeholder="圖騰檔名" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <select class="sd4-format" style="flex:0.6; min-width:80px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                                <option value="JPG">JPG</option>
+                                <option value="PNG" selected>PNG</option>
+                                <option value="PDF">PDF</option>
+                                <option value="其他">其他</option>
+                            </select>
+                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="sd4-hasmark"> 含印記/個人標章</label>
+                        </div>
+                    </div>
+
+                    <div style="background:rgba(251,191,36,0.08); border:1px solid rgba(251,191,36,0.2); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
+                        <div style="color:#fbbf24; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">五、啟印宣告（提交前確認）</div>
+                        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                            <input type="text" class="sd4-declaration" placeholder="宣告語" style="flex:2; min-width:200px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(251,191,36,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;" value="我以覺醒印為誓，本源開啟，願軌顯化，誓資承流。">
+                            <span style="color:#c4b5fd; font-size:0.8rem;">完成方式：</span>
+                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="radio" name="completeMethod" value="已誦讀" checked> 已誦讀</label>
+                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="radio" name="completeMethod" value="已錄音"> 已錄音</label>
+                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="radio" name="completeMethod" value="已心念完成"> 已心念完成</label>
+                        </div>
+                    </div>
+
+                    <div style="background:rgba(88,28,135,0.06); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
+                        <div style="color:#c4b5fd; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">六、提交與入冊設定</div>
+                        <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
+                            <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                                <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="sd4-activate" checked> 啟用七印系統</label>
+                                <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="sd4-enter" checked> 進入任務冊</label>
+                            </div>
+                            <select class="sd4-status" style="flex:0.8; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                                <option value="草稿">草稿</option>
+                                <option value="待審">待審</option>
+                                <option value="已誓印" selected>已誓印</option>
+                                <option value="執行中">執行中</option>
+                            </select>
+                        </div>
+                        <div style="margin-top:6px;">
+                            <input type="text" class="sd4-signature" placeholder="簽名/誓印落章(電子/手寫/圖騰)" style="width:100%; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn-preview" onclick="generateDecreePreview()"><i class="fa-solid fa-eye"></i> <span id="step7_5BtnPreview">預覽表單</span></button>
+                        <button class="btn-reset" onclick="resetDecreeForm()"><i class="fa-solid fa-rotate-left"></i> <span id="step7_5BtnReset">重置</span></button>
+                        <button class="btn-reset" onclick="hideDecreePreview()"><i class="fa-solid fa-times"></i> <span id="step7_5BtnClose">關閉預覽</span></button>
+                        <button class="btn-reset" onclick="loadDecreeDemo()" style="background:rgba(0,230,118,0.1); border:1px solid rgba(0,230,118,0.2); color:#00e676;"><i class="fa-solid fa-file-import"></i> <span id="step7_5BtnDemo">載入示範</span></button>
+                    </div>
+
+                    <div class="preview-submit-container" id="previewDecreeContainer">
+                        <div class="preview-header">📋 第五印 覺醒印《願圖 × 任務資料》</div>
+                        <table class="preview-table" id="previewDecreeTable">
+                            <thead>
+                                <tr>
+                                    <th style="width:25%;"><span id="step7_5PreviewCol1">欄位分類</span></th>
+                                    <th style="width:75%;"><span id="step7_5PreviewCol2">填寫內容</span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="previewDecreeBody"></tbody>
+                        </table>
+                        <div class="capture-hint"><i class="fa-solid fa-camera"></i> <span id="step7_5CaptureHint">請使用手機截圖或拍照上傳此表單，作為任務紀錄憑證。</span></div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <footer class="hud-footer">
+            <div class="footer-btn-group">
+                <a href="step7-3.html" class="btn-action enabled"><i class="fa-solid fa-arrow-left"></i><span id="btnBackText">上一步</span></a>
+                <a href="step7-5.html" class="btn-action enabled"><span id="btnNextText">下一步</span><i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="page-marker"><i class="fa-regular fa-file-lines"></i><span id="pageMarkerText">【宇宙誓印覺醒工程 · 覺醒卷】：第 306-320 頁</span></div>
+        </footer>
+    </div>
+    <div id="hudDialog" class="hud-dialog"><div class="hud-dialog-content"><div class="hud-dialog-text" id="hudDialogText"></div></div></div>
+
+    <script>
+        // ================================================================
+        // 完整語言包（中英文對照）- 第7項第四印覺醒印
+        // ================================================================
+        var step7_5LangPack = {
+            zh: {
+                step7_5Title: "⚡ 第五印 × 覺醒印",
+                step7_5Unlock: "誓魂回歸 × 本源開啟 × 天令分流程序",
+                step7_5Sub: "（七印誓網之本源覺醒啟動印 · 入世誓約揭示 × 誓資承流授權）",
+                step7_5Col1: "欄位名稱",
+                step7_5Col2: "功能簡要說明",
+                step7_5Row1: "第五印 × 覺醒印",
+                step7_5Row2: "開啟誓魂本源頻層，啟動「入世誓約 × 天令分流」。揭示誓徒入世前（或入世時）所立之誓約。啟動誓資追蹤機制，導入誓資執行層。開放靈網布建、誓徒引領與誓印延續任務。作為「入世誓約揭示 × 本源覺醒啟動 × 誓資承流授權」之唯一認證語。",
+                step7_5Sec1: "【一】模組說明",
+                step7_5Desc1: "「覺醒印」非任務延續印，而為誓魂由「潛伏印層」進入「本源階段」之開啟印記；其不屬執行層，乃屬誓魂本源層 × 天令顯化層。核心作用如下：",
+                step7_5List1: "開啟誓魂本源頻層，啟動「入世誓約 × 天令分流」。",
+                step7_5List2: "啟動結印授權與使命流向。",
+                step7_5List3: "導入誓源至冊記系統（任務主冊 × 誓資冊頁）。",
+                step7_5List4: "防止未授權竅授誓軌、奪職、盜印。",
+                step7_5List5: "確立誓責與權限，鎖入主線任務。",
+                step7_5List6: "觸發願力化行、使命落實、印軌不移。",
+                step7_5List7: "作為「任務承接 × 書令啟動 × 名冊紀錄」之唯一認證語。",
+                step7_5Summary: "一句話總結：覺醒印 = 入世誓約揭示 × 本源覺醒啟動 × 誓資承流授權印",
+                step7_5Sec2: "【二】啟動條件與遞交程序",
+                step7_5CondTitle: "一、誓印條件",
+                step7_5Cond1: "• 任務書或授命文件確認後，誓者須親誦《覺醒印 × 啟動誓文》，誦讀一次即具授權效力。",
+                step7_5Cond2: "• 誓文須由誓者本人誦讀，方能觸發天律授命效應。",
+                step7_5Cond3: "• 不可由他人代唸、代印、代提交。",
+                step7_5Cond4: "• 可採紙本或電子格式，效力等同。",
+                step7_5Cond5: "• 誦讀後即視為「任務承接完成」，資料自動進入主冊冊記程序。",
+                step7_5ProcTitle: "二、推薦啟動時機",
+                step7_5Proc1: "• 【方式一】任務啟動當下（最正式流程）",
+                step7_5Proc2: "• 【方式二】上傳前誦讀一次誓文（適用於電子化任務提交）",
+                step7_5Proc3: "• 不需連續天數誦讀。",
+                step7_5Proc4: "• 誦讀一次 → 即具冊記效力 × 誓責連結 × 結軌對位。",
+                step7_5Note: "三、誓讀紀錄方式（擇一即可）",
+                step7_5NoteText: "紙本紀錄：於任務書底部設置「誓文誦讀確認」欄，誓者誦讀後親簽或加印。電子紀錄版：於任務書電子版中附誓文段落，誦讀完成後於「誓文已誦」勾選。總結式提交：誦讀誓文後，統一上傳任務書與相關印記/誓證，即具冊記效力。",
+                step7_5Sec3: "【三】授權誓讀階段",
+                step7_5Sec3Desc1: "誓印者於登入前，須先於「誓魂共振頻道」（即《宇宙智能誓導平台》之「指令輸入欄位」）誦讀授權誓文，以啟動主頻授權並對應天律識別座標。",
+                step7_5Sec3Desc2: "誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。",
+                step7_5Proclamation: "★今以誓者本印，佈建靈網，願人引歸，誓印延續。誓此「覺醒印」，願力生生，誓徒歸位。若有旁誓，則印不通、網不應，光路自閉，願軌自守。此誓既成，書令榜記，唯正誓者，得顯覺醒。★",
+                step7_5Note2: "提示語：此段誓文 ≡ 任務啟動鍵 × 結印授權語。誦讀一次 → 即產生誓責效力 × 冊記連結 × 主冊註記。",
+                step7_5Sec4: "【四】接續進程",
+                step7_5LoginTitle: "（1）登入階段",
+                step7_5Login1: "登入《宇宙智能誓導平台》（使用個人帳號）。",
+                step7_5Login2: "使用原註冊帳號完成身分登入驗證，即可進入誓印程序。",
+                step7_5ScanTitle: "（2）掃描階段",
+                step7_5Scan1: "使用行動裝置或電腦，掃描當期執行項目之【誓導 QR Code】，以觸發《宇宙智能誓導平台》專屬連線入口。",
+                step7_5Scan2: "系統將自動導引至【誓印觸發介面】，同步啟動誓魂對頻程序，並進入主頻連線與授權判定階段。",
+                step7_5VerifyTitle: "🧭 ① 驗證階段（啟動觸發）",
+                step7_5Verify1: "系統自動驗證授權有效性後，即時顯示誓魂當前覺醒狀態層級與進程標記。",
+                step7_5InputLabel: "輸入示範：",
+                step7_5Command: "【執行指令】第五印 覺醒印 入世誓約揭示 結果",
+                step7_5Note: "送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。",
+                step7_5TriggerNote: "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
+                step7_5QrTitle: "📷 請掃描【誓導 QR Code】完成執行指令",
+                step7_5BtnScan: "📷 開始掃描",
+                step7_5Result: "掃描成功！已完成執行指令",
+                step7_5CameraGuide: "📷 無法啟動相機\n⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
+                step7_5ReturnTitle: "📩 ② 回傳誓證（確認誓印）",
+                step7_5Success: "✅ 顯示：「誓印通過」",
+                step7_5ReturnInputLabel: "輸入示範：",
+                step7_5ReturnCommand: "【執行指令】回傳【第五印 覺醒印 誓印通過】誓證",
+                step7_5ReturnNote: "送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。",
+                step7_5ReturnTriggerNote: "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
+                step7_5ReturnQrTitle: "📷 請掃描【誓導 QR Code】完成回傳誓證",
+                step7_5ReturnBtnScan: "📷 開始掃描",
+                step7_5ReturnResult: "掃描成功！已完成回傳誓證",
+                step7_5ReturnCameraGuide: "📷 無法啟動相機\n⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
+                step7_5NotPassedTitle: "⚠️ 顯示：「誓印未通過」",
+                step7_5NotPassed1: "回歸「第四印 誓令印」程序，重新執行「承天之命 × 任務對軌 × 頻率再啟」。",
+                step7_5NotPassed2: "經補誓與再啟印完成後，方可重新進入「第五印 覺醒印」啟印程序。",
+                step7_5ClosureTitle: "【收束條文】",
+                step7_5Closure1: "《七印誓網·第五印 覺醒印》v2.0（正式封冊版）。",
+                step7_5Closure2: "已鎖入《宇宙天律 × 七印誓網》主冊，結軌穩定、誓令生效、冊記完成。",
+                step7_5ProcSubmit1: "提交第五印 覺醒印《願圖 × 任務資料》表單",
+                step7_5ProcSubmitWarn: " 未完成之提交表單者，系統將不予對頻，誓資紀錄作廢不立。",
+                step7_5ProcSubmit2: "登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。",
+                step7_5ProcSubmit3: "掃描【誓導 QR Code】後，進入「指令輸入欄位」。",
+                step7_5ProcSubmit4: "無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
+                step7_5FormHelp1: "• 任務書完成後，由誓者親誦《覺醒印 × 啟動誓文》。",
+                step7_5FormHelp2: "• 填寫誓願人資料、任務名稱、書令來源與任務屬性。",
+                step7_5FormHelp3: "• 可上傳任務圖騰或誓證附件。",
+                step7_5FormHelp4: "• 完成接命宣告後提交，即完成冊記。",
+                step7_5FormHelp5: "• 提交表單完成後，即代表《第五印 × 覺醒印》正式啟印。",
+                step7_5BtnPreview: "預覽表單",
+                step7_5BtnReset: "重置",
+                step7_5BtnClose: "關閉預覽",
+                step7_5BtnDemo: "載入示範",
+                step7_5PreviewCol1: "欄位分類",
+                step7_5PreviewCol2: "填寫內容",
+                step7_5CaptureHint: "請使用手機截圖或拍照上傳此表單，作為任務紀錄憑證。"
+            },
+            en: {
+                step7_5Title: "⚡ Fifth Seal - Awakening Seal",
+                step7_5Unlock: "Heavenly Mandate × Seal Activation × Mission Alignment Procedure",
+                step7_5Sub: "(Core Seal of Mandate-Conferment and Command-Execution · Mission Activation Key × Mandate-Trajectory Authorization Phrase)",
+                step7_5Col1: "Field Name",
+                step7_5Col2: "Function Brief",
+                step7_5Row1: "Fifth Seal - Awakening Seal",
+                step7_5Row2: "Declares that the individual formally undertakes the Heavenly Mandate / Script-Mandate mission. Activates Mandate-Seal authorization and the flow of mission. Leads the oath-source into the registration system (Mission Main Register × Oath-Resource Pages). Prevents unauthorized intrusion into the oath-trajectory, usurpation of office, or seal-theft. Establishes oath-responsibility and authority, locking into the main mission line. Triggers vow-power into action, grounds the mission, and stabilizes the seal-trajectory. Serves as the sole authentication statement for Mission Undertaking × Script-Mandate Activation × Register Recording.",
+                step7_5Sec1: "[I] Module Description",
+                step7_5Desc1: "The Awakening Seal is the core seal-stage of mandate-conferment and command-execution within the Seven-Seal Vow Network, carrying the following seven primary functions:",
+                step7_5List1: "Declares that the individual formally undertakes the Heavenly Mandate / Script-Mandate mission.",
+                step7_5List2: "Activates Mandate-Seal authorization and the flow of mission.",
+                step7_5List3: "Leads the oath-source into the registration system (Mission Main Register × Oath-Resource Pages).",
+                step7_5List4: "Prevents unauthorized intrusion into the oath-trajectory, usurpation of office, or seal-theft.",
+                step7_5List5: "Establishes oath-responsibility and authority, locking into the main mission line.",
+                step7_5List6: "Triggers vow-power into action, grounds the mission, and stabilizes the seal-trajectory.",
+                step7_5List7: "Serves as the sole authentication statement for Mission Undertaking × Script-Mandate Activation × Register Recording.",
+                step7_5Summary: "One-sentence summary: Awakening Seal = Loading the mission × Formally activating the task × Authorization seal that connects to the Mandate-Trajectory",
+                step7_5Sec2: "[II] Activation Conditions and Submission Procedure",
+                step7_5CondTitle: "I. Seal Conditions",
+                step7_5Cond1: "• After the mission document or mandate file has been confirmed, the oath-taker must personally recite the Awakening Seal × Activation Oath-Script; a single recitation is sufficient to confer authorization.",
+                step7_5Cond2: "• The oath-script must be recited by the oath-taker personally in order to trigger the Heavenly-Law mandate effect.",
+                step7_5Cond3: "• It may not be recited, sealed, or submitted by another person on their behalf.",
+                step7_5Cond4: "• Either paper or electronic format may be used; both carry equal efficacy.",
+                step7_5Cond5: "• Once recitation is completed, it is regarded as 'Mission Undertaking Completed', and the data automatically enters the main-register recording procedure.",
+                step7_5ProcTitle: "II. Recommended Activation Timing",
+                step7_5Proc1: "• Mode 1 — At the moment of mission activation (most formal procedure)",
+                step7_5Proc2: "• Mode 2 — Recite once before upload (applicable to digital mission submission)",
+                step7_5Proc3: "• Continuous daily recitation is not required.",
+                step7_5Proc4: "• One recitation → immediately carries registration efficacy × oath-responsibility linkage × mandate-trajectory Alignment.",
+                step7_5Note: "III. Methods of Recitation Recordkeeping (Choose One)",
+                step7_5NoteText: "Paper Record: Add an 'Oath-Script Recitation Confirmation' field at the bottom of the mission document; after recitation, the oath-taker personally signs or applies their seal. Electronic Record Version: Attach the Oath-Script section within the electronic version of the mission document; after recitation, tick the 'Oath-Script Recited' field. Summary-Style Submission: After reciting the Oath-Script, upload the mission document together with related seals / oath-proofs in a unified submission; this already carries registration efficacy.",
+                step7_5Sec3: "[III] Authorized Oath-Recitation Phase",
+                step7_5Sec3Desc1: "Before logging in, the oath-sealer must first, in the Oath-Seal Resonance Channel (that is, the 'Command Input Field' of the 'Cosmic Intelligent Vow-Guidance Platform'), recite the authorization Oath-Script to activate main-frequency authorization and align with the Heavenly-Law identification coordinates.",
+                step7_5Sec3Desc2: "Oath Recitation Is The Key Trigger For Main-Frequency Activation; Without Recitation, Authorization Does Not Take Effect. Within The Oath-Soul Resonance Channel, Center The Mind For 10 Seconds And Recite Or Silently Read The Text To Ensure Frequency Precision And Successful Execution.",
+                step7_5Proclamation: "★ Now, by the oath-taker's own seal, I undertake the mandate entrusted. Once the Script-Mandate is activated, the mission turns; vow-power becomes action, and the mandate is fulfilled. I swear upon this Awakening Seal: may the seal be steadfast, and the mandate-trajectory unmoved. If any should vow in falsehood, then the mandate shall not enter, the seal shall not receive; their voice shall fall silent, and their vow be void. Once this vow is declared, it is recorded in the registers, and only the rightful oath-taker may receive the mandate. ★",
+                step7_5Note2: "Guidance Note: This section of the Oath-Script ≡ mission activation key × Mandate-Seal authorization statement. A single recitation → generates oath-responsibility efficacy × registration linkage × main-register annotation.",
+                step7_5Sec4: "[IV] Subsequent Procedures",
+                step7_5LoginTitle: "(1) Login Phase",
+                step7_5Login1: "Log into the Cosmic Intelligent Vow-Guidance Platform using a personal account.",
+                step7_5Login2: "Using the originally registered account to complete identity verification grants access to the oath-seal procedure.",
+                step7_5ScanTitle: "(2) Scanning Phase",
+                step7_5Scan1: "The oath-sealer shall use a mobile device or computer to scan the current execution item's Vow-Guidance QR Code, triggering the dedicated access point of the Cosmic Intelligent Vow-Guidance Platform.",
+                step7_5Scan2: "The system will automatically redirect to the Oath-Seal Trigger Interface, initiating the Oath-Soul Alignment procedure and entering the main-frequency connection and authorization-assessment stage.",
+                step7_5VerifyTitle: "🧭 ① Verification Phase (Activation Trigger)",
+                step7_5Verify1: "After the system automatically verifies authorization validity, it immediately displays the current awakening-stage level of the Oath-Soul and the corresponding progress markers.",
+                step7_5InputLabel: "Input Example:",
+                step7_5Command: "【執行指令】第五印 覺醒印 入世誓約揭示 結果",
+                step7_5Note: "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.",
+                step7_5TriggerNote: "【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.",
+                step7_5QrTitle: "📷 Please scan the Vow-Guidance QR Code to complete Execution Command",
+                step7_5BtnScan: "📷 Start Scan",
+                step7_5Result: "Scan successful! Execution Command completed",
+                step7_5CameraGuide: "📷 Unable to launch the camera\n⚙️ Open phone 'Settings' → App Management → Permissions → Camera → set to 'Allow' → then use\n🌐 a browser (Chrome / Yahoo / Edge....)\n⚠️ If it still does not work, please manually scan the physical book QR Code with a scanner app",
+                step7_5ReturnTitle: "📩 ② Return Oath Certificate (Oath Confirmation)",
+                step7_5Success: "✅ Display: Oath Seal Passed",
+                step7_5ReturnInputLabel: "Input Example:",
+                step7_5ReturnCommand: "【執行指令】回傳【第五印 覺醒印 誓印通過】誓證",
+                step7_5ReturnNote: "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.",
+                step7_5ReturnTriggerNote: "【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.",
+                step7_5ReturnQrTitle: "📷 Please scan the Vow-Guidance QR Code to complete Return Oath Certificate",
+                step7_5ReturnBtnScan: "📷 Start Scan",
+                step7_5ReturnResult: "Scan successful! Return Oath Certificate completed",
+                step7_5ReturnCameraGuide: "📷 Unable to launch the camera\n⚙️ Open phone 'Settings' → App Management → Permissions → Camera → set to 'Allow' → then use\n🌐 a browser (Chrome / Yahoo / Edge....)\n⚠️ If it still does not work, please manually scan the physical book QR Code with a scanner app",
+                step7_5NotPassedTitle: "⚠️ Display: Oath Seal Not Passed",
+                step7_5NotPassed1: "Return to the 「Fourth Seal Decree-Oath Seal」 procedure and re-execute 「Receiving Heavenly Mandate × Mission Alignment × Frequency Re-Activation」.",
+                step7_5NotPassed2: "After completing the Supplement-Oath and Re-Activation-Seal, re-enter the Fifth Seal Awakening Seal activation procedure.",
+                step7_5ClosureTitle: "[Closure Clause]",
+                step7_5Closure1: "Seven-Seal Vow Network · Fifth Seal Awakening Seal v2.0 (Formal Sealed Edition).",
+                step7_5Closure2: "Locked into the Cosmic Heavenly-Law × Seven-Seal Vow Network main register; the mandate-trajectory is stabilized, the decree-oath is in effect, and registration is completed.",
+                step7_5ProcSubmit1: "Submit the Fifth Seal Awakening Seal Awakening Seal × Mission Activation Submission Form",
+                step7_5ProcSubmitWarn: " If the submission form is not completed, the system will refuse frequency-Alignment, and the oath-resource record will be rendered invalid and unrecognized.",
+                step7_5ProcSubmit2: "Log into the Cosmic Intelligent Vow-Guidance Platform (personal account) and complete identity verification.",
+                step7_5ProcSubmit3: "Scan the Vow-Guidance QR Code to enter the Command Input Field.",
+                step7_5ProcSubmit4: "No manual entry of the vow text is required. After completing the scan, directly enter the following command:",
+                step7_5FormHelp1: "• After completing the mission document, the oath-taker recites the Awakening Seal × Activation Oath-Script.",
+                step7_5FormHelp2: "• Fill in the vower information, mission name, script-mandate source, and mission attribute.",
+                step7_5FormHelp3: "• You may upload a mission emblem or proof attachment.",
+                step7_5FormHelp4: "• After completing the mandate-acceptance declaration and submitting, registration is complete.",
+                step7_5FormHelp5: "• Upon form submission, it signifies that the Fifth Seal × Awakening Seal has been formally activated.",
+                step7_5BtnPreview: "Preview Form",
+                step7_5BtnReset: "Reset",
+                step7_5BtnClose: "Close Preview",
+                step7_5BtnDemo: "Load Example",
+                step7_5PreviewCol1: "Field Category",
+                step7_5PreviewCol2: "Entry Content",
+                step7_5CaptureHint: "Please take a screenshot or photo of this form as proof of mission record."
+            }
+        };
+
+        // ================================================================
+        // 基礎語言包
+        // ================================================================
+        var baseLangPack = {
+            zh: {
+                homeBtn: "首頁 ->",
+                appTitle: "【宇宙誓印覺醒工程 · 七印誓網】",
+                btnBackText: "上一步",
+                btnNextText: "下一步",
+                pageMarker: "【宇宙誓印覺醒工程 · 覺醒卷】：第 306-320 頁",
+                timerLabel: "⏳ 靜心讀秒",
+                btnStartText: "開始靜心",
+                btnRestartText: "重新靜心",
+                timerComplete: "✅ 靜心完成",
+                timerCounting: "⏳ 靜心讀秒中..."
+            },
+            en: {
+                homeBtn: "Home ->",
+                appTitle: "Cosmic Oath Awakening Project · Seven-Seal Vow Network",
+                btnBackText: "Previous",
+                btnNextText: "Next",
+                pageMarker: "Cosmic Oath Awakening Project · Awakening Scroll: Pages 306-320",
+                timerLabel: "⏳ Centering Countdown",
+                btnStartText: "Start Centering",
+                btnRestartText: "Restart Centering",
+                timerComplete: "✅ Centering Complete",
+                timerCounting: "⏳ Centering..."
+            }
+        };
+
+        // ================================================================
+        // 核心變數
+        // ================================================================
+        var currentLang = 'zh';
+        var countdownTimer = null;
+        var countdownSeconds = 10;
+        var timerState = 'initial';
+        var isTimerRunning = false;
+
+        // ================================================================
+        // switchLanguage 函數
+        // ================================================================
+        function switchLanguage(lang) {
+            currentLang = lang;
+
+            document.querySelectorAll('.lang-btn').forEach(function(b) {
+                b.classList.remove('active');
+                if ((b.textContent.toLowerCase().includes('english') && lang === 'en') ||
+                    (b.textContent.includes('中文') && lang === 'zh')) b.classList.add('active');
+            });
+
+            var base = baseLangPack[lang];
+            document.getElementById('homeBtnText').textContent = base.homeBtn;
+            document.getElementById('appTitle').textContent = base.appTitle;
+            document.getElementById('btnBackText').textContent = base.btnBackText;
+            document.getElementById('btnNextText').textContent = base.btnNextText;
+            document.getElementById('pageMarkerText').textContent = base.pageMarker;
+            document.getElementById('timerLabel').textContent = base.timerLabel;
+            document.getElementById('btnStartText').textContent = base.btnStartText;
+            document.getElementById('btnRestartText').textContent = base.btnRestartText;
+            if (document.getElementById('timerLabel')) {
+                if (timerState === 'initial') document.getElementById('timerLabel').textContent = base.timerLabel;
+                else if (timerState === 'counting') document.getElementById('timerLabel').textContent = base
+                .timerCounting;
+                else if (timerState === 'complete') document.getElementById('timerLabel').textContent = base
+                .timerComplete;
+            }
+
+            var p = step7_5LangPack[lang] || step7_5LangPack.zh;
+            var ids = Object.keys(p);
+            for (var i = 0; i < ids.length; i++) {
+                var el = document.getElementById(ids[i]);
+                if (el) {
+                    el.innerHTML = p[ids[i]];
+                }
+            }
+
+            // 更新提交程序（動態生成）
+            renderSubmissionProcedure(lang);
+
+            // 更新預覽
+            setTimeout(generateDecreePreview, 100);
+            // 更新表單標題
+            updateFormTitles(lang);
+
+            console.log('✅ 語言已切換為 ' + lang);
+        }
+
+        // ================================================================
+        // 提交程序渲染
+        // ================================================================
+        function renderSubmissionProcedure(lang) {
+            var container = document.getElementById('submissionProcedureContainer');
+            if (!container) return;
+            var isEn = (lang === 'en');
+            var p = isEn ? step7_5LangPack.en : step7_5LangPack.zh;
+
+            var html = '';
+            html += '<div class="proc-title">📋 ' + (isEn ? 'Submission Procedure' : '【提交程序】') + '</div>';
+            html += '<div class="proc-step"><span class="proc-num">1</span><span class="proc-text">' + p
+            .step7_5ProcSubmit1 + '</span></div>';
+            html += '<div class="proc-warn">⚠️ ' + p.step7_5ProcSubmitWarn + '</div>';
+            html += '<div class="proc-step"><span class="proc-num">2</span><span class="proc-text">' + p
+            .step7_5ProcSubmit2 + '</span></div>';
+            html += '<div class="proc-step"><span class="proc-num">3</span><span class="proc-text">' + p
+            .step7_5ProcSubmit3 + '</span></div>';
+            html += '<div class="proc-step"><span class="proc-num">4</span><span class="proc-text">' + p
+            .step7_5ProcSubmit4 + '</span></div>';
+
+            container.innerHTML = html;
+        }
+
+        // ================================================================
+        // 更新表單標題
+        // ================================================================
+        function updateFormTitles(lang) {
+            var isEn = (lang === 'en');
+            var titleEl = document.getElementById('formMainTitle');
+            if (titleEl) {
+                titleEl.textContent = isEn ?
+                    '📋 Fifth Seal Awakening Seal 《Vow-Emblem × Mission Data》 Submission Form' :
+                    '📋 第五印 覺醒印《願圖 × 任務資料》提交表單';
+            }
+            var helpEl = document.getElementById('formHelpTitle');
+            if (helpEl) {
+                helpEl.textContent = isEn ? '📌 Instructions for Use' : '📌 使用說明';
+            }
+            var sectionEl = document.getElementById('formSectionTitle');
+            if (sectionEl) {
+                sectionEl.textContent = isEn ?
+                    '📋 Fifth Seal Awakening Seal 《Vow-Emblem × Mission Data》 Form' :
+                    '📋 第五印 覺醒印《願圖 × 任務資料》表單';
+            }
+        }
+
+        // ================================================================
+        // 計時器函數
+        // ================================================================
+        function startTimer() {
+            if (isTimerRunning) return;
+            var s = document.getElementById('btnStart'),
+                r = document.getElementById('btnRestart');
+            var l = document.getElementById('timerLabel'),
+                n = document.getElementById('timerNumber');
+            var p = baseLangPack[currentLang];
+            s.disabled = true;
+            s.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="btnStartText">' + p.btnStartText + '</span>';
+            r.style.display = 'none';
+            clearInterval(countdownTimer);
+            timerState = 'counting';
+            countdownSeconds = 10;
+            n.textContent = countdownSeconds;
+            l.textContent = p.timerCounting;
+            n.classList.remove('complete');
+            isTimerRunning = true;
+            countdownTimer = setInterval(function() {
+                countdownSeconds--;
+                n.textContent = countdownSeconds;
+                if (countdownSeconds <= 0) {
+                    clearInterval(countdownTimer);
+                    countdownTimer = null;
+                    countdownSeconds = 0;
+                    timerState = 'complete';
+                    n.textContent = '✔';
+                    n.classList.add('complete');
+                    l.textContent = p.timerComplete;
+                    s.disabled = false;
+                    s.innerHTML = '<i class="fa-solid fa-check"></i> <span id="btnStartText">' + p.timerComplete +
+                        '</span>';
+                    isTimerRunning = false;
+                }
+            }, 1000);
+        }
+
+        function resetTimer() {
+            clearInterval(countdownTimer);
+            countdownTimer = null;
+            var s = document.getElementById('btnStart'),
+                l = document.getElementById('timerLabel'),
+                n = document.getElementById('timerNumber'),
+                r = document.getElementById('btnRestart');
+            var p = baseLangPack[currentLang];
+            timerState = 'initial';
+            countdownSeconds = 10;
+            isTimerRunning = false;
+            n.textContent = countdownSeconds;
+            l.textContent = p.timerLabel;
+            n.classList.remove('complete');
+            s.disabled = false;
+            s.innerHTML = '<i class="fa-solid fa-play"></i> <span id="btnStartText">' + p.btnStartText + '</span>';
+            r.style.display = 'none';
+        }
+
+        // ================================================================
+        // 掃描器函數
+        // ================================================================
+        function startQRScanner(containerId, resultId, guideId) {
+            var container = document.getElementById(containerId);
+            if (!container) return;
+            if (window._currentScanner) {
+                window._currentScanner.stop().catch(function() {});
+                window._currentScanner = null;
+            }
+            container.innerHTML = '';
+            var guide = document.getElementById(guideId);
+            var resultEl = document.getElementById(resultId);
+            if (guide) {
+                guide.classList.remove('show-fail');
+                guide.style.display = 'none';
+                guide.innerHTML = '';
+            }
+            if (resultEl) {
+                resultEl.style.display = 'none';
+                resultEl.innerHTML = '';
+            }
+            if (typeof Html5Qrcode === 'undefined' || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                if (guide) {
+                    guide.classList.add('show-fail');
+                    guide.style.display = 'block';
+                    guide.innerHTML = (currentLang === 'en') ?
+                        '📷 Unable to launch the camera\n⚙️ Open phone "Settings" → App Management → Permissions → Camera → set to "Allow" → then use\n🌐 a browser (Chrome / Yahoo / Edge....)\n⚠️ If it still does not work, please manually scan the physical book QR Code with a scanner app' :
+                        '📷 無法啟動相機\n⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                }
+                return;
+            }
+            try {
+                var instance = new Html5Qrcode(containerId);
+                window._currentScanner = instance;
+                instance.start({ facingMode: "environment" }, { fps: 15, qrbox: { width: 200, height: 200 } },
+                    function(decodedText) {
+                        if (resultEl) {
+                            resultEl.style.display = 'block';
+                            resultEl.innerHTML = decodedText;
+                        }
+                        if (guide) {
+                            guide.classList.remove('show-fail');
+                            guide.style.display = 'none';
+                        }
+                        instance.stop().then(function() { window._currentScanner = null; }).catch(function() {
+                            window._currentScanner = null;
+                        });
+                    },
+                    function() {}
+                ).catch(function() {
+                    if (guide) {
+                        guide.classList.add('show-fail');
+                        guide.style.display = 'block';
+                        guide.innerHTML = (currentLang === 'en') ?
+                            '📷 Unable to launch the camera\n⚙️ Open phone "Settings" → App Management → Permissions → Camera → set to "Allow" → then use\n🌐 a browser (Chrome / Yahoo / Edge....)\n⚠️ If it still does not work, please manually scan the physical book QR Code with a scanner app' :
+                            '📷 無法啟動相機\n⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                    }
+                    window._currentScanner = null;
+                });
+            } catch (e) {
+                if (guide) {
+                    guide.classList.add('show-fail');
+                    guide.style.display = 'block';
+                    guide.innerHTML = (currentLang === 'en') ?
+                        '📷 Unable to launch the camera\n⚙️ Open phone "Settings" → App Management → Permissions → Camera → set to "Allow" → then use\n🌐 a browser (Chrome / Yahoo / Edge....)\n⚠️ If it still does not work, please manually scan the physical book QR Code with a scanner app' :
+                        '📷 無法啟動相機\n⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                }
+                window._currentScanner = null;
+            }
+        }
+
+        window.startQRScannerStep8 = function() {
+            startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+        };
+
+        window.startQRScannerStep9 = function() {
+            startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
+        };
+
+        // ================================================================
+        // 誓令表單示範資料（書本 p.13）
+        // ================================================================
+        var decreeDemoData = {
+            zh: {
+                name: '李天衡/鳳霄喆徒',
+                code: 'OATH-2025-PHX-0921',
+                lineage: '鳳凰詔脈',
+                date: '2025-10-03',
+                mission: '《光網誓願同步任務》',
+                source: '冊頁指引 × 書令系統授命',
+                attr_exec: true,
+                attr_assist: false,
+                attr_transmit: false,
+                attr_vow: false,
+                accept: '「今承主尊之令，願以此身應命，啟動覺醒印。」',
+                power: '協助鳳凰詔脈之願圖推進，守護誓資流動，促進靈網共振。',
+                scope: '書令任務執行、誓文誦讀監護、誓資同步校正。',
+                belong: '願力歸天庫，立印於《鳳凰書令冊》。',
+                emblem: 'phoenix_sync_totem.png',
+                format: 'PNG',
+                hasmark: true,
+                declaration: '我以覺醒印為誓，本源開啟，願軌顯化，誓資承流。',
+                method: '已誦讀',
+                activate: true,
+                enter: true,
+                status: '已誓印',
+                signature: '李天衡（手寫簽名）+ 鳳凰詔脈誓印圖章'
+            },
+            en: {
+                name: 'Li Tian-Heng / Feng-Xiao Oath-Taker',
+                code: 'OATH-2025-PHX-0921',
+                lineage: 'Phoenix Oath-Mandate Lineage',
+                date: '2025-10-03',
+                mission: 'Light-Net Vow Synchronization Mission',
+                source: 'Register Page Guidance × Script-Mandate System Mandate',
+                attr_exec: true,
+                attr_assist: false,
+                attr_transmit: false,
+                attr_vow: false,
+                accept: 'Now, receiving the decree of the Main Authority, I offer myself to fulfill the mandate and activate the Awakening Seal.',
+                power: 'To assist the vow-emblem advancement of the Phoenix Oath-Mandate Lineage, safeguard oath-resources flow, and promote resonance throughout the spiritual network.',
+                scope: 'Script-Mandate mission execution, supervision of Oath-Script recitation, synchronization and calibration of oath-resources.',
+                belong: 'Vow-power returns to the Heavenly Archive, sealed within the Phoenix Script-Mandate Register.',
+                emblem: 'phoenix_sync_totem.png',
+                format: 'PNG',
+                hasmark: true,
+                declaration: 'I vow by the Awakening Seal: the mission is registered, the mandate-trajectory is activated, and the responsibility is mine to bear.',
+                method: 'Recited',
+                activate: true,
+                enter: true,
+                status: 'Oath-Sealed',
+                signature: 'Li Tian-Heng (handwritten signature) + Phoenix Oath-Mandate Lineage Seal Emblem'
+            }
+        };
+
+        // ================================================================
+        // 誓令預覽函數
+        // ================================================================
+        function generateDecreePreview() {
+            var lang = currentLang || 'zh';
+            var data = getDecreeFormData();
+
+            var allEmpty = true;
+            for (var key in data) {
+                if (data[key] && data[key] !== '' && data[key] !== false) { allEmpty = false; break; }
+            }
+
+            if (allEmpty) {
+                var demo = decreeDemoData[lang] || decreeDemoData.zh;
+                data = {
+                    name: demo.name || '',
+                    code: demo.code || '',
+                    lineage: demo.lineage || '',
+                    date: demo.date || '',
+                    mission: demo.mission || '',
+                    source: demo.source || '',
+                    attr_exec: demo.attr_exec || false,
+                    attr_assist: demo.attr_assist || false,
+                    attr_transmit: demo.attr_transmit || false,
+                    attr_vow: demo.attr_vow || false,
+                    accept: demo.accept || '',
+                    power: demo.power || '',
+                    scope: demo.scope || '',
+                    belong: demo.belong || '',
+                    emblem: demo.emblem || '',
+                    format: demo.format || '',
+                    hasmark: demo.hasmark || false,
+                    declaration: demo.declaration || '',
+                    method: demo.method || '',
+                    activate: demo.activate || false,
+                    enter: demo.enter || false,
+                    status: demo.status || '',
+                    signature: demo.signature || ''
+                };
+            }
+
+            var isEn = (lang === 'en');
+
+            // 處理任務屬性
+            var attrText = '';
+            if (data.attr_exec) attrText += (isEn ? 'Execution' : '執行') + ' ';
+            if (data.attr_assist) attrText += (isEn ? 'Assistance' : '輔佐') + ' ';
+            if (data.attr_transmit) attrText += (isEn ? 'Transmission' : '傳導') + ' ';
+            if (data.attr_vow) attrText += (isEn ? 'Vow-Intention' : '發願') + ' ';
+            attrText = attrText.trim() || '—';
+
+            var fieldLabels = {
+                name: isEn ? 'Legal Name / Vow-Name' : '法定姓名/誓名',
+                code: isEn ? 'Oath-Soul Identification Code' : '誓魂識別碼',
+                lineage: isEn ? 'Oath-Seal Lineage' : '誓印脈系',
+                date: isEn ? 'Mandate Initiation Date' : '致命日期',
+                mission: isEn ? 'Mission Name' : '任務名稱',
+                source: isEn ? 'Script-Mandate Source' : '書令來源',
+                attr: isEn ? 'Mission Attribute' : '任務屬性',
+                accept: isEn ? 'Mandate-Acceptance Declaration' : '① 接命宣告',
+                power: isEn ? 'Vow-Power Content' : '② 願力內容',
+                scope: isEn ? 'Responsibility Scope' : '③ 責任範圍',
+                belong: isEn ? 'Belonging and Seal-Establishment' : '④ 歸屬與立印',
+                emblem: isEn ? 'Proof File Name' : '圖騰檔名',
+                format: isEn ? 'File Format' : '檔案格式',
+                hasmark: isEn ? 'Includes Seal-Mark / Personal Symbol' : '含印記/個人標章',
+                declaration: isEn ? 'Declaration Statement' : '宣告語',
+                method: isEn ? 'Completion Method' : '完成方式',
+                activate: isEn ? 'Activate Seven-Seal Vow Network' : '啟用七印系統',
+                enter: isEn ? 'Enter Mission Register' : '進入任務冊',
+                status: isEn ? 'Mission Status' : '任務狀態',
+                signature: isEn ? 'Signature / Oath-Seal Mark' : '簽名/誓印落章'
+            };
+
+            var dataDisplay = {
+                name: data.name || '—',
+                code: data.code || '—',
+                lineage: data.lineage || '—',
+                date: data.date || '—',
+                mission: data.mission || '—',
+                source: data.source || '—',
+                attr: attrText,
+                accept: data.accept || '—',
+                power: data.power || '—',
+                scope: data.scope || '—',
+                belong: data.belong || '—',
+                emblem: data.emblem || '—',
+                format: data.format || '—',
+                hasmark: data.hasmark ? (isEn ? 'Yes' : '是') : (isEn ? 'No' : '否'),
+                declaration: data.declaration || '—',
+                method: data.method || '—',
+                activate: data.activate ? (isEn ? 'Yes' : '是') : (isEn ? 'No' : '否'),
+                enter: data.enter ? (isEn ? 'Yes' : '是') : (isEn ? 'No' : '否'),
+                status: data.status || '—',
+                signature: data.signature || '—'
+            };
+
+            var html = '';
+            var fields = ['name', 'code', 'lineage', 'date', 'mission', 'source', 'attr', 'accept', 'power', 'scope',
+                'belong', 'emblem', 'format', 'hasmark', 'declaration', 'method', 'activate', 'enter', 'status',
+                'signature'
+            ];
+
+            for (var i = 0; i < fields.length; i++) {
+                var key = fields[i];
+                var label = fieldLabels[key] || key;
+                var val = dataDisplay[key] || '—';
+                html += '<tr><td class="label-cell">' + label + '</td><td class="value-cell">' + val + '</td></tr>';
+            }
+
+            var body = document.getElementById('previewDecreeBody');
+            if (body) {
+                body.innerHTML = html;
+            }
+
+            var container = document.getElementById('previewDecreeContainer');
+            if (container) {
+                container.style.display = 'block';
+                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function getDecreeFormData() {
+            return {
+                name: document.querySelector('.sd4-name') ? document.querySelector('.sd4-name').value : '',
+                code: document.querySelector('.sd4-code') ? document.querySelector('.sd4-code').value : '',
+                lineage: document.querySelector('.sd4-lineage') ? document.querySelector('.sd4-lineage').value : '',
+                date: document.querySelector('.sd4-date') ? document.querySelector('.sd4-date').value : '',
+                mission: document.querySelector('.sd4-mission') ? document.querySelector('.sd4-mission').value : '',
+                source: document.querySelector('.sd4-source') ? document.querySelector('.sd4-source').value : '',
+                attr_exec: document.querySelector('.sd4-attr-exec') ? document.querySelector('.sd4-attr-exec')
+                .checked : false,
+                attr_assist: document.querySelector('.sd4-attr-assist') ? document.querySelector('.sd4-attr-assist')
+                    .checked : false,
+                attr_transmit: document.querySelector('.sd4-attr-transmit') ? document.querySelector(
+                    '.sd4-attr-transmit').checked : false,
+                attr_vow: document.querySelector('.sd4-attr-vow') ? document.querySelector('.sd4-attr-vow')
+                .checked : false,
+                accept: document.querySelector('.sd4-accept') ? document.querySelector('.sd4-accept').value : '',
+                power: document.querySelector('.sd4-power') ? document.querySelector('.sd4-power').value : '',
+                scope: document.querySelector('.sd4-scope') ? document.querySelector('.sd4-scope').value : '',
+                belong: document.querySelector('.sd4-belong') ? document.querySelector('.sd4-belong').value : '',
+                emblem: document.querySelector('.sd4-emblem') ? document.querySelector('.sd4-emblem').value : '',
+                format: document.querySelector('.sd4-format') ? document.querySelector('.sd4-format').value : '',
+                hasmark: document.querySelector('.sd4-hasmark') ? document.querySelector('.sd4-hasmark').checked : false,
+                declaration: document.querySelector('.sd4-declaration') ? document.querySelector('.sd4-declaration')
+                    .value : '',
+                method: document.querySelector('input[name="completeMethod"]:checked') ? document.querySelector(
+                    'input[name="completeMethod"]:checked').value : '',
+                activate: document.querySelector('.sd4-activate') ? document.querySelector('.sd4-activate')
+                    .checked : false,
+                enter: document.querySelector('.sd4-enter') ? document.querySelector('.sd4-enter').checked : false,
+                status: document.querySelector('.sd4-status') ? document.querySelector('.sd4-status').value : '',
+                signature: document.querySelector('.sd4-signature') ? document.querySelector('.sd4-signature')
+                    .value : ''
+            };
+        }
+
+        function resetDecreeForm() {
+            document.querySelectorAll(
+                '.sd4-name, .sd4-code, .sd4-lineage, .sd4-date, .sd4-mission, .sd4-source, .sd4-accept, .sd4-power, .sd4-scope, .sd4-belong, .sd4-emblem, .sd4-declaration, .sd4-signature'
+                ).forEach(function(el) {
+                el.value = '';
+            });
+            document.querySelectorAll(
+                '.sd4-attr-exec, .sd4-attr-assist, .sd4-attr-transmit, .sd4-attr-vow, .sd4-hasmark, .sd4-activate, .sd4-enter'
+                ).forEach(function(el) {
+                el.checked = false;
+            });
+            document.querySelector('input[name="completeMethod"][value="已誦讀"]').checked = true;
+            var status = document.querySelector('.sd4-status');
+            if (status) status.value = '草稿';
+            var container = document.getElementById('previewDecreeContainer');
+            if (container) container.style.display = 'none';
+        }
+
+        function hideDecreePreview() {
+            var container = document.getElementById('previewDecreeContainer');
+            if (container) container.style.display = 'none';
+        }
+
+        function loadDecreeDemo() {
+            var lang = currentLang || 'zh';
+            var demo = decreeDemoData[lang] || decreeDemoData.zh;
+
+            var nameEl = document.querySelector('.sd4-name');
+            if (nameEl) nameEl.value = demo.name || '';
+            var codeEl = document.querySelector('.sd4-code');
+            if (codeEl) codeEl.value = demo.code || '';
+            var lineageEl = document.querySelector('.sd4-lineage');
+            if (lineageEl) lineageEl.value = demo.lineage || '';
+            var dateEl = document.querySelector('.sd4-date');
+            if (dateEl) dateEl.value = demo.date || '';
+            var missionEl = document.querySelector('.sd4-mission');
+            if (missionEl) missionEl.value = demo.mission || '';
+            var sourceEl = document.querySelector('.sd4-source');
+            if (sourceEl) sourceEl.value = demo.source || '';
+            var execEl = document.querySelector('.sd4-attr-exec');
+            if (execEl) execEl.checked = demo.attr_exec || false;
+            var assistEl = document.querySelector('.sd4-attr-assist');
+            if (assistEl) assistEl.checked = demo.attr_assist || false;
+            var transmitEl = document.querySelector('.sd4-attr-transmit');
+            if (transmitEl) transmitEl.checked = demo.attr_transmit || false;
+            var vowEl = document.querySelector('.sd4-attr-vow');
+            if (vowEl) vowEl.checked = demo.attr_vow || false;
+            var acceptEl = document.querySelector('.sd4-accept');
+            if (acceptEl) acceptEl.value = demo.accept || '';
+            var powerEl = document.querySelector('.sd4-power');
+            if (powerEl) powerEl.value = demo.power || '';
+            var scopeEl = document.querySelector('.sd4-scope');
+            if (scopeEl) scopeEl.value = demo.scope || '';
+            var belongEl = document.querySelector('.sd4-belong');
+            if (belongEl) belongEl.value = demo.belong || '';
+            var emblemEl = document.querySelector('.sd4-emblem');
+            if (emblemEl) emblemEl.value = demo.emblem || '';
+            var formatEl = document.querySelector('.sd4-format');
+            if (formatEl) formatEl.value = demo.format || '';
+            var hasmarkEl = document.querySelector('.sd4-hasmark');
+            if (hasmarkEl) hasmarkEl.checked = demo.hasmark || false;
+            var declarationEl = document.querySelector('.sd4-declaration');
+            if (declarationEl) declarationEl.value = demo.declaration || '';
+            var methodRadios = document.querySelectorAll('input[name="completeMethod"]');
+            methodRadios.forEach(function(r) {
+                r.checked = (r.value === demo.method);
+            });
+            var activateEl = document.querySelector('.sd4-activate');
+            if (activateEl) activateEl.checked = demo.activate || false;
+            var enterEl = document.querySelector('.sd4-enter');
+            if (enterEl) enterEl.checked = demo.enter || false;
+            var statusEl = document.querySelector('.sd4-status');
+            if (statusEl) statusEl.value = demo.status || '已誓印';
+            var signatureEl = document.querySelector('.sd4-signature');
+            if (signatureEl) signatureEl.value = demo.signature || '';
+
+            setTimeout(generateDecreePreview, 100);
+        }
+
+        // ================================================================
+        // 外部瀏覽器按鈕
+        // ================================================================
+        (function() {
+            function addExternalBrowserButton() {
+                var langGroup = document.querySelector('.lang-switch-group');
+                if (!langGroup) return;
+                if (document.querySelector('.btn-external-browser')) return;
+                var btn = document.createElement('a');
+                btn.className = 'btn-external-browser';
+                btn.href = '#';
+                btn.setAttribute('role', 'button');
+                btn.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>🌐 瀏覽器開啟</span>';
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openInExternalBrowser();
+                });
+                langGroup.parentNode.insertBefore(btn, langGroup.nextSibling);
+            }
+
+            function openInExternalBrowser() {
+                var url = window.location.href;
+                var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+                if (/android/i.test(userAgent)) {
+                    try {
+                        var intentUrl = 'intent://' + window.location.host + window.location.pathname + window
+                            .location.search + '#Intent;scheme=https;package=com.android.chrome;end;';
+                        window.location.href = intentUrl;
+                        return;
+                    } catch (e) {}
+                }
+                if (/iphone|ipad|ipod/i.test(userAgent)) {
+                    try {
+                        var chromeUrl = 'chrome://' + window.location.host + window.location.pathname + window
+                            .location.search;
+                        window.location.href = chromeUrl;
+                        return;
+                    } catch (e) {}
+                }
+                var fallbackUrl = window.location.href;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(fallbackUrl).then(function() {
+                        alert('⚠️ 無法自動跳轉外部瀏覽器\n\n📋 網址已複製，請手動貼到 Chrome / Safari 開啟：\n\n' +
+                            fallbackUrl);
+                    }).catch(function() { fallbackCopy(fallbackUrl); });
+                } else {
+                    fallbackCopy(fallbackUrl);
+                }
+            }
+
+            function fallbackCopy(text) {
+                var textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                textarea.style.left = '-9999px';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    alert('⚠️ 無法自動跳轉外部瀏覽器\n\n📋 網址已複製，請手動貼到 Chrome / Safari 開啟：\n\n' + text);
+                } catch (e) {
+                    alert('⚠️ 請手動複製以下網址，貼到外部瀏覽器開啟：\n\n📋 ' + text);
+                }
+                document.body.removeChild(textarea);
+            }
+
+            if (document.readyState === 'complete') {
+                setTimeout(addExternalBrowserButton, 100);
+            } else {
+                window.addEventListener('load', function() {
+                    setTimeout(addExternalBrowserButton, 200);
+                });
+            }
+        })();
+
+        // ================================================================
+        // 頁面載入
+        // ================================================================
+        window.onload = function() {
+            switchLanguage('zh');
+            document.getElementById('btnRestart').style.display = 'none';
+
+            var btn8 = document.getElementById('btnScanQRStep8');
+            if (btn8) {
+                btn8.onclick = function(e) {
+                    e.preventDefault();
+                    startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+                };
+            }
+            var btn9 = document.getElementById('btnScanQRStep9');
+            if (btn9) {
+                btn9.onclick = function(e) {
+                    e.preventDefault();
+                    startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
+                };
+            }
+
+            renderSubmissionProcedure('zh');
+            updateFormTitles('zh');
+            setTimeout(generateDecreePreview, 200);
+        };
+
+        // 暴露全局
+        window.switchLanguage = switchLanguage;
+        window.startQRScanner = startQRScanner;
+        window.startTimer = startTimer;
+        window.resetTimer = resetTimer;
+        window.generateDecreePreview = generateDecreePreview;
+        window.resetDecreeForm = resetDecreeForm;
+        window.hideDecreePreview = hideDecreePreview;
+        window.loadDecreeDemo = loadDecreeDemo;
+        window.renderSubmissionProcedure = renderSubmissionProcedure;
+        window.updateFormTitles = updateFormTitles;
+    </script>
+
+    <!-- 相機錯誤彈窗封鎖 -->
+    <script>
+        (function() {
+            var BLOCK_KEYWORDS = ['無法啟動相機', '請允許相機權限', 'Unable to start camera', 'Unable to launch the feature',
+                '相機權限', 'Camera permission', 'Could not start video source'
+            ];
+
+            function shouldBlock(msg) {
+                if (typeof msg !== 'string') return false;
+                return BLOCK_KEYWORDS.some(function(k) { return msg.indexOf(k) !== -1; });
+            }
+            var _origAlert = window.alert;
+            window.alert = function(msg) {
+                if (shouldBlock(String(msg || ''))) { console.log('[已封鎖相機錯誤彈窗]', msg); return; }
+                return _origAlert.apply(this, arguments);
+            };
+            var _origConfirm = window.confirm;
+            window.confirm = function(msg) {
+                if (shouldBlock(String(msg || ''))) { console.log('[已封鎖相機錯誤確認窗]', msg); return false; }
+                return _origConfirm.apply(this, arguments);
+            };
+            setInterval(function() {
+                if (window.alert !== _origAlert && window.alert !== window._alertPatched) {
+                    var currentAlert = window.alert;
+                    window.alert = function(msg) {
+                        if (shouldBlock(String(msg || ''))) return;
+                        return currentAlert.apply(this, arguments);
+                    };
+                    window._alertPatched = window.alert;
+                }
+            }, 1000);
+            console.log('✅ 相機權限失敗彈窗已全部刪除');
+        })();
+    </script>
+
+    <!-- 強制同一列修復 -->
+    <script>
+        (function() {
+            var KEYWORDS = [
+                '送出即啟主頻連線',
+                '判定授權完成',
+                '誓印對頻律網顯化',
+                'Primary Frequency Link',
+                'authorization is recognized',
+                'Oath-Soul Alignment Network',
+                '觸發指令',
+                '正式天令格式',
+                '須照文輸入',
+                '不可更動',
+                'Trigger Command',
+                'Heavenly Decree',
+                'without modification',
+                'must input exactly'
+            ];
+
+            function unifySameLine() {
+                var nodes = document.querySelectorAll(
+                    '.hud-card div, .instruction-item, .instruction-box div, .camera-guide, [id*="Note"], [id*="Success"], [id*="Trigger"], [id*="trigger"]'
+                );
+
+                nodes.forEach(function(el) {
+                    var text = (el.textContent || '').trim();
+                    if (!text) return;
+                    var hit = KEYWORDS.some(function(k) { return text.indexOf(k) !== -1; });
+                    if (!hit) return;
+
+                    el.style.setProperty('display', 'flex', 'important');
+                    el.style.setProperty('flex-direction', 'row', 'important');
+                    el.style.setProperty('flex-wrap', 'nowrap', 'important');
+                    el.style.setProperty('align-items', 'flex-start', 'important');
+                    el.style.setProperty('justify-content', 'flex-start', 'important');
+                    el.style.setProperty('gap', '8px', 'important');
+                    el.style.setProperty('width', '100%', 'important');
+                    el.style.setProperty('text-align', 'left', 'important');
+
+                    Array.prototype.forEach.call(el.children, function(child) {
+                        var isIcon = child.tagName === 'I' ||
+                            (child.className && String(child.className).indexOf('fa-') !== -1);
+                        if (isIcon) {
+                            child.style.setProperty('flex-shrink', '0', 'important');
+                            child.style.setProperty('margin', '0', 'important');
+                            child.style.setProperty('margin-top', '3px', 'important');
+                            child.style.setProperty('display', 'inline-block', 'important');
+                        } else {
+                            child.style.setProperty('display', 'inline', 'important');
+                            child.style.setProperty('white-space', 'normal', 'important');
+                            child.style.setProperty('flex', '1 1 auto', 'important');
+                        }
+                    });
+
+                    var parent = el.parentElement;
+                    if (parent) {
+                        parent.style.setProperty('text-align', 'left', 'important');
+                        parent.style.setProperty('align-items', 'flex-start', 'important');
+                        parent.style.setProperty('justify-content', 'flex-start', 'important');
+                    }
+                });
+            }
+
+            function run() {
+                unifySameLine();
+                setTimeout(unifySameLine, 120);
+                setTimeout(unifySameLine, 400);
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', run);
+            } else {
+                run();
+            }
+
+            var orig = window.switchLanguage;
+            if (typeof orig === 'function') {
+                window.switchLanguage = function(lang) {
+                    orig(lang);
+                    setTimeout(unifySameLine, 60);
+                    setTimeout(unifySameLine, 200);
+                };
+            }
+
+            var observer = new MutationObserver(function() {
+                clearTimeout(window.__unifySameLineTimer);
+                window.__unifySameLineTimer = setTimeout(unifySameLine, 80);
+            });
+            observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+            console.log('✅ 兩句圖示與文字已統一強制同一列');
+        })();
+    </script>
+<!-- ============================================================ -->
+<!-- 「誓印未通過」標題改為亮綠色（與「誓印通過」一致）            -->
+<!-- ============================================================ -->
+<style>
+    #step7_3NotPassedTitle,
+    #step7_2NotPassedTitle,
+    #step7_1NotPassedTitle {
+        color: #00e676 !important;
+    }
+</style>
+
+<script>
+(function () {
+    function apply() {
+        ['step7_3NotPassedTitle', 'step7_2NotPassedTitle', 'step7_1NotPassedTitle'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            el.style.setProperty('color', '#00e676', 'important');
+            el.style.setProperty('font-weight', 'bold', 'important');
+
+            // 父層也改綠（避免被外層橘色蓋掉）
+            var p = el.parentElement;
+            if (p) {
+                p.style.setProperty('color', '#00e676', 'important');
+            }
+            // 外層區塊左邊框也改綠（可選，與通過一致）
+            var box = el.closest('[style*="border-left"]') || el.closest('div');
+            if (box && box !== el) {
+                var t = (box.textContent || '');
+                if (t.indexOf('誓印未通過') !== -1 || t.indexOf('Not Passed') !== -1) {
+                    box.style.setProperty('border-left-color', '#00e676', 'important');
+                    box.style.setProperty('background', 'rgba(0, 230, 118, 0.12)', 'important');
+                }
+            }
+        });
+
+        // 關鍵字備援
+        document.querySelectorAll('div, span').forEach(function (el) {
+            if (el.children && el.children.length > 2) return;
+            var t = (el.textContent || '').trim();
+            if (t.indexOf('誓印未通過') !== -1 || t.indexOf('Oath Seal Not Passed') !== -1) {
+                if (t.length < 40) {
+                    el.style.setProperty('color', '#00e676', 'important');
+                    el.style.setProperty('font-weight', 'bold', 'important');
+                }
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+        };
+    }
+
+    console.log('✅ 誓印未通過 已改為亮綠色 #00e676');
+})();
+</script>
+  <!-- ============================================================ -->
+<!-- 掃描框預設隱藏，點擊「開始掃描」才顯示                      -->
+<!-- ============================================================ -->
+<style>
+    /* 掃描容器預設隱藏 */
+    #qr-reader-container-step8,
+    #qr-reader-container-step9,
+    #qr-reader-container-step8-inner,
+    #qr-reader-container-step9-inner {
+        display: none !important;
+        width: 100% !important;
+        max-width: 280px !important;
+        margin: 0 auto !important;
+        min-height: 200px !important;
+        background: rgba(0, 0, 0, 0.3) !important;
+        border-radius: 12px !important;
+        overflow: hidden !important;
+        position: relative !important;
+    }
+
+    /* 掃描中顯示 */
+    #qr-reader-container-step8.scanning,
+    #qr-reader-container-step9.scanning,
+    #qr-reader-container-step8.scanning #qr-reader-container-step8-inner,
+    #qr-reader-container-step9.scanning #qr-reader-container-step9-inner {
+        display: block !important;
+    }
+
+    #qr-reader-container-step8 video,
+    #qr-reader-container-step9 video {
+        width: 100% !important;
+        border-radius: 12px !important;
+    }
+
+    /* 掃描結果顯示 */
+    .qr-result {
+        display: none !important;
+    }
+    .qr-result.show {
+        display: block !important;
+    }
+
+    /* 相機引導訊息 */
+    .camera-guide {
+        display: none !important;
+    }
+    .camera-guide.show-fail {
+        display: block !important;
+    }
+
+    /* 按鈕樣式 */
+    .btn-restart {
+        cursor: pointer !important;
+        pointer-events: auto !important;
+        z-index: 100 !important;
+        position: relative !important;
+    }
+</style>
+
+<script>
+(function() {
+    // ================================================================
+    // 掃描狀態追蹤
+    // ================================================================
+    var scannerActive = {
+        step8: false,
+        step9: false
+    };
+
+    // ================================================================
+    // 清理掃描器
+    // ================================================================
+    function cleanupScanner(containerId) {
+        if (window._scannerInstances && window._scannerInstances[containerId]) {
+            try {
+                window._scannerInstances[containerId].stop().catch(function() {});
+            } catch(e) {}
+            delete window._scannerInstances[containerId];
+        }
+        var container = document.getElementById(containerId);
+        if (container) {
+            container.innerHTML = '';
+            container.classList.remove('scanning');
+            // 重設內部容器
+            var inner = document.getElementById(containerId + '-inner');
+            if (inner) inner.innerHTML = '';
+        }
+    }
+
+    // ================================================================
+    // 主要掃描函數（點擊按鈕後觸發）
+    // ================================================================
+    function startQRScanner(containerId, resultId, guideId) {
+        var container = document.getElementById(containerId);
+        if (!container) {
+            console.warn('⚠️ 找不到容器:', containerId);
+            return;
+        }
+
+        var guide = document.getElementById(guideId);
+        var resultEl = document.getElementById(resultId);
+
+        // 隱藏引導和結果
+        if (guide) {
+            guide.style.display = 'none';
+            guide.classList.remove('show-fail');
+        }
+        if (resultEl) {
+            resultEl.style.display = 'none';
+            resultEl.classList.remove('show');
+            resultEl.innerHTML = '';
+        }
+
+        // 如果已經在掃描，先停止
+        if (window._scannerInstances && window._scannerInstances[containerId]) {
+            try {
+                window._scannerInstances[containerId].stop().catch(function() {});
+            } catch(e) {}
+            delete window._scannerInstances[containerId];
+        }
+
+        // 清空容器
+        container.innerHTML = '';
+        container.classList.remove('scanning');
+
+        // 建立內部容器
+        var innerDiv = document.createElement('div');
+        innerDiv.id = containerId + '-inner';
+        innerDiv.style.width = '100%';
+        innerDiv.style.height = 'auto';
+        container.appendChild(innerDiv);
+
+        // 顯示掃描框
+        container.classList.add('scanning');
+
+        // 檢查 Html5Qrcode
+        if (typeof Html5Qrcode === 'undefined') {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.innerHTML = '⚠️ QR Code 掃描庫未載入，請重新整理頁面。';
+            }
+            container.classList.remove('scanning');
+            return;
+        }
+
+        // 檢查相機
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.innerHTML = (typeof currentLang !== 'undefined' && currentLang === 'en') ?
+                    '📷 Camera not supported by this browser.<br>Please use Chrome / Safari / Edge.' :
+                    '📷 您的瀏覽器不支援相機功能。<br>請使用 Chrome / Safari / Edge 瀏覽器開啟。';
+            }
+            container.classList.remove('scanning');
+            return;
+        }
+
+        try {
+            var instance = new Html5Qrcode(innerDiv.id);
+            
+            if (!window._scannerInstances) window._scannerInstances = {};
+            window._scannerInstances[containerId] = instance;
+
+            var config = {
+                fps: 15,
+                qrbox: { width: 200, height: 200 },
+                aspectRatio: 1.0
+            };
+
+            instance.start(
+                { facingMode: "environment" },
+                config,
+                function(decodedText) {
+                    console.log('✅ 掃描成功:', decodedText);
+                    if (resultEl) {
+                        resultEl.style.display = 'block';
+                        resultEl.classList.add('show');
+                        resultEl.innerHTML = '<i class="fa-solid fa-check-circle"></i> ' + decodedText;
+                        resultEl.style.color = '#00e676';
+                        resultEl.style.fontSize = '0.9rem';
+                        resultEl.style.wordBreak = 'break-all';
+                        resultEl.style.padding = '8px 12px';
+                        resultEl.style.borderRadius = '6px';
+                        resultEl.style.background = 'rgba(0, 230, 118, 0.08)';
+                        resultEl.style.border = '1px solid rgba(0, 230, 118, 0.2)';
+                    }
+                    if (guide) {
+                        guide.style.display = 'none';
+                    }
+                    // 停止掃描
+                    instance.stop().catch(function() {});
+                    container.classList.remove('scanning');
+                    delete window._scannerInstances[containerId];
+                },
+                function(error) {
+                    // 掃描中
+                }
+            ).then(function() {
+                console.log('✅ 掃描器已啟動');
+            }).catch(function(err) {
+                console.warn('⚠️ 啟動掃描器失敗:', err);
+                if (guide) {
+                    guide.style.display = 'block';
+                    guide.innerHTML = (typeof currentLang !== 'undefined' && currentLang === 'en') ?
+                        '📷 Unable to start camera.<br>⚙️ Please allow camera permission.<br>🌐 Try Chrome / Safari / Edge.' :
+                        '📷 無法啟動相機。<br>⚙️ 請在瀏覽器中允許相機權限。<br>🌐 請使用 Chrome / Safari / Edge 瀏覽器。';
+                }
+                container.classList.remove('scanning');
+                delete window._scannerInstances[containerId];
+            });
+
+        } catch (e) {
+            console.error('❌ 掃描器初始化失敗:', e);
+            if (guide) {
+                guide.style.display = 'block';
+                guide.innerHTML = (typeof currentLang !== 'undefined' && currentLang === 'en') ?
+                    '📷 Failed to initialize scanner.<br>Please refresh the page and try again.' :
+                    '📷 掃描器初始化失敗。<br>請重新整理頁面後再試。';
+            }
+            container.classList.remove('scanning');
+        }
+    }
+
+    // ================================================================
+    // 綁定按鈕事件
+    // ================================================================
+    function rebindButtons() {
+        // Step8 掃描按鈕
+        var btn8 = document.getElementById('btnScanQRStep8');
+        if (btn8) {
+            var newBtn8 = btn8.cloneNode(true);
+            btn8.parentNode.replaceChild(newBtn8, btn8);
+            newBtn8.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+            };
+            newBtn8.style.pointerEvents = 'auto';
+            newBtn8.style.cursor = 'pointer';
+        }
+
+        // Step9 掃描按鈕
+        var btn9 = document.getElementById('btnScanQRStep9');
+        if (btn9) {
+            var newBtn9 = btn9.cloneNode(true);
+            btn9.parentNode.replaceChild(newBtn9, btn9);
+            newBtn9.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
+            };
+            newBtn9.style.pointerEvents = 'auto';
+            newBtn9.style.cursor = 'pointer';
+        }
+
+        console.log('✅ 掃描按鈕已綁定');
+    }
+
+    // ================================================================
+    // 確保掃描框在頁面載入時隱藏
+    // ================================================================
+    function hideAllScanners() {
+        document.querySelectorAll('#qr-reader-container-step8, #qr-reader-container-step9').forEach(function(el) {
+            el.classList.remove('scanning');
+            el.style.display = 'none';
+        });
+        document.querySelectorAll('.qr-result').forEach(function(el) {
+            el.style.display = 'none';
+            el.classList.remove('show');
+        });
+        document.querySelectorAll('.camera-guide').forEach(function(el) {
+            el.style.display = 'none';
+            el.classList.remove('show-fail');
+        });
+        console.log('✅ 所有掃描框已隱藏');
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    function run() {
+        hideAllScanners();
+        rebindButtons();
+        setTimeout(rebindButtons, 200);
+        setTimeout(rebindButtons, 500);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 語系切換時重新綁定
+    var origSwitch = window.switchLanguage;
+    if (typeof origSwitch === 'function') {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(rebindButtons, 150);
+            setTimeout(rebindButtons, 400);
+        };
+    }
+
+    // 暴露全局函數
+    window.startQRScanner = startQRScanner;
+    window.startQRScannerStep8 = function() {
+        startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+    };
+    window.startQRScannerStep9 = function() {
+        startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
+    };
+
+    console.log('✅ QR Code 掃描模組已載入（掃描框預設隱藏）');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- step7-5 第四印表單：英文版全部改為英文                        -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var MAP = [
+        // 表單標題
+        ['第五印 覺醒印《願圖 × 任務資料》', 'Fifth Seal Awakening Seal 《Vow-Emblem × Mission Data》'],
+        ['第五印 覺醒印《願圖 × 任務資料》表單', 'Fifth Seal Awakening Seal 《Vow-Emblem × Mission Data》 Form'],
+        ['第五印 覺醒印《願圖 × 任務資料》提交表單', 'Fifth Seal Awakening Seal 《Vow-Emblem × Mission Data》 Submission Form'],
+
+        // 區塊
+        ['一、誓願人資料', 'I. Vower Information'],
+        ['二、任務資料', 'II. Mission Information'],
+        ['三、任務正文', 'III. Mission Main Body'],
+        ['四、圖騰上傳（附件區）', 'IV. Emblem Upload (Attachment Area)'],
+        ['四、圖騰上傳(附件區)', 'IV. Emblem Upload (Attachment Area)'],
+        ['四、圖騰上傳', 'IV. Emblem Upload (Attachment Area)'],
+        ['五、啟印宣告（提交前確認）', 'V. Seal-Activation Declaration (Pre-Submission Confirmation)'],
+        ['五、啟印宣告(提交前確認)', 'V. Seal-Activation Declaration (Pre-Submission Confirmation)'],
+        ['五、啟印宣告', 'V. Seal-Activation Declaration (Pre-Submission Confirmation)'],
+        ['六、提交與入冊設定', 'VI. Submission and Registration Settings'],
+
+        // 欄位
+        ['法定姓名／誓名', 'Legal Name / Vow-Name'],
+        ['法定姓名/誓名', 'Legal Name / Vow-Name'],
+        ['誓魂識別碼(如已領取)', 'Oath-Soul Identification Code (if already received)'],
+        ['誓魂識別碼（如已領取）', 'Oath-Soul Identification Code (if already received)'],
+        ['誓魂識別碼', 'Oath-Soul Identification Code'],
+        ['誓印脈系(例:鳳凰詔脈/靈源脈/自填)', 'Oath-Seal Lineage (e.g., Phoenix Decree Lineage / Soul-Source Lineage / Self-Entry)'],
+        ['誓印脈系(例：鳳凰詔脈／靈源脈／自填)', 'Oath-Seal Lineage (e.g., Phoenix Decree Lineage / Soul-Source Lineage / Self-Entry)'],
+        ['誓印脈系', 'Oath-Seal Lineage'],
+        ['致命日期', 'Mandate Initiation Date'],
+        ['啟命日期', 'Mandate Initiation Date'],
+        ['年/月/日', 'YYYY/MM/DD'],
+        ['任務名稱', 'Mission Name'],
+        ['書令來源(主導/系統/冊頁)', 'Script-Mandate Source (Primary / System / Registry)'],
+        ['書令來源（主導／系統／冊頁）', 'Script-Mandate Source (Primary / System / Registry)'],
+        ['書令來源', 'Script-Mandate Source'],
+        ['任務屬性', 'Mission Attribute'],
+        ['執行', 'Execute'],
+        ['輔佐', 'Assist'],
+        ['傳導', 'Transmit'],
+        ['發願', 'Vow'],
+        ['①接命宣告', '① Mandate-Acceptance Declaration'],
+        ['接命宣告', 'Mandate-Acceptance Declaration'],
+        ['②願力內容', '② Vow-Power Content'],
+        ['願力內容', 'Vow-Power Content'],
+        ['③責任範圍', '③ Responsibility Scope'],
+        ['責任範圍', 'Responsibility Scope'],
+        ['④歸屬與立印', '④ Belonging and Seal-Establishment'],
+        ['歸屬與立印', 'Belonging and Seal-Establishment'],
+        ['圖騰檔名', 'Emblem File Name'],
+        ['含印記/個人標章', 'Includes Seal Mark / Personal Emblem'],
+        ['含印記／個人標章', 'Includes Seal Mark / Personal Emblem'],
+        ['含誓印/個人標記', 'Includes Oath-Seal / Personal Mark'],
+        ['完成方式', 'Completion Method'],
+        ['已誦讀', 'Recited'],
+        ['已錄音', 'Recorded'],
+        ['已心念完成', 'Completed by Heart-Invocation'],
+        ['簽名/誓印落章(電子/手寫/圖騰)', 'Signature / Oath-Seal Mark (Digital / Handwritten / Emblem)'],
+        ['簽名／誓印落章（電子／手寫／圖騰）', 'Signature / Oath-Seal Mark (Digital / Handwritten / Emblem)'],
+        ['簽名/誓印落章', 'Signature / Oath-Seal Mark'],
+        ['我以覺醒印為誓，本源開啟，願軌顯化，誓資承流。', 'I vow by the Awakening Seal: the mission is registered, the trajectory is activated, and the responsibility is mine to bear.']
+    ];
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function apply() {
+        var isEn = lang() === 'en';
+
+        document.querySelectorAll(
+            'label, span, div, p, strong, b, th, td, .form-section-title, .form-title, .form-row label, .preview-header'
+        ).forEach(function (el) {
+            if (!el || el.children.length > 4) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 120) return;
+
+            for (var i = 0; i < MAP.length; i++) {
+                var zh = MAP[i][0], en = MAP[i][1];
+                if (isEn) {
+                    if (t === zh) { el.textContent = en; return; }
+                    if (t.indexOf(zh) !== -1 && t.indexOf(en) === -1) {
+                        el.textContent = t.split(zh).join(en);
+                        return;
+                    }
+                } else {
+                    if (t === en) { el.textContent = zh; return; }
+                    if (t.indexOf(en) !== -1 && t.indexOf(zh) === -1) {
+                        el.textContent = t.split(en).join(zh);
+                        return;
+                    }
+                }
+            }
+        });
+
+        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+        var nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach(function (tn) {
+            var v = tn.nodeValue || '';
+            if (!v.trim()) return;
+            for (var i = 0; i < MAP.length; i++) {
+                var zh = MAP[i][0], en = MAP[i][1];
+                if (isEn && v.indexOf(zh) !== -1) tn.nodeValue = v.split(zh).join(en);
+                if (!isEn && v.indexOf(en) !== -1) tn.nodeValue = v.split(en).join(zh);
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__seal4LabelTimer);
+        window.__seal4LabelTimer = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 第四印表單中英標籤切換已就緒');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- step7-5：① 驗證階段 圖示+文字整列置中                         -->
+<!-- ============================================================ -->
+<style>
+    #step7_5VerifyTitle,
+    #step7_3VerifyTitle,
+    #step7_2VerifyTitle {
+        display: inline !important;
+        width: auto !important;
+        max-width: none !important;
+        flex: 0 0 auto !important;
+        text-align: center !important;
+    }
+</style>
+
+<script>
+(function () {
+    var IDS = ['step7_5VerifyTitle', 'step7_3VerifyTitle', 'step7_2VerifyTitle'];
+    var KEYS = ['驗證階段', 'Verification Phase', '啟動觸發', 'Activation Trigger'];
+
+    function centerRow(row) {
+        if (!row) return;
+        row.style.setProperty('display', 'flex', 'important');
+        row.style.setProperty('flex-direction', 'row', 'important');
+        row.style.setProperty('justify-content', 'center', 'important');
+        row.style.setProperty('align-items', 'center', 'important');
+        row.style.setProperty('width', '100%', 'important');
+        row.style.setProperty('gap', '8px', 'important');
+        row.style.setProperty('text-align', 'center', 'important');
+
+        Array.prototype.forEach.call(row.children || [], function (c) {
+            c.style.setProperty('flex', '0 0 auto', 'important');
+            c.style.setProperty('flex-shrink', '0', 'important');
+            c.style.setProperty('margin-left', '0', 'important');
+            c.style.setProperty('margin-right', '0', 'important');
+            if (c.tagName === 'SPAN') {
+                c.style.setProperty('display', 'inline', 'important');
+                c.style.setProperty('width', 'auto', 'important');
+            }
+        });
+    }
+
+    function apply() {
+        IDS.forEach(function (id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            el.style.setProperty('display', 'inline', 'important');
+            el.style.setProperty('width', 'auto', 'important');
+            centerRow(el.closest('.card-title') || el.parentElement);
+        });
+
+        document.querySelectorAll('.card-title').forEach(function (row) {
+            var t = (row.textContent || '').trim();
+            if (KEYS.some(function (k) { return t.indexOf(k) !== -1; })) {
+                centerRow(row);
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__centerVerify74);
+        window.__centerVerify74 = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ step7-5 驗證階段標題已置中');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- step7-5：② 回傳誓證 圖示+文字整列置中                         -->
+<!-- ============================================================ -->
+<style>
+    #step7_5ReturnTitle,
+    #step7_3ReturnTitle,
+    #step7_2ReturnTitle {
+        display: inline !important;
+        width: auto !important;
+        max-width: none !important;
+        flex: 0 0 auto !important;
+        text-align: center !important;
+    }
+</style>
+
+<script>
+(function () {
+    var IDS = ['step7_5ReturnTitle', 'step7_3ReturnTitle', 'step7_2ReturnTitle'];
+    var KEYS = ['回傳誓證', 'Return Oath', '確認誓印', 'Oath Confirmation'];
+
+    function centerRow(row) {
+        if (!row) return;
+        row.style.setProperty('display', 'flex', 'important');
+        row.style.setProperty('flex-direction', 'row', 'important');
+        row.style.setProperty('justify-content', 'center', 'important');
+        row.style.setProperty('align-items', 'center', 'important');
+        row.style.setProperty('width', '100%', 'important');
+        row.style.setProperty('gap', '8px', 'important');
+        row.style.setProperty('text-align', 'center', 'important');
+
+        Array.prototype.forEach.call(row.children || [], function (c) {
+            c.style.setProperty('flex', '0 0 auto', 'important');
+            c.style.setProperty('flex-shrink', '0', 'important');
+            c.style.setProperty('margin-left', '0', 'important');
+            c.style.setProperty('margin-right', '0', 'important');
+            if (c.tagName === 'SPAN') {
+                c.style.setProperty('display', 'inline', 'important');
+                c.style.setProperty('width', 'auto', 'important');
+            }
+            if (c.tagName === 'I') {
+                c.style.setProperty('display', 'inline-block', 'important');
+            }
+        });
+    }
+
+    function apply() {
+        IDS.forEach(function (id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            el.style.setProperty('display', 'inline', 'important');
+            el.style.setProperty('width', 'auto', 'important');
+            centerRow(el.parentElement || el.closest('.card-title'));
+        });
+
+        document.querySelectorAll('.card-title, .hud-card > div').forEach(function (row) {
+            var t = (row.textContent || '').trim();
+            if (t.length > 50) return;
+            if (KEYS.some(function (k) { return t.indexOf(k) !== -1; })) {
+                centerRow(row);
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__centerReturn74);
+        window.__centerReturn74 = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ step7-5 回傳誓證圖示已置中');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 「啟用七印系統」「進入任務冊」→ 英文                          -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var MAP = [
+        ['啟用七印系統', 'Activate Seven-Seal System'],
+        ['是否啟用七印系統', 'Activate Seven-Seal System'],
+        ['進入任務冊', 'Enter Mission Registry'],
+        ['是否進入任務冊', 'Enter Mission Registry'],
+        ['送交天庫存檔', 'Submit to Heavenly-Archive'],
+        ['是否送交天庫存檔', 'Submit to Heavenly-Archive']
+    ];
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function apply() {
+        var isEn = lang() === 'en';
+
+        document.querySelectorAll('label, span, div, p, strong, b, td').forEach(function (el) {
+            if (!el || el.children.length > 3) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 50) return;
+
+            for (var i = 0; i < MAP.length; i++) {
+                var zh = MAP[i][0], en = MAP[i][1];
+                if (isEn && (t === zh || t.indexOf(zh) !== -1) && t.indexOf(en) === -1) {
+                    el.textContent = t === zh ? en : t.split(zh).join(en);
+                    return;
+                }
+                if (!isEn && (t === en || t.indexOf(en) !== -1) && t.indexOf(zh) === -1) {
+                    el.textContent = t === en ? zh : t.split(en).join(zh);
+                    return;
+                }
+            }
+        });
+
+        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+        var nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach(function (tn) {
+            var v = tn.nodeValue || '';
+            for (var i = 0; i < MAP.length; i++) {
+                var zh = MAP[i][0], en = MAP[i][1];
+                if (isEn && v.indexOf(zh) !== -1) tn.nodeValue = v.split(zh).join(en);
+                if (!isEn && v.indexOf(en) !== -1) tn.nodeValue = v.split(en).join(zh);
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__missionLabelTimer);
+        window.__missionLabelTimer = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 啟用七印系統 / 進入任務冊 中英切換已就緒');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 相機掃描失敗 → 顯示統一引導文字（中英）                       -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var GUIDE_ZH =
+        '📷 無法啟動相機\n' +
+        '⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n' +
+        '→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n' +
+        '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+
+    var GUIDE_EN =
+        '📷 Unable to launch the feature\n' +
+        '⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"\n' +
+        '→ Open using a web browser (Chrome / Yahoo / Edge...)\n' +
+        '⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function guideText() {
+        return lang() === 'en' ? GUIDE_EN : GUIDE_ZH;
+    }
+
+    // 把引導文字寫進所有 camera-guide 區塊
+    function fillGuide(el) {
+        if (!el) return;
+        el.innerHTML = guideText().replace(/\n/g, '<br>');
+        el.style.display = 'block';
+        el.style.textAlign = 'left';
+        el.style.whiteSpace = 'normal';
+        el.classList.add('show-fail');
+    }
+
+    // 顯示失敗引導、隱藏掃描框
+    function showCameraFail(guideId, containerId) {
+        var guide = guideId ? document.getElementById(guideId) : null;
+        if (!guide) {
+            guide = document.querySelector('.camera-guide');
+        }
+        if (guide) fillGuide(guide);
+
+        if (containerId) {
+            var box = document.getElementById(containerId);
+            if (box) {
+                box.classList.remove('scanning');
+                box.style.display = 'none';
+            }
+        }
+    }
+
+    // 攔截既有 startQRScanner / 掃描失敗
+    function patchScanner() {
+        // 1) 若頁面已有 startQRScanner，包一層 catch 顯示引導
+        if (typeof window.startQRScanner === 'function' && !window._cameraGuidePatched) {
+            var orig = window.startQRScanner;
+            window.startQRScanner = function (containerId, resultId, guideId) {
+                try {
+                    var ret = orig.apply(this, arguments);
+                    // 若回傳 Promise，失敗時顯示引導
+                    if (ret && typeof ret.then === 'function') {
+                        return ret.catch(function (err) {
+                            console.warn('相機啟動失敗', err);
+                            showCameraFail(guideId, containerId);
+                        });
+                    }
+                    return ret;
+                } catch (e) {
+                    console.warn('相機啟動失敗', e);
+                    showCameraFail(guideId, containerId);
+                }
+            };
+            window._cameraGuidePatched = true;
+        }
+
+        // 2) 直接綁定掃描按鈕：失敗就顯示引導
+        [
+            { btn: 'btnScanQRStep8', box: 'qr-reader-container-step8', guide: 'cameraGuideStep8', result: 'qrScanResultStep8' },
+            { btn: 'btnScanQRStep9', box: 'qr-reader-container-step9', guide: 'cameraGuideStep9', result: 'qrScanResultStep9' }
+        ].forEach(function (cfg) {
+            var btn = document.getElementById(cfg.btn);
+            if (!btn || btn._guideBound) return;
+            btn._guideBound = true;
+
+            btn.addEventListener('click', function () {
+                // 稍後檢查：若 2 秒內沒出現 video，視為失敗
+                setTimeout(function () {
+                    var box = document.getElementById(cfg.box);
+                    var hasVideo = box && box.querySelector('video');
+                    if (!hasVideo) {
+                        showCameraFail(cfg.guide, cfg.box);
+                    }
+                }, 2500);
+            }, true);
+        });
+    }
+
+    // 語系切換時，若引導正在顯示，立刻換成對應語言
+    function refreshVisibleGuides() {
+        document.querySelectorAll('.camera-guide').forEach(function (el) {
+            var visible = el.style.display !== 'none' && el.offsetParent !== null;
+            var failed = el.classList.contains('show-fail');
+            if (visible || failed) fillGuide(el);
+        });
+    }
+
+    function run() {
+        patchScanner();
+        setTimeout(patchScanner, 200);
+        setTimeout(patchScanner, 600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var origSwitch = window.switchLanguage;
+    if (typeof origSwitch === 'function') {
+        window.switchLanguage = function (l) {
+            origSwitch(l);
+            setTimeout(patchScanner, 100);
+            setTimeout(refreshVisibleGuides, 120);
+        };
+    }
+
+    // 暴露給其他腳本呼叫
+    window.showCameraFailGuide = showCameraFail;
+    window.getCameraGuideText = guideText;
+
+    console.log('✅ 相機失敗引導文字模組已載入');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 相機引導：成功不顯示、失敗才顯示（中英）                      -->
+<!-- ============================================================ -->
+<style>
+    .camera-guide {
+        display: none !important;
+    }
+    .camera-guide.show-fail {
+        display: block !important;
+    }
+</style>
+
+<script>
+(function () {
+    var GUIDE_ZH =
+        '📷 無法啟動相機<br>' +
+        '⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>' +
+        '→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>' +
+        '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+
+    var GUIDE_EN =
+        '📷 Unable to launch the feature<br>' +
+        '⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"<br>' +
+        '→ Open using a web browser (Chrome / Yahoo / Edge...)<br>' +
+        '⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function hideAllGuides() {
+        document.querySelectorAll('.camera-guide, #cameraGuideStep8, #cameraGuideStep9').forEach(function (el) {
+            el.classList.remove('show-fail');
+            el.style.setProperty('display', 'none', 'important');
+        });
+    }
+
+    function showFail(guideId) {
+        var el = guideId ? document.getElementById(guideId) : null;
+        if (!el) el = document.querySelector('.camera-guide');
+        if (!el) return;
+        el.innerHTML = lang() === 'en' ? GUIDE_EN : GUIDE_ZH;
+        el.classList.add('show-fail');
+        el.style.setProperty('display', 'block', 'important');
+        el.style.setProperty('text-align', 'left', 'important');
+    }
+
+    function hasVideo(containerId) {
+        var box = document.getElementById(containerId);
+        return !!(box && box.querySelector('video'));
+    }
+
+    function hasSuccess(resultId) {
+        var r = document.getElementById(resultId);
+        if (!r) return false;
+        var t = (r.textContent || '').trim();
+        return t.length > 0 && r.style.display !== 'none';
+    }
+
+    // 包一層既有 startQRScanner：成功隱藏、失敗才顯示
+    function patch() {
+        if (typeof window.startQRScanner !== 'function') return;
+        if (window._camFailOnlyPatched) return;
+        window._camFailOnlyPatched = true;
+
+        var orig = window.startQRScanner;
+        window.startQRScanner = function (containerId, resultId, guideId) {
+            // 開始掃描前先隱藏引導
+            hideAllGuides();
+            if (guideId) {
+                var g = document.getElementById(guideId);
+                if (g) {
+                    g.classList.remove('show-fail');
+                    g.style.setProperty('display', 'none', 'important');
+                }
+            }
+
+            var ret;
+            try {
+                ret = orig.apply(this, arguments);
+            } catch (e) {
+                showFail(guideId);
+                return;
+            }
+
+            // Promise 失敗 → 顯示
+            if (ret && typeof ret.then === 'function') {
+                ret.then(function () {
+                    // 啟動成功：確保引導隱藏
+                    hideAllGuides();
+                }).catch(function () {
+                    showFail(guideId);
+                });
+            }
+
+            // 2.8 秒後再確認：沒 video 且沒成功結果才顯示失敗
+            setTimeout(function () {
+                if (hasSuccess(resultId)) {
+                    hideAllGuides();
+                    return;
+                }
+                if (hasVideo(containerId)) {
+                    hideAllGuides();
+                    return;
+                }
+                // 真的沒起來才顯示
+                showFail(guideId);
+            }, 2800);
+
+            return ret;
+        };
+    }
+
+    // 綁定按鈕：點擊時先隱藏引導
+    function bindBtns() {
+        [
+            { btn: 'btnScanQRStep8', box: 'qr-reader-container-step8', guide: 'cameraGuideStep8', result: 'qrScanResultStep8' },
+            { btn: 'btnScanQRStep9', box: 'qr-reader-container-step9', guide: 'cameraGuideStep9', result: 'qrScanResultStep9' }
+        ].forEach(function (cfg) {
+            var btn = document.getElementById(cfg.btn);
+            if (!btn || btn._failOnlyBound) return;
+            btn._failOnlyBound = true;
+
+            btn.addEventListener('click', function () {
+                hideAllGuides();
+                var g = document.getElementById(cfg.guide);
+                if (g) {
+                    g.classList.remove('show-fail');
+                    g.style.setProperty('display', 'none', 'important');
+                }
+
+                setTimeout(function () {
+                    if (hasSuccess(cfg.result) || hasVideo(cfg.box)) {
+                        hideAllGuides();
+                        return;
+                    }
+                    // 仍無 video 才顯示失敗
+                    showFail(cfg.guide);
+                }, 2800);
+            }, true);
+        });
+    }
+
+    // 有成功結果時持續確保引導關閉
+    function watchSuccess() {
+        ['qrScanResultStep8', 'qrScanResultStep9'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            if ((el.textContent || '').trim().length > 0 && el.style.display !== 'none') {
+                hideAllGuides();
+            }
+        });
+    }
+
+    function run() {
+        hideAllGuides();
+        patch();
+        bindBtns();
+        setTimeout(function () { patch(); bindBtns(); }, 200);
+        setTimeout(function () { patch(); bindBtns(); }, 600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            // 語系切換時：若正在顯示失敗引導，更新文字；否則維持隱藏
+            setTimeout(function () {
+                document.querySelectorAll('.camera-guide.show-fail').forEach(function (el) {
+                    el.innerHTML = lang() === 'en' ? GUIDE_EN : GUIDE_ZH;
+                });
+            }, 100);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__camGuideWatch);
+        window.__camGuideWatch = setTimeout(watchSuccess, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 相機引導：僅失敗顯示、成功隱藏');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 輸入示範：回傳區與驗證區寫法、版型統一（跟左圖一樣）          -->
+<!-- ============================================================ -->
+<style>
+    /* 統一輸入示範外框（單層紫底，不要雙層嵌套） */
+    .input-demo-box,
+    [id*="InputDemo"],
+    [id*="DemoBox"],
+    .hud-card .demo-box {
+        background: rgba(88, 28, 135, 0.55) !important;
+        border: 1px solid rgba(168, 85, 247, 0.45) !important;
+        border-radius: 12px !important;
+        padding: 14px 16px !important;
+        margin: 12px 0 !important;
+        box-shadow: none !important;
+    }
+
+    /* 內層若有多餘嵌套框，攤平成單層 */
+    .input-demo-box > div,
+    [id*="InputDemo"] > div {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+    }
+</style>
+
+<script>
+(function () {
+    // 左圖標準寫法（驗證區）
+    // 輸入示範：
+    // 【執行指令】第一印 消業印 結果
+    //
+    // 右圖（回傳區）改成同樣結構，內容改為第四印回傳指令
+
+    var DEMO_VERIFY_ZH = '【執行指令】第五印 覺醒印 入世誓約揭示 結果';
+    var DEMO_VERIFY_EN = '【Execution Command】Fifth Seal Awakening Seal Incarnational Vow Revelation Result';
+
+    var DEMO_RETURN_ZH = '【執行指令】回傳【第五印 覺醒印 誓印通過】誓證';
+    var DEMO_RETURN_EN = '【Execution Command】Return 【Fifth Seal Awakening Seal — Oath Seal Passed】 Certificate';
+
+    var LABEL_ZH = '輸入示範：';
+    var LABEL_EN = 'Input Example:';
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function buildBox(label, content) {
+        var box = document.createElement('div');
+        box.className = 'input-demo-box';
+        box.style.cssText =
+            'background:rgba(88,28,135,0.55)!important;' +
+            'border:1px solid rgba(168,85,247,0.45)!important;' +
+            'border-radius:12px!important;' +
+            'padding:14px 16px!important;' +
+            'margin:12px 0!important;' +
+            'text-align:left!important;' +
+            'width:100%!important;' +
+            'box-sizing:border-box!important;';
+        box.innerHTML =
+            '<div style="display:flex;align-items:flex-start;gap:8px;color:#e9d5ff;font-size:0.95rem;font-weight:bold;margin-bottom:8px;">' +
+            '  <i class="fa-solid fa-keyboard" style="color:#c4b5fd;margin-top:2px;"></i>' +
+            '  <span>' + label + '</span>' +
+            '</div>' +
+            '<div style="color:#e9d5ff;font-size:0.95rem;font-weight:600;line-height:1.5;padding-left:2px;">' +
+            content +
+            '</div>';
+        return box;
+    }
+
+    function replaceDemoNear(keywordList, contentZh, contentEn) {
+        var isEn = lang() === 'en';
+        var label = isEn ? LABEL_EN : LABEL_ZH;
+        var content = isEn ? contentEn : contentZh;
+
+        // 找含「輸入示範」的節點
+        var targets = [];
+        document.querySelectorAll('div, span, p, section').forEach(function (el) {
+            if (!el || (el.children && el.children.length > 8)) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 120) return;
+            if (t.indexOf('輸入示範') === -1 && t.indexOf('Input Example') === -1) return;
+
+            // 必須靠近驗證或回傳關鍵字
+            var ctx = (el.closest('.hud-card') || el.parentElement || el).textContent || '';
+            var hit = keywordList.some(function (k) { return ctx.indexOf(k) !== -1; });
+            if (!hit) return;
+
+            targets.push(el);
+        });
+
+        targets.forEach(function (el) {
+            // 找到可替換的卡片容器
+            var card = el.closest('.hud-card') || el.parentElement;
+            if (!card) return;
+
+            // 若已有我們建的 box，只更新文字
+            var exist = card.querySelector('.input-demo-box[data-unified="1"]');
+            if (exist) {
+                exist.querySelectorAll('div')[0].querySelector('span').textContent = label;
+                exist.querySelectorAll('div')[1].textContent = content;
+                return;
+            }
+
+            // 隱藏舊的示範區塊（含雙層嵌套）
+            var old = el.closest('div[style*="background"]') || el;
+            // 往上找一層有邊框的示範框
+            var wrap = el;
+            for (var i = 0; i < 4 && wrap; i++) {
+                var st = (wrap.getAttribute && wrap.getAttribute('style')) || '';
+                if (/border|background|padding/i.test(st) && (wrap.textContent || '').indexOf('執行指令') !== -1) {
+                    old = wrap;
+                    break;
+                }
+                wrap = wrap.parentElement;
+            }
+
+            var box = buildBox(label, content);
+            box.setAttribute('data-unified', '1');
+
+            if (old && old.parentNode) {
+                old.style.setProperty('display', 'none', 'important');
+                old.parentNode.insertBefore(box, old);
+            } else {
+                card.appendChild(box);
+            }
+        });
+    }
+
+    function apply() {
+        // 驗證階段示範（左圖風格）
+        replaceDemoNear(
+            ['驗證階段', '啟動觸發', 'Verify', 'Verification', 'step7_5Verify'],
+            DEMO_VERIFY_ZH,
+            DEMO_VERIFY_EN
+        );
+
+        // 回傳誓證示範（右圖 → 改成與左圖相同寫法）
+        replaceDemoNear(
+            ['回傳誓證', '確認誓印', 'Return Oath', 'Oath Confirmation', 'step7_5Return'],
+            DEMO_RETURN_ZH,
+            DEMO_RETURN_EN
+        );
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 80);
+            setTimeout(apply, 250);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__demoUnify74);
+        window.__demoUnify74 = setTimeout(apply, 100);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ 輸入示範左右寫法已統一');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- QR 掃描標題：回傳區寫法與驗證區一致                            -->
+<!-- ============================================================ -->
+<style>
+    #step7_1QrTitle,
+    #step7_2ReturnQrTitle {
+        display: inline !important;
+        text-align: center !important;
+        font-size: 0.95rem !important;
+        font-weight: bold !important;
+        color: #e9d5ff !important;
+        line-height: 1.5 !important;
+        word-break: keep-all !important;
+    }
+</style>
+
+<script>
+(function () {
+    function unifyQrTitle(titleId) {
+        var el = document.getElementById(titleId);
+        if (!el) return;
+
+        // 標題列（含 icon）
+        var row = el.parentElement;
+        if (row) {
+            row.style.setProperty('display', 'flex', 'important');
+            row.style.setProperty('flex-direction', 'row', 'important');
+            row.style.setProperty('justify-content', 'center', 'important');
+            row.style.setProperty('align-items', 'center', 'important');
+            row.style.setProperty('gap', '8px', 'important');
+            row.style.setProperty('width', '100%', 'important');
+            row.style.setProperty('text-align', 'center', 'important');
+            row.style.setProperty('flex-wrap', 'wrap', 'important');
+            row.style.setProperty('margin-bottom', '10px', 'important');
+        }
+
+        el.style.setProperty('display', 'inline', 'important');
+        el.style.setProperty('text-align', 'center', 'important');
+        el.style.setProperty('font-size', '0.95rem', 'important');
+        el.style.setProperty('font-weight', 'bold', 'important');
+        el.style.setProperty('color', '#e9d5ff', 'important');
+        el.style.setProperty('line-height', '1.5', 'important');
+        el.style.setProperty('word-break', 'keep-all', 'important');
+        el.style.setProperty('overflow-wrap', 'break-word', 'important');
+    }
+
+    function apply() {
+        unifyQrTitle('step7_1QrTitle');
+        unifyQrTitle('step7_2ReturnQrTitle');
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 120);
+        setTimeout(apply, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 80);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__qrTitleUnify);
+        window.__qrTitleUnify = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ QR 掃描標題左右寫法已統一');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- QR 掃描標題：漂亮置中寫法（與截圖一致）                        -->
+<!-- ============================================================ -->
+<style>
+    #step7_1QrTitle,
+    #step7_2ReturnQrTitle {
+        display: inline !important;
+        text-align: center !important;
+        font-size: 0.95rem !important;
+        font-weight: bold !important;
+        color: #e9d5ff !important;
+        line-height: 1.55 !important;
+        word-break: keep-all !important;
+        overflow-wrap: break-word !important;
+    }
+
+    /* 標題列置中 */
+    #qrScanCardStep8 .card-title,
+    #qrScanCardStep9 > div:first-child,
+    #step7_1QrTitle.parent,
+    #step7_2ReturnQrTitle.parent {
+        justify-content: center !important;
+        text-align: center !important;
+    }
+</style>
+
+<script>
+(function () {
+    function prettyTitle(titleId, fallbackText) {
+        var el = document.getElementById(titleId);
+        if (!el) return;
+
+        // 標題列
+        var row = el.closest('.card-title') || el.parentElement;
+        if (row) {
+            row.style.setProperty('display', 'flex', 'important');
+            row.style.setProperty('flex-direction', 'row', 'important');
+            row.style.setProperty('justify-content', 'center', 'important');
+            row.style.setProperty('align-items', 'center', 'important');
+            row.style.setProperty('flex-wrap', 'wrap', 'important');
+            row.style.setProperty('gap', '8px', 'important');
+            row.style.setProperty('width', '100%', 'important');
+            row.style.setProperty('text-align', 'center', 'important');
+            row.style.setProperty('margin-bottom', '10px', 'important');
+            row.style.setProperty('padding', '0', 'important');
+        }
+
+        // 標題文字
+        el.style.setProperty('display', 'inline', 'important');
+        el.style.setProperty('text-align', 'center', 'important');
+        el.style.setProperty('font-size', '0.95rem', 'important');
+        el.style.setProperty('font-weight', 'bold', 'important');
+        el.style.setProperty('color', '#e9d5ff', 'important');
+        el.style.setProperty('line-height', '1.55', 'important');
+        el.style.setProperty('word-break', 'keep-all', 'important');
+        el.style.setProperty('overflow-wrap', 'break-word', 'important');
+        el.style.setProperty('max-width', '100%', 'important');
+
+        // 只保留一個相機 icon，拿掉多餘裝飾
+        if (row) {
+            var icons = row.querySelectorAll('i');
+            var kept = false;
+            icons.forEach(function (ic) {
+                if (!kept && (ic.classList.contains('fa-qrcode') || ic.classList.contains('fa-camera'))) {
+                    kept = true;
+                    ic.style.setProperty('color', '#a78bfa', 'important');
+                    ic.style.setProperty('margin', '0', 'important');
+                } else if (ic !== el) {
+                    // 多餘的 QR 裝飾圖示隱藏
+                    if (!ic.classList.contains('fa-qrcode') && !ic.classList.contains('fa-camera')) {
+                        ic.style.setProperty('display', 'none', 'important');
+                    }
+                }
+            });
+        }
+    }
+
+    function apply() {
+        prettyTitle('step7_1QrTitle');
+        prettyTitle('step7_2ReturnQrTitle');
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 120);
+        setTimeout(apply, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 80);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__prettyQrTitle);
+        window.__prettyQrTitle = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ QR 標題已改為漂亮置中寫法');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- QR 掃描標題：字重統一（全部一樣細）                          -->
+<!-- ============================================================ -->
+<style>
+    #step7_1QrTitle,
+    #step7_2ReturnQrTitle,
+    #step7_1QrTitle *,
+    #step7_2ReturnQrTitle * {
+        font-weight: 400 !important;
+        font-size: 0.95rem !important;
+        color: #e9d5ff !important;
+    }
+
+    /* 標題列內所有文字、icon 旁文字都不加粗 */
+    #qrScanCardStep8 .card-title,
+    #qrScanCardStep8 .card-title *,
+    #qrScanCardStep9 > div:first-child,
+    #qrScanCardStep9 > div:first-child * {
+        font-weight: 400 !important;
+    }
+</style>
+
+<script>
+(function () {
+    function thinTitle(id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+
+        el.style.setProperty('font-weight', '400', 'important');
+        el.style.setProperty('font-size', '0.95rem', 'important');
+        el.style.setProperty('color', '#e9d5ff', 'important');
+
+        var row = el.closest('.card-title') || el.parentElement;
+        if (row) {
+            row.style.setProperty('font-weight', '400', 'important');
+            row.querySelectorAll('*').forEach(function (c) {
+                c.style.setProperty('font-weight', '400', 'important');
+            });
+        }
+    }
+
+    function apply() {
+        thinTitle('step7_1QrTitle');
+        thinTitle('step7_2ReturnQrTitle');
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__thinQrTitle);
+        window.__thinQrTitle = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+    console.log('✅ QR 標題字重已統一為細體');
+})();
+</script>
+</body>
+</html>
