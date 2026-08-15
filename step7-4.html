@@ -3189,5 +3189,197 @@
     console.log('✅ 相機失敗引導文字模組已載入');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 相機引導：成功不顯示、失敗才顯示（中英）                      -->
+<!-- ============================================================ -->
+<style>
+    .camera-guide {
+        display: none !important;
+    }
+    .camera-guide.show-fail {
+        display: block !important;
+    }
+</style>
+
+<script>
+(function () {
+    var GUIDE_ZH =
+        '📷 無法啟動相機<br>' +
+        '⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>' +
+        '→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>' +
+        '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+
+    var GUIDE_EN =
+        '📷 Unable to launch the feature<br>' +
+        '⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"<br>' +
+        '→ Open using a web browser (Chrome / Yahoo / Edge...)<br>' +
+        '⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function hideAllGuides() {
+        document.querySelectorAll('.camera-guide, #cameraGuideStep8, #cameraGuideStep9').forEach(function (el) {
+            el.classList.remove('show-fail');
+            el.style.setProperty('display', 'none', 'important');
+        });
+    }
+
+    function showFail(guideId) {
+        var el = guideId ? document.getElementById(guideId) : null;
+        if (!el) el = document.querySelector('.camera-guide');
+        if (!el) return;
+        el.innerHTML = lang() === 'en' ? GUIDE_EN : GUIDE_ZH;
+        el.classList.add('show-fail');
+        el.style.setProperty('display', 'block', 'important');
+        el.style.setProperty('text-align', 'left', 'important');
+    }
+
+    function hasVideo(containerId) {
+        var box = document.getElementById(containerId);
+        return !!(box && box.querySelector('video'));
+    }
+
+    function hasSuccess(resultId) {
+        var r = document.getElementById(resultId);
+        if (!r) return false;
+        var t = (r.textContent || '').trim();
+        return t.length > 0 && r.style.display !== 'none';
+    }
+
+    // 包一層既有 startQRScanner：成功隱藏、失敗才顯示
+    function patch() {
+        if (typeof window.startQRScanner !== 'function') return;
+        if (window._camFailOnlyPatched) return;
+        window._camFailOnlyPatched = true;
+
+        var orig = window.startQRScanner;
+        window.startQRScanner = function (containerId, resultId, guideId) {
+            // 開始掃描前先隱藏引導
+            hideAllGuides();
+            if (guideId) {
+                var g = document.getElementById(guideId);
+                if (g) {
+                    g.classList.remove('show-fail');
+                    g.style.setProperty('display', 'none', 'important');
+                }
+            }
+
+            var ret;
+            try {
+                ret = orig.apply(this, arguments);
+            } catch (e) {
+                showFail(guideId);
+                return;
+            }
+
+            // Promise 失敗 → 顯示
+            if (ret && typeof ret.then === 'function') {
+                ret.then(function () {
+                    // 啟動成功：確保引導隱藏
+                    hideAllGuides();
+                }).catch(function () {
+                    showFail(guideId);
+                });
+            }
+
+            // 2.8 秒後再確認：沒 video 且沒成功結果才顯示失敗
+            setTimeout(function () {
+                if (hasSuccess(resultId)) {
+                    hideAllGuides();
+                    return;
+                }
+                if (hasVideo(containerId)) {
+                    hideAllGuides();
+                    return;
+                }
+                // 真的沒起來才顯示
+                showFail(guideId);
+            }, 2800);
+
+            return ret;
+        };
+    }
+
+    // 綁定按鈕：點擊時先隱藏引導
+    function bindBtns() {
+        [
+            { btn: 'btnScanQRStep8', box: 'qr-reader-container-step8', guide: 'cameraGuideStep8', result: 'qrScanResultStep8' },
+            { btn: 'btnScanQRStep9', box: 'qr-reader-container-step9', guide: 'cameraGuideStep9', result: 'qrScanResultStep9' }
+        ].forEach(function (cfg) {
+            var btn = document.getElementById(cfg.btn);
+            if (!btn || btn._failOnlyBound) return;
+            btn._failOnlyBound = true;
+
+            btn.addEventListener('click', function () {
+                hideAllGuides();
+                var g = document.getElementById(cfg.guide);
+                if (g) {
+                    g.classList.remove('show-fail');
+                    g.style.setProperty('display', 'none', 'important');
+                }
+
+                setTimeout(function () {
+                    if (hasSuccess(cfg.result) || hasVideo(cfg.box)) {
+                        hideAllGuides();
+                        return;
+                    }
+                    // 仍無 video 才顯示失敗
+                    showFail(cfg.guide);
+                }, 2800);
+            }, true);
+        });
+    }
+
+    // 有成功結果時持續確保引導關閉
+    function watchSuccess() {
+        ['qrScanResultStep8', 'qrScanResultStep9'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            if ((el.textContent || '').trim().length > 0 && el.style.display !== 'none') {
+                hideAllGuides();
+            }
+        });
+    }
+
+    function run() {
+        hideAllGuides();
+        patch();
+        bindBtns();
+        setTimeout(function () { patch(); bindBtns(); }, 200);
+        setTimeout(function () { patch(); bindBtns(); }, 600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            // 語系切換時：若正在顯示失敗引導，更新文字；否則維持隱藏
+            setTimeout(function () {
+                document.querySelectorAll('.camera-guide.show-fail').forEach(function (el) {
+                    el.innerHTML = lang() === 'en' ? GUIDE_EN : GUIDE_ZH;
+                });
+            }, 100);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__camGuideWatch);
+        window.__camGuideWatch = setTimeout(watchSuccess, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 相機引導：僅失敗顯示、成功隱藏');
+})();
+</script>
 </body>
 </html>
