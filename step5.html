@@ -1217,5 +1217,117 @@
         }
     })();
 </script>
+<!-- ============================================================ -->
+<!-- 修正 rankData：靈性維度 + 九界層域（依書本齊全）              -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    // 書本標準對照
+    var FIX_ZH = [
+        { spiritual: '· 超越系統', realm: '天界本源' },           // 源律層
+        { spiritual: '13D', realm: '天界本源' },                   // 第十三維·封冊層
+        { spiritual: '12D', realm: '鳳界中樞' },                   // 第十二維·鳳徽層
+        { spiritual: '11D', realm: '鳳界邊緣' },                   // 第十一維·誥徒層
+        { spiritual: '10D', realm: '書令之頂' },                   // 第十維·覺醒層
+        { spiritual: '9D',  realm: '書令交界' },                   // 第九維·誓令層
+        { spiritual: '8D',  realm: '靈界主軸' },                   // 第八維·守願層
+        { spiritual: '7D',  realm: '願頻調律層 × 守願預備層主軸' }, // 第七維·願頻層
+        { spiritual: '6D',  realm: '光界交錯' },                   // 第六維·修心層
+        { spiritual: '5D',  realm: '人界外緣' },                   // 第五維·消業層
+        { spiritual: '4D',  realm: '人界中層' },                   // 第四維·感應層
+        { spiritual: '3D',  realm: '人界下層' },                   // 第三維·靈識層
+        { spiritual: '1~2D', realm: '黑頻流離' }                   // 第二維·封印層
+    ];
+
+    var FIX_EN = [
+        { spiritual: '· Beyond-System', realm: 'Celestial Origin' },
+        { spiritual: '13D', realm: 'Celestial Origin' },
+        { spiritual: '12D', realm: 'Phoenix Realms Core' },
+        { spiritual: '11D', realm: 'Phoenix Boundary' },
+        { spiritual: '10D', realm: 'Scriptural Apex' },
+        { spiritual: '9D',  realm: 'Scriptural Boundary' },
+        { spiritual: '8D',  realm: 'Spiritual Axis Realm' },
+        { spiritual: '7D',  realm: 'Vow-Frequency Calibration Layer × Pre-Vow-Guardian Axis' },
+        { spiritual: '6D',  realm: 'Light-Realm Interlace' },
+        { spiritual: '5D',  realm: 'Outer Rim of Human Realm' },
+        { spiritual: '4D',  realm: 'Mid Human Realm' },
+        { spiritual: '3D',  realm: 'Lower Human Realm' },
+        { spiritual: '1~2D', realm: 'Black-Frequency Drift' }
+    ];
+
+    function applyFix() {
+        if (typeof rankData === 'undefined') return;
+
+        if (rankData.zh && rankData.zh.length) {
+            for (var i = 0; i < Math.min(rankData.zh.length, FIX_ZH.length); i++) {
+                rankData.zh[i].spiritual = FIX_ZH[i].spiritual;
+                rankData.zh[i].realm = FIX_ZH[i].realm;
+            }
+        }
+        if (rankData.en && rankData.en.length) {
+            for (var j = 0; j < Math.min(rankData.en.length, FIX_EN.length); j++) {
+                rankData.en[j].spiritual = FIX_EN[j].spiritual;
+                rankData.en[j].realm = FIX_EN[j].realm;
+            }
+        }
+
+        // 重新渲染表格
+        if (typeof renderRankTable === 'function') {
+            renderRankTable();
+        } else if (typeof applyLanguage === 'function') {
+            var lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
+            applyLanguage(lang);
+        } else {
+            // 手動重填 tbody
+            var tbody = document.getElementById('rankTableBody');
+            if (!tbody || !rankData) return;
+            var lang2 = (typeof currentLang !== 'undefined' && currentLang === 'en') ? 'en' : 'zh';
+            var data = rankData[lang2] || rankData.zh;
+            if (!data) return;
+
+            // 若表格已由原程式渲染，直接改對應欄位文字
+            var rows = tbody.querySelectorAll('tr');
+            rows.forEach(function (tr, idx) {
+                if (!data[idx]) return;
+                var cells = tr.querySelectorAll('td');
+                // 依表頭：通常 靈性維度、九界層域 在第 5、6 欄（0-index 4、5）
+                // 保守：找含舊值的 cell 更新
+                cells.forEach(function (td) {
+                    var t = (td.textContent || '').trim();
+                    // 不精準匹配時，依欄位順序
+                });
+                if (cells.length >= 6) {
+                    // 常見順序：tier, level, network, dimension, spiritual, realm, ...
+                    if (cells[4]) cells[4].textContent = data[idx].spiritual;
+                    if (cells[5]) cells[5].textContent = data[idx].realm;
+                }
+            });
+        }
+    }
+
+    function run() {
+        applyFix();
+        setTimeout(applyFix, 150);
+        setTimeout(applyFix, 500);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(applyFix, 80);
+            setTimeout(applyFix, 300);
+        };
+    }
+
+    console.log('✅ 靈性維度 / 九界層域 已依書本修正齊全');
+})();
+</script>
 </body>
 </html>
