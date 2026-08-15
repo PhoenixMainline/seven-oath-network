@@ -4626,5 +4626,82 @@
     console.log('✅ 相機引導：僅失敗顯示、成功隱藏');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 掃描成功結果：字體大小與圖中綠色框一致                        -->
+<!-- ============================================================ -->
+<style>
+    #qrScanResultStep8,
+    #qrScanResultStep9,
+    .qr-result {
+        font-size: 0.95rem !important;
+        font-weight: 600 !important;
+        line-height: 1.55 !important;
+        color: #00e676 !important;
+        text-align: left !important;
+        padding: 12px 14px !important;
+        border-radius: 10px !important;
+        background: rgba(0, 230, 118, 0.08) !important;
+        border: 1px solid rgba(0, 230, 118, 0.25) !important;
+        word-break: keep-all !important;
+        overflow-wrap: break-word !important;
+    }
+    #qrScanResultStep8 *,
+    #qrScanResultStep9 *,
+    .qr-result * {
+        font-size: 0.95rem !important;
+        color: #00e676 !important;
+        font-weight: 600 !important;
+    }
+</style>
+
+<script>
+(function () {
+    function applySize() {
+        ['qrScanResultStep8', 'qrScanResultStep9'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            el.style.setProperty('font-size', '0.95rem', 'important');
+            el.style.setProperty('font-weight', '600', 'important');
+            el.style.setProperty('line-height', '1.55', 'important');
+            el.style.setProperty('color', '#00e676', 'important');
+            el.style.setProperty('text-align', 'left', 'important');
+            el.querySelectorAll('*').forEach(function (c) {
+                c.style.setProperty('font-size', '0.95rem', 'important');
+                c.style.setProperty('color', '#00e676', 'important');
+                c.style.setProperty('font-weight', '600', 'important');
+            });
+        });
+    }
+
+    function run() {
+        applySize();
+        setTimeout(applySize, 150);
+        setTimeout(applySize, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(applySize, 80);
+        };
+    }
+
+    // 掃描成功後 DOM 會被改寫，持續監看
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__scanFontSize);
+        window.__scanFontSize = setTimeout(applySize, 60);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 掃描成功字體已統一為 0.95rem');
+})();
+</script>
     </body>
 </html>
