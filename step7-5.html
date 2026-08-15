@@ -3826,5 +3826,136 @@
     console.log('✅ QR 標題字重已統一為細體');
 })();
 </script>
+ <!-- ============================================================ -->
+<!-- 英文版：主頻連線 / 輸入示範 / 觸發指令 全部英文化                -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var MAP = [
+        // 主頻連線
+        {
+            zh: '送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。',
+            en: 'Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.'
+        },
+        {
+            zh: '送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。',
+            en: 'Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.'
+        },
+        // 觸發指令
+        {
+            zh: '【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。',
+            en: '【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.'
+        },
+        // 輸入示範標籤
+        { zh: '輸入示範：', en: 'Input Example:' },
+        { zh: '輸入示範', en: 'Input Example' },
+        // 驗證指令
+        {
+            zh: '【執行指令】第五印 覺醒印 入世誓約揭示 結果',
+            en: '【Execution Command】Fifth Seal Awakening Seal Incarnational Vow Revelation Result'
+        },
+        // 回傳指令
+        {
+            zh: '【執行指令】回傳【第五印 覺醒印 誓印通過】誓證',
+            en: '【Execution Command】Return 【Fifth Seal Awakening Seal — Oath Seal Passed】 Certificate'
+        },
+        // 掃描標題
+        {
+            zh: '📷 請掃描【誓導 QR Code】完成執行指令',
+            en: '📷 Please scan the 【Vow-Guidance QR Code】 to complete Execution Command'
+        },
+        {
+            zh: '📷 請掃描【誓導 QR Code】完成回傳誓證',
+            en: '📷 Please scan the 【Vow-Guidance QR Code】 to complete Return Oath Certificate'
+        },
+        // 通過 / 未通過
+        { zh: '✅ 顯示：「誓印通過」', en: '✅ Display: 「Oath Seal Passed」' },
+        { zh: '⚠️ 顯示：「誓印未通過」', en: '⚠️ Display: 「Oath Seal Not Passed」' },
+        // 提交程序
+        { zh: '【提交程序】', en: '【Submission Procedure】' },
+        { zh: '📋 【提交程序】', en: '📋 【Submission Procedure】' }
+    ];
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function apply() {
+        var isEn = lang() === 'en';
+
+        // 1) 指定 ID 優先
+        var idMap = {
+            step7_5Note: isEn ? MAP[0].en : MAP[0].zh,
+            step7_5ReturnNote: isEn ? MAP[0].en : MAP[0].zh,
+            step7_5TriggerNote: isEn ? MAP[2].en : MAP[2].zh,
+            step7_5ReturnTriggerNote: isEn ? MAP[2].en : MAP[2].zh,
+            step7_5InputLabel: isEn ? MAP[3].en : MAP[3].zh,
+            step7_5ReturnInputLabel: isEn ? MAP[3].en : MAP[3].zh,
+            step7_5Command: isEn ? MAP[5].en : MAP[5].zh,
+            step7_5ReturnCommand: isEn ? MAP[6].en : MAP[6].zh,
+            step7_5QrTitle: isEn ? MAP[7].en : MAP[7].zh,
+            step7_5ReturnQrTitle: isEn ? MAP[8].en : MAP[8].zh,
+            step7_5Success: isEn ? MAP[9].en : MAP[9].zh,
+            step7_5NotPassedTitle: isEn ? MAP[10].en : MAP[10].zh
+        };
+        Object.keys(idMap).forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = idMap[id];
+        });
+
+        // 2) 全文掃描替換（抓漏網）
+        document.querySelectorAll('span, div, p, label').forEach(function (el) {
+            if (el.children && el.children.length > 3) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 120) return;
+
+            MAP.forEach(function (pair) {
+                if (isEn) {
+                    if (t === pair.zh || t.indexOf(pair.zh) === 0) {
+                        el.textContent = pair.en;
+                    }
+                } else {
+                    if (t === pair.en || t.indexOf(pair.en) === 0) {
+                        el.textContent = pair.zh;
+                    }
+                }
+            });
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 80);
+        setTimeout(apply, 250);
+        setTimeout(apply, 600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 40);
+            setTimeout(apply, 180);
+            setTimeout(apply, 400);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__enAllFix);
+        window.__enAllFix = setTimeout(apply, 70);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 英文版全文對應已鎖定');
+})();
+            </script>   
 </body>
 </html>
