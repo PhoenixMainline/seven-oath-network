@@ -3381,5 +3381,184 @@
     console.log('✅ 相機引導：僅失敗顯示、成功隱藏');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 輸入示範：回傳區與驗證區寫法、版型統一（跟左圖一樣）          -->
+<!-- ============================================================ -->
+<style>
+    /* 統一輸入示範外框（單層紫底，不要雙層嵌套） */
+    .input-demo-box,
+    [id*="InputDemo"],
+    [id*="DemoBox"],
+    .hud-card .demo-box {
+        background: rgba(88, 28, 135, 0.55) !important;
+        border: 1px solid rgba(168, 85, 247, 0.45) !important;
+        border-radius: 12px !important;
+        padding: 14px 16px !important;
+        margin: 12px 0 !important;
+        box-shadow: none !important;
+    }
+
+    /* 內層若有多餘嵌套框，攤平成單層 */
+    .input-demo-box > div,
+    [id*="InputDemo"] > div {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+    }
+</style>
+
+<script>
+(function () {
+    // 左圖標準寫法（驗證區）
+    // 輸入示範：
+    // 【執行指令】第一印 消業印 結果
+    //
+    // 右圖（回傳區）改成同樣結構，內容改為第四印回傳指令
+
+    var DEMO_VERIFY_ZH = '【執行指令】第四印 誓令印 結果';
+    var DEMO_VERIFY_EN = '【Execution Command】Fourth Seal Oath-Law Seal Result';
+
+    var DEMO_RETURN_ZH = '【執行指令】回傳【第四印 誓令印 誓印通過】誓證';
+    var DEMO_RETURN_EN = '【Execution Command】Return 【Fourth Seal Oath-Law Seal — Oath Seal Passed】 Certificate';
+
+    var LABEL_ZH = '輸入示範：';
+    var LABEL_EN = 'Input Example:';
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function buildBox(label, content) {
+        var box = document.createElement('div');
+        box.className = 'input-demo-box';
+        box.style.cssText =
+            'background:rgba(88,28,135,0.55)!important;' +
+            'border:1px solid rgba(168,85,247,0.45)!important;' +
+            'border-radius:12px!important;' +
+            'padding:14px 16px!important;' +
+            'margin:12px 0!important;' +
+            'text-align:left!important;' +
+            'width:100%!important;' +
+            'box-sizing:border-box!important;';
+        box.innerHTML =
+            '<div style="display:flex;align-items:flex-start;gap:8px;color:#e9d5ff;font-size:0.95rem;font-weight:bold;margin-bottom:8px;">' +
+            '  <i class="fa-solid fa-keyboard" style="color:#c4b5fd;margin-top:2px;"></i>' +
+            '  <span>' + label + '</span>' +
+            '</div>' +
+            '<div style="color:#e9d5ff;font-size:0.95rem;font-weight:600;line-height:1.5;padding-left:2px;">' +
+            content +
+            '</div>';
+        return box;
+    }
+
+    function replaceDemoNear(keywordList, contentZh, contentEn) {
+        var isEn = lang() === 'en';
+        var label = isEn ? LABEL_EN : LABEL_ZH;
+        var content = isEn ? contentEn : contentZh;
+
+        // 找含「輸入示範」的節點
+        var targets = [];
+        document.querySelectorAll('div, span, p, section').forEach(function (el) {
+            if (!el || (el.children && el.children.length > 8)) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 120) return;
+            if (t.indexOf('輸入示範') === -1 && t.indexOf('Input Example') === -1) return;
+
+            // 必須靠近驗證或回傳關鍵字
+            var ctx = (el.closest('.hud-card') || el.parentElement || el).textContent || '';
+            var hit = keywordList.some(function (k) { return ctx.indexOf(k) !== -1; });
+            if (!hit) return;
+
+            targets.push(el);
+        });
+
+        targets.forEach(function (el) {
+            // 找到可替換的卡片容器
+            var card = el.closest('.hud-card') || el.parentElement;
+            if (!card) return;
+
+            // 若已有我們建的 box，只更新文字
+            var exist = card.querySelector('.input-demo-box[data-unified="1"]');
+            if (exist) {
+                exist.querySelectorAll('div')[0].querySelector('span').textContent = label;
+                exist.querySelectorAll('div')[1].textContent = content;
+                return;
+            }
+
+            // 隱藏舊的示範區塊（含雙層嵌套）
+            var old = el.closest('div[style*="background"]') || el;
+            // 往上找一層有邊框的示範框
+            var wrap = el;
+            for (var i = 0; i < 4 && wrap; i++) {
+                var st = (wrap.getAttribute && wrap.getAttribute('style')) || '';
+                if (/border|background|padding/i.test(st) && (wrap.textContent || '').indexOf('執行指令') !== -1) {
+                    old = wrap;
+                    break;
+                }
+                wrap = wrap.parentElement;
+            }
+
+            var box = buildBox(label, content);
+            box.setAttribute('data-unified', '1');
+
+            if (old && old.parentNode) {
+                old.style.setProperty('display', 'none', 'important');
+                old.parentNode.insertBefore(box, old);
+            } else {
+                card.appendChild(box);
+            }
+        });
+    }
+
+    function apply() {
+        // 驗證階段示範（左圖風格）
+        replaceDemoNear(
+            ['驗證階段', '啟動觸發', 'Verify', 'Verification', 'step7_4Verify'],
+            DEMO_VERIFY_ZH,
+            DEMO_VERIFY_EN
+        );
+
+        // 回傳誓證示範（右圖 → 改成與左圖相同寫法）
+        replaceDemoNear(
+            ['回傳誓證', '確認誓印', 'Return Oath', 'Oath Confirmation', 'step7_4Return'],
+            DEMO_RETURN_ZH,
+            DEMO_RETURN_EN
+        );
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 80);
+            setTimeout(apply, 250);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__demoUnify74);
+        window.__demoUnify74 = setTimeout(apply, 100);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ 輸入示範左右寫法已統一');
+})();
+</script>
 </body>
 </html>
