@@ -1328,5 +1328,104 @@
         }
     })();
 </script>
+<!-- ============================================================ -->
+<!-- 修正 awakenData：是否入地獄 / 是否為地府職員（依書本）         -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    // 書本標準
+    // 一階 ✕否 / ✕否
+    // 二階 ✕否 / ✕否
+    // 三階 △未入獄 / ✕否
+    // 四階 ✓是 / △少數可任務服役
+    // 五階 ✓是 / ✕否
+    // 六階 ✓是 / ✕否
+    // 七階 △誤入地網 / ✕否
+
+    var FIX_ZH = [
+        { hell: '✕否', staff: '✕否' },
+        { hell: '✕否', staff: '✕否' },
+        { hell: '△未入獄', staff: '✕否' },
+        { hell: '✓是', staff: '△少數可任務服役' },
+        { hell: '✓是', staff: '✕否' },
+        { hell: '✓是', staff: '✕否' },
+        { hell: '△誤入地網', staff: '✕否' }
+    ];
+
+    var FIX_EN = [
+        { hell: '✕ No', staff: '✕ No' },
+        { hell: '✕ No', staff: '✕ No' },
+        { hell: '△ Not imprisoned', staff: '✕ No' },
+        { hell: '✓ Yes', staff: '△ Some may serve minor duties' },
+        { hell: '✓ Yes', staff: '✕ No' },
+        { hell: '✓ Yes', staff: '✕ No' },
+        { hell: '△ Misguided into net', staff: '✕ No' }
+    ];
+
+    function applyFix() {
+        if (typeof awakenData === 'undefined') return;
+
+        if (awakenData.zh && awakenData.zh.length) {
+            for (var i = 0; i < Math.min(awakenData.zh.length, FIX_ZH.length); i++) {
+                awakenData.zh[i].hell = FIX_ZH[i].hell;
+                awakenData.zh[i].staff = FIX_ZH[i].staff;
+            }
+        }
+        if (awakenData.en && awakenData.en.length) {
+            for (var j = 0; j < Math.min(awakenData.en.length, FIX_EN.length); j++) {
+                awakenData.en[j].hell = FIX_EN[j].hell;
+                awakenData.en[j].staff = FIX_EN[j].staff;
+            }
+        }
+
+        // 重新渲染
+        if (typeof renderAwakenTable === 'function') {
+            renderAwakenTable();
+        } else if (typeof applyLanguage === 'function') {
+            var lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
+            applyLanguage(lang);
+        } else {
+            // 手動改 tbody
+            var tbody = document.getElementById('awakenTableBody');
+            if (!tbody) return;
+            var lang2 = (typeof currentLang !== 'undefined' && currentLang === 'en') ? 'en' : 'zh';
+            var data = (awakenData[lang2] || awakenData.zh) || [];
+            var rows = tbody.querySelectorAll('tr');
+            rows.forEach(function (tr, idx) {
+                if (!data[idx]) return;
+                var cells = tr.querySelectorAll('td');
+                // 常見順序：level, mark, hell, staff, ...
+                if (cells.length >= 4) {
+                    if (cells[2]) cells[2].textContent = data[idx].hell;
+                    if (cells[3]) cells[3].textContent = data[idx].staff;
+                }
+            });
+        }
+    }
+
+    function run() {
+        applyFix();
+        setTimeout(applyFix, 150);
+        setTimeout(applyFix, 500);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(applyFix, 80);
+            setTimeout(applyFix, 300);
+        };
+    }
+
+    console.log('✅ 是否入地獄 / 是否為地府職員 已依書本修正');
+})();
+</script>
 </body>
 </html>
