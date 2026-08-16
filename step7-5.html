@@ -4031,5 +4031,62 @@
     console.log('✅ 致命日期 → 啟願日期 已修正');
 })();
         </script>   
+<script>
+(function() {
+  // 1. 定義模版與掛載點
+  const templateHTML = `
+    <div id="my-custom-template" style="position: fixed; bottom: 20px; right: 20px; padding: 15px; background: #333; color: #fff; border-radius: 8px; z-index: 9999; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-family: sans-serif;">
+      <span class="template-content">預設範本文字</span>
+      <button class="template-btn" style="margin-left: 10px; padding: 4px 8px; cursor: pointer;">點擊 me</button>
+    </div>
+  `;
+
+  // 2. 新增 (Insert) 模版到 body 底部
+  function injectTemplate() {
+    if (!document.getElementById('my-custom-template')) {
+      document.body.insertAdjacentHTML('beforeend', templateHTML);
+      bindEvents();
+    }
+  }
+
+  // 綁定內部事件（例如按鈕點擊）
+  function bindEvents() {
+    const btn = document.querySelector('#my-custom-template .template-btn');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        alert('模版內的按鈕被點擊了！');
+      });
+    }
+  }
+
+  // 3. 修改 (Update) 模版內容
+  function updateTemplate(newText) {
+    const contentEl = document.querySelector('#my-custom-template .template-content');
+    if (contentEl) {
+      contentEl.textContent = newText;
+    }
+  }
+
+  // 4. 套用 (Apply) / 移除模版
+  function removeTemplate() {
+    const el = document.getElementById('my-custom-template');
+    if (el) el.remove();
+  }
+
+  // 5. 註冊至全域 window 物件，方便外部調用
+  window.MyTemplate = {
+    add: injectTemplate,
+    update: updateTemplate,
+    remove: removeTemplate
+  };
+
+  // 頁面載入完成後自動注入模版
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', injectTemplate);
+  } else {
+    injectTemplate();
+  }
+})();
+</script>
 </body>
 </html>
