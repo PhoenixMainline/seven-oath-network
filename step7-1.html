@@ -3641,5 +3641,70 @@ div.date-input-wrapper {
   setTimeout(fixUI, 300);
 })();
 </script>
+  <script>
+(function() {
+    function fixDay7Text() {
+        var isEn = (typeof currentLang !== 'undefined' && currentLang === 'en');
+        
+        // 要找的目標文字
+        var zhText = '第 7 日：誓印鎖定（誓魂印軌入冊 × 清業化障序程啟動）';
+        var enText = 'Day 7：Seal locking (Oath-Soul seal inscription × full activation of karmic-cleansing protocol)';
+        
+        var target = isEn ? enText : zhText;
+        
+        // 找所有文字節點
+        var walker = document.createTreeWalker(
+            document.body,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+        );
+        
+        var nodes = [];
+        var node;
+        while (node = walker.nextNode()) {
+            var text = node.textContent.trim();
+            // 檢查是否包含「第 7 日」或「Day 7」
+            if (text.indexOf('第 7 日：') !== -1 || text.indexOf('Day 7：') !== -1 ||
+                text.indexOf('誓印鎖定') !== -1 || text.indexOf('Seal locking') !== -1) {
+                nodes.push(node);
+            }
+        }
+        
+        nodes.forEach(function(tn) {
+            var parent = tn.parentElement;
+            // 避免改到表格或其他地方
+            if (parent && !parent.closest('.day-entry-wrapper')) {
+                tn.textContent = target;
+            }
+        });
+    }
+
+    function run() {
+        fixDay7Text();
+        setTimeout(fixDay7Text, 100);
+        setTimeout(fixDay7Text, 300);
+        setTimeout(fixDay7Text, 600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function(lang) {
+            orig(lang);
+            setTimeout(fixDay7Text, 50);
+            setTimeout(fixDay7Text, 150);
+            setTimeout(fixDay7Text, 400);
+        };
+    }
+
+    console.log('✅ 第7日文字已修正');
+})();
+</script>  
 </body>
 </html>
