@@ -3583,5 +3583,63 @@
     console.log('✅ QR 標題字重已統一為細體');
 })();
 </script>
+<style>
+/* 1. 精準隱藏表單內的 YYYY-MM-DD 輸入框（不留空白高） */
+.form-group input[placeholder*="YYYY"],
+.form-group input[value*="YYYY"],
+.form-group input[type="date"],
+div.date-input-wrapper {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 2. 隱藏表單區塊頂部的下拉選單 */
+.form-group select,
+.card select {
+  display: none !important;
+}
+</style>
+
+<script>
+(function() {
+  function fixUI() {
+    // A. 修正「★ 第7日」：僅移除它裡面的 select，保留原本的文字列
+    document.querySelectorAll('div, p, li').forEach(el => {
+      if (el.children.length > 0 && el.textContent.includes('★ 第7日')) {
+        const sel = el.querySelector('select');
+        if (sel) sel.remove();
+      }
+    });
+
+    // B. 清理表單內的「(請填寫日期)」與「YYYY-MM-DD」純文字/輸入框
+    document.querySelectorAll('.form-group, .card, div').forEach(card => {
+      // 確保只在表單卡片內清理，不破壞大結構
+      if (card.querySelector('input, select')) {
+        
+        // 刪除 YYYY-MM-DD 輸入框元件
+        card.querySelectorAll('input').forEach(input => {
+          const ph = input.getAttribute('placeholder') || '';
+          if (ph.includes('YYYY') || input.value.includes('YYYY') || input.type === 'date') {
+            input.remove();
+          }
+        });
+
+        // 刪除 (請填寫日期) 提示字眼
+        card.querySelectorAll('span, p, label').forEach(txt => {
+          if (txt.textContent.includes('請填寫日期')) {
+            txt.remove();
+          }
+        });
+      }
+    });
+  }
+
+  // 執行修正
+  fixUI();
+  setTimeout(fixUI, 300);
+})();
+</script>
 </body>
 </html>
