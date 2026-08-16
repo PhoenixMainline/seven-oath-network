@@ -2469,6 +2469,315 @@
     console.log('✅ 相機引導：僅失敗顯示、成功隱藏');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- step7-2：日期欄位改為 type="date" 可點選 + 中英文            -->
+<!-- ============================================================ -->
+<style>
+    /* 日期輸入框統一風格 */
+    .sd2-date-input {
+        padding: 6px 10px !important;
+        background: rgba(0, 0, 0, 0.35) !important;
+        border: 1px solid rgba(168, 85, 247, 0.35) !important;
+        border-radius: 6px !important;
+        color: #e0e8f5 !important;
+        font-size: 0.8rem !important;
+        font-family: inherit !important;
+        min-width: 140px !important;
+        outline: none !important;
+        cursor: pointer !important;
+        flex: 0.8 !important;
+    }
+    .sd2-date-input:focus {
+        border-color: #a78bfa !important;
+        box-shadow: 0 0 12px rgba(167, 139, 250, 0.2) !important;
+    }
+    /* 深色背景日期選擇器 */
+    .sd2-date-input::-webkit-calendar-picker-indicator {
+        filter: invert(0.85);
+        cursor: pointer;
+    }
+    /* 日期標題列排版 */
+    .day-title-row-72 {
+        display: flex !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+        margin-bottom: 6px !important;
+        font-weight: bold !important;
+        font-size: 0.9rem !important;
+    }
+    .day-title-row-72 .day-label-72 {
+        color: #c4b5fd !important;
+    }
+    .day-title-row-72 .day-label-72.day7-72 {
+        color: #fbbf24 !important;
+    }
+    /* 隱藏舊的日期輸入框 */
+    .sd2-date.old-date-input {
+        display: none !important;
+    }
+</style>
 
+<script>
+(function() {
+    // ================================================================
+    // 取得語系
+    // ================================================================
+    function getLang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var active = document.querySelector('.lang-btn.active');
+        if (active && /english|en/i.test(active.textContent || '')) return 'en';
+        return 'zh';
+    }
+
+    // ================================================================
+    // 日期標籤文字
+    // ================================================================
+    function dayLabel(n, lang) {
+        return (lang === 'en') ? ('Entry ' + n) : ('第' + n + '錄');
+    }
+
+    function dateHint(lang) {
+        return (lang === 'en') ? 'Select date' : '請選擇日期';
+    }
+
+    // ================================================================
+    // 將舊的日期文字輸入框(placeholder包含日期) 替換為 type="date"
+    // ================================================================
+    function convertDateInputsToDatePicker() {
+        var lang = getLang();
+
+        // ----- 找到所有「第N錄」標題列，加上日期輸入框 -----
+        for (var d = 1; d <= 10; d++) {
+            // 找包含「第N錄」或「Entry N」的標題列
+            var titleDiv = null;
+            var allDivs = document.querySelectorAll('.form-submit-container div, .hud-card div, .day-row, .sd2-row');
+            for (var i = 0; i < allDivs.length; i++) {
+                var el = allDivs[i];
+                if (el.children && el.children.length > 6) continue;
+                var t = (el.textContent || '').trim();
+                // 檢查是否為當日的標題列
+                var zhHit = t.indexOf('第' + d + '錄') !== -1;
+                var enHit = t.indexOf('Entry ' + d) !== -1 || t.indexOf('Entry' + d) !== -1;
+                // 也檢查是否包含日期欄位的舊輸入框
+                var hasDateInput = el.querySelector('input[data-day="' + d + '"].sd2-date');
+                if ((zhHit || enHit) && t.length < 60) {
+                    titleDiv = el;
+                    break;
+                }
+                // 如果標題列含有 data-day 屬性
+                if (el.getAttribute && el.getAttribute('data-day') === String(d)) {
+                    if (el.textContent && (el.textContent.indexOf('第' + d + '錄') !== -1 || el.textContent.indexOf('Entry ' + d) !== -1)) {
+                        titleDiv = el;
+                        break;
+                    }
+                }
+            }
+
+            if (!titleDiv) continue;
+
+            // 檢查是否已經有 type="date" 輸入框
+            var existingDate = titleDiv.querySelector('input[type="date"]');
+            if (existingDate) {
+                // 已存在，確保它被正確標記和樣式
+                existingDate.className = 'sd2-date-input';
+                existingDate.setAttribute('data-day', d);
+                // 更新 placeholder
+                existingDate.title = dateHint(lang);
+                continue;
+            }
+
+            // 保留既有日期值（如果有舊的 text input）
+            var oldInput = titleDiv.querySelector('input.sd2-date[data-day="' + d + '"], input[data-day="' + d + '"]');
+            var keptValue = oldInput ? oldInput.value : '';
+
+            // 移除舊的日期輸入框（如果有）
+            if (oldInput) {
+                oldInput.className = 'old-date-input';
+                oldInput.style.display = 'none';
+            }
+
+            // 建立 type="date" 輸入框
+            var inp = document.createElement('input');
+            inp.type = 'date';
+            inp.className = 'sd2-date-input';
+            inp.setAttribute('data-day', String(d));
+            inp.id = 'sd2Date_' + d;
+            inp.title = dateHint(lang);
+            if (keptValue) inp.value = keptValue;
+
+            // 找到標題文字後面插入
+            // 先找純文字節點（標題文字）
+            var textNodes = [];
+            var childNodes = titleDiv.childNodes;
+            for (var i = 0; i < childNodes.length; i++) {
+                if (childNodes[i].nodeType === 3 && childNodes[i].textContent.trim()) {
+                    textNodes.push(childNodes[i]);
+                }
+            }
+
+            // 如果標題列內有 span 且包含日期文字，在後面插入
+            var insertAfter = titleDiv.querySelector('span:not(.sd2-recited-label)') || 
+                              titleDiv.querySelector('[id*="Day"]') ||
+                              titleDiv.querySelector('[id*="day"]') ||
+                              titleDiv.firstChild;
+
+            // 如果有 sd2-date 舊輸入框，在它前面插入
+            var oldDateEl = titleDiv.querySelector('.old-date-input, .sd2-date[data-day="' + d + '"]');
+            if (oldDateEl) {
+                titleDiv.insertBefore(inp, oldDateEl);
+            } else if (insertAfter && insertAfter.nextSibling) {
+                titleDiv.insertBefore(inp, insertAfter.nextSibling);
+            } else if (insertAfter) {
+                titleDiv.appendChild(inp);
+            } else {
+                titleDiv.appendChild(inp);
+            }
+
+            // 確保標題列有正確的 class
+            titleDiv.className = 'day-title-row-72';
+            titleDiv.style.display = 'flex';
+            titleDiv.style.alignItems = 'center';
+            titleDiv.style.flexWrap = 'wrap';
+            titleDiv.style.gap = '10px';
+            titleDiv.style.marginBottom = '6px';
+            titleDiv.style.color = (d === 10) ? '#fbbf24' : '#c4b5fd';
+            titleDiv.style.fontWeight = 'bold';
+            titleDiv.style.fontSize = '0.9rem';
+
+            // 更新日次標籤（第N錄 → Entry N）
+            var labelSpans = titleDiv.querySelectorAll('span:not(.sd2-recited-label)');
+            labelSpans.forEach(function(span) {
+                var t = (span.textContent || '').trim();
+                if (t.indexOf('第' + d + '錄') !== -1 || t.indexOf('Entry ' + d) !== -1) {
+                    span.textContent = dayLabel(d, lang) + ' ';
+                    span.className = 'day-label-72' + (d === 10 ? ' day7-72' : '');
+                    span.style.color = (d === 10) ? '#fbbf24' : '#c4b5fd';
+                }
+                // 移除「（請填寫日期）」或「(Please fill in the date)」
+                if (t.indexOf('請填寫日期') !== -1 || t.indexOf('Please fill in the date') !== -1) {
+                    span.style.display = 'none';
+                }
+            });
+
+            // 更新 id 為 step7_2DayXLabel 的標籤
+            var labelEl = document.getElementById('step7_2Day' + d + 'Label');
+            if (labelEl) {
+                labelEl.textContent = '';
+                labelEl.style.display = 'none';
+            }
+
+            // 更新 checkboxes 文字
+            var recitedLabels = titleDiv.querySelectorAll('label span, .sd2-recited + span, [id*="Day"][id*="Recited"]');
+            recitedLabels.forEach(function(el) {
+                var t = (el.textContent || '').trim();
+                if (t === '誓文誦讀' || t === 'Recited') {
+                    el.textContent = (lang === 'en') ? 'Recited' : '誓文誦讀';
+                }
+            });
+        }
+
+        // ----- 處理 checkbox 文字（全域） -----
+        var checkMap = {
+            '誓文誦讀': 'Recited',
+            'Recited': '誓文誦讀'
+        };
+        document.querySelectorAll('.sd2-recited + span, label span[id*="Day"][id*="Recited"]').forEach(function(el) {
+            var t = (el.textContent || '').trim();
+            if (checkMap[t]) {
+                el.textContent = (lang === 'en') ? 'Recited' : '誓文誦讀';
+            }
+        });
+
+        // ----- 處理 placeholder -----
+        document.querySelectorAll('.sd2-trigger').forEach(function(el) {
+            if (lang === 'en') {
+                if (!el.dataset.phLocked) el.placeholder = 'Habit / Emotion Trigger Source';
+            } else {
+                if (!el.dataset.phLocked) el.placeholder = '覺察的習氣／情緒觸發來源';
+            }
+        });
+        document.querySelectorAll('.sd2-insight').forEach(function(el) {
+            if (lang === 'en') {
+                if (!el.dataset.phLocked) el.placeholder = 'Mirror-Reflection Insight (10-30 words)';
+            } else {
+                if (!el.dataset.phLocked) el.placeholder = '鏡修省思摘要(10~30字)';
+            }
+        });
+        document.querySelectorAll('.sd2-phrase').forEach(function(el) {
+            if (lang === 'en') {
+                if (!el.dataset.phLocked) el.placeholder = 'Intent-Alignment Phrase';
+            } else {
+                if (!el.dataset.phLocked) el.placeholder = '願心調頻語';
+            }
+        });
+
+        // ----- 修正預覽函數，讀取 type="date" 的值 -----
+        if (typeof window.generateMirrorPreview === 'function') {
+            // 擴充原函數
+            var origPreview = window.generateMirrorPreview;
+            window.generateMirrorPreview = function() {
+                // 先確保所有 date 值被讀取
+                for (var d = 1; d <= 10; d++) {
+                    var dateInput = document.querySelector('input[type="date"][data-day="' + d + '"], #sd2Date_' + d);
+                    if (dateInput) {
+                        // 確保值被正確設定
+                        var val = dateInput.value;
+                        // 如果有對應的舊輸入框，也同步
+                        var oldDate = document.querySelector('.sd2-date.old-date-input[data-day="' + d + '"]');
+                        if (oldDate && oldDate.value !== val) {
+                            oldDate.value = val;
+                        }
+                    }
+                }
+                // 呼叫原函數
+                origPreview();
+            };
+        }
+
+        console.log('✅ step7-2 日期欄位已改為下拉式日期點選 (type="date")，語言：' + lang);
+    }
+
+    // ================================================================
+    // 執行轉換
+    // ================================================================
+    function run() {
+        convertDateInputsToDatePicker();
+        setTimeout(convertDateInputsToDatePicker, 150);
+        setTimeout(convertDateInputsToDatePicker, 400);
+        setTimeout(convertDateInputsToDatePicker, 800);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // ================================================================
+    // 語系切換時重新同步
+    // ================================================================
+    var origSwitch = window.switchLanguage;
+    if (typeof origSwitch === 'function') {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(convertDateInputsToDatePicker, 80);
+            setTimeout(convertDateInputsToDatePicker, 250);
+            setTimeout(convertDateInputsToDatePicker, 500);
+        };
+    }
+
+    // ================================================================
+    // 動態變化時重新補強
+    // ================================================================
+    var observer = new MutationObserver(function() {
+        clearTimeout(window.__datePicker72Timer);
+        window.__datePicker72Timer = setTimeout(convertDateInputsToDatePicker, 120);
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ step7-2 日期欄位轉換模組已載入');
+})();
+</script>
 </body>
 </html>
