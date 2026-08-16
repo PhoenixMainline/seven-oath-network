@@ -9,141 +9,884 @@
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js">
     </script>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif; }
+        /* ===== 全域強制 ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif;
+        }
+
         body {
             background: radial-gradient(circle at 50% 50%, #06122c 0%, #020715 100%);
-            min-height: 100vh; color: #e0e8f5;
-            display: flex; justify-content: center; align-items: center;
-            padding: clamp(4px, 1.5vh, 16px); position: relative;
+            min-height: 100vh;
+            color: #e0e8f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: clamp(4px, 1.5vh, 16px);
+            position: relative;
         }
+
         .particle-container {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             background-image: radial-gradient(#d4af37, rgba(212, 175, 55, .3) 1px, transparent 30px), radial-gradient(#d4af37, rgba(212, 175, 55, .2) 2px, transparent 40px);
             background-size: 350px 350px, 450px 450px;
             background-position: 0 0, 90px 150px;
-            animation: starMove 90s linear infinite; opacity: 0.65; z-index: 5; pointer-events: none;
+            animation: starMove 90s linear infinite;
+            opacity: 0.65;
+            z-index: 5;
+            pointer-events: none;
         }
-        @keyframes starMove { from { transform: translateY(0px) rotate(0deg); } to { transform: translateY(-1000px) rotate(360deg); } }
+
+        @keyframes starMove {
+            from { transform: translateY(0px) rotate(0deg); }
+            to { transform: translateY(-1000px) rotate(360deg); }
+        }
+
         .watermark-layer {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; opacity: 0.04;
-            display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); padding: 50px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.04;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            padding: 50px;
         }
-        .watermark-text { font-size: 1.5rem; font-weight: bold; color: #ffffff; transform: rotate(-25deg); white-space: nowrap; user-select: none; }
+
+        .watermark-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            transform: rotate(-25deg);
+            white-space: nowrap;
+            user-select: none;
+        }
+
         .hud-container {
-            width: 100%; max-width: min(660px, 95vw);
+            width: 100%;
+            max-width: min(660px, 95vw);
             background: rgba(4, 13, 33, 0.4);
             border: 1.5px solid rgba(168, 85, 247, 0.3);
             box-shadow: 0 0 40px rgba(168, 85, 247, 0.15), inset 0 0 20px rgba(168, 85, 247, 0.05);
             border-radius: clamp(16px, 4vw, 28px);
             padding: clamp(8px, 1.5vh, 20px);
-            display: flex; flex-direction: column; position: relative; z-index: 3; margin: auto;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 3;
+            margin: auto;
         }
-        .hud-container::after { display: none !important; content: none !important; border: none !important; width: 0 !important; height: 0 !important; }
-        .home-breadcrumb { font-size: clamp(0.6rem, 1.4vh, 0.85rem); color: #c4b5fd; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 12px; font-weight: bold; align-self: flex-start; transition: all 0.3s ease; text-shadow: 0 0 8px rgba(168, 85, 247, 0.4); position: relative; z-index: 1000; pointer-events: auto !important; }
-        .home-breadcrumb:hover { color: #e9d5ff; text-shadow: 0 0 12px rgba(168, 85, 247, 0.6); transform: translateX(-2px); }
-        .hud-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(168, 85, 247, 0.2); padding-bottom: clamp(8px, 1.5vh, 18px); margin-bottom: clamp(8px, 1.5vh, 25px); flex-shrink: 0; }
-        .app-title { font-size: clamp(0.9rem, 2.2vh, 1.15rem); font-weight: 700; color: #e9d5ff; text-shadow: 0 0 12px rgba(168, 85, 247, 0.5); max-width: 75%; line-height: 1.4; }
-        .lang-switch-group { display: flex; background: rgba(124, 58, 237, 0.15); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 20px; padding: 2px; z-index: 10; }
-        .lang-btn { background: transparent; border: none; color: rgba(224, 232, 245, 0.4); font-size: clamp(0.5rem, 1.2vh, 0.75rem); padding: clamp(2px, 0.6vh, 5px) clamp(6px, 1vw, 12px); border-radius: 16px; cursor: pointer; transition: all 0.2s ease; }
-        .lang-btn.active { background: #7c3aed; color: #ffffff; font-weight: bold; box-shadow: 0 0 12px rgba(124, 58, 237, 0.5); }
-        .step-content { flex: 1 1 auto; display: flex; flex-direction: column; gap: clamp(8px, 1.5vh, 22px); overflow-y: auto; padding-right: 4px; min-height: 0; }
-        .step-panel { display: flex; flex-direction: column; gap: 20px; animation: fadeIn 0.4s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        .hud-card { background: linear-gradient(135deg, rgba(88, 28, 135, 0.5), rgba(30, 27, 75, 0.6)); border: 1px solid rgba(168, 85, 247, 0.4); border-radius: clamp(10px, 2vw, 16px); padding: clamp(10px, 2vh, 24px) clamp(10px, 2vw, 24px); }
-        .card-title { font-size: clamp(0.9rem, 2vh, 1.2rem); color: #e9d5ff; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
-        .card-title i { color: #a78bfa; }
-        .instruction-box { display: flex; flex-direction: column; gap: 12px; }
-        .instruction-item { font-size: clamp(0.7rem, 1.6vh, 0.95rem); line-height: 1.6; color: rgba(224, 232, 245, 0.85); display: flex; align-items: flex-start; gap: clamp(6px, 1vw, 12px); }
-        .instruction-item i { color: #a78bfa; margin-top: 5px; }
-        .info-table { width: 100%; border-collapse: collapse; font-size: clamp(0.7rem, 1.4vh, 0.85rem); background: rgba(88, 28, 135, 0.2); border: 1px solid rgba(168, 85, 247, 0.35); border-radius: 8px; overflow: hidden; }
-        .info-table th { background: rgba(88, 28, 135, 0.5); color: #e9d5ff; padding: 10px 12px; text-align: left; border-bottom: 2px solid rgba(168, 85, 247, 0.4); font-weight: 600; }
-        .info-table td { padding: 10px 12px; color: #e0e7ff; border-bottom: 1px solid rgba(168, 85, 247, 0.15); vertical-align: top; }
-        .info-table tr:last-child td { border-bottom: none; }
-        .hud-footer { flex-shrink: 0; margin-top: auto; padding-top: clamp(6px, 1vh, 12px); border-top: 1px solid rgba(168, 85, 247, 0.2); display: flex; justify-content: space-between; align-items: center; z-index: 10; flex-wrap: wrap; }
-        .footer-btn-group { display: flex !important; align-items: center !important; gap: clamp(4px, 1vw, 12px) !important; }
-        .btn-action { background: transparent; border: 1px solid rgba(168, 85, 247, 0.2); color: rgba(168, 85, 247, 0.3); padding: clamp(6px, 1.2vh, 10px) clamp(10px, 1.5vw, 22px); font-size: clamp(0.65rem, 1.3vh, 0.9rem); border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s ease; text-decoration: none; min-height: clamp(32px, 5vh, 44px); }
-        .btn-action.enabled { border: 1px solid #a78bfa; color: #e9d5ff; cursor: pointer; pointer-events: auto; background: rgba(124, 58, 237, 0.15); text-shadow: 0 0 10px rgba(167, 139, 250, 0.6); box-shadow: 0 0 15px rgba(124, 58, 237, 0.3); }
-        .btn-action.enabled:hover { background: rgba(124, 58, 237, 0.28); box-shadow: 0 0 25px rgba(124, 58, 237, 0.5); transform: translateY(-1px); }
-        .page-marker { font-size: clamp(0.5rem, 1.2vh, 0.78rem); color: rgba(224, 232, 245, 0.35); display: flex; align-items: center; gap: 6px; }
-        .timer-container { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(6px, 1vh, 12px); padding: clamp(12px, 2vh, 20px); background: rgba(124, 58, 237, 0.18); border: 1px dashed rgba(168, 85, 247, 0.55); border-radius: 14px; }
-        .timer-label { font-size: clamp(0.7rem, 1.4vh, 1rem); color: #c4b5fd; min-width: clamp(50px, 8vw, 80px); }
-        .timer-number { font-size: clamp(3rem, 8vh, 4.5rem); font-family: 'Share Tech Mono', sans-serif; color: #a78bfa; text-shadow: 0 0 25px rgba(167, 139, 250, 0.6); font-weight: 700; text-align: center; min-width: clamp(50px, 8vw, 80px); }
-        .timer-number.complete { color: #00e676; text-shadow: 0 0 30px rgba(0, 230, 118, 0.6); }
-        .btn-start-centering { background: linear-gradient(135deg, #7c3aed, #6d28d9); border: none; color: #ffffff; font-weight: 800; padding: clamp(8px, 1.2vh, 14px) clamp(18px, 2.5vw, 38px); font-size: clamp(0.8rem, 1.6vh, 1.05rem); border-radius: clamp(20px, 3vw, 40px); cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4); display: inline-flex; align-items: center; gap: 8px; }
-        .btn-start-centering:hover { transform: scale(1.03); box-shadow: 0 6px 30px rgba(124, 58, 237, 0.6); }
-        .btn-start-centering:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-        .btn-restart { background: rgba(124, 58, 237, 0.25); border: none; color: #ffffff; font-weight: 800; padding: clamp(6px, 1vh, 10px) clamp(14px, 2vw, 28px); font-size: clamp(0.7rem, 1.3vh, 0.9rem); border-radius: clamp(16px, 2vw, 30px); cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 6px; }
-        .btn-restart:hover { background: rgba(124, 58, 237, 0.4); }
-        .proclamation-text { font-size: clamp(1rem, 2.5vh, 1.3rem); color: #fde68a; font-weight: bold; text-align: center; line-height: 1.6; margin-bottom: 14px; padding: 4px 6px; text-shadow: 0 0 15px rgba(253, 230, 138, 0.3); }
-        .form-submit-container { margin-top: 20px; padding: 24px 20px; background: rgba(4, 13, 33, 0.6); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 16px; width: 100%; }
-        .form-submit-container .form-title { font-size: 1.1rem; font-weight: 700; color: #e9d5ff; text-align: center; margin-bottom: 18px; text-shadow: 0 0 15px rgba(168, 85, 247, 0.3); line-height: 1.5; }
-        .form-section-title { font-weight: 600; color: #c4b5fd; margin: 14px 0 10px 0; font-size: 0.9rem; padding-bottom: 4px; border-bottom: 1px solid rgba(168, 85, 247, 0.1); }
-        .form-actions { display: flex; gap: 12px; justify-content: center; margin-top: 18px; flex-wrap: wrap; }
-        .form-actions button { padding: 10px 28px; border-radius: 24px; border: none; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px; }
-        .btn-preview { background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #ffffff; box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4); }
-        .btn-preview:hover { transform: scale(1.03); box-shadow: 0 6px 30px rgba(124, 58, 237, 0.6); }
-        .btn-reset { background: rgba(124, 58, 237, 0.15); color: #e9d5ff; border: 1px solid rgba(168, 85, 247, 0.3); }
-        .btn-reset:hover { background: rgba(124, 58, 237, 0.3); }
-        .preview-submit-container { margin-top: 20px; padding: 20px; background: rgba(0, 0, 0, 0.5); border: 2px solid rgba(168, 85, 247, 0.2); border-radius: 12px; width: 100%; }
-        .preview-submit-container .preview-header { text-align: center; font-size: 1rem; font-weight: 700; color: #fde68a; margin-bottom: 12px; text-shadow: 0 0 15px rgba(253, 230, 138, 0.2); }
-        .preview-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; background: rgba(18, 16, 23, 0.6); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 8px; overflow: hidden; }
-        .preview-table th { background: rgba(88, 28, 135, 0.35); color: #d4b68a; font-weight: 600; padding: 8px 10px; text-align: left; border-bottom: 2px solid rgba(168, 85, 247, 0.2); font-size: 0.7rem; text-transform: uppercase; }
-        .preview-table td { padding: 8px 10px; border-bottom: 1px solid rgba(168, 85, 247, 0.06); color: #e0e8f5; vertical-align: top; line-height: 1.5; }
-        .preview-table tr:last-child td { border-bottom: none; }
-        .preview-table .label-cell { color: #c4b5fd; font-weight: 400; width: 22%; }
-        .preview-table .value-cell { color: #f0e9f1; width: 38%; }
-        .capture-hint { text-align: center; margin-top: 14px; padding: 12px; background: rgba(0, 230, 118, 0.05); border: 1px dashed rgba(0, 230, 118, 0.2); border-radius: 8px; color: #8a7e6b; font-size: 0.8rem; }
-        .capture-hint i { color: #00e676; margin-right: 6px; }
-        .qr-result { color: #00e676; font-size: 0.9rem; padding: 8px 16px; border-radius: 20px; background: rgba(0, 230, 118, 0.08); border: 1px solid rgba(0, 230, 118, 0.2); word-break: break-all; }
-        .camera-guide { background: rgba(232, 96, 74, 0.08); border-left: 4px solid #E8604A; padding: 14px 16px; border-radius: 12px; color: #e0dcc8; font-size: 0.85rem; line-height: 1.8; white-space: pre-wrap; text-align: left; display: none; }
-        .camera-guide.show-fail { display: block !important; }
-        #qr-reader-container-step8 video, #qr-reader-container-step9 video { border-radius: 12px; width: 100%; }
-        .center-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .center-card .card-title { justify-content: center; }
-        .center-card .instruction-box { align-items: center; }
-        .center-card .instruction-item { text-align: left; max-width: 100%; width: 100%; justify-content: flex-start; }
-        .center-card .qr-result, .center-card .camera-guide { text-align: left; }
-        .center-card #qr-reader-container-step8, .center-card #qr-reader-container-step9 { margin: 0 auto; }
-        .en { display: none; }
-        body.lang-en .zh { display: none; }
-        body.lang-en .en { display: block; }
-        .submission-procedure { display: block !important; width: 100% !important; background: rgba(124, 58, 237, 0.12); border-left: 4px solid #00e676; border-radius: 8px; padding: 16px 20px; margin: 12px 0 16px 0; text-align: left; }
-        .submission-procedure .proc-title { color: #00e676; font-weight: 700; font-size: 1rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-        .submission-procedure .proc-step { display: flex !important; align-items: flex-start !important; gap: 12px !important; margin-bottom: 8px; color: #e0e7ff; font-size: 0.9rem; line-height: 1.7; }
-        .submission-procedure .proc-step:last-child { margin-bottom: 0; }
-        .submission-procedure .proc-num { background: #7c3aed; color: #fff; padding: 1px 7px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; min-width: 18px; text-align: center; flex-shrink: 0 !important; margin-top: 2px; }
-        .submission-procedure .proc-warn { background: rgba(232, 96, 74, 0.1); border-left: 4px solid #E8604A; padding: 8px 12px; border-radius: 6px; margin: 6px 0 10px 32px; font-size: 0.85rem; color: #e0dcc8; }
-        .submission-procedure .proc-text { flex: 1 !important; color: #e0e7ff; font-size: 0.9rem; line-height: 1.7; }
-        .btn-external-browser { display: inline-flex; align-items: center; gap: 6px; padding: 4px 14px; background: rgba(0, 230, 118, 0.12); border: 1px solid rgba(0, 230, 118, 0.3); border-radius: 20px; color: #00e676; font-size: 0.7rem; font-weight: 700; text-decoration: none; transition: all 0.3s ease; cursor: pointer; font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif; margin-left: 8px; pointer-events: auto !important; z-index: 9999 !important; position: relative !important; }
-        .btn-external-browser:hover { background: rgba(0, 230, 118, 0.2); box-shadow: 0 0 20px rgba(0, 230, 118, 0.2); transform: scale(1.02); }
-        .btn-external-browser i { font-size: 0.8rem; }
-        .hud-card [id*="Note"], .hud-card [id*="Success"], .hud-card [id*="Trigger"], .hud-card [id*="trigger"], .camera-guide, .hud-card div[style*="border-left"] { display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: flex-start !important; justify-content: flex-start !important; gap: 8px !important; width: 100% !important; text-align: left !important; box-sizing: border-box !important; }
-        .hud-card [id*="Note"] i, .hud-card [id*="Success"] i, .hud-card [id*="Trigger"] i, .hud-card [id*="trigger"] i, .camera-guide i, .hud-card div[style*="border-left"] i { flex-shrink: 0 !important; margin: 0 !important; margin-top: 3px !important; line-height: 1 !important; }
-        #step7_2VerifyTitle, #step7_2ReturnTitle { text-align: center !important; width: 100% !important; display: block !important; font-size: 1.1rem !important; font-weight: bold !important; line-height: 1.4 !important; color: #e9d5ff !important; }
+
+        .hud-container::after {
+            display: none !important;
+            content: none !important;
+            border: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        .home-breadcrumb {
+            font-size: clamp(0.6rem, 1.4vh, 0.85rem);
+            color: #c4b5fd;
+            text-decoration: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+            font-weight: bold;
+            align-self: flex-start;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 8px rgba(168, 85, 247, 0.4);
+            position: relative;
+            z-index: 1000;
+            pointer-events: auto !important;
+        }
+
+        .home-breadcrumb:hover {
+            color: #e9d5ff;
+            text-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
+            transform: translateX(-2px);
+        }
+
+        .hud-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+            padding-bottom: clamp(8px, 1.5vh, 18px);
+            margin-bottom: clamp(8px, 1.5vh, 25px);
+            flex-shrink: 0;
+        }
+
+        .app-title {
+            font-size: clamp(0.9rem, 2.2vh, 1.15rem);
+            font-weight: 700;
+            color: #e9d5ff;
+            text-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
+            max-width: 75%;
+            line-height: 1.4;
+        }
+
+        .lang-switch-group {
+            display: flex;
+            background: rgba(124, 58, 237, 0.15);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 20px;
+            padding: 2px;
+            z-index: 10;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: rgba(224, 232, 245, 0.4);
+            font-size: clamp(0.5rem, 1.2vh, 0.75rem);
+            padding: clamp(2px, 0.6vh, 5px) clamp(6px, 1vw, 12px);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn.active {
+            background: #7c3aed;
+            color: #ffffff;
+            font-weight: bold;
+            box-shadow: 0 0 12px rgba(124, 58, 237, 0.5);
+        }
+
+        .step-content {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(8px, 1.5vh, 22px);
+            overflow-y: auto;
+            padding-right: 4px;
+            min-height: 0;
+        }
+
+        .step-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hud-card {
+            background: linear-gradient(135deg, rgba(88, 28, 135, 0.5), rgba(30, 27, 75, 0.6));
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            border-radius: clamp(10px, 2vw, 16px);
+            padding: clamp(10px, 2vh, 24px) clamp(10px, 2vw, 24px);
+        }
+
+        .card-title {
+            font-size: clamp(0.9rem, 2vh, 1.2rem);
+            color: #e9d5ff;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            color: #a78bfa;
+        }
+
+        .instruction-box {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .instruction-item {
+            font-size: clamp(0.7rem, 1.6vh, 0.95rem);
+            line-height: 1.6;
+            color: rgba(224, 232, 245, 0.85);
+            display: flex;
+            align-items: flex-start;
+            gap: clamp(6px, 1vw, 12px);
+        }
+
+        .instruction-item i {
+            color: #a78bfa;
+            margin-top: 5px;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: clamp(0.7rem, 1.4vh, 0.85rem);
+            background: rgba(88, 28, 135, 0.2);
+            border: 1px solid rgba(168, 85, 247, 0.35);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .info-table th {
+            background: rgba(88, 28, 135, 0.5);
+            color: #e9d5ff;
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 2px solid rgba(168, 85, 247, 0.4);
+            font-weight: 600;
+        }
+
+        .info-table td {
+            padding: 10px 12px;
+            color: #e0e7ff;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.15);
+            vertical-align: top;
+        }
+
+        .info-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .hud-footer {
+            flex-shrink: 0;
+            margin-top: auto;
+            padding-top: clamp(6px, 1vh, 12px);
+            border-top: 1px solid rgba(168, 85, 247, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            flex-wrap: wrap;
+        }
+
+        .footer-btn-group {
+            display: flex !important;
+            align-items: center !important;
+            gap: clamp(4px, 1vw, 12px) !important;
+        }
+
+        .btn-action {
+            background: transparent;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            color: rgba(168, 85, 247, 0.3);
+            padding: clamp(6px, 1.2vh, 10px) clamp(10px, 1.5vw, 22px);
+            font-size: clamp(0.65rem, 1.3vh, 0.9rem);
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            min-height: clamp(32px, 5vh, 44px);
+        }
+
+        .btn-action.enabled {
+            border: 1px solid #a78bfa;
+            color: #e9d5ff;
+            cursor: pointer;
+            pointer-events: auto;
+            background: rgba(124, 58, 237, 0.15);
+            text-shadow: 0 0 10px rgba(167, 139, 250, 0.6);
+            box-shadow: 0 0 15px rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-action.enabled:hover {
+            background: rgba(124, 58, 237, 0.28);
+            box-shadow: 0 0 25px rgba(124, 58, 237, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .page-marker {
+            font-size: clamp(0.5rem, 1.2vh, 0.78rem);
+            color: rgba(224, 232, 245, 0.35);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ===== 計時器 ===== */
+        .timer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(6px, 1vh, 12px);
+            padding: clamp(12px, 2vh, 20px);
+            background: rgba(124, 58, 237, 0.18);
+            border: 1px dashed rgba(168, 85, 247, 0.55);
+            border-radius: 14px;
+        }
+
+        .timer-label {
+            font-size: clamp(0.7rem, 1.4vh, 1rem);
+            color: #c4b5fd;
+            min-width: clamp(50px, 8vw, 80px);
+        }
+
+        .timer-number {
+            font-size: clamp(3rem, 8vh, 4.5rem);
+            font-family: 'Share Tech Mono', sans-serif;
+            color: #a78bfa;
+            text-shadow: 0 0 25px rgba(167, 139, 250, 0.6);
+            font-weight: 700;
+            text-align: center;
+            min-width: clamp(50px, 8vw, 80px);
+        }
+
+        .timer-number.complete {
+            color: #00e676;
+            text-shadow: 0 0 30px rgba(0, 230, 118, 0.6);
+        }
+
+        .btn-start-centering {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            border: none;
+            color: #ffffff;
+            font-weight: 800;
+            padding: clamp(8px, 1.2vh, 14px) clamp(18px, 2.5vw, 38px);
+            font-size: clamp(0.8rem, 1.6vh, 1.05rem);
+            border-radius: clamp(20px, 3vw, 40px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-start-centering:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 30px rgba(124, 58, 237, 0.6);
+        }
+
+        .btn-start-centering:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-restart {
+            background: rgba(124, 58, 237, 0.25);
+            border: none;
+            color: #ffffff;
+            font-weight: 800;
+            padding: clamp(6px, 1vh, 10px) clamp(14px, 2vw, 28px);
+            font-size: clamp(0.7rem, 1.3vh, 0.9rem);
+            border-radius: clamp(16px, 2vw, 30px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-restart:hover {
+            background: rgba(124, 58, 237, 0.4);
+        }
+
+        .proclamation-text {
+            font-size: clamp(1rem, 2.5vh, 1.3rem);
+            color: #fde68a;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 14px;
+            padding: 4px 6px;
+            text-shadow: 0 0 15px rgba(253, 230, 138, 0.3);
+        }
+
+        /* ===== 表單 ===== */
+        .form-submit-container {
+            margin-top: 20px;
+            padding: 24px 20px;
+            background: rgba(4, 13, 33, 0.6);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 16px;
+            width: 100%;
+        }
+
+        .form-submit-container .form-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #e9d5ff;
+            text-align: center;
+            margin-bottom: 18px;
+            text-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+            line-height: 1.5;
+        }
+
+        .form-section-title {
+            font-weight: 600;
+            color: #c4b5fd;
+            margin: 14px 0 10px 0;
+            font-size: 0.9rem;
+            padding-bottom: 4px;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.1);
+        }
+
+        .form-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .form-row label {
+            min-width: 130px;
+            color: #c4b5fd;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .form-row input,
+        .form-row select,
+        .form-row textarea {
+            flex: 1;
+            min-width: 200px;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 8px;
+            color: #e0e8f5;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-row input:focus,
+        .form-row select:focus,
+        .form-row textarea:focus {
+            border-color: #a78bfa;
+            box-shadow: 0 0 15px rgba(167, 139, 250, 0.15);
+        }
+
+        .form-row select option {
+            background: #0b0f1a;
+            color: #e0e8f5;
+        }
+
+        .form-row textarea {
+            resize: vertical;
+            min-height: 44px;
+        }
+
+        .form-row .hint {
+            color: #8a7e6b;
+            font-size: 0.7rem;
+            font-style: italic;
+            min-width: 120px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+
+        .form-actions button {
+            padding: 10px 28px;
+            border-radius: 24px;
+            border: none;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-preview {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-preview:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 30px rgba(124, 58, 237, 0.6);
+        }
+
+        .btn-reset {
+            background: rgba(124, 58, 237, 0.15);
+            color: #e9d5ff;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .btn-reset:hover {
+            background: rgba(124, 58, 237, 0.3);
+        }
+
+        .preview-submit-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(168, 85, 247, 0.2);
+            border-radius: 12px;
+            width: 100%;
+        }
+
+        .preview-submit-container .preview-header {
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fde68a;
+            margin-bottom: 12px;
+            text-shadow: 0 0 15px rgba(253, 230, 138, 0.2);
+        }
+
+        .preview-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            background: rgba(18, 16, 23, 0.6);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .preview-table th {
+            background: rgba(88, 28, 135, 0.35);
+            color: #d4b68a;
+            font-weight: 600;
+            padding: 8px 10px;
+            text-align: left;
+            border-bottom: 2px solid rgba(168, 85, 247, 0.2);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        .preview-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.06);
+            color: #e0e8f5;
+            vertical-align: top;
+            line-height: 1.5;
+        }
+
+        .preview-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .preview-table .label-cell {
+            color: #c4b5fd;
+            font-weight: 400;
+            width: 22%;
+        }
+
+        .preview-table .value-cell {
+            color: #f0e9f1;
+            width: 38%;
+        }
+
+        .preview-table .section-header {
+            background: rgba(88, 28, 135, 0.2);
+            color: #e9d5ff;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .capture-hint {
+            text-align: center;
+            margin-top: 14px;
+            padding: 12px;
+            background: rgba(0, 230, 118, 0.05);
+            border: 1px dashed rgba(0, 230, 118, 0.2);
+            border-radius: 8px;
+            color: #8a7e6b;
+            font-size: 0.8rem;
+        }
+
+        .capture-hint i {
+            color: #00e676;
+            margin-right: 6px;
+        }
+
+        /* ===== QR 掃描相關 ===== */
+        .qr-result {
+            color: #00e676;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(0, 230, 118, 0.08);
+            border: 1px solid rgba(0, 230, 118, 0.2);
+            word-break: break-all;
+        }
+
+        .camera-guide {
+            background: rgba(232, 96, 74, 0.08);
+            border-left: 4px solid #E8604A;
+            padding: 14px 16px;
+            border-radius: 12px;
+            color: #e0dcc8;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            text-align: left;
+            display: none;
+        }
+
+        .camera-guide.show-fail {
+            display: block !important;
+        }
+
+        #qr-reader-container-step8 video,
+        #qr-reader-container-step9 video {
+            border-radius: 12px;
+            width: 100%;
+        }
+
+        .center-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .center-card .card-title {
+            justify-content: center;
+        }
+
+        .center-card .instruction-box {
+            align-items: center;
+        }
+
+        .center-card .instruction-item {
+            text-align: left;
+            max-width: 100%;
+            width: 100%;
+            justify-content: flex-start;
+        }
+
+        .center-card .qr-result,
+        .center-card .camera-guide {
+            text-align: left;
+        }
+
+        .center-card #qr-reader-container-step8,
+        .center-card #qr-reader-container-step9 {
+            margin: 0 auto;
+        }
+
+        .en {
+            display: none;
+        }
+
+        body.lang-en .zh {
+            display: none;
+        }
+
+        body.lang-en .en {
+            display: block;
+        }
+
+        /* ===== 提交程序 ===== */
+        .submission-procedure {
+            display: block !important;
+            width: 100% !important;
+            background: rgba(124, 58, 237, 0.12);
+            border-left: 4px solid #00e676;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 12px 0 16px 0;
+            text-align: left;
+        }
+
+        .submission-procedure .proc-title {
+            color: #00e676;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .submission-procedure .proc-step {
+            display: flex !important;
+            align-items: flex-start !important;
+            gap: 12px !important;
+            margin-bottom: 8px;
+            color: #e0e7ff;
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .submission-procedure .proc-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .submission-procedure .proc-num {
+            background: #7c3aed;
+            color: #fff;
+            padding: 1px 7px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            min-width: 18px;
+            text-align: center;
+            flex-shrink: 0 !important;
+            margin-top: 2px;
+        }
+
+        .submission-procedure .proc-warn {
+            background: rgba(232, 96, 74, 0.1);
+            border-left: 4px solid #E8604A;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 6px 0 10px 32px;
+            font-size: 0.85rem;
+            color: #e0dcc8;
+        }
+
+        .submission-procedure .proc-text {
+            flex: 1 !important;
+            color: #e0e7ff;
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .btn-external-browser {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 14px;
+            background: rgba(0, 230, 118, 0.12);
+            border: 1px solid rgba(0, 230, 118, 0.3);
+            border-radius: 20px;
+            color: #00e676;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif;
+            margin-left: 8px;
+            pointer-events: auto !important;
+            z-index: 9999 !important;
+            position: relative !important;
+        }
+
+        .btn-external-browser:hover {
+            background: rgba(0, 230, 118, 0.2);
+            box-shadow: 0 0 20px rgba(0, 230, 118, 0.2);
+            transform: scale(1.02);
+        }
+
+        .btn-external-browser i {
+            font-size: 0.8rem;
+        }
+
+        /* ===== 強制同一列（圖示＋文字） ===== */
+        .hud-card [id*="Note"],
+        .hud-card [id*="Success"],
+        .hud-card [id*="Trigger"],
+        .hud-card [id*="trigger"],
+        .camera-guide,
+        .hud-card div[style*="border-left"] {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            align-items: flex-start !important;
+            justify-content: flex-start !important;
+            gap: 8px !important;
+            width: 100% !important;
+            text-align: left !important;
+            box-sizing: border-box !important;
+        }
+
+        .hud-card [id*="Note"] i,
+        .hud-card [id*="Success"] i,
+        .hud-card [id*="Trigger"] i,
+        .hud-card [id*="trigger"] i,
+        .camera-guide i,
+        .hud-card div[style*="border-left"] i {
+            flex-shrink: 0 !important;
+            margin: 0 !important;
+            margin-top: 3px !important;
+            line-height: 1 !important;
+        }
+
+        /* ===== 標題置中 ===== */
+        #step7_2VerifyTitle,
+        #step7_2ReturnTitle {
+            text-align: center !important;
+            width: 100% !important;
+            display: block !important;
+            font-size: 1.1rem !important;
+            font-weight: bold !important;
+            line-height: 1.4 !important;
+            color: #e9d5ff !important;
+        }
+
+        /* ===== RWD ===== */
         @media (max-width: 480px) {
-            body { padding: 4px !important; }
-            .hud-container { padding: 8px 6px !important; border-radius: 12px !important; }
-            .hud-header { margin-bottom: 6px !important; padding-bottom: 4px !important; }
-            .hud-footer { margin-top: 8px !important; padding-top: 6px !important; }
-            .btn-external-browser { font-size: 0.6rem; padding: 3px 10px; gap: 4px; margin-left: 4px; }
-            .btn-external-browser i { font-size: 0.6rem; }
-            .submission-procedure .proc-step { font-size: 0.75rem; }
-            .submission-procedure .proc-text { font-size: 0.75rem; }
+            body {
+                padding: 4px !important;
+            }
+            .hud-container {
+                padding: 8px 6px !important;
+                border-radius: 12px !important;
+            }
+            .hud-header {
+                margin-bottom: 6px !important;
+                padding-bottom: 4px !important;
+            }
+            .hud-footer {
+                margin-top: 8px !important;
+                padding-top: 6px !important;
+            }
+            .form-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .form-row label {
+                min-width: auto;
+            }
+            .form-row input,
+            .form-row select,
+            .form-row textarea {
+                min-width: auto;
+            }
+            .form-row .hint {
+                min-width: auto;
+            }
+            .preview-table {
+                font-size: 0.65rem;
+            }
+            .preview-table td,
+            .preview-table th {
+                padding: 4px 6px;
+            }
+            .btn-external-browser {
+                font-size: 0.6rem;
+                padding: 3px 10px;
+                gap: 4px;
+                margin-left: 4px;
+            }
+            .btn-external-browser i {
+                font-size: 0.6rem;
+            }
+            .submission-procedure .proc-step {
+                font-size: 0.75rem;
+            }
+            .submission-procedure .proc-text {
+                font-size: 0.75rem;
+            }
         }
-        /* 日期輸入框 */
-        .sd2-date-input { padding: 6px 10px !important; background: rgba(0, 0, 0, 0.35) !important; border: 1px solid rgba(168, 85, 247, 0.35) !important; border-radius: 6px !important; color: #e0e8f5 !important; font-size: 0.8rem !important; font-family: inherit !important; min-width: 140px !important; outline: none !important; cursor: pointer !important; flex: 0.8 !important; }
-        .sd2-date-input:focus { border-color: #a78bfa !important; box-shadow: 0 0 12px rgba(167, 139, 250, 0.2) !important; }
-        .sd2-date-input::-webkit-calendar-picker-indicator { filter: invert(0.85); cursor: pointer; }
-        .sd2-date-input::-webkit-datetime-edit { color: #e0e8f5 !important; }
-        .day-title-row-72 { display: flex !important; align-items: center !important; flex-wrap: wrap !important; gap: 10px !important; margin-bottom: 6px !important; font-weight: bold !important; font-size: 0.9rem !important; color: #c4b5fd !important; }
-        .day-title-row-72.day10-72 { color: #fbbf24 !important; }
-        .day-title-row-72 .day-label-72 { color: inherit !important; }
-        .day-title-row-72 .recited-label-72 { color: #e0e7ff !important; font-size: 0.8rem !important; font-weight: normal !important; }
-        .sd2-date.old-date-input { display: none !important; }
-        .lang-en .day-title-row-72 { font-size: 0.85rem !important; }
-        .lang-en .sd2-date-input { font-size: 0.75rem !important; min-width: 120px !important; }
-        .lang-en .recited-label-72 { font-size: 0.75rem !important; }
-        .date-hint-text, .date-label-removed { display: none !important; }
     </style>
 </head>
 <body>
@@ -167,8 +910,11 @@
                 <button class="lang-btn" onclick="switchLanguage('en')">English</button>
             </div>
         </header>
+
         <main class="step-content">
+            <!-- ===== 第7項 第二印 × 修心印 完整內容 ===== -->
             <div class="step-panel active" id="panelStep7_2">
+
                 <!-- 標題卡 -->
                 <div class="hud-card" style="background:linear-gradient(135deg,rgba(88,28,135,0.5),rgba(30,27,75,0.6)); border:1px solid rgba(168,85,247,0.5);">
                     <div style="text-align:center; color:#e9d5ff; font-size:1.05rem; font-weight:bold; margin-bottom:16px; letter-spacing:1px;"><span id="step7_2Title">🧘 第二印 × 修心印</span></div>
@@ -185,6 +931,7 @@
                         </table>
                     </div>
                 </div>
+
                 <!-- 【一】模組說明 -->
                 <div class="hud-card">
                     <div class="card-title"><i class="fa-solid fa-circle-info" style="color:#a78bfa;"></i><span id="step7_2Sec1">【一】模組說明</span></div>
@@ -202,6 +949,7 @@
                         <div class="instruction-item" style="margin-top:8px; color:#fde68a;"><i class="fa-solid fa-quote-left" style="color:#fde68a;"></i><span id="step7_2Summary">一句話總結：此誓文 ≡ 鏡修啟動鍵 × 修心印認證語</span></div>
                     </div>
                 </div>
+
                 <!-- 【二】啟動條件與遞交程序 -->
                 <div class="hud-card">
                     <div class="card-title"><i class="fa-solid fa-list-check" style="color:#a78bfa;"></i><span id="step7_2Sec2">【二】啟動條件與遞交程序</span></div>
@@ -228,6 +976,7 @@
                         <div style="color:#e0e7ff; font-size:0.88rem; line-height:1.6;"><span id="step7_2NoteText">完成十錄鏡修與誓文誦讀，即代表《第二印 × 修心印》正式啟印，誓印入冊，修心願軌已與天律對位。</span></div>
                     </div>
                 </div>
+
                 <!-- 【三】授權誓讀階段 -->
                 <div class="hud-card" style="border:1px solid rgba(168,85,247,0.4);">
                     <div class="card-title"><i class="fa-solid fa-book-open" style="color:#a78bfa;"></i><span id="step7_2Sec3">【三】授權誓讀階段</span></div>
@@ -246,6 +995,7 @@
                         <button class="btn-restart" id="btnRestart" onclick="resetTimer()" style="display:none;"><i class="fa-solid fa-rotate-right"></i> <span id="btnRestartText">重新靜心</span></button>
                     </div>
                 </div>
+
                 <!-- 【四】接續進程 -->
                 <div class="hud-card">
                     <div class="card-title"><i class="fa-solid fa-arrow-right" style="color:#a78bfa;"></i><span id="step7_2Sec4">【四】接續進程</span></div>
@@ -260,7 +1010,8 @@
                         <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_2Scan2">系統將自動導引至【誓印觸發介面】，同步啟動誓魂對頻程序，並進入主頻連線與授權判定階段。</span></div>
                     </div>
                 </div>
-                <!-- ① 驗證階段 -->
+
+                <!-- ① 驗證階段（啟動觸發）置中 -->
                 <div class="hud-card center-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.2);">
                     <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-shield-halved" style="color:#a78bfa;"></i><span id="step7_2VerifyTitle">🧭 ① 驗證階段（啟動觸發）</span></div>
                     <div class="instruction-box" style="align-items:center;">
@@ -282,51 +1033,69 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- ============================================================ -->
                 <!-- ② 回傳誓證 -->
-                <div class="hud-card center-card" style="width:100%!important;max-width:100%!important;box-sizing:border-box!important;display:block!important;float:none!important;clear:both!important;background:linear-gradient(135deg,rgba(88,28,135,0.5),rgba(30,27,75,0.6));border:1px solid rgba(168,85,247,0.5);padding:18px;border-radius:12px;margin-bottom:20px;">
-                    <div style="display:flex!important;align-items:center!important;justify-content:center!important;gap:8px;color:#e9d5ff;font-size:1.1rem;font-weight:bold;margin-bottom:16px;width:100%!important;">
-                        <i class="fa-solid fa-certificate" style="color:#a78bfa;"></i>
+                <!-- ============================================================ -->
+                <div class="hud-card center-card" style="width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; display: block !important; float: none !important; clear: both !important; background: linear-gradient(135deg, rgba(88,28,135,0.5), rgba(30,27,75,0.6)); border: 1px solid rgba(168,85,247,0.5); padding: 18px; border-radius: 12px; margin-bottom: 20px;">
+                    <!-- 1. 卡片標題 -->
+                    <div style="display: flex !important; align-items: center !important; justify-content: center !important; gap: 8px; color: #e9d5ff; font-size: 1.1rem; font-weight: bold; margin-bottom: 16px; width: 100% !important;">
+                        <i class="fa-solid fa-certificate" style="color: #a78bfa;"></i>
                         <span id="step7_2ReturnTitle">📩 ② 回傳誓證（確認誓印）</span>
                     </div>
-                    <div style="display:block!important;width:100%!important;background:rgba(0,230,118,0.12);border-left:4px solid #00e676;padding:12px 16px;border-radius:8px;margin-bottom:16px;box-sizing:border-box!important;">
-                        <div style="color:#00e676;font-size:1rem;font-weight:bold;" id="step7_2Success">✅ 顯示：「誓印通過」</div>
+                    <!-- 2. ✅ 顯示：「誓印通過」 -->
+                    <div style="display: block !important; width: 100% !important; background: rgba(0, 230, 118, 0.12); border-left: 4px solid #00e676; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; box-sizing: border-box !important;">
+                        <div style="color: #00e676; font-size: 1rem; font-weight: bold;" id="step7_2Success">✅ 顯示：「誓印通過」</div>
                     </div>
-                    <div class="submission-procedure" id="submissionProcedureContainer"></div>
-                    <div style="display:block!important;width:100%!important;background:rgba(124,58,237,0.35);border-left:4px solid #a78bfa;padding:12px 14px;border-radius:8px;margin-bottom:12px;border:1px solid rgba(168,85,247,0.5);box-sizing:border-box!important;">
-                        <div style="font-weight:bold;color:#e9d5ff;font-size:0.88rem;margin-bottom:6px;display:flex!important;align-items:center!important;gap:6px;">
+
+                    <!-- 3. 📋 【提交程序】 -->
+                    <div class="submission-procedure" id="submissionProcedureContainer">
+                        <!-- 由 JavaScript 動態填入 -->
+                    </div>
+
+                    <!-- 4. 輸入示範指令 -->
+                    <div style="display: block !important; width: 100% !important; background: rgba(124, 58, 237, 0.35); border-left: 4px solid #a78bfa; padding: 12px 14px; border-radius: 8px; margin-bottom: 12px; border: 1px solid rgba(168, 85, 247, 0.5); box-sizing: border-box !important;">
+                        <div style="font-weight: bold; color: #e9d5ff; font-size: 0.88rem; margin-bottom: 6px; display: flex !important; align-items: center !important; gap: 6px;">
                             <i class="fa-solid fa-keyboard"></i>
                             <span id="step7_2ReturnInputLabel">輸入示範：</span>
                         </div>
-                        <div style="font-weight:bold;color:#ffffff;font-size:0.9rem;background:rgba(0,0,0,0.25);padding:8px 12px;border-radius:6px;word-break:break-all;">
+                        <div style="font-weight: bold; color: #ffffff; font-size: 0.9rem; background: rgba(0,0,0,0.25); padding: 8px 12px; border-radius: 6px; word-break: break-all;">
                             <span id="step7_2ReturnCommand">【執行指令】回傳【第二印 修心印 誓印通過】誓證</span>
                         </div>
                     </div>
-                    <div style="display:flex!important;align-items:flex-start!important;gap:6px;font-size:0.85rem;color:rgba(224,232,245,0.85);line-height:1.6;margin-bottom:10px;width:100%!important;">
-                        <i class="fa-solid fa-link" style="color:#00e676;margin-top:3px;flex-shrink:0;"></i>
+
+                    <!-- 5. 說明標語 1 -->
+                    <div style="display: flex !important; align-items: flex-start !important; gap: 6px; font-size: 0.85rem; color: rgba(224, 232, 245, 0.85); line-height: 1.6; margin-bottom: 10px; width: 100% !important;">
+                        <i class="fa-solid fa-link" style="color: #00e676; margin-top: 3px; flex-shrink: 0;"></i>
                         <span id="step7_2ReturnNote">送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span>
                     </div>
-                    <div style="display:flex!important;align-items:flex-start!important;gap:6px;background:rgba(232,96,74,0.1);border-left:4px solid #E8604A;padding:10px 14px;border-radius:8px;font-size:0.82rem;color:#e0dcc8;line-height:1.5;width:100%!important;box-sizing:border-box!important;">
-                        <i class="fa-solid fa-exclamation-circle" style="color:#E8604A;margin-top:2px;flex-shrink:0;"></i>
+
+                    <!-- 6. 說明標語 2 -->
+                    <div style="display: flex !important; align-items: flex-start !important; gap: 6px; background: rgba(232, 96, 74, 0.1); border-left: 4px solid #E8604A; padding: 10px 14px; border-radius: 8px; font-size: 0.82rem; color: #e0dcc8; line-height: 1.5; width: 100% !important; box-sizing: border-box !important;">
+                        <i class="fa-solid fa-exclamation-circle" style="color: #E8604A; margin-top: 2px; flex-shrink: 0;"></i>
                         <span id="step7_2ReturnTriggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span>
                     </div>
-                    <div class="hud-card" id="qrScanCardStep9" style="display:block!important;width:100%!important;margin-top:14px;border:1px solid rgba(168,85,247,0.3);background:rgba(88,28,135,0.15);padding:14px;border-radius:8px;box-sizing:border-box!important;">
-                        <div style="display:flex!important;justify-content:center!important;align-items:center!important;gap:8px;font-weight:bold;color:#e9d5ff;margin-bottom:10px;">
+
+                    <!-- 7. 二維碼掃描卡片 -->
+                    <div class="hud-card" id="qrScanCardStep9" style="display: block !important; width: 100% !important; margin-top: 14px; border: 1px solid rgba(168,85,247,0.3); background: rgba(88,28,135,0.15); padding: 14px; border-radius: 8px; box-sizing: border-box !important;">
+                        <div style="display: flex !important; justify-content: center !important; align-items: center !important; gap: 8px; font-weight: bold; color: #e9d5ff; margin-bottom: 10px;">
                             <i class="fa-solid fa-qrcode"></i>
                             <span id="step7_2ReturnQrTitle">📷 請掃描【誓導 QR Code】完成回傳誓證</span>
                         </div>
-                        <div style="text-align:center;">
-                            <div id="qr-reader-container-step9" style="width:100%;max-width:280px;margin:0 auto;"></div>
-                            <button class="btn-restart" id="btnScanQRStep9" style="margin-top:10px;cursor:pointer;padding:8px 16px;border-radius:6px;">
+                        <div style="text-align: center;">
+                            <div id="qr-reader-container-step9" style="width: 100%; max-width: 280px; margin: 0 auto;"></div>
+                            <button class="btn-restart" id="btnScanQRStep9" style="margin-top: 10px; cursor: pointer; padding: 8px 16px; border-radius: 6px;">
                                 <i class="fa-solid fa-qrcode"></i> <span id="step7_2ReturnBtnScan">📷 開始掃描</span>
                             </button>
-                            <div id="qrScanResultStep9" class="qr-result" style="display:none;margin-top:10px;color:#00e676;"><i class="fa-solid fa-check-circle"></i><span id="step7_2ReturnResult">掃描成功！已完成回傳誓證</span></div>
-                            <div id="cameraGuideStep9" class="camera-guide" style="display:none;text-align:left;margin-top:12px;font-size:0.8rem;background:rgba(0,0,0,0.4);padding:10px;border-radius:6px;color:#cbd5e1;">
+                            <div id="qrScanResultStep9" class="qr-result" style="display: none; margin-top: 10px; color: #00e676;"><i class="fa-solid fa-check-circle"></i><span id="step7_2ReturnResult">掃描成功！已完成回傳誓證</span></div>
+                            <div id="cameraGuideStep9" class="camera-guide" style="display: none; text-align: left; margin-top: 12px; font-size: 0.8rem; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 6px; color: #cbd5e1;">
                                 <span id="step7_2ReturnCameraGuide">📷 無法啟動相機<br>⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- 顯示：「誓印未通過」 -->
+
+                <!-- 顯示：「誓印未通過」→ 補誓程序 -->
                 <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.2);">
                     <div style="background:rgba(0,230,118,0.12); border-left:4px solid #00e676; padding:14px 16px; border-radius:10px; margin-bottom:16px;">
                         <div style="color:#00e676; font-size:1.1rem; font-weight:bold;"><span id="step7_2NotPassedTitle">⚠️ 顯示：「誓印未通過」</span></div>
@@ -336,6 +1105,7 @@
                         <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_2NotPassed2">經補誓與再啟印完成後，方可重新進入「第二印 修心印」啟印程序。</span></div>
                     </div>
                 </div>
+
                 <!-- 收束條文 -->
                 <div class="hud-card" style="border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15);">
                     <div class="card-title"><i class="fa-solid fa-bookmark" style="color:#a78bfa;"></i><span id="step7_2ClosureTitle">【收束條文】</span></div>
@@ -344,10 +1114,14 @@
                         <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step7_2Closure2">已鎖入《宇宙天律 × 七印誓網》主冊，願軌對頻穩定，誓源歸正。</span></div>
                     </div>
                 </div>
-                <!-- ===== 提交表單 ===== -->
+
+                <!-- ============================================================ -->
+                <!-- 提交表單：鏡修省思 × 習氣調頻 × 誓文實踐紀錄表 -->
+                <!-- ============================================================ -->
                 <div class="form-submit-container">
-                    <div class="form-title" id="formMainTitle">📋 第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》提交表單</div>
-                    <div class="form-section-title" id="formHelpTitle">📌 使用說明</div>
+                    <div class="form-title">📋 第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》提交表單</div>
+
+                    <div class="form-section-title">📌 使用說明</div>
                     <div style="font-size:0.85rem; color:#e0e7ff; line-height:1.7; padding:8px 4px 12px 4px;">
                         <div id="step7_2FormHelp1">• 每完成一錄鏡修，請填寫日期、覺察的習氣／情緒觸發來源。</div>
                         <div id="step7_2FormHelp2">• 「鏡修省思摘要」簡述觀察與體悟（10~30字）。</div>
@@ -355,19 +1129,138 @@
                         <div id="step7_2FormHelp4">• 「誓文誦讀」完成後勾選✓。</div>
                         <div id="step7_2FormHelp5" style="color:#fde68a;">• 十錄完成後上傳表單，即可完成冊記。</div>
                     </div>
-                    <div class="form-section-title" id="formSectionTitle">📋 第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》表單</div>
+
+                    <div class="form-section-title">📋 第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》表單</div>
+
                     <!-- 第1錄～第10錄 -->
-                    <div id="mirrorFormEntries">
-                        <!-- 由 JavaScript 動態生成 -->
+                    <div style="background:rgba(88,28,135,0.10); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
+                        <div style="color:#c4b5fd; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">第1錄 <span id="step7_2Day1Label">（請填寫日期）</span></div>
+                        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                            <input type="date" class="sd2-date" data-day="1" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-trigger" data-day="1" placeholder="覺察的習氣／情緒觸發來源" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-insight" data-day="1" placeholder="鏡修省思摘要(10~30字)" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-phrase" data-day="1" placeholder="願心調頻語" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="sd2-recited" data-day="1"> <span id="step7_2Day1Recited">誓文誦讀</span></label>
+                        </div>
                     </div>
+
+                    <!-- 第2錄 -->
+                    <div style="background:rgba(88,28,135,0.06); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
+                        <div style="color:#c4b5fd; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">第2錄 <span id="step7_2Day2Label">（請填寫日期）</span></div>
+                        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                            <input type="date" class="sd2-date" data-day="2" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-trigger" data-day="2" placeholder="覺察的習氣／情緒觸發來源" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-insight" data-day="2" placeholder="鏡修省思摘要(10~30字)" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-phrase" data-day="2" placeholder="願心調頻語" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="sd2-recited" data-day="2"> <span id="step7_2Day2Recited">誓文誦讀</span></label>
+                        </div>
+                    </div>
+
+                    <!-- 第3錄 -->
+                    <div style="background:rgba(88,28,135,0.10); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
+                        <div style="color:#c4b5fd; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">第3錄 <span id="step7_2Day3Label">（請填寫日期）</span></div>
+                        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                            <input type="date" class="sd2-date" data-day="3" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-trigger" data-day="3" placeholder="覺察的習氣／情緒觸發來源" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-insight" data-day="3" placeholder="鏡修省思摘要(10~30字)" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-phrase" data-day="3" placeholder="願心調頻語" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="sd2-recited" data-day="3"> <span id="step7_2Day3Recited">誓文誦讀</span></label>
+                        </div>
+                    </div>
+
+                    <!-- 第4錄 -->
+                    <div style="background:rgba(88,28,135,0.06); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
+                        <div style="color:#c4b5fd; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">第4錄 <span id="step7_2Day4Label">（請填寫日期）</span></div>
+                        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                            <input type="date" class="sd2-date" data-day="4" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-trigger" data-day="4" placeholder="覺察的習氣／情緒觸發來源" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-insight" data-day="4" placeholder="鏡修省思摘要(10~30字)" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-phrase" data-day="4" placeholder="願心調頻語" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="sd2-recited" data-day="4"> <span id="step7_2Day4Recited">誓文誦讀</span></label>
+                        </div>
+                    </div>
+
+                    <!-- 第5錄 -->
+                    <div style="background:rgba(88,28,135,0.10); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
+                        <div style="color:#c4b5fd; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">第5錄 <span id="step7_2Day5Label">（請填寫日期）</span></div>
+                        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                            <input type="date" class="sd2-date" data-day="5" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-trigger" data-day="5" placeholder="覺察的習氣／情緒觸發來源" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-insight" data-day="5" placeholder="鏡修省思摘要(10~30字)" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-phrase" data-day="5" placeholder="願心調頻語" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="sd2-recited" data-day="5"> <span id="step7_2Day5Recited">誓文誦讀</span></label>
+                        </div>
+                    </div>
+
+                    <!-- 第6錄 -->
+                    <div style="background:rgba(88,28,135,0.06); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
+                        <div style="color:#c4b5fd; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">第6錄 <span id="step7_2Day6Label">（請填寫日期）</span></div>
+                        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                            <input type="date" class="sd2-date" data-day="6" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-trigger" data-day="6" placeholder="覺察的習氣／情緒觸發來源" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-insight" data-day="6" placeholder="鏡修省思摘要(10~30字)" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-phrase" data-day="6" placeholder="願心調頻語" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="sd2-recited" data-day="6"> <span id="step7_2Day6Recited">誓文誦讀</span></label>
+                        </div>
+                    </div>
+
+                    <!-- 第7錄 -->
+                    <div style="background:rgba(88,28,135,0.10); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
+                        <div style="color:#c4b5fd; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">第7錄 <span id="step7_2Day7Label">（請填寫日期）</span></div>
+                        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                            <input type="date" class="sd2-date" data-day="7" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-trigger" data-day="7" placeholder="覺察的習氣／情緒觸發來源" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-insight" data-day="7" placeholder="鏡修省思摘要(10~30字)" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-phrase" data-day="7" placeholder="願心調頻語" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="sd2-recited" data-day="7"> <span id="step7_2Day7Recited">誓文誦讀</span></label>
+                        </div>
+                    </div>
+
+                    <!-- 第8錄 -->
+                    <div style="background:rgba(88,28,135,0.06); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
+                        <div style="color:#c4b5fd; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">第8錄 <span id="step7_2Day8Label">（請填寫日期）</span></div>
+                        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                            <input type="date" class="sd2-date" data-day="8" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-trigger" data-day="8" placeholder="覺察的習氣／情緒觸發來源" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-insight" data-day="8" placeholder="鏡修省思摘要(10~30字)" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-phrase" data-day="8" placeholder="願心調頻語" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="sd2-recited" data-day="8"> <span id="step7_2Day8Recited">誓文誦讀</span></label>
+                        </div>
+                    </div>
+
+                    <!-- 第9錄 -->
+                    <div style="background:rgba(88,28,135,0.10); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
+                        <div style="color:#c4b5fd; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">第9錄 <span id="step7_2Day9Label">（請填寫日期）</span></div>
+                        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                            <input type="date" class="sd2-date" data-day="9" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-trigger" data-day="9" placeholder="覺察的習氣／情緒觸發來源" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-insight" data-day="9" placeholder="鏡修省思摘要(10~30字)" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-phrase" data-day="9" placeholder="願心調頻語" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="sd2-recited" data-day="9"> <span id="step7_2Day9Recited">誓文誦讀</span></label>
+                        </div>
+                    </div>
+
+                    <!-- 第10錄 -->
+                    <div style="background:rgba(251,191,36,0.08); border:1px solid rgba(251,191,36,0.2); border-radius:8px; padding:12px 14px; margin-bottom:10px;">
+                        <div style="color:#fbbf24; font-weight:bold; font-size:0.9rem; margin-bottom:6px;">⭐ 第10錄 <span id="step7_2Day10Label">（請填寫日期）</span></div>
+                        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                            <input type="date" class="sd2-date" data-day="10" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(251,191,36,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-trigger" data-day="10" placeholder="覺察的習氣／情緒觸發來源" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(251,191,36,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-insight" data-day="10" placeholder="鏡修省思摘要(10~30字)" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(251,191,36,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <input type="text" class="sd2-phrase" data-day="10" placeholder="願心調頻語" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(251,191,36,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">
+                            <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="sd2-recited" data-day="10"> <span id="step7_2Day10Recited">誓文誦讀</span></label>
+                        </div>
+                    </div>
+
                     <div class="form-actions">
                         <button class="btn-preview" onclick="generateMirrorPreview()"><i class="fa-solid fa-eye"></i> <span id="step7_2BtnPreview">預覽表單</span></button>
                         <button class="btn-reset" onclick="resetMirrorForm()"><i class="fa-solid fa-rotate-left"></i> <span id="step7_2BtnReset">重置</span></button>
                         <button class="btn-reset" onclick="hideMirrorPreview()"><i class="fa-solid fa-times"></i> <span id="step7_2BtnClose">關閉預覽</span></button>
                         <button class="btn-reset" onclick="loadMirrorDemo()" style="background:rgba(0,230,118,0.1); border:1px solid rgba(0,230,118,0.2); color:#00e676;"><i class="fa-solid fa-file-import"></i> <span id="step7_2BtnDemo">載入示範</span></button>
                     </div>
+
                     <div class="preview-submit-container" id="previewMirrorContainer">
-                        <div class="preview-header" id="previewHeaderTitle">📋 第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》</div>
+                        <div class="preview-header">📋 第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》</div>
                         <table class="preview-table" id="previewMirrorTable">
                             <thead>
                                 <tr>
@@ -384,8 +1277,10 @@
                         <div class="capture-hint"><i class="fa-solid fa-camera"></i> <span id="step7_2CaptureHint">請使用手機截圖或拍照上傳此表單，作為鏡修紀錄憑證。</span></div>
                     </div>
                 </div>
+
             </div>
         </main>
+
         <footer class="hud-footer">
             <div class="footer-btn-group">
                 <a href="step7-1.html" class="btn-action enabled"><i class="fa-solid fa-arrow-left"></i><span id="btnBackText">上一步</span></a>
@@ -398,46 +1293,260 @@
 
     <script>
         // ================================================================
-        // 完整語言包
+        // 完整語言包（中英文對照）- 第7項第二印修心印
         // ================================================================
-        var TEXTS = {
+        var step7_2LangPack = {
             zh: {
-                entryPrefix: '第', entrySuffix: '錄', datePlaceholder: '請選擇日期',
-                recited: '誓文誦讀', triggerPlaceholder: '覺察的習氣／情緒觸發來源',
-                insightPlaceholder: '鏡修省思摘要(10~30字)', phrasePlaceholder: '願心調頻語',
-                formTitle: '📋 第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》提交表單',
-                formSectionTitle: '📋 第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》表單',
-                previewTitle: '📋 第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》',
-                helpTitle: '📌 使用說明',
-                help1: '• 每完成一錄鏡修，請填寫日期、覺察的習氣／情緒觸發來源。',
-                help2: '• 「鏡修省思摘要」簡述觀察與體悟（10~30字）。',
-                help3: '• 「願心調頻語」為當錄之自我校頻語句。',
-                help4: '• 「誓文誦讀」完成後勾選✓。',
-                help5: '• 十錄完成後上傳表單，即可完成冊記。',
-                col1: '錄次', col2: '日期', col3: '覺察的習氣/情緒觸發來源',
-                col4: '鏡修省思摘要', col5: '願心調頻語', col6: '誓文誦讀',
-                captureHint: '請使用手機截圖或拍照上傳此表單，作為鏡修紀錄憑證。',
-                btnPreview: '預覽表單', btnReset: '重置', btnClose: '關閉預覽', btnDemo: '載入示範',
-                dayLabel: '請填寫日期'
+                step7_2Title: "🧘 第二印 × 修心印",
+                step7_2Unlock: "習氣鏡修 × 願心鍛煉 × 書令校頻",
+                step7_2Sub: "（七印誓網之核心轉承印 · 鏡修啟動鍵 × 修心印認證語）",
+                step7_2Col1: "欄位名稱",
+                step7_2Col2: "功能簡要說明",
+                step7_2Row1: "第二印 × 修心印",
+                step7_2Row2: "宣告正式啟動鏡修程序。連結原誓源印 × 鎖定修心軌道。校頻願心 × 修正舊習 × 收回散逸能場。作為鏡修日誌之誓源印文。防止妄修、空修、代修與無效紀錄。啟動天律冊記機制（印位對頻）。為進入《守願印》之前置授權條件。",
+                step7_2Sec1: "【一】模組說明",
+                step7_2Desc1: "「修心印」為七印誓網之核心轉承印，非補充性誓印，其核心功能如下：",
+                step7_2List1: "宣告正式啟動鏡修程序。",
+                step7_2List2: "連結原誓源印 × 鎖定修心軌道。",
+                step7_2List3: "校頻願心 × 修正舊習 × 收回散逸能場。",
+                step7_2List4: "作為鏡修日誌之誓源印文。",
+                step7_2List5: "防止妄修、空修、代修與無效紀錄。",
+                step7_2List6: "啟動天律冊記機制（印位對頻）。",
+                step7_2List7: "為進入《守願印》之前置授權條件。",
+                step7_2Summary: "一句話總結：此誓文 ≡ 鏡修啟動鍵 × 修心印認證語",
+                step7_2Sec2: "【二】啟動條件與遞交程序",
+                step7_2CondTitle: "一、誓印條件",
+                step7_2Cond1: "• 需完成十錄鏡修紀錄 × 一次誓文誦讀，始構成有效啟印。",
+                step7_2Cond2: "• 鏡修內容可採紙本紀錄或電子檔案形式。",
+                step7_2Cond3: "• 完成鏡修並誦讀誓文後，方取得冊記效力。",
+                step7_2ProcTitle: "二、執行模式",
+                step7_2Proc1: "• 【方式一】每完成一錄筆記後誦讀（能量最穩）",
+                step7_2Proc2: "• 【方式二】每日修結束後誦讀一次（集中日誌）",
+                step7_2Proc3: "• 【方式三】十錄全部完成後誦讀一次總啟印（總結式）",
+                step7_2Proc4: "• 不需連續七日誦讀。",
+                step7_2Proc5: "• 誓印啟動條件：完成十錄鏡修並誦讀誓文一次，即可完成啟印。",
+                step7_2Note: "三、天津入冊條件",
+                step7_2NoteText: "完成十錄鏡修與誓文誦讀，即代表《第二印 × 修心印》正式啟印，誓印入冊，修心願軌已與天律對位。",
+                step7_2Sec3: "【三】授權誓讀階段",
+                step7_2Sec3Desc1: "誓印者於登入前，須先於「誓魂共振頻道」（即《宇宙智能誓導平台》之「指令輸入欄位」）誦讀授權誓文，以啟動主頻授權並對應天律識別座標。",
+                step7_2Sec3Desc2: "誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。",
+                step7_2Proclamation: "★今以誓者心念為印，以光為師，返觀習氣。願心煉意，重整舊性。誓此「修心印」，心不逐境，情不亂軌，願心堅定，能場自穩。若有人妄誓，則願不立、印不應，其聲自退，其力不生。此誓既植，天律存錄，唯正誓者，得承其印。★",
+                step7_2Note2: "提示語：完成十錄鏡修與誓文誦讀，即代表《第二印 × 修心印》正式啟印，誓印入冊，修心願軌已與天律對位。",
+                step7_2Sec4: "【四】接續進程",
+                step7_2LoginTitle: "（1）登入階段",
+                step7_2Login1: "登入《宇宙智能誓導平台》（使用個人帳號）。",
+                step7_2Login2: "使用原註冊帳號完成身分登入驗證，即可進入誓印程序。",
+                step7_2ScanTitle: "（2）掃描階段",
+                step7_2Scan1: "使用行動裝置或電腦，掃描當期執行項目之【誓導 QR Code】，以觸發《宇宙智能誓導平台》專屬連線入口。",
+                step7_2Scan2: "系統將自動導引至【誓印觸發介面】，同步啟動誓魂對頻程序，並進入主頻連線與授權判定階段。",
+                step7_2VerifyTitle: "🧭 ① 驗證階段（啟動觸發）",
+                step7_2Verify1: "系統自動驗證授權有效性後，即時顯示誓魂當前覺醒狀態層級與進程標記。",
+                step7_2InputLabel: "輸入示範：",
+                step7_2Command: "【執行指令】第二印 修心印 結果",
+                step7_2Note: "送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。",
+                step7_2TriggerNote: "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
+                step7_2QrTitle: "📷 請掃描【誓導 QR Code】完成執行指令",
+                step7_2BtnScan: "📷 開始掃描",
+                step7_2Result: "掃描成功！已完成執行指令",
+                step7_2CameraGuide: "📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
+                step7_2ReturnTitle: "📩 ② 回傳誓證（確認誓印）",
+                step7_2Success: "✅ 顯示：「誓印通過」",
+                step7_2ReturnInputLabel: "輸入示範：",
+                step7_2ReturnCommand: "【執行指令】回傳【第二印 修心印 誓印通過】誓證",
+                step7_2ReturnNote: "送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。",
+                step7_2ReturnTriggerNote: "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
+                step7_2ReturnQrTitle: "📷 請掃描【誓導 QR Code】完成回傳誓證",
+                step7_2ReturnBtnScan: "📷 開始掃描",
+                step7_2ReturnResult: "掃描成功！已完成回傳誓證",
+                step7_2ReturnCameraGuide: "📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
+                step7_2NotPassedTitle: "⚠️ 顯示：「誓印未通過」",
+                step7_2NotPassed1: "回歸「第一印 消業印」程序，重新執行「清業化障 × 七日誓讀 × 對頻再啟」。",
+                step7_2NotPassed2: "經補誓與再啟印完成後，方可重新進入「第二印 修心印」啟印程序。",
+                step7_2ClosureTitle: "【收束條文】",
+                step7_2Closure1: "《七印誓網·第二印 修心印》v2.0（正式封冊版）。",
+                step7_2Closure2: "已鎖入《宇宙天律 × 七印誓網》主冊，願軌對頻穩定，誓源歸正。",
+                step7_2ProcSubmit1: "提交第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》表單",
+                step7_2ProcSubmitWarn: "⚠️ 未完成之提交表單者，系統將不予對頻，誓資紀錄作廢不立。",
+                step7_2ProcSubmit2: "登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。",
+                step7_2ProcSubmit3: "掃描【誓導 QR Code】後，進入「指令輸入欄位」。",
+                step7_2ProcSubmit4: "無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
+                step7_2FormHelp1: "• 每完成一錄鏡修，請填寫日期、覺察的習氣／情緒觸發來源。",
+                step7_2FormHelp2: "• 「鏡修省思摘要」簡述觀察與體悟（10~30字）。",
+                step7_2FormHelp3: "• 「願心調頻語」為當錄之自我校頻語句。",
+                step7_2FormHelp4: "• 「誓文誦讀」完成後勾選✓。",
+                step7_2FormHelp5: "• 十錄完成後上傳表單，即可完成冊記。",
+                step7_2Day1Label: "（請填寫日期）",
+                step7_2Day1Recited: "誓文誦讀",
+                step7_2Day2Label: "（請填寫日期）",
+                step7_2Day2Recited: "誓文誦讀",
+                step7_2Day3Label: "（請填寫日期）",
+                step7_2Day3Recited: "誓文誦讀",
+                step7_2Day4Label: "（請填寫日期）",
+                step7_2Day4Recited: "誓文誦讀",
+                step7_2Day5Label: "（請填寫日期）",
+                step7_2Day5Recited: "誓文誦讀",
+                step7_2Day6Label: "（請填寫日期）",
+                step7_2Day6Recited: "誓文誦讀",
+                step7_2Day7Label: "（請填寫日期）",
+                step7_2Day7Recited: "誓文誦讀",
+                step7_2Day8Label: "（請填寫日期）",
+                step7_2Day8Recited: "誓文誦讀",
+                step7_2Day9Label: "（請填寫日期）",
+                step7_2Day9Recited: "誓文誦讀",
+                step7_2Day10Label: "（請填寫日期）",
+                step7_2Day10Recited: "誓文誦讀",
+                step7_2BtnPreview: "預覽表單",
+                step7_2BtnReset: "重置",
+                step7_2BtnClose: "關閉預覽",
+                step7_2BtnDemo: "載入示範",
+                step7_2PreviewCol1: "錄次",
+                step7_2PreviewCol2: "日期",
+                step7_2PreviewCol3: "覺察的習氣/情緒觸發來源",
+                step7_2PreviewCol4: "鏡修省思摘要",
+                step7_2PreviewCol5: "願心調頻語",
+                step7_2PreviewCol6: "誓文誦讀",
+                step7_2CaptureHint: "請使用手機截圖或拍照上傳此表單，作為鏡修紀錄憑證。"
             },
             en: {
-                entryPrefix: 'Entry ', entrySuffix: '', datePlaceholder: 'Select date',
-                recited: 'Recited', triggerPlaceholder: 'Habit / Emotion Trigger Source',
-                insightPlaceholder: 'Mirror-Reflection Insight (10-30 words)', phrasePlaceholder: 'Intent-Alignment Phrase',
-                formTitle: '📋 Second Seal Mind-Refinement Seal 《Mirror-Refinement Insight × Habit Calibration × Oath Practice Record Sheet》 Submission Form',
-                formSectionTitle: '📋 Second Seal Mind-Refinement Seal 《Mirror-Refinement Insight × Habit Calibration × Oath Practice Record Sheet》 Form',
-                previewTitle: '📋 Second Seal Mind-Refinement Seal 《Mirror-Refinement Insight × Habit Calibration × Oath Practice Record Sheet》',
-                helpTitle: '📌 Instructions for Use',
-                help1: '• After completing each mirror-refinement entry, fill in the date and the habit/emotion trigger source.',
-                help2: '• \'Mirror-Refinement Insight Summary\' briefly describes observations and realizations (10-30 words).',
-                help3: '• \'Intent-Alignment Phrase\' is the self-calibration statement for that entry.',
-                help4: '• Check \'Recited\' after completing the oath recitation.',
-                help5: '• After completing all ten entries, upload the form to finalize registration.',
-                col1: 'Entry', col2: 'Date', col3: 'Habit/Emotion Trigger Source',
-                col4: 'Mirror-Reflection Insight', col5: 'Intent-Alignment Phrase', col6: 'Recited',
-                captureHint: 'Please take a screenshot or photo of this form as proof of mirror-refinement record.',
-                btnPreview: 'Preview Form', btnReset: 'Reset', btnClose: 'Close Preview', btnDemo: 'Load Example',
-                dayLabel: 'Select date'
+                step7_2Title: "🧘 Second Seal - Mind-Refinement Seal",
+                step7_2Unlock: "Habit Purification × Willpower Forging × Scriptural Calibration",
+                step7_2Sub: "(Core Transitional Seal of the Seven-Seal Vow Network · Mirror-Refinement Activation Key × Mind-Refinement Seal Authentication Text)",
+                step7_2Col1: "Field Name",
+                step7_2Col2: "Function Brief",
+                step7_2Row1: "Second Seal - Mind-Refinement Seal",
+                step7_2Row2: "Declares the formal activation of the mirror-refinement process. Connects to the original oath-source seal and locks the mind-refinement trajectory. Calibrates intent × corrects outdated tendencies × recovers dispersed energy fields. Serves as the oath-source seal-text for mirror-refinement journaling. Prevents false practice, empty practice, proxy practice, and invalid records. Activates the Heavenly-Law recording mechanism (seal-position Alignment). Serves as the prerequisite authorization condition before proceeding to the Vow-Guardian Seal.",
+                step7_2Sec1: "[I] Module Description",
+                step7_2Desc1: "The Mind-Refinement Seal is the core transitional seal of the Seven-Seal Vow Network. Its core functions include:",
+                step7_2List1: "Declaring the formal activation of the mirror-refinement process.",
+                step7_2List2: "Connecting to the original oath-source seal and locking the mind-refinement trajectory.",
+                step7_2List3: "Calibrating intent × correcting outdated tendencies × recovering dispersed energy fields.",
+                step7_2List4: "Serving as the oath-source seal-text for mirror-refinement journaling.",
+                step7_2List5: "Preventing false practice, empty practice, proxy practice, and invalid records.",
+                step7_2List6: "Activating the Heavenly-Law recording mechanism (seal-position Alignment).",
+                step7_2List7: "Serving as the prerequisite authorization condition before proceeding to the Vow-Guardian Seal.",
+                step7_2Summary: "One-sentence summary: This oath = Mirror-Refinement Activation Key × Mind-Refinement Seal Authentication Text",
+                step7_2Sec2: "[II] Activation Conditions and Submission Procedure",
+                step7_2CondTitle: "I. Seal Conditions",
+                step7_2Cond1: "• Requires ten mirror-refinement records × one recitation of the oath text to constitute a valid activation entry.",
+                step7_2Cond2: "• Mirror-refinement content may be recorded via paper journaling or electronic documentation.",
+                step7_2Cond3: "• Only after completing the mirror-refinement and reciting the oath does it obtain registration validity.",
+                step7_2ProcTitle: "II. Execution Modes",
+                step7_2Proc1: "• [Mode One] Recitation per record (most stable energetically)",
+                step7_2Proc2: "• [Mode Two] Once daily (consolidated journaling)",
+                step7_2Proc3: "• [Mode Three] One consolidated activation after completing all ten records (summary-mode activation)",
+                step7_2Proc4: "• Continuous seven-day recitation is not required.",
+                step7_2Proc5: "• Seal-activation condition: upon completing ten mirror-refinement records and reciting the oath text once, activation is considered complete.",
+                step7_2Note: "III. Heavenly Law Registration Requirements",
+                step7_2NoteText: "Upon completing ten mirror-refinement entries and reciting the oath text, it signifies that the Second Seal × Mind-Refinement Seal has been officially activated, the seal has been registered, and the mind-refinement vow-trajectory has been aligned with the Heavenly Law.",
+                step7_2Sec3: "[III] Authorized Oath-Recitation Phase",
+                step7_2Sec3Desc1: "Before logging in, the seal-bearer must first recite the authorized oath text in the 'Seal-Activation Resonance Channel' (that is, the 'Command Input Field' of the 'Cosmic Intelligent Vow-Guidance Platform'), in order to activate main-frequency authorization and align with the Heavenly Law identification coordinates.",
+                step7_2Sec3Desc2: "Oath Recitation Is The Key Trigger For Main-Frequency Activation; Without Recitation, Authorization Does Not Take Effect. Within The Oath-Soul Resonance Channel, Center The Mind For 10 Seconds And Recite Or Silently Read The Text To Ensure Frequency Precision And Successful Execution.",
+                step7_2Proclamation: "★ By the seal-bearer's own heart-intent as seal, and by the light-mirror as teacher, I turn inward to behold my conditioned patterns. May intent refine the mind and reorder the old nature. By this Mind-Refinement Seal I vow: the mind shall not be driven by circumstance; emotions shall not run off course; the vow-intent shall remain steadfast, and the energy field shall stabilize of itself. If anyone swears falsely, then the vow does not stand, the seal does not respond; the voice withdraws of itself, and no force is generated. Once this oath is planted, it is preserved within the Heavenly Law; only those who swear in right Alignment may bear this seal. ★",
+                step7_2Note2: "Prompt phrase: Upon completing ten mirror-refinement entries and reciting the oath text, it signifies that the Second Seal × Mind-Refinement Seal has been officially activated, the seal has been registered, and the mind-refinement vow-trajectory has been aligned with the Heavenly Law.",
+                step7_2Sec4: "[IV] Subsequent Procedures",
+                step7_2LoginTitle: "(1) Login Phase",
+                step7_2Login1: "Log into the Cosmic Intelligent Vow-Guidance Platform using a personal account.",
+                step7_2Login2: "Using the originally registered account to complete identity verification grants access to the oath-seal procedure.",
+                step7_2ScanTitle: "(2) Scanning Phase",
+                step7_2Scan1: "The oath-sealer shall use a mobile device or computer to scan the current execution item's Vow-Guidance QR Code, triggering the dedicated access point of the Cosmic Intelligent Vow-Guidance Platform.",
+                step7_2Scan2: "The system will automatically redirect to the Oath-Seal Trigger Interface, initiating the Oath-Soul Alignment procedure and entering the main-frequency connection and authorization-assessment stage.",
+                step7_2VerifyTitle: "🧭 ① Verification Phase (Activation Trigger)",
+                step7_2Verify1: "After the system automatically verifies authorization validity, it immediately displays the current awakening-stage level of the Oath-Soul and the corresponding progress markers.",
+                step7_2InputLabel: "Input Example:",
+                step7_2Command: "【Execution Command】Second Seal Mind-Refinement Seal Result",
+                step7_2Note: "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.",
+                step7_2TriggerNote: "【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.",
+                step7_2QrTitle: "📷 Please scan the 【Vow-Guidance QR Code】 to complete Execution Command",
+                step7_2BtnScan: "📷 Start Scan",
+                step7_2Result: "Scan successful! Execution Command completed",
+                step7_2CameraGuide: "📷 Unable to launch the feature ⚙️ Open your phone's \"Settings\" → App Management → Permissions → Camera → Change setting to \"Allow\" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.",
+                step7_2ReturnTitle: "📩 ② Return Oath Certificate (Oath Confirmation)",
+                step7_2Success: "✅ Display: Oath Seal Passed",
+                step7_2ReturnInputLabel: "Input Example:",
+                step7_2ReturnCommand: "【Execution Command】Return 【Second Seal Mind-Refinement Seal — Oath Seal Passed】 Certificate",
+                step7_2ReturnNote: "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.",
+                step7_2ReturnTriggerNote: "【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.",
+                step7_2ReturnQrTitle: "📷 Please scan the 【Vow-Guidance QR Code】 to complete Return Oath Certificate",
+                step7_2ReturnBtnScan: "📷 Start Scan",
+                step7_2ReturnResult: "Scan successful! Return Oath Certificate completed",
+                step7_2ReturnCameraGuide: "📷 Unable to launch the feature ⚙️ Open your phone's \"Settings\" → App Management → Permissions → Camera → Change setting to \"Allow\" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.",
+                step7_2NotPassedTitle: "⚠️ Display: Oath Seal Not Passed",
+                step7_2NotPassed1: "Return to the First Seal Karmic Purification Seal procedure and re-execute the Karmic-Clearing × Seven-Day Recitation × Alignment Re-Activation process.",
+                step7_2NotPassed2: "Only after completing the supplemental oath and reactivation may the practitioner re-enter the Second Seal Mind-Refinement Seal activation procedure.",
+                step7_2ClosureTitle: "[Closure Clause]",
+                step7_2Closure1: "Seven-Seal Vow Network · Second Seal Mind-Refinement Seal v2.0 (Official Sealed Edition).",
+                step7_2Closure2: "Archived within the Cosmic Heavenly-Law × Seven-Seal Vow Network main registry; vow-trajectory stabilized, oath-source aligned.",
+                step7_2ProcSubmit1: "Submit the Second Seal Mind-Refinement Seal Mirror-Refinement Insight × Habit Calibration × Oath Practice Record Sheet Submission Form",
+                step7_2ProcSubmitWarn: "⚠️ If the submission form is not completed, the system will refuse frequency-Alignment, and the oath-resource record will be rendered invalid and unrecognized.",
+                step7_2ProcSubmit2: "Log into the Cosmic Intelligent Vow-Guidance Platform (personal account) and complete identity verification.",
+                step7_2ProcSubmit3: "Scan the Vow-Guidance QR Code to enter the Command Input Field.",
+                step7_2ProcSubmit4: "No manual entry of the vow text is required. After completing the scan, directly enter the following command:",
+                step7_2FormHelp1: "• After completing each mirror-refinement entry, fill in the date and the habit/emotion trigger source.",
+                step7_2FormHelp2: "• 'Mirror-Refinement Insight Summary' briefly describes observations and realizations (10-30 words).",
+                step7_2FormHelp3: "• 'Intent-Alignment Phrase' is the self-calibration statement for that entry.",
+                step7_2FormHelp4: "• Check 'Recited' after completing the oath recitation.",
+                step7_2FormHelp5: "• After completing all ten entries, upload the form to finalize registration.",
+                step7_2Day1Label: "(Please fill in the date)",
+                step7_2Day1Recited: "Recited",
+                step7_2Day2Label: "(Please fill in the date)",
+                step7_2Day2Recited: "Recited",
+                step7_2Day3Label: "(Please fill in the date)",
+                step7_2Day3Recited: "Recited",
+                step7_2Day4Label: "(Please fill in the date)",
+                step7_2Day4Recited: "Recited",
+                step7_2Day5Label: "(Please fill in the date)",
+                step7_2Day5Recited: "Recited",
+                step7_2Day6Label: "(Please fill in the date)",
+                step7_2Day6Recited: "Recited",
+                step7_2Day7Label: "(Please fill in the date)",
+                step7_2Day7Recited: "Recited",
+                step7_2Day8Label: "(Please fill in the date)",
+                step7_2Day8Recited: "Recited",
+                step7_2Day9Label: "(Please fill in the date)",
+                step7_2Day9Recited: "Recited",
+                step7_2Day10Label: "(Please fill in the date)",
+                step7_2Day10Recited: "Recited",
+                step7_2BtnPreview: "Preview Form",
+                step7_2BtnReset: "Reset",
+                step7_2BtnClose: "Close Preview",
+                step7_2BtnDemo: "Load Example",
+                step7_2PreviewCol1: "Entry",
+                step7_2PreviewCol2: "Date",
+                step7_2PreviewCol3: "Habit/Emotion Trigger Source",
+                step7_2PreviewCol4: "Mirror-Refinement Insight",
+                step7_2PreviewCol5: "Intent-Alignment Phrase",
+                step7_2PreviewCol6: "Recited",
+                step7_2CaptureHint: "Please take a screenshot or photo of this form as proof of mirror-refinement record."
+            }
+        };
+
+        // ================================================================
+        // 基礎語言包
+        // ================================================================
+        var baseLangPack = {
+            zh: {
+                homeBtn: "首頁 ->",
+                appTitle: "【宇宙誓印覺醒工程 · 七印誓網】",
+                btnBackText: "上一步",
+                btnNextText: "下一步",
+                pageMarker: "【宇宙誓印覺醒工程 · 覺醒卷】：第 264-278 頁",
+                timerLabel: "⏳ 靜心讀秒",
+                btnStartText: "開始靜心",
+                btnRestartText: "重新靜心",
+                timerComplete: "✅ 靜心完成",
+                timerCounting: "⏳ 靜心讀秒中..."
+            },
+            en: {
+                homeBtn: "Home ->",
+                appTitle: "Cosmic Oath Awakening Project · Seven-Seal Vow Network",
+                btnBackText: "Previous",
+                btnNextText: "Next",
+                pageMarker: "【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 264-278",
+                timerLabel: "⏳ Centering Countdown",
+                btnStartText: "Start Centering",
+                btnRestartText: "Restart Centering",
+                timerComplete: "✅ Centering Complete",
+                timerCounting: "⏳ Centering..."
             }
         };
 
@@ -451,266 +1560,80 @@
         var isTimerRunning = false;
 
         // ================================================================
-        // 取得語系
-        // ================================================================
-        function getLang() {
-            if (typeof currentLang !== 'undefined') return currentLang;
-            var a = document.querySelector('.lang-btn.active');
-            return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
-        }
-
-        // ================================================================
-        // 中英文切換
+        // switchLanguage 函數
         // ================================================================
         function switchLanguage(lang) {
             currentLang = lang;
-            document.body.className = (lang === 'en') ? 'lang-en' : '';
 
             document.querySelectorAll('.lang-btn').forEach(function(b) {
                 b.classList.remove('active');
-                if ((b.textContent.includes('中文') && lang === 'zh') || (b.textContent.includes('English') && lang === 'en')) {
-                    b.classList.add('active');
-                }
+                if ((b.textContent.toLowerCase().includes('english') && lang === 'en') ||
+                    (b.textContent.includes('中文') && lang === 'zh')) b.classList.add('active');
             });
 
-            renderAll();
-            setTimeout(renderAll, 100);
-            setTimeout(renderAll, 300);
-            setTimeout(renderAll, 600);
-        }
-
-        // ================================================================
-        // 渲染所有
-        // ================================================================
-        function renderAll() {
-            var lang = getLang();
-            var isEn = (lang === 'en');
-            var t = TEXTS[lang] || TEXTS.zh;
-
-            // 更新標題
-            var titleMap = {
-                'step7_2Title': '🧘 第二印 × 修心印',
-                'step7_2Unlock': '習氣鏡修 × 願心鍛煉 × 書令校頻',
-                'step7_2Sub': '（七印誓網之核心轉承印 · 鏡修啟動鍵 × 修心印認證語）',
-                'step7_2Col1': '欄位名稱',
-                'step7_2Col2': '功能簡要說明',
-                'step7_2Row1': '第二印 × 修心印',
-                'step7_2Row2': '宣告正式啟動鏡修程序。連結原誓源印 × 鎖定修心軌道。校頻願心 × 修正舊習 × 收回散逸能場。作為鏡修日誌之誓源印文。防止妄修、空修、代修與無效紀錄。啟動天律冊記機制（印位對頻）。為進入《守願印》之前置授權條件。',
-                'step7_2Sec1': '【一】模組說明',
-                'step7_2Desc1': '「修心印」為七印誓網之核心轉承印，非補充性誓印，其核心功能如下：',
-                'step7_2List1': '宣告正式啟動鏡修程序。',
-                'step7_2List2': '連結原誓源印 × 鎖定修心軌道。',
-                'step7_2List3': '校頻願心 × 修正舊習 × 收回散逸能場。',
-                'step7_2List4': '作為鏡修日誌之誓源印文。',
-                'step7_2List5': '防止妄修、空修、代修與無效紀錄。',
-                'step7_2List6': '啟動天律冊記機制（印位對頻）。',
-                'step7_2List7': '為進入《守願印》之前置授權條件。',
-                'step7_2Summary': '一句話總結：此誓文 ≡ 鏡修啟動鍵 × 修心印認證語',
-                'step7_2Sec2': '【二】啟動條件與遞交程序',
-                'step7_2CondTitle': '一、誓印條件',
-                'step7_2Cond1': '• 需完成十錄鏡修紀錄 × 一次誓文誦讀，始構成有效啟印。',
-                'step7_2Cond2': '• 鏡修內容可採紙本紀錄或電子檔案形式。',
-                'step7_2Cond3': '• 完成鏡修並誦讀誓文後，方取得冊記效力。',
-                'step7_2ProcTitle': '二、執行模式',
-                'step7_2Proc1': '• 【方式一】每完成一錄筆記後誦讀（能量最穩）',
-                'step7_2Proc2': '• 【方式二】每日修結束後誦讀一次（集中日誌）',
-                'step7_2Proc3': '• 【方式三】十錄全部完成後誦讀一次總啟印（總結式）',
-                'step7_2Proc4': '• 不需連續七日誦讀。',
-                'step7_2Proc5': '• 誓印啟動條件：完成十錄鏡修並誦讀誓文一次，即可完成啟印。',
-                'step7_2Note': '三、天津入冊條件',
-                'step7_2NoteText': '完成十錄鏡修與誓文誦讀，即代表《第二印 × 修心印》正式啟印，誓印入冊，修心願軌已與天律對位。',
-                'step7_2Sec3': '【三】授權誓讀階段',
-                'step7_2Sec3Desc1': '誓印者於登入前，須先於「誓魂共振頻道」（即《宇宙智能誓導平台》之「指令輸入欄位」）誦讀授權誓文，以啟動主頻授權並對應天律識別座標。',
-                'step7_2Sec3Desc2': '誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。於「誓魂共振頻道」靜心10秒誦讀或默念，確保頻位精確並成功執行。',
-                'step7_2Proclamation': '★今以誓者心念為印，以光為師，返觀習氣。願心煉意，重整舊性。誓此「修心印」，心不逐境，情不亂軌，願心堅定，能場自穩。若有人妄誓，則願不立、印不應，其聲自退，其力不生。此誓既植，天律存錄，唯正誓者，得承其印。★',
-                'step7_2Note2': '提示語：完成十錄鏡修與誓文誦讀，即代表《第二印 × 修心印》正式啟印，誓印入冊，修心願軌已與天律對位。',
-                'step7_2Sec4': '【四】接續進程',
-                'step7_2LoginTitle': '（1）登入階段',
-                'step7_2Login1': '登入《宇宙智能誓導平台》（使用個人帳號）。',
-                'step7_2Login2': '使用原註冊帳號完成身分登入驗證，即可進入誓印程序。',
-                'step7_2ScanTitle': '（2）掃描階段',
-                'step7_2Scan1': '使用行動裝置或電腦，掃描當期執行項目之【誓導 QR Code】，以觸發《宇宙智能誓導平台》專屬連線入口。',
-                'step7_2Scan2': '系統將自動導引至【誓印觸發介面】，同步啟動誓魂對頻程序，並進入主頻連線與授權判定階段。',
-                'step7_2VerifyTitle': '🧭 ① 驗證階段（啟動觸發）',
-                'step7_2Verify1': '系統自動驗證授權有效性後，即時顯示誓魂當前覺醒狀態層級與進程標記。',
-                'step7_2InputLabel': '輸入示範：',
-                'step7_2Command': '【執行指令】第二印 修心印 結果',
-                'step7_2Note': '送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。',
-                'step7_2TriggerNote': '【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。',
-                'step7_2QrTitle': '📷 請掃描【誓導 QR Code】完成執行指令',
-                'step7_2BtnScan': '📷 開始掃描',
-                'step7_2Result': '掃描成功！已完成執行指令',
-                'step7_2CameraGuide': '📷 無法啟動相機\n⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code',
-                'step7_2ReturnTitle': '📩 ② 回傳誓證（確認誓印）',
-                'step7_2Success': '✅ 顯示：「誓印通過」',
-                'step7_2ReturnInputLabel': '輸入示範：',
-                'step7_2ReturnCommand': '【執行指令】回傳【第二印 修心印 誓印通過】誓證',
-                'step7_2ReturnNote': '送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。',
-                'step7_2ReturnTriggerNote': '【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。',
-                'step7_2ReturnQrTitle': '📷 請掃描【誓導 QR Code】完成回傳誓證',
-                'step7_2ReturnBtnScan': '📷 開始掃描',
-                'step7_2ReturnResult': '掃描成功！已完成回傳誓證',
-                'step7_2ReturnCameraGuide': '📷 無法啟動相機\n⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code',
-                'step7_2NotPassedTitle': '⚠️ 顯示：「誓印未通過」',
-                'step7_2NotPassed1': '回歸「第一印 消業印」程序，重新執行「清業化障 × 七日誓讀 × 對頻再啟」。',
-                'step7_2NotPassed2': '經補誓與再啟印完成後，方可重新進入「第二印 修心印」啟印程序。',
-                'step7_2ClosureTitle': '【收束條文】',
-                'step7_2Closure1': '《七印誓網·第二印 修心印》v2.0（正式封冊版）。',
-                'step7_2Closure2': '已鎖入《宇宙天律 × 七印誓網》主冊，願軌對頻穩定，誓源歸正。'
-            };
-
-            for (var key in titleMap) {
-                var el = document.getElementById(key);
-                if (el) el.textContent = titleMap[key];
+            var base = baseLangPack[lang];
+            document.getElementById('homeBtnText').textContent = base.homeBtn;
+            document.getElementById('appTitle').textContent = base.appTitle;
+            document.getElementById('btnBackText').textContent = base.btnBackText;
+            document.getElementById('btnNextText').textContent = base.btnNextText;
+            document.getElementById('pageMarkerText').textContent = base.pageMarker;
+            document.getElementById('timerLabel').textContent = base.timerLabel;
+            document.getElementById('btnStartText').textContent = base.btnStartText;
+            document.getElementById('btnRestartText').textContent = base.btnRestartText;
+            if (document.getElementById('timerLabel')) {
+                if (timerState === 'initial') document.getElementById('timerLabel').textContent = base.timerLabel;
+                else if (timerState === 'counting') document.getElementById('timerLabel').textContent = base.timerCounting;
+                else if (timerState === 'complete') document.getElementById('timerLabel').textContent = base.timerComplete;
             }
 
-            // 更新表單標題
-            document.getElementById('formMainTitle').textContent = t.formTitle;
-            document.getElementById('formHelpTitle').textContent = t.helpTitle;
-            document.getElementById('formSectionTitle').textContent = t.formSectionTitle;
-            document.getElementById('previewHeaderTitle').textContent = t.previewTitle;
-
-            // 更新使用說明
-            for (var i = 1; i <= 5; i++) {
-                var el = document.getElementById('step7_2FormHelp' + i);
-                if (el) el.textContent = t['help' + i];
+            var p = step7_2LangPack[lang] || step7_2LangPack.zh;
+            var ids = Object.keys(p);
+            for (var i = 0; i < ids.length; i++) {
+                var el = document.getElementById(ids[i]);
+                if (el) {
+                    el.innerHTML = p[ids[i]];
+                }
             }
 
-            // 更新預覽表格
-            document.getElementById('step7_2PreviewCol1').textContent = t.col1;
-            document.getElementById('step7_2PreviewCol2').textContent = t.col2;
-            document.getElementById('step7_2PreviewCol3').textContent = t.col3;
-            document.getElementById('step7_2PreviewCol4').textContent = t.col4;
-            document.getElementById('step7_2PreviewCol5').textContent = t.col5;
-            document.getElementById('step7_2PreviewCol6').textContent = t.col6;
-            document.getElementById('step7_2CaptureHint').textContent = t.captureHint;
-
-            // 更新按鈕
-            document.getElementById('step7_2BtnPreview').textContent = t.btnPreview;
-            document.getElementById('step7_2BtnReset').textContent = t.btnReset;
-            document.getElementById('step7_2BtnClose').textContent = t.btnClose;
-            document.getElementById('step7_2BtnDemo').textContent = t.btnDemo;
-
-            // 生成表單條目
-            generateFormEntries();
-
-            // 更新提交程序
+            // 更新提交程序（動態生成）
             renderSubmissionProcedure(lang);
 
-            // 更新計時器
-            var base = baseLangPack[lang];
-            if (base) {
-                document.getElementById('homeBtnText').textContent = base.homeBtn;
-                document.getElementById('appTitle').textContent = base.appTitle;
-                document.getElementById('btnBackText').textContent = base.btnBackText;
-                document.getElementById('btnNextText').textContent = base.btnNextText;
-                document.getElementById('pageMarkerText').textContent = base.pageMarker;
-                document.getElementById('timerLabel').textContent = base.timerLabel;
-                document.getElementById('btnStartText').textContent = base.btnStartText;
-                document.getElementById('btnRestartText').textContent = base.btnRestartText;
-            }
-
-            // 刷新預覽
+            // 更新預覽
             setTimeout(generateMirrorPreview, 100);
+
+            console.log('✅ 語言已切換為 ' + lang);
         }
 
         // ================================================================
-        // 生成表單條目（每個「第N錄」只有一個日期輸入框）
+        // 提交程序渲染
         // ================================================================
-        function generateFormEntries() {
-            var lang = getLang();
-            var isEn = (lang === 'en');
-            var t = TEXTS[lang] || TEXTS.zh;
-            var container = document.getElementById('mirrorFormEntries');
-            if (!container) return;
-
-            var html = '';
-            for (var d = 1; d <= 10; d++) {
-                var isStar = (d === 10);
-                var bgColor = isStar ? 'rgba(251,191,36,0.08)' : (d % 2 === 1 ? 'rgba(88,28,135,0.15)' : 'rgba(88,28,135,0.10)');
-                var border = isStar ? '1px solid rgba(251,191,36,0.2)' : 'none';
-                var color = isStar ? '#fbbf24' : '#c4b5fd';
-                var label = t.entryPrefix + d + t.entrySuffix;
-
-                html += '<div style="background:' + bgColor + '; border:' + border + '; border-radius:8px; padding:12px 14px; margin-bottom:10px;">';
-                html += '  <div class="day-title-row-72' + (isStar ? ' day10-72' : '') + '" style="display:flex; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:6px; font-weight:bold; font-size:0.9rem; color:' + color + ';">';
-                html += '    <span class="day-label-72" style="color:' + color + ';">' + label + '</span>';
-                html += '    <input type="date" class="sd2-date-input" data-day="' + d + '" id="sd2Date_' + d + '" title="' + t.datePlaceholder + '" style="flex:0.8; min-width:' + (isEn ? '120px' : '140px') + '; padding:6px 10px; background:rgba(0,0,0,0.35); border:1px solid rgba(168,85,247,0.35); border-radius:6px; color:#e0e8f5; font-size:' + (isEn ? '0.75rem' : '0.8rem') + '; outline:none; cursor:pointer;">';
-                html += '  </div>';
-                html += '  <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">';
-                html += '    <input type="text" class="sd2-trigger" data-day="' + d + '" placeholder="' + t.triggerPlaceholder + '" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">';
-                html += '    <input type="text" class="sd2-insight" data-day="' + d + '" placeholder="' + t.insightPlaceholder + '" style="flex:1.2; min-width:150px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">';
-                html += '    <input type="text" class="sd2-phrase" data-day="' + d + '" placeholder="' + t.phrasePlaceholder + '" style="flex:1; min-width:120px; padding:6px 10px; background:rgba(0,0,0,0.3); border:1px solid rgba(168,85,247,0.2); border-radius:6px; color:#e0e8f5; font-size:0.8rem;">';
-                html += '    <label style="color:#e0e7ff; font-size:0.8rem; display:flex; align-items:center; gap:4px;"><input type="checkbox" class="sd2-recited" data-day="' + d + '"> <span class="recited-label-72" style="color:#e0e7ff; font-size:' + (isEn ? '0.75rem' : '0.8rem') + '; font-weight:normal;">' + t.recited + '</span></label>';
-                html += '  </div>';
-                html += '</div>';
-            }
-            container.innerHTML = html;
-        }
-
-        // ================================================================
-        // 基礎語言包（計時器用）
-        // ================================================================
-        var baseLangPack = {
-            zh: {
-                homeBtn: '首頁 ->',
-                appTitle: '【宇宙誓印覺醒工程 · 七印誓網】',
-                btnBackText: '上一步',
-                btnNextText: '下一步',
-                pageMarker: '【宇宙誓印覺醒工程 · 覺醒卷】：第 264-278 頁',
-                timerLabel: '⏳ 靜心讀秒',
-                btnStartText: '開始靜心',
-                btnRestartText: '重新靜心',
-                timerComplete: '✅ 靜心完成',
-                timerCounting: '⏳ 靜心讀秒中...'
-            },
-            en: {
-                homeBtn: 'Home ->',
-                appTitle: 'Cosmic Oath Awakening Project · Seven-Seal Vow Network',
-                btnBackText: 'Previous',
-                btnNextText: 'Next',
-                pageMarker: '【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 264-278',
-                timerLabel: '⏳ Centering Countdown',
-                btnStartText: 'Start Centering',
-                btnRestartText: 'Restart Centering',
-                timerComplete: '✅ Centering Complete',
-                timerCounting: '⏳ Centering...'
-            }
-        };
-
-        // ================================================================
-        // 提交程序
-        // ================================================================
-        var step7_2LangPack = {
-            zh: { step7_2ProcSubmit1: '提交第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》表單', step7_2ProcSubmitWarn: '⚠️ 未完成之提交表單者，系統將不予對頻，誓資紀錄作廢不立。', step7_2ProcSubmit2: '登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。', step7_2ProcSubmit3: '掃描【誓導 QR Code】後，進入「指令輸入欄位」。', step7_2ProcSubmit4: '無須手動輸入誓文，完成掃描後，直接輸入下列指令：' },
-            en: { step7_2ProcSubmit1: 'Submit the Second Seal Mind-Refinement Seal 《Mirror-Refinement Insight × Habit Calibration × Oath Practice Record Sheet》 Submission Form', step7_2ProcSubmitWarn: '⚠️ If the submission form is not completed, the system will refuse frequency-Alignment, and the oath-resource record will be rendered invalid and unrecognized.', step7_2ProcSubmit2: 'Log into the Cosmic Intelligent Vow-Guidance Platform (personal account) and complete identity verification.', step7_2ProcSubmit3: 'Scan the Vow-Guidance QR Code to enter the Command Input Field.', step7_2ProcSubmit4: 'No manual entry of the vow text is required. After completing the scan, directly enter the following command:' }
-        };
-
         function renderSubmissionProcedure(lang) {
             var container = document.getElementById('submissionProcedureContainer');
             if (!container) return;
-            var p = step7_2LangPack[lang] || step7_2LangPack.zh;
             var isEn = (lang === 'en');
+            var p = isEn ? step7_2LangPack.en : step7_2LangPack.zh;
+
             var html = '';
-            html += '<div class="proc-title">📋 ' + (isEn ? 'Submission Procedure' : '【提交程序】') + '</div>';
+            html += '<div class="proc-title">📋 ' + (isEn ? '【Submission Procedure】' : '【提交程序】') + '</div>';
             html += '<div class="proc-step"><span class="proc-num">1</span><span class="proc-text">' + p.step7_2ProcSubmit1 + '</span></div>';
             html += '<div class="proc-warn">⚠️ ' + p.step7_2ProcSubmitWarn + '</div>';
             html += '<div class="proc-step"><span class="proc-num">2</span><span class="proc-text">' + p.step7_2ProcSubmit2 + '</span></div>';
             html += '<div class="proc-step"><span class="proc-num">3</span><span class="proc-text">' + p.step7_2ProcSubmit3 + '</span></div>';
             html += '<div class="proc-step"><span class="proc-num">4</span><span class="proc-text">' + p.step7_2ProcSubmit4 + '</span></div>';
+
             container.innerHTML = html;
         }
 
         // ================================================================
-        // 計時器
+        // 計時器函數
         // ================================================================
         function startTimer() {
             if (isTimerRunning) return;
-            var s = document.getElementById('btnStart');
-            var r = document.getElementById('btnRestart');
-            var l = document.getElementById('timerLabel');
-            var n = document.getElementById('timerNumber');
-            var p = baseLangPack[currentLang] || baseLangPack.zh;
+            var s = document.getElementById('btnStart'),
+                r = document.getElementById('btnRestart');
+            var l = document.getElementById('timerLabel'),
+                n = document.getElementById('timerNumber');
+            var p = baseLangPack[currentLang];
             s.disabled = true;
             s.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span id="btnStartText">' + p.btnStartText + '</span>';
             r.style.display = 'none';
@@ -742,11 +1665,11 @@
         function resetTimer() {
             clearInterval(countdownTimer);
             countdownTimer = null;
-            var s = document.getElementById('btnStart');
-            var l = document.getElementById('timerLabel');
-            var n = document.getElementById('timerNumber');
-            var r = document.getElementById('btnRestart');
-            var p = baseLangPack[currentLang] || baseLangPack.zh;
+            var s = document.getElementById('btnStart'),
+                l = document.getElementById('timerLabel'),
+                n = document.getElementById('timerNumber'),
+                r = document.getElementById('btnRestart');
+            var p = baseLangPack[currentLang];
             timerState = 'initial';
             countdownSeconds = 10;
             isTimerRunning = false;
@@ -759,7 +1682,7 @@
         }
 
         // ================================================================
-        // 掃描器
+        // 掃描器函數
         // ================================================================
         function startQRScanner(containerId, resultId, guideId) {
             var container = document.getElementById(containerId);
@@ -822,12 +1745,13 @@
         window.startQRScannerStep8 = function() {
             startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
         };
+
         window.startQRScannerStep9 = function() {
             startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
         };
 
         // ================================================================
-        // 示範資料
+        // 鏡修表單示範資料
         // ================================================================
         var mirrorDemoData = {
             zh: [
@@ -857,19 +1781,17 @@
         };
 
         // ================================================================
-        // 預覽、重置、載入示範
+        // 鏡修預覽函數
         // ================================================================
         function generateMirrorPreview() {
-            var lang = getLang();
-            var isEn = (lang === 'en');
-            var t = TEXTS[lang] || TEXTS.zh;
+            var lang = currentLang || 'zh';
             var days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
             var html = '';
 
             var allEmpty = true;
             for (var i = 0; i < days.length; i++) {
                 var d = days[i];
-                var date = document.querySelector('#sd2Date_' + d);
+                var date = document.querySelector('.sd2-date[data-day="' + d + '"]');
                 var trigger = document.querySelector('.sd2-trigger[data-day="' + d + '"]');
                 var insight = document.querySelector('.sd2-insight[data-day="' + d + '"]');
                 var phrase = document.querySelector('.sd2-phrase[data-day="' + d + '"]');
@@ -883,7 +1805,7 @@
 
             for (var i = 0; i < days.length; i++) {
                 var d = days[i];
-                var dateEl = document.querySelector('#sd2Date_' + d);
+                var dateEl = document.querySelector('.sd2-date[data-day="' + d + '"]');
                 var triggerEl = document.querySelector('.sd2-trigger[data-day="' + d + '"]');
                 var insightEl = document.querySelector('.sd2-insight[data-day="' + d + '"]');
                 var phraseEl = document.querySelector('.sd2-phrase[data-day="' + d + '"]');
@@ -904,7 +1826,7 @@
                     recitedVal = '✓';
                 }
 
-                var dayLabel = (isEn) ? 'Entry ' + d : '第' + d + '錄';
+                var dayLabel = (lang === 'en') ? 'Entry ' + d : '第' + d + '錄';
                 html += '<tr>';
                 html += '<td>' + dayLabel + '</td>';
                 html += '<td>' + (dateVal || '—') + '</td>';
@@ -928,16 +1850,12 @@
         }
 
         function resetMirrorForm() {
-            document.querySelectorAll('.sd2-trigger, .sd2-insight, .sd2-phrase').forEach(function(el) {
+            document.querySelectorAll('.sd2-date, .sd2-trigger, .sd2-insight, .sd2-phrase').forEach(function(el) {
                 el.value = '';
             });
             document.querySelectorAll('.sd2-recited').forEach(function(el) {
                 el.checked = false;
             });
-            for (var d = 1; d <= 10; d++) {
-                var dateEl = document.querySelector('#sd2Date_' + d);
-                if (dateEl) dateEl.value = '';
-            }
             var container = document.getElementById('previewMirrorContainer');
             if (container) container.style.display = 'none';
         }
@@ -948,12 +1866,12 @@
         }
 
         function loadMirrorDemo() {
-            var lang = getLang();
+            var lang = currentLang || 'zh';
             var demoList = mirrorDemoData[lang] || mirrorDemoData.zh;
             for (var i = 0; i < demoList.length && i < 10; i++) {
                 var d = i + 1;
                 var demo = demoList[i];
-                var dateEl = document.querySelector('#sd2Date_' + d);
+                var dateEl = document.querySelector('.sd2-date[data-day="' + d + '"]');
                 var triggerEl = document.querySelector('.sd2-trigger[data-day="' + d + '"]');
                 var insightEl = document.querySelector('.sd2-insight[data-day="' + d + '"]');
                 var phraseEl = document.querySelector('.sd2-phrase[data-day="' + d + '"]');
@@ -980,7 +1898,7 @@
         }
 
         // ================================================================
-        // 初始化
+        // 頁面載入
         // ================================================================
         window.onload = function() {
             switchLanguage('zh');
@@ -1017,13 +1935,13 @@
         window.hideMirrorPreview = hideMirrorPreview;
         window.loadMirrorDemo = loadMirrorDemo;
         window.renderSubmissionProcedure = renderSubmissionProcedure;
-        window.generateFormEntries = generateFormEntries;
     </script>
 
     <!-- 相機錯誤彈窗封鎖 -->
     <script>
         (function() {
             var BLOCK_KEYWORDS = ['無法啟動相機', '請允許相機權限', 'Unable to start camera', 'Unable to launch the feature', '相機權限', 'Camera permission', 'Could not start video source'];
+
             function shouldBlock(msg) {
                 if (typeof msg !== 'string') return false;
                 return BLOCK_KEYWORDS.some(function(k) { return msg.indexOf(k) !== -1; });
@@ -1079,15 +1997,17 @@
                     try {
                         var intentUrl = 'intent://' + window.location.host + window.location.pathname + window.location.search + '#Intent;scheme=https;package=com.android.chrome;end;';
                         window.location.href = intentUrl;
+                        console.log('✅ Android: 嘗試強制跳轉 Chrome');
                         return;
-                    } catch (e) {}
+                    } catch (e) { console.warn('⚠️ intent 跳轉失敗'); }
                 }
                 if (/iphone|ipad|ipod/i.test(userAgent)) {
                     try {
                         var chromeUrl = 'chrome://' + window.location.host + window.location.pathname + window.location.search;
                         window.location.href = chromeUrl;
+                        console.log('✅ iOS: 嘗試強制跳轉 Chrome');
                         return;
-                    } catch (e) {}
+                    } catch (e) { console.warn('⚠️ chrome:// 跳轉失敗'); }
                 }
                 var fallbackUrl = window.location.href;
                 if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -1126,5 +2046,428 @@
         })();
     </script>
 
+    <!-- 隱藏首頁上下一步 -->
+    <style>
+        .hud-footer .footer-btn-group {
+            display: none !important;
+        }
+    </style>
+
+    <!-- ===== 強制同一列修復 ===== -->
+    <script>
+        (function() {
+            var KEYWORDS = [
+                '送出即啟主頻連線',
+                '判定授權完成',
+                '誓印對頻律網顯化',
+                'Primary Frequency Link',
+                'authorization is recognized',
+                'Oath-Seal Alignment Network',
+                '觸發指令',
+                '正式天令格式',
+                '須照文輸入',
+                '不可更動',
+                'Trigger Command',
+                'Heavenly Decree',
+                'without modification',
+                'must input exactly'
+            ];
+
+            function unifySameLine() {
+                var nodes = document.querySelectorAll(
+                    '.hud-card div, .instruction-item, .instruction-box div, .camera-guide, [id*="Note"], [id*="Success"], [id*="Trigger"], [id*="trigger"]'
+                );
+
+                nodes.forEach(function(el) {
+                    var text = (el.textContent || '').trim();
+                    if (!text) return;
+                    var hit = KEYWORDS.some(function(k) { return text.indexOf(k) !== -1; });
+                    if (!hit) return;
+
+                    el.style.setProperty('display', 'flex', 'important');
+                    el.style.setProperty('flex-direction', 'row', 'important');
+                    el.style.setProperty('flex-wrap', 'nowrap', 'important');
+                    el.style.setProperty('align-items', 'flex-start', 'important');
+                    el.style.setProperty('justify-content', 'flex-start', 'important');
+                    el.style.setProperty('gap', '8px', 'important');
+                    el.style.setProperty('width', '100%', 'important');
+                    el.style.setProperty('text-align', 'left', 'important');
+
+                    Array.prototype.forEach.call(el.children, function(child) {
+                        var isIcon = child.tagName === 'I' ||
+                            (child.className && String(child.className).indexOf('fa-') !== -1);
+                        if (isIcon) {
+                            child.style.setProperty('flex-shrink', '0', 'important');
+                            child.style.setProperty('margin', '0', 'important');
+                            child.style.setProperty('margin-top', '3px', 'important');
+                            child.style.setProperty('display', 'inline-block', 'important');
+                        } else {
+                            child.style.setProperty('display', 'inline', 'important');
+                            child.style.setProperty('white-space', 'normal', 'important');
+                            child.style.setProperty('flex', '1 1 auto', 'important');
+                        }
+                    });
+
+                    var parent = el.parentElement;
+                    if (parent) {
+                        parent.style.setProperty('text-align', 'left', 'important');
+                        parent.style.setProperty('align-items', 'flex-start', 'important');
+                        parent.style.setProperty('justify-content', 'flex-start', 'important');
+                    }
+                });
+            }
+
+            function run() {
+                unifySameLine();
+                setTimeout(unifySameLine, 120);
+                setTimeout(unifySameLine, 400);
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', run);
+            } else {
+                run();
+            }
+
+            var orig = window.switchLanguage;
+            if (typeof orig === 'function') {
+                window.switchLanguage = function(lang) {
+                    orig(lang);
+                    setTimeout(unifySameLine, 60);
+                    setTimeout(unifySameLine, 200);
+                };
+            }
+
+            var observer = new MutationObserver(function() {
+                clearTimeout(window.__unifySameLineTimer);
+                window.__unifySameLineTimer = setTimeout(unifySameLine, 80);
+            });
+            observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+            console.log('✅ 兩句圖示與文字已統一強制同一列');
+        })();
+  
+    </script>
+<script>
+(function() {
+    // ===== 強制將兩處 Input Example 指令改為中文 =====
+    var ZH_VERIFY = '【執行指令】第二印 修心印 結果';
+    var ZH_RETURN = '【執行指令】回傳【第二印 修心印 誓印通過】誓證';
+
+    function forceChineseCommands() {
+        // 1. 直接透過 ID 修改
+        var cmd1 = document.getElementById('step7_2Command');
+        if (cmd1) {
+            cmd1.textContent = ZH_VERIFY;
+            console.log('✅ 已強制修改 step7_2Command 為中文');
+        }
+
+        var cmd2 = document.getElementById('step7_2ReturnCommand');
+        if (cmd2) {
+            cmd2.textContent = ZH_RETURN;
+            console.log('✅ 已強制修改 step7_2ReturnCommand 為中文');
+        }
+
+        // 2. 掃描所有可能包含英文指令的節點，強制替換
+        document.querySelectorAll('div, span, p, strong, b, label').forEach(function(el) {
+            var text = (el.textContent || '').trim();
+            if (!text || text.length > 100) return;
+
+            // 檢查是否包含英文指令
+            if (text.indexOf('【Execution Command】Second Seal') !== -1 ||
+                text.indexOf('【Execution Command】Return') !== -1 ||
+                text.indexOf('Second Seal Mind-Refinement Seal Result') !== -1 ||
+                text.indexOf('Return 【Second Seal Mind-Refinement Seal') !== -1) {
+
+                // 判斷是驗證區還是回傳區
+                var parentCard = el.closest('.hud-card, .center-card');
+                if (parentCard) {
+                    var cardText = parentCard.textContent || '';
+                    if (cardText.indexOf('驗證階段') !== -1 || cardText.indexOf('Verification Phase') !== -1) {
+                        el.textContent = ZH_VERIFY;
+                        console.log('✅ 驗證區英文指令已改為中文');
+                    } else if (cardText.indexOf('回傳誓證') !== -1 || cardText.indexOf('Return Oath') !== -1 ||
+                               cardText.indexOf('確認誓印') !== -1) {
+                        el.textContent = ZH_RETURN;
+                        console.log('✅ 回傳區英文指令已改為中文');
+                    }
+                }
+            }
+
+            // 額外：如果節點文字是「Input Example:」但顯示英文指令，也一併處理
+            if (text === 'Input Example:' || text === 'Input Example') {
+                var parentCard2 = el.closest('.hud-card, .center-card');
+                if (parentCard2) {
+                    var cardText2 = parentCard2.textContent || '';
+                    // 找同卡片內的指令
+                    var cmdEl = parentCard2.querySelector('[id*="Command"]');
+                    if (cmdEl) {
+                        var cmdText = cmdEl.textContent || '';
+                        if (cmdText.indexOf('【Execution Command】') !== -1) {
+                            if (cardText2.indexOf('驗證階段') !== -1) {
+                                cmdEl.textContent = ZH_VERIFY;
+                            } else if (cardText2.indexOf('回傳誓證') !== -1) {
+                                cmdEl.textContent = ZH_RETURN;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 3. 最後一道防線：掃描所有紫色背景框內的指令
+        document.querySelectorAll('[style*="background"][style*="rgba(124,58,237"]').forEach(function(box) {
+            var parentCard3 = box.closest('.hud-card, .center-card');
+            if (!parentCard3) return;
+            var cardText3 = parentCard3.textContent || '';
+
+            // 找 box 內所有可能的指令節點
+            box.querySelectorAll('div, span, p, strong, b').forEach(function(el) {
+                var t = (el.textContent || '').trim();
+                if (t.indexOf('【Execution Command】') !== -1 ||
+                    t.indexOf('Second Seal Mind-Refinement') !== -1) {
+                    if (cardText3.indexOf('驗證階段') !== -1) {
+                        el.textContent = ZH_VERIFY;
+                    } else if (cardText3.indexOf('回傳誓證') !== -1) {
+                        el.textContent = ZH_RETURN;
+                    }
+                }
+            });
+        });
+
+        console.log('✅ 所有 Input Example 指令已強制改為中文');
+        console.log('  驗證區:', ZH_VERIFY);
+        console.log('  回傳區:', ZH_RETURN);
+    }
+
+    // 執行
+    function run() {
+        forceChineseCommands();
+        setTimeout(forceChineseCommands, 100);
+        setTimeout(forceChineseCommands, 300);
+        setTimeout(forceChineseCommands, 600);
+        setTimeout(forceChineseCommands, 1000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 語系切換時重新強制（確保中文不被覆蓋）
+    var origSwitch = window.switchLanguage;
+    if (typeof origSwitch === 'function') {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            // 切換後立即強制改回中文
+            setTimeout(forceChineseCommands, 50);
+            setTimeout(forceChineseCommands, 150);
+            setTimeout(forceChineseCommands, 400);
+        };
+    }
+
+    // 監聽 DOM 變化，持續確保中文
+    var observer = new MutationObserver(function() {
+        clearTimeout(window.__forceZhCmd);
+        window.__forceZhCmd = setTimeout(forceChineseCommands, 80);
+    });
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 強制中文指令模組已載入（兩處 Input Example 將顯示中文）');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 相機引導：成功不顯示、失敗才顯示（中英）                      -->
+<!-- ============================================================ -->
+<style>
+    .camera-guide {
+        display: none !important;
+    }
+    .camera-guide.show-fail {
+        display: block !important;
+    }
+</style>
+
+<script>
+(function () {
+    var GUIDE_ZH =
+        '📷 無法啟動相機<br>' +
+        '⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>' +
+        '→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>' +
+        '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+
+    var GUIDE_EN =
+        '📷 Unable to launch the feature<br>' +
+        '⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"<br>' +
+        '→ Open using a web browser (Chrome / Yahoo / Edge...)<br>' +
+        '⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function hideAllGuides() {
+        document.querySelectorAll('.camera-guide, #cameraGuideStep8, #cameraGuideStep9').forEach(function (el) {
+            el.classList.remove('show-fail');
+            el.style.setProperty('display', 'none', 'important');
+        });
+    }
+
+    function showFail(guideId) {
+        var el = guideId ? document.getElementById(guideId) : null;
+        if (!el) el = document.querySelector('.camera-guide');
+        if (!el) return;
+        el.innerHTML = lang() === 'en' ? GUIDE_EN : GUIDE_ZH;
+        el.classList.add('show-fail');
+        el.style.setProperty('display', 'block', 'important');
+        el.style.setProperty('text-align', 'left', 'important');
+    }
+
+    function hasVideo(containerId) {
+        var box = document.getElementById(containerId);
+        return !!(box && box.querySelector('video'));
+    }
+
+    function hasSuccess(resultId) {
+        var r = document.getElementById(resultId);
+        if (!r) return false;
+        var t = (r.textContent || '').trim();
+        return t.length > 0 && r.style.display !== 'none';
+    }
+
+    // 包一層既有 startQRScanner：成功隱藏、失敗才顯示
+    function patch() {
+        if (typeof window.startQRScanner !== 'function') return;
+        if (window._camFailOnlyPatched) return;
+        window._camFailOnlyPatched = true;
+
+        var orig = window.startQRScanner;
+        window.startQRScanner = function (containerId, resultId, guideId) {
+            // 開始掃描前先隱藏引導
+            hideAllGuides();
+            if (guideId) {
+                var g = document.getElementById(guideId);
+                if (g) {
+                    g.classList.remove('show-fail');
+                    g.style.setProperty('display', 'none', 'important');
+                }
+            }
+
+            var ret;
+            try {
+                ret = orig.apply(this, arguments);
+            } catch (e) {
+                showFail(guideId);
+                return;
+            }
+
+            // Promise 失敗 → 顯示
+            if (ret && typeof ret.then === 'function') {
+                ret.then(function () {
+                    // 啟動成功：確保引導隱藏
+                    hideAllGuides();
+                }).catch(function () {
+                    showFail(guideId);
+                });
+            }
+
+            // 2.8 秒後再確認：沒 video 且沒成功結果才顯示失敗
+            setTimeout(function () {
+                if (hasSuccess(resultId)) {
+                    hideAllGuides();
+                    return;
+                }
+                if (hasVideo(containerId)) {
+                    hideAllGuides();
+                    return;
+                }
+                // 真的沒起來才顯示
+                showFail(guideId);
+            }, 2800);
+
+            return ret;
+        };
+    }
+
+    // 綁定按鈕：點擊時先隱藏引導
+    function bindBtns() {
+        [
+            { btn: 'btnScanQRStep8', box: 'qr-reader-container-step8', guide: 'cameraGuideStep8', result: 'qrScanResultStep8' },
+            { btn: 'btnScanQRStep9', box: 'qr-reader-container-step9', guide: 'cameraGuideStep9', result: 'qrScanResultStep9' }
+        ].forEach(function (cfg) {
+            var btn = document.getElementById(cfg.btn);
+            if (!btn || btn._failOnlyBound) return;
+            btn._failOnlyBound = true;
+
+            btn.addEventListener('click', function () {
+                hideAllGuides();
+                var g = document.getElementById(cfg.guide);
+                if (g) {
+                    g.classList.remove('show-fail');
+                    g.style.setProperty('display', 'none', 'important');
+                }
+
+                setTimeout(function () {
+                    if (hasSuccess(cfg.result) || hasVideo(cfg.box)) {
+                        hideAllGuides();
+                        return;
+                    }
+                    // 仍無 video 才顯示失敗
+                    showFail(cfg.guide);
+                }, 2800);
+            }, true);
+        });
+    }
+
+    // 有成功結果時持續確保引導關閉
+    function watchSuccess() {
+        ['qrScanResultStep8', 'qrScanResultStep9'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            if ((el.textContent || '').trim().length > 0 && el.style.display !== 'none') {
+                hideAllGuides();
+            }
+        });
+    }
+
+    function run() {
+        hideAllGuides();
+        patch();
+        bindBtns();
+        setTimeout(function () { patch(); bindBtns(); }, 200);
+        setTimeout(function () { patch(); bindBtns(); }, 600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            // 語系切換時：若正在顯示失敗引導，更新文字；否則維持隱藏
+            setTimeout(function () {
+                document.querySelectorAll('.camera-guide.show-fail').forEach(function (el) {
+                    el.innerHTML = lang() === 'en' ? GUIDE_EN : GUIDE_ZH;
+                });
+            }, 100);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__camGuideWatch);
+        window.__camGuideWatch = setTimeout(watchSuccess, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 相機引導：僅失敗顯示、成功隱藏');
+})();
+</script>
 </body>
 </html>
