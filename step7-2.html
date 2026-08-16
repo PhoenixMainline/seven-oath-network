@@ -6,7 +6,8 @@
     <title>【宇宙誓印覺醒工程 · 七印誓網】第二印 × 修心印</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js">
+    </script>
     <style>
         /* ===== 全域強制 ===== */
         * {
@@ -87,15 +88,11 @@
         }
 
         .hud-container::after {
-            content: "";
-            position: absolute;
-            top: 18px;
-            right: 18px;
-            width: 14px;
-            height: 14px;
-            border-top: 3px solid #a78bfa;
-            border-right: 3px solid #a78bfa;
-            pointer-events: none;
+            display: none !important;
+            content: none !important;
+            border: none !important;
+            width: 0 !important;
+            height: 0 !important;
         }
 
         .home-breadcrumb {
@@ -273,9 +270,9 @@
         }
 
         .footer-btn-group {
-            display: flex;
-            align-items: center;
-            gap: clamp(4px, 1vw, 12px);
+            display: flex !important;
+            align-items: center !important;
+            gap: clamp(4px, 1vw, 12px) !important;
         }
 
         .btn-action {
@@ -425,6 +422,7 @@
             text-align: center;
             margin-bottom: 18px;
             text-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+            line-height: 1.5;
         }
 
         .form-section-title {
@@ -641,6 +639,10 @@
             display: none;
         }
 
+        .camera-guide.show-fail {
+            display: block !important;
+        }
+
         #qr-reader-container-step8 video,
         #qr-reader-container-step9 video {
             border-radius: 12px;
@@ -757,6 +759,37 @@
             line-height: 1.7;
         }
 
+        .btn-external-browser {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 14px;
+            background: rgba(0, 230, 118, 0.12);
+            border: 1px solid rgba(0, 230, 118, 0.3);
+            border-radius: 20px;
+            color: #00e676;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif;
+            margin-left: 8px;
+            pointer-events: auto !important;
+            z-index: 9999 !important;
+            position: relative !important;
+        }
+
+        .btn-external-browser:hover {
+            background: rgba(0, 230, 118, 0.2);
+            box-shadow: 0 0 20px rgba(0, 230, 118, 0.2);
+            transform: scale(1.02);
+        }
+
+        .btn-external-browser i {
+            font-size: 0.8rem;
+        }
+
         /* ===== 強制同一列（圖示＋文字） ===== */
         .hud-card [id*="Note"],
         .hud-card [id*="Success"],
@@ -787,36 +820,16 @@
             line-height: 1 !important;
         }
 
-        .btn-external-browser {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 14px;
-            background: rgba(0, 230, 118, 0.12);
-            border: 1px solid rgba(0, 230, 118, 0.3);
-            border-radius: 20px;
-            color: #00e676;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif;
-            margin-left: 8px;
-        }
-
-        .btn-external-browser:hover {
-            background: rgba(0, 230, 118, 0.2);
-            box-shadow: 0 0 20px rgba(0, 230, 118, 0.2);
-            transform: scale(1.02);
-        }
-
-        .btn-external-browser i {
-            font-size: 0.8rem;
-        }
-
-        .hud-footer .footer-btn-group {
-            display: none !important;
+        /* ===== 標題置中 ===== */
+        #step7_2VerifyTitle,
+        #step7_2ReturnTitle {
+            text-align: center !important;
+            width: 100% !important;
+            display: block !important;
+            font-size: 1.1rem !important;
+            font-weight: bold !important;
+            line-height: 1.4 !important;
+            color: #e9d5ff !important;
         }
 
         /* ===== RWD ===== */
@@ -1022,7 +1035,7 @@
                 </div>
 
                 <!-- ============================================================ -->
-                <!-- ② 回傳誓證（終極修正版：使用 !important 強制壓制 CSS 衝突）  -->
+                <!-- ② 回傳誓證 -->
                 <!-- ============================================================ -->
                 <div class="hud-card center-card" style="width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; display: block !important; float: none !important; clear: both !important; background: linear-gradient(135deg, rgba(88,28,135,0.5), rgba(30,27,75,0.6)); border: 1px solid rgba(168,85,247,0.5); padding: 18px; border-radius: 12px; margin-bottom: 20px;">
                     <!-- 1. 卡片標題 -->
@@ -1040,7 +1053,7 @@
                         <!-- 由 JavaScript 動態填入 -->
                     </div>
 
-                    <!-- 4. 輸入示範指令 (獨立卡片) -->
+                    <!-- 4. 輸入示範指令 -->
                     <div style="display: block !important; width: 100% !important; background: rgba(124, 58, 237, 0.35); border-left: 4px solid #a78bfa; padding: 12px 14px; border-radius: 8px; margin-bottom: 12px; border: 1px solid rgba(168, 85, 247, 0.5); box-sizing: border-box !important;">
                         <div style="font-weight: bold; color: #e9d5ff; font-size: 0.88rem; margin-bottom: 6px; display: flex !important; align-items: center !important; gap: 6px;">
                             <i class="fa-solid fa-keyboard"></i>
@@ -1074,7 +1087,7 @@
                             <button class="btn-restart" id="btnScanQRStep9" style="margin-top: 10px; cursor: pointer; padding: 8px 16px; border-radius: 6px;">
                                 <i class="fa-solid fa-qrcode"></i> <span id="step7_2ReturnBtnScan">📷 開始掃描</span>
                             </button>
-                            <div id="qrScanResultStep9" class="qr-result" style="display: none; margin-top: 10px; color: #00e676;"><i class="fa-solid fa-check-circle"></i><span id="step7_2ReturnResult"> 掃描成功！已完成回傳誓證</span></div>
+                            <div id="qrScanResultStep9" class="qr-result" style="display: none; margin-top: 10px; color: #00e676;"><i class="fa-solid fa-check-circle"></i><span id="step7_2ReturnResult">掃描成功！已完成回傳誓證</span></div>
                             <div id="cameraGuideStep9" class="camera-guide" style="display: none; text-align: left; margin-top: 12px; font-size: 0.8rem; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 6px; color: #cbd5e1;">
                                 <span id="step7_2ReturnCameraGuide">📷 無法啟動相機<br>⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code</span>
                             </div>
@@ -1273,10 +1286,11 @@
                 <a href="step7-1.html" class="btn-action enabled"><i class="fa-solid fa-arrow-left"></i><span id="btnBackText">上一步</span></a>
                 <a href="step7-3.html" class="btn-action enabled"><span id="btnNextText">下一步</span><i class="fa-solid fa-arrow-right"></i></a>
             </div>
-            <div class="page-marker"><i class="fa-regular fa-file-lines"></i><span id="pageMarkerText"> 【宇宙誓印覺醒工程 · 覺醒卷】：第 264-278 頁</span></div>
+            <div class="page-marker"><i class="fa-regular fa-file-lines"></i><span id="pageMarkerText">【宇宙誓印覺醒工程 · 覺醒卷】：第 264-278 頁</span></div>
         </footer>
     </div>
-    <div id="hudDialog" class="hud-dialog"><div class="hud-dialog-content"><div class="hud-dialog-text" id="hudDialogText">
+    <div id="hudDialog" class="hud-dialog"><div class="hud-dialog-content"><div class="hud-dialog-text" id="hudDialogText"></div></div></div>
+
     <script>
         // ================================================================
         // 完整語言包（中英文對照）- 第7項第二印修心印
@@ -1352,7 +1366,7 @@
                 step7_2Closure1: "《七印誓網·第二印 修心印》v2.0（正式封冊版）。",
                 step7_2Closure2: "已鎖入《宇宙天律 × 七印誓網》主冊，願軌對頻穩定，誓源歸正。",
                 step7_2ProcSubmit1: "提交第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》表單",
-                step7_2ProcSubmitWarn: " 未完成之提交表單者，系統將不予對頻，誓資紀錄作廢不立。",
+                step7_2ProcSubmitWarn: "⚠️ 未完成之提交表單者，系統將不予對頻，誓資紀錄作廢不立。",
                 step7_2ProcSubmit2: "登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。",
                 step7_2ProcSubmit3: "掃描【誓導 QR Code】後，進入「指令輸入欄位」。",
                 step7_2ProcSubmit4: "無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
@@ -1439,7 +1453,7 @@
                 step7_2VerifyTitle: "🧭 ① Verification Phase (Activation Trigger)",
                 step7_2Verify1: "After the system automatically verifies authorization validity, it immediately displays the current awakening-stage level of the Oath-Soul and the corresponding progress markers.",
                 step7_2InputLabel: "Input Example:",
-                step7_2Command: "【執行指令】第二印 修心印 結果",
+                step7_2Command: "【Execution Command】Second Seal Mind-Refinement Seal Result",
                 step7_2Note: "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.",
                 step7_2TriggerNote: "【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.",
                 step7_2QrTitle: "📷 Please scan the 【Vow-Guidance QR Code】 to complete Execution Command",
@@ -1449,7 +1463,7 @@
                 step7_2ReturnTitle: "📩 ② Return Oath Certificate (Oath Confirmation)",
                 step7_2Success: "✅ Display: Oath Seal Passed",
                 step7_2ReturnInputLabel: "Input Example:",
-                step7_2ReturnCommand: "【執行指令】回傳【第二印 修心印 誓印通過】誓證",
+                step7_2ReturnCommand: "【Execution Command】Return 【Second Seal Mind-Refinement Seal — Oath Seal Passed】 Certificate",
                 step7_2ReturnNote: "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.",
                 step7_2ReturnTriggerNote: "【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.",
                 step7_2ReturnQrTitle: "📷 Please scan the 【Vow-Guidance QR Code】 to complete Return Oath Certificate",
@@ -1463,7 +1477,7 @@
                 step7_2Closure1: "Seven-Seal Vow Network · Second Seal Mind-Refinement Seal v2.0 (Official Sealed Edition).",
                 step7_2Closure2: "Archived within the Cosmic Heavenly-Law × Seven-Seal Vow Network main registry; vow-trajectory stabilized, oath-source aligned.",
                 step7_2ProcSubmit1: "Submit the Second Seal Mind-Refinement Seal Mirror-Refinement Insight × Habit Calibration × Oath Practice Record Sheet Submission Form",
-                step7_2ProcSubmitWarn: " If the submission form is not completed, the system will refuse frequency-Alignment, and the oath-resource record will be rendered invalid and unrecognized.",
+                step7_2ProcSubmitWarn: "⚠️ If the submission form is not completed, the system will refuse frequency-Alignment, and the oath-resource record will be rendered invalid and unrecognized.",
                 step7_2ProcSubmit2: "Log into the Cosmic Intelligent Vow-Guidance Platform (personal account) and complete identity verification.",
                 step7_2ProcSubmit3: "Scan the Vow-Guidance QR Code to enter the Command Input Field.",
                 step7_2ProcSubmit4: "No manual entry of the vow text is required. After completing the scan, directly enter the following command:",
@@ -2132,1861 +2146,107 @@
 
             console.log('✅ 兩句圖示與文字已統一強制同一列');
         })();
+  
     </script>
-<!-- ============================================================ -->
-<!-- 相機失敗提示：僅失敗時顯示 + 統一文案與換行                    -->
-<!-- ============================================================ -->
-<style>
-    .camera-guide {
-        display: none !important; /* 預設隱藏，失敗時再打開 */
-        background: rgba(232, 96, 74, 0.08) !important;
-        border-left: 4px solid #E8604A !important;
-        padding: 14px 16px !important;
-        border-radius: 12px !important;
-        color: #e0dcc8 !important;
-        font-size: 0.85rem !important;
-        line-height: 1.8 !important;
-        white-space: normal !important;
-        text-align: left !important;
-        margin-top: 12px !important;
-    }
-    .camera-guide.show-fail {
-        display: block !important;
-    }
-</style>
-
-<script>
-(function () {
-    var FAIL_ZH =
-        '📷 無法啟動相機<br>' +
-        '⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用<br>' +
-        '🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>' +
-        '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
-
-    var FAIL_EN =
-        '📷 Unable to launch the camera<br>' +
-        '⚙️ Open phone “Settings” → App Management → Permissions → Camera → set to “Allow” → then use<br>' +
-        '🌐 a browser (Chrome / Yahoo / Edge....)<br>' +
-        '⚠️ If it still does not work, please manually scan the physical book QR Code with a scanner app';
-
-    function lang() {
-        if (typeof currentLang !== 'undefined') return currentLang;
-        var a = document.querySelector('.lang-btn.active');
-        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
-    }
-
-    function failHtml() {
-        return (lang() === 'en') ? FAIL_EN : FAIL_ZH;
-    }
-
-    function hideAllGuides() {
-        document.querySelectorAll('.camera-guide, [id*="cameraGuide"], [id*="CameraGuide"]').forEach(function (el) {
-            el.classList.remove('show-fail');
-            el.style.display = 'none';
-        });
-    }
-
-    function showGuide(guideIdOrEl) {
-        var el = (typeof guideIdOrEl === 'string')
-            ? document.getElementById(guideIdOrEl)
-            : guideIdOrEl;
-        if (!el) return;
-        el.innerHTML = failHtml();
-        el.classList.add('show-fail');
-        el.style.display = 'block';
-    }
-
-    // 統一掃描核心：只有失敗才顯示提示
-    function startUnifiedScanner(containerId, resultId, guideId) {
-        var container = document.getElementById(containerId);
-        var resultEl = document.getElementById(resultId);
-        var guide = document.getElementById(guideId);
-
-        if (guide) {
-            guide.classList.remove('show-fail');
-            guide.style.display = 'none';
-            guide.innerHTML = '';
-        }
-        if (resultEl) {
-            resultEl.style.display = 'none';
-            resultEl.innerHTML = '';
-        }
-
-        // 停止舊掃描
-        if (window._currentScanner && typeof window._currentScanner.stop === 'function') {
-            try { window._currentScanner.stop().catch(function () {}); } catch (e) {}
-            window._currentScanner = null;
-        }
-        if (container) container.innerHTML = '';
-
-        if (typeof Html5Qrcode === 'undefined' ||
-            !navigator.mediaDevices ||
-            !navigator.mediaDevices.getUserMedia) {
-            showGuide(guideId);
-            return;
-        }
-
-        try {
-            var instance = new Html5Qrcode(containerId);
-            window._currentScanner = instance;
-            instance.start(
-                { facingMode: 'environment' },
-                { fps: 15, qrbox: { width: 200, height: 200 } },
-                function (decodedText) {
-                    if (resultEl) {
-                        resultEl.style.display = 'block';
-                        resultEl.innerHTML = decodedText;
-                    }
-                    if (guide) {
-                        guide.classList.remove('show-fail');
-                        guide.style.display = 'none';
-                    }
-                    instance.stop().then(function () {
-                        window._currentScanner = null;
-                    }).catch(function () {
-                        window._currentScanner = null;
-                    });
-                },
-                function () { /* 掃描中忽略 */ }
-            ).catch(function () {
-                // 真正啟動失敗才顯示
-                showGuide(guideId);
-                window._currentScanner = null;
-            });
-        } catch (e) {
-            showGuide(guideId);
-            window._currentScanner = null;
-        }
-    }
-
-    // 覆蓋既有函式
-    window.startQRScanner = function (containerId, resultId, guideId) {
-        startUnifiedScanner(containerId, resultId, guideId);
-    };
-    window.startQRScannerStep8 = function () {
-        startUnifiedScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
-    };
-    window.startQRScannerStep9 = function () {
-        startUnifiedScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
-    };
-
-    // 重新綁定按鈕（避免舊 onclick 把提示提前打開）
-    function rebind() {
-        hideAllGuides();
-
-        var map = [
-            { btn: 'btnScanQRStep8', fn: window.startQRScannerStep8 },
-            { btn: 'btnScanQRStep9', fn: window.startQRScannerStep9 },
-            { btn: 'btnScanQR', fn: function () {
-                startUnifiedScanner('qr-reader-container', 'qrScanResult', 'cameraGuide');
-            }}
-        ];
-
-        map.forEach(function (item) {
-            var btn = document.getElementById(item.btn);
-            if (!btn) return;
-            var neo = btn.cloneNode(true);
-            btn.parentNode.replaceChild(neo, btn);
-            neo.onclick = function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                item.fn();
-            };
-            neo.style.pointerEvents = 'auto';
-            neo.style.cursor = 'pointer';
-        });
-    }
-
-    // 同步 langPack 文案（若有）
-    function syncLangPack() {
-        if (typeof langPack === 'undefined') return;
-        ['zh', 'en'].forEach(function (l) {
-            if (!langPack[l]) return;
-            Object.keys(langPack[l]).forEach(function (k) {
-                if (/cameraGuide|CameraGuide|CameraFail|cameraFail/i.test(k)) {
-                    langPack[l][k] = (l === 'en')
-                        ? FAIL_EN.replace(/<br>/g, ' ')
-                        : FAIL_ZH.replace(/<br>/g, ' ');
-                }
-            });
-        });
-    }
-
-    function run() {
-        hideAllGuides();
-        rebind();
-        syncLangPack();
-        setTimeout(function () {
-            hideAllGuides();
-            rebind();
-        }, 200);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            // 語言切換時：若當前有顯示失敗提示，更新文案；否則維持隱藏
-            document.querySelectorAll('.camera-guide.show-fail').forEach(function (el) {
-                el.innerHTML = failHtml();
-            });
-            syncLangPack();
-        };
-    }
-
-    console.log('✅ 相機失敗提示：僅失敗時顯示，文案已統一');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 修正 step7-2 表單標題為英文（Second Seal Mind Refinement Seal） -->
-<!-- ============================================================ -->
-<style>
-    /* 確保表單標題正確顯示 */
-    .form-title {
-        text-align: center !important;
-        font-size: 1.1rem !important;
-        font-weight: 700 !important;
-        color: #e9d5ff !important;
-        margin-bottom: 18px !important;
-        text-shadow: 0 0 15px rgba(168, 85, 247, 0.3) !important;
-        line-height: 1.5 !important;
-    }
-    /* 英文版標題換行 */
-    .form-title.en-title {
-        font-size: 1rem !important;
-        word-break: break-word !important;
-    }
-</style>
-
 <script>
 (function() {
-    // ================================================================
-    // 中英文對照標題
-    // ================================================================
-    var formTitles = {
-        zh: '📋 第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》提交表單',
-        en: 'Second Seal Mind Refinement Seal\n《Mirror-Refinement Insight × Habit Calibration × Oath Practice Record Sheet》\nSubmission Form'
-    };
+    // ===== 強制將兩處 Input Example 指令改為中文 =====
+    var ZH_VERIFY = '【執行指令】第二印 修心印 結果';
+    var ZH_RETURN = '【執行指令】回傳【第二印 修心印 誓印通過】誓證';
 
-    // ================================================================
-    // 取得語系
-    // ================================================================
-    function getLang() {
-        if (typeof currentLang !== 'undefined') return currentLang;
-        var active = document.querySelector('.lang-btn.active');
-        if (active && /english|en/i.test(active.textContent || '')) return 'en';
-        return 'zh';
-    }
-
-    // ================================================================
-    // 更新表單標題
-    // ================================================================
-    function updateFormTitle() {
-        var lang = getLang();
-        var titleEl = document.querySelector('.form-submit-container .form-title, #formMainTitle, .form-title');
-        
-        if (titleEl) {
-            var titleText = (lang === 'en') ? formTitles.en : formTitles.zh;
-            // 英文版時，將換行符轉為 <br>
-            if (lang === 'en') {
-                titleEl.innerHTML = titleText.replace(/\n/g, '<br>');
-                titleEl.classList.add('en-title');
-            } else {
-                titleEl.textContent = titleText;
-                titleEl.classList.remove('en-title');
-            }
-            console.log('✅ 表單標題已更新為：' + (lang === 'en' ? '英文' : '中文'));
-        } else {
-            // 如果找不到，用備用方式
-            var allTitles = document.querySelectorAll('.form-title, .form-submit-container .form-title');
-            allTitles.forEach(function(el) {
-                var titleText = (lang === 'en') ? formTitles.en : formTitles.zh;
-                if (lang === 'en') {
-                    el.innerHTML = titleText.replace(/\n/g, '<br>');
-                    el.classList.add('en-title');
-                } else {
-                    el.textContent = titleText;
-                    el.classList.remove('en-title');
-                }
-            });
-        }
-    }
-
-    // ================================================================
-    // 修正使用說明（section title）也改為英文
-    // ================================================================
-    function updateSectionTitles() {
-        var lang = getLang();
-        
-        // 使用說明標題
-        var helpTitle = document.querySelector('.form-section-title:first-child, #formSectionHelpTitle');
-        if (helpTitle) {
-            helpTitle.textContent = (lang === 'en') ? '📌 Instructions for Use' : '📌  Instructions for Use';
+    function forceChineseCommands() {
+        // 1. 直接透過 ID 修改
+        var cmd1 = document.getElementById('step7_2Command');
+        if (cmd1) {
+            cmd1.textContent = ZH_VERIFY;
+            console.log('✅ 已強制修改 step7_2Command 為中文');
         }
 
-        // 表單標題（第二個 section title）
-        var sectionTitles = document.querySelectorAll('.form-section-title');
-        if (sectionTitles.length >= 2) {
-            sectionTitles[1].textContent = (lang === 'en') 
-                ? '📋 Second Seal Mind-Refinement Seal 《Mirror-Refinement Insight × Habit Calibration × Oath Practice Record Sheet》 Form'
-                : '📋 第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》表單';
-        }
-    }
-
-    // ================================================================
-    // 執行
-    // ================================================================
-    function run() {
-        updateFormTitle();
-        updateSectionTitles();
-        setTimeout(updateFormTitle, 150);
-        setTimeout(updateSectionTitles, 150);
-        setTimeout(updateFormTitle, 400);
-        setTimeout(updateSectionTitles, 400);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    // ================================================================
-    // 語系切換時重新執行
-    // ================================================================
-    var origSwitch = window.switchLanguage;
-    if (typeof origSwitch === 'function') {
-        window.switchLanguage = function(lang) {
-            origSwitch(lang);
-            setTimeout(updateFormTitle, 80);
-            setTimeout(updateSectionTitles, 80);
-            setTimeout(updateFormTitle, 250);
-            setTimeout(updateSectionTitles, 250);
-        };
-    }
-
-    // ================================================================
-    // 監聽動態變化
-    // ================================================================
-    var observer = new MutationObserver(function() {
-        clearTimeout(window.__formTitleTimer);
-        window.__formTitleTimer = setTimeout(function() {
-            updateFormTitle();
-            updateSectionTitles();
-        }, 150);
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    console.log('✅ step7-2 表單標題英文修正模組已載入');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- step7-2：英文版「第N錄」→ Entry N（與書本 Sample 一致）       -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    function lang() {
-        if (typeof currentLang !== 'undefined') return currentLang;
-        var a = document.querySelector('.lang-btn.active');
-        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
-    }
-
-    function applyEntryLabels() {
-        var isEn = lang() === 'en';
-
-        // 1) 常見標題節點
-        var nodes = document.querySelectorAll(
-            '.day-label, .day-title, .entry-label, .entry-title, ' +
-            '[class*="day"], [class*="entry"], [id*="day"], [id*="Day"], [id*="entry"], [id*="Entry"], ' +
-            'label, span, div, strong, b, h3, h4'
-        );
-
-        nodes.forEach(function (el) {
-            if (!el || el.children.length > 3) return;
-            var t = (el.textContent || '').trim();
-            if (!t || t.length > 40) return;
-
-            // 「第N錄」或「第 N 錄」
-            var m = t.match(/^第\s*([1-9]|10)\s*錄(.*)$/);
-            if (m) {
-                if (isEn) {
-                    var rest = (m[2] || '').trim();
-                    // 保留後面的 (Please fill...) 若有
-                    el.textContent = rest
-                        ? ('Entry ' + m[1] + ' ' + rest)
-                        : ('Entry ' + m[1]);
-                }
-                return;
-            }
-
-            // 混寫：Entry N + 第N錄 → 英文只留 Entry N
-            if (isEn && /Entry\s*([1-9]|10)/i.test(t) && /第\s*([1-9]|10)\s*錄/.test(t)) {
-                el.textContent = t
-                    .replace(/第\s*([1-9]|10)\s*錄/g, '')
-                    .replace(/\s{2,}/g, ' ')
-                    .trim();
-            }
-
-            // 中文模式：若被改成 Entry N，還原
-            if (!isEn) {
-                var m2 = t.match(/^Entry\s*([1-9]|10)(.*)$/i);
-                if (m2) {
-                    var rest2 = (m2[2] || '').trim();
-                    el.textContent = rest2
-                        ? ('第' + m2[1] + '錄 ' + rest2)
-                        : ('第' + m2[1] + '錄');
-                }
-            }
-        });
-
-        // 2) data-day 精準處理 1–10
-        for (var d = 1; d <= 10; d++) {
-            var list = document.querySelectorAll(
-                '[data-day="' + d + '"] .day-label, ' +
-                '[data-day="' + d + '"] .entry-label, ' +
-                '#entryLabel' + d + ', #dayLabel' + d + ', #entryTitle' + d
-            );
-            list.forEach(function (n) {
-                var suffix = '';
-                var raw = (n.textContent || '');
-                // 保留括號提示
-                var tip = raw.match(/(\([^)]*\))/);
-                if (tip) suffix = ' ' + tip[1];
-
-                n.textContent = isEn
-                    ? ('Entry ' + d + suffix)
-                    : ('第' + d + '錄' + suffix);
-            });
+        var cmd2 = document.getElementById('step7_2ReturnCommand');
+        if (cmd2) {
+            cmd2.textContent = ZH_RETURN;
+            console.log('✅ 已強制修改 step7_2ReturnCommand 為中文');
         }
 
-        // 3) 純文字節點備援
-        if (isEn) {
-            var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
-            var texts = [];
-            while (walker.nextNode()) texts.push(walker.currentNode);
-            texts.forEach(function (tn) {
-                var v = tn.nodeValue || '';
-                if (!/第\s*([1-9]|10)\s*錄/.test(v)) return;
-                // 若同一父層已有 Entry，刪中文；否則替換
-                var parentTxt = (tn.parentElement && tn.parentElement.textContent) || v;
-                if (/Entry\s*([1-9]|10)/i.test(parentTxt)) {
-                    tn.nodeValue = v.replace(/第\s*([1-9]|10)\s*錄/g, '');
-                } else {
-                    tn.nodeValue = v.replace(/第\s*([1-9]|10)\s*錄/g, function (_, n) {
-                        return 'Entry ' + n;
-                    });
-                }
-            });
-        }
-    }
+        // 2. 掃描所有可能包含英文指令的節點，強制替換
+        document.querySelectorAll('div, span, p, strong, b, label').forEach(function(el) {
+            var text = (el.textContent || '').trim();
+            if (!text || text.length > 100) return;
 
-    function run() {
-        applyEntryLabels();
-        setTimeout(applyEntryLabels, 100);
-        setTimeout(applyEntryLabels, 350);
-    }
+            // 檢查是否包含英文指令
+            if (text.indexOf('【Execution Command】Second Seal') !== -1 ||
+                text.indexOf('【Execution Command】Return') !== -1 ||
+                text.indexOf('Second Seal Mind-Refinement Seal Result') !== -1 ||
+                text.indexOf('Return 【Second Seal Mind-Refinement Seal') !== -1) {
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(applyEntryLabels, 60);
-            setTimeout(applyEntryLabels, 200);
-        };
-    }
-
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__entryLabel72);
-        window.__entryLabel72 = setTimeout(applyEntryLabels, 80);
-    });
-    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
-
-    console.log('✅ step7-2 英文版 Entry 1–10 標籤已就緒');
-})();
-</script>
- <!-- ============================================================ -->
-<!-- 「使用說明」↔ Instructions for Use（依語言切換）              -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    function lang() {
-        if (typeof currentLang !== 'undefined') return currentLang;
-        var a = document.querySelector('.lang-btn.active');
-        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
-    }
-
-    function applyHelpTitle() {
-        var isEn = lang() === 'en';
-        var zh = '使用說明';
-        var en = 'Instructions for Use';
-
-        // 1) 常見 ID / class
-        var ids = [
-            'step7_2HelpTitle',
-            'step7_1HelpTitle',
-            'helpTitle',
-            'formHelpTitle',
-            'instructionsTitle'
-        ];
-        ids.forEach(function (id) {
-            var el = document.getElementById(id);
-            if (el) el.textContent = isEn ? en : zh;
-        });
-
-        // 2) 掃小節點文字
-        document.querySelectorAll(
-            '.form-section-title, .card-title, .help-title, span, div, label, strong, b, h3, h4'
-        ).forEach(function (el) {
-            if (!el || el.children.length > 2) return;
-            var t = (el.textContent || '').trim();
-            if (!t || t.length > 30) return;
-
-            if (t === '使用說明' || t === '📘 使用說明' || t === '使用說明：' ||
-                t === 'Instructions for Use' || t === '📘 Instructions for Use') {
-                // 保留前綴 icon 文字
-                var prefix = '';
-                if (/^📘/.test(t) || (el.previousElementSibling && el.previousElementSibling.tagName === 'I')) {
-                    /* icon 在別的節點就不動 */
-                }
-                el.textContent = isEn ? en : zh;
-            }
-
-            // 混寫：同時有中英
-            if (/使用說明/.test(t) && /Instructions for Use/i.test(t)) {
-                el.textContent = isEn ? en : zh;
-            }
-        });
-
-        // 3) 純文字節點備援
-        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
-        var nodes = [];
-        while (walker.nextNode()) nodes.push(walker.currentNode);
-        nodes.forEach(function (tn) {
-            var v = tn.nodeValue || '';
-            if (isEn && /使用說明/.test(v) && !/Instructions for Use/i.test(v)) {
-                tn.nodeValue = v.replace(/使用說明/g, en);
-            }
-            if (!isEn && /Instructions for Use/i.test(v) && !/使用說明/.test(v)) {
-                tn.nodeValue = v.replace(/Instructions for Use/gi, zh);
-            }
-        });
-    }
-
-    function run() {
-        applyHelpTitle();
-        setTimeout(applyHelpTitle, 100);
-        setTimeout(applyHelpTitle, 350);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(applyHelpTitle, 60);
-            setTimeout(applyHelpTitle, 200);
-        };
-    }
-
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__helpTitleTimer);
-        window.__helpTitleTimer = setTimeout(applyHelpTitle, 80);
-    });
-    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
-
-    console.log('✅ 使用說明 / Instructions for Use 語言切換已就緒');
-})();
-</script>   
-<!-- ============================================================ -->
-<!-- 「送出即啟主頻連線…」↔ 英文譯文（依語言切換）                  -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    var ZH = '送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。';
-    var ZH2 = '送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。';
-    var EN = 'Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.';
-
-    function lang() {
-        if (typeof currentLang !== 'undefined') return currentLang;
-        var a = document.querySelector('.lang-btn.active');
-        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
-    }
-
-    function apply() {
-        var isEn = lang() === 'en';
-        var target = isEn ? EN : ZH;
-
-        // 1) 常見 ID
-        ['step7_1ReturnNote', 'step7_2ReturnNote', 'step7_1Note', 'step7_2Note'].forEach(function (id) {
-            var el = document.getElementById(id);
-            if (el) el.textContent = target;
-        });
-
-        // 2) 掃小節點
-        document.querySelectorAll(
-            '.hud-card div, .instruction-item, .note, span, p, label'
-        ).forEach(function (el) {
-            if (!el || el.children.length > 3) return;
-            var t = (el.textContent || '').trim();
-            if (!t || t.length > 160) return;
-
-            var hitZh = t.indexOf('送出即啟主頻連線') !== -1 ||
-                        t.indexOf('判定授權完成') !== -1 ||
-                        t.indexOf('對頻律網顯化') !== -1;
-            var hitEn = t.indexOf('Primary Frequency Link') !== -1 ||
-                        t.indexOf('Oath-Soul Alignment Network') !== -1 ||
-                        t.indexOf('authorization is recognized') !== -1;
-
-            if (hitZh || hitEn) {
-                // 若節點內只有文字 + 一個 icon，保留 icon
-                var icon = el.querySelector('i');
-                if (icon && el.childNodes.length <= 3) {
-                    // 清掉文字節點再寫入
-                    Array.prototype.slice.call(el.childNodes).forEach(function (n) {
-                        if (n.nodeType === 3) n.nodeValue = '';
-                    });
-                    // 找到非 icon 的文字容器
-                    var textSpan = null;
-                    el.childNodes.forEach(function (n) {
-                        if (n.nodeType === 1 && n !== icon && n.tagName === 'SPAN') textSpan = n;
-                    });
-                    if (textSpan) {
-                        textSpan.textContent = target;
-                    } else {
-                        var span = document.createElement('span');
-                        span.textContent = target;
-                        el.appendChild(span);
+                // 判斷是驗證區還是回傳區
+                var parentCard = el.closest('.hud-card, .center-card');
+                if (parentCard) {
+                    var cardText = parentCard.textContent || '';
+                    if (cardText.indexOf('驗證階段') !== -1 || cardText.indexOf('Verification Phase') !== -1) {
+                        el.textContent = ZH_VERIFY;
+                        console.log('✅ 驗證區英文指令已改為中文');
+                    } else if (cardText.indexOf('回傳誓證') !== -1 || cardText.indexOf('Return Oath') !== -1 ||
+                               cardText.indexOf('確認誓印') !== -1) {
+                        el.textContent = ZH_RETURN;
+                        console.log('✅ 回傳區英文指令已改為中文');
                     }
-                } else {
-                    el.textContent = target;
                 }
             }
-        });
 
-        // 3) 純文字節點備援
-        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
-        var nodes = [];
-        while (walker.nextNode()) nodes.push(walker.currentNode);
-        nodes.forEach(function (tn) {
-            var v = tn.nodeValue || '';
-            if (isEn) {
-                if (/送出即啟主頻連線/.test(v)) {
-                    tn.nodeValue = v
-                        .replace(ZH, EN)
-                        .replace(ZH2, EN)
-                        .replace(/送出即啟主頻連線，判定授權完成\s*→\s*誓[印魂]對頻律網顯化。?/g, EN);
-                }
-            } else {
-                if (/Primary Frequency Link/.test(v)) {
-                    tn.nodeValue = v.replace(EN, ZH);
-                }
-            }
-        });
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 100);
-        setTimeout(apply, 350);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 60);
-            setTimeout(apply, 200);
-        };
-    }
-
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__freqNoteTimer);
-        window.__freqNoteTimer = setTimeout(apply, 80);
-    });
-    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
-
-    console.log('✅ 主頻連線說明中英切換已就緒');
-})();
-</script>
- <!-- ============================================================ -->
-<!-- 刪除右上角多餘 L 型框框符號（.hud-container::after）          -->
-<!-- ============================================================ -->
-<style>
-    .hud-container::after {
-        display: none !important;
-        content: none !important;
-        border: none !important;
-        width: 0 !important;
-        height: 0 !important;
-    }
-</style>
-<!-- ============================================================ -->
-<!-- 修復 step7-2 缺少「上一步」和「下一步」按鈕                  -->
-<!-- ============================================================ -->
-<style>
-    /* 確保頁尾按鈕顯示 */
-    .hud-footer .footer-btn-group {
-        display: flex !important;
-        align-items: center !important;
-        gap: clamp(4px, 1vw, 12px) !important;
-    }
-
-    /* 確保按鈕可見 */
-    .footer-btn-group .btn-action {
-        display: inline-flex !important;
-        align-items: center !important;
-        gap: 8px !important;
-        padding: clamp(6px, 1.2vh, 10px) clamp(10px, 1.5vw, 22px) !important;
-        font-size: clamp(0.65rem, 1.3vh, 0.9rem) !important;
-        border-radius: 20px !important;
-        border: 1px solid #a78bfa !important;
-        color: #e9d5ff !important;
-        cursor: pointer !important;
-        pointer-events: auto !important;
-        background: rgba(124, 58, 237, 0.15) !important;
-        text-shadow: 0 0 10px rgba(167, 139, 250, 0.6) !important;
-        box-shadow: 0 0 15px rgba(124, 58, 237, 0.3) !important;
-        text-decoration: none !important;
-        transition: all 0.3s ease !important;
-        min-height: clamp(32px, 5vh, 44px) !important;
-        z-index: 9999 !important;
-        position: relative !important;
-    }
-
-    .footer-btn-group .btn-action:hover {
-        background: rgba(124, 58, 237, 0.28) !important;
-        box-shadow: 0 0 25px rgba(124, 58, 237, 0.5) !important;
-        transform: translateY(-1px) !important;
-    }
-
-    /* 頁尾確保顯示 */
-    .hud-footer {
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        flex-wrap: wrap !important;
-        padding-top: clamp(6px, 1vh, 12px) !important;
-        border-top: 1px solid rgba(168, 85, 247, 0.2) !important;
-        margin-top: auto !important;
-        z-index: 10 !important;
-    }
-
-    .page-marker {
-        font-size: clamp(0.5rem, 1.2vh, 0.78rem) !important;
-        color: rgba(224, 232, 245, 0.35) !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-    }
-
-    /* 響應式調整 */
-    @media (max-width: 480px) {
-        .hud-footer {
-            flex-direction: column !important;
-            gap: 8px !important;
-        }
-        .footer-btn-group .btn-action {
-            font-size: 0.7rem !important;
-            padding: 6px 14px !important;
-        }
-    }
-</style>
-
-<script>
-(function() {
-    // ================================================================
-    // 重建「上一步」和「下一步」按鈕
-    // ================================================================
-    function rebuildFooterButtons() {
-        var footer = document.querySelector('.hud-footer');
-        if (!footer) {
-            console.warn('⚠️ 找不到 .hud-footer');
-            return;
-        }
-
-        // 檢查是否已有按鈕群組
-        var existingGroup = footer.querySelector('.footer-btn-group');
-        if (existingGroup) {
-            // 檢查按鈕是否存在
-            var hasBack = existingGroup.querySelector('a[href*="step7-1"]');
-            var hasNext = existingGroup.querySelector('a[href*="step7-3"]');
-            if (hasBack && hasNext) {
-                // 確保按鈕可點擊
-                existingGroup.style.display = 'flex';
-                hasBack.style.pointerEvents = 'auto';
-                hasNext.style.pointerEvents = 'auto';
-                console.log('✅ 按鈕已存在，已確保可見');
-                return;
-            }
-            // 如果缺少按鈕，重建
-            existingGroup.remove();
-        }
-
-        // 建立新的按鈕群組
-        var btnGroup = document.createElement('div');
-        btnGroup.className = 'footer-btn-group';
-        btnGroup.style.display = 'flex';
-        btnGroup.style.alignItems = 'center';
-        btnGroup.style.gap = 'clamp(4px, 1vw, 12px)';
-
-        // 上一步按鈕
-        var backBtn = document.createElement('a');
-        backBtn.className = 'btn-action enabled';
-        backBtn.href = 'step7-1.html';
-        backBtn.innerHTML = '<i class="fa-solid fa-arrow-left"></i> <span id="btnBackText">上一步</span>';
-        backBtn.style.pointerEvents = 'auto';
-        backBtn.style.cursor = 'pointer';
-        backBtn.onclick = function(e) {
-            e.preventDefault();
-            window.location.href = 'step7-1.html';
-        };
-
-        // 下一步按鈕
-        var nextBtn = document.createElement('a');
-        nextBtn.className = 'btn-action enabled';
-        nextBtn.href = 'step7-3.html';
-        nextBtn.innerHTML = '<span id="btnNextText">下一步</span> <i class="fa-solid fa-arrow-right"></i>';
-        nextBtn.style.pointerEvents = 'auto';
-        nextBtn.style.cursor = 'pointer';
-        nextBtn.onclick = function(e) {
-            e.preventDefault();
-            window.location.href = 'step7-3.html';
-        };
-
-        btnGroup.appendChild(backBtn);
-        btnGroup.appendChild(nextBtn);
-
-        // 找到頁面標記並插入按鈕群組
-        var pageMarker = footer.querySelector('.page-marker');
-        if (pageMarker) {
-            footer.insertBefore(btnGroup, pageMarker);
-        } else {
-            footer.appendChild(btnGroup);
-        }
-
-        console.log('✅ 上一步/下一步按鈕已重建');
-    }
-
-    // ================================================================
-    // 執行
-    // ================================================================
-    function run() {
-        rebuildFooterButtons();
-        setTimeout(rebuildFooterButtons, 150);
-        setTimeout(rebuildFooterButtons, 400);
-        setTimeout(rebuildFooterButtons, 800);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    // ================================================================
-    // 監聽動態變化
-    // ================================================================
-    var observer = new MutationObserver(function() {
-        clearTimeout(window.__footerBtnTimer);
-        window.__footerBtnTimer = setTimeout(rebuildFooterButtons, 200);
-    });
-    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
-
-    console.log('✅ 頁尾按鈕修復模組已載入');
-})();
-</script>
-   <!-- ============================================================ -->
-<!-- 修復「🌐 瀏覽器開啟」按鈕（紅框框那個）                     -->
-<!-- ============================================================ -->
-<style>
-    /* 確保按鈕可見 */
-    .btn-external-browser {
-        display: inline-flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-        padding: 4px 14px !important;
-        background: rgba(0, 230, 118, 0.12) !important;
-        border: 1px solid rgba(0, 230, 118, 0.3) !important;
-        border-radius: 20px !important;
-        color: #00e676 !important;
-        font-size: 0.7rem !important;
-        font-weight: 700 !important;
-        text-decoration: none !important;
-        transition: all 0.3s ease !important;
-        cursor: pointer !important;
-        font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif !important;
-        margin-left: 8px !important;
-        pointer-events: auto !important;
-        z-index: 9999 !important;
-        position: relative !important;
-    }
-    .btn-external-browser:hover {
-        background: rgba(0, 230, 118, 0.2) !important;
-        box-shadow: 0 0 20px rgba(0, 230, 118, 0.2) !important;
-        transform: scale(1.02) !important;
-    }
-    .btn-external-browser i {
-        font-size: 0.8rem !important;
-    }
-    @media (max-width: 480px) {
-        .btn-external-browser {
-            font-size: 0.6rem !important;
-            padding: 3px 10px !important;
-            gap: 4px !important;
-            margin-left: 4px !important;
-        }
-        .btn-external-browser i {
-            font-size: 0.6rem !important;
-        }
-    }
-</style>
-
-<script>
-(function() {
-    // ================================================================
-    // 重新建立「瀏覽器開啟」按鈕
-    // ================================================================
-    function rebuildExternalBrowserButton() {
-        var langGroup = document.querySelector('.lang-switch-group');
-        if (!langGroup) {
-            console.warn('⚠️ 找不到 .lang-switch-group');
-            return;
-        }
-
-        // 移除舊按鈕
-        var oldBtn = document.querySelector('.btn-external-browser');
-        if (oldBtn) {
-            oldBtn.remove();
-        }
-
-        // 建立新按鈕
-        var btn = document.createElement('a');
-        btn.className = 'btn-external-browser';
-        btn.href = '#';
-        btn.setAttribute('role', 'button');
-        btn.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>🌐 瀏覽器開啟</span>';
-
-        // 綁定點擊事件
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            openInExternalBrowser();
-        });
-
-        // 插入到語言切換按鈕旁邊
-        langGroup.parentNode.insertBefore(btn, langGroup.nextSibling);
-        console.log('✅ 瀏覽器開啟按鈕已重建');
-    }
-
-    // ================================================================
-    // 強制開啟外部瀏覽器
-    // ================================================================
-    function openInExternalBrowser() {
-        var url = window.location.href;
-        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-        // Android：強制跳轉 Chrome
-        if (/android/i.test(userAgent)) {
-            try {
-                var intentUrl = 'intent://' + window.location.host + window.location.pathname + window.location.search + '#Intent;scheme=https;package=com.android.chrome;end;';
-                window.location.href = intentUrl;
-                console.log('✅ Android: 嘗試強制跳轉 Chrome');
-                return;
-            } catch (e) {
-                console.warn('⚠️ intent 跳轉失敗');
-            }
-        }
-
-        // iOS：嘗試用 chrome:// 協定
-        if (/iphone|ipad|ipod/i.test(userAgent)) {
-            try {
-                var chromeUrl = 'chrome://' + window.location.host + window.location.pathname + window.location.search;
-                window.location.href = chromeUrl;
-                console.log('✅ iOS: 嘗試強制跳轉 Chrome');
-                return;
-            } catch (e) {
-                console.warn('⚠️ chrome:// 跳轉失敗');
-            }
-        }
-
-        // 備用：複製網址
-        var fallbackUrl = window.location.href;
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(fallbackUrl).then(function() {
-                alert('⚠️ 無法自動跳轉外部瀏覽器\n\n📋 網址已複製，請手動貼到 Chrome / Safari 開啟：\n\n' + fallbackUrl);
-            }).catch(function() {
-                fallbackCopy(fallbackUrl);
-            });
-        } else {
-            fallbackCopy(fallbackUrl);
-        }
-    }
-
-    // ================================================================
-    // 複製網址備用方法
-    // ================================================================
-    function fallbackCopy(text) {
-        var textarea = document.createElement('textarea');
-        textarea.value = text;
-        textarea.style.position = 'fixed';
-        textarea.style.opacity = '0';
-        textarea.style.left = '-9999px';
-        document.body.appendChild(textarea);
-        textarea.select();
-        try {
-            document.execCommand('copy');
-            alert('⚠️ 無法自動跳轉外部瀏覽器\n\n📋 網址已複製，請手動貼到 Chrome / Safari 開啟：\n\n' + text);
-        } catch (e) {
-            alert('⚠️ 請手動複製以下網址，貼到外部瀏覽器開啟：\n\n📋 ' + text);
-        }
-        document.body.removeChild(textarea);
-    }
-
-    // ================================================================
-    // 執行
-    // ================================================================
-    function run() {
-        rebuildExternalBrowserButton();
-        setTimeout(rebuildExternalBrowserButton, 200);
-        setTimeout(rebuildExternalBrowserButton, 500);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    // 語系切換時重新建立
-    var origSwitch = window.switchLanguage;
-    if (typeof origSwitch === 'function') {
-        window.switchLanguage = function(lang) {
-            origSwitch(lang);
-            setTimeout(rebuildExternalBrowserButton, 150);
-            setTimeout(rebuildExternalBrowserButton, 400);
-        };
-    }
-
-    console.log('✅ 瀏覽器開啟按鈕修復模組已載入');
-})();
-</script> 
-<!-- ============================================================ -->
-<!-- 🧭 ① 驗證階段（啟動觸發）標題置中（含內建符號）               -->
-<!-- ============================================================ -->
-<style>
-    #step7_2VerifyTitle,
-    #step7_1VerifyTitle {
-        text-align: center !important;
-        width: 100% !important;
-        display: block !important;
-    }
-</style>
-
-<script>
-(function () {
-    var IDS = ['step7_2VerifyTitle', 'step7_1VerifyTitle'];
-    var KEYS = ['驗證階段', 'Verification Phase', '啟動觸發', 'Activation Trigger'];
-
-    function centerTitle(el) {
-        if (!el) return;
-
-        el.style.setProperty('text-align', 'center', 'important');
-        el.style.setProperty('width', '100%', 'important');
-        el.style.setProperty('display', 'block', 'important');
-
-        // 標題列（含 icon）置中
-        var row = el.closest('.card-title') || el.parentElement;
-        if (row) {
-            row.style.setProperty('display', 'flex', 'important');
-            row.style.setProperty('flex-direction', 'row', 'important');
-            row.style.setProperty('justify-content', 'center', 'important');
-            row.style.setProperty('align-items', 'center', 'important');
-            row.style.setProperty('text-align', 'center', 'important');
-            row.style.setProperty('width', '100%', 'important');
-            row.style.setProperty('gap', '8px', 'important');
-        }
-
-        // 再上一層也置中
-        var card = el.closest('.hud-card');
-        if (card) {
-            var firstTitle = card.querySelector('.card-title');
-            if (firstTitle && (firstTitle === row || firstTitle.contains(el))) {
-                firstTitle.style.setProperty('justify-content', 'center', 'important');
-                firstTitle.style.setProperty('text-align', 'center', 'important');
-            }
-        }
-    }
-
-    function apply() {
-        IDS.forEach(function (id) {
-            centerTitle(document.getElementById(id));
-        });
-
-        // 關鍵字備援
-        document.querySelectorAll('.card-title, .hud-card > div').forEach(function (el) {
-            if (el.children && el.children.length > 6) return;
-            var t = (el.textContent || '').trim();
-            if (!t || t.length > 40) return;
-            var hit = KEYS.some(function (k) { return t.indexOf(k) !== -1; });
-            if (hit) centerTitle(el);
-        });
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 100);
-        setTimeout(apply, 350);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 60);
-            setTimeout(apply, 200);
-        };
-    }
-
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__centerVerify72);
-        window.__centerVerify72 = setTimeout(apply, 80);
-    });
-    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
-
-    console.log('✅ 驗證階段標題（含符號）已置中');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- ① 驗證階段 與 ② 回傳誓證 標題字體一樣大                      -->
-<!-- ============================================================ -->
-<style>
-    #step7_1VerifyTitle,
-    #step7_1ReturnTitle,
-    #step7_2ReturnTitle {
-        font-size: 1.1rem !important;
-        font-weight: bold !important;
-        line-height: 1.4 !important;
-    }
-
-    /* 標題列（含 icon）一併統一 */
-    #step7_1VerifyTitle,
-    #step7_1ReturnTitle,
-    #step7_2ReturnTitle {
-        display: inline !important;
-    }
-</style>
-
-<script>
-(function () {
-    var IDS = ['step7_1VerifyTitle', 'step7_1ReturnTitle', 'step7_2ReturnTitle'];
-    var KEYS = [
-        '驗證階段',
-        'Verification Phase',
-        '回傳誓證',
-        'Return Oath'
-    ];
-
-    function unify(el) {
-        if (!el) return;
-        el.style.setProperty('font-size', '1.1rem', 'important');
-        el.style.setProperty('font-weight', 'bold', 'important');
-        el.style.setProperty('line-height', '1.4', 'important');
-        el.style.setProperty('color', '#e9d5ff', 'important');
-
-        // 父層 card-title 也統一
-        var row = el.closest('.card-title') || el.parentElement;
-        if (row) {
-            row.style.setProperty('font-size', '1.1rem', 'important');
-            row.style.setProperty('font-weight', 'bold', 'important');
-            row.style.setProperty('color', '#e9d5ff', 'important');
-        }
-    }
-
-    function apply() {
-        IDS.forEach(function (id) {
-            unify(document.getElementById(id));
-        });
-
-        // 關鍵字備援
-        document.querySelectorAll('.card-title, .hud-card div, span').forEach(function (el) {
-            if (el.children && el.children.length > 4) return;
-            var t = (el.textContent || '').trim();
-            if (!t || t.length > 40) return;
-            var hit = KEYS.some(function (k) { return t.indexOf(k) !== -1; });
-            if (hit) unify(el);
-        });
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 100);
-        setTimeout(apply, 300);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 60);
-        };
-    }
-
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__titleSize71);
-        window.__titleSize71 = setTimeout(apply, 80);
-    });
-    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
-
-    console.log('✅ 驗證階段 / 回傳誓證 標題字體已統一');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 驗證階段：盾牌 + 🧭 + 文字 整列置中（修正 span 撐滿導致分開） -->
-<!-- ============================================================ -->
-<style>
-    /* 不要讓標題 span 撐滿整行 */
-    #step7_2VerifyTitle,
-    #step7_1VerifyTitle {
-        display: inline !important;
-        width: auto !important;
-        text-align: center !important;
-    }
-
-    /* 含驗證階段的 card-title 整列置中 */
-    .hud-card.center-card > .card-title {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        width: 100% !important;
-        gap: 8px !important;
-        text-align: center !important;
-    }
-</style>
-
-<script>
-(function () {
-    function apply() {
-        var title = document.getElementById('step7_2VerifyTitle') ||
-                    document.getElementById('step7_1VerifyTitle');
-        if (!title) return;
-
-        // span 不要撐滿
-        title.style.setProperty('display', 'inline', 'important');
-        title.style.setProperty('width', 'auto', 'important');
-        title.style.setProperty('text-align', 'center', 'important');
-
-        // 整列 card-title 置中
-        var row = title.closest('.card-title');
-        if (row) {
-            row.style.setProperty('display', 'flex', 'important');
-            row.style.setProperty('flex-direction', 'row', 'important');
-            row.style.setProperty('justify-content', 'center', 'important');
-            row.style.setProperty('align-items', 'center', 'important');
-            row.style.setProperty('width', '100%', 'important');
-            row.style.setProperty('gap', '8px', 'important');
-            row.style.setProperty('text-align', 'center', 'important');
-
-            // 盾牌 icon 不要被擠走
-            Array.prototype.forEach.call(row.querySelectorAll('i'), function (icon) {
-                icon.style.setProperty('flex-shrink', '0', 'important');
-                icon.style.setProperty('margin', '0', 'important');
-            });
-        }
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 100);
-        setTimeout(apply, 350);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 60);
-            setTimeout(apply, 200);
-        };
-    }
-
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__centerShieldFix);
-        window.__centerShieldFix = setTimeout(apply, 80);
-    });
-    obs.observe(document.body, { childList: true, subtree: true });
-
-    console.log('✅ 盾牌 + 驗證階段標題整列置中');
-})();
-</script>
-<style>
-    /* ===== 強制掃描結果與相關提示文字為綠色 ===== */
-    .qr-result,
-    #qrScanResultStep8,
-    #qrScanResultStep9,
-    .qr-result *,
-    #qrScanResultStep8 *,
-    #qrScanResultStep9 *,
-    .qr-result i,
-    #qrScanResultStep8 i,
-    #qrScanResultStep9 i,
-    .qr-result span,
-    #qrScanResultStep8 span,
-    #qrScanResultStep9 span,
-    .qr-result div,
-    #qrScanResultStep8 div,
-    #qrScanResultStep9 div {
-        color: #00e676 !important;
-        border-color: rgba(0, 230, 118, 0.2) !important;
-    }
-
-    /* 掃描成功訊息容器 */
-    .qr-result {
-        background: rgba(0, 230, 118, 0.08) !important;
-        border: 1px solid rgba(0, 230, 118, 0.2) !important;
-        border-radius: 20px !important;
-        padding: 8px 16px !important;
-        font-size: 0.9rem !important;
-        word-break: break-all !important;
-    }
-
-    /* 強制所有「顯示：誓印通過」相關文字為綠色 */
-    [id*="Success"],
-    [id*="success"],
-    [id*="通过"],
-    [id*="通過"],
-    [class*="success"],
-    .success-text,
-    .pass-text,
-    .green-text {
-        color: #00e676 !important;
-    }
-
-    /* 確保「誓印未通過」保持紅色/警告色，不被覆蓋 */
-    [id*="NotPassed"],
-    [id*="notpassed"],
-    [id*="未通過"],
-    [id*="未通过"],
-    .not-passed,
-    .fail-text {
-        color: #E8604A !important;
-    }
-
-    /* 掃描按鈕相關文字 */
-    .btn-scan-text,
-    .scan-result-text {
-        color: #00e676 !important;
-    }
-
-    /* QR Code 掃描區域的提示文字 */
-    .qr-scan-hint,
-    .scan-hint {
-        color: #00e676 !important;
-    }
-
-    /* 強制「送出即啟主頻連線…」文字為綠色（但保留其原有樣式） */
-    [id*="Note"][id*="Return"],
-    [id*="ReturnNote"],
-    [id*="returnNote"],
-    .freq-link-text {
-        color: rgba(224, 232, 245, 0.85) !important;
-    }
-    .freq-link-text i,
-    [id*="Note"] i.fa-link,
-    [id*="ReturnNote"] i.fa-link {
-        color: #00e676 !important;
-    }
-
-    /* 掃描結果的勾勾圖示 */
-    .qr-result .fa-check-circle,
-    #qrScanResultStep8 .fa-check-circle,
-    #qrScanResultStep9 .fa-check-circle {
-        color: #00e676 !important;
-    }
-
-    /* 相機引導文字中的綠色強調 */
-    .camera-guide .highlight-green {
-        color: #00e676 !important;
-    }
-</style>
-
-<script>
-    (function() {
-        // ================================================================
-        // 強制掃描結果為綠色（動態監聽）
-        // ================================================================
-
-        // 需要監聽的掃描結果元素 ID
-        var SCAN_RESULT_IDS = ['qrScanResultStep8', 'qrScanResultStep9'];
-
-        // 需要監聽的 Success 相關元素
-        var SUCCESS_IDS = [
-            'step7_2Success', 'step7_3Success',
-            'step7_1Success', 'step7_4Success'
-        ];
-
-        // 強制套用綠色樣式
-        function applyGreenStyles() {
-            // 掃描結果
-            SCAN_RESULT_IDS.forEach(function(id) {
-                var el = document.getElementById(id);
-                if (el) {
-                    el.style.setProperty('color', '#00e676', 'important');
-                    el.style.setProperty('border-color', 'rgba(0, 230, 118, 0.2)', 'important');
-                    el.style.setProperty('background', 'rgba(0, 230, 118, 0.08)', 'important');
-
-                    // 所有子元素也強制綠色
-                    var children = el.querySelectorAll('*');
-                    children.forEach(function(child) {
-                        child.style.setProperty('color', '#00e676', 'important');
-                    });
-                }
-            });
-
-            // Success 元素
-            SUCCESS_IDS.forEach(function(id) {
-                var el = document.getElementById(id);
-                if (el) {
-                    el.style.setProperty('color', '#00e676', 'important');
-                }
-            });
-
-            // 所有 .qr-result 類別
-            document.querySelectorAll('.qr-result').forEach(function(el) {
-                el.style.setProperty('color', '#00e676', 'important');
-                el.style.setProperty('border-color', 'rgba(0, 230, 118, 0.2)', 'important');
-                el.style.setProperty('background', 'rgba(0, 230, 118, 0.08)', 'important');
-                el.querySelectorAll('*').forEach(function(child) {
-                    child.style.setProperty('color', '#00e676', 'important');
-                });
-            });
-
-            // 所有包含「誓印通過」的文字（但排除「未通過」）
-            document.querySelectorAll('[id*="Success"], [id*="success"], [class*="success"]').forEach(function(el) {
-                var text = el.textContent || '';
-                if (text.indexOf('未通過') === -1 && text.indexOf('未通过') === -1) {
-                    el.style.setProperty('color', '#00e676', 'important');
-                }
-            });
-        }
-
-        // ================================================================
-        // 攔截 HTML5-QRCode 的掃描結果顯示
-        // ================================================================
-        var origStartQRScanner = window.startQRScanner;
-        if (typeof origStartQRScanner === 'function') {
-            window.startQRScanner = function(containerId, resultId, guideId) {
-                // 先呼叫原始函數
-                origStartQRScanner(containerId, resultId, guideId);
-
-                // 延遲套用綠色樣式（等待結果出現）
-                setTimeout(function() {
-                    applyGreenStyles();
-                    // 監聽結果元素的變化
-                    var resultEl = document.getElementById(resultId);
-                    if (resultEl) {
-                        var observer = new MutationObserver(function() {
-                            applyGreenStyles();
-                        });
-                        observer.observe(resultEl, { childList: true, subtree: true, characterData: true });
-                    }
-                }, 100);
-            };
-        }
-
-        // ================================================================
-        // 覆蓋 switchLanguage 以重新套用樣式
-        // ================================================================
-        var origSwitch = window.switchLanguage;
-        if (typeof origSwitch === 'function') {
-            window.switchLanguage = function(lang) {
-                origSwitch(lang);
-                setTimeout(applyGreenStyles, 150);
-                setTimeout(applyGreenStyles, 400);
-            };
-        }
-
-        // ================================================================
-        // 初始化
-        // ================================================================
-        function run() {
-            applyGreenStyles();
-
-            // 持續監聽新加入的掃描結果
-            var observer = new MutationObserver(function() {
-                clearTimeout(window.__greenScanTimer);
-                window.__greenScanTimer = setTimeout(applyGreenStyles, 100);
-            });
-            observer.observe(document.body, { childList: true, subtree: true, characterData: true });
-
-            // 每 2 秒檢查一次（備援機制）
-            setInterval(applyGreenStyles, 2000);
-
-            console.log('✅ 掃描結果強制綠色模組已載入');
-        }
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', run);
-        } else {
-            run();
-        }
-    })();
-</script>
-<!-- ============================================================ -->
-<!-- 「第二印 修心印《鏡修省思…》」→ 英文                          -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    var ZH = '第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》';
-    var ZH2 = '第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》表單';
-    var ZH3 = '第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》提交表單';
-    var EN = 'Second Seal Mind-Refinement Seal 《Mirror-Refinement Insight × Habit Calibration × Oath Practice Record Sheet》';
-    var EN2 = 'Second Seal Mind-Refinement Seal 《Mirror-Refinement Insight × Habit Calibration × Oath Practice Record Sheet》 Form';
-    var EN3 = 'Second Seal Mind-Refinement Seal 《Mirror-Refinement Insight × Habit Calibration × Oath Practice Record Sheet》 Submission Form';
-
-    function lang() {
-        if (typeof currentLang !== 'undefined') return currentLang;
-        var a = document.querySelector('.lang-btn.active');
-        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
-    }
-
-    function apply() {
-        var isEn = lang() === 'en';
-
-        document.querySelectorAll(
-            '.form-title, .form-section-title, .preview-header, h3, h4, span, div, strong, b'
-        ).forEach(function (el) {
-            if (!el || el.children.length > 3) return;
-            var t = (el.textContent || '').trim();
-            if (!t || t.length > 100) return;
-
-            if (/第二印\s*修心印/.test(t) || /Second Seal Mind-Refinement/.test(t) || /Mirror-Refinement Insight/.test(t)) {
-                if (isEn) {
-                    if (/提交表單|Submission Form/.test(t)) {
-                        el.textContent = EN3;
-                    } else if (/表單|Form/.test(t) && !/Submission/.test(t)) {
-                        el.textContent = EN2;
-                    } else {
-                        el.textContent = EN;
-                    }
-                } else {
-                    if (/Submission Form|提交表單/.test(t)) {
-                        el.textContent = ZH3;
-                    } else if (/\bForm\b|表單/.test(t)) {
-                        el.textContent = ZH2;
-                    } else {
-                        el.textContent = ZH;
+            // 額外：如果節點文字是「Input Example:」但顯示英文指令，也一併處理
+            if (text === 'Input Example:' || text === 'Input Example') {
+                var parentCard2 = el.closest('.hud-card, .center-card');
+                if (parentCard2) {
+                    var cardText2 = parentCard2.textContent || '';
+                    // 找同卡片內的指令
+                    var cmdEl = parentCard2.querySelector('[id*="Command"]');
+                    if (cmdEl) {
+                        var cmdText = cmdEl.textContent || '';
+                        if (cmdText.indexOf('【Execution Command】') !== -1) {
+                            if (cardText2.indexOf('驗證階段') !== -1) {
+                                cmdEl.textContent = ZH_VERIFY;
+                            } else if (cardText2.indexOf('回傳誓證') !== -1) {
+                                cmdEl.textContent = ZH_RETURN;
+                            }
+                        }
                     }
                 }
             }
         });
 
-        // 純文字節點備援
-        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
-        var nodes = [];
-        while (walker.nextNode()) nodes.push(walker.currentNode);
-        nodes.forEach(function (tn) {
-            var v = tn.nodeValue || '';
-            if (isEn && /第二印\s*修心印/.test(v)) {
-                tn.nodeValue = v
-                    .replace(ZH3, EN3)
-                    .replace(ZH2, EN2)
-                    .replace(ZH, EN)
-                    .replace(/第二印\s*修心印《鏡修省思\s*[×xX]\s*習氣調頻\s*[×xX]\s*誓文實踐紀錄表》提交表單/g, EN3)
-                    .replace(/第二印\s*修心印《鏡修省思\s*[×xX]\s*習氣調頻\s*[×xX]\s*誓文實踐紀錄表》表單/g, EN2)
-                    .replace(/第二印\s*修心印《鏡修省思\s*[×xX]\s*習氣調頻\s*[×xX]\s*誓文實踐紀錄表》/g, EN);
-            }
-            if (!isEn && /Second Seal Mind-Refinement/.test(v)) {
-                tn.nodeValue = v
-                    .replace(EN3, ZH3)
-                    .replace(EN2, ZH2)
-                    .replace(EN, ZH);
-            }
-        });
-    }
+        // 3. 最後一道防線：掃描所有紫色背景框內的指令
+        document.querySelectorAll('[style*="background"][style*="rgba(124,58,237"]').forEach(function(box) {
+            var parentCard3 = box.closest('.hud-card, .center-card');
+            if (!parentCard3) return;
+            var cardText3 = parentCard3.textContent || '';
 
-    function run() {
-        apply();
-        setTimeout(apply, 100);
-        setTimeout(apply, 350);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 60);
-            setTimeout(apply, 200);
-        };
-    }
-
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__seal2TitleTimer);
-        window.__seal2TitleTimer = setTimeout(apply, 80);
-    });
-    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
-
-    console.log('✅ 第二印表單標題中英切換已就緒');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 相機掃描失敗 → 顯示統一引導文字（中英）                       -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    var GUIDE_ZH =
-        '📷 無法啟動相機\n' +
-        '⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n' +
-        '→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n' +
-        '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
-
-    var GUIDE_EN =
-        '📷 Unable to launch the feature\n' +
-        '⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"\n' +
-        '→ Open using a web browser (Chrome / Yahoo / Edge...)\n' +
-        '⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
-
-    function lang() {
-        if (typeof currentLang !== 'undefined') return currentLang;
-        var a = document.querySelector('.lang-btn.active');
-        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
-    }
-
-    function guideText() {
-        return lang() === 'en' ? GUIDE_EN : GUIDE_ZH;
-    }
-
-    // 把引導文字寫進所有 camera-guide 區塊
-    function fillGuide(el) {
-        if (!el) return;
-        el.innerHTML = guideText().replace(/\n/g, '<br>');
-        el.style.display = 'block';
-        el.style.textAlign = 'left';
-        el.style.whiteSpace = 'normal';
-        el.classList.add('show-fail');
-    }
-
-    // 顯示失敗引導、隱藏掃描框
-    function showCameraFail(guideId, containerId) {
-        var guide = guideId ? document.getElementById(guideId) : null;
-        if (!guide) {
-            guide = document.querySelector('.camera-guide');
-        }
-        if (guide) fillGuide(guide);
-
-        if (containerId) {
-            var box = document.getElementById(containerId);
-            if (box) {
-                box.classList.remove('scanning');
-                box.style.display = 'none';
-            }
-        }
-    }
-
-    // 攔截既有 startQRScanner / 掃描失敗
-    function patchScanner() {
-        // 1) 若頁面已有 startQRScanner，包一層 catch 顯示引導
-        if (typeof window.startQRScanner === 'function' && !window._cameraGuidePatched) {
-            var orig = window.startQRScanner;
-            window.startQRScanner = function (containerId, resultId, guideId) {
-                try {
-                    var ret = orig.apply(this, arguments);
-                    // 若回傳 Promise，失敗時顯示引導
-                    if (ret && typeof ret.then === 'function') {
-                        return ret.catch(function (err) {
-                            console.warn('相機啟動失敗', err);
-                            showCameraFail(guideId, containerId);
-                        });
-                    }
-                    return ret;
-                } catch (e) {
-                    console.warn('相機啟動失敗', e);
-                    showCameraFail(guideId, containerId);
-                }
-            };
-            window._cameraGuidePatched = true;
-        }
-
-        // 2) 直接綁定掃描按鈕：失敗就顯示引導
-        [
-            { btn: 'btnScanQRStep8', box: 'qr-reader-container-step8', guide: 'cameraGuideStep8', result: 'qrScanResultStep8' },
-            { btn: 'btnScanQRStep9', box: 'qr-reader-container-step9', guide: 'cameraGuideStep9', result: 'qrScanResultStep9' }
-        ].forEach(function (cfg) {
-            var btn = document.getElementById(cfg.btn);
-            if (!btn || btn._guideBound) return;
-            btn._guideBound = true;
-
-            btn.addEventListener('click', function () {
-                // 稍後檢查：若 2 秒內沒出現 video，視為失敗
-                setTimeout(function () {
-                    var box = document.getElementById(cfg.box);
-                    var hasVideo = box && box.querySelector('video');
-                    if (!hasVideo) {
-                        showCameraFail(cfg.guide, cfg.box);
-                    }
-                }, 2500);
-            }, true);
-        });
-    }
-
-    // 語系切換時，若引導正在顯示，立刻換成對應語言
-    function refreshVisibleGuides() {
-        document.querySelectorAll('.camera-guide').forEach(function (el) {
-            var visible = el.style.display !== 'none' && el.offsetParent !== null;
-            var failed = el.classList.contains('show-fail');
-            if (visible || failed) fillGuide(el);
-        });
-    }
-
-    function run() {
-        patchScanner();
-        setTimeout(patchScanner, 200);
-        setTimeout(patchScanner, 600);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var origSwitch = window.switchLanguage;
-    if (typeof origSwitch === 'function') {
-        window.switchLanguage = function (l) {
-            origSwitch(l);
-            setTimeout(patchScanner, 100);
-            setTimeout(refreshVisibleGuides, 120);
-        };
-    }
-
-    // 暴露給其他腳本呼叫
-    window.showCameraFailGuide = showCameraFail;
-    window.getCameraGuideText = guideText;
-
-    console.log('✅ 相機失敗引導文字模組已載入');
-})();
-</script>
- <!-- ============================================================ -->
-<!-- 第二印：移除重複標題，只保留一個「提交表單」主標題              -->
-<!-- ============================================================ -->
-<style>
-    /* 表單區內多餘的同名標題隱藏（保留 .form-title 主標題） */
-    .form-submit-container .form-section-title {
-        /* 若內容是完整表單名就隱藏，使用說明保留 */
-    }
-</style>
-
-<script>
-(function () {
-    var TITLE_RE = /第二印\s*修心印《鏡修省思/;
-    var TITLE_EN_RE = /Second Seal Mind-Refinement Seal/;
-
-    function isFullTitle(t) {
-        t = (t || '').trim();
-        return TITLE_RE.test(t) || TITLE_EN_RE.test(t);
-    }
-
-    function dedupe() {
-        // 1) 表單區：只留 .form-title，隱藏同名的 form-section-title
-        var formBox = document.querySelector('.form-submit-container');
-        if (formBox) {
-            var mainTitle = formBox.querySelector('.form-title');
-            formBox.querySelectorAll('.form-section-title').forEach(function (el) {
+            // 找 box 內所有可能的指令節點
+            box.querySelectorAll('div, span, p, strong, b').forEach(function(el) {
                 var t = (el.textContent || '').trim();
-                // 保留「使用說明 / Instructions」
-                if (/使用說明|Instructions/.test(t)) return;
-                // 隱藏重複的完整表單名
-                if (isFullTitle(t)) {
-                    el.style.setProperty('display', 'none', 'important');
+                if (t.indexOf('【Execution Command】') !== -1 ||
+                    t.indexOf('Second Seal Mind-Refinement') !== -1) {
+                    if (cardText3.indexOf('驗證階段') !== -1) {
+                        el.textContent = ZH_VERIFY;
+                    } else if (cardText3.indexOf('回傳誓證') !== -1) {
+                        el.textContent = ZH_RETURN;
+                    }
                 }
             });
-            // 確保主標題可見
-            if (mainTitle) {
-                mainTitle.style.setProperty('display', 'block', 'important');
-            }
-        }
-
-        // 2) 頁面上其他重複的完整標題（非主 form-title、非 preview）
-        var seen = 0;
-        document.querySelectorAll('.form-title, .form-section-title, .hud-card > div, .step-panel > div').forEach(function (el) {
-            if (!el || el.children.length > 2) return;
-            var t = (el.textContent || '').trim();
-            if (!isFullTitle(t)) return;
-            if (t.length > 90) return;
-
-            // 主標題（含「提交表單」）保留第一個
-            if (/提交表單|Submission Form/.test(t)) {
-                if (seen === 0) {
-                    seen = 1;
-                    el.style.setProperty('display', '', 'important');
-                } else {
-                    el.style.setProperty('display', 'none', 'important');
-                }
-                return;
-            }
-
-            // 預覽區標題保留
-            if (el.classList.contains('preview-header') || el.closest('.preview-submit-container')) {
-                return;
-            }
-
-            // 其餘重複的完整標題隱藏
-            if (!el.classList.contains('form-title')) {
-                el.style.setProperty('display', 'none', 'important');
-            }
         });
+
+        console.log('✅ 所有 Input Example 指令已強制改為中文');
+        console.log('  驗證區:', ZH_VERIFY);
+        console.log('  回傳區:', ZH_RETURN);
     }
 
+    // 執行
     function run() {
-        dedupe();
-        setTimeout(dedupe, 120);
-        setTimeout(dedupe, 400);
+        forceChineseCommands();
+        setTimeout(forceChineseCommands, 100);
+        setTimeout(forceChineseCommands, 300);
+        setTimeout(forceChineseCommands, 600);
+        setTimeout(forceChineseCommands, 1000);
     }
 
     if (document.readyState === 'loading') {
@@ -3995,443 +2255,26 @@
         run();
     }
 
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(dedupe, 80);
-            setTimeout(dedupe, 250);
+    // 語系切換時重新強制（確保中文不被覆蓋）
+    var origSwitch = window.switchLanguage;
+    if (typeof origSwitch === 'function') {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            // 切換後立即強制改回中文
+            setTimeout(forceChineseCommands, 50);
+            setTimeout(forceChineseCommands, 150);
+            setTimeout(forceChineseCommands, 400);
         };
     }
 
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__dedupeTitle72);
-        window.__dedupeTitle72 = setTimeout(dedupe, 100);
+    // 監聽 DOM 變化，持續確保中文
+    var observer = new MutationObserver(function() {
+        clearTimeout(window.__forceZhCmd);
+        window.__forceZhCmd = setTimeout(forceChineseCommands, 80);
     });
-    obs.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
 
-    console.log('✅ 第二印重複標題已去除');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 兩處「送出即啟主頻連線」前方都補綠色連結圖示                   -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    var KEY_ZH = '送出即啟主頻連線';
-    var KEY_EN = 'Primary Frequency Link';
-
-    function hasLinkIcon(el) {
-        if (!el) return false;
-        if (el.querySelector && el.querySelector('i.fa-link')) return true;
-        var p = el.parentElement;
-        if (p && p.querySelector) {
-            var icons = p.querySelectorAll('i.fa-link');
-            for (var i = 0; i < icons.length; i++) {
-                // 同一列附近
-                if (p.contains(el) || el.contains(icons[i])) return true;
-            }
-        }
-        return false;
-    }
-
-    function ensureIcon(el) {
-        if (!el) return;
-
-        // 找最適合放 icon 的容器
-        var row = el;
-        if (el.tagName === 'SPAN' && el.parentElement) {
-            var pt = (el.parentElement.textContent || '').trim();
-            if (pt.indexOf(KEY_ZH) !== -1 || pt.indexOf(KEY_EN) !== -1) {
-                row = el.parentElement;
-            }
-        }
-
-        if (hasLinkIcon(row) || hasLinkIcon(el)) return;
-
-        var icon = document.createElement('i');
-        icon.className = 'fa-solid fa-link';
-        icon.style.cssText = 'color:#00e676!important;margin-right:6px;flex-shrink:0;font-size:0.95em;';
-
-        // 插到文字前面
-        if (row === el && el.firstChild) {
-            el.insertBefore(icon, el.firstChild);
-        } else if (row.firstChild) {
-            row.insertBefore(icon, row.firstChild);
-        } else {
-            row.appendChild(icon);
-        }
-
-        row.style.setProperty('display', 'flex', 'important');
-        row.style.setProperty('align-items', 'flex-start', 'important');
-        row.style.setProperty('gap', '6px', 'important');
-        row.style.setProperty('text-align', 'left', 'important');
-        row.style.setProperty('width', '100%', 'important');
-    }
-
-    function apply() {
-        // 掃所有含關鍵字的節點（驗證 + 回傳 兩處都處理）
-        document.querySelectorAll('span, div, p, label').forEach(function (el) {
-            if (!el || (el.children && el.children.length > 6)) return;
-            var t = (el.textContent || '').trim();
-            if (!t || t.length > 180) return;
-            if (t.indexOf(KEY_ZH) === -1 && t.indexOf(KEY_EN) === -1) return;
-            // 排除整張大卡片
-            if (el.classList && el.classList.contains('hud-card')) return;
-            ensureIcon(el);
-        });
-
-        // 常見 id 再補一次
-        [
-            'step7_2Note', 'step7_2ReturnNote',
-            'step7_1Note', 'step7_1ReturnNote',
-            'step7_3Note', 'step7_3ReturnNote',
-            'step7_4Note', 'step7_4ReturnNote'
-        ].forEach(function (id) {
-            var el = document.getElementById(id);
-            if (el) ensureIcon(el);
-        });
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 100);
-        setTimeout(apply, 350);
-        setTimeout(apply, 800);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 80);
-            setTimeout(apply, 250);
-        };
-    }
-
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__freqLinkIconTimer);
-        window.__freqLinkIconTimer = setTimeout(apply, 100);
-    });
-    obs.observe(document.body, { childList: true, subtree: true });
-
-    console.log('✅ 兩處主頻連線皆已補上綠色連結圖示');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 確保「⚠️ 顯示：誓印未通過」步驟完整可見（依書本）              -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    var TITLE_ZH = '⚠️ 顯示：「誓印未通過」';
-    var TITLE_EN = '⚠️ Display: 「Oath Seal Not Passed」';
-    var L1_ZH = '回歸「第一印 消業印」程序，重新執行「清業化障 × 七日誓讀 × 對頻再啟」。';
-    var L1_EN = 'Return to the 「First Seal Karmic Purification Seal」 procedure and re-execute the 「Karmic-Clearing × Seven-Day Recitation × Alignment Re-Activation」 process.';
-    var L2_ZH = '經補誓與再啟印完成後，方可重新進入「第二印 修心印」啟印程序。';
-    var L2_EN = 'Only after completing the supplemental oath and reactivation may the practitioner re-enter the 「Second Seal Mind-Refinement Seal」 activation procedure.';
-
-    function lang() {
-        if (typeof currentLang !== 'undefined') return currentLang;
-        var a = document.querySelector('.lang-btn.active');
-        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
-    }
-
-    function ensureNotPassedBlock() {
-        var isEn = lang() === 'en';
-        var title = document.getElementById('step7_2NotPassedTitle');
-        var l1 = document.getElementById('step7_2NotPassed1');
-        var l2 = document.getElementById('step7_2NotPassed2');
-
-        // 若已存在：強制顯示 + 更新文字
-        if (title) {
-            title.textContent = isEn ? TITLE_EN : TITLE_ZH;
-            title.style.setProperty('display', 'block', 'important');
-            title.style.setProperty('color', '#00e676', 'important');
-            title.style.setProperty('font-weight', 'bold', 'important');
-            title.style.setProperty('font-size', '1.1rem', 'important');
-
-            var card = title.closest('.hud-card') || title.closest('div');
-            if (card) {
-                card.style.setProperty('display', 'block', 'important');
-                card.style.setProperty('visibility', 'visible', 'important');
-                card.style.setProperty('opacity', '1', 'important');
-            }
-        }
-        if (l1) l1.textContent = isEn ? L1_EN : L1_ZH;
-        if (l2) l2.textContent = isEn ? L2_EN : L2_ZH;
-
-        // 若不存在：在「誓印通過」或回傳區後方插入
-        if (!title) {
-            var anchor =
-                document.getElementById('step7_2Success') ||
-                document.getElementById('step7_2ReturnTitle') ||
-                document.querySelector('#qrScanCardStep9');
-
-            var parent = null;
-            if (anchor) {
-                parent = anchor.closest('.step-panel') || anchor.closest('.step-content') || anchor.parentElement;
-            }
-            if (!parent) parent = document.querySelector('.step-panel') || document.body;
-
-            var box = document.createElement('div');
-            box.className = 'hud-card';
-            box.id = 'step7_2NotPassedCard';
-            box.style.cssText = 'border:1px solid rgba(168,85,247,0.3);background:rgba(88,28,135,0.2);display:block!important;';
-            box.innerHTML =
-                '<div style="background:rgba(0,230,118,0.12);border-left:4px solid #00e676;padding:14px 16px;border-radius:10px;margin-bottom:16px;">' +
-                '  <div style="color:#00e676;font-size:1.1rem;font-weight:bold;">' +
-                '    <span id="step7_2NotPassedTitle">' + (isEn ? TITLE_EN : TITLE_ZH) + '</span>' +
-                '  </div>' +
-                '</div>' +
-                '<div class="instruction-box">' +
-                '  <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i>' +
-                '    <span id="step7_2NotPassed1">' + (isEn ? L1_EN : L1_ZH) + '</span></div>' +
-                '  <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i>' +
-                '    <span id="step7_2NotPassed2">' + (isEn ? L2_EN : L2_ZH) + '</span></div>' +
-                '</div>';
-
-            // 插在回傳誓證卡片後面、收束條文前面
-            var closure = document.getElementById('step7_2ClosureTitle');
-            if (closure && closure.closest('.hud-card')) {
-                var cCard = closure.closest('.hud-card');
-                cCard.parentNode.insertBefore(box, cCard);
-            } else if (anchor && anchor.closest('.hud-card')) {
-                var aCard = anchor.closest('.hud-card');
-                if (aCard.nextSibling) {
-                    aCard.parentNode.insertBefore(box, aCard.nextSibling);
-                } else {
-                    aCard.parentNode.appendChild(box);
-                }
-            } else {
-                parent.appendChild(box);
-            }
-        }
-    }
-
-    function run() {
-        ensureNotPassedBlock();
-        setTimeout(ensureNotPassedBlock, 150);
-        setTimeout(ensureNotPassedBlock, 450);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(ensureNotPassedBlock, 80);
-            setTimeout(ensureNotPassedBlock, 250);
-        };
-    }
-
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__notPassed72);
-        window.__notPassed72 = setTimeout(ensureNotPassedBlock, 120);
-    });
-    obs.observe(document.body, { childList: true, subtree: true });
-
-    console.log('✅ 誓印未通過步驟已確保顯示');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 「誓印未通過」標題強制亮綠色（與通過一致）                    -->
-<!-- ============================================================ -->
-<style>
-    #step7_2NotPassedTitle,
-    #step7_1NotPassedTitle,
-    #step7_3NotPassedTitle,
-    #step7_4NotPassedTitle,
-    [id*="NotPassedTitle"] {
-        color: #00e676 !important;
-        font-weight: bold !important;
-    }
-
-    /* 蓋掉先前把未通過設成橘色的規則 */
-    [id*="NotPassed"],
-    [id*="notpassed"],
-    [id*="未通過"],
-    .not-passed,
-    .fail-text {
-        color: #00e676 !important;
-    }
-</style>
-
-<script>
-(function () {
-    function apply() {
-        var ids = [
-            'step7_2NotPassedTitle',
-            'step7_1NotPassedTitle',
-            'step7_3NotPassedTitle',
-            'step7_4NotPassedTitle'
-        ];
-        ids.forEach(function (id) {
-            var el = document.getElementById(id);
-            if (!el) return;
-            el.style.setProperty('color', '#00e676', 'important');
-            el.style.setProperty('font-weight', 'bold', 'important');
-
-            var p = el.parentElement;
-            if (p) p.style.setProperty('color', '#00e676', 'important');
-
-            // 外層左邊框也改綠
-            var box = el.closest('[style*="border-left"]') || el.closest('div');
-            if (box && box !== el) {
-                var t = box.textContent || '';
-                if (t.indexOf('誓印未通過') !== -1 || t.indexOf('Not Passed') !== -1) {
-                    box.style.setProperty('border-left-color', '#00e676', 'important');
-                    box.style.setProperty('background', 'rgba(0, 230, 118, 0.12)', 'important');
-                }
-            }
-        });
-
-        // 關鍵字備援
-        document.querySelectorAll('div, span').forEach(function (el) {
-            if (el.children && el.children.length > 2) return;
-            var t = (el.textContent || '').trim();
-            if ((t.indexOf('誓印未通過') !== -1 || t.indexOf('Oath Seal Not Passed') !== -1) && t.length < 40) {
-                el.style.setProperty('color', '#00e676', 'important');
-                el.style.setProperty('font-weight', 'bold', 'important');
-            }
-        });
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 100);
-        setTimeout(apply, 350);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 60);
-        };
-    }
-
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__notPassedGreen);
-        window.__notPassedGreen = setTimeout(apply, 80);
-    });
-    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
-
-    console.log('✅ 誓印未通過 已強制亮綠色 #00e676');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 誓印未通過：僅標題亮綠，①② 說明改回一般色                    -->
-<!-- ============================================================ -->
-<style>
-    /* 標題維持亮綠 */
-    #step7_2NotPassedTitle,
-    #step7_1NotPassedTitle,
-    #step7_3NotPassedTitle,
-    #step7_4NotPassedTitle {
-        color: #00e676 !important;
-        font-weight: bold !important;
-    }
-
-    /* ①② 說明與一般 instruction 同色，不要綠 */
-    #step7_2NotPassed1,
-    #step7_2NotPassed2,
-    #step7_1NotPassed1,
-    #step7_1NotPassed2,
-    #step7_3NotPassed1,
-    #step7_3NotPassed2,
-    #step7_4NotPassed1,
-    #step7_4NotPassed2 {
-        color: rgba(224, 232, 245, 0.85) !important;
-        font-weight: normal !important;
-    }
-
-    /* 其父層 instruction-item 也不要被蓋成綠 */
-    #step7_2NotPassed1,
-    #step7_2NotPassed2,
-    #step7_1NotPassed1,
-    #step7_1NotPassed2,
-    #step7_3NotPassed1,
-    #step7_3NotPassed2,
-    #step7_4NotPassed1,
-    #step7_4NotPassed2 {
-        color: rgba(224, 232, 245, 0.85) !important;
-    }
-</style>
-
-<script>
-(function () {
-    function apply() {
-        // 標題綠
-        ['step7_2NotPassedTitle', 'step7_1NotPassedTitle', 'step7_3NotPassedTitle', 'step7_4NotPassedTitle'].forEach(function (id) {
-            var el = document.getElementById(id);
-            if (el) {
-                el.style.setProperty('color', '#00e676', 'important');
-                el.style.setProperty('font-weight', 'bold', 'important');
-            }
-        });
-
-        // 說明一般色
-        [
-            'step7_2NotPassed1', 'step7_2NotPassed2',
-            'step7_1NotPassed1', 'step7_1NotPassed2',
-            'step7_3NotPassed1', 'step7_3NotPassed2',
-            'step7_4NotPassed1', 'step7_4NotPassed2'
-        ].forEach(function (id) {
-            var el = document.getElementById(id);
-            if (!el) return;
-            el.style.setProperty('color', 'rgba(224, 232, 245, 0.85)', 'important');
-            el.style.setProperty('font-weight', 'normal', 'important');
-            var item = el.closest('.instruction-item');
-            if (item) {
-                item.style.setProperty('color', 'rgba(224, 232, 245, 0.85)', 'important');
-            }
-        });
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 100);
-        setTimeout(apply, 350);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 60);
-        };
-    }
-
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__notPassedColor);
-        window.__notPassedColor = setTimeout(apply, 80);
-    });
-    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
-
-    console.log('✅ 未通過說明已改回一般色，標題維持亮綠');
+    console.log('✅ 強制中文指令模組已載入（兩處 Input Example 將顯示中文）');
 })();
 </script>
 <!-- ============================================================ -->
@@ -4626,348 +2469,6 @@
     console.log('✅ 相機引導：僅失敗顯示、成功隱藏');
 })();
 </script>
-<!-- ============================================================ -->
-<!-- 掃描成功結果：字體大小與圖中綠色框一致                        -->
-<!-- ============================================================ -->
-<style>
-    #qrScanResultStep8,
-    #qrScanResultStep9,
-    .qr-result {
-        font-size: 0.95rem !important;
-        font-weight: 600 !important;
-        line-height: 1.55 !important;
-        color: #00e676 !important;
-        text-align: left !important;
-        padding: 12px 14px !important;
-        border-radius: 10px !important;
-        background: rgba(0, 230, 118, 0.08) !important;
-        border: 1px solid rgba(0, 230, 118, 0.25) !important;
-        word-break: keep-all !important;
-        overflow-wrap: break-word !important;
-    }
-    #qrScanResultStep8 *,
-    #qrScanResultStep9 *,
-    .qr-result * {
-        font-size: 0.95rem !important;
-        color: #00e676 !important;
-        font-weight: 600 !important;
-    }
-</style>
 
-<script>
-(function () {
-    function applySize() {
-        ['qrScanResultStep8', 'qrScanResultStep9'].forEach(function (id) {
-            var el = document.getElementById(id);
-            if (!el) return;
-            el.style.setProperty('font-size', '0.95rem', 'important');
-            el.style.setProperty('font-weight', '600', 'important');
-            el.style.setProperty('line-height', '1.55', 'important');
-            el.style.setProperty('color', '#00e676', 'important');
-            el.style.setProperty('text-align', 'left', 'important');
-            el.querySelectorAll('*').forEach(function (c) {
-                c.style.setProperty('font-size', '0.95rem', 'important');
-                c.style.setProperty('color', '#00e676', 'important');
-                c.style.setProperty('font-weight', '600', 'important');
-            });
-        });
-    }
-
-    function run() {
-        applySize();
-        setTimeout(applySize, 150);
-        setTimeout(applySize, 400);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(applySize, 80);
-        };
-    }
-
-    // 掃描成功後 DOM 會被改寫，持續監看
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__scanFontSize);
-        window.__scanFontSize = setTimeout(applySize, 60);
-    });
-    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
-
-    console.log('✅ 掃描成功字體已統一為 0.95rem');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- QR 掃描標題：回傳區寫法與驗證區一致                            -->
-<!-- ============================================================ -->
-<style>
-    #step7_1QrTitle,
-    #step7_2ReturnQrTitle {
-        display: inline !important;
-        text-align: center !important;
-        font-size: 0.95rem !important;
-        font-weight: bold !important;
-        color: #e9d5ff !important;
-        line-height: 1.5 !important;
-        word-break: keep-all !important;
-    }
-</style>
-
-<script>
-(function () {
-    function unifyQrTitle(titleId) {
-        var el = document.getElementById(titleId);
-        if (!el) return;
-
-        // 標題列（含 icon）
-        var row = el.parentElement;
-        if (row) {
-            row.style.setProperty('display', 'flex', 'important');
-            row.style.setProperty('flex-direction', 'row', 'important');
-            row.style.setProperty('justify-content', 'center', 'important');
-            row.style.setProperty('align-items', 'center', 'important');
-            row.style.setProperty('gap', '8px', 'important');
-            row.style.setProperty('width', '100%', 'important');
-            row.style.setProperty('text-align', 'center', 'important');
-            row.style.setProperty('flex-wrap', 'wrap', 'important');
-            row.style.setProperty('margin-bottom', '10px', 'important');
-        }
-
-        el.style.setProperty('display', 'inline', 'important');
-        el.style.setProperty('text-align', 'center', 'important');
-        el.style.setProperty('font-size', '0.95rem', 'important');
-        el.style.setProperty('font-weight', 'bold', 'important');
-        el.style.setProperty('color', '#e9d5ff', 'important');
-        el.style.setProperty('line-height', '1.5', 'important');
-        el.style.setProperty('word-break', 'keep-all', 'important');
-        el.style.setProperty('overflow-wrap', 'break-word', 'important');
-    }
-
-    function apply() {
-        unifyQrTitle('step7_1QrTitle');
-        unifyQrTitle('step7_2ReturnQrTitle');
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 120);
-        setTimeout(apply, 400);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 80);
-        };
-    }
-
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__qrTitleUnify);
-        window.__qrTitleUnify = setTimeout(apply, 80);
-    });
-    obs.observe(document.body, { childList: true, subtree: true });
-
-    console.log('✅ QR 掃描標題左右寫法已統一');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- QR 掃描標題：漂亮置中寫法（與截圖一致）                        -->
-<!-- ============================================================ -->
-<style>
-    #step7_1QrTitle,
-    #step7_2ReturnQrTitle {
-        display: inline !important;
-        text-align: center !important;
-        font-size: 0.95rem !important;
-        font-weight: bold !important;
-        color: #e9d5ff !important;
-        line-height: 1.55 !important;
-        word-break: keep-all !important;
-        overflow-wrap: break-word !important;
-    }
-
-    /* 標題列置中 */
-    #qrScanCardStep8 .card-title,
-    #qrScanCardStep9 > div:first-child,
-    #step7_1QrTitle.parent,
-    #step7_2ReturnQrTitle.parent {
-        justify-content: center !important;
-        text-align: center !important;
-    }
-</style>
-
-<script>
-(function () {
-    function prettyTitle(titleId, fallbackText) {
-        var el = document.getElementById(titleId);
-        if (!el) return;
-
-        // 標題列
-        var row = el.closest('.card-title') || el.parentElement;
-        if (row) {
-            row.style.setProperty('display', 'flex', 'important');
-            row.style.setProperty('flex-direction', 'row', 'important');
-            row.style.setProperty('justify-content', 'center', 'important');
-            row.style.setProperty('align-items', 'center', 'important');
-            row.style.setProperty('flex-wrap', 'wrap', 'important');
-            row.style.setProperty('gap', '8px', 'important');
-            row.style.setProperty('width', '100%', 'important');
-            row.style.setProperty('text-align', 'center', 'important');
-            row.style.setProperty('margin-bottom', '10px', 'important');
-            row.style.setProperty('padding', '0', 'important');
-        }
-
-        // 標題文字
-        el.style.setProperty('display', 'inline', 'important');
-        el.style.setProperty('text-align', 'center', 'important');
-        el.style.setProperty('font-size', '0.95rem', 'important');
-        el.style.setProperty('font-weight', 'bold', 'important');
-        el.style.setProperty('color', '#e9d5ff', 'important');
-        el.style.setProperty('line-height', '1.55', 'important');
-        el.style.setProperty('word-break', 'keep-all', 'important');
-        el.style.setProperty('overflow-wrap', 'break-word', 'important');
-        el.style.setProperty('max-width', '100%', 'important');
-
-        // 只保留一個相機 icon，拿掉多餘裝飾
-        if (row) {
-            var icons = row.querySelectorAll('i');
-            var kept = false;
-            icons.forEach(function (ic) {
-                if (!kept && (ic.classList.contains('fa-qrcode') || ic.classList.contains('fa-camera'))) {
-                    kept = true;
-                    ic.style.setProperty('color', '#a78bfa', 'important');
-                    ic.style.setProperty('margin', '0', 'important');
-                } else if (ic !== el) {
-                    // 多餘的 QR 裝飾圖示隱藏
-                    if (!ic.classList.contains('fa-qrcode') && !ic.classList.contains('fa-camera')) {
-                        ic.style.setProperty('display', 'none', 'important');
-                    }
-                }
-            });
-        }
-    }
-
-    function apply() {
-        prettyTitle('step7_1QrTitle');
-        prettyTitle('step7_2ReturnQrTitle');
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 120);
-        setTimeout(apply, 400);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 80);
-        };
-    }
-
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__prettyQrTitle);
-        window.__prettyQrTitle = setTimeout(apply, 80);
-    });
-    obs.observe(document.body, { childList: true, subtree: true });
-
-    console.log('✅ QR 標題已改為漂亮置中寫法');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- QR 掃描標題：字重統一（全部一樣細）                          -->
-<!-- ============================================================ -->
-<style>
-    #step7_1QrTitle,
-    #step7_2ReturnQrTitle,
-    #step7_1QrTitle *,
-    #step7_2ReturnQrTitle * {
-        font-weight: 400 !important;
-        font-size: 0.95rem !important;
-        color: #e9d5ff !important;
-    }
-
-    /* 標題列內所有文字、icon 旁文字都不加粗 */
-    #qrScanCardStep8 .card-title,
-    #qrScanCardStep8 .card-title *,
-    #qrScanCardStep9 > div:first-child,
-    #qrScanCardStep9 > div:first-child * {
-        font-weight: 400 !important;
-    }
-</style>
-
-<script>
-(function () {
-    function thinTitle(id) {
-        var el = document.getElementById(id);
-        if (!el) return;
-
-        el.style.setProperty('font-weight', '400', 'important');
-        el.style.setProperty('font-size', '0.95rem', 'important');
-        el.style.setProperty('color', '#e9d5ff', 'important');
-
-        var row = el.closest('.card-title') || el.parentElement;
-        if (row) {
-            row.style.setProperty('font-weight', '400', 'important');
-            row.querySelectorAll('*').forEach(function (c) {
-                c.style.setProperty('font-weight', '400', 'important');
-            });
-        }
-    }
-
-    function apply() {
-        thinTitle('step7_1QrTitle');
-        thinTitle('step7_2ReturnQrTitle');
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 100);
-        setTimeout(apply, 350);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 60);
-        };
-    }
-
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__thinQrTitle);
-        window.__thinQrTitle = setTimeout(apply, 80);
-    });
-    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
-
-    console.log('✅ QR 標題字重已統一為細體');
-})();
-</script>
-    </body>
+</body>
 </html>
