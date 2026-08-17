@@ -3977,5 +3977,159 @@
     console.log('✅ 下拉選單英文模式已切換');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- step7-4 強制修正「送出即啟主頻連線」英文顯示                  -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    // ================================================================
+    // 強制將特定文字在英文模式下改為英文
+    // ================================================================
+    var ZH_NOTE = '送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。';
+    var EN_NOTE = 'Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.';
+
+    var ZH_TRIGGER = '【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。';
+    var EN_TRIGGER = '【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.';
+
+    function isEnglishMode() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var active = document.querySelector('.lang-btn.active');
+        return !!(active && /english|en/i.test(active.textContent || ''));
+    }
+
+    function fixNoteText() {
+        var isEn = isEnglishMode();
+
+        // 1. 直接透過 ID 修改（驗證區）
+        var note1 = document.getElementById('step7_4Note');
+        if (note1) {
+            note1.textContent = isEn ? EN_NOTE : ZH_NOTE;
+            console.log('✅ step7_4Note 已更新為 ' + (isEn ? '英文' : '中文'));
+        }
+
+        // 2. 回傳區的 note（如果有獨立 ID）
+        var note2 = document.getElementById('step7_4ReturnNote');
+        if (note2) {
+            note2.textContent = isEn ? EN_NOTE : ZH_NOTE;
+            console.log('✅ step7_4ReturnNote 已更新為 ' + (isEn ? '英文' : '中文'));
+        }
+
+        // 3. 觸發指令
+        var trigger1 = document.getElementById('step7_4TriggerNote');
+        if (trigger1) {
+            trigger1.textContent = isEn ? EN_TRIGGER : ZH_TRIGGER;
+            console.log('✅ step7_4TriggerNote 已更新為 ' + (isEn ? '英文' : '中文'));
+        }
+
+        var trigger2 = document.getElementById('step7_4ReturnTriggerNote');
+        if (trigger2) {
+            trigger2.textContent = isEn ? EN_TRIGGER : ZH_TRIGGER;
+            console.log('✅ step7_4ReturnTriggerNote 已更新為 ' + (isEn ? '英文' : '中文'));
+        }
+
+        // 4. 掃描所有包含關鍵字的文字節點（備援）
+        var walker = document.createTreeWalker(
+            document.body,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+        );
+        var nodes = [];
+        var node;
+        while (node = walker.nextNode()) {
+            var text = node.textContent || '';
+            if (text.indexOf('送出即啟主頻連線') !== -1 ||
+                text.indexOf('Once submitted, the Primary Frequency Link') !== -1 ||
+                text.indexOf('【觸發指令】為正式天令格式') !== -1 ||
+                text.indexOf('【Trigger Command】 is a formal Heavenly Decree') !== -1) {
+                nodes.push(node);
+            }
+        }
+
+        nodes.forEach(function(tn) {
+            var parent = tn.parentElement;
+            // 避免改到不該改的地方
+            if (parent && parent.closest && !parent.closest('.hud-card')) return;
+            var text = tn.textContent || '';
+            if (isEn) {
+                if (text.indexOf('送出即啟主頻連線') !== -1) {
+                    tn.textContent = text.replace('送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。', EN_NOTE);
+                }
+                if (text.indexOf('【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。') !== -1) {
+                    tn.textContent = text.replace('【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。', EN_TRIGGER);
+                }
+            } else {
+                if (text.indexOf('Once submitted, the Primary Frequency Link') !== -1) {
+                    tn.textContent = text.replace(EN_NOTE, ZH_NOTE);
+                }
+                if (text.indexOf('【Trigger Command】 is a formal Heavenly Decree') !== -1) {
+                    tn.textContent = text.replace(EN_TRIGGER, ZH_TRIGGER);
+                }
+            }
+        });
+
+        // 5. 額外：處理 .hud-card 內的所有 div
+        document.querySelectorAll('.hud-card div, .center-card div, .instruction-item, .instruction-box div').forEach(function(el) {
+            if (el.children && el.children.length > 2) return;
+            var text = (el.textContent || '').trim();
+            if (!text || text.length > 100) return;
+
+            if (isEn) {
+                if (text.indexOf('送出即啟主頻連線') !== -1) {
+                    el.textContent = EN_NOTE;
+                }
+                if (text.indexOf('【觸發指令】為正式天令格式') !== -1) {
+                    el.textContent = EN_TRIGGER;
+                }
+            } else {
+                if (text.indexOf('Once submitted, the Primary Frequency Link') !== -1) {
+                    el.textContent = ZH_NOTE;
+                }
+                if (text.indexOf('【Trigger Command】 is a formal Heavenly Decree') !== -1) {
+                    el.textContent = ZH_TRIGGER;
+                }
+            }
+        });
+
+        console.log('✅ 所有頻道連線文字已更新為 ' + (isEn ? '英文' : '中文'));
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    function run() {
+        fixNoteText();
+        setTimeout(fixNoteText, 100);
+        setTimeout(fixNoteText, 300);
+        setTimeout(fixNoteText, 600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 語系切換時重新執行
+    var origSwitch = window.switchLanguage;
+    if (typeof origSwitch === 'function') {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(fixNoteText, 50);
+            setTimeout(fixNoteText, 150);
+            setTimeout(fixNoteText, 400);
+        };
+    }
+
+    // 監聽 DOM 變化
+    var observer = new MutationObserver(function() {
+        clearTimeout(window.__fixNoteTextTimer);
+        window.__fixNoteTextTimer = setTimeout(fixNoteText, 80);
+    });
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ step7-4 頻道連線文字修復模組已載入');
+})();
+</script>
 </body>
 </html>
