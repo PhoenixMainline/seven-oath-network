@@ -2702,5 +2702,173 @@
     console.log('✅ 第三印表單標籤英文模式已對應切換');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 第三印：標題「第三印 守願印《守願印 × 願書》」英文模式改英文    -->
+<!-- 貼在 </body> 前即可                                           -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var ZH = '第三印 守願印《守願印 × 願書》';
+    var EN = 'Third Seal Vow-Guardian Seal 《Vow-Guardian Seal × Vow-Script》';
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var target = isEn() ? EN : ZH;
+
+        // 1) 常見標題位置
+        document.querySelectorAll('.form-title, .card-title, .form-section-title, .preview-header, h2, h3, h4').forEach(function (el) {
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (/第三印.*守願印|Third Seal.*Vow-Guardian|守願印\s*×\s*願書/i.test(t)) {
+                // 保留前面 icon
+                var icon = el.querySelector('i');
+                if (icon) {
+                    el.innerHTML = '';
+                    el.appendChild(icon);
+                    el.appendChild(document.createTextNode(' ' + target));
+                } else {
+                    el.textContent = target;
+                }
+            }
+        });
+
+        // 2) 全頁短文字備援
+        document.querySelectorAll('div, span, strong, b, p').forEach(function (el) {
+            if (el.children && el.children.length > 1) return;
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (t === ZH || t === EN ||
+                t === '📄 ' + ZH || t === '📄' + ZH ||
+                /第三印\s*守願印《守願印/.test(t)) {
+                var icon = el.querySelector('i');
+                if (icon) {
+                    el.innerHTML = '';
+                    el.appendChild(icon);
+                    el.appendChild(document.createTextNode(' ' + target));
+                } else {
+                    el.textContent = target;
+                }
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 400);
+        setTimeout(apply, 800);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            try { window.currentLang = l; } catch (e) {}
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.lang-btn')) return;
+        setTimeout(apply, 60);
+        setTimeout(apply, 250);
+    }, true);
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__s73TitleFix);
+        window.__s73TitleFix = setTimeout(apply, 60);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 第三印標題英文模式已切換');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 第三印：下拉選單（草稿/待審/已誓印/完成入冊）英文模式改英文    -->
+<!-- 貼在 </body> 前即可                                           -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var OPT_MAP = {
+        '草稿': 'Draft',
+        '待審': 'Pending Review',
+        '已誓印': 'Oath Sealed',
+        '完成入冊': 'Registration Completed'
+    };
+    var OPT_REV = {
+        'Draft': '草稿',
+        'Pending Review': '待審',
+        'Oath Sealed': '已誓印',
+        'Registration Completed': '完成入冊'
+    };
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var en = isEn();
+        var dict = en ? OPT_MAP : OPT_REV;
+
+        document.querySelectorAll('select').forEach(function (sel) {
+            Array.prototype.forEach.call(sel.options, function (opt) {
+                var t = (opt.textContent || '').replace(/\s+/g, ' ').trim();
+                if (dict[t]) {
+                    opt.textContent = dict[t];
+                }
+            });
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 400);
+        setTimeout(apply, 800);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            try { window.currentLang = l; } catch (e) {}
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.lang-btn')) return;
+        setTimeout(apply, 60);
+        setTimeout(apply, 250);
+    }, true);
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__s73SelectLang);
+        window.__s73SelectLang = setTimeout(apply, 60);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 下拉選單英文模式已切換');
+})();
+</script>
 </body>
 </html>
