@@ -4131,5 +4131,48 @@
     console.log('✅ step7-4 頻道連線文字修復模組已載入');
 })();
 </script>
+<script>
+(function() {
+  function fixText() {
+    // 方案 1：精準抓取包含「Execute指令」的所有 HTML 元素並直接整段替換（最猛最有效）
+    const allElements = document.querySelectorAll('*');
+    allElements.forEach(el => {
+      // 確保只針對最深層的文字容器操作，避免破壞大結構
+      if (el.children.length === 0 && el.textContent) {
+        
+        // 處理包含「回傳」的句子
+        if (el.textContent.includes('Execute指令') && el.textContent.includes('回傳')) {
+          el.textContent = 'Input Example:【執行指令】回傳【第四印 誓令印 誓印通過】誓證';
+        }
+        
+        // 處理包含「結果」的句子
+        else if (el.textContent.includes('Execute指令') && el.textContent.includes('結果')) {
+          el.textContent = 'Input Example:【執行指令】第四印 誓令印 結果';
+        }
+
+        // 預防萬一：如果連前綴「輸入示範」也被拆開，直接暴力匹配
+        else if (el.textContent.includes('【Execute指令】')) {
+          el.textContent = el.textContent.replace('【Execute指令】', '【執行指令】')
+                                         .replace('輸入示範 :', 'Input Example:')
+                                         .replace('輸入示範:', 'Input Example:');
+        }
+      }
+    });
+  }
+
+  // 1. 立即執行與頁面載入執行
+  fixText();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', fixText);
+  }
+
+  // 2. 針對動態框架（Vue/React/Angular）定時與變更監控
+  const observer = new MutationObserver(fixText);
+  observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+  // 3. 強制每 0.5 秒補刀一次，防止框架非同步延遲覆蓋回來
+  setInterval(fixText, 500);
+})();
+</script>
 </body>
 </html>
