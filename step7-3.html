@@ -1333,7 +1333,7 @@
                 step7_3Closure1: "《七印誓網·第三印 守願印》v2.0（正式封冊版）。",
                 step7_3Closure2: "已鎖入《宇宙天律 × 七印誓網》主冊，願軌對頻穩定，誓源歸正。",
                 step7_3ProcSubmit1: "提交第三印 守願印《守願印 × 願書》表單",
-                step7_3ProcSubmitWarn: "⚠️ 未完成之提交表單者，系統將不予對頻，誓資紀錄作廢不立。",
+                step7_3ProcSubmitWarn: " 未完成之提交表單者，系統將不予對頻，誓資紀錄作廢不立。",
                 step7_3ProcSubmit2: "登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。",
                 step7_3ProcSubmit3: "掃描【誓導 QR Code】後，進入「指令輸入欄位」。",
                 step7_3ProcSubmit4: "無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
@@ -1421,7 +1421,7 @@
                 step7_3Closure1: "Seven-Seal Vow Network · Third Seal Vow-Guardian Seal v2.0 (Formal Sealed Edition).",
                 step7_3Closure2: "Locked into the Cosmic Heavenly-Law × Seven-Seal Vow Network main register; vow-trajectory stabilized, oath-source restored.",
                 step7_3ProcSubmit1: "Submit the Third Seal Vow-Guardian Seal Vow-Guardian Seal × Vow-Script Submission Form",
-                step7_3ProcSubmitWarn: "⚠️ If the submission form is not completed, the system will refuse frequency-Alignment, and the oath-resource record will be rendered invalid and unrecognized.",
+                step7_3ProcSubmitWarn: " If the submission form is not completed, the system will refuse frequency-Alignment, and the oath-resource record will be rendered invalid and unrecognized.",
                 step7_3ProcSubmit2: "Log into the Cosmic Intelligent Vow-Guidance Platform (personal account) and complete identity verification.",
                 step7_3ProcSubmit3: "Scan the Vow-Guidance QR Code to enter the Command Input Field.",
                 step7_3ProcSubmit4: "No manual entry of the vow text is required. After completing the scan, directly enter the following command:",
@@ -2562,6 +2562,144 @@
     obs.observe(document.body, { childList: true, subtree: true, attributes: true });
 
     console.log('✅ 誓印未通過說明文字已改回一般色，標題維持亮綠');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 第三印表單：英文模式強制顯示英文標籤（圈起來的那些）            -->
+<!-- 貼在 </body> 前即可                                           -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var MAP = {
+        '一、誓願人資料': 'I. Vow-Maker Information',
+        '二、願書主題': 'II. Vow-Script Theme',
+        '三、願書正文': 'III. Vow-Script Main Text',
+        '四、願書圖騰上傳（附件區）': 'IV. Vow-Sigil Upload (Attachment Area)',
+        '四、願書圖騰上傳': 'IV. Vow-Sigil Upload',
+        '五、啟印宣告（提交前確認）': 'V. Seal-Activation Declaration (Pre-Submission Confirmation)',
+        '五、啟印宣告': 'V. Seal-Activation Declaration',
+        '六、提交與入冊設定': 'VI. Submission & Registration Settings',
+        '啟願日期': 'Vow Initiation Date',
+        '含誓印/個人標記': 'Includes Oath-Seal / Personal Mark',
+        '含誓印／個人標記': 'Includes Oath-Seal / Personal Mark',
+        '上傳位置': 'Upload Location',
+        '願書附件區': 'Vow Attachment Area',
+        '天庫圖騰備查區': 'Celestial Archive Sigil Reference Area',
+        '書令密鑰存檔': 'Script-Mandate Key Archive',
+        '完成方式': 'Completion Method',
+        '已誦讀': 'Recited',
+        '已錄音': 'Recorded',
+        '已心念完成': 'Completed by Heart-Invocation',
+        '送交天庫存檔': 'Submit to Celestial Archive',
+        '啟用七印系統流程': 'Activate Seven-Seal System Process'
+    };
+
+    // 反向（英文 → 中文），切回中文時用
+    var MAP_REV = {};
+    Object.keys(MAP).forEach(function (k) { MAP_REV[MAP[k]] = k; });
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function replaceInElement(el, fromTo) {
+        // 只改文字節點，保留結構
+        el.childNodes.forEach(function (n) {
+            if (n.nodeType === 3) {
+                var t = n.textContent;
+                Object.keys(fromTo).forEach(function (k) {
+                    if (t.indexOf(k) !== -1) {
+                        n.textContent = t.split(k).join(fromTo[k]);
+                        t = n.textContent;
+                    }
+                });
+            }
+        });
+        // 若整個元素就是短標籤
+        var full = (el.textContent || '').replace(/\s+/g, ' ').trim();
+        if (fromTo[full]) {
+            if (el.children.length === 0) {
+                el.textContent = fromTo[full];
+            } else {
+                // 有 icon 時用 innerHTML 替換文字
+                Object.keys(fromTo).forEach(function (k) {
+                    if (el.innerHTML.indexOf(k) !== -1) {
+                        el.innerHTML = el.innerHTML.split(k).join(fromTo[k]);
+                    }
+                });
+            }
+        }
+    }
+
+    function apply() {
+        var en = isEn();
+        var dict = en ? MAP : MAP_REV;
+
+        // 表單區為主
+        var root = document.querySelector('.form-submit-container') || document.body;
+
+        root.querySelectorAll('div, span, label, p, strong, b, h3, h4, td, th').forEach(function (el) {
+            if (el.closest('script, style')) return;
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t || t.length > 80) return;
+
+            // 精確或包含替換
+            Object.keys(dict).forEach(function (k) {
+                if (t === k || t.indexOf(k) !== -1) {
+                    replaceInElement(el, dict);
+                }
+            });
+        });
+
+        // 針對 radio / checkbox 旁的文字再掃一次
+        root.querySelectorAll('label').forEach(function (lab) {
+            Object.keys(dict).forEach(function (k) {
+                if ((lab.textContent || '').indexOf(k) !== -1) {
+                    lab.innerHTML = lab.innerHTML.split(k).join(dict[k]);
+                }
+            });
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 400);
+        setTimeout(apply, 900);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            try { window.currentLang = l; } catch (e) {}
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+            setTimeout(apply, 500);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.lang-btn')) return;
+        setTimeout(apply, 80);
+        setTimeout(apply, 300);
+    }, true);
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__s73FormLang);
+        window.__s73FormLang = setTimeout(apply, 70);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 第三印表單標籤英文模式已對應切換');
 })();
 </script>
 </body>
