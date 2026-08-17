@@ -4218,5 +4218,455 @@
     console.log('✅ 第7日文字已修正');
 })();
 </script>
+<!-- ============================================================
+     七日誓讀表單｜日期標題重複修正
+     功能：
+     1. 第1日～第7日只保留一個日次標題
+     2. 中文直接顯示「第1日～第7日」
+     3. 英文直接顯示「Day 1～Day 7」
+     4. 不需要先切英文再切回中文
+     5. 不修改原本亮紫色系、卡片、輸入框樣式
+     6. 不修改日期資料與 checkbox 資料
+============================================================ -->
+
+<script>
+(function () {
+
+    'use strict';
+
+    /* ------------------------------------------------------------
+       取得目前語系
+    ------------------------------------------------------------ */
+    function getCurrentLanguage() {
+
+        if (typeof window.currentLang !== 'undefined') {
+            return window.currentLang === 'en' ? 'en' : 'zh';
+        }
+
+        if (document.body.classList.contains('lang-en')) {
+            return 'en';
+        }
+
+        var activeBtn = document.querySelector('.lang-btn.active');
+
+        if (
+            activeBtn &&
+            /english|^en$/i.test(
+                (activeBtn.textContent || '').trim()
+            )
+        ) {
+            return 'en';
+        }
+
+        return 'zh';
+    }
+
+
+    /* ------------------------------------------------------------
+       找到第 N 日的日期標題列
+    ------------------------------------------------------------ */
+    function findDayTitleRow(day) {
+
+        var dateInput = document.querySelector(
+            'input.day-date-input[data-day="' + day + '"], ' +
+            'input[type="date"][data-day="' + day + '"]'
+        );
+
+        if (dateInput) {
+
+            var row = dateInput.closest('.day-title-row');
+
+            if (row) {
+                return row;
+            }
+
+            if (dateInput.parentElement) {
+                return dateInput.parentElement;
+            }
+        }
+
+
+        /* 備援：找原本的 dayHeader */
+        var header = document.getElementById('dayHeader_' + day);
+
+        if (header) {
+
+            var parent = header.closest('.day-title-row');
+
+            if (parent) {
+                return parent;
+            }
+
+            if (header.parentElement) {
+                return header.parentElement;
+            }
+        }
+
+        return null;
+    }
+
+
+    /* ------------------------------------------------------------
+       清理重複的「第N日 / Day N」
+       只處理標題列，不碰下面 checkbox / 備註 / 摘要
+    ------------------------------------------------------------ */
+    function cleanDayTitle(day) {
+
+        var row = findDayTitleRow(day);
+
+        if (!row) {
+            return;
+        }
+
+
+        var lang = getCurrentLanguage();
+
+        var correctText =
+            lang === 'en'
+                ? 'Day ' + day
+                : '第' + day + '日';
+
+
+        /* --------------------------------------------------------
+           ① 原本正式標題 dayHeader_N
+        -------------------------------------------------------- */
+
+        var header =
+            document.getElementById('dayHeader_' + day);
+
+        if (header) {
+
+            header.textContent = correctText;
+
+            header.style.display = 'inline-block';
+
+        }
+
+
+        /* --------------------------------------------------------
+           ② 找出日期輸入框
+        -------------------------------------------------------- */
+
+        var dateInput =
+            row.querySelector(
+                'input.day-date-input[data-day="' + day + '"], ' +
+                'input[type="date"][data-day="' + day + '"]'
+            );
+
+        if (dateInput) {
+
+            dateInput.title =
+                lang === 'en'
+                    ? 'Select date'
+                    : '請選擇日期';
+
+        }
+
+
+        /* --------------------------------------------------------
+           ③ 隱藏舊的「（請填寫日期）」Label
+              這個不是日期標題，不需要顯示在標題列
+        -------------------------------------------------------- */
+
+        var oldLabel =
+            document.getElementById(
+                'step7_1Day' + day + 'Label'
+            );
+
+        if (oldLabel) {
+
+            oldLabel.style.display = 'none';
+
+        }
+
+
+        /* --------------------------------------------------------
+           ④ 清掉日期標題列裡「重複建立」的純文字
+           
+           注意：
+           不刪 HTML、不刪 input、不刪 checkbox。
+           只處理直接掛在標題列上的文字節點。
+        -------------------------------------------------------- */
+
+        var directTextNodes = [];
+
+        row.childNodes.forEach(function (node) {
+
+            if (node.nodeType === Node.TEXT_NODE) {
+
+                var text =
+                    (node.nodeValue || '').trim();
+
+                if (!text) {
+                    return;
+                }
+
+                /*
+                   找到：
+                   第1日
+                   第2日
+                   ...
+                   Day 1
+                   Day 2
+                   ...
+                */
+                var isDayText =
+                    /^第\s*\d+\s*日/.test(text) ||
+                    /^⭐\s*第\s*\d+\s*日/.test(text) ||
+                    /^Day\s*\d+/i.test(text) ||
+                    /^⭐\s*Day\s*\d+/i.test(text);
+
+                if (isDayText) {
+
+                    directTextNodes.push(node);
+
+                }
+
+            }
+
+        });
+
+
+        /*
+           如果正式 dayHeader 存在：
+           → 把其他重複純文字移除
+        */
+        if (header) {
+
+            directTextNodes.forEach(function (node) {
+
+                /*
+                   如果這個文字節點不是 header 本身產生的文字，
+                   直接移除。
+                */
+                if (
+                    node.parentNode === row &&
+                    node.nodeValue.trim() !== ''
+                ) {
+
+                    node.nodeValue = '';
+
+                }
+
+            });
+
+        }
+
+
+        /* --------------------------------------------------------
+           ⑤ 找所有 span 中可能重複的 Day N / 第N日
+        -------------------------------------------------------- */
+
+        var spans = row.querySelectorAll('span');
+
+        spans.forEach(function (span) {
+
+            /*
+               正式 dayHeader 不處理
+            */
+            if (
+                header &&
+                (
+                    span === header ||
+                    span.id === 'dayHeader_' + day
+                )
+            ) {
+                return;
+            }
+
+
+            var txt =
+                (span.textContent || '').trim();
+
+
+            /*
+               只處理純粹的：
+               第2日
+               ⭐ 第7日
+               Day 2
+               ⭐ Day 7
+            */
+            var duplicate =
+                /^第\s*\d+\s*日$/.test(txt) ||
+                /^⭐\s*第\s*\d+\s*日$/.test(txt) ||
+                /^Day\s*\d+$/i.test(txt) ||
+                /^⭐\s*Day\s*\d+$/i.test(txt);
+
+
+            if (duplicate) {
+
+                span.style.display = 'none';
+
+            }
+
+        });
+
+
+        /* --------------------------------------------------------
+           ⑥ 第7日保留原本星號效果
+              不修改你的紫色系
+        -------------------------------------------------------- */
+
+        if (day === 7 && header) {
+
+            if (lang === 'en') {
+
+                header.textContent = '⭐ Day 7';
+
+            } else {
+
+                header.textContent = '⭐ 第7日';
+
+            }
+
+        }
+
+
+        /* --------------------------------------------------------
+           ⑦ 標題列最後確認
+        -------------------------------------------------------- */
+
+        row.classList.add('day-title-row');
+
+    }
+
+
+    /* ------------------------------------------------------------
+       一次修正 1～7 日
+    ------------------------------------------------------------ */
+    function fixAllDays() {
+
+        for (var d = 1; d <= 7; d++) {
+
+            cleanDayTitle(d);
+
+        }
+
+    }
+
+
+    /* ------------------------------------------------------------
+       等原本的日期轉換程式完成後再修正
+       因為你的原始程式會動態建立日期 input
+    ------------------------------------------------------------ */
+    function runFix() {
+
+        fixAllDays();
+
+        setTimeout(fixAllDays, 50);
+        setTimeout(fixAllDays, 150);
+        setTimeout(fixAllDays, 300);
+        setTimeout(fixAllDays, 600);
+        setTimeout(fixAllDays, 1000);
+
+    }
+
+
+    /* ------------------------------------------------------------
+       初始載入
+    ------------------------------------------------------------ */
+
+    if (document.readyState === 'loading') {
+
+        document.addEventListener(
+            'DOMContentLoaded',
+            runFix
+        );
+
+    } else {
+
+        runFix();
+
+    }
+
+
+    /* ------------------------------------------------------------
+       攔截語系切換
+       中文 → 英文 → 中文
+       不再需要靠第二次切換才修正
+    ------------------------------------------------------------ */
+
+    var oldSwitchLanguage =
+        window.switchLanguage;
+
+
+    if (typeof oldSwitchLanguage === 'function') {
+
+        window.switchLanguage =
+            function (lang) {
+
+                oldSwitchLanguage.apply(
+                    this,
+                    arguments
+                );
+
+
+                /*
+                   原本語系程式完成後再修正
+                */
+                setTimeout(
+                    fixAllDays,
+                    20
+                );
+
+                setTimeout(
+                    fixAllDays,
+                    80
+                );
+
+                setTimeout(
+                    fixAllDays,
+                    200
+                );
+
+                setTimeout(
+                    fixAllDays,
+                    500
+                );
+
+            };
+
+    }
+
+
+    /* ------------------------------------------------------------
+       MutationObserver
+       
+       你的原始檔本身會動態建立日期欄位，
+       所以如果它重新建立一次，就再次清理。
+    ------------------------------------------------------------ */
+
+    var observerTimer = null;
+
+    var observer =
+        new MutationObserver(function () {
+
+            clearTimeout(observerTimer);
+
+            observerTimer =
+                setTimeout(function () {
+
+                    fixAllDays();
+
+                }, 80);
+
+        });
+
+
+    observer.observe(
+        document.body,
+        {
+            childList: true,
+            subtree: true
+        }
+    );
+
+
+    console.log(
+        '✅ 七日表單日次標題重複修正已啟用'
+    );
+
+})();
+</script>
 </body>
 </html>
