@@ -4174,5 +4174,45 @@
   setInterval(fixText, 500);
 })();
 </script>
+<script>
+(function() {
+  function fixText() {
+    // 檢查當前網頁是否為英文版（根據 HTML lang 屬性或 URL 網址判斷）
+    const isEnglishPage = document.documentElement.lang.toLowerCase().startsWith('en') || 
+                          window.location.href.includes('/en/');
+
+    // 只在英文版頁面才執行替換，中文版完全不動作
+    if (!isEnglishPage) return;
+
+    const allElements = document.querySelectorAll('*');
+    allElements.forEach(el => {
+      if (el.children.length === 0 && el.textContent) {
+        
+        // 英文版：處理包含「回傳」的句子
+        if (el.textContent.includes('Execute指令') && el.textContent.includes('回傳')) {
+          el.textContent = 'Input Example:【執行指令】回傳【第四印 誓令印 誓印通過】誓證';
+        }
+        
+        // 英文版：處理包含「結果」的句子
+        else if (el.textContent.includes('Execute指令') && el.textContent.includes('結果')) {
+          el.textContent = 'Input Example:【執行指令】第四印 誓令印 結果';
+        }
+      }
+    });
+  }
+
+  // 1. 載入時執行
+  fixText();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', fixText);
+  }
+
+  // 2. 動態變更監控與定期檢查
+  const observer = new MutationObserver(fixText);
+  observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+  setInterval(fixText, 500);
+})();
+</script>
 </body>
 </html>
