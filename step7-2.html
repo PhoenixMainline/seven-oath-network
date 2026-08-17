@@ -2849,5 +2849,218 @@
     console.log('✅ 表單標題修復模組已載入（英文模式顯示英文）');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 第二印：英文模式強制顯示英文（表單標題 + 主頻連線句）            -->
+<!-- 只改這幾處，不影響其他功能                                      -->
+<!-- 貼在 </body> 前即可                                             -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var ZH = {
+        formMain: '第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》提交表單',
+        formSection: '第二印 修心印《鏡修省思 × 習氣調頻 × 誓文實踐紀錄表》表單',
+        helpTitle: '使用說明',
+        note: '送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。'
+    };
+    var EN = {
+        formMain: 'Second Seal Mind-Refinement Seal 《Mirror-Refinement Insight × Habit Calibration × Oath Practice Record Sheet》 Submission Form',
+        formSection: 'Second Seal Mind-Refinement Seal 《Mirror-Refinement Insight × Habit Calibration × Oath Practice Record Sheet》 Form',
+        helpTitle: 'Instructions for Use',
+        note: 'Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.'
+    };
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var en = isEn();
+        var p = en ? EN : ZH;
+
+        // 1) 表單主標題 / 區塊標題
+        document.querySelectorAll('.form-title, .form-section-title, .preview-header').forEach(function (el) {
+            var t = (el.textContent || '').trim();
+            if (/第二印.*修心印|鏡修省思|習氣調頻|誓文實踐|Mind-Refinement|Mirror-Refinement|Record Sheet/i.test(t)) {
+                if (/提交|Submission/i.test(t)) {
+                    el.textContent = p.formMain;
+                } else {
+                    el.textContent = p.formSection;
+                }
+            }
+        });
+
+        // 2) 「使用說明」
+        document.querySelectorAll('div, span, strong, b, p, h3, h4').forEach(function (el) {
+            if (el.children && el.children.length > 0) return;
+            var t = (el.textContent || '').trim();
+            if (t === '使用說明' || t === 'Instructions for Use' || t === 'Instructions') {
+                el.textContent = p.helpTitle;
+            }
+        });
+
+        // 3) 主頻連線句（含綠色連結那行）
+        ['step7_2Note', 'step7_2ReturnNote'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = p.note;
+        });
+        // 掃文字相符的也改
+        document.querySelectorAll('span, div, p').forEach(function (el) {
+            if (el.children && el.children.length > 1) return;
+            var t = (el.textContent || '').trim();
+            if (t === ZH.note || t === EN.note ||
+                /送出即啟主頻連線|Primary Frequency Link is activated/i.test(t)) {
+                // 避免改到整段說明
+                if (t.length < 120) el.textContent = p.note;
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 400);
+        setTimeout(apply, 900);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 語系切換後套用
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            try { window.currentLang = l; } catch (e) {}
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+            setTimeout(apply, 500);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.lang-btn')) return;
+        setTimeout(apply, 80);
+        setTimeout(apply, 300);
+    }, true);
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__s72EnFix);
+        window.__s72EnFix = setTimeout(apply, 70);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 英文模式：表單標題 / 使用說明 / 主頻連線句 已切換為英文');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 只改「使用說明」→ 英文模式顯示 Instructions for Use            -->
+<!-- 貼在 </body> 前即可                                           -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function fixHelpTitle() {
+        var en = isEn();
+        var target = en ? 'Instructions for Use' : '使用說明';
+
+        // 掃所有可能的節點
+        document.querySelectorAll('div, span, p, strong, b, h3, h4, label, i').forEach(function (el) {
+            // 取純文字（去掉子元素後）
+            var own = '';
+            el.childNodes.forEach(function (n) {
+                if (n.nodeType === 3) own += n.textContent;
+            });
+            own = own.replace(/\s+/g, ' ').trim();
+
+            var full = (el.textContent || '').replace(/\s+/g, ' ').trim();
+
+            // 本身就是「使用說明」或「Instructions for Use」
+            if (own === '使用說明' || own === 'Instructions for Use' ||
+                full === '使用說明' || full === 'Instructions for Use' ||
+                full === '📌 使用說明' || full === '📌 Instructions for Use') {
+
+                // 若有 icon，只改文字節點
+                var replaced = false;
+                el.childNodes.forEach(function (n) {
+                    if (n.nodeType === 3 && /使用說明|Instructions for Use/.test(n.textContent || '')) {
+                        n.textContent = n.textContent.replace(/使用說明|Instructions for Use/g, target);
+                        replaced = true;
+                    }
+                });
+                if (!replaced) {
+                    // 整段就是這個字
+                    if (el.children.length === 0) {
+                        el.textContent = target;
+                    } else {
+                        // 保留 icon，改後面文字
+                        el.innerHTML = el.innerHTML
+                            .replace(/使用說明/g, target)
+                            .replace(/Instructions for Use/g, target);
+                    }
+                }
+            }
+        });
+
+        // 再保險：含「使用說明」的短標題列
+        document.querySelectorAll('div, span').forEach(function (el) {
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (t.length > 20) return;
+            if (/使用說明/.test(t) && en) {
+                el.innerHTML = el.innerHTML.replace(/使用說明/g, 'Instructions for Use');
+            }
+            if (/Instructions for Use/.test(t) && !en) {
+                el.innerHTML = el.innerHTML.replace(/Instructions for Use/g, '使用說明');
+            }
+        });
+    }
+
+    function run() {
+        fixHelpTitle();
+        setTimeout(fixHelpTitle, 80);
+        setTimeout(fixHelpTitle, 300);
+        setTimeout(fixHelpTitle, 700);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            try { window.currentLang = l; } catch (e) {}
+            setTimeout(fixHelpTitle, 40);
+            setTimeout(fixHelpTitle, 200);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.lang-btn')) return;
+        setTimeout(fixHelpTitle, 60);
+        setTimeout(fixHelpTitle, 250);
+    }, true);
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__helpTitleFix);
+        window.__helpTitleFix = setTimeout(fixHelpTitle, 60);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅「使用說明」英文模式已改為 Instructions for Use');
+})();
+</script>
 </body>
 </html>
