@@ -2469,5 +2469,385 @@
     console.log('✅ 相機引導：僅失敗顯示、成功隱藏');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 修復 footer 按鈕（上一步／下一步）顯示                        -->
+<!-- ============================================================ -->
+<style>
+    /* 強制顯示 footer 按鈕群組 */
+    .hud-footer .footer-btn-group {
+        display: flex !important;
+    }
+
+    /* 確保按鈕可見且可點擊 */
+    .footer-btn-group .btn-action {
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    /* 確保頁面標記與按鈕並排 */
+    .hud-footer {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+
+    /* 手機版調整 */
+    @media (max-width: 480px) {
+        .hud-footer {
+            flex-direction: row !important;
+            justify-content: space-between !important;
+        }
+        .footer-btn-group {
+            flex-wrap: wrap !important;
+            gap: 4px !important;
+        }
+        .footer-btn-group .btn-action {
+            font-size: 0.65rem !important;
+            padding: 4px 10px !important;
+        }
+    }
+</style>
+
+<script>
+(function() {
+    // ================================================================
+    // 強制顯示 footer 按鈕（上一步／下一步）
+    // ================================================================
+    function fixFooterButtons() {
+        var footer = document.querySelector('.hud-footer');
+        if (!footer) {
+            console.warn('⚠️ 找不到 .hud-footer');
+            return;
+        }
+
+        // 1. 強制顯示按鈕群組
+        var btnGroup = footer.querySelector('.footer-btn-group');
+        if (btnGroup) {
+            btnGroup.style.setProperty('display', 'flex', 'important');
+            btnGroup.style.setProperty('visibility', 'visible', 'important');
+            btnGroup.style.setProperty('opacity', '1', 'important');
+            console.log('✅ 按鈕群組已強制顯示');
+        } else {
+            console.warn('⚠️ 找不到 .footer-btn-group');
+        }
+
+        // 2. 確保每個按鈕都可見
+        footer.querySelectorAll('.btn-action').forEach(function(btn) {
+            btn.style.setProperty('display', 'inline-flex', 'important');
+            btn.style.setProperty('visibility', 'visible', 'important');
+            btn.style.setProperty('opacity', '1', 'important');
+            btn.style.setProperty('pointer-events', 'auto', 'important');
+        });
+
+        // 3. 檢查連結是否正確
+        var backLink = footer.querySelector('a[href*="step7-1"]');
+        var nextLink = footer.querySelector('a[href*="step7-3"]');
+
+        if (backLink) {
+            console.log('✅ 上一步連結: ' + backLink.getAttribute('href'));
+        } else {
+            console.warn('⚠️ 找不到上一步連結 (href 含 step7-1)');
+        }
+
+        if (nextLink) {
+            console.log('✅ 下一步連結: ' + nextLink.getAttribute('href'));
+        } else {
+            console.warn('⚠️ 找不到下一步連結 (href 含 step7-3)');
+        }
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    function run() {
+        fixFooterButtons();
+        setTimeout(fixFooterButtons, 100);
+        setTimeout(fixFooterButtons, 300);
+        setTimeout(fixFooterButtons, 600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 語系切換後重新確保顯示
+    var origSwitch = window.switchLanguage;
+    if (typeof origSwitch === 'function') {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(fixFooterButtons, 50);
+            setTimeout(fixFooterButtons, 150);
+            setTimeout(fixFooterButtons, 400);
+        };
+    }
+
+    // 監聽 DOM 變化
+    var observer = new MutationObserver(function() {
+        clearTimeout(window.__fixFooterTimer);
+        window.__fixFooterTimer = setTimeout(fixFooterButtons, 80);
+    });
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+    console.log('✅ Footer 按鈕修復模組已載入');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 修復表單標題：英文模式顯示英文，中文模式顯示中文            -->
+<!-- ============================================================ -->
+<style>
+    /* 確保標題正確顯示 */
+    .sd2-entry-label {
+        font-weight: bold !important;
+        font-size: 0.9rem !important;
+    }
+    .sd2-entry-label.zh {
+        color: #c4b5fd !important;
+    }
+    .sd2-entry-label.en {
+        color: #c4b5fd !important;
+    }
+    .sd2-entry-label.zh-day10 {
+        color: #fbbf24 !important;
+    }
+    .sd2-entry-label.en-day10 {
+        color: #fbbf24 !important;
+    }
+</style>
+
+<script>
+(function() {
+    // ================================================================
+    // 強制表單標題在英文模式下顯示英文
+    // ================================================================
+    var ENTRY_LABELS = {
+        zh: ['第1錄', '第2錄', '第3錄', '第4錄', '第5錄', '第6錄', '第7錄', '第8錄', '第9錄', '第10錄'],
+        en: ['Entry 1', 'Entry 2', 'Entry 3', 'Entry 4', 'Entry 5', 'Entry 6', 'Entry 7', 'Entry 8', 'Entry 9', 'Entry 10']
+    };
+
+    function getLang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var active = document.querySelector('.lang-btn.active');
+        return (active && /english|en/i.test(active.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function fixEntryLabels() {
+        var lang = getLang();
+        var isEn = (lang === 'en');
+
+        // 找到所有「第X錄」的標題容器
+        var entryContainers = document.querySelectorAll('.form-submit-container .hud-card, .form-submit-container > div[style*="background"]');
+
+        // 如果找不到，改用更精確的選擇器
+        if (!entryContainers.length) {
+            entryContainers = document.querySelectorAll('.form-submit-container [style*="background"][style*="border-radius"]');
+        }
+
+        // 再找不到，直接找所有包含「第」和「錄」的 div
+        if (!entryContainers.length) {
+            var allDivs = document.querySelectorAll('.form-submit-container div');
+            var matched = [];
+            allDivs.forEach(function(el) {
+                var text = (el.textContent || '').trim();
+                if (/第[1-9]錄|第10錄/.test(text) && el.children.length < 3) {
+                    matched.push(el);
+                }
+            });
+            entryContainers = matched;
+        }
+
+        // 如果還是沒有，直接找「第1錄」這種文字並替換
+        if (!entryContainers.length) {
+            var walker = document.createTreeWalker(
+                document.body,
+                NodeFilter.SHOW_TEXT,
+                null,
+                false
+            );
+            var nodes = [];
+            var node;
+            while (node = walker.nextNode()) {
+                var text = node.textContent || '';
+                if (/第[1-9]錄/.test(text) || /第10錄/.test(text)) {
+                    nodes.push(node);
+                }
+            }
+
+            // 直接替換文字節點
+            nodes.forEach(function(tn) {
+                var parent = tn.parentElement;
+                if (!parent || !parent.closest('.form-submit-container')) return;
+
+                var text = tn.textContent || '';
+                for (var i = 1; i <= 10; i++) {
+                    var zhPattern = '第' + i + '錄';
+                    var enPattern = 'Entry ' + i;
+                    if (text.indexOf(zhPattern) !== -1) {
+                        tn.textContent = isEn ? enPattern : zhPattern;
+                        // 同時處理後面的 (Please fill in the date)
+                        var remaining = text.replace(zhPattern, '');
+                        if (isEn && remaining.indexOf('(請填寫日期)') !== -1) {
+                            tn.textContent = enPattern + ' (Please fill in the date)';
+                        } else if (!isEn && remaining.indexOf('(Please fill in the date)') !== -1) {
+                            tn.textContent = zhPattern + ' (請填寫日期)';
+                        }
+                        break;
+                    }
+                }
+            });
+            console.log('✅ 表單標題已修正（直接替換文字節點）');
+            return;
+        }
+
+        // 遍歷每個容器
+        entryContainers.forEach(function(container, index) {
+            // 找到標題元素（通常是 div 或 span，包含「第X錄」）
+            var titleEl = null;
+            var children = container.children;
+            for (var i = 0; i < children.length; i++) {
+                var child = children[i];
+                var text = (child.textContent || '').trim();
+                if (/第[1-9]錄/.test(text) || /第10錄/.test(text) || /Entry\s*[1-9]/.test(text) || /Entry\s*10/.test(text)) {
+                    titleEl = child;
+                    break;
+                }
+            }
+
+            if (!titleEl) {
+                // 試試看用 querySelector
+                titleEl = container.querySelector('[style*="color"][style*="font-weight"]');
+                if (!titleEl) {
+                    // 找第一個有文字的 div
+                    var allDivs = container.querySelectorAll('div');
+                    for (var i = 0; i < allDivs.length; i++) {
+                        var t = (allDivs[i].textContent || '').trim();
+                        if (/第[1-9]錄/.test(t) || /第10錄/.test(t) || /Entry\s*[1-9]/.test(t) || /Entry\s*10/.test(t)) {
+                            titleEl = allDivs[i];
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (titleEl) {
+                var text = (titleEl.textContent || '').trim();
+                var dayNum = 0;
+                // 提取數字
+                var match = text.match(/(\d+)/);
+                if (match) {
+                    dayNum = parseInt(match[1]);
+                } else {
+                    // 用 index 推算
+                    dayNum = index + 1;
+                }
+
+                // 替換為正確語言
+                if (isEn) {
+                    titleEl.textContent = 'Entry ' + dayNum;
+                    // 同時替換後面的日期提示
+                    var sibling = titleEl.nextElementSibling || titleEl.nextSibling;
+                    if (sibling && sibling.textContent && sibling.textContent.indexOf('(請填寫日期)') !== -1) {
+                        sibling.textContent = ' (Please fill in the date)';
+                    }
+                    // 如果是第10錄，保持金色
+                    if (dayNum === 10) {
+                        titleEl.style.color = '#fbbf24';
+                    } else {
+                        titleEl.style.color = '#c4b5fd';
+                    }
+                } else {
+                    titleEl.textContent = '第' + dayNum + '錄';
+                    var sibling = titleEl.nextElementSibling || titleEl.nextSibling;
+                    if (sibling && sibling.textContent && sibling.textContent.indexOf('(Please fill in the date)') !== -1) {
+                        sibling.textContent = ' (請填寫日期)';
+                    }
+                    if (dayNum === 10) {
+                        titleEl.style.color = '#fbbf24';
+                    } else {
+                        titleEl.style.color = '#c4b5fd';
+                    }
+                }
+                console.log('✅ 已修正第 ' + dayNum + ' 錄標題為: ' + titleEl.textContent);
+            }
+        });
+
+        // 額外：修正「誓文誦讀」標籤
+        document.querySelectorAll('.form-submit-container label').forEach(function(label) {
+            var text = (label.textContent || '').trim();
+            if (text.indexOf('誓文誦讀') !== -1 || text.indexOf('Recited') !== -1) {
+                label.textContent = isEn ? 'Recited' : '誓文誦讀';
+            }
+        });
+
+        // 額外：修正 placeholder
+        document.querySelectorAll('.sd2-trigger').forEach(function(el) {
+            if (isEn && el.placeholder && el.placeholder.indexOf('覺察的習氣') !== -1) {
+                el.placeholder = 'Habit/Emotion Trigger Source';
+            } else if (!isEn && el.placeholder && el.placeholder.indexOf('Habit') !== -1) {
+                el.placeholder = '覺察的習氣／情緒觸發來源';
+            }
+        });
+
+        document.querySelectorAll('.sd2-insight').forEach(function(el) {
+            if (isEn && el.placeholder && el.placeholder.indexOf('鏡修省思') !== -1) {
+                el.placeholder = 'Mirror-Reflection Insight (10-30 words)';
+            } else if (!isEn && el.placeholder && el.placeholder.indexOf('Mirror') !== -1) {
+                el.placeholder = '鏡修省思摘要(10~30字)';
+            }
+        });
+
+        document.querySelectorAll('.sd2-phrase').forEach(function(el) {
+            if (isEn && el.placeholder && el.placeholder.indexOf('願心調頻語') !== -1) {
+                el.placeholder = 'Intent-Alignment Phrase';
+            } else if (!isEn && el.placeholder && el.placeholder.indexOf('Intent') !== -1) {
+                el.placeholder = '願心調頻語';
+            }
+        });
+
+        console.log('✅ 表單標題與 placeholder 已全部修正為 ' + (isEn ? '英文' : '中文'));
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    function run() {
+        fixEntryLabels();
+        setTimeout(fixEntryLabels, 100);
+        setTimeout(fixEntryLabels, 300);
+        setTimeout(fixEntryLabels, 600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 語系切換時重新執行
+    var origSwitch = window.switchLanguage;
+    if (typeof origSwitch === 'function') {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(fixEntryLabels, 50);
+            setTimeout(fixEntryLabels, 150);
+            setTimeout(fixEntryLabels, 400);
+        };
+    }
+
+    // 監聽 DOM 變化
+    var observer = new MutationObserver(function() {
+        clearTimeout(window.__fixEntryLabelTimer);
+        window.__fixEntryLabelTimer = setTimeout(fixEntryLabels, 80);
+    });
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 表單標題修復模組已載入（英文模式顯示英文）');
+})();
+</script>
 </body>
 </html>
