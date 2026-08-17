@@ -4088,5 +4088,65 @@
   }
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 最簡單：直接把綠色🔗寫進文字裡（保證出現）                      -->
+<!-- 貼在 </body> 前，然後強制重新整理 Ctrl+F5                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var EN = 'Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.';
+    var ZH = '送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。';
+
+    function getLang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var b = document.querySelector('.lang-btn.active');
+        return (b && /en/i.test(b.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function apply() {
+        var isEn = getLang() === 'en';
+        var txt = isEn ? EN : ZH;
+        var html = '<i class="fa-solid fa-link" style="color:#00e676;margin-right:6px;"></i>' + txt;
+
+        // 1. 用文字內容找（最準）
+        document.querySelectorAll('span, div').forEach(function (el) {
+            var t = (el.textContent || '').trim();
+            if (t === EN || t === ZH || 
+                t.indexOf('Once submitted, the Primary Frequency') === 0 || 
+                t.indexOf('送出即啟主頻連線') === 0) {
+                
+                // 只改這個元素本身，不動父層
+                if (el.innerHTML.indexOf('fa-link') === -1) {
+                    el.innerHTML = html;
+                }
+            }
+        });
+
+        // 2. 再保險用 ID 找一次
+        ['step7_5ReturnNote', 'step7_5MainFreqNote'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.innerHTML = html;
+        });
+    }
+
+    // 多跑幾次確保蓋過其他腳本
+    apply();
+    setTimeout(apply, 100);
+    setTimeout(apply, 300);
+    setTimeout(apply, 800);
+    setTimeout(apply, 1500);
+
+    // 切換語言後再跑
+    var old = window.switchLanguage;
+    window.switchLanguage = function (l) {
+        if (typeof old === 'function') old(l);
+        setTimeout(apply, 50);
+        setTimeout(apply, 200);
+        setTimeout(apply, 500);
+    };
+
+    console.log('✅ 綠色🔗已直接寫入文字');
+})();
+</script>
 </body>
 </html>
