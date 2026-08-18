@@ -1891,5 +1891,17 @@
     console.log('✅ 是否可轉世 完整文字已強制寫入');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 刪除右上角多餘 L 型框框符號（.hud-container::after）          -->
+<!-- ============================================================ -->
+<style>
+    .hud-container::after {
+        display: none !important;
+        content: none !important;
+        border: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+</style>
 </body>
 </html>
