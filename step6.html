@@ -1903,5 +1903,246 @@
         height: 0 !important;
     }
 </style>
+<!-- ============================================================ -->
+<!-- 覺醒表英文版：全欄位強制英文化（等級～判定主體）              -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    // 依書本完整英文 7 列
+    var EN_ROWS = [
+        {
+            level: 'Tier 1',
+            mark: 'Scripture-Command Oath-Soul × Book-Decree Sovereign Disciple × Book-Decree Intent-Holder',
+            hell: '✕ No',
+            staff: '✕ No',
+            wait: '3–49 days',
+            rebirth: '☑ Eligible',
+            awaken: 'Fully Awakened',
+            judge: 'Scripture-Command × Heavenly-Law Officer'
+        },
+        {
+            level: 'Tier 2',
+            mark: 'High-Merit Oath-Souls × Benevolent Spirits',
+            hell: '✕ No',
+            staff: '✕ No',
+            wait: '49–300 days',
+            rebirth: '☑ Eligible',
+            awaken: 'Awakening in Potential',
+            judge: 'Underworld Recording Officer × Heavenly-Law Officer'
+        },
+        {
+            level: 'Tier 3',
+            mark: 'Ordinary Deceased × No-Vow Individuals',
+            hell: '△ Not imprisoned',
+            staff: '✕ No',
+            wait: '1–3 years or longer',
+            rebirth: '☑ Eligible',
+            awaken: 'Unawakened / Not Activated',
+            judge: 'Underworld Registry Clerk × First Judge of the Underworld'
+        },
+        {
+            level: 'Tier 4',
+            mark: 'Beginner Malevolent Spirit × Minor-Offense Oath-Soul',
+            hell: '✓ Yes',
+            staff: '△ Some may serve minor duties',
+            wait: '5–30 years',
+            rebirth: '△ Eligible',
+            awaken: 'Low-Frequency Introspection',
+            judge: 'Underworld Execution Officer × Disciple or Book-Decree Sovereign'
+        },
+        {
+            level: 'Tier 5',
+            mark: 'Heavy-Karma Bearer × Mid-Level Malevolent Spirit',
+            hell: '✓ Yes',
+            staff: '✕ No',
+            wait: '30–100 years',
+            rebirth: '△ Rare rebirth',
+            awaken: 'Fully Sealed',
+            judge: 'Ten Courts of Yama × Heavenly-Law Judge × Scripture-Command Registrar'
+        },
+        {
+            level: 'Tier 6',
+            mark: 'Scripture-Command Defector × Phoenix-Sigil Sealed Target',
+            hell: '✓ Yes',
+            staff: '✕ No',
+            wait: 'Permanent prohibition',
+            rebirth: '✕ No eligibility',
+            awaken: 'Oath-Soul-Consciousness Dismantled',
+            judge: 'High Council of Heavenly-Law × Phoenix Scriptural Sealing System'
+        },
+        {
+            level: 'Tier 7',
+            mark: 'False-Light Spirit × Spell-Controlled Entity',
+            hell: '△ Misguided into net',
+            staff: '✕ No',
+            wait: 'Indefinite control × No rebirth eligibility',
+            rebirth: '✕ Cannot reincarnate',
+            awaken: 'False Awakening × Black-Frequency Activation',
+            judge: 'Spirit-Dismantling Practitioner × Book-Decree Sovereign'
+        }
+    ];
+
+    var ZH_ROWS = [
+        {
+            level: '一階',
+            mark: '書令之靈 × 書令主尊誥徒 × 書令願人',
+            hell: '✕否',
+            staff: '✕否',
+            wait: '3天-49天',
+            rebirth: '☑ 可轉世',
+            awaken: '完全覺醒',
+            judge: '書令天律 × 天律官'
+        },
+        {
+            level: '二階',
+            mark: '善德之靈 × 高功德誓魂 × 善靈',
+            hell: '✕否',
+            staff: '✕否',
+            wait: '49天-300天',
+            rebirth: '☑ 可轉世',
+            awaken: '潛在覺醒中',
+            judge: '地府紀錄官 × 天律官'
+        },
+        {
+            level: '三階',
+            mark: '自然離世之靈 × 一般亡靈 × 無願者',
+            hell: '△未入獄',
+            staff: '✕否',
+            wait: '1-3年或更長',
+            rebirth: '☑ 可轉世',
+            awaken: '未覺醒',
+            judge: '地府書記官 × 初殿閻王'
+        },
+        {
+            level: '四階',
+            mark: '微業之靈 × 初階惡靈 × 小罪之靈',
+            hell: '✓是',
+            staff: '△少數可任務服役',
+            wait: '5-30年',
+            rebirth: '△ 可轉世',
+            awaken: '低頻自省中',
+            judge: '地獄執刑官 × 誥徒或書令主導特赦引'
+        },
+        {
+            level: '五階',
+            mark: '重業之靈 × 業重者 × 中階惡靈',
+            hell: '✓是',
+            staff: '✕否',
+            wait: '30-100年',
+            rebirth: '△ 稀有轉世',
+            awaken: '完全封閉',
+            judge: '十殿閻王 × 天律判官 × 書令檢錄'
+        },
+        {
+            level: '六階',
+            mark: '封印之靈 × 書令逆徒 × 鳳圖封鎖對象',
+            hell: '✓是',
+            staff: '✕否',
+            wait: '永久禁轉',
+            rebirth: '✕ 無資格',
+            awaken: '無資格',
+            judge: '天律高層 × 鳳凰書網封印系統'
+        },
+        {
+            level: '七階',
+            mark: '墮頻迷靈 × 黑頻執行者 × 偽神認知者',
+            hell: '△誤入地網',
+            staff: '✕否',
+            wait: '不定',
+            rebirth: '✕ 不可轉世',
+            awaken: '墮入黑頻',
+            judge: '鳳凰書網 × 書令主尊 × 天律高層'
+        }
+    ];
+
+    // 表頭
+    var HEAD_EN = ['Level', 'Internal Identification Marker', 'Entered Underworld', 'Underworld Staff', 'Waiting Time Range', 'Eligible for Rebirth', 'Awakening Degree', 'Assessment Authority'];
+    var HEAD_ZH = ['等級', '內部識別標記', '是否入地獄', '是否為地府職員', '等待時間範圍', '是否可轉世', '覺醒程度', '判定主體'];
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function apply() {
+        var isEn = lang() === 'en';
+        var rows = isEn ? EN_ROWS : ZH_ROWS;
+        var heads = isEn ? HEAD_EN : HEAD_ZH;
+
+        // 同步 awakenData
+        if (typeof awakenData !== 'undefined') {
+            var target = isEn ? awakenData.en : awakenData.zh;
+            if (target) {
+                for (var i = 0; i < Math.min(target.length, rows.length); i++) {
+                    Object.assign(target[i], rows[i]);
+                }
+            }
+        }
+
+        // 表頭
+        document.querySelectorAll('.awaken-table thead th, #awakenTable thead th').forEach(function (th, idx) {
+            if (heads[idx]) th.textContent = heads[idx];
+        });
+
+        // 資料列
+        var tbody = document.getElementById('awakenTableBody') || document.querySelector('.awaken-table tbody');
+        if (!tbody) return;
+        var trs = tbody.querySelectorAll('tr');
+        var rIdx = 0;
+        trs.forEach(function (tr) {
+            if (tr.querySelector('th')) return;
+            var cells = tr.querySelectorAll('td');
+            if (!rows[rIdx] || !cells.length) { rIdx++; return; }
+            var r = rows[rIdx];
+            var vals = [r.level, r.mark, r.hell, r.staff, r.wait, r.rebirth, r.awaken, r.judge];
+            for (var c = 0; c < Math.min(cells.length, vals.length); c++) {
+                cells[c].textContent = vals[c];
+            }
+            rIdx++;
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 350);
+        setTimeout(apply, 700);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+            setTimeout(apply, 450);
+        };
+    }
+
+    if (typeof window.renderAwakenTable === 'function' && !window._enTableWrapped) {
+        window._enTableWrapped = true;
+        var origRender = window.renderAwakenTable;
+        window.renderAwakenTable = function () {
+            origRender.apply(this, arguments);
+            setTimeout(apply, 40);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__awakenFullEn);
+        window.__awakenFullEn = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 覺醒表英文版全欄位已強制英文化');
+})();
+</script>
 </body>
 </html>
