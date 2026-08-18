@@ -1652,5 +1652,244 @@
     console.log('✅ 覺醒表英文內容已齊全切換');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 是否可轉世：符號＋文字依書本齊全（中英）                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    // 書本標準（是否可轉世）
+    // 一階 ☑ 可轉世
+    // 二階 ☑ 可轉世
+    // 三階 ☑ 可轉世
+    // 四階 △ 可轉世
+    // 五階 △ 稀有轉世
+    // 六階 ✕ 無資格
+    // 七階 ✕ 不可轉世
+
+    var REBIRTH_ZH = [
+        '☑ 可轉世',
+        '☑ 可轉世',
+        '☑ 可轉世',
+        '△ 可轉世',
+        '△ 稀有轉世',
+        '✕ 無資格',
+        '✕ 不可轉世'
+    ];
+
+    var REBIRTH_EN = [
+        '☑ Eligible',
+        '☑ Eligible',
+        '☑ Eligible',
+        '△ Eligible',
+        '△ Rare rebirth',
+        '✕ No eligibility',
+        '✕ Cannot reincarnate'
+    ];
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function apply() {
+        var isEn = lang() === 'en';
+        var list = isEn ? REBIRTH_EN : REBIRTH_ZH;
+
+        // 同步 awakenData（若存在）
+        if (typeof awakenData !== 'undefined') {
+            if (awakenData.zh) {
+                for (var i = 0; i < Math.min(awakenData.zh.length, REBIRTH_ZH.length); i++) {
+                    awakenData.zh[i].rebirth = REBIRTH_ZH[i];
+                }
+            }
+            if (awakenData.en) {
+                for (var j = 0; j < Math.min(awakenData.en.length, REBIRTH_EN.length); j++) {
+                    awakenData.en[j].rebirth = REBIRTH_EN[j];
+                }
+            }
+        }
+
+        // 直接改表格
+        var tbody = document.getElementById('awakenTableBody');
+        if (!tbody) return;
+        var trs = tbody.querySelectorAll('tr');
+        trs.forEach(function (tr, idx) {
+            if (!list[idx]) return;
+            var cells = tr.querySelectorAll('td');
+            // 常見欄位順序：
+            // 0等級 1標記 2入地獄 3地府職員 4等待時間 5是否可轉世 6覺醒程度 7判定主體 ...
+            if (cells.length >= 6) {
+                cells[5].textContent = list[idx];
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 120);
+        setTimeout(apply, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 80);
+            setTimeout(apply, 250);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__rebirthFix);
+        window.__rebirthFix = setTimeout(apply, 100);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ 是否可轉世 符號＋文字已依書本補齊');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 是否可轉世：強制寫入「符號＋文字」（中英）                    -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var REBIRTH_ZH = [
+        '☑ 可轉世',
+        '☑ 可轉世',
+        '☑ 可轉世',
+        '△ 可轉世',
+        '△ 稀有轉世',
+        '✕ 無資格',
+        '✕ 不可轉世'
+    ];
+    var REBIRTH_EN = [
+        '☑ Eligible',
+        '☑ Eligible',
+        '☑ Eligible',
+        '△ Eligible',
+        '△ Rare rebirth',
+        '✕ No eligibility',
+        '✕ Cannot reincarnate'
+    ];
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function findRebirthColIndex(table) {
+        var ths = table.querySelectorAll('thead th, tr th');
+        for (var i = 0; i < ths.length; i++) {
+            var t = (ths[i].textContent || '').replace(/\s+/g, '');
+            if (t.indexOf('是否可轉世') !== -1 || t.indexOf('Eligib') !== -1 || t.indexOf('Rebirth') !== -1 || t.indexOf('可轉世') !== -1) {
+                return i;
+            }
+        }
+        // 常見第 6 欄（0-based = 5）
+        return 5;
+    }
+
+    function apply() {
+        var isEn = lang() === 'en';
+        var list = isEn ? REBIRTH_EN : REBIRTH_ZH;
+
+        // 同步 awakenData
+        if (typeof awakenData !== 'undefined') {
+            if (awakenData.zh) {
+                for (var i = 0; i < Math.min(awakenData.zh.length, 7); i++) {
+                    awakenData.zh[i].rebirth = REBIRTH_ZH[i];
+                }
+            }
+            if (awakenData.en) {
+                for (var j = 0; j < Math.min(awakenData.en.length, 7); j++) {
+                    awakenData.en[j].rebirth = REBIRTH_EN[j];
+                }
+            }
+        }
+
+        var tables = document.querySelectorAll('.awaken-table, #awakenTable, table');
+        tables.forEach(function (table) {
+            var headerText = (table.textContent || '');
+            if (headerText.indexOf('是否可轉世') === -1 && headerText.indexOf('Eligib') === -1 && headerText.indexOf('可轉世') === -1) {
+                // 仍可能是覺醒表，用 id / class 判斷
+                if (!table.classList.contains('awaken-table') && table.id !== 'awakenTable' && !table.querySelector('#awakenTableBody')) {
+                    return;
+                }
+            }
+
+            var col = findRebirthColIndex(table);
+            var tbody = table.querySelector('tbody') || document.getElementById('awakenTableBody') || table;
+            var trs = tbody.querySelectorAll('tr');
+            var rowIdx = 0;
+            trs.forEach(function (tr) {
+                // 跳過表頭列
+                if (tr.querySelector('th')) return;
+                var cells = tr.querySelectorAll('td');
+                if (!cells.length || !list[rowIdx]) {
+                    rowIdx++;
+                    return;
+                }
+                if (cells[col]) {
+                    cells[col].textContent = list[rowIdx];
+                    cells[col].style.whiteSpace = 'normal';
+                    cells[col].style.lineHeight = '1.3';
+                } else if (cells[5]) {
+                    cells[5].textContent = list[rowIdx];
+                }
+                rowIdx++;
+            });
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 300);
+        setTimeout(apply, 700);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 200);
+            setTimeout(apply, 450);
+        };
+    }
+
+    // 若頁面有 renderAwakenTable，包一層
+    if (typeof window.renderAwakenTable === 'function' && !window._rebirthWrapped) {
+        window._rebirthWrapped = true;
+        var origRender = window.renderAwakenTable;
+        window.renderAwakenTable = function () {
+            origRender.apply(this, arguments);
+            setTimeout(apply, 50);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__rebirthTextFix);
+        window.__rebirthTextFix = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 是否可轉世 完整文字已強制寫入');
+})();
+</script>
 </body>
 </html>
