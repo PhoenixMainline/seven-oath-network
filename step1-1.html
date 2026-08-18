@@ -2493,5 +2493,119 @@
   setTimeout(applyTargetedPatch, 500);
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 英文版：殘留中文一次清完（回傳標題／第6項／補誓區塊）        -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__enClearV6) return;
+    window.__enClearV6 = true;
+
+    var MAP = [
+        // 回傳標題
+        { zh: '② 回傳誓證（確認誓印）', en: '② Return Oath Certificate (Confirm Oath Seal)' },
+        { zh: '回傳誓證（確認誓印）', en: 'Return Oath Certificate (Confirm Oath Seal)' },
+
+        // 進入第 N 項
+        { zh: '② 進入「第 6 項 覺醒程度」對應階段。', en: '② Enter the Corresponding Stage of 「Item 6 Awakening Degree」.' },
+        { zh: '② 進入「第 6 項 覺醒程度」對應階段', en: '② Enter the Corresponding Stage of 「Item 6 Awakening Degree」' },
+        { zh: '② 進入「第 7 項 七印誓網對應階段」。', en: '② Enter 「Item 7 Seven-Seal Vow Network Corresponding Stage」.' },
+        { zh: '① 進入 ②【回傳誓證】執行階段。', en: '① Enter ②【Return Oath Certificate】 execution stage.' },
+
+        // 若仍顯示未通過
+        { zh: '若仍顯示：「誓印未通過」', en: 'If it still displays: 「Oath Seal Not Passed」' },
+        { zh: '⚠️ 若仍顯示：「誓印未通過」', en: '⚠️ If it still displays: 「Oath Seal Not Passed」' },
+
+        // 補誓程序
+        { zh: '進入「第 1 項 開啟誓魂密鑰對頻總判定（誓印未通過）」之【補誓程序】。', en: 'Enter the 【Remedial Oath Procedure】 of 「Item 1 Activate Oath-Soul Key Frequency Alignment Total Judgment (Oath Seal Not Passed)」.' },
+        { zh: '啟動「懺悔補誓 × 七日循環 × 頻率再校」程序，修正後方可重新啟印。', en: 'Activate the 「Repentance Remedial Oath × Seven-Day Cycle × Frequency Recalibration」 procedure; only after correction may the seal be reactivated.' },
+        { zh: '補誓成功後，系統即自動回傳「誓印通過」，誓印資格隨即恢復。', en: 'After successful remedial oath, the system automatically returns 「Oath Seal Passed」, and oath-seal eligibility is immediately restored.' },
+        { zh: '《七印誓網 · 第 1 項 開啟誓魂密鑰對頻總判定（誓印未通過）》v2.0（正式封冊版）。', en: '《Seven-Seal Vow Network · Item 1 Activate Oath-Soul Key Frequency Alignment Total Judgment (Oath Seal Not Passed)》 v2.0 (Official Sealed Edition).' },
+        { zh: '永鎖《宇宙天律 × 七印誓網》主冊，與「第1項（誓印通過版）」互為鏡文，構成「誓魂啟印雙模組」。', en: 'Permanently locked into the 《Cosmic Heavenly Law × Seven-Seal Vow Network》 master registry, mirroring 「Item 1 (Oath Seal Passed Edition)」 to form the 「Oath-Soul Activation Dual Module」.' },
+
+        // 常見短句
+        { zh: '【補誓程序】', en: '【Remedial Oath Procedure】' },
+        { zh: '補誓程序', en: 'Remedial Oath Procedure' },
+        { zh: '【回傳誓證】', en: '【Return Oath Certificate】' },
+        { zh: '顯示：「誓印未通過」', en: 'Display: 「Oath Seal Not Passed」' },
+        { zh: '顯示：「誓印通過」', en: 'Display: 「Oath Seal Passed」' }
+    ];
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function isCam(el) {
+        if (!el) return true;
+        var id = el.id || '';
+        if (/qrScanResult|cameraGuide|qr-reader/i.test(id)) return true;
+        if (el.closest && (
+            el.closest('#qrScanResultStep8') || el.closest('#qrScanResultStep9') ||
+            el.closest('#cameraGuideStep8') || el.closest('#cameraGuideStep9') ||
+            el.closest('.camera-guide') || el.closest('.qr-result')
+        )) return true;
+        var t = el.textContent || '';
+        if (t.indexOf('無法啟動相機') !== -1 || t.indexOf('掃描成功') !== -1) return true;
+        return false;
+    }
+
+    function apply() {
+        if (lang() !== 'en') return;
+
+        document.querySelectorAll('span, div, p, label, li, strong, b').forEach(function (el) {
+            if (isCam(el)) return;
+            if (el.children && el.children.length > 6) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 220) return;
+
+            for (var i = 0; i < MAP.length; i++) {
+                if (t === MAP[i].zh) {
+                    el.textContent = MAP[i].en;
+                    return;
+                }
+            }
+            for (var j = 0; j < MAP.length; j++) {
+                if (t.indexOf(MAP[j].zh) !== -1) {
+                    el.textContent = t.split(MAP[j].zh).join(MAP[j].en);
+                    return;
+                }
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 120);
+        setTimeout(apply, 400);
+        setTimeout(apply, 900);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 250);
+            setTimeout(apply, 500);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__enClearV6Timer);
+        window.__enClearV6Timer = setTimeout(apply, 100);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 英文殘留中文（回傳／第6項／補誓）已清');
+})();
+</script>
 </body>
 </html>
