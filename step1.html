@@ -2580,5 +2580,115 @@
         display: none !important;
     }
 </style>
+<style>
+/* 針對掃描提示文字進行細體與字體大小精準調校（對照圖檔質感） */
+.vow-scan-hint-text {
+  font-weight: 300 !important;
+  font-size: 0.88rem !important;
+  letter-spacing: 0.5px !important;
+  opacity: 0.9 !important;
+  line-height: 1.5 !important;
+}
+</style>
+
+<script>
+(function() {
+  function runSafeReplacement() {
+    // 智慧型多重語系判定：網頁標籤、URL、DOM class 或頁面特徵英文字詞
+    const pageText = document.body ? (document.body.innerText || document.body.textContent || '') : '';
+    const isEnglish = (document.documentElement.lang || '').toLowerCase().startsWith('en') || 
+                      window.location.href.toLowerCase().includes('/en/') ||
+                      !!document.querySelector('.lang-en-active, [data-lang="en"]') ||
+                      pageText.includes('No manual entry') ||
+                      pageText.includes('following command') ||
+                      pageText.includes('Once submitted') ||
+                      pageText.includes('Please scan');
+
+    // 使用 TreeWalker 安全掃描純文字節點，不破壞 DOM 結構，確保不白屏
+    const walker = document.createTreeWalker(
+      document.body || document.documentElement,
+      NodeFilter.SHOW_TEXT,
+      null,
+      false
+    );
+
+    let currentNode;
+    while (currentNode = walker.nextNode()) {
+      const text = currentNode.nodeValue;
+      if (!text || !text.trim()) continue;
+
+      // -----------------------------------------------------------------
+      // 1. 輸入示範區塊：標題與內文徹底英化／中化
+      // -----------------------------------------------------------------
+      // A. 輸入示範標題列 (捕捉「輸入示範」或英文標題)
+      if (text.includes('輸入示範') || text.includes('Input Example')) {
+        const newText = isEnglish ? '⌨️ Input Example :' : '⌨️ 輸入示範：';
+        if (currentNode.nodeValue !== newText) currentNode.nodeValue = newText;
+      }
+      // B. 輸入示範框內的所有指令／說明內文（確保英文版絕無殘留中文字）
+      else if (
+        text.includes('請依本卷書') || 
+        text.includes('【執行指令】') || 
+        text.includes('誓魂密鑰') || 
+        text.includes('誓印通過') || 
+        text.includes('誓印未通過') ||
+        text.includes('誓導碼') ||
+        (isEnglish && text.includes('Please follow'))
+      ) {
+        const newText = isEnglish
+          ? 'Please follow the Seven-Seal Vow Network Vow-Guidance Code.'
+          : '請依本卷書七印誓網誓導碼操作';
+        if (currentNode.nodeValue !== newText) currentNode.nodeValue = newText;
+      }
+
+      // -----------------------------------------------------------------
+      // 2. 掃描提示：執行指令 (英文完全英化 + 圖片細體樣式)
+      // -----------------------------------------------------------------
+      else if ((text.includes('請掃描') || text.includes('Please scan')) && (text.includes('執行指令') || text.includes('execute'))) {
+        const newText = isEnglish
+          ? '📷 Please scan the [Vow-Guidance QR Code] to execute the command'
+          : '📷 請掃描【誓導 QR Code】完成執行指令';
+        if (currentNode.nodeValue !== newText) currentNode.nodeValue = newText;
+        if (currentNode.parentElement) currentNode.parentElement.classList.add('vow-scan-hint-text');
+      }
+
+      // -----------------------------------------------------------------
+      // 3. 掃描提示：回傳誓證 (英文完全英化 + 圖片細體樣式)
+      // -----------------------------------------------------------------
+      else if ((text.includes('請掃描') || text.includes('Please scan')) && (text.includes('回傳') || text.includes('誓證') || text.includes('return') || text.includes('verification'))) {
+        const newText = isEnglish
+          ? '📷 Please scan the [Vow-Guidance QR Code] to return the vow verification'
+          : '📷 請掃描【誓導 QR Code】完成回傳誓證';
+        if (currentNode.nodeValue !== newText) currentNode.nodeValue = newText;
+        if (currentNode.parentElement) currentNode.parentElement.classList.add('vow-scan-hint-text');
+      }
+
+      // -----------------------------------------------------------------
+      // 4. 按鈕：開始掃描
+      // -----------------------------------------------------------------
+      else if (text.includes('開始掃描') || text.includes('Start Scan')) {
+        const newText = isEnglish ? '📷 Start Scan' : '📷 開始掃描';
+        if (currentNode.nodeValue !== newText) currentNode.nodeValue = newText;
+      }
+    }
+  }
+
+  // DOM 載入即時觸發
+  if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    runSafeReplacement();
+  } else {
+    document.addEventListener('DOMContentLoaded', runSafeReplacement);
+  }
+
+  // 防護機制：應對動態切換語系或頁面渲染遲延
+  setTimeout(runSafeReplacement, 300);
+  setTimeout(runSafeReplacement, 800);
+  
+  const observer = new MutationObserver(runSafeReplacement);
+  if (document.body) {
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+  }
+})();
+</script>
 </body>
 </html>
