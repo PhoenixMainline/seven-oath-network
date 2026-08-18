@@ -2607,5 +2607,113 @@
     console.log('✅ 英文殘留中文（回傳／第6項／補誓）已清');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 中英雙向：補誓區塊依語言正確顯示（修中文模式被誤翻）          -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__biLangV1) return;
+    window.__biLangV1 = true;
+
+    var MAP = [
+        { zh: '若仍顯示：「誓印未通過」', en: 'If it still displays: 「Oath Seal Not Passed」' },
+        { zh: '⚠️ 若仍顯示：「誓印未通過」', en: '⚠️ If it still displays: 「Oath Seal Not Passed」' },
+        { zh: '進入「第 1 項 開啟誓魂密鑰對頻總判定（誓印未通過）」之【補誓程序】。', en: 'Enter the 【Remedial Oath Procedure】 of 「Item 1 Activate Oath-Soul Key Frequency Alignment Total Judgment (Oath Seal Not Passed)」.' },
+        { zh: '啟動「懺悔補誓 × 七日循環 × 頻率再校」程序，修正後方可重新啟印。', en: 'Activate the 「Repentance Remedial Oath × Seven-Day Cycle × Frequency Recalibration」 procedure; only after correction may the seal be reactivated.' },
+        { zh: '補誓成功後，系統即自動回傳「誓印通過」，誓印資格隨即恢復。', en: 'After successful remedial oath, the system automatically returns 「Oath Seal Passed」, and oath-seal eligibility is immediately restored.' },
+        { zh: '《七印誓網 · 第 1 項 開啟誓魂密鑰對頻總判定（誓印未通過）》v2.0（正式封冊版）。', en: '《Seven-Seal Vow Network · Item 1 Activate Oath-Soul Key Frequency Alignment Total Judgment (Oath Seal Not Passed)》 v2.0 (Official Sealed Edition).' },
+        { zh: '永鎖《宇宙天律 × 七印誓網》主冊，與「第1項（誓印通過版）」互為鏡文，構成「誓魂啟印雙模組」。', en: 'Permanently locked into the 《Cosmic Heavenly Law × Seven-Seal Vow Network》 master registry, mirroring 「Item 1 (Oath Seal Passed Edition)」 to form the 「Oath-Soul Activation Dual Module」.' },
+        { zh: '② 回傳誓證（確認誓印）', en: '② Return Oath Certificate (Confirm Oath Seal)' },
+        { zh: '回傳誓證（確認誓印）', en: 'Return Oath Certificate (Confirm Oath Seal)' },
+        { zh: '② 進入「第 6 項 覺醒程度」對應階段。', en: '② Enter the Corresponding Stage of 「Item 6 Awakening Degree」.' },
+        { zh: '② 進入「第 6 項 覺醒程度」對應階段', en: '② Enter the Corresponding Stage of 「Item 6 Awakening Degree」' }
+    ];
+
+    function lang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function isCam(el) {
+        if (!el) return true;
+        var id = el.id || '';
+        if (/qrScanResult|cameraGuide|qr-reader/i.test(id)) return true;
+        if (el.closest && (
+            el.closest('#qrScanResultStep8') || el.closest('#qrScanResultStep9') ||
+            el.closest('#cameraGuideStep8') || el.closest('#cameraGuideStep9') ||
+            el.closest('.camera-guide') || el.closest('.qr-result')
+        )) return true;
+        return false;
+    }
+
+    function apply() {
+        var isEn = lang() === 'en';
+
+        document.querySelectorAll('span, div, p, label, li, strong, b').forEach(function (el) {
+            if (isCam(el)) return;
+            if (el.children && el.children.length > 6) return;
+            var t = (el.textContent || '').trim();
+            if (!t || t.length > 220) return;
+
+            for (var i = 0; i < MAP.length; i++) {
+                var pair = MAP[i];
+                if (isEn) {
+                    // 英文模式：中文 → 英文
+                    if (t === pair.zh) {
+                        el.textContent = pair.en;
+                        return;
+                    }
+                    if (t.indexOf(pair.zh) !== -1) {
+                        el.textContent = t.split(pair.zh).join(pair.en);
+                        return;
+                    }
+                } else {
+                    // 中文模式：英文 → 中文（修正被誤翻的）
+                    if (t === pair.en) {
+                        el.textContent = pair.zh;
+                        return;
+                    }
+                    if (t.indexOf(pair.en) !== -1) {
+                        el.textContent = t.split(pair.en).join(pair.zh);
+                        return;
+                    }
+                }
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 250);
+            setTimeout(apply, 500);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__biLangV1Timer);
+        window.__biLangV1Timer = setTimeout(apply, 120);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 中英雙向補誓區塊已鎖定');
+})();
+</script>
 </body>
 </html>
