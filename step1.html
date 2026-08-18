@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>【宇宙誓印覺醒工程 · 七印誓網】第1項</title>
+    <title>【宇宙誓印覺醒工程 · 七印誓網】公版範本</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
@@ -30,6 +30,7 @@
             display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); padding: 50px;
         }
         .watermark-text { font-size: 1.5rem; font-weight: bold; color: #ffffff; transform: rotate(-25deg); white-space: nowrap; user-select: none; }
+        
         .hud-container {
             width: 100%; max-width: min(660px, 95vw); height: 92vh; max-height: 92vh;
             background: rgba(4, 13, 33, 0.4);
@@ -52,6 +53,14 @@
         .step-panel { display: flex; flex-direction: column; gap: 20px; animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
+        .vow-scan-hint-text {
+            font-weight: 300 !important;
+            font-size: 0.88rem !important;
+            letter-spacing: 0.5px !important;
+            opacity: 0.9 !important;
+            line-height: 1.5 !important;
+        }
+
         .hud-card {
             background: linear-gradient(135deg, rgba(88, 28, 135, 0.5), rgba(30, 27, 75, 0.6));
             border: 1px solid rgba(168, 85, 247, 0.4);
@@ -63,9 +72,6 @@
         .instruction-box { display: flex; flex-direction: column; gap: 12px; }
         .instruction-item { font-size: clamp(0.7rem, 1.6vh, 0.95rem); line-height: 1.6; color: rgba(224, 232, 245, 0.85); display: flex; align-items: flex-start; gap: clamp(6px, 1vw, 12px); }
         .instruction-item i { color: #a78bfa; margin-top: 5px; }
-        .condition-list { list-style: none; display: flex; flex-direction: column; gap: 15px; }
-        .condition-item { display: flex; align-items: flex-start; gap: clamp(6px, 1vw, 12px); font-size: clamp(0.7rem, 1.6vh, 0.95rem); line-height: 1.6; color: rgba(224, 232, 245, 0.85); }
-        .condition-item i.check-icon { color: #a78bfa; margin-top: 4px; text-shadow: 0 0 8px rgba(167, 139, 250, 0.4); }
 
         .timer-container {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -121,11 +127,6 @@
             padding: 4px 6px;
             text-shadow: 0 0 15px rgba(253, 230, 138, 0.3);
         }
-        .guide-text {
-            text-align: center; margin: 8px 0 14px;
-            color: rgba(224, 232, 245, 0.85);
-            font-size: 0.9rem; line-height: 1.6;
-        }
 
         .hud-footer { flex-shrink: 0; margin-top: auto; padding-top: clamp(6px, 1vh, 12px); border-top: 1px solid rgba(168, 85, 247, 0.2); display: flex; justify-content: space-between; align-items: center; z-index: 10; flex-wrap: wrap; }
         .footer-btn-group { display: flex; align-items: center; gap: clamp(4px, 1vw, 12px); }
@@ -151,33 +152,17 @@
         .camera-guide { background: rgba(232, 96, 74, 0.08); border-left: 4px solid #E8604A; padding: 14px 16px; border-radius: 12px; color: #e0dcc8; font-size: 0.85rem; line-height: 1.8; white-space: pre-wrap; text-align: left; }
         #qr-reader-container-step8 video, #qr-reader-container-step9 video { border-radius: 12px; width: 100%; }
 
-        /* 強制置中卡片 */
         .center-card {
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
         }
-        .center-card .card-title {
-            justify-content: center;
-        }
-        .center-card .instruction-box {
-            align-items: center;
-        }
-        .center-card .instruction-item {
-            text-align: left;
-            max-width: 100%;
-            width: 100%;
-            justify-content: flex-start;
-        }
-        .center-card .qr-result,
-        .center-card .camera-guide {
-            text-align: left;
-        }
-        .center-card #qr-reader-container-step8,
-        .center-card #qr-reader-container-step9 {
-            margin: 0 auto;
-        }
+        .center-card .card-title { justify-content: center; }
+        .center-card .instruction-box { align-items: center; }
+        .center-card .instruction-item { text-align: left; max-width: 100%; width: 100%; justify-content: flex-start; }
+        .center-card .qr-result, .center-card .camera-guide { text-align: left; }
+        .center-card #qr-reader-container-step8, .center-card #qr-reader-container-step9 { margin: 0 auto; }
 
         @media (max-width: 480px) {
             body { padding: 4px !important; }
@@ -199,6 +184,7 @@
         <div class="watermark-text">天地為鑑・光網為證</div>
         <div class="watermark-text">天地為鑑・光網為證</div>
     </div>
+    
     <div class="hud-container">
         <a class="home-breadcrumb" id="homeBtn" href="index.html"><i class="fa-solid fa-house"></i><span id="homeBtnText">首頁 -></span></a>
         <header class="hud-header">
@@ -210,7 +196,6 @@
         </header>
 
         <main class="step-content">
-            <!-- ===== 第1項：身份啟動與資格檢核 · 誓魂頻率需達 5D ===== -->
             <div class="step-panel active" id="panelStep1">
                 <div class="hud-card" style="background:linear-gradient(135deg,rgba(88,28,135,0.5),rgba(30,27,75,0.6)); border:1px solid rgba(168,85,247,0.5);">
                     <div style="text-align:center; color:#e9d5ff; font-size:1.05rem; font-weight:bold; margin-bottom:16px; letter-spacing:1px;"><span id="step1Title">🔓 身份啟動與資格檢核 · 誓魂頻率需達 5D</span></div>
@@ -303,14 +288,20 @@
                         <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step1Verify2">掃描【誓導 QR Code】後，進入「指令輸入欄位」。</span></div>
                         <div class="instruction-item"><i class="fa-solid fa-circle-check" style="color:#a78bfa;"></i><span id="step1Verify3">無須手動輸入誓文，完成掃描後，直接輸入下列指令：</span></div>
                     </div>
+                    
+                    <!-- 輸入示範框（修復為規範文字） -->
                     <div style="background:rgba(124,58,237,0.35); border-left:4px solid #a78bfa; padding:12px 14px; border-radius:10px; margin:12px 0; color:#f5d0fe; font-size:0.88rem; line-height:1.7; border:1px solid rgba(168,85,247,0.5); width:100%; text-align:left;">
-                        <div style="font-weight:bold; margin-bottom:6px; color:#e9d5ff;"><i class="fa-solid fa-keyboard" style="margin-right:6px;"></i><span id="step1InputLabel">輸入示範：</span></div>
-                        <div style="font-weight:bold; color:#fff;"><span id="step1Command">【執行指令】第 1 項 開啟誓魂密鑰對頻總判定（誓印通過／誓印未通過）結果</span></div>
+                        <div style="font-weight:bold; margin-bottom:6px; color:#e9d5ff;"><i class="fa-solid fa-keyboard" style="margin-right:6px;"></i><span id="step1InputLabel">⌨️ 輸入示範：</span></div>
+                        <div style="font-weight:bold; color:#fff;"><span id="step1Command">請依本卷書七印誓網誓導碼操作</span></div>
                     </div>
+
                     <div style="font-size:0.85rem; color:rgba(224,232,245,0.85); line-height:1.7; margin-bottom:12px; width:100%;"><i class="fa-solid fa-link" style="color:#00e676; margin-right:6px;"></i><span id="step1Note">送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span></div>
                     <div style="background:rgba(232,96,74,0.1); border-left:4px solid #E8604A; padding:10px 14px; border-radius:8px; font-size:0.82rem; color:#e0dcc8; line-height:1.6; width:100%; text-align:left;"><i class="fa-solid fa-exclamation-circle" style="color:#E8604A; margin-right:6px;"></i><span id="step1TriggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span></div>
+                    
                     <div class="hud-card" id="qrScanCardStep8" style="margin-top:12px; border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15); width:100%;">
-                        <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-qrcode"></i><span id="step1QrTitle">📷 請掃描【誓導 QR Code】完成執行指令</span></div>
+                        <div class="card-title" style="justify-content:center;">
+                            <span id="step1QrTitle" class="vow-scan-hint-text">📷 請掃描【誓導 QR Code】完成執行指令</span>
+                        </div>
                         <div style="text-align:center; padding:10px 0;">
                             <div id="qr-reader-container-step8" style="width:100%; max-width:280px; margin:0 auto;"></div>
                             <button class="btn-restart" id="btnScanQRStep8" onclick="startQRScannerStep8()" style="margin-top:10px;"><i class="fa-solid fa-qrcode"></i> <span id="step1BtnScan">📷 開始掃描</span></button>
@@ -334,14 +325,20 @@
                         <div style="margin-bottom:8px; line-height:1.6; color:#e0e7ff; font-size:0.9rem;"><span style="background:#7c3aed;color:#fff;padding:1px 6px;border-radius:4px;font-size:0.7rem;margin-right:6px;font-weight:bold;">2</span> <span id="step1Cmd2">② 掃描【誓導 QR Code】後，進入「指令輸入欄位」。</span></div>
                         <div style="line-height:1.6; color:#e0e7ff; font-size:0.9rem;"><span style="background:#7c3aed;color:#fff;padding:1px 6px;border-radius:4px;font-size:0.7rem;margin-right:6px;font-weight:bold;">3</span> <span id="step1Cmd3">③ 無須手動輸入誓文，完成掃描後，直接輸入下列指令：</span></div>
                     </div>
+                    
+                    <!-- 輸入示範框（修復為規範文字） -->
                     <div style="background:rgba(124,58,237,0.35); border-left:4px solid #a78bfa; padding:12px 14px; border-radius:10px; margin-bottom:14px; color:#f5d0fe; font-size:0.88rem; line-height:1.7; border:1px solid rgba(168,85,247,0.5); width:100%; text-align:left;">
-                        <div style="font-weight:bold; margin-bottom:6px; color:#e9d5ff;"><i class="fa-solid fa-keyboard" style="margin-right:6px;"></i><span id="step1ReturnInputLabel">輸入示範：</span></div>
-                        <div style="font-weight:bold; color:#fff;"><span id="step1ReturnCommand">【執行指令】第 1 項 回傳【誓印通過】誓證</span></div>
+                        <div style="font-weight:bold; margin-bottom:6px; color:#e9d5ff;"><i class="fa-solid fa-keyboard" style="margin-right:6px;"></i><span id="step1ReturnInputLabel">⌨️ 輸入示範：</span></div>
+                        <div style="font-weight:bold; color:#fff;"><span id="step1ReturnCommand">請依本卷書七印誓網誓導碼操作</span></div>
                     </div>
+
                     <div style="font-size:0.85rem; color:rgba(224,232,245,0.85); line-height:1.7; margin-bottom:12px; width:100%;"><i class="fa-solid fa-link" style="color:#00e676; margin-right:6px;"></i><span id="step1ReturnNote">送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span></div>
                     <div style="background:rgba(232,96,74,0.1); border-left:4px solid #E8604A; padding:10px 14px; border-radius:8px; font-size:0.82rem; color:#e0dcc8; line-height:1.6; width:100%; text-align:left;"><i class="fa-solid fa-exclamation-circle" style="color:#E8604A; margin-right:6px;"></i><span id="step1ReturnTriggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span></div>
+                    
                     <div class="hud-card" id="qrScanCardStep9" style="margin-top:12px; border:1px solid rgba(168,85,247,0.3); background:rgba(88,28,135,0.15); width:100%;">
-                        <div class="card-title" style="justify-content:center;"><i class="fa-solid fa-qrcode"></i><span id="step1ReturnQrTitle">📷 請掃描【誓導 QR Code】完成回傳誓證</span></div>
+                        <div class="card-title" style="justify-content:center;">
+                            <span id="step1ReturnQrTitle" class="vow-scan-hint-text">📷 請掃描【誓導 QR Code】完成回傳誓證</span>
+                        </div>
                         <div style="text-align:center; padding:10px 0;">
                             <div id="qr-reader-container-step9" style="width:100%; max-width:280px; margin:0 auto;"></div>
                             <button class="btn-restart" id="btnScanQRStep9" onclick="startQRScannerStep9()" style="margin-top:10px;"><i class="fa-solid fa-qrcode"></i> <span id="step1ReturnBtnScan">📷 開始掃描</span></button>
@@ -379,16 +376,13 @@
     <div id="hudDialog" class="hud-dialog"><div class="hud-dialog-content"><div class="hud-dialog-text" id="hudDialogText">提示訊息</div><button class="hud-dialog-btn" onclick="closeHudDialog()">OK</button></div></div>
 
     <script>
-        // ================================================================
-        // LangPack（中英雙語）
-        // ================================================================
         var langPack = {
             zh: {
                 homeBtn: "首頁 ->",
                 appTitle: "【宇宙誓印覺醒工程 · 七印誓網】",
                 step1Title: "🔓 身份啟動與資格檢核 · 誓魂頻率需達 5D",
-                step1Unlock: " 解鎖誓魂血脈身分記載歷程 × 全表結構總覽",
-                step1Layer: " 第一層級距誓魂定位模組",
+                step1Unlock: "✅ 解鎖誓魂血脈身分記載歷程 × 全表結構總覽",
+                step1Layer: "✅ 第一層級距誓魂定位模組",
                 step1Sub: "（對應書令系統分類 × 靈脈對位）",
                 step1Col1: "欄位名稱",
                 step1Col2: "功能簡要說明",
@@ -431,14 +425,14 @@
                 step1Verify1: "登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。",
                 step1Verify2: "掃描【誓導 QR Code】後，進入「指令輸入欄位」。",
                 step1Verify3: "無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
-                step1InputLabel: "輸入示範：",
-                step1Command: "【執行指令】第 1 項 開啟誓魂密鑰對頻總判定（誓印通過／誓印未通過）結果",
+                step1InputLabel: "⌨️ 輸入示範：",
+                step1Command: "請依本卷書七印誓網誓導碼操作",
                 step1Note: "送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。",
                 step1TriggerNote: "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
                 step1QrTitle: "📷 請掃描【誓導 QR Code】完成執行指令",
                 step1BtnScan: "📷 開始掃描",
                 step1Result: "掃描成功！已完成執行指令",
-                step1CameraGuide: "📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
+                step1CameraGuide: "📷 無法啟動相機<br>⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
                 step1ReturnTitle: "📩 ② 回傳誓證（確認誓印）",
                 step1Success: "✅ 顯示：「誓印通過」",
                 step1Return1: "❶ 進入 📩 ②【回傳誓證】執行階段。",
@@ -447,22 +441,22 @@
                 step1Cmd1: "① 登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。",
                 step1Cmd2: "② 掃描【誓導 QR Code】後，進入「指令輸入欄位」。",
                 step1Cmd3: "③ 無須手動輸入誓文，完成掃描後，直接輸入下列指令：",
-                step1ReturnInputLabel: "輸入示範：",
-                step1ReturnCommand: "【執行指令】第 1 項 回傳【誓印通過】誓證",
+                step1ReturnInputLabel: "⌨️ 輸入示範：",
+                step1ReturnCommand: "請依本卷書七印誓網誓導碼操作",
                 step1ReturnNote: "送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。",
                 step1ReturnTriggerNote: "【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。",
                 step1ReturnQrTitle: "📷 請掃描【誓導 QR Code】完成回傳誓證",
                 step1ReturnBtnScan: "📷 開始掃描",
                 step1ReturnResult: "掃描成功！已完成回傳誓證",
-                step1ReturnCameraGuide: "📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」 → 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....） ⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
-                step1NotPassedTitle: "⚠️ 顯示：「誓印未通過」",
+                step1ReturnCameraGuide: "📷 無法啟動相機<br>⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code",
+                step1NotPassedTitle: "✅ 顯示：「誓印未通過」",
                 step1NotPassed1: "進入「第 1 項 開啟誓魂密鑰對頻總判定（誓印未通過）」之【補誓程序】。",
                 step1NotPassed2: "啟動「懺悔補誓 × 七日循環 × 頻率再校」程序，修正後方可重新啟印。",
                 step1NotPassed3: "《七印誓網·第 1 項 誓魂密鑰對頻總判定》v2.0（封冊正式版）。",
                 step1NotPassed4: "鎖入《宇宙天律 × 七印誓網》主冊，誓資承流有效。",
                 btnBackText: "上一步",
                 btnNextText: "下一步",
-                pageMarker: "【宇宙誓印覺醒工程 · 覺醒卷】：第 171-180 頁",
+                pageMarkerText: " 【宇宙誓印覺醒工程 · 覺醒卷】：第 171-180 頁",
                 timerLabel: "⏳ 靜心讀秒",
                 btnStartText: "開始靜心",
                 btnRestartText: "重新靜心",
@@ -471,10 +465,10 @@
             },
             en: {
                 homeBtn: "Home ->",
-                appTitle: "Cosmic Oath Awakening Project · Seven-Seal Oath Network",
+                appTitle: "Cosmic Vow Awakening Project · Seven-Seal Vow Network",
                 step1Title: "🔓 Identity Activation & Qualification Check · Oath-Soul Frequency Radar 5D",
-                step1Unlock: " Unlock Oath-Soul Bloodline Identity Record × Full Table Structure Overview",
-                step1Layer: " First-Layer Oath-Soul Positioning Module",
+                step1Unlock: "✅ Unlock Oath-Soul Bloodline Identity Record × Full Table Structure Overview",
+                step1Layer: "✅ First-Layer Oath-Soul Positioning Module",
                 step1Sub: "(Corresponding to Book-Command System Classification × Spiritual Vein Alignment)",
                 step1Col1: "Field Name",
                 step1Col2: "Function Brief",
@@ -517,14 +511,14 @@
                 step1Verify1: "Log into the 《Cosmic Intelligent Vow-Guidance Platform》 using your personal account. After identity verification, proceed into the Oath-Seal Activation Procedure.",
                 step1Verify2: "Scan the 【Vow-Guidance QR Code】 to enter the 「Command Input Field」.",
                 step1Verify3: "No manual entry of the vow text is required. After completing the scan, directly enter the following command：",
-                step1InputLabel: "Input Example：",
-                step1Command: "【執行指令】第 1 項 開啟誓魂密鑰對頻總判定（誓印通過／誓印未通過）結果",
+                step1InputLabel: "⌨️ Input Example : ",
+                step1Command: "Please follow the Seven-Seal Vow Network Vow-Guidance Code.",
                 step1Note: "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.",
                 step1TriggerNote: "【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.",
-                step1QrTitle: "📷 Please scan the 【Vow-Guidance QR Code】 to complete Execution Command",
+                step1QrTitle: "📷 Please scan the [Vow-Guidance QR Code] to execute the command",
                 step1BtnScan: "📷 Start Scan",
                 step1Result: "Scan successful! Execution Command completed",
-                step1CameraGuide: "📷 Unable to launch the feature ⚙️ Open your phone's \"Settings\" → App Management → Permissions → Camera → Change setting to \"Allow\" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.",
+                step1CameraGuide: "📷 Unable to launch the feature<br>⚙️ Open your phone's \"Settings\" → App Management → Permissions → Camera → Change setting to \"Allow\" → Open using a web browser (Chrome / Yahoo / Edge...)<br>⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.",
                 step1ReturnTitle: "📩 ② Return Oath Certificate (Oath Confirmation)",
                 step1Success: "✅ Display：「Oath Seal Passed」",
                 step1Return1: "❶ Enter 📩 ②【Return Oath Certificate】execution stage.",
@@ -533,22 +527,22 @@
                 step1Cmd1: "① Log into the 《Cosmic Intelligent Vow-Guidance Platform》 via using your personal account. After identity verification, proceed into the Oath-Seal Activation Procedure.",
                 step1Cmd2: "② Scan the 【Vow-Guidance QR Code】 to enter the 「Command Input Field」.",
                 step1Cmd3: "③ No manual entry of the vow text is required. After completing the scan, directly enter the following command：",
-                step1ReturnInputLabel: "Input Example：",
-                step1ReturnCommand: "【執行指令】第 1 項 回傳【誓印通過】誓證",
+                step1ReturnInputLabel: "⌨️ Input Example : ",
+                step1ReturnCommand: "Please follow the Seven-Seal Vow Network Vow-Guidance Code.",
                 step1ReturnNote: "Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.",
                 step1ReturnTriggerNote: "【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.",
-                step1ReturnQrTitle: "📷 Please scan the 【Vow-Guidance QR Code】 to complete Return Oath Certificate",
+                step1ReturnQrTitle: "📷 Please scan the [Vow-Guidance QR Code] to return the vow verification",
                 step1ReturnBtnScan: "📷 Start Scan",
                 step1ReturnResult: "Scan successful! Return Oath Certificate completed",
-                step1ReturnCameraGuide: "📷 Unable to launch the feature ⚙️ Open your phone's \"Settings\" → App Management → Permissions → Camera → Change setting to \"Allow\" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.",
-                step1NotPassedTitle: "⚠️ Display：「Oath Seal Not Passed」",
+                step1ReturnCameraGuide: "📷 Unable to launch the feature<br>⚙️ Open your phone's \"Settings\" → App Management → Permissions → Camera → Change setting to \"Allow\" → Open using a web browser (Chrome / Yahoo / Edge...)<br>⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.",
+                step1NotPassedTitle: "✅ Display：「Oath Seal Not Passed」",
                 step1NotPassed1: "Enter Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed) Activation Procedure and enter the [Oath Renewal Procedure].",
                 step1NotPassed2: "Initiate the process of Repentance Oath Renewal × Seven-Day Cycle × Frequency Recalibration. Only after correction may the oath-seal activation be attempted again.",
                 step1NotPassed3: "《Seven-Seal Vow Network · Item 1 Oath-Soul Key Frequency-Alignment Determination》 v2.0 (Official Sealed Edition)",
                 step1NotPassed4: "Locked into the Cosmic Heavenly-Law × Seven-Seal Vow Network Main Ledger; oath-energy flow is valid and in effect.",
                 btnBackText: "Previous",
                 btnNextText: "Next",
-                pageMarker: "【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 171-180",
+                pageMarkerText: " 【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 171-180",
                 timerLabel: "⏳ Centering Countdown",
                 btnStartText: "Start Centering",
                 btnRestartText: "Restart Centering",
@@ -620,14 +614,19 @@
             document.getElementById('step1Verify1').textContent = p.step1Verify1;
             document.getElementById('step1Verify2').textContent = p.step1Verify2;
             document.getElementById('step1Verify3').textContent = p.step1Verify3;
+            
+            // 精準套用輸入示範
             document.getElementById('step1InputLabel').textContent = p.step1InputLabel;
             document.getElementById('step1Command').textContent = p.step1Command;
+            document.getElementById('step1ReturnInputLabel').textContent = p.step1ReturnInputLabel;
+            document.getElementById('step1ReturnCommand').textContent = p.step1ReturnCommand;
+
             document.getElementById('step1Note').textContent = p.step1Note;
             document.getElementById('step1TriggerNote').textContent = p.step1TriggerNote;
             document.getElementById('step1QrTitle').textContent = p.step1QrTitle;
             document.getElementById('step1BtnScan').textContent = p.step1BtnScan;
             document.getElementById('step1Result').textContent = p.step1Result;
-            document.getElementById('step1CameraGuide').innerHTML = p.step1CameraGuide.replace(/\n/g, '<br>');
+            document.getElementById('step1CameraGuide').innerHTML = p.step1CameraGuide;
             document.getElementById('step1ReturnTitle').textContent = p.step1ReturnTitle;
             document.getElementById('step1Success').textContent = p.step1Success;
             document.getElementById('step1Return1').textContent = p.step1Return1;
@@ -636,14 +635,13 @@
             document.getElementById('step1Cmd1').textContent = p.step1Cmd1;
             document.getElementById('step1Cmd2').textContent = p.step1Cmd2;
             document.getElementById('step1Cmd3').textContent = p.step1Cmd3;
-            document.getElementById('step1ReturnInputLabel').textContent = p.step1ReturnInputLabel;
-            document.getElementById('step1ReturnCommand').textContent = p.step1ReturnCommand;
+            
             document.getElementById('step1ReturnNote').textContent = p.step1ReturnNote;
             document.getElementById('step1ReturnTriggerNote').textContent = p.step1ReturnTriggerNote;
             document.getElementById('step1ReturnQrTitle').textContent = p.step1ReturnQrTitle;
             document.getElementById('step1ReturnBtnScan').textContent = p.step1ReturnBtnScan;
             document.getElementById('step1ReturnResult').textContent = p.step1ReturnResult;
-            document.getElementById('step1ReturnCameraGuide').innerHTML = p.step1ReturnCameraGuide.replace(/\n/g, '<br>');
+            document.getElementById('step1ReturnCameraGuide').innerHTML = p.step1ReturnCameraGuide;
             document.getElementById('step1NotPassedTitle').textContent = p.step1NotPassedTitle;
             document.getElementById('step1NotPassed1').textContent = p.step1NotPassed1;
             document.getElementById('step1NotPassed2').textContent = p.step1NotPassed2;
@@ -651,7 +649,7 @@
             document.getElementById('step1NotPassed4').textContent = p.step1NotPassed4;
             document.getElementById('btnBackText').textContent = p.btnBackText;
             document.getElementById('btnNextText').textContent = p.btnNextText;
-            document.getElementById('pageMarkerText').textContent = p.pageMarker;
+            document.getElementById('pageMarkerText').textContent = p.pageMarkerText;
             document.getElementById('timerLabel').textContent = p.timerLabel;
             document.getElementById('btnStartText').textContent = p.btnStartText;
             document.getElementById('btnRestartText').textContent = p.btnRestartText;
@@ -670,7 +668,6 @@
         }
         function closeHudDialog() { document.getElementById('hudDialog').classList.remove('active'); }
 
-        // ===== 計時器 =====
         function startTimer() {
             if (isTimerRunning) return;
             var s = document.getElementById('btnStart'), r = document.getElementById('btnRestart');
@@ -711,22 +708,18 @@
             r.style.display = 'none';
         }
 
-        // ===== QR 掃描 Step8 =====
         window.startQRScannerStep8 = function() {
             var container = document.getElementById('qr-reader-container-step8');
+            var guide = document.getElementById('cameraGuideStep8');
             if (!container || typeof Html5Qrcode === 'undefined') {
-                var guide = document.getElementById('cameraGuideStep8');
                 if (guide) {
                     guide.style.display = 'block';
-                    guide.innerHTML = (currentLang === 'en') 
-                        ? '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.'
-                        : '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                    guide.innerHTML = langPack[currentLang].step1CameraGuide;
                 }
                 return;
             }
             if (html5QrCodeStep8) { html5QrCodeStep8.stop().catch(function() {}); html5QrCodeStep8 = null; }
             container.innerHTML = '';
-            var guide = document.getElementById('cameraGuideStep8');
             if (guide) guide.style.display = 'none';
             html5QrCodeStep8 = new Html5Qrcode('qr-reader-container-step8');
             html5QrCodeStep8.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 220, height: 220 } },
@@ -741,32 +734,25 @@
                 },
                 function() {}
             ).catch(function() {
-                var guide = document.getElementById('cameraGuideStep8');
                 if (guide) {
                     guide.style.display = 'block';
-                    guide.innerHTML = (currentLang === 'en') 
-                        ? '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.'
-                        : '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                    guide.innerHTML = langPack[currentLang].step1CameraGuide;
                 }
             });
         };
 
-        // ===== QR 掃描 Step9 =====
         window.startQRScannerStep9 = function() {
             var container = document.getElementById('qr-reader-container-step9');
+            var guide = document.getElementById('cameraGuideStep9');
             if (!container || typeof Html5Qrcode === 'undefined') {
-                var guide = document.getElementById('cameraGuideStep9');
                 if (guide) {
                     guide.style.display = 'block';
-                    guide.innerHTML = (currentLang === 'en') 
-                        ? '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.'
-                        : '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                    guide.innerHTML = langPack[currentLang].step1ReturnCameraGuide;
                 }
                 return;
             }
             if (html5QrCodeStep9) { html5QrCodeStep9.stop().catch(function() {}); html5QrCodeStep9 = null; }
             container.innerHTML = '';
-            var guide = document.getElementById('cameraGuideStep9');
             if (guide) guide.style.display = 'none';
             html5QrCodeStep9 = new Html5Qrcode('qr-reader-container-step9');
             html5QrCodeStep9.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 220, height: 220 } },
@@ -781,37 +767,25 @@
                 },
                 function() {}
             ).catch(function() {
-                var guide = document.getElementById('cameraGuideStep9');
                 if (guide) {
                     guide.style.display = 'block';
-                    guide.innerHTML = (currentLang === 'en') 
-                        ? '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.'
-                        : '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+                    guide.innerHTML = langPack[currentLang].step1ReturnCameraGuide;
                 }
             });
         };
 
         window.onload = function() {
             switchLanguage('zh');
-            // 隱藏重新靜心按鈕
             document.getElementById('btnRestart').style.display = 'none';
         };
         window.switchLanguage = switchLanguage;
     </script>
 
-    <!-- ============================================================ -->
-    <!-- 刪除相機權限失敗 / 無法啟動相機 的所有彈窗（alert）            -->
-    <!-- ============================================================ -->
     <script>
     (function() {
         var BLOCK_KEYWORDS = [
-            '無法啟動相機',
-            '請允許相機權限',
-            'Unable to start camera',
-            'Unable to launch the feature',
-            '相機權限',
-            'Camera permission',
-            'Could not start video source'
+            '無法啟動相機', '請允許相機權限', 'Unable to start camera',
+            'Unable to launch the feature', '相機權限', 'Camera permission', 'Could not start video source'
         ];
         function shouldBlock(msg) {
             if (typeof msg !== 'string') return false;
@@ -827,1758 +801,7 @@
             if (shouldBlock(String(msg || ''))) { console.log('[已封鎖相機錯誤確認窗]', msg); return false; }
             return _origConfirm.apply(this, arguments);
         };
-        setInterval(function() {
-            if (window.alert !== _origAlert && window.alert !== window._alertPatched) {
-                var currentAlert = window.alert;
-                window.alert = function(msg) {
-                    if (shouldBlock(String(msg || ''))) return;
-                    return currentAlert.apply(this, arguments);
-                };
-                window._alertPatched = window.alert;
-            }
-        }, 1000);
-        console.log('✅ 相機權限失敗彈窗已全部刪除');
     })();
     </script>
-<!-- ============================================================ -->
-<!-- QR Code 掃描器完整修復模板（含移除「掃描成功」文字）        -->
-<!-- 貼在 </body> 前即可                                            -->
-<!-- ============================================================ -->
-<script>
-(function() {
-    // ================================================================
-    // 1. 重新定義掃描器啟動函數
-    // ================================================================
-    function startQRScanner(containerId, resultId, guideId) {
-        var container = document.getElementById(containerId);
-        if (!container) {
-            console.warn('找不到容器:', containerId);
-            return;
-        }
-        
-        if (typeof Html5Qrcode === 'undefined') {
-            alert('QR Code 掃描器尚未載入，請重新整理頁面');
-            return;
-        }
-        
-        // 停止現有掃描器
-        if (window._currentScanner) {
-            window._currentScanner.stop().catch(function() {});
-            window._currentScanner = null;
-        }
-        
-        container.innerHTML = '';
-        
-        var guide = document.getElementById(guideId);
-        if (guide) guide.style.display = 'block';
-        
-        var resultEl = document.getElementById(resultId);
-        if (resultEl) {
-            resultEl.style.display = 'none';
-            resultEl.innerHTML = '';
-        }
-        
-        try {
-            var scanner = new Html5Qrcode(containerId);
-            window._currentScanner = scanner;
-            
-            scanner.start(
-                { facingMode: "environment" },
-                { fps: 10, qrbox: { width: 220, height: 220 } },
-                function(decodedText, decodedResult) {
-                    // 掃描成功：顯示解碼內容（不包含「掃描成功」文字）
-                    console.log('QR Code 解碼內容:', decodedText);
-                    scanner.stop().then(function() {
-                        window._currentScanner = null;
-                        container.innerHTML = '';
-                        if (guide) guide.style.display = 'none';
-                        if (resultEl) {
-                            // 只顯示解碼後的實際內容
-                            resultEl.innerHTML = decodedText;
-                            resultEl.style.display = 'block';
-                        }
-                    }).catch(function() {});
-                },
-                function(errorMessage) {
-                    // 持續掃描中
-                }
-            ).catch(function(err) {
-                console.warn('啟動掃描器失敗:', err);
-                if (guide) {
-                    guide.style.display = 'block';
-                    guide.innerHTML = (currentLang === 'en') 
-                        ? '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.'
-                        : '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
-                }
-            });
-        } catch (e) {
-            console.error('掃描器初始化失敗:', e);
-            if (guide) {
-                guide.style.display = 'block';
-                guide.innerHTML = (currentLang === 'en') 
-                    ? '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.'
-                    : '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
-            }
-        }
-    }
-
-    // ================================================================
-    // 2. 重新綁定所有掃描按鈕
-    // ================================================================
-    function bindScanButtons() {
-        // Step8 按鈕
-        var btn8 = document.getElementById('btnScanQRStep8');
-        if (btn8) {
-            btn8.onclick = function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
-            };
-            console.log('✅ 已綁定 btnScanQRStep8');
-        }
-        
-        // Step9 按鈕
-        var btn9 = document.getElementById('btnScanQRStep9');
-        if (btn9) {
-            btn9.onclick = function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
-            };
-            console.log('✅ 已綁定 btnScanQRStep9');
-        }
-        
-        // 通用按鈕
-        var btnGeneric = document.getElementById('btnScanQR');
-        if (btnGeneric) {
-            btnGeneric.onclick = function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                startQRScanner('qr-reader-container', 'qrScanResult', 'cameraGuide');
-            };
-            console.log('✅ 已綁定 btnScanQR');
-        }
-    }
-
-    // ================================================================
-    // 3. 執行
-    // ================================================================
-    if (document.readyState === 'complete') {
-        setTimeout(bindScanButtons, 200);
-    } else {
-        window.addEventListener('load', function() {
-            setTimeout(bindScanButtons, 300);
-        });
-    }
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 修復按鈕邊界與下一步連結模板                                 -->
-<!-- 貼在 </body> 前即可                                            -->
-<!-- ============================================================ -->
-<script>
-(function() {
-    // ================================================================
-    // 1. 修復按鈕超出邊界問題
-    // ================================================================
-    function fixButtonOverflow() {
-        // 找到 footer 區域
-        var footer = document.querySelector('.hud-footer');
-        if (!footer) return;
-        
-        // 確保 footer 不會被裁切
-        footer.style.flexShrink = '0';
-        footer.style.flexWrap = 'wrap';
-        footer.style.gap = '8px';
-        footer.style.paddingBottom = 'clamp(8px, 1.5vh, 16px)';
-        
-        // 調整按鈕群組
-        var btnGroup = footer.querySelector('.footer-btn-group');
-        if (btnGroup) {
-            btnGroup.style.display = 'flex';
-            btnGroup.style.flexWrap = 'wrap';
-            btnGroup.style.gap = '6px';
-        }
-        
-        // 調整按鈕樣式
-        var btns = footer.querySelectorAll('.btn-action');
-        for (var i = 0; i < btns.length; i++) {
-            var btn = btns[i];
-            btn.style.padding = 'clamp(6px, 1vh, 10px) clamp(10px, 1.5vw, 18px)';
-            btn.style.fontSize = 'clamp(0.6rem, 1.2vh, 0.85rem)';
-            btn.style.minHeight = 'clamp(28px, 4vh, 38px)';
-            btn.style.whiteSpace = 'nowrap';
-        }
-        
-        // 調整 page-marker
-        var marker = footer.querySelector('.page-marker');
-        if (marker) {
-            marker.style.fontSize = 'clamp(0.45rem, 1vh, 0.7rem)';
-            marker.style.whiteSpace = 'nowrap';
-        }
-        
-        console.log('✅ 已修復按鈕邊界問題');
-    }
-
-    // ================================================================
-    // 2. 修復「下一步」按鈕連結
-    // ================================================================
-    function fixNextButton() {
-        // 找到「下一步」按鈕
-        var nextBtn = document.querySelector('.footer-btn-group a[href="step2.html"]');
-        if (nextBtn) {
-            // 修改連結為 step1-1.html
-            nextBtn.setAttribute('href', 'step1-1.html');
-            console.log('✅ 已將「下一步」連結修改為 step1-1.html');
-        } else {
-            // 備用：透過文字內容尋找
-            var allLinks = document.querySelectorAll('.footer-btn-group a');
-            for (var i = 0; i < allLinks.length; i++) {
-                var link = allLinks[i];
-                var text = link.textContent || '';
-                if (text.indexOf('下一步') !== -1 || text.indexOf('Next') !== -1) {
-                    link.setAttribute('href', 'step1-1.html');
-                    console.log('✅ 已將「下一步」連結修改為 step1-1.html (備用方式)');
-                    break;
-                }
-            }
-        }
-    }
-
-    // ================================================================
-    // 3. 執行修復
-    // ================================================================
-    if (document.readyState === 'complete') {
-        setTimeout(function() {
-            fixButtonOverflow();
-            fixNextButton();
-        }, 100);
-    } else {
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                fixButtonOverflow();
-                fixNextButton();
-            }, 150);
-        });
-    }
-})();
-</script>
-
-<!-- ============================================================ -->
-<!-- 額外 CSS 修復：確保按鈕不會超出邊界                        -->
-<!-- ============================================================ -->
-<style>
-    /* 修復 footer 邊界 */
-    .hud-footer {
-        flex-shrink: 0 !important;
-        flex-wrap: wrap !important;
-        gap: 8px !important;
-        padding: clamp(6px, 1vh, 12px) 0 !important;
-        margin-top: auto !important;
-        border-top: 1px solid rgba(168, 85, 247, 0.2) !important;
-    }
-    
-    .footer-btn-group {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        gap: 6px !important;
-        align-items: center !important;
-    }
-    
-    .btn-action {
-        padding: clamp(6px, 1vh, 10px) clamp(10px, 1.5vw, 18px) !important;
-        font-size: clamp(0.6rem, 1.2vh, 0.85rem) !important;
-        min-height: clamp(28px, 4vh, 38px) !important;
-        white-space: nowrap !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-    }
-    
-    .page-marker {
-        font-size: clamp(0.45rem, 1vh, 0.7rem) !important;
-        white-space: nowrap !important;
-    }
-    
-    /* 確保容器不會裁切按鈕 */
-    .hud-container {
-        overflow: hidden !important;
-        padding-bottom: clamp(6px, 1vh, 12px) !important;
-    }
-    
-    /* 手機版額外調整 */
-    @media (max-width: 480px) {
-        .footer-btn-group {
-            gap: 4px !important;
-        }
-        .btn-action {
-            padding: 4px 10px !important;
-            font-size: 0.6rem !important;
-            min-height: 24px !important;
-        }
-        .page-marker {
-            font-size: 0.4rem !important;
-        }
-    }
-</style>
-<!-- ============================================================ -->
-<!-- 修復「❶ 進入」與「❷ 進入」靠左對齊模板                    -->
-<!-- 貼在 </body> 前即可                                            -->
-<!-- ============================================================ -->
-<script>
-(function() {
-    // ================================================================
-    // 將「❶ 進入」與「❷ 進入」改為靠左對齊
-    // ================================================================
-    function fixReturnItemsAlign() {
-        // 尋找所有包含「❶ 進入」或「❷ 進入」的元素
-        var targetPhrases = ['❶ 進入', '❷ 進入', '❶ Enter', '❷ Enter'];
-        
-        // 方式1：透過 ID 直接找到元素
-        var item1 = document.getElementById('step1Return1');
-        var item2 = document.getElementById('step1Return2');
-        
-        if (item1) {
-            item1.style.textAlign = 'left';
-            item1.style.justifyContent = 'flex-start';
-            item1.style.width = '100%';
-            console.log('✅ 已將 step1Return1 設為靠左');
-        }
-        
-        if (item2) {
-            item2.style.textAlign = 'left';
-            item2.style.justifyContent = 'flex-start';
-            item2.style.width = '100%';
-            console.log('✅ 已將 step1Return2 設為靠左');
-        }
-        
-        // 方式2：透過文字內容搜尋（備用）
-        var allElements = document.querySelectorAll('.instruction-item, .hud-card *');
-        for (var i = 0; i < allElements.length; i++) {
-            var el = allElements[i];
-            var text = el.textContent || '';
-            var isTarget = false;
-            for (var j = 0; j < targetPhrases.length; j++) {
-                if (text.indexOf(targetPhrases[j]) !== -1) {
-                    isTarget = true;
-                    break;
-                }
-            }
-            if (isTarget) {
-                el.style.textAlign = 'left';
-                el.style.justifyContent = 'flex-start';
-                el.style.width = '100%';
-                // 如果是 span 或 div 內的文字，確保父層也靠左
-                var parent = el.closest('.instruction-item');
-                if (parent) {
-                    parent.style.textAlign = 'left';
-                    parent.style.justifyContent = 'flex-start';
-                    parent.style.width = '100%';
-                }
-            }
-        }
-        
-        // 方式3：直接修改 instruction-box 內的項目
-        var instBoxes = document.querySelectorAll('.center-card .instruction-box');
-        for (var k = 0; k < instBoxes.length; k++) {
-            var box = instBoxes[k];
-            var items = box.querySelectorAll('.instruction-item');
-            for (var m = 0; m < items.length; m++) {
-                var item = items[m];
-                var text = item.textContent || '';
-                if (text.indexOf('❶') !== -1 || text.indexOf('❷') !== -1 || 
-                    text.indexOf('❶ Enter') !== -1 || text.indexOf('❷ Enter') !== -1) {
-                    item.style.textAlign = 'left';
-                    item.style.justifyContent = 'flex-start';
-                    item.style.width = '100%';
-                }
-            }
-        }
-        
-        console.log('✅ 已將「❶ 進入」與「❷ 進入」設為靠左');
-    }
-
-    // ================================================================
-    // 執行修復
-    // ================================================================
-    if (document.readyState === 'complete') {
-        setTimeout(fixReturnItemsAlign, 100);
-    } else {
-        window.addEventListener('load', function() {
-            setTimeout(fixReturnItemsAlign, 150);
-        });
-    }
-})();
-</script>
-
-<!-- ============================================================ -->
-<!-- 額外 CSS 修復：強制靠左                                      -->
-<!-- ============================================================ -->
-<style>
-    /* 強制「❶ 進入」與「❷ 進入」靠左 */
-    #step1Return1,
-    #step1Return2 {
-        text-align: left !important;
-        justify-content: flex-start !important;
-        width: 100% !important;
-    }
-    
-    /* 確保 instruction-item 內的內容靠左 */
-    .instruction-item:has(#step1Return1),
-    .instruction-item:has(#step1Return2),
-    .instruction-item:contains("❶"),
-    .instruction-item:contains("❷") {
-        text-align: left !important;
-        justify-content: flex-start !important;
-        width: 100% !important;
-    }
-    
-    /* 備用：所有包含「❶」或「❷」的 instruction-item */
-    .instruction-item {
-        text-align: left !important;
-        justify-content: flex-start !important;
-    }
-    
-    /* 但保留中心卡片的其他元素置中 */
-    .center-card .instruction-item {
-        text-align: left !important;
-        justify-content: flex-start !important;
-        width: 100% !important;
-    }
-</style>
-<!-- ============================================================ -->
-<!-- 修復「送出即啟主頻連線」靠左對齊模板                        -->
-<!-- 貼在 </body> 前即可                                            -->
-<!-- ============================================================ -->
-<script>
-(function() {
-    // ================================================================
-    // 將「送出即啟主頻連線...」改為靠左對齊
-    // ================================================================
-    function fixNoteAlign() {
-        // 目標關鍵字
-        var targetPhrases = [
-            '送出即啟主頻連線',
-            '判定授權完成',
-            '誓印對頻律網顯化'
-        ];
-        
-        // 方式1：透過 ID 找到元素
-        var noteEl = document.getElementById('step1Note');
-        if (noteEl) {
-            noteEl.style.textAlign = 'left';
-            noteEl.style.justifyContent = 'flex-start';
-            noteEl.style.width = '100%';
-            console.log('✅ 已將 step1Note 設為靠左');
-        }
-        
-        var returnNoteEl = document.getElementById('step1ReturnNote');
-        if (returnNoteEl) {
-            returnNoteEl.style.textAlign = 'left';
-            returnNoteEl.style.justifyContent = 'flex-start';
-            returnNoteEl.style.width = '100%';
-            console.log('✅ 已將 step1ReturnNote 設為靠左');
-        }
-        
-        // 方式2：透過文字內容搜尋（備用）
-        var allElements = document.querySelectorAll('.hud-card *');
-        for (var i = 0; i < allElements.length; i++) {
-            var el = allElements[i];
-            var text = el.textContent || '';
-            var isTarget = false;
-            for (var j = 0; j < targetPhrases.length; j++) {
-                if (text.indexOf(targetPhrases[j]) !== -1) {
-                    isTarget = true;
-                    break;
-                }
-            }
-            if (isTarget) {
-                // 檢查是否為包含這些文字的區塊
-                el.style.textAlign = 'left';
-                el.style.justifyContent = 'flex-start';
-                el.style.width = '100%';
-                
-                // 如果父層是 center-card 內的元素，確保靠左
-                var parent = el.closest('.center-card');
-                if (parent) {
-                    // 但不要影響到 QR Code 掃描區塊
-                    var isQrCard = el.closest('[id^="qrScanCardStep"]');
-                    if (!isQrCard) {
-                        el.style.textAlign = 'left';
-                        el.style.justifyContent = 'flex-start';
-                    }
-                }
-            }
-        }
-        
-        // 方式3：特定處理文字圖示區塊
-        var iconBlocks = document.querySelectorAll('.hud-card .fa-link, .hud-card .fa-key');
-        for (var k = 0; k < iconBlocks.length; k++) {
-            var block = iconBlocks[k];
-            var parent = block.closest('div');
-            if (parent) {
-                var text = parent.textContent || '';
-                if (text.indexOf('送出即啟主頻連線') !== -1 || 
-                    text.indexOf('判定授權完成') !== -1 ||
-                    text.indexOf('誓印對頻律網顯化') !== -1) {
-                    parent.style.textAlign = 'left';
-                    parent.style.justifyContent = 'flex-start';
-                    parent.style.width = '100%';
-                }
-            }
-        }
-        
-        console.log('✅ 已將「送出即啟主頻連線...」設為靠左');
-    }
-
-    // ================================================================
-    // 執行修復
-    // ================================================================
-    if (document.readyState === 'complete') {
-        setTimeout(fixNoteAlign, 100);
-    } else {
-        window.addEventListener('load', function() {
-            setTimeout(fixNoteAlign, 150);
-        });
-    }
-})();
-</script>
-
-<!-- ============================================================ -->
-<!-- 額外 CSS 修復：強制靠左                                      -->
-<!-- ============================================================ -->
-<style>
-    /* 強制「送出即啟主頻連線...」靠左 */
-    #step1Note,
-    #step1ReturnNote,
-    .hud-card div:has(.fa-link),
-    .hud-card div:has(.fa-key) {
-        text-align: left !important;
-        justify-content: flex-start !important;
-        width: 100% !important;
-    }
-    
-    /* 所有包含「送出即啟主頻連線」的 div 靠左 */
-    .hud-card div:contains("送出即啟主頻連線"),
-    .hud-card div:contains("判定授權完成"),
-    .hud-card div:contains("誓印對頻律網顯化") {
-        text-align: left !important;
-        justify-content: flex-start !important;
-        width: 100% !important;
-    }
-    
-    /* 但保留 QR Code 掃描區塊的置中 */
-    [id^="qrScanCardStep"] {
-        text-align: center !important;
-        align-items: center !important;
-    }
-    [id^="qrScanCardStep"] .card-title {
-        justify-content: center !important;
-    }
-</style>
-<!-- ============================================================ -->
-<!-- 恢復上一步/下一步按鈕修復模板                               -->
-<!-- 貼在 </body> 前即可                                            -->
-<!-- ============================================================ -->
-<script>
-(function() {
-    // ================================================================
-    // 強制恢復並顯示上一步/下一步按鈕
-    // ================================================================
-    function restoreFooterButtons() {
-        // 1. 檢查 footer 是否存在
-        var footer = document.querySelector('.hud-footer');
-        if (!footer) {
-            console.warn('找不到 .hud-footer，嘗試重新建立');
-            // 嘗試找到 main 後面的 footer
-            var main = document.querySelector('main.step-content');
-            if (main) {
-                footer = main.nextElementSibling;
-                if (footer && footer.classList.contains('hud-footer')) {
-                    // 找到了
-                } else {
-                    // 完全沒有 footer，不處理
-                    console.warn('無法找到 footer');
-                    return;
-                }
-            }
-        }
-        
-        // 2. 確保 footer 顯示
-        if (footer) {
-            footer.style.display = 'flex';
-            footer.style.visibility = 'visible';
-            footer.style.opacity = '1';
-            footer.style.position = 'relative';
-            footer.style.zIndex = '10';
-            
-            // 確保 footer 內容可見
-            var children = footer.children;
-            for (var i = 0; i < children.length; i++) {
-                children[i].style.display = '';
-                children[i].style.visibility = 'visible';
-                children[i].style.opacity = '1';
-            }
-        }
-        
-        // 3. 檢查按鈕群組是否存在
-        var btnGroup = document.querySelector('.footer-btn-group');
-        if (!btnGroup && footer) {
-            // 重建按鈕群組
-            console.warn('重建按鈕群組');
-            btnGroup = document.createElement('div');
-            btnGroup.className = 'footer-btn-group';
-            
-            // 建立上一步按鈕
-            var backBtn = document.createElement('a');
-            backBtn.href = 'step0.html';
-            backBtn.className = 'btn-action enabled';
-            backBtn.innerHTML = '<i class="fa-solid fa-arrow-left"></i> <span id="btnBackText">上一步</span>';
-            backBtn.id = 'btnBack';
-            
-            // 建立下一步按鈕
-            var nextBtn = document.createElement('a');
-            nextBtn.href = 'step1-1.html';
-            nextBtn.className = 'btn-action enabled';
-            nextBtn.innerHTML = '<span id="btnNextText">下一步</span> <i class="fa-solid fa-arrow-right"></i>';
-            nextBtn.id = 'btnNext';
-            
-            btnGroup.appendChild(backBtn);
-            btnGroup.appendChild(nextBtn);
-            
-            // 插入到 footer 最前面
-            footer.insertBefore(btnGroup, footer.firstChild);
-            
-            // 更新語言
-            if (currentLang === 'en') {
-                document.getElementById('btnBackText').textContent = 'Previous';
-                document.getElementById('btnNextText').textContent = 'Next';
-            }
-            
-            console.log('✅ 已重建按鈕群組');
-        }
-        
-        // 4. 確保按鈕可見
-        if (btnGroup) {
-            btnGroup.style.display = 'flex';
-            btnGroup.style.flexWrap = 'wrap';
-            btnGroup.style.gap = '6px';
-            btnGroup.style.alignItems = 'center';
-            
-            var btns = btnGroup.querySelectorAll('.btn-action');
-            for (var j = 0; j < btns.length; j++) {
-                var btn = btns[j];
-                btn.style.display = 'inline-flex';
-                btn.style.visibility = 'visible';
-                btn.style.opacity = '1';
-                btn.style.padding = 'clamp(6px, 1vh, 10px) clamp(10px, 1.5vw, 18px)';
-                btn.style.fontSize = 'clamp(0.6rem, 1.2vh, 0.85rem)';
-                btn.style.minHeight = 'clamp(28px, 4vh, 38px)';
-                btn.style.whiteSpace = 'nowrap';
-                btn.style.border = '1px solid #a78bfa';
-                btn.style.color = '#e9d5ff';
-                btn.style.background = 'rgba(124, 58, 237, 0.15)';
-                btn.style.borderRadius = '20px';
-                btn.style.textDecoration = 'none';
-                btn.style.cursor = 'pointer';
-                btn.style.pointerEvents = 'auto';
-            }
-        }
-        
-        // 5. 確保 page-marker 存在
-        var marker = footer ? footer.querySelector('.page-marker') : null;
-        if (!marker && footer) {
-            marker = document.createElement('div');
-            marker.className = 'page-marker';
-            marker.innerHTML = '<i class="fa-regular fa-file-lines"></i> <span id="pageMarkerText">【宇宙誓印覺醒工程 · 覺醒卷】：第 171-180 頁</span>';
-            footer.appendChild(marker);
-        }
-        
-        console.log('✅ 已恢復上一步/下一步按鈕');
-    }
-
-    // ================================================================
-    // 執行修復
-    // ================================================================
-    if (document.readyState === 'complete') {
-        setTimeout(restoreFooterButtons, 100);
-    } else {
-        window.addEventListener('load', function() {
-            setTimeout(restoreFooterButtons, 200);
-        });
-    }
-})();
-</script>
-
-<!-- ============================================================ -->
-<!-- 額外 CSS 修復：強制顯示按鈕                                 -->
-<!-- ============================================================ -->
-<style>
-    /* 強制顯示 footer */
-    .hud-footer {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        flex-shrink: 0 !important;
-        flex-wrap: wrap !important;
-        gap: 8px !important;
-        padding: clamp(6px, 1vh, 12px) 0 !important;
-        margin-top: auto !important;
-        border-top: 1px solid rgba(168, 85, 247, 0.2) !important;
-        position: relative !important;
-        z-index: 10 !important;
-        min-height: 44px !important;
-    }
-    
-    /* 強制顯示按鈕群組 */
-    .footer-btn-group {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        flex-wrap: wrap !important;
-        gap: 6px !important;
-        align-items: center !important;
-    }
-    
-    /* 強制顯示按鈕 */
-    .btn-action {
-        display: inline-flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        padding: clamp(6px, 1vh, 10px) clamp(10px, 1.5vw, 18px) !important;
-        font-size: clamp(0.6rem, 1.2vh, 0.85rem) !important;
-        min-height: clamp(28px, 4vh, 38px) !important;
-        white-space: nowrap !important;
-        border: 1px solid #a78bfa !important;
-        color: #e9d5ff !important;
-        background: rgba(124, 58, 237, 0.15) !important;
-        border-radius: 20px !important;
-        text-decoration: none !important;
-        cursor: pointer !important;
-        pointer-events: auto !important;
-        align-items: center !important;
-        gap: 6px !important;
-    }
-    .btn-action:hover {
-        background: rgba(124, 58, 237, 0.28) !important;
-        box-shadow: 0 0 25px rgba(124, 58, 237, 0.5) !important;
-    }
-    
-    /* 強制顯示 page-marker */
-    .page-marker {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        font-size: clamp(0.45rem, 1vh, 0.7rem) !important;
-        white-space: nowrap !important;
-        color: rgba(224, 232, 245, 0.35) !important;
-        align-items: center !important;
-        gap: 6px !important;
-    }
-    
-    /* 手機版 */
-    @media (max-width: 480px) {
-        .footer-btn-group {
-            gap: 4px !important;
-        }
-        .btn-action {
-            padding: 4px 10px !important;
-            font-size: 0.6rem !important;
-            min-height: 24px !important;
-        }
-        .page-marker {
-            font-size: 0.4rem !important;
-        }
-    }
-</style>
-<!-- ============================================================ -->
-<!-- 修復「✅ 顯示：「誓印通過」」靠左對齊模板                    -->
-<!-- 貼在 </body> 前即可                                            -->
-<!-- ============================================================ -->
-<script>
-(function() {
-    // ================================================================
-    // 將「✅ 顯示：「誓印通過」」改為靠左對齊
-    // ================================================================
-    function fixSuccessAlign() {
-        // 方式1：透過 ID 直接找到元素
-        var successEl = document.getElementById('step1Success');
-        if (successEl) {
-            successEl.style.textAlign = 'left';
-            successEl.style.justifyContent = 'flex-start';
-            successEl.style.width = '100%';
-            console.log('✅ 已將 step1Success 設為靠左');
-            
-            // 確保父層容器也靠左
-            var parent = successEl.closest('div');
-            if (parent) {
-                var bgDiv = parent.closest('div[style*="background:rgba(0,230,118,0.12)"]');
-                if (bgDiv) {
-                    bgDiv.style.textAlign = 'left';
-                    bgDiv.style.justifyContent = 'flex-start';
-                    bgDiv.style.width = '100%';
-                }
-            }
-        }
-        
-        // 方式2：透過文字內容搜尋（備用）
-        var allElements = document.querySelectorAll('.hud-card *');
-        for (var i = 0; i < allElements.length; i++) {
-            var el = allElements[i];
-            var text = el.textContent || '';
-            if (text.indexOf('顯示：「誓印通過」') !== -1 || 
-                text.indexOf('Display：「Oath Seal Passed」') !== -1) {
-                el.style.textAlign = 'left';
-                el.style.justifyContent = 'flex-start';
-                el.style.width = '100%';
-                
-                // 確保父層也靠左
-                var parent = el.closest('div');
-                if (parent) {
-                    parent.style.textAlign = 'left';
-                    parent.style.justifyContent = 'flex-start';
-                    parent.style.width = '100%';
-                }
-                
-                console.log('✅ 已將「顯示：「誓印通過」」設為靠左 (備用方式)');
-                break;
-            }
-        }
-    }
-
-    // ================================================================
-    // 執行修復
-    // ================================================================
-    if (document.readyState === 'complete') {
-        setTimeout(fixSuccessAlign, 100);
-    } else {
-        window.addEventListener('load', function() {
-            setTimeout(fixSuccessAlign, 150);
-        });
-    }
-})();
-</script>
-
-<!-- ============================================================ -->
-<!-- 額外 CSS 修復：強制靠左                                      -->
-<!-- ============================================================ -->
-<style>
-    /* 強制「✅ 顯示：「誓印通過」」靠左 */
-    #step1Success {
-        text-align: left !important;
-        justify-content: flex-start !important;
-        width: 100% !important;
-    }
-    
-    /* 確保包含「顯示：「誓印通過」」的父層容器也靠左 */
-    div:has(#step1Success),
-    div:contains("顯示：「誓印通過」"),
-    div:contains("Display：「Oath Seal Passed」") {
-        text-align: left !important;
-        justify-content: flex-start !important;
-        width: 100% !important;
-    }
-    
-    /* 特別處理背景區塊 */
-    .hud-card div[style*="background:rgba(0,230,118,0.12)"] {
-        text-align: left !important;
-        justify-content: flex-start !important;
-        width: 100% !important;
-    }
-</style>
-<!-- ============================================================ -->
-<!-- 修復兩個掃描器互相干擾問題                                    -->
-<!-- 貼在 </body> 前即可                                            -->
-<!-- ============================================================ -->
-<script>
-(function() {
-    // ================================================================
-    // 強制停止所有掃描器（確保相機資源釋放）
-    // ================================================================
-    function stopAllScanners() {
-        if (window._scannerStep8) {
-            try {
-                window._scannerStep8.stop().catch(function() {});
-            } catch(e) {}
-            window._scannerStep8 = null;
-        }
-        if (window._scannerStep9) {
-            try {
-                window._scannerStep9.stop().catch(function() {});
-            } catch(e) {}
-            window._scannerStep9 = null;
-        }
-        if (window._currentScanner) {
-            try {
-                window._currentScanner.stop().catch(function() {});
-            } catch(e) {}
-            window._currentScanner = null;
-        }
-        // 清理舊的變數
-        if (html5QrCodeStep8) {
-            try {
-                html5QrCodeStep8.stop().catch(function() {});
-            } catch(e) {}
-            html5QrCodeStep8 = null;
-        }
-        if (html5QrCodeStep9) {
-            try {
-                html5QrCodeStep9.stop().catch(function() {});
-            } catch(e) {}
-            html5QrCodeStep9 = null;
-        }
-    }
-
-    // ================================================================
-    // 中英文錯誤訊息
-    // ================================================================
-    var enCameraText = '📷 Unable to launch the feature ⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow" → Open using a web browser (Chrome / Yahoo / Edge...) ⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
-    var zhCameraText = '📷 無法啟動相機 ⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
-
-    function getCameraText() {
-        return (currentLang === 'en') ? enCameraText : zhCameraText;
-    }
-
-    // ================================================================
-    // Step8 掃描器（啟動前先停止所有掃描器）
-    // ================================================================
-    window.startQRScannerStep8 = function() {
-        // 先停止所有掃描器，釋放相機資源
-        stopAllScanners();
-
-        var container = document.getElementById('qr-reader-container-step8');
-        var guide = document.getElementById('cameraGuideStep8');
-        var resultEl = document.getElementById('qrScanResultStep8');
-
-        if (!container) {
-            console.warn('找不到容器 qr-reader-container-step8');
-            return;
-        }
-
-        container.innerHTML = '';
-        if (guide) guide.style.display = 'none';
-        if (resultEl) {
-            resultEl.style.display = 'none';
-            resultEl.innerHTML = '';
-        }
-
-        if (typeof Html5Qrcode === 'undefined') {
-            if (guide) {
-                guide.style.display = 'block';
-                guide.innerHTML = getCameraText();
-            }
-            return;
-        }
-
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            if (guide) {
-                guide.style.display = 'block';
-                guide.innerHTML = getCameraText();
-            }
-            return;
-        }
-
-        try {
-            var scanner = new Html5Qrcode('qr-reader-container-step8');
-            window._scannerStep8 = scanner;
-
-            scanner.start(
-                { facingMode: "environment" },
-                { fps: 15, qrbox: { width: 200, height: 200 } },
-                function(decodedText) {
-                    if (resultEl) {
-                        resultEl.style.display = 'block';
-                        resultEl.innerHTML = decodedText;
-                    }
-                    scanner.stop().then(function() {
-                        window._scannerStep8 = null;
-                    }).catch(function() {
-                        window._scannerStep8 = null;
-                    });
-                },
-                function() {}
-            ).catch(function() {
-                if (guide) {
-                    guide.style.display = 'block';
-                    guide.innerHTML = getCameraText();
-                }
-                window._scannerStep8 = null;
-            });
-        } catch (err) {
-            if (guide) {
-                guide.style.display = 'block';
-                guide.innerHTML = getCameraText();
-            }
-            window._scannerStep8 = null;
-        }
-    };
-
-    // ================================================================
-    // Step9 掃描器（啟動前先停止所有掃描器）
-    // ================================================================
-    window.startQRScannerStep9 = function() {
-        // 先停止所有掃描器，釋放相機資源
-        stopAllScanners();
-
-        var container = document.getElementById('qr-reader-container-step9');
-        var guide = document.getElementById('cameraGuideStep9');
-        var resultEl = document.getElementById('qrScanResultStep9');
-
-        if (!container) {
-            console.warn('找不到容器 qr-reader-container-step9');
-            return;
-        }
-
-        container.innerHTML = '';
-        if (guide) guide.style.display = 'none';
-        if (resultEl) {
-            resultEl.style.display = 'none';
-            resultEl.innerHTML = '';
-        }
-
-        if (typeof Html5Qrcode === 'undefined') {
-            if (guide) {
-                guide.style.display = 'block';
-                guide.innerHTML = getCameraText();
-            }
-            return;
-        }
-
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            if (guide) {
-                guide.style.display = 'block';
-                guide.innerHTML = getCameraText();
-            }
-            return;
-        }
-
-        try {
-            var scanner = new Html5Qrcode('qr-reader-container-step9');
-            window._scannerStep9 = scanner;
-
-            scanner.start(
-                { facingMode: "environment" },
-                { fps: 15, qrbox: { width: 200, height: 200 } },
-                function(decodedText) {
-                    if (resultEl) {
-                        resultEl.style.display = 'block';
-                        resultEl.innerHTML = decodedText;
-                    }
-                    scanner.stop().then(function() {
-                        window._scannerStep9 = null;
-                    }).catch(function() {
-                        window._scannerStep9 = null;
-                    });
-                },
-                function() {}
-            ).catch(function() {
-                if (guide) {
-                    guide.style.display = 'block';
-                    guide.innerHTML = getCameraText();
-                }
-                window._scannerStep9 = null;
-            });
-        } catch (err) {
-            if (guide) {
-                guide.style.display = 'block';
-                guide.innerHTML = getCameraText();
-            }
-            window._scannerStep9 = null;
-        }
-    };
-
-    // ================================================================
-    // 重新綁定按鈕
-    // ================================================================
-    function rebindButtons() {
-        var btn8 = document.getElementById('btnScanQRStep8');
-        if (btn8) {
-            var newBtn8 = btn8.cloneNode(true);
-            btn8.parentNode.replaceChild(newBtn8, btn8);
-            newBtn8.onclick = function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                window.startQRScannerStep8();
-            };
-        }
-
-        var btn9 = document.getElementById('btnScanQRStep9');
-        if (btn9) {
-            var newBtn9 = btn9.cloneNode(true);
-            btn9.parentNode.replaceChild(newBtn9, btn9);
-            newBtn9.onclick = function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                window.startQRScannerStep9();
-            };
-        }
-        console.log('✅ 兩個掃描按鈕已重新綁定');
-    }
-
-    // ================================================================
-    // 語言切換時更新錯誤訊息
-    // ================================================================
-    var origSwitch = window.switchLanguage;
-    if (origSwitch) {
-        window.switchLanguage = function(lang) {
-            origSwitch(lang);
-            var guides = document.querySelectorAll('.camera-guide');
-            guides.forEach(function(g) {
-                if (g.style.display === 'block') {
-                    g.innerHTML = getCameraText();
-                }
-            });
-        };
-    }
-
-    // ================================================================
-    // 執行
-    // ================================================================
-    if (document.readyState === 'complete') {
-        setTimeout(rebindButtons, 200);
-    } else {
-        window.addEventListener('load', function() {
-            setTimeout(rebindButtons, 300);
-        });
-    }
-
-    console.log('✅ 兩個掃描器已修復（啟動時會先停止另一個）');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 通用「上一步/下一步」按鈕修復模板                            -->
-<!-- 貼在 </body> 前即可                                            -->
-<!-- ============================================================ -->
-<script>
-(function() {
-    // ================================================================
-    // 強制修復並顯示上一步/下一步按鈕
-    // ================================================================
-    function fixNavigationButtons() {
-        // 1. 找到 footer
-        var footer = document.querySelector('.hud-footer');
-        if (!footer) {
-            console.warn('找不到 .hud-footer，嘗試尋找 footer 元素');
-            footer = document.querySelector('footer');
-            if (!footer) {
-                console.warn('完全找不到 footer，跳過修復');
-                return;
-            }
-        }
-
-        // 2. 確保 footer 可見
-        footer.style.display = 'flex';
-        footer.style.visibility = 'visible';
-        footer.style.opacity = '1';
-        footer.style.flexShrink = '0';
-        footer.style.flexWrap = 'wrap';
-        footer.style.gap = '8px';
-        footer.style.padding = 'clamp(6px, 1vh, 12px) 0';
-        footer.style.marginTop = 'auto';
-        footer.style.borderTop = '1px solid rgba(168, 85, 247, 0.2)';
-        footer.style.position = 'relative';
-        footer.style.zIndex = '10';
-        footer.style.minHeight = '44px';
-        footer.style.width = '100%';
-        footer.style.justifyContent = 'space-between';
-        footer.style.alignItems = 'center';
-
-        // 3. 找到或建立按鈕群組
-        var btnGroup = footer.querySelector('.footer-btn-group');
-        if (!btnGroup) {
-            btnGroup = document.createElement('div');
-            btnGroup.className = 'footer-btn-group';
-            footer.insertBefore(btnGroup, footer.firstChild);
-        }
-
-        btnGroup.style.display = 'flex';
-        btnGroup.style.flexWrap = 'wrap';
-        btnGroup.style.gap = '6px';
-        btnGroup.style.alignItems = 'center';
-        btnGroup.style.width = '100%';
-        btnGroup.style.justifyContent = 'flex-start';
-
-        // 4. 檢查是否有上一步按鈕
-        var backBtn = btnGroup.querySelector('.btn-action:first-child, a[href*="step"], a[onclick*="back"]');
-        var nextBtn = btnGroup.querySelector('.btn-action:last-child, a[href*="step"], a[onclick*="next"]');
-
-        // 如果沒有上一步按鈕，建立一個
-        if (!backBtn) {
-            backBtn = document.createElement('a');
-            backBtn.className = 'btn-action enabled';
-            backBtn.id = 'btnBack';
-            backBtn.innerHTML = '<i class="fa-solid fa-arrow-left"></i> <span id="btnBackText">上一步</span>';
-            // 嘗試從現有連結取得 href
-            var existingLink = footer.querySelector('a[href*="step"]');
-            if (existingLink && existingLink.textContent.indexOf('下一步') === -1) {
-                backBtn.href = existingLink.href;
-            } else {
-                backBtn.href = 'javascript:history.back()';
-            }
-            btnGroup.insertBefore(backBtn, btnGroup.firstChild);
-            console.log('✅ 已建立「上一步」按鈕');
-        }
-
-        // 如果沒有下一步按鈕，建立一個
-        if (!nextBtn) {
-            nextBtn = document.createElement('a');
-            nextBtn.className = 'btn-action enabled';
-            nextBtn.id = 'btnNext';
-            nextBtn.innerHTML = '<span id="btnNextText">下一步</span> <i class="fa-solid fa-arrow-right"></i>';
-            // 嘗試從現有連結取得 href
-            var existingLinks = footer.querySelectorAll('a[href*="step"]');
-            for (var i = 0; i < existingLinks.length; i++) {
-                if (existingLinks[i].textContent.indexOf('下一步') !== -1) {
-                    nextBtn.href = existingLinks[i].href;
-                    break;
-                }
-            }
-            if (!nextBtn.href) {
-                nextBtn.href = '#';
-            }
-            btnGroup.appendChild(nextBtn);
-            console.log('✅ 已建立「下一步」按鈕');
-        }
-
-        // 5. 確保兩個按鈕都顯示且可點擊
-        var allBtns = btnGroup.querySelectorAll('.btn-action');
-        for (var j = 0; j < allBtns.length; j++) {
-            var btn = allBtns[j];
-            btn.style.display = 'inline-flex';
-            btn.style.visibility = 'visible';
-            btn.style.opacity = '1';
-            btn.style.padding = 'clamp(6px, 1vh, 10px) clamp(10px, 1.5vw, 18px)';
-            btn.style.fontSize = 'clamp(0.6rem, 1.2vh, 0.85rem)';
-            btn.style.minHeight = 'clamp(28px, 4vh, 38px)';
-            btn.style.whiteSpace = 'nowrap';
-            btn.style.border = '1px solid #a78bfa';
-            btn.style.color = '#e9d5ff';
-            btn.style.background = 'rgba(124, 58, 237, 0.15)';
-            btn.style.borderRadius = '20px';
-            btn.style.textDecoration = 'none';
-            btn.style.cursor = 'pointer';
-            btn.style.pointerEvents = 'auto';
-            btn.style.alignItems = 'center';
-            btn.style.gap = '6px';
-            btn.style.boxShadow = '0 0 15px rgba(124, 58, 237, 0.3)';
-        }
-
-        // 6. 確保 page-marker 存在
-        var marker = footer.querySelector('.page-marker');
-        if (!marker) {
-            marker = document.createElement('span');
-            marker.className = 'page-marker';
-            marker.innerHTML = '<i class="fa-regular fa-file-lines"></i> <span id="pageMarkerText">覺醒卷</span>';
-            footer.appendChild(marker);
-        }
-        marker.style.display = 'inline-flex';
-        marker.style.visibility = 'visible';
-        marker.style.opacity = '1';
-        marker.style.fontSize = 'clamp(0.45rem, 1vh, 0.7rem)';
-        marker.style.whiteSpace = 'nowrap';
-        marker.style.color = 'rgba(224, 232, 245, 0.35)';
-        marker.style.alignItems = 'center';
-        marker.style.gap = '6px';
-
-        console.log('✅ 導航按鈕已修復完成');
-    }
-
-    // ================================================================
-    // 執行
-    // ================================================================
-    if (document.readyState === 'complete') {
-        setTimeout(fixNavigationButtons, 100);
-    } else {
-        window.addEventListener('load', function() {
-            setTimeout(fixNavigationButtons, 200);
-        });
-    }
-
-    // 監聽 DOM 變化（動態載入時）
-    var observer = new MutationObserver(function() {
-        var footer = document.querySelector('.hud-footer');
-        if (footer) {
-            var btnGroup = footer.querySelector('.footer-btn-group');
-            if (btnGroup) {
-                var btns = btnGroup.querySelectorAll('.btn-action');
-                if (btns.length >= 2) {
-                    // 按鈕已存在，不需要再修復
-                    observer.disconnect();
-                    return;
-                }
-            }
-            fixNavigationButtons();
-        }
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    console.log('✅ 通用導航按鈕修復模板已載入');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 通用「上一步/下一步」按鈕修復模板                            -->
-<!-- 貼在 </body> 前即可                                            -->
-<!-- ============================================================ -->
-<script>
-(function() {
-    // ================================================================
-    // 強制修復並顯示上一步/下一步按鈕
-    // ================================================================
-    function fixNavigationButtons() {
-        // 1. 找到 footer
-        var footer = document.querySelector('.hud-footer');
-        if (!footer) {
-            console.warn('找不到 .hud-footer，嘗試尋找 footer 元素');
-            footer = document.querySelector('footer');
-            if (!footer) {
-                console.warn('完全找不到 footer，跳過修復');
-                return;
-            }
-        }
-
-        // 2. 確保 footer 可見
-        footer.style.display = 'flex';
-        footer.style.visibility = 'visible';
-        footer.style.opacity = '1';
-        footer.style.flexShrink = '0';
-        footer.style.flexWrap = 'wrap';
-        footer.style.gap = '8px';
-        footer.style.padding = 'clamp(6px, 1vh, 12px) 0';
-        footer.style.marginTop = 'auto';
-        footer.style.borderTop = '1px solid rgba(168, 85, 247, 0.2)';
-        footer.style.position = 'relative';
-        footer.style.zIndex = '10';
-        footer.style.minHeight = '44px';
-        footer.style.width = '100%';
-        footer.style.justifyContent = 'space-between';
-        footer.style.alignItems = 'center';
-
-        // 3. 找到或建立按鈕群組
-        var btnGroup = footer.querySelector('.footer-btn-group');
-        if (!btnGroup) {
-            btnGroup = document.createElement('div');
-            btnGroup.className = 'footer-btn-group';
-            footer.insertBefore(btnGroup, footer.firstChild);
-        }
-
-        btnGroup.style.display = 'flex';
-        btnGroup.style.flexWrap = 'wrap';
-        btnGroup.style.gap = '6px';
-        btnGroup.style.alignItems = 'center';
-        btnGroup.style.width = '100%';
-        btnGroup.style.justifyContent = 'flex-start';
-
-        // 4. 檢查是否有上一步按鈕
-        var backBtn = btnGroup.querySelector('.btn-action:first-child, a[href*="step"], a[onclick*="back"]');
-        var nextBtn = btnGroup.querySelector('.btn-action:last-child, a[href*="step"], a[onclick*="next"]');
-
-        // 如果沒有上一步按鈕，建立一個
-        if (!backBtn) {
-            backBtn = document.createElement('a');
-            backBtn.className = 'btn-action enabled';
-            backBtn.id = 'btnBack';
-            backBtn.innerHTML = '<i class="fa-solid fa-arrow-left"></i> <span id="btnBackText">上一步</span>';
-            // 嘗試從現有連結取得 href
-            var existingLink = footer.querySelector('a[href*="step"]');
-            if (existingLink && existingLink.textContent.indexOf('下一步') === -1) {
-                backBtn.href = existingLink.href;
-            } else {
-                backBtn.href = 'javascript:history.back()';
-            }
-            btnGroup.insertBefore(backBtn, btnGroup.firstChild);
-            console.log('✅ 已建立「上一步」按鈕');
-        }
-
-        // 如果沒有下一步按鈕，建立一個
-        if (!nextBtn) {
-            nextBtn = document.createElement('a');
-            nextBtn.className = 'btn-action enabled';
-            nextBtn.id = 'btnNext';
-            nextBtn.innerHTML = '<span id="btnNextText">下一步</span> <i class="fa-solid fa-arrow-right"></i>';
-            // 嘗試從現有連結取得 href
-            var existingLinks = footer.querySelectorAll('a[href*="step"]');
-            for (var i = 0; i < existingLinks.length; i++) {
-                if (existingLinks[i].textContent.indexOf('下一步') !== -1) {
-                    nextBtn.href = existingLinks[i].href;
-                    break;
-                }
-            }
-            if (!nextBtn.href) {
-                nextBtn.href = '#';
-            }
-            btnGroup.appendChild(nextBtn);
-            console.log('✅ 已建立「下一步」按鈕');
-        }
-
-        // 5. 確保兩個按鈕都顯示且可點擊
-        var allBtns = btnGroup.querySelectorAll('.btn-action');
-        for (var j = 0; j < allBtns.length; j++) {
-            var btn = allBtns[j];
-            btn.style.display = 'inline-flex';
-            btn.style.visibility = 'visible';
-            btn.style.opacity = '1';
-            btn.style.padding = 'clamp(6px, 1vh, 10px) clamp(10px, 1.5vw, 18px)';
-            btn.style.fontSize = 'clamp(0.6rem, 1.2vh, 0.85rem)';
-            btn.style.minHeight = 'clamp(28px, 4vh, 38px)';
-            btn.style.whiteSpace = 'nowrap';
-            btn.style.border = '1px solid #a78bfa';
-            btn.style.color = '#e9d5ff';
-            btn.style.background = 'rgba(124, 58, 237, 0.15)';
-            btn.style.borderRadius = '20px';
-            btn.style.textDecoration = 'none';
-            btn.style.cursor = 'pointer';
-            btn.style.pointerEvents = 'auto';
-            btn.style.alignItems = 'center';
-            btn.style.gap = '6px';
-            btn.style.boxShadow = '0 0 15px rgba(124, 58, 237, 0.3)';
-        }
-
-        // 6. 確保 page-marker 存在
-        var marker = footer.querySelector('.page-marker');
-        if (!marker) {
-            marker = document.createElement('span');
-            marker.className = 'page-marker';
-            marker.innerHTML = '<i class="fa-regular fa-file-lines"></i> <span id="pageMarkerText">覺醒卷</span>';
-            footer.appendChild(marker);
-        }
-        marker.style.display = 'inline-flex';
-        marker.style.visibility = 'visible';
-        marker.style.opacity = '1';
-        marker.style.fontSize = 'clamp(0.45rem, 1vh, 0.7rem)';
-        marker.style.whiteSpace = 'nowrap';
-        marker.style.color = 'rgba(224, 232, 245, 0.35)';
-        marker.style.alignItems = 'center';
-        marker.style.gap = '6px';
-
-        console.log('✅ 導航按鈕已修復完成');
-    }
-
-    // ================================================================
-    // 執行
-    // ================================================================
-    if (document.readyState === 'complete') {
-        setTimeout(fixNavigationButtons, 100);
-    } else {
-        window.addEventListener('load', function() {
-            setTimeout(fixNavigationButtons, 200);
-        });
-    }
-
-    // 監聽 DOM 變化（動態載入時）
-    var observer = new MutationObserver(function() {
-        var footer = document.querySelector('.hud-footer');
-        if (footer) {
-            var btnGroup = footer.querySelector('.footer-btn-group');
-            if (btnGroup) {
-                var btns = btnGroup.querySelectorAll('.btn-action');
-                if (btns.length >= 2) {
-                    // 按鈕已存在，不需要再修復
-                    observer.disconnect();
-                    return;
-                }
-            }
-            fixNavigationButtons();
-        }
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    console.log('✅ 通用導航按鈕修復模板已載入');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 最強力「上一步/下一步」按鈕修復模板 - 強制建立可點擊按鈕   -->
-<!-- 貼在 </body> 前即可                                            -->
-<!-- ============================================================ -->
-<div id="universal-nav-container" style="position:fixed; bottom:0; left:0; right:0; z-index:9999; background:rgba(4,13,33,0.95); border-top:2px solid rgba(168,85,247,0.4); padding:10px 16px; display:flex; justify-content:space-between; align-items:center; backdrop-filter:blur(10px);">
-    <div style="display:flex; gap:12px;">
-        <a id="uni-back-btn" href="#" style="display:inline-flex; align-items:center; gap:8px; padding:8px 20px; background:rgba(124,58,237,0.2); border:1px solid #a78bfa; border-radius:24px; color:#e9d5ff; text-decoration:none; font-size:0.9rem; font-weight:bold; cursor:pointer; transition:all 0.3s;">
-            <i class="fa-solid fa-arrow-left"></i> <span id="uni-back-text">上一步</span>
-        </a>
-        <a id="uni-next-btn" href="#" style="display:inline-flex; align-items:center; gap:8px; padding:8px 20px; background:rgba(124,58,237,0.2); border:1px solid #a78bfa; border-radius:24px; color:#e9d5ff; text-decoration:none; font-size:0.9rem; font-weight:bold; cursor:pointer; transition:all 0.3s;">
-            <span id="uni-next-text">下一步</span> <i class="fa-solid fa-arrow-right"></i>
-        </a>
-    </div>
-    <div id="uni-page-marker" style="font-size:0.7rem; color:rgba(224,232,245,0.4);">
-        <i class="fa-regular fa-file-lines"></i> <span id="uni-page-text">覺醒卷</span>
-    </div>
-</div>
-
-<script>
-(function() {
-    // ================================================================
-    // 強制建立導航按鈕
-    // ================================================================
-    function setupUniversalNav() {
-        var backBtn = document.getElementById('uni-back-btn');
-        var nextBtn = document.getElementById('uni-next-btn');
-
-        // 自動偵測上一步連結
-        var allLinks = document.querySelectorAll('a[href]');
-        var backHref = null;
-        var nextHref = null;
-        var pageText = '覺醒卷';
-
-        // 收集所有頁面連結
-        var stepLinks = [];
-        for (var i = 0; i < allLinks.length; i++) {
-            var href = allLinks[i].getAttribute('href');
-            if (href && href.indexOf('step') !== -1) {
-                stepLinks.push({
-                    href: href,
-                    text: allLinks[i].textContent || ''
-                });
-            }
-        }
-
-        // 找頁碼標記
-        var markerEl = document.querySelector('.page-marker, [class*="page"], [id*="page"]');
-        if (markerEl) {
-            pageText = markerEl.textContent || '覺醒卷';
-        }
-
-        // 設定下一步
-        if (stepLinks.length > 0) {
-            for (var j = 0; j < stepLinks.length; j++) {
-                var link = stepLinks[j];
-                if (link.text.indexOf('下一步') !== -1 || link.text.indexOf('Next') !== -1) {
-                    nextHref = link.href;
-                }
-                if (link.text.indexOf('上一步') !== -1 || link.text.indexOf('Previous') !== -1) {
-                    backHref = link.href;
-                }
-            }
-            // 如果沒找到明確的下一步，用最後一個
-            if (!nextHref && stepLinks.length > 0) {
-                nextHref = stepLinks[stepLinks.length - 1].href;
-            }
-            // 如果沒找到明確的上一步，用第一個
-            if (!backHref && stepLinks.length > 0) {
-                backHref = stepLinks[0].href;
-            }
-        }
-
-        // 設定按鈕連結
-        if (backBtn) {
-            if (backHref) {
-                backBtn.href = backHref;
-            } else {
-                backBtn.href = 'javascript:history.back()';
-            }
-            // 如果有語言切換，更新文字
-            var lang = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
-            var backText = document.getElementById('uni-back-text');
-            if (backText) {
-                backText.textContent = (lang === 'en') ? 'Previous' : '上一步';
-            }
-            backBtn.style.display = 'inline-flex';
-        }
-
-        if (nextBtn) {
-            if (nextHref) {
-                nextBtn.href = nextHref;
-            } else {
-                nextBtn.href = '#';
-            }
-            var lang2 = (typeof currentLang !== 'undefined') ? currentLang : 'zh';
-            var nextText = document.getElementById('uni-next-text');
-            if (nextText) {
-                nextText.textContent = (lang2 === 'en') ? 'Next' : '下一步';
-            }
-            nextBtn.style.display = 'inline-flex';
-        }
-
-        // 更新頁碼
-        var pageEl = document.getElementById('uni-page-text');
-        if (pageEl) {
-            pageEl.textContent = pageText;
-        }
-
-        console.log('✅ 通用導航按鈕已建立');
-    }
-
-    // ================================================================
-    // 執行
-    // ================================================================
-    if (document.readyState === 'complete') {
-        setTimeout(setupUniversalNav, 100);
-    } else {
-        window.addEventListener('load', function() {
-            setTimeout(setupUniversalNav, 200);
-        });
-    }
-
-    // 語言切換時更新
-    var origSwitch = window.switchLanguage;
-    if (origSwitch) {
-        window.switchLanguage = function(lang) {
-            origSwitch(lang);
-            setTimeout(function() {
-                var backText = document.getElementById('uni-back-text');
-                var nextText = document.getElementById('uni-next-text');
-                if (backText) backText.textContent = (lang === 'en') ? 'Previous' : '上一步';
-                if (nextText) nextText.textContent = (lang === 'en') ? 'Next' : '下一步';
-            }, 50);
-        };
-    }
-
-    console.log('✅ 最強力導航按鈕修復模板已載入');
-})();
-</script>
-
-<style>
-    /* 按鈕懸停效果 */
-    #uni-back-btn:hover,
-    #uni-next-btn:hover {
-        background: rgba(124, 58, 237, 0.4) !important;
-        box-shadow: 0 0 30px rgba(124, 58, 237, 0.5) !important;
-        transform: scale(1.02);
-    }
-    /* 手機版調整 */
-    @media (max-width: 600px) {
-        #universal-nav-container {
-            flex-wrap: wrap;
-            gap: 8px;
-            padding: 8px 12px !important;
-        }
-        #universal-nav-container > div:first-child {
-            width: 100%;
-            justify-content: center;
-        }
-        #uni-back-btn,
-        #uni-next-btn {
-            padding: 6px 14px !important;
-            font-size: 0.75rem !important;
-        }
-        #uni-page-marker {
-            font-size: 0.55rem !important;
-        }
-    }
-</style>
-<style>
-    /* 外部瀏覽器按鈕樣式 */
-    .btn-external-browser {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 4px 14px;
-        background: rgba(0, 230, 118, 0.12);
-        border: 1px solid rgba(0, 230, 118, 0.3);
-        border-radius: 20px;
-        color: #00e676;
-        font-size: 0.7rem;
-        font-weight: 700;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif;
-        margin-left: 8px;
-    }
-    .btn-external-browser:hover {
-        background: rgba(0, 230, 118, 0.2);
-        box-shadow: 0 0 20px rgba(0, 230, 118, 0.2);
-        transform: scale(1.02);
-    }
-    .btn-external-browser i {
-        font-size: 0.8rem;
-    }
-
-    /* 手機版調整 */
-    @media (max-width: 480px) {
-        .btn-external-browser {
-            font-size: 0.6rem;
-            padding: 3px 10px;
-            gap: 4px;
-            margin-left: 4px;
-        }
-        .btn-external-browser i {
-            font-size: 0.6rem;
-        }
-    }
-</style>
-
-<script>
-    (function() {
-        // 在標頭區（中英文切換旁邊）加入外部瀏覽器按鈕
-        function addExternalBrowserButton() {
-            var langGroup = document.querySelector('.lang-switch-group');
-            if (!langGroup) {
-                console.warn('⚠️ 找不到 .lang-switch-group');
-                return;
-            }
-
-            // 檢查是否已經有這個按鈕，避免重複新增
-            if (document.querySelector('.btn-external-browser')) {
-                return;
-            }
-
-            var btn = document.createElement('a');
-            btn.className = 'btn-external-browser';
-            btn.href = '#';
-            btn.setAttribute('role', 'button');
-            btn.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>🌐 瀏覽器開啟</span>';
-
-            // 點擊事件：複製目前網址並提示使用者手動開啟，或嘗試強制用外部瀏覽器
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-
-                // 方法1：複製網址到剪貼簿
-                var url = window.location.href;
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(url).then(function() {
-                        alert('✅ 網址已複製！\n請貼到外部瀏覽器（Chrome / Safari）開啟。\n\n📋 ' + url);
-                    }).catch(function() {
-                        fallbackCopy(url);
-                    });
-                } else {
-                    fallbackCopy(url);
-                }
-
-                // 方法2：嘗試強制用外部瀏覽器開啟（僅支援部分手機）
-                // 部分 Android 手機可用 intent:// 協定
-                try {
-                    var intentUrl = 'intent://' + window.location.host + window.location.pathname + window.location.search + '#Intent;scheme=https;package=com.android.chrome;end;';
-                    // 不強制跳轉，以免無法返回
-                } catch (e) {}
-            });
-
-            // 將按鈕插入到語言切換群組旁邊（後面）
-            langGroup.parentNode.insertBefore(btn, langGroup.nextSibling);
-            console.log('✅ 外部瀏覽器按鈕已新增');
-        }
-
-        // 複製網址的備用方法
-        function fallbackCopy(text) {
-            var textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            textarea.style.left = '-9999px';
-            document.body.appendChild(textarea);
-            textarea.select();
-            try {
-                document.execCommand('copy');
-                alert('✅ 網址已複製！\n請貼到外部瀏覽器（Chrome / Safari）開啟。\n\n📋 ' + text);
-            } catch (e) {
-                alert('⚠️ 請手動複製以下網址，貼到外部瀏覽器開啟：\n\n📋 ' + text);
-            }
-            document.body.removeChild(textarea);
-        }
-
-        // 頁面載入後執行
-        if (document.readyState === 'complete') {
-            setTimeout(addExternalBrowserButton, 100);
-        } else {
-            window.addEventListener('load', function() {
-                setTimeout(addExternalBrowserButton, 200);
-            });
-        }
-    })();
-</script>
-<style>
-    /* 首頁隱藏「上一步 / 下一步」按鈕 */
-    .hud-footer .footer-btn-group {
-        display: none !important;
-    }
-</style>
 </body>
 </html>
