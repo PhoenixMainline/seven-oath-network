@@ -1515,5 +1515,91 @@
     }
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 回傳誓證標題整列置中（含藍圈圖示 + 符號 + 文字）             -->
+<!-- 貼在 </body> 前即可                                           -->
+<!-- ============================================================ -->
+<style>
+    /* 強制整個 card-title 置中 */
+    .hud-card .card-title:has(#step4ReturnTitle),
+    .hud-card:has(#step4ReturnTitle) .card-title {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+        width: 100% !important;
+        gap: 8px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    /* 確保內部的 i 與 span 都跟著置中 */
+    .hud-card .card-title:has(#step4ReturnTitle) i,
+    .hud-card .card-title:has(#step4ReturnTitle) span {
+        display: inline-flex !important;
+        align-items: center !important;
+    }
+
+    #step4ReturnTitle {
+        text-align: center !important;
+    }
+</style>
+
+<script>
+(function () {
+    'use strict';
+
+    function centerReturnTitle() {
+        var titleEl = document.getElementById('step4ReturnTitle');
+        if (!titleEl) return;
+
+        // 找到最近的 .card-title
+        var cardTitle = titleEl.closest('.card-title');
+        if (!cardTitle) return;
+
+        // 整列置中
+        cardTitle.style.display = 'flex';
+        cardTitle.style.justifyContent = 'center';
+        cardTitle.style.alignItems = 'center';
+        cardTitle.style.textAlign = 'center';
+        cardTitle.style.width = '100%';
+        cardTitle.style.gap = '8px';
+        cardTitle.style.marginLeft = 'auto';
+        cardTitle.style.marginRight = 'auto';
+
+        // 內部圖示也強制對齊
+        var icon = cardTitle.querySelector('i');
+        if (icon) {
+            icon.style.display = 'inline-flex';
+            icon.style.alignItems = 'center';
+            icon.style.margin = '0';
+        }
+
+        titleEl.style.textAlign = 'center';
+        titleEl.style.display = 'inline-flex';
+        titleEl.style.alignItems = 'center';
+
+        console.log('✅ 回傳誓證標題（含藍圈圖示）已整列置中');
+    }
+
+    // 頁面載入後執行
+    if (document.readyState === 'complete') {
+        setTimeout(centerReturnTitle, 80);
+    } else {
+        window.addEventListener('load', function () {
+            setTimeout(centerReturnTitle, 120);
+        });
+    }
+
+    // 語言切換後再套一次
+    var origSwitch = window.switchLanguage;
+    if (typeof origSwitch === 'function') {
+        window.switchLanguage = function (lang) {
+            origSwitch(lang);
+            setTimeout(centerReturnTitle, 100);
+        };
+    }
+})();
+</script>
 </body>
 </html>
