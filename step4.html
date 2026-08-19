@@ -1601,5 +1601,175 @@
     }
 })();
 </script>
+<style>
+/* 針對掃描提示文字精準設置細體與字體大小（完全還原圖片質感） */
+.vow-scan-hint-text {
+  font-weight: 300 !important;
+  font-size: 0.88rem !important;
+  letter-spacing: 0.5px !important;
+  opacity: 0.9 !important;
+  line-height: 1.5 !important;
+}
+</style>
+
+<script>
+(function() {
+  /**
+   * 七印誓網萬用修復腳本：精準針對指定 ID 與 Selector 修改，絕對不上溯父層，切換英文時 100% 無殘留中文
+   */
+  function applyTargetedPatch() {
+    // 1. 判斷當前語系
+    var activeBtn = document.querySelector('.lang-btn.active');
+    var isEn = (typeof currentLang !== 'undefined' && currentLang === 'en') ||
+               (activeBtn && activeBtn.textContent.toLowerCase().indexOf('english') !== -1) ||
+               (document.documentElement.lang || '').toLowerCase().indexOf('en') === 0;
+
+    // 2. 輸入示範 - 標籤標頭 (如 #step1InputLabel, #step1ReturnInputLabel)
+    document.querySelectorAll('[id*="InputLabel"], [id*="inputLabel"]').forEach(function(el) {
+      el.textContent = isEn ? '⌨️ Input Example : ' : '⌨️ 輸入示範：';
+    });
+
+    // 3. 輸入示範 - 指令內容 (如 #step1Command, #step1ReturnCommand)
+    document.querySelectorAll('[id*="Command"], [id*="command"]').forEach(function(el) {
+      var id = el.id || '';
+      // 排除觸發指令警示區塊
+      if (id.indexOf('Trigger') === -1 && id.indexOf('trigger') === -1) {
+        el.textContent = isEn 
+          ? 'Please follow the Seven-Seal Vow Network Vow-Guidance Code.' 
+          : '請依本卷七印誓網誓導碼操作';
+      }
+    });
+
+    // 4. 掃描提示標題 (如 #step1QrTitle, #step1ReturnQrTitle)
+    document.querySelectorAll('[id*="QrTitle"], [id*="qrTitle"]').forEach(function(el) {
+      var id = el.id || '';
+      if (id.indexOf('Return') !== -1 || id.indexOf('return') !== -1) {
+        el.textContent = isEn 
+          ? '📷 Please scan the [Vow-Guidance QR Code] to return the vow verification' 
+          : '📷 請掃描【誓導 QR Code】完成回傳誓證';
+      } else {
+        el.textContent = isEn 
+          ? '📷 Please scan the [Vow-Guidance QR Code] to execute the command' 
+          : '📷 請掃描【誓導 QR Code】完成執行指令';
+      }
+      el.classList.add('vow-scan-hint-text');
+    });
+
+    // 5. 掃描按鈕文字 (如 #step1BtnScan, #step1ReturnBtnScan)
+    document.querySelectorAll('[id*="BtnScan"], [id*="btnScan"]').forEach(function(el) {
+      el.textContent = isEn ? '📷 Start Scan' : '📷 開始掃描';
+    });
+
+    // 6. 觸發指令警示語 (如 #step1TriggerNote, #step1ReturnTriggerNote)
+    document.querySelectorAll('[id*="TriggerNote"], [id*="triggerNote"]').forEach(function(el) {
+      el.textContent = isEn 
+        ? '【Trigger Command】is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.' 
+        : '【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。';
+    });
+
+    // 7. 說明 Note (如 #step1Note, #step1ReturnNote)
+    document.querySelectorAll('[id*="Note"], [id*="note"]').forEach(function(el) {
+      var id = el.id || '';
+      if (id.indexOf('Trigger') === -1 && id.indexOf('trigger') === -1) {
+        el.textContent = isEn 
+          ? 'Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.' 
+          : '送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。';
+      }
+    });
+
+    // 8. 通過/結果狀態文字 (如 #step1Success, #step1Result, #step1ReturnResult)
+    document.querySelectorAll('[id*="Success"], [id*="success"]').forEach(function(el) {
+      el.textContent = isEn ? '✅ Display：「Oath Seal Passed」' : '✅ 顯示：「誓印通過」';
+    });
+
+    document.querySelectorAll('[id*="Result"], [id*="result"]').forEach(function(el) {
+      var id = el.id || '';
+      if (id.indexOf('Return') !== -1 || id.indexOf('return') !== -1) {
+        el.textContent = isEn ? 'Scan successful! Return Oath Certificate completed' : '掃描成功！已完成回傳誓證';
+      } else {
+        el.textContent = isEn ? 'Scan successful! Execution Command completed' : '掃描成功！已完成執行指令';
+      }
+    });
+
+    // 9. 被代理誓印 / 執行階段說明標籤英化 (針對回傳區塊標題與流程條目)
+    document.querySelectorAll('[id*="CmdTitle"], [id*="cmdTitle"]').forEach(function(el) {
+      el.textContent = isEn ? '🧭【Execution Command】' : '🧭【執行指令】';
+    });
+    document.querySelectorAll('[id*="Cmd1"], [id*="cmd1"]').forEach(function(el) {
+      el.textContent = isEn 
+        ? '① Log into the 《Cosmic Intelligent Vow-Guidance Platform》 via using your personal account. After identity verification, proceed into the Oath-Seal Activation Procedure.' 
+        : '① 登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。';
+    });
+    document.querySelectorAll('[id*="Cmd2"], [id*="cmd2"]').forEach(function(el) {
+      el.textContent = isEn 
+        ? '② Scan the 【Vow-Guidance QR Code】 to enter the 「Command Input Field」.' 
+        : '② 掃描【誓導 QR Code】後，進入「指令輸入欄位」。';
+    });
+    document.querySelectorAll('[id*="Cmd3"], [id*="cmd3"]').forEach(function(el) {
+      el.textContent = isEn 
+        ? '③ No manual entry of the vow text is required. After completing the scan, directly enter the following command：' 
+        : '③ 無須手動輸入誓文，完成掃描後，直接輸入下列指令：';
+    });
+    document.querySelectorAll('[id*="Return1"], [id*="return1"]').forEach(function(el) {
+      el.textContent = isEn ? '❶ Enter 📩 ②【Return Oath Certificate】execution stage.' : '❶ 進入 📩 ②【回傳誓證】執行階段。';
+    });
+    document.querySelectorAll('[id*="Return2"], [id*="return2"]').forEach(function(el) {
+      if (el.textContent.indexOf('7') !== -1) {
+        el.textContent = isEn ? '❷ Enter 「Item 7 Seven-Seal Vow Network Correspondence Stage」.' : '❷ 進入「第 7 項 七印誓網對應階段」。';
+      }
+    });
+
+    // 10. 相機指引 Camera Guide
+    document.querySelectorAll('[id*="CameraGuide"], [id*="cameraGuide"]').forEach(function(el) {
+      el.innerHTML = isEn 
+        ? '📷 Unable to launch the feature<br>⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"<br>→ Open using a web browser (Chrome / Yahoo / Edge...)<br>⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.' 
+        : '📷 無法啟動相機<br>⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+    });
+
+    // 11. 導覽按鈕與麵包屑
+    var homeBtn = document.getElementById('homeBtnText');
+    if (homeBtn) homeBtn.textContent = isEn ? 'Home ->' : '首頁 ->';
+    var backBtn = document.getElementById('btnBackText');
+    if (backBtn) backBtn.textContent = isEn ? 'Previous' : '上一步';
+    var nextBtn = document.getElementById('btnNextText');
+    if (nextBtn) nextBtn.textContent = isEn ? 'Next' : '下一步';
+  }
+
+  // 鉤住頁面 switchLanguage 函數
+  function hookSwitchLanguage() {
+    if (typeof window.switchLanguage === 'function' && !window.__vowPatchHooked) {
+      var origSwitch = window.switchLanguage;
+      window.switchLanguage = function(lang) {
+        origSwitch(lang);
+        setTimeout(applyTargetedPatch, 20);
+        setTimeout(applyTargetedPatch, 100);
+      };
+      window.__vowPatchHooked = true;
+    }
+  }
+
+  // 監聽點擊語系按鈕
+  document.addEventListener('click', function(e) {
+    if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
+      setTimeout(applyTargetedPatch, 30);
+      setTimeout(applyTargetedPatch, 150);
+    }
+  });
+
+  // 初始化與延遲補刀
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      hookSwitchLanguage();
+      applyTargetedPatch();
+    });
+  } else {
+    hookSwitchLanguage();
+    applyTargetedPatch();
+  }
+
+  setTimeout(applyTargetedPatch, 200);
+  setTimeout(applyTargetedPatch, 500);
+})();
+</script>
 </body>
 </html>
