@@ -3120,6 +3120,125 @@
     console.log('✅ 指令空行（深色空條）已徹底清除，只留輸入示範一行');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 只改：step7_4 驗證／回傳 標題圖示與文字同一列置中              -->
+<!-- ============================================================ -->
+<style>
+    /* 驗證階段 */
+    #step7_4VerifyTitle {
+        display: inline !important;
+        width: auto !important;
+        flex: 0 0 auto !important;
+    }
+    .card-title:has(#step7_4VerifyTitle) {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 8px !important;
+        width: 100% !important;
+        text-align: center !important;
+    }
+    .card-title:has(#step7_4VerifyTitle) > i {
+        position: static !important;
+        float: none !important;
+        margin: 0 !important;
+        flex: 0 0 auto !important;
+    }
 
+    /* 回傳誓證 */
+    #step7_4ReturnTitle {
+        display: inline !important;
+        width: auto !important;
+        flex: 0 0 auto !important;
+    }
+    #step7_4ReturnTitle.parent,
+    div:has(> #step7_4ReturnTitle) {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 8px !important;
+        width: 100% !important;
+        text-align: center !important;
+    }
+    div:has(> #step7_4ReturnTitle) > i {
+        position: static !important;
+        float: none !important;
+        margin: 0 !important;
+        flex: 0 0 auto !important;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__fixTitleCenter74) return;
+    window.__fixTitleCenter74 = true;
+
+    function centerById(id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+
+        var row = el.parentElement;
+        if (!row) return;
+
+        // 列
+        row.style.setProperty('display', 'flex', 'important');
+        row.style.setProperty('flex-direction', 'row', 'important');
+        row.style.setProperty('justify-content', 'center', 'important');
+        row.style.setProperty('align-items', 'center', 'important');
+        row.style.setProperty('gap', '8px', 'important');
+        row.style.setProperty('width', '100%', 'important');
+        row.style.setProperty('text-align', 'center', 'important');
+        row.style.setProperty('position', 'relative', 'important');
+
+        // 文字
+        el.style.setProperty('display', 'inline', 'important');
+        el.style.setProperty('width', 'auto', 'important');
+        el.style.setProperty('flex', '0 0 auto', 'important');
+        el.style.setProperty('position', 'static', 'important');
+
+        // 列內圖示
+        Array.prototype.forEach.call(row.children, function (c) {
+            if (c.tagName === 'I' || (c.classList && (c.classList.contains('fa') || c.classList.contains('fa-solid')))) {
+                c.style.setProperty('position', 'static', 'important');
+                c.style.setProperty('left', 'auto', 'important');
+                c.style.setProperty('right', 'auto', 'important');
+                c.style.setProperty('float', 'none', 'important');
+                c.style.setProperty('margin', '0', 'important');
+                c.style.setProperty('flex', '0 0 auto', 'important');
+                c.style.setProperty('display', 'inline-flex', 'important');
+            }
+        });
+    }
+
+    function apply() {
+        centerById('step7_4VerifyTitle');
+        centerById('step7_4ReturnTitle');
+        // 其他印若同結構也一併
+        ['step7_1VerifyTitle','step7_2VerifyTitle','step7_3VerifyTitle','step7_5VerifyTitle',
+         'step7_1ReturnTitle','step7_2ReturnTitle','step7_3ReturnTitle','step7_5ReturnTitle'
+        ].forEach(centerById);
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 200);
+        setTimeout(apply, 600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 80);
+        };
+    }
+})();
+</script>
 </body>
 </html>
