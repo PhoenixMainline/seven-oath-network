@@ -1652,5 +1652,184 @@
     console.log('✅ 覺醒表英文內容已齊全切換');
 })();
 </script>
+<style>
+/* 針對掃描提示文字精準設置細體與字體大小 */
+.vow-scan-hint-text {
+  font-weight: 300 !important;
+  font-size: 0.88rem !important;
+  letter-spacing: 0.5px !important;
+  opacity: 0.9 !important;
+  line-height: 1.5 !important;
+}
+</style>
+
+<script>
+(function() {
+  /**
+   * 七印誓網精簡版通用修復腳本
+   * 1. 設置中英文輸入示範文字
+   * 2. 清空【執行指令】藍圈圈文字區塊
+   * 3. 設置中英文掃描提示標題
+   */
+  function applyTargetedPatch() {
+    // 1. 判斷當前語系 (自動相容按鈕點擊與頁面設定)
+    var activeBtn = document.querySelector('.lang-btn.active');
+    var isEn = (typeof currentLang !== 'undefined' && currentLang === 'en') ||
+               (activeBtn && activeBtn.textContent.toLowerCase().indexOf('english') !== -1) ||
+               (document.documentElement.lang || '').toLowerCase().indexOf('en') === 0;
+
+    // 2. 設定「輸入示範」文字
+    document.querySelectorAll('[id*="InputLabel"], [id*="inputLabel"]').forEach(function(el) {
+      el.textContent = isEn 
+        ? '⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.' 
+        : '⌨️ 輸入示範：請依本卷書七印誓網誓導碼操作';
+    });
+
+    // 3. 清空「【執行指令】第 X 項...」區塊 (移除藍圈圈文字)
+    document.querySelectorAll('[id*="Command"], [id*="command"]').forEach(function(el) {
+      var id = el.id || '';
+      // 排除觸發指令警示區塊，僅針對指令顯示區進行清空
+      if (id.indexOf('Trigger') === -1 && id.indexOf('trigger') === -1) {
+        el.textContent = '';
+      }
+    });
+
+    // 4. 設定「掃描提示標題」文字 (區分一般執行與回傳誓證)
+    document.querySelectorAll('[id*="QrTitle"], [id*="qrTitle"]').forEach(function(el) {
+      var id = el.id || '';
+      if (id.indexOf('Return') !== -1 || id.indexOf('return') !== -1) {
+        el.textContent = isEn 
+          ? '📷 Please scan the [Vow-Guidance QR Code] to return the vow verification' 
+          : '📷 請掃描【誓導 QR Code】完成回傳誓證';
+      } else {
+        el.textContent = isEn 
+          ? '📷 Please scan the [Vow-Guidance QR Code] to execute the command' 
+          : '📷 請掃描【誓導 QR Code】完成執行指令';
+      }
+      
+      el.classList.add('vow-scan-hint-text');
+    });
+  }
+
+  // 鉤住頁面 switchLanguage 函數
+  function hookSwitchLanguage() {
+    if (typeof window.switchLanguage === 'function' && !window.__vowPatchHooked) {
+      var origSwitch = window.switchLanguage;
+      window.switchLanguage = function(lang) {
+        origSwitch(lang);
+        setTimeout(applyTargetedPatch, 20);
+        setTimeout(applyTargetedPatch, 100);
+      };
+      window.__vowPatchHooked = true;
+    }
+  }
+
+  // 監聽點擊語系切換按鈕
+  document.addEventListener('click', function(e) {
+    if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
+      setTimeout(applyTargetedPatch, 30);
+      setTimeout(applyTargetedPatch, 150);
+    }
+  });
+
+  // 頁面載入與延遲修復
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      hookSwitchLanguage();
+      applyTargetedPatch();
+    });
+  } else {
+    hookSwitchLanguage();
+    applyTargetedPatch();
+  }
+
+  setTimeout(applyTargetedPatch, 200);
+  setTimeout(applyTargetedPatch, 500);
+})();
+</script>
+<!-- ============================================================ -->
+<!-- step6 回傳誓證標題整列置中（含藍圈圖示 + 符號 + 文字）         -->
+<!-- 貼在 </body> 前即可                                           -->
+<!-- ============================================================ -->
+<style>
+    /* 強制整個 card-title 置中 */
+    .hud-card .card-title:has(#step6ReturnTitle),
+    .hud-card:has(#step6ReturnTitle) .card-title {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+        width: 100% !important;
+        gap: 8px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    .hud-card .card-title:has(#step6ReturnTitle) i,
+    .hud-card .card-title:has(#step6ReturnTitle) span {
+        display: inline-flex !important;
+        align-items: center !important;
+    }
+
+    #step6ReturnTitle {
+        text-align: center !important;
+    }
+</style>
+
+<script>
+(function () {
+    'use strict';
+
+    function centerReturnTitle() {
+        var titleEl = document.getElementById('step6ReturnTitle');
+        if (!titleEl) return;
+
+        var cardTitle = titleEl.closest('.card-title');
+        if (!cardTitle) return;
+
+        // 整列置中
+        cardTitle.style.display = 'flex';
+        cardTitle.style.justifyContent = 'center';
+        cardTitle.style.alignItems = 'center';
+        cardTitle.style.textAlign = 'center';
+        cardTitle.style.width = '100%';
+        cardTitle.style.gap = '8px';
+        cardTitle.style.marginLeft = 'auto';
+        cardTitle.style.marginRight = 'auto';
+
+        // 藍圈圖示也對齊
+        var icon = cardTitle.querySelector('i');
+        if (icon) {
+            icon.style.display = 'inline-flex';
+            icon.style.alignItems = 'center';
+            icon.style.margin = '0';
+        }
+
+        titleEl.style.textAlign = 'center';
+        titleEl.style.display = 'inline-flex';
+        titleEl.style.alignItems = 'center';
+
+        console.log('✅ step6 回傳誓證標題（含藍圈圖示）已整列置中');
+    }
+
+    // 頁面載入後執行
+    if (document.readyState === 'complete') {
+        setTimeout(centerReturnTitle, 80);
+    } else {
+        window.addEventListener('load', function () {
+            setTimeout(centerReturnTitle, 120);
+        });
+    }
+
+    // 語言切換後再套一次
+    var origSwitch = window.switchLanguage;
+    if (typeof origSwitch === 'function') {
+        window.switchLanguage = function (lang) {
+            origSwitch(lang);
+            setTimeout(centerReturnTitle, 100);
+        };
+    }
+})();
+</script>
 </body>
 </html>
