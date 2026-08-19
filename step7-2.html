@@ -3062,5 +3062,244 @@
     console.log('✅「使用說明」英文模式已改為 Instructions for Use');
 })();
 </script>
+<style>
+/* 針對掃描提示文字精準設置細體與字體大小 */
+.vow-scan-hint-text {
+  font-weight: 300 !important;
+  font-size: 0.88rem !important;
+  letter-spacing: 0.5px !important;
+  opacity: 0.9 !important;
+  line-height: 1.5 !important;
+}
+</style>
+
+<script>
+(function() {
+  /**
+   * 七印誓網精簡版通用修復腳本
+   * 1. 設置中英文輸入示範文字
+   * 2. 清空【執行指令】藍圈圈文字區塊
+   * 3. 設置中英文掃描提示標題
+   */
+  function applyTargetedPatch() {
+    // 1. 判斷當前語系 (自動相容按鈕點擊與頁面設定)
+    var activeBtn = document.querySelector('.lang-btn.active');
+    var isEn = (typeof currentLang !== 'undefined' && currentLang === 'en') ||
+               (activeBtn && activeBtn.textContent.toLowerCase().indexOf('english') !== -1) ||
+               (document.documentElement.lang || '').toLowerCase().indexOf('en') === 0;
+
+    // 2. 設定「輸入示範」文字
+    document.querySelectorAll('[id*="InputLabel"], [id*="inputLabel"]').forEach(function(el) {
+      el.textContent = isEn 
+        ? '⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.' 
+        : '⌨️ 輸入示範：請依本卷七印誓網誓導碼操作';
+    });
+
+    // 3. 清空「【執行指令】第 X 項...」區塊 (移除藍圈圈文字)
+    document.querySelectorAll('[id*="Command"], [id*="command"]').forEach(function(el) {
+      var id = el.id || '';
+      // 排除觸發指令警示區塊，僅針對指令顯示區進行清空
+      if (id.indexOf('Trigger') === -1 && id.indexOf('trigger') === -1) {
+        el.textContent = '';
+      }
+    });
+
+    // 4. 設定「掃描提示標題」文字 (區分一般執行與回傳誓證)
+    document.querySelectorAll('[id*="QrTitle"], [id*="qrTitle"]').forEach(function(el) {
+      var id = el.id || '';
+      if (id.indexOf('Return') !== -1 || id.indexOf('return') !== -1) {
+        el.textContent = isEn 
+          ? '📷 Please scan the [Vow-Guidance QR Code] to return the vow verification' 
+          : '📷 請掃描【誓導 QR Code】完成回傳誓證';
+      } else {
+        el.textContent = isEn 
+          ? '📷 Please scan the [Vow-Guidance QR Code] to execute the command' 
+          : '📷 請掃描【誓導 QR Code】完成執行指令';
+      }
+      
+      el.classList.add('vow-scan-hint-text');
+    });
+  }
+
+  // 鉤住頁面 switchLanguage 函數
+  function hookSwitchLanguage() {
+    if (typeof window.switchLanguage === 'function' && !window.__vowPatchHooked) {
+      var origSwitch = window.switchLanguage;
+      window.switchLanguage = function(lang) {
+        origSwitch(lang);
+        setTimeout(applyTargetedPatch, 20);
+        setTimeout(applyTargetedPatch, 100);
+      };
+      window.__vowPatchHooked = true;
+    }
+  }
+
+  // 監聽點擊語系切換按鈕
+  document.addEventListener('click', function(e) {
+    if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
+      setTimeout(applyTargetedPatch, 30);
+      setTimeout(applyTargetedPatch, 150);
+    }
+  });
+
+  // 頁面載入與延遲修復
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      hookSwitchLanguage();
+      applyTargetedPatch();
+    });
+  } else {
+    hookSwitchLanguage();
+    applyTargetedPatch();
+  }
+
+  setTimeout(applyTargetedPatch, 200);
+  setTimeout(applyTargetedPatch, 500);
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 驗證區輸入示範 與 回傳區完全一致（只留一行標籤，指令整行刪）   -->
+<!-- 貼在 </body> 前即可                                           -->
+<!-- ============================================================ -->
+<style>
+    /* 隱藏兩處指令本體 */
+    #step7_2Command,
+    #step7_2ReturnCommand {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        max-height: 0 !important;
+        overflow: hidden !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-size: 0 !important;
+        line-height: 0 !important;
+        opacity: 0 !important;
+    }
+</style>
+
+<script>
+(function () {
+    var LABEL_ZH = '輸入示範：請依本卷書七印誓網誓導碼操作';
+    var LABEL_EN = 'Input Example: Follow the Seven-Seal Vow Network guidance code in this volume';
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function hide(el) {
+        if (!el) return;
+        el.style.setProperty('display', 'none', 'important');
+        el.style.setProperty('visibility', 'hidden', 'important');
+        el.style.setProperty('height', '0', 'important');
+        el.style.setProperty('max-height', '0', 'important');
+        el.style.setProperty('overflow', 'hidden', 'important');
+        el.style.setProperty('margin', '0', 'important');
+        el.style.setProperty('padding', '0', 'important');
+        el.style.setProperty('font-size', '0', 'important');
+        el.style.setProperty('line-height', '0', 'important');
+        el.style.setProperty('opacity', '0', 'important');
+        try { el.textContent = ''; } catch (e) {}
+    }
+
+    function unify() {
+        var en = isEn();
+        var labelText = en ? LABEL_EN : LABEL_ZH;
+
+        // 1. 兩處標籤統一成同一句
+        var lab1 = document.getElementById('step7_2InputLabel');
+        var lab2 = document.getElementById('step7_2ReturnInputLabel');
+        if (lab1) lab1.textContent = labelText;
+        if (lab2) lab2.textContent = labelText;
+
+        // 2. 隱藏指令本身
+        hide(document.getElementById('step7_2Command'));
+        hide(document.getElementById('step7_2ReturnCommand'));
+
+        // 3. 隱藏「指令那一行」的整個父層（關鍵：讓左圖框變單行，跟右圖一樣）
+        var cmd1 = document.getElementById('step7_2Command');
+        var cmd2 = document.getElementById('step7_2ReturnCommand');
+        if (cmd1 && cmd1.parentElement) hide(cmd1.parentElement);
+        if (cmd2 && cmd2.parentElement) hide(cmd2.parentElement);
+
+        // 4. 再掃一次，清掉殘留的指令文字
+        var REMOVE = [
+            '【執行指令】第二印 修心印 結果',
+            '【執行指令】回傳【第二印 修心印 誓印通過】誓證',
+            '【Execution Command】Second Seal Mind-Refinement Seal Result',
+            '【Execution Command】Return 【Second Seal Mind-Refinement Seal — Oath Seal Passed】 Certificate',
+            '【Execution Command】Return 【Second Seal Mind-Refinement Seal - Oath Seal Passed】 Certificate'
+        ];
+        document.querySelectorAll('span, div').forEach(function (el) {
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t || t.length > 90) return;
+            if (/輸入示範|Input Example/i.test(t)) return;
+            for (var i = 0; i < REMOVE.length; i++) {
+                if (t === REMOVE[i] || t.indexOf(REMOVE[i]) !== -1) {
+                    hide(el);
+                    if (el.parentElement) hide(el.parentElement);
+                    break;
+                }
+            }
+        });
+
+        // 5. 清語系物件，避免切換語系又寫回指令
+        try {
+            if (window.translations) {
+                ['zh', 'en'].forEach(function (lang) {
+                    if (window.translations[lang]) {
+                        window.translations[lang].step7_2Command = '';
+                        window.translations[lang].step7_2ReturnCommand = '';
+                        window.translations[lang].step7_2InputLabel = (lang === 'en') ? LABEL_EN : LABEL_ZH;
+                        window.translations[lang].step7_2ReturnInputLabel = (lang === 'en') ? LABEL_EN : LABEL_ZH;
+                    }
+                });
+            }
+        } catch (e) {}
+    }
+
+    // 壓過舊的 forceChineseCommands
+    function neutralize() {
+        if (typeof window.forceChineseCommands === 'function') {
+            window.forceChineseCommands = function () {};
+        }
+        unify();
+    }
+
+    function run() {
+        neutralize();
+        setTimeout(neutralize, 80);
+        setTimeout(neutralize, 250);
+        setTimeout(neutralize, 600);
+        setTimeout(neutralize, 1200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (lang) {
+            orig(lang);
+            setTimeout(unify, 40);
+            setTimeout(unify, 180);
+            setTimeout(unify, 450);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__unifyInputTimer);
+        window.__unifyInputTimer = setTimeout(unify, 60);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 驗證區與回傳區「輸入示範」已統一（左圖=右圖，指令整行刪除）');
+})();
+</script>
 </body>
 </html>
