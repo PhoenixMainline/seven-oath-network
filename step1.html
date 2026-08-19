@@ -978,5 +978,51 @@
     console.log('✅ 瀏覽器開啟按鈕修復模組已載入');
 })();
 </script>
+<!-- ===== 安全版：只讓「送出即啟主頻連線」圖示+文字連在一起靠左 ===== -->
+<script>
+(function() {
+    function fixNoteAlign() {
+        ['step1Note', 'step1ReturnNote'].forEach(function(id) {
+            var text = document.getElementById(id);
+            if (!text) return;
+
+            var parent = text.parentElement;
+            if (!parent) return;
+
+            // 父層：靠左、寬度100%，不改 display 以免破壞版面
+            parent.style.textAlign = 'left';
+            parent.style.width = '100%';
+
+            // 文字保持 inline，跟圖示同一行
+            text.style.display = 'inline';
+            text.style.textAlign = 'left';
+
+            // 圖示也保持 inline
+            var icon = parent.querySelector('i');
+            if (icon) {
+                icon.style.display = 'inline';
+                icon.style.marginRight = '6px';
+                icon.style.verticalAlign = 'middle';
+            }
+        });
+    }
+
+    // 頁面載入後執行
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fixNoteAlign);
+    } else {
+        fixNoteAlign();
+    }
+
+    // 語系切換後再執行一次
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function(lang) {
+            orig(lang);
+            setTimeout(fixNoteAlign, 80);
+        };
+    }
+})();
+</script>
 </body>
 </html>
