@@ -3329,6 +3329,104 @@
     console.log('✅ 輸入示範完整一行已套用');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 只在藍色線位置插入相機掃描（執行指令用）                        -->
+<!-- 貼在 </body> 最後，Ctrl+F5                                    -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    // 已經插過就不要重複
+    if (document.getElementById('forceQrScan73')) return;
 
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function insert() {
+        if (document.getElementById('forceQrScan73')) return;
+
+        var en = isEn();
+        var html =
+            '<div id="forceQrScan73" class="hud-card" style="margin:14px 0;padding:16px;border:1px solid rgba(168,85,247,0.4);background:rgba(88,28,135,0.2);border-radius:12px;width:100%;">' +
+                '<div style="display:flex;justify-content:center;align-items:center;gap:8px;margin-bottom:12px;color:#e9d5ff;font-weight:bold;font-size:0.95rem;">' +
+                    '<i class="fa-solid fa-qrcode" style="color:#a78bfa;"></i>' +
+                    '<span>' + (en ? 'Please scan the 【Vow-Guidance QR Code】 to complete the command' : '請掃描【誓導 QR Code】完成掃描指令') + '</span>' +
+                '</div>' +
+                '<div style="text-align:center;">' +
+                    '<div id="force-qr-reader-73" style="width:100%;max-width:280px;margin:0 auto;"></div>' +
+                    '<button type="button" id="forceBtnScan73" class="btn-restart" style="margin-top:10px;display:inline-flex;align-items:center;gap:6px;">' +
+                        '<i class="fa-solid fa-camera"></i>' +
+                        '<span>' + (en ? 'Start Scan' : '開始掃描') + '</span>' +
+                    '</button>' +
+                    '<div id="forceQrResult73" style="display:none;margin-top:10px;color:#00e676;">' +
+                        '<i class="fa-solid fa-check-circle"></i> ' + (en ? 'Scan successful!' : '掃描成功！') +
+                    '</div>' +
+                    '<div id="forceCameraGuide73" style="display:none;margin-top:12px;text-align:left;white-space:pre-wrap;font-size:0.8rem;background:rgba(0,0,0,0.35);padding:10px;border-radius:8px;">' +
+                        (en
+                            ? '📷 Unable to launch the camera\n⚙️ Open phone Settings → App Management → Permissions → Camera → Allow\n→ Use browser (Chrome / Edge)\n⚠️ Or scan the physical book QR Code manually'
+                            : '📷 無法啟動相機\n⚙️ 開啟手機「設定」→ 應用程式管理 → 權限 → 相機 → 允許\n→ 使用瀏覽器（Chrome / Edge）\n⚠️ 或自行掃描實體書 QR Code') +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+
+        // 精準插在「回傳誓證」卡片前面（藍色線位置）
+        var returnTitle = document.getElementById('step7_3ReturnTitle');
+        if (returnTitle) {
+            var returnCard = returnTitle.closest('.hud-card') || returnTitle.parentElement;
+            if (returnCard && returnCard.parentNode) {
+                returnCard.insertAdjacentHTML('beforebegin', html);
+            }
+        } else {
+            // 備援：插在觸發指令後面
+            var trigger = document.getElementById('step7_3TriggerNote');
+            if (trigger && trigger.parentElement) {
+                trigger.parentElement.insertAdjacentHTML('afterend', html);
+            }
+        }
+
+        // 按鈕行為
+        var btn = document.getElementById('forceBtnScan73');
+        if (btn) {
+            btn.onclick = function () {
+                if (typeof window.startQRScanner === 'function') {
+                    window.startQRScanner('force-qr-reader-73', 'forceQrResult73', 'forceCameraGuide73');
+                } else if (typeof window.startQRScannerStep8 === 'function') {
+                    window.startQRScannerStep8();
+                } else {
+                    var g = document.getElementById('forceCameraGuide73');
+                    if (g) g.style.display = 'block';
+                }
+            };
+        }
+    }
+
+    function run() {
+        insert();
+        setTimeout(insert, 300);
+        setTimeout(insert, 800);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 語系切換後文字更新
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            var old = document.getElementById('forceQrScan73');
+            if (old) old.remove();
+            setTimeout(insert, 100);
+        };
+    }
+
+    console.log('✅ 已在藍色線位置插入相機掃描');
+})();
+</script>
 </body>
 </html>
