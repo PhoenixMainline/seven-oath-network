@@ -1113,5 +1113,35 @@
     console.log('✅ 輸入示範完整一行已套用');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- step1 下一步：改連到 step1-1（第1項 誓印未通過）              -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    function fix() {
+        // 精確改下一步按鈕
+        document.querySelectorAll('a.btn-action').forEach(function (a) {
+            var t = (a.textContent || '').replace(/\s+/g, ' ');
+            if (t.indexOf('下一步') !== -1 || t.indexOf('Next') !== -1) {
+                a.setAttribute('href', 'step1-1.html');
+            }
+        });
+        // 備援：任何指向 step2 的下一步
+        document.querySelectorAll('a[href="step2.html"]').forEach(function (a) {
+            var t = (a.textContent || '').replace(/\s+/g, ' ');
+            if (t.indexOf('下一步') !== -1 || t.indexOf('Next') !== -1 || t.indexOf('arrow-right') !== -1) {
+                a.setAttribute('href', 'step1-1.html');
+            }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fix);
+    } else {
+        fix();
+    }
+    setTimeout(fix, 200);
+})();
+</script>
 </body>
 </html>
