@@ -1114,33 +1114,53 @@
 })();
 </script>
 <!-- ============================================================ -->
-<!-- step1 下一步：改連到 step1-1（第1項 誓印未通過）              -->
+<!-- step1 下一步：強制改連 step1-1.html（第1項 誓印未通過）       -->
 <!-- ============================================================ -->
 <script>
 (function () {
+    if (window.__forceNextTo11) return;
+    window.__forceNextTo11 = true;
+
     function fix() {
-        // 精確改下一步按鈕
-        document.querySelectorAll('a.btn-action').forEach(function (a) {
+        // 1) 直接改所有「下一步」的 href
+        document.querySelectorAll('a.btn-action, a[href]').forEach(function (a) {
             var t = (a.textContent || '').replace(/\s+/g, ' ');
-            if (t.indexOf('下一步') !== -1 || t.indexOf('Next') !== -1) {
-                a.setAttribute('href', 'step1-1.html');
-            }
-        });
-        // 備援：任何指向 step2 的下一步
-        document.querySelectorAll('a[href="step2.html"]').forEach(function (a) {
-            var t = (a.textContent || '').replace(/\s+/g, ' ');
-            if (t.indexOf('下一步') !== -1 || t.indexOf('Next') !== -1 || t.indexOf('arrow-right') !== -1) {
-                a.setAttribute('href', 'step1-1.html');
-            }
+            var href = (a.getAttribute('href') || '');
+            var isNext = t.indexOf('下一步') !== -1 || t.indexOf('Next') !== -1 ||
+                         a.querySelector('.fa-arrow-right');
+            if (!isNext) return;
+            // 不要動「上一步」
+            if (t.indexOf('上一步') !== -1 || t.indexOf('Previous') !== -1) return;
+            a.setAttribute('href', 'step1-1.html');
         });
     }
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', fix);
-    } else {
+    // 2) 點擊攔截（即使 href 被蓋回去也強制跳）
+    document.addEventListener('click', function (e) {
+        var a = e.target.closest('a');
+        if (!a) return;
+        var t = (a.textContent || '').replace(/\s+/g, ' ');
+        if (t.indexOf('上一步') !== -1 || t.indexOf('Previous') !== -1) return;
+        var isNext = t.indexOf('下一步') !== -1 || t.indexOf('Next') !== -1 ||
+                     a.querySelector('.fa-arrow-right');
+        if (!isNext) return;
+        e.preventDefault();
+        e.stopPropagation();
+        location.href = 'step1-1.html';
+    }, true);
+
+    function run() {
         fix();
+        setTimeout(fix, 100);
+        setTimeout(fix, 400);
+        setTimeout(fix, 800);
     }
-    setTimeout(fix, 200);
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
 })();
 </script>
 </body>
