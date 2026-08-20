@@ -1232,5 +1232,99 @@
         height: 0 !important;
     }
 </style>
+<!-- ============================================================ -->
+<!-- 第1項連結對應修正：對頻總判定 → step1；誓印未通過 → step1-1   -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__fixStep1Links) return;
+    window.__fixStep1Links = true;
+
+    function apply() {
+        document.querySelectorAll('a, button, [onclick], [href]').forEach(function (el) {
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            var href = el.getAttribute('href') || '';
+            var onclick = el.getAttribute('onclick') || '';
+
+            // 列文字判斷
+            var isPassJudge =
+                (t.indexOf('對頻總判定') !== -1 && t.indexOf('誓印未通過') === -1) ||
+                (t.indexOf('開啟誓魂密鑰對頻總判定') !== -1 && t.indexOf('誓印通過') !== -1 && t.indexOf('誓印未通過') !== -1 && t.indexOf('補誓') === -1);
+
+            var isNotPass =
+                t.indexOf('誓印未通過') !== -1 ||
+                (t.indexOf('開啟誓魂密鑰對頻總判定') !== -1 && t.indexOf('誓印未通過') !== -1);
+
+            var isStep2 =
+                t.indexOf('被代理誓印') !== -1 ||
+                (t.indexOf('第2項') !== -1 && t.indexOf('代理') !== -1);
+
+            // 「進入 →」按鈕：依同一列文字決定目標
+            var row = el.closest('tr, .row, .list-item, .nav-item, div');
+            var rowText = row ? (row.textContent || '').replace(/\s+/g, ' ') : t;
+
+            if (el.tagName === 'A' || href || /進入/.test(t)) {
+                // 第1項 對頻總判定（通過/未通過判定頁）
+                if (
+                    (rowText.indexOf('對頻總判定') !== -1 && rowText.indexOf('誓印未通過') === -1) ||
+                    (rowText.indexOf('開啟誓魂密鑰對頻總判定') !== -1 && rowText.indexOf('誓印通過') !== -1 && rowText.indexOf('補誓') === -1 && rowText.indexOf('第1項 誓印未通過') === -1)
+                ) {
+                    if (el.tagName === 'A') el.setAttribute('href', 'step1.html');
+                    if (onclick) el.setAttribute('onclick', "location.href='step1.html'");
+                }
+
+                // 第1項 誓印未通過（補誓）
+                if (
+                    rowText.indexOf('第1項 誓印未通過') !== -1 ||
+                    (rowText.indexOf('誓印未通過') !== -1 && rowText.indexOf('開啟誓魂密鑰對頻總判定') !== -1) ||
+                    (rowText.indexOf('補誓') !== -1 && rowText.indexOf('第1項') !== -1)
+                ) {
+                    if (el.tagName === 'A') el.setAttribute('href', 'step1-1.html');
+                    if (onclick) el.setAttribute('onclick', "location.href='step1-1.html'");
+                }
+
+                // 第2項
+                if (rowText.indexOf('被代理誓印') !== -1 || (rowText.indexOf('第2項') !== -1 && rowText.indexOf('代理') !== -1)) {
+                    if (el.tagName === 'A') el.setAttribute('href', 'step2.html');
+                    if (onclick) el.setAttribute('onclick', "location.href='step2.html'");
+                }
+            }
+        });
+
+        // step1.html 的「下一步」→ step1-1.html（誓印未通過補誓）
+        var nextBtn = document.getElementById('btnNext') || document.querySelector('[id*="btnNext"], .btn-next, a.btn-action[href*="step"]');
+        if (nextBtn) {
+            var page = (location.pathname || '').toLowerCase();
+            if (page.indexOf('step1.html') !== -1 && page.indexOf('step1-1') === -1) {
+                if (nextBtn.tagName === 'A') nextBtn.setAttribute('href', 'step1-1.html');
+                nextBtn.onclick = function (e) {
+                    e.preventDefault();
+                    location.href = 'step1-1.html';
+                };
+            }
+            // step1-1 的下一步 → step2
+            if (page.indexOf('step1-1') !== -1) {
+                if (nextBtn.tagName === 'A') nextBtn.setAttribute('href', 'step2.html');
+                nextBtn.onclick = function (e) {
+                    e.preventDefault();
+                    location.href = 'step2.html';
+                };
+            }
+        }
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 200);
+        setTimeout(apply, 600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+})();
+</script>
 </body>
 </html>
