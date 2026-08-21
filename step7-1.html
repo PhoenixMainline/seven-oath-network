@@ -4856,5 +4856,184 @@
     obs.observe(document.body, { childList: true, subtree: true, characterData: true });
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 只改：回傳誓證 QR 標題（強制細字 + 完整文字）                -->
+<!-- ============================================================ -->
+<style>
+    [id*="ReturnQrTitle"], [id*="returnQrTitle"] {
+        font-size: 0.88rem !important;
+        font-weight: 300 !important;
+        letter-spacing: 0.5px !important;
+        line-height: 1.55 !important;
+        color: #e9d5ff !important;
+    }
+</style>
+<script>
+(function () {
+    if (window.__forceReturnQrTitle) return;
+    window.__forceReturnQrTitle = true;
+
+    var ZH = '📷 請掃描【誓導 QR Code】完成回傳誓證';
+    var EN = '📷 Please scan the 【Vow-Guidance QR Code】 to complete Return Oath Certificate';
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var text = isEn() ? EN : ZH;
+
+        // 所有 ReturnQrTitle
+        document.querySelectorAll('[id*="ReturnQrTitle"], [id*="returnQrTitle"]').forEach(function (el) {
+            el.textContent = text;
+            el.style.setProperty('font-size', '0.88rem', 'important');
+            el.style.setProperty('font-weight', '300', 'important');
+            el.style.setProperty('letter-spacing', '0.5px', 'important');
+            el.style.setProperty('line-height', '1.55', 'important');
+            el.style.setProperty('color', '#e9d5ff', 'important');
+        });
+
+        // 文字備援
+        document.querySelectorAll('span, div, p').forEach(function (el) {
+            if (el.children && el.children.length > 2) return;
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t || t.length > 90) return;
+            if (
+                (t.indexOf('請掃描') !== -1 || t.indexOf('Please scan') !== -1) &&
+                (t.indexOf('回傳誓證') !== -1 || t.indexOf('Return Oath') !== -1 || t.indexOf('回傳') !== -1) &&
+                t.indexOf('執行指令') === -1 && t.indexOf('Execution') === -1
+            ) {
+                el.textContent = text;
+                el.style.setProperty('font-size', '0.88rem', 'important');
+                el.style.setProperty('font-weight', '300', 'important');
+                el.style.setProperty('letter-spacing', '0.5px', 'important');
+                el.style.setProperty('line-height', '1.55', 'important');
+                el.style.setProperty('color', '#e9d5ff', 'important');
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 400);
+        setTimeout(apply, 900);
+        setTimeout(apply, 1600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__forceReturnQrTitleT);
+        window.__forceReturnQrTitleT = setTimeout(apply, 60);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 只改：執行指令 QR 標題（強制細字 + 完整文字）                -->
+<!-- ============================================================ -->
+<style>
+    [id*="QrTitle"]:not([id*="Return"]):not([id*="return"]),
+    #step1QrTitle, #step7_1QrTitle, #step7_2QrTitle,
+    #step7_3QrTitle, #step7_4QrTitle, #step7_5QrTitle {
+        font-size: 0.88rem !important;
+        font-weight: 300 !important;
+        letter-spacing: 0.5px !important;
+        line-height: 1.55 !important;
+        color: #e9d5ff !important;
+    }
+</style>
+<script>
+(function () {
+    if (window.__forceExecQrTitle) return;
+    window.__forceExecQrTitle = true;
+
+    var ZH = '📷 請掃描【誓導 QR Code】完成執行指令';
+    var EN = '📷 Please scan the 【Vow-Guidance QR Code】 to complete Execution Command';
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var text = isEn() ? EN : ZH;
+
+        document.querySelectorAll('[id*="QrTitle"], [id*="qrTitle"]').forEach(function (el) {
+            var id = el.id || '';
+            if (/Return|return/i.test(id)) return; // 不碰回傳
+            el.textContent = text;
+            el.style.setProperty('font-size', '0.88rem', 'important');
+            el.style.setProperty('font-weight', '300', 'important');
+            el.style.setProperty('letter-spacing', '0.5px', 'important');
+            el.style.setProperty('line-height', '1.55', 'important');
+            el.style.setProperty('color', '#e9d5ff', 'important');
+        });
+
+        document.querySelectorAll('span, div, p').forEach(function (el) {
+            if (el.children && el.children.length > 2) return;
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t || t.length > 90) return;
+            if (
+                (t.indexOf('請掃描') !== -1 || t.indexOf('Please scan') !== -1) &&
+                (t.indexOf('執行指令') !== -1 || t.indexOf('Execution Command') !== -1)
+            ) {
+                el.textContent = text;
+                el.style.setProperty('font-size', '0.88rem', 'important');
+                el.style.setProperty('font-weight', '300', 'important');
+                el.style.setProperty('letter-spacing', '0.5px', 'important');
+                el.style.setProperty('line-height', '1.55', 'important');
+                el.style.setProperty('color', '#e9d5ff', 'important');
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 400);
+        setTimeout(apply, 900);
+        setTimeout(apply, 1600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__forceExecQrTitleT);
+        window.__forceExecQrTitleT = setTimeout(apply, 60);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+})();
+</script>
 </body>
 </html>
