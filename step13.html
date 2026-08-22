@@ -620,5 +620,426 @@ apply('zh');
     console.log('✅ 輸入示範完整一行已套用');
 })();
 </script>
+<script>
+(function () {
+  function isEn() {
+    if (typeof currentLang !== 'undefined') return currentLang === 'en';
+    var a = document.querySelector('.lang-btn.active');
+    return !!(a && /english|en/i.test(a.textContent || ''));
+  }
+
+  // 載入示範資料
+  function loadDemo() {
+    document.getElementById('proxyName').value = isEn()
+      ? 'Delegating Oath-Seal [Legal Full Name]'
+      : '代理誓印【法定全名】';
+    document.getElementById('delegatedName').value = isEn()
+      ? 'Delegated Oath-Seal [Legal Full Name]'
+      : '被代理誓印【法定全名】';
+    var d = new Date();
+    document.getElementById('vowDate').value =
+      d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    document.getElementById('signField').value = isEn()
+      ? 'Signature / Oath Seal Stamp'
+      : '簽名／誓印落章（電子／手寫／圖騰）';
+    document.getElementById('formNote').value = isEn()
+      ? 'Demo data for preview only'
+      : '示範資料，僅供預覽';
+  }
+
+  function doPreview() {
+    document.getElementById('pvV1').textContent = document.getElementById('proxyName').value || '—';
+    document.getElementById('pvV2').textContent = document.getElementById('delegatedName').value || '—';
+    document.getElementById('pvV3').textContent = document.getElementById('vowDate').value || '—';
+    document.getElementById('pvV4').textContent = document.getElementById('signField').value || '—';
+    document.getElementById('pvV5').textContent = document.getElementById('formNote').value || '—';
+    document.getElementById('previewBox').style.display = 'block';
+  }
+
+  function doReset() {
+    ['proxyName', 'delegatedName', 'vowDate', 'signField', 'formNote'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    document.getElementById('previewBox').style.display = 'none';
+  }
+
+  function doClosePreview() {
+    document.getElementById('previewBox').style.display = 'none';
+  }
+
+  // 綁定
+  function bind() {
+    var p = document.getElementById('btnPreview');
+    var r = document.getElementById('btnReset');
+    var c = document.getElementById('btnClosePreview');
+    var l = document.getElementById('btnLoadDemo');
+    if (p && !p.__bound) { p.__bound = true; p.addEventListener('click', doPreview); }
+    if (r && !r.__bound) { r.__bound = true; r.addEventListener('click', doReset); }
+    if (c && !c.__bound) { c.__bound = true; c.addEventListener('click', doClosePreview); }
+    if (l && !l.__bound) { l.__bound = true; l.addEventListener('click', loadDemo); }
+  }
+
+  // 英文標籤
+  function applyFormLang() {
+    var en = isEn();
+    var map = {
+      formTitle: en ? '📋【Submission Procedure】' : '📋【提交程序】',
+      formSecProxy: en ? 'Delegating / Delegated Info' : '代理／被代理資訊',
+      lblProxy: en ? 'Delegating Oath-Seal Name' : '代理誓印全名',
+      lblDelegated: en ? 'Delegated Oath-Seal Name' : '被代理誓印全名',
+      lblDate: en ? 'Vow Activation Date' : '啟願日期',
+      lblSign: en ? 'Signature / Oath Seal Stamp' : '簽名／誓印落章',
+      lblNote: en ? 'Notes' : '備註',
+      btnPreviewText: en ? 'Preview Form' : '預覽表單',
+      btnResetText: en ? 'Reset' : '重置',
+      btnClosePreviewText: en ? 'Close Preview' : '關閉預覽',
+      btnLoadDemoText: en ? 'Load Demo' : '載入示範',
+      previewHeader: en ? 'Preview Submission' : '預覽提交內容',
+      pvL1: en ? 'Delegating Oath-Seal' : '代理誓印',
+      pvL2: en ? 'Delegated Oath-Seal' : '被代理誓印',
+      pvL3: en ? 'Vow Activation Date' : '啟願日期',
+      pvL4: en ? 'Signature / Stamp' : '簽名／誓印落章',
+      pvL5: en ? 'Notes' : '備註',
+      captureHint: en ? 'Please screenshot the preview before submitting the command' : '請截圖保存預覽內容後再送出指令'
+    };
+    Object.keys(map).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = map[id];
+    });
+  }
+
+  function run() {
+    bind();
+    applyFormLang();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+
+  var orig = window.switchLanguage;
+  if (typeof orig === 'function') {
+    window.switchLanguage = function (l) {
+      orig(l);
+      setTimeout(applyFormLang, 60);
+      setTimeout(applyFormLang, 200);
+    };
+  }
+})();
+</script>
+<!-- ============================================================ -->
+<!-- step13：比照 step7-7 整合表單四按鈕（預覽／重置／關閉預覽／載入示範） -->
+<!-- ============================================================ -->
+<style>
+.form-actions{display:flex!important;flex-wrap:wrap!important;gap:10px!important;justify-content:center!important;margin-top:18px!important}
+.btn-preview,.btn-reset,#btnClosePreview,#btnLoadDemo{
+  display:inline-flex!important;align-items:center!important;gap:8px!important;
+  padding:10px 22px!important;border-radius:24px!important;font-weight:700!important;
+  font-size:.9rem!important;cursor:pointer!important;border:none!important;
+}
+.btn-preview{background:linear-gradient(135deg,#7c3aed,#6d28d9)!important;color:#fff!important;box-shadow:0 4px 20px rgba(124,58,237,.4)!important}
+.btn-reset{background:rgba(124,58,237,.15)!important;color:#e9d5ff!important;border:1px solid rgba(168,85,247,.3)!important}
+#btnClosePreview{background:rgba(232,96,74,.15)!important;border:1px solid rgba(232,96,74,.35)!important;color:#f5a97f!important}
+#btnLoadDemo{background:linear-gradient(135deg,#059669,#047857)!important;color:#fff!important}
+.preview-submit-container{display:none;margin-top:16px;padding:16px;background:rgba(0,0,0,.5);border:2px solid rgba(168,85,247,.2);border-radius:12px}
+.capture-hint{text-align:center;margin-top:12px;padding:10px;border:1px dashed rgba(0,230,118,.25);border-radius:8px;color:#8a7e6b;font-size:.8rem}
+</style>
+
+<script>
+(function () {
+  if (window.__step13FormButtons) return;
+  window.__step13FormButtons = true;
+
+  function isEn() {
+    if (typeof currentLang !== 'undefined') return currentLang === 'en';
+    var a = document.querySelector('.lang-btn.active');
+    return !!(a && /english|en/i.test(a.textContent || ''));
+  }
+
+  // 1) 補「簽名／誓印落章」欄位（若還沒有）
+  function ensureSignField() {
+    if (document.getElementById('signField')) return;
+    var noteRow = document.getElementById('formNote');
+    if (!noteRow) return;
+    var row = noteRow.closest('.form-row');
+    if (!row) return;
+    var div = document.createElement('div');
+    div.className = 'form-row';
+    div.innerHTML =
+      '<label id="lblSign">簽名／誓印落章</label>' +
+      '<input type="text" id="signField" placeholder="簽名／誓印落章（電子／手寫／圖騰）">';
+    row.parentNode.insertBefore(div, row);
+  }
+
+  // 2) 改成四顆按鈕
+  function ensureButtons() {
+    var actions = document.querySelector('.form-actions');
+    if (!actions) return;
+    actions.innerHTML =
+      '<button type="button" class="btn-preview" id="btnPreview"><i class="fa-solid fa-eye"></i> <span id="btnPreviewText">預覽表單</span></button>' +
+      '<button type="button" class="btn-reset" id="btnReset"><i class="fa-solid fa-rotate-left"></i> <span id="btnResetText">重置</span></button>' +
+      '<button type="button" id="btnClosePreview"><i class="fa-solid fa-xmark"></i> <span id="btnClosePreviewText">關閉預覽</span></button>' +
+      '<button type="button" id="btnLoadDemo"><i class="fa-solid fa-file-import"></i> <span id="btnLoadDemoText">載入示範</span></button>';
+  }
+
+  // 3) 預覽表補簽名欄
+  function ensurePreviewRows() {
+    var box = document.getElementById('previewBox');
+    if (!box) return;
+    var table = box.querySelector('table');
+    if (!table) return;
+    if (!document.getElementById('pvV4_sign')) {
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td id="pvL4_sign">簽名／誓印落章</td><td id="pvV4_sign">—</td>';
+      // 插在備註前
+      var noteRow = document.getElementById('pvL4') ? document.getElementById('pvL4').parentNode : null;
+      if (noteRow) table.insertBefore(tr, noteRow);
+      else table.appendChild(tr);
+    }
+    if (!box.querySelector('.capture-hint')) {
+      var hint = document.createElement('div');
+      hint.className = 'capture-hint';
+      hint.innerHTML = '<i class="fa-solid fa-camera" style="color:#00e676;margin-right:6px;"></i><span id="captureHint">請截圖保存預覽內容後再送出指令</span>';
+      box.appendChild(hint);
+    }
+  }
+
+  function loadDemo() {
+    document.getElementById('proxyName').value = isEn()
+      ? 'Delegating Oath-Seal [Legal Full Name]'
+      : '代理誓印【法定全名】';
+    document.getElementById('delegatedName').value = isEn()
+      ? 'Delegated Oath-Seal [Legal Full Name]'
+      : '被代理誓印【法定全名】';
+    var d = new Date();
+    document.getElementById('vowDate').value =
+      d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    var sf = document.getElementById('signField');
+    if (sf) sf.value = isEn() ? 'Signature / Oath Seal Stamp' : '簽名／誓印落章（電子／手寫／圖騰）';
+    document.getElementById('formNote').value = isEn() ? 'Demo data for preview only' : '示範資料，僅供預覽';
+  }
+
+  function doPreview() {
+    document.getElementById('pvV1').textContent = document.getElementById('proxyName').value || '—';
+    document.getElementById('pvV2').textContent = document.getElementById('delegatedName').value || '—';
+    document.getElementById('pvV3').textContent = document.getElementById('vowDate').value || '—';
+    var sf = document.getElementById('signField');
+    var pvSign = document.getElementById('pvV4_sign');
+    if (pvSign) pvSign.textContent = (sf && sf.value) ? sf.value : '—';
+    document.getElementById('pvV4').textContent = document.getElementById('formNote').value || '—';
+    document.getElementById('previewBox').style.display = 'block';
+  }
+
+  function doReset() {
+    ['proxyName', 'delegatedName', 'vowDate', 'signField', 'formNote'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    document.getElementById('previewBox').style.display = 'none';
+  }
+
+  function doClosePreview() {
+    document.getElementById('previewBox').style.display = 'none';
+  }
+
+  function bind() {
+    var p = document.getElementById('btnPreview');
+    var r = document.getElementById('btnReset');
+    var c = document.getElementById('btnClosePreview');
+    var l = document.getElementById('btnLoadDemo');
+    if (p && !p.__bound13) { p.__bound13 = true; p.onclick = doPreview; }
+    if (r && !r.__bound13) { r.__bound13 = true; r.onclick = doReset; }
+    if (c && !c.__bound13) { c.__bound13 = true; c.onclick = doClosePreview; }
+    if (l && !l.__bound13) { l.__bound13 = true; l.onclick = loadDemo; }
+  }
+
+  function applyLang() {
+    var en = isEn();
+    var map = {
+      formTitle: en ? '📋【Submission Procedure】' : '📋【提交程序】',
+      lblProxy: en ? 'Delegating Oath-Seal Name' : '代理誓印全名',
+      lblDelegated: en ? 'Delegated Oath-Seal Name' : '被代理誓印全名',
+      lblDate: en ? 'Vow Activation Date' : '啟願日期',
+      lblSign: en ? 'Signature / Oath Seal Stamp' : '簽名／誓印落章',
+      lblNote: en ? 'Notes' : '備註',
+      btnPreviewText: en ? 'Preview Form' : '預覽表單',
+      btnResetText: en ? 'Reset' : '重置',
+      btnClosePreviewText: en ? 'Close Preview' : '關閉預覽',
+      btnLoadDemoText: en ? 'Load Demo' : '載入示範',
+      previewHeader: en ? 'Preview Submission' : '預覽提交內容',
+      pvL1: en ? 'Delegating Oath-Seal' : '代理誓印',
+      pvL2: en ? 'Delegated Oath-Seal' : '被代理誓印',
+      pvL3: en ? 'Vow Activation Date' : '啟願日期',
+      pvL4_sign: en ? 'Signature / Stamp' : '簽名／誓印落章',
+      pvL4: en ? 'Notes' : '備註',
+      captureHint: en ? 'Please screenshot the preview before submitting the command' : '請截圖保存預覽內容後再送出指令'
+    };
+    Object.keys(map).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = map[id];
+    });
+    // placeholder
+    var sf = document.getElementById('signField');
+    if (sf) sf.placeholder = en ? 'Signature / Oath Seal Stamp (e-sign / handwriting / totem)' : '簽名／誓印落章（電子／手寫／圖騰）';
+  }
+
+  function run() {
+    ensureSignField();
+    ensureButtons();
+    ensurePreviewRows();
+    bind();
+    applyLang();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+  setTimeout(run, 300);
+
+  var orig = window.switchLanguage;
+  if (typeof orig === 'function') {
+    window.switchLanguage = function (l) {
+      orig(l);
+      setTimeout(applyLang, 60);
+      setTimeout(applyLang, 200);
+    };
+  }
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 底部：完成 → 下一步（中英）                                  -->
+<!-- ============================================================ -->
+<script>
+(function () {
+  function isEn() {
+    if (typeof currentLang !== 'undefined') return currentLang === 'en';
+    var a = document.querySelector('.lang-btn.active');
+    return !!(a && /english|en/i.test(a.textContent || ''));
+  }
+
+  function apply() {
+    var en = isEn();
+    // 按鈕文字
+    var next = document.getElementById('btnNextText');
+    if (next) next.textContent = en ? 'Next' : '下一步';
+
+    // 備援：掃整個 footer 裡寫「完成」的 span
+    document.querySelectorAll('.hud-footer span, .btn-action span').forEach(function (el) {
+      var t = (el.textContent || '').trim();
+      if (t === '完成' || t === 'Complete' || t === '完成 ✓' || t === 'Complete ✓') {
+        el.textContent = en ? 'Next' : '下一步';
+      }
+    });
+  }
+
+  function run() {
+    apply();
+    setTimeout(apply, 150);
+    setTimeout(apply, 400);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+
+  var orig = window.switchLanguage;
+  if (typeof orig === 'function') {
+    window.switchLanguage = function (l) {
+      orig(l);
+      setTimeout(apply, 50);
+      setTimeout(apply, 200);
+    };
+  }
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 底部「下一步」：✓ 改成 → 箭頭（中英）                        -->
+<!-- ============================================================ -->
+<script>
+(function () {
+  function isEn() {
+    if (typeof currentLang !== 'undefined') return currentLang === 'en';
+    var a = document.querySelector('.lang-btn.active');
+    return !!(a && /english|en/i.test(a.textContent || ''));
+  }
+
+  function apply() {
+    var en = isEn();
+    var text = en ? 'Next' : '下一步';
+
+    // 1) 有 id 的 span
+    var next = document.getElementById('btnNextText');
+    if (next) {
+      next.textContent = text;
+      // 把後面的 ✓ 圖示改成箭頭
+      var parent = next.closest('a') || next.parentElement;
+      if (parent) {
+        var icon = parent.querySelector('i');
+        if (icon) {
+          icon.className = 'fa-solid fa-arrow-right';
+        }
+      }
+    }
+
+    // 2) 掃 footer 所有按鈕
+    document.querySelectorAll('.hud-footer a.btn-action, .hud-footer .btn-action').forEach(function (btn) {
+      var t = (btn.textContent || '').replace(/\s+/g, ' ').trim();
+      if (/完成|Complete|下一步|Next/i.test(t)) {
+        // 文字
+        var span = btn.querySelector('span');
+        if (span) span.textContent = text;
+        else {
+          // 清掉舊內容再寫
+          var icon = btn.querySelector('i');
+          btn.innerHTML = '';
+          if (icon) {
+            icon.className = 'fa-solid fa-arrow-right';
+            btn.appendChild(icon);
+          } else {
+            var i = document.createElement('i');
+            i.className = 'fa-solid fa-arrow-right';
+            btn.appendChild(i);
+          }
+          var s = document.createElement('span');
+          s.id = 'btnNextText';
+          s.textContent = text;
+          btn.appendChild(s);
+        }
+        // 圖示改箭頭
+        var ic = btn.querySelector('i');
+        if (ic) ic.className = 'fa-solid fa-arrow-right';
+      }
+    });
+  }
+
+  function run() {
+    apply();
+    setTimeout(apply, 100);
+    setTimeout(apply, 350);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+
+  var orig = window.switchLanguage;
+  if (typeof orig === 'function') {
+    window.switchLanguage = function (l) {
+      orig(l);
+      setTimeout(apply, 50);
+      setTimeout(apply, 200);
+    };
+  }
+})();
+</script>
 </body>
 </html>
