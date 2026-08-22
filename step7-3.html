@@ -3602,5 +3602,72 @@
     obs.observe(document.body, { childList: true, subtree: true });
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 輸入示範：字級／字重對齊右圖細字                              -->
+<!-- ============================================================ -->
+<style>
+    [id*="InputLabel"], [id*="inputLabel"],
+    #step7_3InputLabel, #step7_3ReturnInputLabel {
+        font-size: 0.88rem !important;
+        font-weight: 300 !important;
+        letter-spacing: 0.4px !important;
+        line-height: 1.55 !important;
+        color: #e9d5ff !important;
+    }
+</style>
+<script>
+(function () {
+    if (window.__demoThinFont) return;
+    window.__demoThinFont = true;
+
+    function thin(el) {
+        if (!el) return;
+        el.style.setProperty('font-size', '0.88rem', 'important');
+        el.style.setProperty('font-weight', '300', 'important');
+        el.style.setProperty('letter-spacing', '0.4px', 'important');
+        el.style.setProperty('line-height', '1.55', 'important');
+        el.style.setProperty('color', '#e9d5ff', 'important');
+    }
+
+    function apply() {
+        document.querySelectorAll('[id*="InputLabel"], [id*="inputLabel"]').forEach(thin);
+
+        document.querySelectorAll('div, span, p').forEach(function (el) {
+            if (el.children && el.children.length > 2) return;
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t || t.length > 90) return;
+            if (
+                t.indexOf('輸入示範') !== -1 ||
+                t.indexOf('Please follow the Seven-Seal') !== -1 ||
+                t.indexOf('請依本卷') !== -1
+            ) {
+                thin(el);
+                // 父層紫框內文字也細
+                if (el.parentElement) thin(el.parentElement);
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 200);
+        setTimeout(apply, 600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 80);
+        };
+    }
+})();
+</script>
 </body>
 </html>
