@@ -678,5 +678,69 @@
     console.log('✅ 輸入示範完整一行已套用');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- ② 回傳誓證（略）：圖示＋文字強制置中（加強版）                  -->
+<!-- ============================================================ -->
+<style>
+    /* 直接鎖定含 returnTitle 的 card-title */
+    #returnTitle {
+        text-align: center !important;
+        margin: 0 auto !important;
+        display: inline !important;
+    }
+</style>
+<script>
+(function () {
+    function centerReturnBlock() {
+        var title = document.getElementById('returnTitle');
+        if (!title) return;
+
+        // 往上找 .card-title
+        var row = title.closest('.card-title');
+        if (!row) row = title.parentElement;
+        if (!row) return;
+
+        // 整列強制置中
+        row.style.cssText += ';display:flex!important;flex-direction:row!important;justify-content:center!important;align-items:center!important;width:100%!important;text-align:center!important;gap:10px!important;';
+
+        // 圖示
+        var icon = row.querySelector('i');
+        if (icon) {
+            icon.style.cssText += ';margin:0!important;float:none!important;position:static!important;display:inline-block!important;';
+        }
+
+        // 文字
+        title.style.cssText += ';text-align:center!important;margin:0!important;display:inline!important;';
+    }
+
+    function run() {
+        centerReturnBlock();
+        setTimeout(centerReturnBlock, 100);
+        setTimeout(centerReturnBlock, 300);
+        setTimeout(centerReturnBlock, 700);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(centerReturnBlock, 50);
+            setTimeout(centerReturnBlock, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__centerReturnT);
+        window.__centerReturnT = setTimeout(centerReturnBlock, 60);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+})();
+</script>
 </body>
 </html>
