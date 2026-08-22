@@ -598,5 +598,163 @@
     console.log('✅ 瀏覽器開啟按鈕修復模組已載入');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 底部「下一步」：✓ 改成 → 箭頭（中英）                        -->
+<!-- ============================================================ -->
+<script>
+(function () {
+  function isEn() {
+    if (typeof currentLang !== 'undefined') return currentLang === 'en';
+    var a = document.querySelector('.lang-btn.active');
+    return !!(a && /english|en/i.test(a.textContent || ''));
+  }
+
+  function apply() {
+    var en = isEn();
+    var text = en ? 'Next' : '下一步';
+
+    // 1) 有 id 的 span
+    var next = document.getElementById('btnNextText');
+    if (next) {
+      next.textContent = text;
+      // 把後面的 ✓ 圖示改成箭頭
+      var parent = next.closest('a') || next.parentElement;
+      if (parent) {
+        var icon = parent.querySelector('i');
+        if (icon) {
+          icon.className = 'fa-solid fa-arrow-right';
+        }
+      }
+    }
+
+    // 2) 掃 footer 所有按鈕
+    document.querySelectorAll('.hud-footer a.btn-action, .hud-footer .btn-action').forEach(function (btn) {
+      var t = (btn.textContent || '').replace(/\s+/g, ' ').trim();
+      if (/完成|Complete|下一步|Next/i.test(t)) {
+        // 文字
+        var span = btn.querySelector('span');
+        if (span) span.textContent = text;
+        else {
+          // 清掉舊內容再寫
+          var icon = btn.querySelector('i');
+          btn.innerHTML = '';
+          if (icon) {
+            icon.className = 'fa-solid fa-arrow-right';
+            btn.appendChild(icon);
+          } else {
+            var i = document.createElement('i');
+            i.className = 'fa-solid fa-arrow-right';
+            btn.appendChild(i);
+          }
+          var s = document.createElement('span');
+          s.id = 'btnNextText';
+          s.textContent = text;
+          btn.appendChild(s);
+        }
+        // 圖示改箭頭
+        var ic = btn.querySelector('i');
+        if (ic) ic.className = 'fa-solid fa-arrow-right';
+      }
+    });
+  }
+
+  function run() {
+    apply();
+    setTimeout(apply, 100);
+    setTimeout(apply, 350);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+
+  var orig = window.switchLanguage;
+  if (typeof orig === 'function') {
+    window.switchLanguage = function (l) {
+      orig(l);
+      setTimeout(apply, 50);
+      setTimeout(apply, 200);
+    };
+  }
+})();
+</script>
+<!-- ============================================================ -->
+<!-- step9 底部導航：上一步→step8 / 下一步→step10，✓改→          -->
+<!-- ============================================================ -->
+<script>
+(function () {
+  function isEn() {
+    if (typeof currentLang !== 'undefined') return currentLang === 'en';
+    var a = document.querySelector('.lang-btn.active');
+    return !!(a && /english|en/i.test(a.textContent || ''));
+  }
+
+  function apply() {
+    var en = isEn();
+
+    // 上一步 → step8.html
+    var back = document.getElementById('btnBack');
+    if (back) {
+      back.href = 'step8.html';
+      var backSpan = document.getElementById('btnBackText');
+      if (backSpan) backSpan.textContent = en ? 'Previous' : '上一步';
+      var backIcon = back.querySelector('i');
+      if (backIcon) backIcon.className = 'fa-solid fa-arrow-left';
+    }
+
+    // 下一步 → step10.html（✓ 改 →）
+    var next = document.getElementById('btnNext');
+    if (next) {
+      next.href = 'step10.html';
+      var nextSpan = document.getElementById('btnNextText');
+      if (nextSpan) nextSpan.textContent = en ? 'Next' : '下一步';
+      var nextIcon = next.querySelector('i');
+      if (nextIcon) nextIcon.className = 'fa-solid fa-arrow-right';
+    }
+
+    // 備援：掃 footer 文字
+    document.querySelectorAll('.hud-footer a.btn-action').forEach(function (a) {
+      var t = (a.textContent || '').replace(/\s+/g, ' ').trim();
+      if (/上一步|Previous/i.test(t)) {
+        a.href = 'step8.html';
+        var s = a.querySelector('span');
+        if (s) s.textContent = en ? 'Previous' : '上一步';
+        var i = a.querySelector('i');
+        if (i) i.className = 'fa-solid fa-arrow-left';
+      }
+      if (/完成|Complete|下一步|Next/i.test(t)) {
+        a.href = 'step10.html';
+        var s2 = a.querySelector('span');
+        if (s2) s2.textContent = en ? 'Next' : '下一步';
+        var i2 = a.querySelector('i');
+        if (i2) i2.className = 'fa-solid fa-arrow-right';
+      }
+    });
+  }
+
+  function run() {
+    apply();
+    setTimeout(apply, 100);
+    setTimeout(apply, 400);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+
+  var orig = window.switchLanguage;
+  if (typeof orig === 'function') {
+    window.switchLanguage = function (l) {
+      orig(l);
+      setTimeout(apply, 50);
+      setTimeout(apply, 200);
+    };
+  }
+})();
+</script>
 </body>
 </html>
