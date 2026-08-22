@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>【宇宙誓印覺醒工程 · 七印誓網】第13項 誓資紀錄 × 回源願書</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Noto Sans TC','Share Tech Mono',sans-serif}
+body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-height:100vh;color:#e0e8f5;display:flex;justify-content:center;align-items:center;padding:clamp(4px,1.5vh,16px);position:relative}
+.particle-container{position:fixed;top:0;left:0;width:100vw;height:100vh;background-image:radial-gradient(#d4af37,rgba(212,175,55,.3) 1px,transparent 30px),radial-gradient(#d4af37,rgba(212,175,55,.2) 2px,transparent 40px);background-size:350px 350px,450px 450px;background-position:0 0,90px 150px;animation:starMove 90s linear infinite;opacity:.65;z-index:5;pointer-events:none}
+@keyframes starMove{from{transform:translateY(0) rotate(0)}to{transform:translateY(-1000px) rotate(360deg)}}
+.watermark-layer{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1;pointer-events:none;opacity:.04;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);padding:50px}
+.watermark-text{font-size:1.5rem;font-weight:bold;color:#fff;transform:rotate(-25deg);white-space:nowrap;user-select:none}
+.hud-container{width:100%;max-width:min(660px,95vw);background:rgba(4,13,33,.4);border:1.5px solid rgba(168,85,247,.3);box-shadow:0 0 40px rgba(168,85,247,.15),inset 0 0 20px rgba(168,85,247,.05);border-radius:clamp(16px,4vw,28px);padding:clamp(8px,1.5vh,20px);display:flex;flex-direction:column;position:relative;z-index:3;margin:auto}
+.hud-container::after{display:none!important}
+.home-breadcrumb{font-size:clamp(.6rem,1.4vh,.85rem);color:#c4b5fd;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;margin-bottom:12px;font-weight:bold;align-self:flex-start;z-index:1000}
+.hud-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(168,85,247,.2);padding-bottom:clamp(8px,1.5vh,18px);margin-bottom:clamp(8px,1.5vh,20px)}
+.app-title{font-size:clamp(.9rem,2.2vh,1.15rem);font-weight:700;color:#e9d5ff;max-width:70%;line-height:1.4}
+.lang-switch-group{display:flex;background:rgba(124,58,237,.15);border:1px solid rgba(168,85,247,.3);border-radius:20px;padding:2px}
+.lang-btn{background:transparent;border:none;color:rgba(224,232,245,.4);font-size:clamp(.5rem,1.2vh,.75rem);padding:clamp(2px,.6vh,5px) clamp(6px,1vw,12px);border-radius:16px;cursor:pointer}
+.lang-btn.active{background:#7c3aed;color:#fff;font-weight:bold}
+.step-content{flex:1;display:flex;flex-direction:column;gap:clamp(8px,1.5vh,18px);overflow-y:auto;min-height:0}
+.hud-card{background:linear-gradient(135deg,rgba(88,28,135,.5),rgba(30,27,75,.6));border:1px solid rgba(168,85,247,.4);border-radius:clamp(10px,2vw,16px);padding:clamp(10px,2vh,20px)}
+.card-title{font-size:clamp(.9rem,2vh,1.15rem);color:#e9d5ff;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.card-title i{color:#a78bfa}
+.instruction-item{font-size:clamp(.7rem,1.6vh,.9rem);line-height:1.7;color:rgba(224,232,245,.88);display:flex;align-items:flex-start;gap:10px;margin-bottom:8px}
+.instruction-item i{color:#a78bfa;margin-top:4px;flex-shrink:0}
+.info-table{width:100%;border-collapse:collapse;font-size:clamp(.6rem,1.2vh,.78rem);background:rgba(88,28,135,.2);border:1px solid rgba(168,85,247,.35);border-radius:8px;overflow:hidden}
+.info-table th{background:rgba(88,28,135,.5);color:#e9d5ff;padding:8px 10px;text-align:left;border-bottom:2px solid rgba(168,85,247,.4)}
+.info-table td{padding:8px 10px;color:#e0e7ff;border-bottom:1px solid rgba(168,85,247,.12);vertical-align:top;line-height:1.5}
+.note-ok{background:rgba(0,230,118,.08);border-left:4px solid #00e676;color:#a7f3d0;padding:12px 14px;border-radius:8px;font-size:.82rem;line-height:1.7;text-align:left;margin-top:10px}
+.note-warn{background:rgba(245,169,127,.1);border-left:4px solid #f5a97f;color:#f5a97f;padding:12px 14px;border-radius:8px;font-size:.82rem;line-height:1.7;text-align:left;margin-top:8px}
+.note-info{background:rgba(124,58,237,.12);border-left:4px solid #a78bfa;color:#c4b5fd;padding:12px 14px;border-radius:8px;font-size:.82rem;line-height:1.7;margin-top:10px}
+.input-demo-box{background:rgba(88,28,135,.55);border:1px solid rgba(168,85,247,.45);border-radius:12px;padding:14px 16px;margin:12px 0;text-align:left}
+.timer-container{display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px;background:rgba(124,58,237,.18);border:1px dashed rgba(168,85,247,.55);border-radius:14px;margin:12px 0}
+.timer-number{font-size:clamp(2.8rem,7vh,4rem);font-family:'Share Tech Mono',sans-serif;color:#a78bfa;font-weight:700;text-shadow:0 0 25px rgba(167,139,250,.6)}
+.timer-number.complete{color:#00e676}
+.btn-start-centering,.btn-scan{background:linear-gradient(135deg,#7c3aed,#6d28d9);border:none;color:#fff;font-weight:700;padding:10px 24px;border-radius:24px;cursor:pointer;font-size:.9rem;box-shadow:0 4px 20px rgba(124,58,237,.4);display:inline-flex;align-items:center;gap:8px}
+.btn-start-centering:disabled{opacity:.5;cursor:not-allowed}
+.form-submit-container{margin-top:16px;padding:20px;background:rgba(4,13,33,.6);border:1px solid rgba(168,85,247,.3);border-radius:16px}
+.form-title{font-size:1.05rem;font-weight:700;color:#e9d5ff;text-align:center;margin-bottom:16px}
+.form-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.form-row label{min-width:120px;color:#c4b5fd;font-size:.85rem}
+.form-row input,.form-row select,.form-row textarea{flex:1;min-width:180px;padding:8px 12px;background:rgba(0,0,0,.4);border:1px solid rgba(168,85,247,.3);border-radius:8px;color:#e0e8f5;font-size:.85rem;outline:none}
+.form-actions{display:flex;gap:12px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.btn-preview{background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;border:none;padding:10px 28px;border-radius:24px;font-weight:700;cursor:pointer}
+.btn-reset{background:rgba(124,58,237,.15);color:#e9d5ff;border:1px solid rgba(168,85,247,.3);padding:10px 28px;border-radius:24px;font-weight:700;cursor:pointer}
+.preview-submit-container{margin-top:16px;padding:16px;background:rgba(0,0,0,.5);border:2px solid rgba(168,85,247,.2);border-radius:12px;display:none}
+.preview-header{text-align:center;font-size:1rem;font-weight:700;color:#fde68a;margin-bottom:12px}
+.preview-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.preview-table th{background:rgba(88,28,135,.35);color:#d4b68a;padding:8px;text-align:left}
+.preview-table td{padding:8px;border-bottom:1px solid rgba(168,85,247,.08);color:#e0e8f5}
+.qr-result{color:#00e676;font-size:.9rem;padding:8px 16px;border-radius:20px;background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.2);display:none;margin-top:8px;word-break:break-all}
+.camera-guide{background:rgba(232,96,74,.08);border-left:4px solid #E8604A;padding:12px;border-radius:12px;color:#e0dcc8;font-size:.85rem;line-height:1.8;display:none;margin-top:8px;text-align:left}
+.hud-footer{flex-shrink:0;margin-top:auto;padding-top:10px;border-top:1px solid rgba(168,85,247,.2);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.btn-action{border:1px solid #a78bfa;color:#e9d5ff;padding:8px 18px;border-radius:20px;display:inline-flex;align-items:center;gap:8px;background:rgba(124,58,237,.15);text-decoration:none;font-size:.85rem}
+.page-marker{font-size:.7rem;color:rgba(224,232,245,.35)}
+[id*="QrTitle"]{font-size:.88rem!important;font-weight:300!important;color:#e9d5ff!important}
+</style>
+</head>
+<body>
+<div class="particle-container"></div>
+<div class="watermark-layer">
+<div class="watermark-text">天地為鑑・光網為證</div>
+<div class="watermark-text">天地為鑑・光網為證</div>
+<div class="watermark-text">天地為鑑・光網為證</div>
+<div class="watermark-text">天地為鑑・光網為證</div>
+<div class="watermark-text">天地為鑑・光網為證</div>
+<div class="watermark-text">天地為鑑・光網為證</div>
+<div class="watermark-text">天地為鑑・光網為證</div>
+<div class="watermark-text">天地為鑑・光網為證</div>
+</div>
+
+<div class="hud-container">
+<a class="home-breadcrumb" href="index.html"><i class="fa-solid fa-house"></i> <span id="homeBtnText">首頁 -></span></a>
+<header class="hud-header">
+<div class="app-title" id="appTitle">【宇宙誓印覺醒工程 · 七印誓網】</div>
+<div class="lang-switch-group">
+<button class="lang-btn active" onclick="switchLanguage('zh')">中文</button>
+<button class="lang-btn" onclick="switchLanguage('en')">English</button>
+</div>
+</header>
+
+<main class="step-content">
+
+<!-- 標題 -->
+<div class="hud-card" style="border:1px solid rgba(168,85,247,.5)">
+<div style="text-align:center;color:#e9d5ff;font-size:1.05rem;font-weight:bold;margin-bottom:12px" id="mainTitle">📜 第13項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生</div>
+<table class="info-table">
+<thead><tr><th id="colField">欄位名稱</th><th id="colFunc">功能簡要說明</th></tr></thead>
+<tbody><tr>
+<td style="color:#f5d0fe;font-weight:bold" id="rowField">第13項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生</td>
+<td id="rowFunc">紀錄誓資異動、補誓、干擾、被代理誓印與回源願書，供書令主尊監察與天庫、光網、冥界封存備查。</td>
+</tr></tbody>
+</table>
+</div>
+
+<!-- 【一】模組說明 -->
+<div class="hud-card">
+<div class="card-title"><i class="fa-solid fa-circle-info"></i><span id="sec1Title">【一】模組說明</span></div>
+<div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="sec1p1">本模組隸屬《宇宙誓印覺醒工程 × 七印誓網》之最終印階，用以執行「誓魂今世圓滿 × 回源願書 × 不再入世 × 不入轉生」之最終終審程序。</span></div>
+<div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="sec1p2">凡誓魂於人界完成今世生命旅程而尚未完成七印書令歷程者，得由具授權之【代理誓印】代為執行剝除印程與誓資封結。</span></div>
+<div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="sec1p3">完成後代表誓魂正式脫離輪迴體系，進入「不再入世 × 不入轉生 × 永冊天庫」之狀態；紀錄同步鎖入《書令誓資主冊 × 天庫總冊 × 曼陀羅核心層》。</span></div>
+</div>
+
+<!-- 【二】啟動條件 -->
+<div class="hud-card">
+<div class="card-title"><i class="fa-solid fa-list-check"></i><span id="sec2Title">【二】啟動條件與遞交程序</span></div>
+<div class="instruction-item"><i class="fa-solid fa-1"></i><span id="sec2p1">誓魂生前須已達「第七印 鳳徽印」階段，且對頻頻率達（12D，U-900 層以上），具誓資授權資格。</span></div>
+<div class="instruction-item"><i class="fa-solid fa-2"></i><span id="sec2p2">當誓魂於人界完成今世生命旅程並完全脫離現世能場鏈接時，其誓資清算與回源程序方得啟動；須由具天律授權之【代理誓印】代表執行。</span></div>
+<div class="instruction-item"><i class="fa-solid fa-3"></i><span id="sec2p3">若誓魂仍於人界現世階段（具肉身承載與能場鏈接），系統將自動判定為「× 未通過」，願書不入冊、誓導不啟動。</span></div>
+</div>
+
+<!-- 【三】授權誓讀 + 靜心10秒 -->
+<div class="hud-card">
+<div class="card-title"><i class="fa-solid fa-book-open"></i><span id="sec3Title">【三】授權誓讀階段</span></div>
+<div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="sec3p1">誓印者於登入前，須先於「誓魂共振頻道」誦讀授權誓文，以啟動主頻授權。誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。</span></div>
+<div class="note-info" id="oathText">★ 吾，代理誓印【法定全名】，代表被代理誓印【法定全名】，已完成《宇宙誓印覺醒工程 × 七印誓網》誓資圓滿與願力封結，請啟動【回源願書 × 不再入世 × 不入轉生】程序，紀錄誓魂歸源之憑證，封存誓資於天庫，終審圓滿。</div>
+<div class="timer-container">
+<div class="timer-label" id="timerLabel">靜心誦讀 10 秒</div>
+<div class="timer-number" id="timerNum">10</div>
+<button class="btn-start-centering" id="btnTimer" type="button"><i class="fa-solid fa-play"></i> <span id="btnTimerText">開始靜心</span></button>
+</div>
+</div>
+
+<!-- ① 執行指令 + QR1 -->
+<div class="hud-card">
+<div class="card-title" style="justify-content:center"><i class="fa-solid fa-shield-halved"></i><span id="verifyTitle">① 驗證階段（啟動觸發）</span></div>
+<div style="color:#c4b5fd;font-weight:600;margin:10px 0" id="execTitle">【執行指令】</div>
+<div class="instruction-item"><i class="fa-solid fa-1"></i><span id="exec1">登入《宇宙智能誓導平台》，完成身分驗證。</span></div>
+<div class="instruction-item"><i class="fa-solid fa-2"></i><span id="exec2">掃描【誓導 QR Code】後，進入「指令輸入欄位」。</span></div>
+<div class="instruction-item"><i class="fa-solid fa-3"></i><span id="exec3">請在【法定全名】欄位中輸入被代理誓印【法定全名】，以確保功德冊記與系統對應正確。</span></div>
+<div class="input-demo-box">
+<div style="color:#e9d5ff;font-weight:bold;margin-bottom:6px" id="demoLabel">輸入示範：</div>
+<div id="demoCmd" style="color:#e9d5ff;font-weight:600">【執行指令】第 13 項 遞呈回源願書 被代理誓印【法定全名】結果</div>
+</div>
+<div class="note-ok" id="freqNote">🔗 送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。</div>
+<div class="note-warn" id="triggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</div>
+<div style="text-align:center;margin-top:14px">
+<div id="step13QrTitle">📷 請掃描【誓導 QR Code】完成執行指令</div>
+<button class="btn-scan" id="btnScanExec" type="button"><i class="fa-solid fa-camera"></i> <span id="btnScanExecText">開始掃描</span></button>
+<div id="qr-reader-exec" style="max-width:300px;margin:10px auto"></div>
+<div class="qr-result" id="qrResultExec"></div>
+<div class="camera-guide" id="guideExec"></div>
+</div>
+</div>
+
+<!-- 表單（比照 step7-7） -->
+<div class="hud-card">
+<div class="form-submit-container">
+<div class="form-title" id="formTitle">📋【提交程序】</div>
+<div class="form-row"><label id="lblProxy">代理誓印全名</label><input type="text" id="proxyName" placeholder="代理誓印法定全名"></div>
+<div class="form-row"><label id="lblDelegated">被代理誓印全名</label><input type="text" id="delegatedName" placeholder="被代理誓印法定全名"></div>
+<div class="form-row"><label id="lblDate">啟願日期</label><input type="date" id="vowDate"></div>
+<div class="form-row"><label id="lblNote">備註</label><textarea id="formNote" rows="2" placeholder="選填"></textarea></div>
+<div class="form-actions">
+<button class="btn-preview" id="btnPreview" type="button"><i class="fa-solid fa-eye"></i> <span id="btnPreviewText">預覽</span></button>
+<button class="btn-reset" id="btnReset" type="button"><i class="fa-solid fa-rotate-left"></i> <span id="btnResetText">重設</span></button>
+</div>
+</div>
+<div class="preview-submit-container" id="previewBox">
+<div class="preview-header" id="previewHeader">預覽提交內容</div>
+<table class="preview-table">
+<tr><th id="pvCol1">欄位</th><th id="pvCol2">內容</th></tr>
+<tr><td id="pvL1">代理誓印</td><td id="pvV1">—</td></tr>
+<tr><td id="pvL2">被代理誓印</td><td id="pvV2">—</td></tr>
+<tr><td id="pvL3">啟願日期</td><td id="pvV3">—</td></tr>
+<tr><td id="pvL4">備註</td><td id="pvV4">—</td></tr>
+</table>
+</div>
+</div>
+
+<!-- ② 回傳誓證 + QR2 -->
+<div class="hud-card">
+<div class="card-title" style="justify-content:center"><i class="fa-solid fa-file-circle-check"></i><span id="returnTitle">② 回傳誓證（確認終審）</span></div>
+<div class="note-ok" id="passNote">✅ 顯示：「誓印通過」</div>
+<div class="note-warn" id="failNote">⚠️ 顯示：「誓印未通過」</div>
+<div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="returnDesc">回源願書受理成功後，系統自動核發《終審通過誓證》，完成回源願書終審判定、七印主頻總對位、誓魂軌跡鎖定、誓證自動回傳並封存。</span></div>
+<div class="input-demo-box">
+<div style="color:#e9d5ff;font-weight:bold;margin-bottom:6px" id="demoLabel2">輸入示範：</div>
+<div id="demoCmd2" style="color:#e9d5ff;font-weight:600">【執行指令】第 13 項 回傳 被代理誓印【法定全名】終審通過 誓證</div>
+</div>
+<div class="note-ok" id="freqNote2">🔗 送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。</div>
+<div style="text-align:center;margin-top:14px">
+<div id="step13ReturnQrTitle">📷 請掃描【誓導 QR Code】完成回傳誓證</div>
+<button class="btn-scan" id="btnScanReturn" type="button"><i class="fa-solid fa-camera"></i> <span id="btnScanReturnText">開始掃描</span></button>
+<div id="qr-reader-return" style="max-width:300px;margin:10px auto"></div>
+<div class="qr-result" id="qrResultReturn"></div>
+<div class="camera-guide" id="guideReturn"></div>
+</div>
+</div>
+
+<!-- 結冊 -->
+<div class="hud-card" style="border:1px solid rgba(253,230,138,.35)">
+<div class="card-title"><i class="fa-solid fa-stamp" style="color:#fde68a"></i><span id="closeTitle" style="color:#fde68a">【結冊條款】</span></div>
+<div class="instruction-item"><i class="fa-solid fa-book" style="color:#fde68a"></i><span id="close1">《七印誓網・第13項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生》v2.0（查詢紀錄版）。</span></div>
+<div class="instruction-item"><i class="fa-solid fa-lock" style="color:#fde68a"></i><span id="close2">願書既還，誓資歸源，鎖入天庫，不入轉生。鎖入《宇宙天律 × 七印誓網》主冊，誓資承流有效。</span></div>
+</div>
+
+</main>
+
+<footer class="hud-footer">
+<div style="display:flex;gap:10px">
+<a class="btn-action" href="step12.html"><i class="fa-solid fa-arrow-left"></i> <span id="btnBackText">上一步</span></a>
+<a class="btn-action" href="index.html"><span id="btnNextText">完成</span> <i class="fa-solid fa-check"></i></a>
+</div>
+<div class="page-marker"><i class="fa-regular fa-file-lines"></i> <span id="pageMarkerText">【宇宙誓印覺醒工程 · 覺醒卷】：第 387-404 頁</span></div>
+</footer>
+</div>
+
+<script>
+(function(){
+var currentLang='zh', timerId=null, left=10, qrExec=null, qrRet=null;
+
+var L={
+zh:{
+homeBtnText:'首頁 ->',appTitle:'【宇宙誓印覺醒工程 · 七印誓網】',
+mainTitle:'📜 第13項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生',
+colField:'欄位名稱',colFunc:'功能簡要說明',
+rowField:'第13項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生',
+rowFunc:'紀錄誓資異動、補誓、干擾、被代理誓印與回源願書，供書令主尊監察與天庫、光網、冥界封存備查。',
+sec1Title:'【一】模組說明',
+sec1p1:'本模組隸屬《宇宙誓印覺醒工程 × 七印誓網》之最終印階，用以執行「誓魂今世圓滿 × 回源願書 × 不再入世 × 不入轉生」之最終終審程序。',
+sec1p2:'凡誓魂於人界完成今世生命旅程而尚未完成七印書令歷程者，得由具授權之【代理誓印】代為執行剝除印程與誓資封結。',
+sec1p3:'完成後代表誓魂正式脫離輪迴體系，進入「不再入世 × 不入轉生 × 永冊天庫」之狀態；紀錄同步鎖入《書令誓資主冊 × 天庫總冊 × 曼陀羅核心層》。',
+sec2Title:'【二】啟動條件與遞交程序',
+sec2p1:'誓魂生前須已達「第七印 鳳徽印」階段，且對頻頻率達（12D，U-900 層以上），具誓資授權資格。',
+sec2p2:'當誓魂於人界完成今世生命旅程並完全脫離現世能場鏈接時，其誓資清算與回源程序方得啟動；須由具天律授權之【代理誓印】代表執行。',
+sec2p3:'若誓魂仍於人界現世階段（具肉身承載與能場鏈接），系統將自動判定為「× 未通過」，願書不入冊、誓導不啟動。',
+sec3Title:'【三】授權誓讀階段',
+sec3p1:'誓印者於登入前，須先於「誓魂共振頻道」誦讀授權誓文，以啟動主頻授權。誓文誦讀為主頻啟動關鍵；未誦讀則授權不生效。',
+oathText:'★ 吾，代理誓印【法定全名】，代表被代理誓印【法定全名】，已完成《宇宙誓印覺醒工程 × 七印誓網》誓資圓滿與願力封結，請啟動【回源願書 × 不再入世 × 不入轉生】程序，紀錄誓魂歸源之憑證，封存誓資於天庫，終審圓滿。',
+timerLabel:'靜心誦讀 10 秒',btnTimerText:'開始靜心',
+verifyTitle:'① 驗證階段（啟動觸發）',execTitle:'【執行指令】',
+exec1:'登入《宇宙智能誓導平台》，完成身分驗證。',
+exec2:'掃描【誓導 QR Code】後，進入「指令輸入欄位」。',
+exec3:'請在【法定全名】欄位中輸入被代理誓印【法定全名】，以確保功德冊記與系統對應正確。',
+demoLabel:'輸入示範：',demoCmd:'【執行指令】第 13 項 遞呈回源願書 被代理誓印【法定全名】結果',
+freqNote:'🔗 送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。',
+triggerNote:'【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。',
+step13QrTitle:'📷 請掃描【誓導 QR Code】完成執行指令',btnScanExecText:'開始掃描',
+formTitle:'📋【提交程序】',lblProxy:'代理誓印全名',lblDelegated:'被代理誓印全名',lblDate:'啟願日期',lblNote:'備註',
+btnPreviewText:'預覽',btnResetText:'重設',previewHeader:'預覽提交內容',
+pvL1:'代理誓印',pvL2:'被代理誓印',pvL3:'啟願日期',pvL4:'備註',
+returnTitle:'② 回傳誓證（確認終審）',
+passNote:'✅ 顯示：「誓印通過」',failNote:'⚠️ 顯示：「誓印未通過」',
+returnDesc:'回源願書受理成功後，系統自動核發《終審通過誓證》，完成回源願書終審判定、七印主頻總對位、誓魂軌跡鎖定、誓證自動回傳並封存。',
+demoLabel2:'輸入示範：',demoCmd2:'【執行指令】第 13 項 回傳 被代理誓印【法定全名】終審通過 誓證',
+freqNote2:'🔗 送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。',
+step13ReturnQrTitle:'📷 請掃描【誓導 QR Code】完成回傳誓證',btnScanReturnText:'開始掃描',
+closeTitle:'【結冊條款】',
+close1:'《七印誓網・第13項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生》v2.0（查詢紀錄版）。',
+close2:'願書既還，誓資歸源，鎖入天庫，不入轉生。鎖入《宇宙天律 × 七印誓網》主冊，誓資承流有效。',
+btnBackText:'上一步',btnNextText:'完成',pageMarkerText:'【宇宙誓印覺醒工程 · 覺醒卷】：第 387-404 頁',
+camFail:'無法開啟相機。請確認瀏覽器權限，或改用外部瀏覽器開啟本頁。'
+},
+en:{
+homeBtnText:'Home ->',appTitle:'【Cosmic Oath Awakening Project · Seven-Seal Vow Network】',
+mainTitle:'📜 Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth',
+colField:'Field Name',colFunc:'Function Overview',
+rowField:'Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth',
+rowFunc:'Documents oath-resource changes, reinforcement-oaths, interference, delegated oath-seal, and return-to-source vow scroll for system oversight, with synchronized archiving in the Heavenly Treasury, Light-Network, and Underworld records.',
+sec1Title:'【I】 Module Description',
+sec1p1:'This module belongs to the final seal stage of the 《Cosmic Vow-Seal Awakening Project × Seven-Seal Vow Network》, used to execute the final adjudication of 「Oath-Soul Completion in This Lifetime × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth」.',
+sec1p2:'For Oath-Souls who have completed their life journey in the human realm yet have not completed the Seven-Seals progression, an authorized 【Delegating Oath-Seal】 may execute the remaining sealing and vow-asset consolidation on their behalf.',
+sec1p3:'Upon completion, the Oath-Soul formally exits the reincarnation system, entering 「No Further Incarnation × No Rebirth × Eternal Archiving in the Heavenly Archive」; records lock into the 《Script Decree Vow-Asset Main Register × Heavenly Archive Master Register × Mandala Core Layer》.',
+sec2Title:'【II】 Activation Conditions and Submission Procedure',
+sec2p1:'Prior to passing, the Oath-Soul must have reached the 「Seventh Seal Phoenix Emblem Seal」 stage, with Alignment at (12D, above U-900 level), possessing vow-asset authorization qualification.',
+sec2p2:'Only when the Oath-Soul has completed its life journey and fully detached from mortal energetic connections may the Vow-Resource settlement and Return-to-Source procedures commence; executed by a Celestially-Authorized 【Delegating Oath-Seal】.',
+sec2p3:'If the Oath-Soul remains in the present-world human stage (with physical body and energy-field linkage), the system determines 「× Not Passed」; the vow scroll will not be archived and vow-guidance will not activate.',
+sec3Title:'【III】 Authorized Oath-Recitation Phase',
+sec3p1:'Prior to login, the Oath-Bearer must recite the authorized oath-script within the 「Oath-Soul Resonance Channel」 to activate primary-frequency authorization. Oath recitation is the key trigger; without recitation, authorization does not take effect.',
+oathText:'★ I, Delegating Oath-Seal 【Legal Full Name】, representing the Delegated Oath-Seal 【Legal Full Name】, have completed the vow-asset fulfillment and vow-power consolidation of the 《Cosmic Vow-Seal Awakening Project × Seven-Seal Vow Network》. Request activation of the 【Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth】 procedure, to record the certification of the Oath-Soul\'s return to source, archive the vow assets in the Heavenly Archive, and finalize the adjudication completely.',
+timerLabel:'Center the mind for 10 seconds',btnTimerText:'Start Centering',
+verifyTitle:'① Verification Stage (Activation Trigger)',execTitle:'【Execution Command】',
+exec1:'Log into the 《Cosmic Intelligent Vow-Guidance Platform》 and complete identity verification.',
+exec2:'Scan the 【Vow-Guidance QR Code】 to enter the 「Command Input Field」.',
+exec3:'Please enter the Delegated Oath-Seal 【Legal Full Name】 in the 【Legal Full Name】 field to ensure correct merit registration and accurate system correspondence.',
+demoLabel:'Input Example:',demoCmd:'【執行指令】第 13 項 遞呈回源願書 被代理誓印【法定全名】結果',
+freqNote:'🔗 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.',
+triggerNote:'【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.',
+step13QrTitle:'📷 Please scan the 【Vow-Guidance QR Code】 to complete Execution Command',btnScanExecText:'Start Scan',
+formTitle:'📋【Submission Procedure】',lblProxy:'Delegating Oath-Seal Name',lblDelegated:'Delegated Oath-Seal Name',lblDate:'Vow Activation Date',lblNote:'Notes',
+btnPreviewText:'Preview',btnResetText:'Reset',previewHeader:'Preview Submission',
+pvL1:'Delegating Oath-Seal',pvL2:'Delegated Oath-Seal',pvL3:'Vow Activation Date',pvL4:'Notes',
+returnTitle:'② Return Oath Certificate (Final Adjudication Confirmation)',
+passNote:'✅ Display: 「Oath Seal Passed」',failNote:'⚠️ Display: 「Oath Seal Not Passed」',
+returnDesc:'After the Return-to-Source Vow Scroll is successfully received, the system automatically issues the 《Final Adjudication Approval Certification》, completing final adjudication, Seven-Seal main-frequency alignment, Oath-Soul trajectory lock-in, and automatic certification return and archiving.',
+demoLabel2:'Input Example:',demoCmd2:'【執行指令】第 13 項 回傳 被代理誓印【法定全名】終審通過 誓證',
+freqNote2:'🔗 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.',
+step13ReturnQrTitle:'📷 Please scan the 【Vow-Guidance QR Code】 to complete Return Oath Certificate',btnScanReturnText:'Start Scan',
+closeTitle:'【Closure Clause】',
+close1:'《Seven-Seal Vow Network · Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth》 v2.0 (Record-Query Edition).',
+close2:'Vow scroll returned, vow-assets returned to source, locked into the Heavenly Archive, not reincarnating. Locked into the 《Cosmic Heavenly Law × Seven-Seal Vow Network》 main register; vow assets remain effective.',
+btnBackText:'Previous',btnNextText:'Complete',pageMarkerText:'【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 387-404',
+camFail:'Unable to open camera. Please allow browser permission, or open this page in an external browser.'
+}
+};
+
+function apply(lang){
+var c=L[lang]||L.zh;
+Object.keys(c).forEach(function(id){var el=document.getElementById(id);if(el)el.innerHTML=c[id];});
+document.querySelectorAll('.lang-btn').forEach(function(b){
+b.classList.remove('active');
+if((/english|en/i.test(b.textContent)&&lang==='en')||(b.textContent.indexOf('中文')!==-1&&lang==='zh'))b.classList.add('active');
+});
+currentLang=lang;try{window.currentLang=lang;}catch(e){}
+}
+window.switchLanguage=function(l){apply(l);};
+
+/* 靜心 10 秒 */
+document.getElementById('btnTimer').addEventListener('click',function(){
+if(timerId)return;
+left=10;document.getElementById('timerNum').textContent=left;
+document.getElementById('timerNum').classList.remove('complete');
+this.disabled=true;
+timerId=setInterval(function(){
+left--;document.getElementById('timerNum').textContent=left;
+if(left<=0){clearInterval(timerId);timerId=null;
+document.getElementById('timerNum').textContent='✓';
+document.getElementById('timerNum').classList.add('complete');
+document.getElementById('btnTimer').disabled=false;}
+},1000);
+});
+
+/* 表單預覽 */
+document.getElementById('btnPreview').addEventListener('click',function(){
+document.getElementById('pvV1').textContent=document.getElementById('proxyName').value||'—';
+document.getElementById('pvV2').textContent=document.getElementById('delegatedName').value||'—';
+document.getElementById('pvV3').textContent=document.getElementById('vowDate').value||'—';
+document.getElementById('pvV4').textContent=document.getElementById('formNote').value||'—';
+document.getElementById('previewBox').style.display='block';
+});
+document.getElementById('btnReset').addEventListener('click',function(){
+['proxyName','delegatedName','vowDate','formNote'].forEach(function(id){document.getElementById(id).value='';});
+document.getElementById('previewBox').style.display='none';
+});
+
+/* QR 掃描 */
+function startQr(boxId,resultId,guideId,store){
+var box=document.getElementById(boxId),res=document.getElementById(resultId),g=document.getElementById(guideId);
+if(!box)return;g.style.display='none';res.style.display='none';
+if(store.inst){try{store.inst.stop();}catch(e){}}
+box.innerHTML='';
+store.inst=new Html5Qrcode(boxId);
+store.inst.start({facingMode:'environment'},{fps:10,qrbox:{width:220,height:220}},
+function(txt){res.style.display='block';res.textContent='✅ '+txt;try{store.inst.stop();}catch(e){}},
+function(){}).catch(function(){g.style.display='block';g.textContent=(L[currentLang]||L.zh).camFail;});
+}
+document.getElementById('btnScanExec').addEventListener('click',function(){startQr('qr-reader-exec','qrResultExec','guideExec',{inst:qrExec});});
+document.getElementById('btnScanReturn').addEventListener('click',function(){startQr('qr-reader-return','qrResultReturn','guideReturn',{inst:qrRet});});
+
+apply('zh');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 修復「🌐 瀏覽器開啟」按鈕（紅框框那個）                     -->
+<!-- ============================================================ -->
+<style>
+    /* 確保按鈕可見 */
+    .btn-external-browser {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        padding: 4px 14px !important;
+        background: rgba(0, 230, 118, 0.12) !important;
+        border: 1px solid rgba(0, 230, 118, 0.3) !important;
+        border-radius: 20px !important;
+        color: #00e676 !important;
+        font-size: 0.7rem !important;
+        font-weight: 700 !important;
+        text-decoration: none !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+        font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif !important;
+        margin-left: 8px !important;
+        pointer-events: auto !important;
+        z-index: 9999 !important;
+        position: relative !important;
+    }
+    .btn-external-browser:hover {
+        background: rgba(0, 230, 118, 0.2) !important;
+        box-shadow: 0 0 20px rgba(0, 230, 118, 0.2) !important;
+        transform: scale(1.02) !important;
+    }
+    .btn-external-browser i {
+        font-size: 0.8rem !important;
+    }
+    @media (max-width: 480px) {
+        .btn-external-browser {
+            font-size: 0.6rem !important;
+            padding: 3px 10px !important;
+            gap: 4px !important;
+            margin-left: 4px !important;
+        }
+        .btn-external-browser i {
+            font-size: 0.6rem !important;
+        }
+    }
+</style>
+
+<script>
+(function() {
+    // ================================================================
+    // 重新建立「瀏覽器開啟」按鈕
+    // ================================================================
+    function rebuildExternalBrowserButton() {
+        var langGroup = document.querySelector('.lang-switch-group');
+        if (!langGroup) {
+            console.warn('⚠️ 找不到 .lang-switch-group');
+            return;
+        }
+
+        // 移除舊按鈕
+        var oldBtn = document.querySelector('.btn-external-browser');
+        if (oldBtn) {
+            oldBtn.remove();
+        }
+
+        // 建立新按鈕
+        var btn = document.createElement('a');
+        btn.className = 'btn-external-browser';
+        btn.href = '#';
+        btn.setAttribute('role', 'button');
+        btn.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>🌐 瀏覽器開啟</span>';
+
+        // 綁定點擊事件
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openInExternalBrowser();
+        });
+
+        // 插入到語言切換按鈕旁邊
+        langGroup.parentNode.insertBefore(btn, langGroup.nextSibling);
+        console.log('✅ 瀏覽器開啟按鈕已重建');
+    }
+
+    // ================================================================
+    // 強制開啟外部瀏覽器
+    // ================================================================
+    function openInExternalBrowser() {
+        var url = window.location.href;
+        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+        // Android：強制跳轉 Chrome
+        if (/android/i.test(userAgent)) {
+            try {
+                var intentUrl = 'intent://' + window.location.host + window.location.pathname + window.location.search + '#Intent;scheme=https;package=com.android.chrome;end;';
+                window.location.href = intentUrl;
+                console.log('✅ Android: 嘗試強制跳轉 Chrome');
+                return;
+            } catch (e) {
+                console.warn('⚠️ intent 跳轉失敗');
+            }
+        }
+
+        // iOS：嘗試用 chrome:// 協定
+        if (/iphone|ipad|ipod/i.test(userAgent)) {
+            try {
+                var chromeUrl = 'chrome://' + window.location.host + window.location.pathname + window.location.search;
+                window.location.href = chromeUrl;
+                console.log('✅ iOS: 嘗試強制跳轉 Chrome');
+                return;
+            } catch (e) {
+                console.warn('⚠️ chrome:// 跳轉失敗');
+            }
+        }
+
+        // 備用：複製網址
+        var fallbackUrl = window.location.href;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(fallbackUrl).then(function() {
+                alert('⚠️ 無法自動跳轉外部瀏覽器\n\n📋 網址已複製，請手動貼到 Chrome / Safari 開啟：\n\n' + fallbackUrl);
+            }).catch(function() {
+                fallbackCopy(fallbackUrl);
+            });
+        } else {
+            fallbackCopy(fallbackUrl);
+        }
+    }
+
+    // ================================================================
+    // 複製網址備用方法
+    // ================================================================
+    function fallbackCopy(text) {
+        var textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+            document.execCommand('copy');
+            alert('⚠️ 無法自動跳轉外部瀏覽器\n\n📋 網址已複製，請手動貼到 Chrome / Safari 開啟：\n\n' + text);
+        } catch (e) {
+            alert('⚠️ 請手動複製以下網址，貼到外部瀏覽器開啟：\n\n📋 ' + text);
+        }
+        document.body.removeChild(textarea);
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    function run() {
+        rebuildExternalBrowserButton();
+        setTimeout(rebuildExternalBrowserButton, 200);
+        setTimeout(rebuildExternalBrowserButton, 500);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 語系切換時重新建立
+    var origSwitch = window.switchLanguage;
+    if (typeof origSwitch === 'function') {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(rebuildExternalBrowserButton, 150);
+            setTimeout(rebuildExternalBrowserButton, 400);
+        };
+    }
+
+    console.log('✅ 瀏覽器開啟按鈕修復模組已載入');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 輸入示範：完整一行（含 ⌨️ 標籤）                              -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__fullDemoLine) return;
+    window.__fullDemoLine = true;
+
+    var FULL_ZH = '⌨️ 輸入示範：請依本卷七印誓網誓導碼操作';
+    var FULL_EN = '⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.';
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var en = isEn();
+        var full = en ? FULL_EN : FULL_ZH;
+
+        // 1) 常見 ID
+        document.querySelectorAll('[id*="InputLabel"], [id*="inputLabel"]').forEach(function (el) {
+            el.textContent = full;
+        });
+        document.querySelectorAll('[id*="Command"], [id*="command"]').forEach(function (el) {
+            var id = el.id || '';
+            if (/Trigger|trigger/i.test(id)) return;
+            el.textContent = '';
+            el.style.setProperty('display', 'none', 'important');
+        });
+
+        // 2) 畫面上的示範框文字
+        document.querySelectorAll('div, span, p').forEach(function (el) {
+            if (el.children && el.children.length > 3) return;
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t || t.length > 100) return;
+
+            // 已是示範相關
+            var isDemo =
+                t.indexOf('輸入示範') !== -1 ||
+                t.indexOf('Input Example') !== -1 ||
+                t.indexOf('請依本卷') !== -1 ||
+                t.indexOf('Please follow the Seven-Seal') !== -1 ||
+                (t.indexOf('【執行指令】') !== -1 && (t.indexOf('第') !== -1 || t.indexOf('回傳') !== -1 || t.indexOf('結果') !== -1));
+
+            if (!isDemo) return;
+            el.textContent = full;
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 200);
+        setTimeout(apply, 600);
+        setTimeout(apply, 1200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
+            setTimeout(apply, 60);
+            setTimeout(apply, 250);
+        }
+    });
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__fullDemoTimer);
+        window.__fullDemoTimer = setTimeout(apply, 100);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 輸入示範完整一行已套用');
+})();
+</script>
+</body>
+</html>
