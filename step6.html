@@ -2029,5 +2029,96 @@
     });
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 覺醒表三欄：入地獄／地府職員／可轉世（符號＋文字對齊書本）    -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__fixAwakenThreeCols) return;
+    window.__fixAwakenThreeCols = true;
+
+    // 欄位 index：0等級 1標記 2入地獄 3地府職員 4等待時間 5可轉世 6覺醒 7判定主體
+    var ZH = {
+        hell:  ['❌ 否', '❌ 否', '🔺 未入獄', '✅ 是', '✅ 是', '✅ 是', '🔺 誤入地網'],
+        staff: ['❌ 否', '❌ 否', '❌ 否', '🔺 少數可任務服役', '❌ 否', '❌ 否', '❌ 否'],
+        rebirth: ['✅ 可轉世', '✅ 可轉世', '✅ 可轉世', '🔺 可轉世', '🔺 稀有轉世', '❌ 無資格', '❌ 無法轉世']
+    };
+    var EN = {
+        hell:  ['❌ No', '❌ No', '🔺 Not imprisoned', '✅ Yes', '✅ Yes', '✅ Yes', '🔺 Misguided into net'],
+        staff: ['❌ No', '❌ No', '❌ No', '🔺 Some may serve minor duties', '❌ No', '❌ No', '❌ No'],
+        rebirth: ['✅ Eligible', '✅ Eligible', '✅ Eligible', '🔺 Eligible', '🔺 Rare rebirth', '❌ No eligibility', '❌ Cannot reincarnate']
+    };
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var d = isEn() ? EN : ZH;
+        var body = document.getElementById('awakenTableBody');
+        if (!body) return;
+
+        var rows = body.querySelectorAll('tr');
+        rows.forEach(function (tr, i) {
+            if (i >= 7) return;
+            var cells = tr.querySelectorAll('td');
+            if (cells.length < 6) return;
+
+            cells[2].textContent = d.hell[i];
+            cells[3].textContent = d.staff[i];
+            cells[5].textContent = d.rebirth[i];
+
+            [2, 3, 5].forEach(function (idx) {
+                cells[idx].style.setProperty('text-align', 'center', 'important');
+                cells[idx].style.setProperty('white-space', 'normal', 'important');
+                cells[idx].style.setProperty('line-height', '1.4', 'important');
+            });
+        });
+
+        // 同步資料源
+        try {
+            if (typeof awakenData !== 'undefined') {
+                var src = isEn() ? (awakenData.en || []) : (awakenData.zh || []);
+                var map = isEn() ? EN : ZH;
+                for (var j = 0; j < Math.min(src.length, 7); j++) {
+                    src[j].hell = map.hell[j];
+                    src[j].staff = map.staff[j];
+                    src[j].rebirth = map.rebirth[j];
+                }
+            }
+        } catch (e) {}
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 200);
+        setTimeout(apply, 600);
+        setTimeout(apply, 1200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 80);
+            setTimeout(apply, 300);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__fixAwakenThreeT);
+        window.__fixAwakenThreeT = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+})();
+</script>
 </body>
 </html>
