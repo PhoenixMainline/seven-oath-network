@@ -4482,5 +4482,33 @@
     console.log('✅ 相機掃描：一次點擊順暢啟動');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 第五印：上一步 → step7-4.html（第四印 × 誓令印）              -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    function fix() {
+        // 上一步
+        document.querySelectorAll('a.btn-action, a[href]').forEach(function (a) {
+            var t = (a.textContent || '').replace(/\s+/g, '');
+            if (t.indexOf('上一步') !== -1 || (a.querySelector('#btnBackText'))) {
+                a.setAttribute('href', 'step7-4.html');
+            }
+        });
+        var back = document.getElementById('btnBackText');
+        if (back) {
+            var link = back.closest('a');
+            if (link) link.setAttribute('href', 'step7-4.html');
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fix);
+    } else {
+        fix();
+    }
+    setTimeout(fix, 300);
+})();
+</script>
 </body>
 </html>
