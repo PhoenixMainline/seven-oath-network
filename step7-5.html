@@ -4510,5 +4510,86 @@
     setTimeout(fix, 300);
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 第五印 導航：上一步→step7-4 / 下一步→step7-6，✓改→           -->
+<!-- ============================================================ -->
+<script>
+(function () {
+  function isEn() {
+    if (typeof currentLang !== 'undefined') return currentLang === 'en';
+    var a = document.querySelector('.lang-btn.active');
+    return !!(a && /english|en/i.test(a.textContent || ''));
+  }
+
+  function apply() {
+    var en = isEn();
+
+    // 上一步 → step7-4.html（第四印 × 誓令印）
+    var back = document.getElementById('btnBack');
+    if (back) {
+      back.href = 'step7-4.html';
+      back.classList.add('enabled');
+      var backSpan = document.getElementById('btnBackText');
+      if (backSpan) backSpan.textContent = en ? 'Previous' : '上一步';
+      var backIcon = back.querySelector('i');
+      if (backIcon) backIcon.className = 'fa-solid fa-arrow-left';
+    }
+
+    // 下一步 → step7-6.html（第六印 × 誥徒誓印）
+    var next = document.getElementById('btnNext');
+    if (next) {
+      next.href = 'step7-6.html';
+      next.classList.add('enabled');
+      var nextSpan = document.getElementById('btnNextText');
+      if (nextSpan) nextSpan.textContent = en ? 'Next' : '下一步';
+      var nextIcon = next.querySelector('i');
+      if (nextIcon) nextIcon.className = 'fa-solid fa-arrow-right';
+    }
+
+    // 備援：掃 footer
+    document.querySelectorAll('.hud-footer a, .footer-btn-group a, a.btn-action').forEach(function (a) {
+      var t = (a.textContent || '').replace(/\s+/g, ' ').trim();
+      if (/上一步|Previous/i.test(t) || a.querySelector('#btnBackText')) {
+        a.href = 'step7-4.html';
+        a.classList.add('enabled');
+        var s = a.querySelector('span');
+        if (s) s.textContent = en ? 'Previous' : '上一步';
+        var i = a.querySelector('i');
+        if (i) i.className = 'fa-solid fa-arrow-left';
+      }
+      if (/完成|Complete|下一步|Next/i.test(t) || a.querySelector('#btnNextText')) {
+        a.href = 'step7-6.html';
+        a.classList.add('enabled');
+        var s2 = a.querySelector('span');
+        if (s2) s2.textContent = en ? 'Next' : '下一步';
+        var i2 = a.querySelector('i');
+        if (i2) i2.className = 'fa-solid fa-arrow-right';
+      }
+    });
+  }
+
+  function run() {
+    apply();
+    setTimeout(apply, 100);
+    setTimeout(apply, 400);
+    setTimeout(apply, 800);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+
+  var orig = window.switchLanguage;
+  if (typeof orig === 'function') {
+    window.switchLanguage = function (l) {
+      orig(l);
+      setTimeout(apply, 50);
+      setTimeout(apply, 200);
+    };
+  }
+})();
+</script>
 </body>
 </html>
