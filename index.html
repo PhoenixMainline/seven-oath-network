@@ -1326,5 +1326,167 @@
     }
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 第二層七印列：中英文同款深紫底＋金色字（修正版）              -->
+<!-- ============================================================ -->
+<style>
+    /* 主列 + 子列：深紫底、金字 */
+    #tableBody2 tr.seven-seal-row td,
+    #tableBody2 tr.seven-seal-sub td {
+        background: rgba(88, 28, 135, 0.35) !important;
+        color: #ffd700 !important;
+    }
+    #tableBody2 tr.seven-seal-row td.col-segment,
+    #tableBody2 tr.seven-seal-sub td.col-segment {
+        background: linear-gradient(135deg, rgba(109, 40, 217, 0.75), rgba(88, 28, 135, 0.55)) !important;
+        color: #ffd700 !important;
+        font-weight: 700 !important;
+        border-left: 4px solid #ffd700 !important;
+    }
+    #tableBody2 tr.seven-seal-row td.col-no,
+    #tableBody2 tr.seven-seal-sub td.col-no {
+        color: #ffd700 !important;
+        font-weight: 700 !important;
+    }
+    #tableBody2 tr.seven-seal-row td.col-field,
+    #tableBody2 tr.seven-seal-sub td.col-field {
+        color: #ffed4a !important;
+        font-weight: 500 !important;
+    }
+    #tableBody2 tr.seven-seal-row td.col-func,
+    #tableBody2 tr.seven-seal-sub td.col-func {
+        color: #f0d890 !important;
+        font-weight: 400 !important;
+    }
+    #tableBody2 tr.seven-seal-row .unit-link,
+    #tableBody2 tr.seven-seal-sub .unit-link {
+        background: rgba(88, 28, 135, 0.45) !important;
+        border-color: rgba(255, 215, 0, 0.45) !important;
+        color: #ffd700 !important;
+        font-weight: 600 !important;
+    }
+    #tableBody2 tr.seven-seal-row .unit-link i,
+    #tableBody2 tr.seven-seal-sub .unit-link i {
+        color: #ffd700 !important;
+    }
+    #tableBody2 tr.seven-seal-row:hover td,
+    #tableBody2 tr.seven-seal-sub:hover td {
+        background: rgba(88, 28, 135, 0.5) !important;
+    }
+</style>
+<script>
+(function () {
+    if (window.__sevenSealStyleFix) return;
+    window.__sevenSealStyleFix = true;
+
+    function highlight() {
+        var rows = document.querySelectorAll('#tableBody2 tr');
+        rows.forEach(function (row) {
+            row.classList.remove('seven-seal-row', 'seven-seal-sub');
+            var cells = row.querySelectorAll('td');
+            if (cells.length < 2) return;
+
+            var seg = (cells[0].textContent || '').trim();
+            var no = (cells[1].textContent || '').trim();
+
+            var isSeven =
+                /七印啟動階段|Seven-Seal Activation Phase/i.test(seg) ||
+                /第[一二三四五六七]印|First Seal|Second Seal|Third Seal|Fourth Seal|Fifth Seal|Sixth Seal|Seventh Seal/i.test(no) ||
+                /第7項|Item 7/i.test(no);
+
+            if (!isSeven) return;
+
+            row.classList.add('seven-seal-row');
+            // 子項：第一印～第七印（非第7項）
+            if (/第[一二三四五六七]印|First Seal|Second Seal|Third Seal|Fourth Seal|Fifth Seal|Sixth Seal|Seventh Seal/i.test(no) &&
+                !/第7項|Item 7/i.test(no)) {
+                row.classList.add('seven-seal-sub');
+            }
+        });
+    }
+
+    function run() {
+        highlight();
+        setTimeout(highlight, 150);
+        setTimeout(highlight, 400);
+        setTimeout(highlight, 900);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(highlight, 80);
+            setTimeout(highlight, 250);
+            setTimeout(highlight, 600);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
+            setTimeout(highlight, 100);
+            setTimeout(highlight, 400);
+        }
+    });
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 頁尾說明：英文版完整文案                                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__fixPageInfoEn) return;
+    window.__fixPageInfoEn = true;
+
+    var ZH = '📄 凡圓滿【宇宙誓印覺醒工程】者，由天庫自動撥補資糧。';
+    var EN = '📄 For those who fulfill the【Cosmic Vow-Seal Awakening Project】, the Heavenly Treasury shall automatically replenish their provisions. Ordering initiates activation. Validation achieves alignment.';
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var el = document.getElementById('pageInfo');
+        if (!el) return;
+        el.innerHTML = isEn() ? EN : ZH;
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 200);
+        setTimeout(apply, 600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
+            setTimeout(apply, 80);
+            setTimeout(apply, 300);
+        }
+    });
+})();
+</script>
 </body>
 </html>
