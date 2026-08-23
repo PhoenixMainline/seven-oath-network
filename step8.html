@@ -1084,5 +1084,114 @@
   }
 })();
 </script>
+<!-- ============================================================ -->
+<!-- step8 最終導航鎖定：上一步→step7 / 下一步→step9（蓋過 step8-1） -->
+<!-- ============================================================ -->
+<script>
+(function () {
+  if (window.__step8NavFinal) return;
+  window.__step8NavFinal = true;
+
+  function isEn() {
+    if (typeof currentLang !== 'undefined') return currentLang === 'en';
+    var a = document.querySelector('.lang-btn.active');
+    return !!(a && /english|en/i.test(a.textContent || ''));
+  }
+
+  function apply() {
+    var en = isEn();
+
+    // 上一步 → step7.html（第7項 第七印 × 鳳徽印）
+    var back = document.getElementById('btnBack');
+    if (back) {
+      back.href = 'step7.html';
+      back.classList.add('enabled');
+      back.removeAttribute('disabled');
+      back.style.pointerEvents = 'auto';
+      back.onclick = null;
+      var bs = document.getElementById('btnBackText');
+      if (bs) bs.textContent = en ? 'Previous' : '上一步';
+      var bi = back.querySelector('i');
+      if (bi) bi.className = 'fa-solid fa-arrow-left';
+    }
+
+    // 下一步 → step9.html（第9項 第七印鳳徽印 × 圓印封冊）
+    var next = document.getElementById('btnNext');
+    if (next) {
+      next.href = 'step9.html';
+      next.classList.add('enabled');
+      next.removeAttribute('disabled');
+      next.style.pointerEvents = 'auto';
+      next.onclick = null;
+      var ns = document.getElementById('btnNextText');
+      if (ns) ns.textContent = en ? 'Next' : '下一步';
+      var ni = next.querySelector('i');
+      if (ni) ni.className = 'fa-solid fa-arrow-right';
+    }
+
+    // 掃全部 footer 連結，強制覆寫 step8-1 / step8-2 / index
+    document.querySelectorAll('.hud-footer a, .footer-btn-group a, a.btn-action').forEach(function (a) {
+      var t = (a.textContent || '').replace(/\s+/g, ' ').trim();
+      var href = (a.getAttribute('href') || '');
+
+      if (/上一步|Previous/i.test(t) || a.id === 'btnBack' || a.querySelector('#btnBackText')) {
+        a.href = 'step7.html';
+        a.classList.add('enabled');
+        a.onclick = null;
+        var s = a.querySelector('span');
+        if (s) s.textContent = en ? 'Previous' : '上一步';
+        var i = a.querySelector('i');
+        if (i) i.className = 'fa-solid fa-arrow-left';
+      }
+
+      if (/完成|Complete|下一步|Next/i.test(t) ||
+          a.id === 'btnNext' ||
+          a.querySelector('#btnNextText') ||
+          /step8-1|step8-2|index\.html/i.test(href)) {
+        a.href = 'step9.html';
+        a.classList.add('enabled');
+        a.onclick = null;
+        var s2 = a.querySelector('span');
+        if (s2) s2.textContent = en ? 'Next' : '下一步';
+        var i2 = a.querySelector('i');
+        if (i2) i2.className = 'fa-solid fa-arrow-right';
+      }
+    });
+  }
+
+  function run() {
+    apply();
+    setTimeout(apply, 50);
+    setTimeout(apply, 200);
+    setTimeout(apply, 500);
+    setTimeout(apply, 1000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+
+  // 語系切換後再鎖一次
+  var orig = window.switchLanguage;
+  if (typeof orig === 'function') {
+    window.switchLanguage = function (l) {
+      orig(l);
+      setTimeout(apply, 50);
+      setTimeout(apply, 250);
+    };
+  }
+
+  // 持續監視，防止舊腳本又改回 step8-1
+  var obs = new MutationObserver(function () {
+    clearTimeout(window.__step8NavT);
+    window.__step8NavT = setTimeout(apply, 80);
+  });
+  obs.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['href'] });
+
+  console.log('✅ step8 導航已鎖定：上一步→step7.html / 下一步→step9.html');
+})();
+</script>
 </body>
 </html>
