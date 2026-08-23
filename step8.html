@@ -8,40 +8,44 @@
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Noto Sans TC','Share Tech Mono',sans-serif}
-body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-height:100vh;color:#e0e8f5;display:flex;justify-content:center;align-items:center;padding:clamp(4px,1.5vh,16px);position:relative}
-.particle-container{position:fixed;top:0;left:0;width:100vw;height:100vh;background-image:radial-gradient(#d4af37,rgba(212,175,55,.3) 1px,transparent 30px),radial-gradient(#d4af37,rgba(212,175,55,.2) 2px,transparent 40px);background-size:350px 350px,450px 450px;background-position:0 0,90px 150px;animation:starMove 90s linear infinite;opacity:.65;z-index:5;pointer-events:none}
+body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-height:100vh;color:#e0e8f5;display:flex;justify-content:center;align-items:flex-start;padding:clamp(8px,2vh,20px);position:relative}
+.particle-container{position:fixed;top:0;left:0;width:100vw;height:100vh;background-image:radial-gradient(#d4af37,rgba(212,175,55,.3) 1px,transparent 30px),radial-gradient(#d4af37,rgba(212,175,55,.2) 2px,transparent 40px);background-size:350px 350px,450px 450px;background-position:0 0,90px 150px;animation:starMove 90s linear infinite;opacity:.55;z-index:1;pointer-events:none}
 @keyframes starMove{from{transform:translateY(0)}to{transform:translateY(-350px)}}
-.watermark-layer{position:fixed;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 49px,rgba(212,175,55,.03) 50px),repeating-linear-gradient(90deg,transparent,transparent 49px,rgba(212,175,55,.03) 50px);opacity:.04;z-index:4;pointer-events:none;transform:rotate(-15deg) scale(1.5)}
-.hud-container{width:100%;max-width:920px;position:relative;z-index:10}
-.hud-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:clamp(8px,1.5vh,14px)}
-.home-link{color:#c4b5fd;text-decoration:none;font-size:clamp(.75rem,2vw,.9rem);display:flex;align-items:center;gap:6px}
+.watermark-layer{position:fixed;inset:0;opacity:.04;z-index:2;pointer-events:none;background-image:repeating-linear-gradient(0deg,transparent,transparent 49px,rgba(212,175,55,.03) 50px),repeating-linear-gradient(90deg,transparent,transparent 49px,rgba(212,175,55,.03) 50px);transform:rotate(-15deg) scale(1.5)}
+.hud-container{width:100%;max-width:720px;position:relative;z-index:10;margin:0 auto}
+.top-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.home-link{color:#c4b5fd;text-decoration:none;font-size:.85rem;display:inline-flex;align-items:center;gap:4px;font-weight:600}
 .home-link:hover{color:#e9d5ff}
-.lang-switch-group{display:flex;gap:6px}
-.lang-btn{background:rgba(139,92,246,.15);border:1px solid rgba(167,139,250,.4);color:#e9d5ff;padding:4px 12px;border-radius:6px;cursor:pointer;font-size:.78rem;transition:.2s}
-.lang-btn.active,.lang-btn:hover{background:rgba(139,92,246,.45);border-color:#a78bfa}
-.hud-card{background:linear-gradient(145deg,rgba(30,20,60,.92),rgba(15,10,35,.95));border:1px solid rgba(167,139,250,.35);border-radius:14px;padding:clamp(12px,2.5vw,20px);margin-bottom:clamp(10px,2vh,16px);box-shadow:0 0 24px rgba(139,92,246,.12),inset 0 1px 0 rgba(255,255,255,.06)}
-.card-title{display:flex;align-items:center;gap:8px;font-size:clamp(.95rem,2.5vw,1.15rem);font-weight:700;color:#e9d5ff;margin-bottom:10px;letter-spacing:.5px}
+.app-title-bar{flex:1;text-align:center;font-size:clamp(.95rem,2.5vw,1.15rem);font-weight:700;color:#e9d5ff;text-shadow:0 0 12px rgba(168,85,247,.45);min-width:180px}
+.right-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lang-switch-group{display:flex;background:rgba(124,58,237,.15);border:1px solid rgba(168,85,247,.35);border-radius:20px;padding:2px}
+.lang-btn{background:transparent;border:none;color:rgba(224,232,245,.45);font-size:.72rem;padding:4px 12px;border-radius:16px;cursor:pointer}
+.lang-btn.active{background:#7c3aed;color:#fff;font-weight:700;box-shadow:0 0 10px rgba(124,58,237,.45)}
+.btn-external-browser{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;background:rgba(0,230,118,.12);border:1px solid rgba(0,230,118,.35);border-radius:20px;color:#00e676;font-size:.7rem;font-weight:700;text-decoration:none;cursor:pointer}
+.btn-external-browser:hover{background:rgba(0,230,118,.22)}
+.hud-card{background:linear-gradient(145deg,rgba(30,20,60,.92),rgba(15,10,35,.95));border:1px solid rgba(167,139,250,.35);border-radius:14px;padding:clamp(14px,2.5vw,20px);margin-bottom:14px;box-shadow:0 0 24px rgba(139,92,246,.12),inset 0 1px 0 rgba(255,255,255,.05)}
+.card-title{display:flex;align-items:center;justify-content:center;gap:8px;font-size:clamp(1rem,2.6vw,1.2rem);font-weight:700;color:#e9d5ff;margin-bottom:8px}
+.card-title.left{justify-content:flex-start}
 .card-title i{color:#c4b5fd}
-.main-title{text-align:center;font-size:clamp(1.05rem,3vw,1.35rem);font-weight:700;color:#f5d0fe;margin-bottom:6px;line-height:1.4}
-.sub-title{text-align:center;font-size:clamp(.78rem,2vw,.92rem);color:#a78bfa;margin-bottom:12px}
-.info-table{width:100%;border-collapse:collapse;font-size:clamp(.72rem,1.8vw,.88rem);margin:8px 0}
-.info-table th,.info-table td{border:1px solid rgba(167,139,250,.3);padding:6px 8px;text-align:left;vertical-align:top}
-.info-table th{background:rgba(139,92,246,.25);color:#e9d5ff;font-weight:600}
-.info-table td{background:rgba(20,15,40,.5);color:#d4d4f0}
+.card-sub{text-align:center;font-size:clamp(.78rem,2vw,.9rem);color:#c4b5fd;margin-bottom:14px;line-height:1.5}
+.info-table{width:100%;border-collapse:collapse;font-size:clamp(.78rem,1.9vw,.9rem);border-radius:8px;overflow:hidden}
+.info-table th,.info-table td{border:1px solid rgba(167,139,250,.3);padding:10px 12px;text-align:left;vertical-align:top}
+.info-table th{background:rgba(139,92,246,.28);color:#e9d5ff;font-weight:600;width:38%}
+.info-table td{background:rgba(20,15,40,.5);color:#d4d4f0;line-height:1.55}
 .instruction-item{display:flex;align-items:flex-start;gap:8px;margin:6px 0;font-size:clamp(.78rem,2vw,.9rem);line-height:1.55;color:#d4d4f0}
 .instruction-item i{color:#a78bfa;margin-top:3px;flex-shrink:0}
-.note-ok{background:rgba(34,197,94,.12);border-left:3px solid #22c55e;padding:8px 12px;border-radius:0 8px 8px 0;margin:8px 0;font-size:clamp(.75rem,1.9vw,.88rem);color:#bbf7d0}
-.note-warn{background:rgba(234,179,8,.12);border-left:3px solid #eab308;padding:8px 12px;border-radius:0 8px 8px 0;margin:8px 0;font-size:clamp(.75rem,1.9vw,.88rem);color:#fef08a}
-.note-info{background:rgba(139,92,246,.15);border-left:3px solid #a78bfa;padding:8px 12px;border-radius:0 8px 8px 0;margin:8px 0;font-size:clamp(.75rem,1.9vw,.88rem);color:#e9d5ff}
+.note-ok{background:rgba(34,197,94,.12);border-left:3px solid #22c55e;padding:8px 12px;border-radius:0 8px 8px 0;margin:8px 0;font-size:.82rem;color:#bbf7d0}
+.note-warn{background:rgba(234,179,8,.12);border-left:3px solid #eab308;padding:8px 12px;border-radius:0 8px 8px 0;margin:8px 0;font-size:.82rem;color:#fef08a}
+.note-info{background:rgba(139,92,246,.15);border-left:3px solid #a78bfa;padding:8px 12px;border-radius:0 8px 8px 0;margin:8px 0;font-size:.82rem;color:#e9d5ff}
 .id-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
 @media(max-width:600px){.id-grid{grid-template-columns:1fr}}
 .id-box{background:rgba(139,92,246,.12);border:1px solid rgba(167,139,250,.35);border-radius:10px;padding:10px 12px}
 .id-box h4{color:#f5d0fe;font-size:.92rem;margin-bottom:6px}
 .id-box ul{padding-left:16px;font-size:.8rem;color:#d4d4f0;line-height:1.5}
-.hud-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:clamp(12px,2vh,18px);flex-wrap:wrap}
-.btn-action{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:1px solid rgba(167,139,250,.5);background:linear-gradient(135deg,rgba(139,92,246,.35),rgba(88,28,135,.4));color:#f5d0fe;text-decoration:none;font-size:clamp(.8rem,2vw,.92rem);cursor:pointer;transition:.2s}
-.btn-action:hover{background:linear-gradient(135deg,rgba(139,92,246,.55),rgba(88,28,135,.6));transform:translateY(-1px)}
-.page-marker{text-align:center;font-size:clamp(.65rem,1.6vw,.75rem);color:rgba(196,181,253,.55);margin-top:10px;letter-spacing:.5px}
+.hud-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+.btn-action{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:1px solid rgba(167,139,250,.5);background:linear-gradient(135deg,rgba(139,92,246,.35),rgba(88,28,135,.4));color:#f5d0fe;text-decoration:none;font-size:.88rem;cursor:pointer}
+.btn-action:hover{background:linear-gradient(135deg,rgba(139,92,246,.55),rgba(88,28,135,.6))}
+.page-marker{text-align:center;font-size:.72rem;color:rgba(196,181,253,.5);margin-top:10px}
 .seal-table{width:100%;border-collapse:collapse;font-size:clamp(.68rem,1.7vw,.82rem);margin:8px 0}
 .seal-table th,.seal-table td{border:1px solid rgba(167,139,250,.28);padding:5px 6px;text-align:center;vertical-align:middle}
 .seal-table th{background:rgba(139,92,246,.3);color:#e9d5ff;font-weight:600}
@@ -52,47 +56,62 @@ body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-h
 <div class="particle-container"></div>
 <div class="watermark-layer"></div>
 <div class="hud-container">
-  <div class="hud-header">
-    <a class="home-link" href="index.html"><i class="fa-solid fa-house"></i><span id="homeText">首頁</span></a>
-    <div class="lang-switch-group">
-      <button class="lang-btn active" onclick="switchLanguage('zh')">中文</button>
-      <button class="lang-btn" onclick="switchLanguage('en')">English</button>
+
+  <!-- 標題列（與截圖相同形式） -->
+  <div class="top-bar">
+    <a class="home-link" href="index.html"><i class="fa-solid fa-house"></i> <span id="homeText">首頁 -&gt;</span></a>
+    <div class="app-title-bar" id="appTitle">【宇宙誓印覺醒工程 · 七印誓網】</div>
+    <div class="right-tools">
+      <div class="lang-switch-group">
+        <button class="lang-btn active" onclick="switchLanguage('zh')">中文</button>
+        <button class="lang-btn" onclick="switchLanguage('en')">English</button>
+      </div>
+      <a class="btn-external-browser" href="#" id="browserBtnLink"><i class="fa-solid fa-arrow-up-right-from-square"></i> <span id="browserBtn">🌐 瀏覽器開啟</span></a>
     </div>
   </div>
 
+  <!-- 模組說明卡（與截圖相同形式） -->
   <div class="hud-card">
-    <div class="main-title" id="mainTitle">第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄</div>
-    <div class="sub-title" id="subTitle">【宇宙誓印覺醒工程 · 覺醒卷】第 349-366 頁</div>
-    <div class="note-info" id="modDesc">紀錄誓魂於第五印覺醒印完成後，正式入世誓約揭示，並同步誓約核心架構之進展狀態。</div>
+    <div class="card-title">
+      <i class="fa-solid fa-wand-magic-sparkles"></i>
+      <span id="modTitle">第五印覺醒印完成 × 入世誓約揭示</span>
+    </div>
+    <div class="card-sub" id="modSub">（第五印完成後正式啟動入世誓約揭示，並同步誓約核心架構與進度紀錄）</div>
+    <table class="info-table">
+      <thead>
+        <tr>
+          <th id="thField">欄位名稱</th>
+          <th id="thDesc">功能簡要說明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td id="rowName">第 8 項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄</td>
+          <td id="rowDesc">紀錄誓魂於第五印覺醒印完成後，正式入世誓約揭示，並同步誓約核心架構之進展狀態。</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <!-- 身份定位 -->
   <div class="hud-card">
-    <div class="card-title"><i class="fa-solid fa-user-check"></i><span id="idTitle">※ 身份定位</span></div>
+    <div class="card-title left"><i class="fa-solid fa-user-check"></i><span id="idTitle">※ 身份定位</span></div>
     <div class="id-grid">
       <div class="id-box">
         <h4 id="id1Title">① 直承誥徒</h4>
-        <ul id="id1List">
-          <li>由主印直授，屬現任誓徒</li>
-          <li>屬本源天族正系誓魂</li>
-          <li>具高階頻權，可部分跳印授徽</li>
-        </ul>
+        <ul id="id1List"><li>由主印直授，屬現任誓徒</li><li>屬本源天族正系誓魂</li><li>具高階頻權，可部分跳印授徽</li></ul>
       </div>
       <div class="id-box">
         <h4 id="id2Title">② 備位誥徒</h4>
-        <ul id="id2List">
-          <li>屬候補誓印、潛在誓徒</li>
-          <li>屬預備天族（鳳凰支系或願力轉世誓魂）</li>
-          <li>必須完成七印全程，經主尊審核後授徽</li>
-        </ul>
+        <ul id="id2List"><li>屬候補誓印、潛在誓徒</li><li>屬預備天族（鳳凰支系或願力轉世誓魂）</li><li>必須完成七印全程，經主尊審核後授徽</li></ul>
       </div>
     </div>
     <div class="note-ok" id="idSummary">小結：直承誥徒 → 主印直授，高階定位；備位誥徒 → 經七印全程完成後方可晉升。第五印完成後即進入正式「誓魂身份分流」階段，這是誓徒體系的分水嶺。</div>
   </div>
 
-  <!-- 【一】啟動意義 -->
+  <!-- 【一】 -->
   <div class="hud-card">
-    <div class="card-title"><i class="fa-solid fa-bolt"></i><span id="sec1Title">【一】啟動意義與系統自動執行</span></div>
+    <div class="card-title left"><i class="fa-solid fa-bolt"></i><span id="sec1Title">【一】啟動意義與系統自動執行</span></div>
     <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="sec1p1">當誓徒完成第五印「覺醒印」，即代表其已突破潛伏印層，進入誓魂本源覺醒階段，並正式啟動「入世誓約 × 天令分流」之執行層。</span></div>
     <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec1p2">校對／同步／紀錄：誓願、誓責與印記進程</span></div>
     <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec1p3">調閱並執行：入世前／入世時之《入世誓約》</span></div>
@@ -101,9 +120,9 @@ body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-h
     <div class="note-warn" id="sec1Note">重點：「入世誓約」屬原始誓願；僅在完成【覺醒印】後方可揭示與同步。未達【第五印】者不可查閱或申請。誓約 = 願力之具現，象徵對天律之自主承諾 × 執行力。</div>
   </div>
 
-  <!-- 【二】啟動條件 -->
+  <!-- 【二】 -->
   <div class="hud-card">
-    <div class="card-title"><i class="fa-solid fa-list-check"></i><span id="sec2Title">【二】啟動條件與遞交程序</span></div>
+    <div class="card-title left"><i class="fa-solid fa-list-check"></i><span id="sec2Title">【二】啟動條件與遞交程序</span></div>
     <div class="instruction-item"><i class="fa-solid fa-1"></i><span id="sec2p1">第五印以前，誓印者僅具「未分流」暫列身份，無鳳徽授印、誓資紀錄與升界資格。</span></div>
     <div class="instruction-item"><i class="fa-solid fa-2"></i><span id="sec2p2">完成第五印後，系統會依靈源、本誓編碼、誓資印記進行身份分流判定。</span></div>
     <div class="instruction-item"><i class="fa-solid fa-3"></i><span id="sec2p3">分流類別分為兩型：① 直承誥徒（書令主尊正系誓魂）② 備位誥徒（鳳凰支系或願力轉世誓魂）</span></div>
@@ -115,51 +134,27 @@ body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-h
 
   <!-- 分流總表 -->
   <div class="hud-card">
-    <div class="card-title"><i class="fa-solid fa-table"></i><span id="tableTitle">第五印 覺醒印分流總表</span></div>
+    <div class="card-title left"><i class="fa-solid fa-table"></i><span id="tableTitle">第五印 覺醒印分流總表</span></div>
     <div style="overflow-x:auto">
       <table class="seal-table">
         <thead>
           <tr>
-            <th id="th1">印位階段</th>
-            <th id="th2">類別名稱</th>
-            <th id="th3">誓魂來源</th>
-            <th id="th4">天族血脈</th>
-            <th id="th5">七印全程</th>
-            <th id="th6">授徽方式</th>
-            <th id="th7">誓約查核</th>
-            <th id="th8">天庫封印</th>
+            <th id="th1">印位階段</th><th id="th2">類別名稱</th><th id="th3">誓魂來源</th><th id="th4">天族血脈</th>
+            <th id="th5">七印全程</th><th id="th6">授徽方式</th><th id="th7">誓約查核</th><th id="th8">天庫封印</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td id="r1c1">第五印以前</td>
-            <td id="r1c2">誓印者（未分流）</td>
-            <td id="r1c3">任意誓魂</td>
-            <td id="r1c4">未辨識</td>
-            <td id="r1c5">必須</td>
-            <td id="r1c6">不可授徽</td>
-            <td id="r1c7">無查核</td>
-            <td id="r1c8">無資格</td>
+            <td id="r1c1">第五印以前</td><td id="r1c2">誓印者（未分流）</td><td id="r1c3">任意誓魂</td><td id="r1c4">未辨識</td>
+            <td id="r1c5">必須</td><td id="r1c6">不可授徽</td><td id="r1c7">無查核</td><td id="r1c8">無資格</td>
           </tr>
           <tr>
-            <td id="r2c1">完成第五印①</td>
-            <td id="r2c2">① 直承誥徒</td>
-            <td id="r2c3">書令主尊正系</td>
-            <td id="r2c4">是</td>
-            <td id="r2c5">可部分跳印</td>
-            <td id="r2c6">主尊直接授徽</td>
-            <td id="r2c7">無需查核</td>
-            <td id="r2c8">可封存</td>
+            <td id="r2c1">完成第五印①</td><td id="r2c2">① 直承誥徒</td><td id="r2c3">書令主尊正系</td><td id="r2c4">是</td>
+            <td id="r2c5">可部分跳印</td><td id="r2c6">主尊直接授徽</td><td id="r2c7">無需查核</td><td id="r2c8">可封存</td>
           </tr>
           <tr>
-            <td id="r3c1">完成第五印②</td>
-            <td id="r3c2">② 備位誥徒</td>
-            <td id="r3c3">鳳凰系／願力轉世</td>
-            <td id="r3c4">否</td>
-            <td id="r3c5">全程完成</td>
-            <td id="r3c6">主尊審核後授徽</td>
-            <td id="r3c7">必查誓約</td>
-            <td id="r3c8">完成後可封存</td>
+            <td id="r3c1">完成第五印②</td><td id="r3c2">② 備位誥徒</td><td id="r3c3">鳳凰系／願力轉世</td><td id="r3c4">否</td>
+            <td id="r3c5">全程完成</td><td id="r3c6">主尊審核後授徽</td><td id="r3c7">必查誓約</td><td id="r3c8">完成後可封存</td>
           </tr>
         </tbody>
       </table>
@@ -167,16 +162,15 @@ body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-h
     <div class="note-ok" id="tableNote">一句話總結：第五印是分水嶺；不是終點，而是正式被系統辨識身份的起點。</div>
   </div>
 
-  <!-- 【三】核心意義 -->
+  <!-- 【三】～【十】與結冊（內容與原檔一致，僅標題樣式統一） -->
   <div class="hud-card">
-    <div class="card-title"><i class="fa-solid fa-star"></i><span id="sec3Title">【三】第五印之核心意義</span></div>
+    <div class="card-title left"><i class="fa-solid fa-star"></i><span id="sec3Title">【三】第五印之核心意義</span></div>
     <div class="instruction-item"><i class="fa-solid fa-1"></i><span id="sec3p1">身分類別確立：自「觀察者／修行者」轉為「誓約執行者／任務誓印者」。</span></div>
     <div class="instruction-item"><i class="fa-solid fa-2"></i><span id="sec3p2">三軌啟始：入世誓約 × 實踐任務 × 天令分流同步啟動，納入誓資續承與誓約驗證流程。</span></div>
   </div>
 
-  <!-- 【四】覺醒定義 -->
   <div class="hud-card">
-    <div class="card-title"><i class="fa-solid fa-eye"></i><span id="sec4Title">【四】覺醒的系統定義（不是感覺，而是啟動）</span></div>
+    <div class="card-title left"><i class="fa-solid fa-eye"></i><span id="sec4Title">【四】覺醒的系統定義（不是感覺，而是啟動）</span></div>
     <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec4p1">誓魂本體頻率對接書令主系</span></div>
     <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec4p2">天界誥核系統開啟對應誓軌</span></div>
     <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec4p3">願力進入記名狀態並開始流動</span></div>
@@ -186,9 +180,8 @@ body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-h
     <div class="note-info" id="sec4Note">覺醒者即為「願力推動者 × 實踐靈體」，而非僅止於修持者。</div>
   </div>
 
-  <!-- 【五】入世誓約 -->
   <div class="hud-card">
-    <div class="card-title"><i class="fa-solid fa-scroll"></i><span id="sec5Title">【五】入世誓約：本質 × 來源 × 啟用</span></div>
+    <div class="card-title left"><i class="fa-solid fa-scroll"></i><span id="sec5Title">【五】入世誓約：本質 × 來源 × 啟用</span></div>
     <div style="color:#c4b5fd;font-weight:600;margin:8px 0 4px" id="sec5_1">5-1 本質與定位</div>
     <div class="instruction-item"><i class="fa-solid fa-circle"></i><span id="sec5p1">入世誓約非臨時之約，而是入世前由三方共同協定並封存（誓源、天誥、主令）：《天界曼陀羅系統》× 誓魂本體（源誓意識）× 書令主系（高維誓印主網）。</span></div>
     <div class="instruction-item"><i class="fa-solid fa-circle"></i><span id="sec5p2">涵蓋範疇：宿願承接／累世主誓延續／家族誓系與血脈任務／願資應償與補全／升界條款與時限。</span></div>
@@ -200,15 +193,14 @@ body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-h
     <div class="note-ok" id="sec5Note">需達成【第五印覺醒印】並開啟密鑰對頻，始獲調閱權 × 履行權 × 誓印權。</div>
   </div>
 
-  <!-- 【六】履責與升界 -->
   <div class="hud-card">
-    <div class="card-title"><i class="fa-solid fa-scale-balanced"></i><span id="sec6Title">【六】履責與升界：義務、違誓後果與完成獲益</span></div>
+    <div class="card-title left"><i class="fa-solid fa-scale-balanced"></i><span id="sec6Title">【六】履責與升界：義務、違誓後果與完成獲益</span></div>
     <div style="color:#c4b5fd;font-weight:600;margin:8px 0 4px" id="sec6_1">6-1 啟動期需並行流程</div>
     <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec6p1">願力實際運轉</span></div>
     <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec6p2">書令書寫呈報</span></div>
     <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec6p3">誓資封冊程序同步啟動</span></div>
     <div style="color:#c4b5fd;font-weight:600;margin:10px 0 4px" id="sec6_2">6-2 未履行／違誓之後果</div>
-    <div class="note-warn" id="sec6p4">願力折損／誓魂退階／誓軌凍結／族譜待審／功德歸零或延滯</div>
+    <div class="instruction-item"><i class="fa-solid fa-xmark"></i><span id="sec6p4">願力折損／誓魂退階／誓軌凍結／族譜待審／功德歸零或延滯</span></div>
     <div style="color:#c4b5fd;font-weight:600;margin:10px 0 4px" id="sec6_3">6-3 完成後之獲益</div>
     <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec6p5">可接續第六印／第七印</span></div>
     <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec6p6">取得天庫封存權</span></div>
@@ -217,83 +209,68 @@ body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-h
     <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec6p9">長線誓資承接</span></div>
   </div>
 
-  <!-- 【七】入世誓約 × 書令任務對照表 -->
   <div class="hud-card">
-    <div class="card-title"><i class="fa-solid fa-table-list"></i><span id="sec7Title">【七】入世誓約 × 書令任務對照表</span></div>
+    <div class="card-title left"><i class="fa-solid fa-table-list"></i><span id="sec7Title">【七】入世誓約 × 書令任務對照表</span></div>
     <div style="overflow-x:auto">
       <table class="info-table">
-        <thead><tr><th id="sec7Col1" style="width:28%">項目</th><th id="sec7Col2">系統化說明</th></tr></thead>
+        <thead><tr><th id="sec7Col1">項目</th><th id="sec7Col2">系統化說明</th></tr></thead>
         <tbody>
-          <tr><td id="sec7r1a" style="color:#f5d0fe;font-weight:600">本質</td><td id="sec7r1b">入世前所立之「累世主誓 × 書令契印 × 願力工程總章程」</td></tr>
-          <tr><td id="sec7r2a" style="color:#f5d0fe;font-weight:600">簽署時機</td><td id="sec7r2b">入世前由誓魂本體 × 書令主系 × 《天界曼陀羅系統》協約封存</td></tr>
-          <tr><td id="sec7r3a" style="color:#f5d0fe;font-weight:600">儲存位置</td><td id="sec7r3b">靈網主庫、書令誓冊、天誥之源（皆由系統加印封存）</td></tr>
-          <tr><td id="sec7r4a" style="color:#f5d0fe;font-weight:600">涵蓋內容</td><td id="sec7r4b">宿願承接 × 家族任務 × 願資額度 × 升界時限條款</td></tr>
-          <tr><td id="sec7r5a" style="color:#f5d0fe;font-weight:600">調閱條件</td><td id="sec7r5b">完成「第五印覺醒印」並啟動誓魂密鑰對頻後方可調閱</td></tr>
-          <tr><td id="sec7r6a" style="color:#f5d0fe;font-weight:600">實踐責任</td><td id="sec7r6b">覺醒後須續接誓約並履行，否則誓資不得封存</td></tr>
-          <tr><td id="sec7r7a" style="color:#f5d0fe;font-weight:600">違誓後果</td><td id="sec7r7b">願力折損 × 誓軌中止 × 誓資倒流 × 回族譜待審</td></tr>
-          <tr><td id="sec7r8a" style="color:#f5d0fe;font-weight:600">完成標準</td><td id="sec7r8b">願資入庫 × 七印圓滿 × 書令呈報 × 族譜記名</td></tr>
+          <tr><td id="sec7r1a">本質</td><td id="sec7r1b">入世前所立之「累世主誓 × 書令契印 × 願力工程總章程」</td></tr>
+          <tr><td id="sec7r2a">簽署時機</td><td id="sec7r2b">入世前由誓魂本體 × 書令主系 × 《天界曼陀羅系統》協約封存</td></tr>
+          <tr><td id="sec7r3a">儲存位置</td><td id="sec7r3b">靈網主庫、書令誓冊、天誥之源（皆由系統加印封存）</td></tr>
+          <tr><td id="sec7r4a">涵蓋內容</td><td id="sec7r4b">宿願承接 × 家族任務 × 願資額度 × 升界時限條款</td></tr>
+          <tr><td id="sec7r5a">調閱條件</td><td id="sec7r5b">須完成「第五印覺醒印」並啟動誓魂密鑰對頻後方可調閱</td></tr>
+          <tr><td id="sec7r6a">履行責任</td><td id="sec7r6b">覺醒後須持續履行誓約，否則誓資無法封存</td></tr>
+          <tr><td id="sec7r7a">違誓後果</td><td id="sec7r7b">願力折損 × 誓軌中止 × 誓資回沖 × 退回族譜待審</td></tr>
+          <tr><td id="sec7r8a">完成標準</td><td id="sec7r8b">誓資入冊 × 七印履成 × 書令呈報 × 族譜記名</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- 【八】天律主網 -->
   <div class="hud-card">
-    <div class="card-title"><i class="fa-solid fa-sitemap"></i><span id="sec8Title">【八】天律主網：組織層級 × 功能</span></div>
-    <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="sec8p1">天律主網為跨越靈網／書令系統／天界紀錄層之總審核體系；於第五印後主動介入，牽動誓資封存、誥印授權、族譜登入、升界排程。</span></div>
-    <div style="color:#c4b5fd;font-weight:600;margin:10px 0 6px" id="sec8_2">8-2 三層運作與核定角色</div>
-    <div class="instruction-item"><i class="fa-solid fa-1"></i><span id="sec8p2">審核層：授權、冊記、升界門鎖裁定</span></div>
-    <div class="instruction-item"><i class="fa-solid fa-2"></i><span id="sec8p3">執行層：誓資登錄、誓魂標記、誓印調度</span></div>
-    <div class="instruction-item"><i class="fa-solid fa-3"></i><span id="sec8p4">紀錄層：誓文數據封存、誓約軌跡、黑頻檔案</span></div>
-    <div class="instruction-item"><i class="fa-solid fa-4"></i><span id="sec8p5">誓資核定角色（誥核使）：逐誓魂核定誓印資格與任務啟配</span></div>
-    <div style="overflow-x:auto;margin-top:10px">
-      <table class="info-table">
-        <thead><tr><th id="sec8Col1" style="width:32%">組織層級</th><th id="sec8Col2">功能說明</th></tr></thead>
-        <tbody>
-          <tr><td id="sec8r1a" style="color:#f5d0fe;font-weight:600">天律主印議會</td><td id="sec8r1b">天界書令律令最高審核機構。負責主尊誓印、誓魂核授、族譜收錄、升界門鎖批准與否。</td></tr>
-          <tr><td id="sec8r2a" style="color:#f5d0fe;font-weight:600">天律系統執行處</td><td id="sec8r2b">管理誓願登錄、轉世調度、誓資儲存、誓魂標記與執行層調頻任務。與《天界曼陀羅系統》核心同步運作。</td></tr>
-          <tr><td id="sec8r3a" style="color:#f5d0fe;font-weight:600">靈網紀錄庫</td><td id="sec8r3b">儲存誓魂歷世誓願、願力工程數據、密鑰對頻紀錄與黑頻狀態。作為查核、比對與校準之依據。</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="note-warn" id="sec8Note">結語：若無誥核使之標定，誓魂即不具備正規入世誓約執行權，不得啟用後續印程。</div>
+    <div class="card-title left"><i class="fa-solid fa-network-wired"></i><span id="sec8Title">【八】天律主網：組織層級 × 功能</span></div>
+    <div class="instruction-item"><i class="fa-solid fa-circle"></i><span id="sec8p1">天律主網是跨越靈網、書令系統與天界紀錄層的總驗證架構。第五印之後主動介入，主掌誓資封存、授徽授權、族譜入冊與升界排程。</span></div>
+    <div style="color:#c4b5fd;font-weight:600;margin:10px 0 4px" id="sec8_2">8-2 三層運作與驗證角色</div>
+    <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec8p2">審核層：授權、註冊、升界門鎖判定</span></div>
+    <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec8p3">執行層：誓資登錄、誓魂標記、誓印協調</span></div>
+    <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec8p4">紀錄層：誓文資料封存、誓約軌跡、黑頻檔案</span></div>
+    <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec8p5">誓資驗證使（驗證使者）：核對各誓魂之授印資格與任務指派</span></div>
+    <div class="note-warn" id="sec8Note">結論：未經驗證使者指定，誓魂不具合法執行入世誓約之權，亦不得啟動後續印位程序。</div>
   </div>
 
-  <!-- 【九】兩大路徑 -->
   <div class="hud-card">
-    <div class="card-title"><i class="fa-solid fa-road"></i><span id="sec9Title">【九】分流後之兩大路徑：精要說明</span></div>
+    <div class="card-title left"><i class="fa-solid fa-route"></i><span id="sec9Title">【九】分流後兩主路徑：精要說明</span></div>
     <div style="color:#c4b5fd;font-weight:600;margin:8px 0 4px" id="sec9_1">9-1 直承誥徒（本源天族）</div>
     <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec9p1">可快速銜接第六／第七印；必要時可跳印或加速授徽</span></div>
-    <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec9p2">願資可預封入天庫；免查核誓約成立度</span></div>
-    <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec9p3">主尊可直接授印／認領；舊誓資可原位續承</span></div>
-    <div class="note-ok" id="sec9Note1">一句話：本源天族者，覺醒即啟動誓約續承與天律直授。</div>
-    <div style="color:#c4b5fd;font-weight:600;margin:12px 0 4px" id="sec9_2">9-2 備位誥徒（預備天族）</div>
-    <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec9p4">必須完整走完七印，不得跳階</span></div>
-    <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec9p5">誓資須透過誓文 × 誓印逐步復位</span></div>
+    <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec9p2">誓資可預先封入天庫；免誓約有效性查核</span></div>
+    <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec9p3">主尊可直接授印並認領；既往誓資可自原分配延續</span></div>
+    <div class="note-ok" id="sec9Note1">一句話：本源系者，覺醒即啟動舊誓延續與天律直授。</div>
+    <div style="color:#c4b5fd;font-weight:600;margin:10px 0 4px" id="sec9_2">9-2 備位誥徒（預備系）</div>
+    <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec9p4">須完成七印全程；不得跳印</span></div>
+    <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec9p5">誓資須以誓文 × 誓印對頻逐步復原</span></div>
     <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec9p6">主尊親審授徽；誓約須查核完成度與真實性</span></div>
     <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec9p7">完成後方可天庫封存並具升界資格</span></div>
     <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec9p8">違誓／脫頻／中斷 → 凍結誓資</span></div>
     <div class="note-warn" id="sec9Note2">一句話：非本源者，須完成七印全程並通過查核，始具誓印權與升界資格。</div>
   </div>
 
-  <!-- 【十】平台提醒 -->
   <div class="hud-card">
-    <div class="card-title"><i class="fa-solid fa-bullhorn"></i><span id="sec10Title">【十】平台提醒（統一規範）</span></div>
+    <div class="card-title left"><i class="fa-solid fa-bullhorn"></i><span id="sec10Title">【十】平台提醒（統一規範）</span></div>
     <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="sec10p1">只要完成【第五印】並接軌願力，皆可納入備位誥徒審核。</span></div>
     <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="sec10p2">誓印資格／天庫封存／升界權限，一律依七印全程履勘。</span></div>
     <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="sec10p3">直承天族無需提交外源背景；備位誥徒須登錄來源與誓願承接說明。</span></div>
     <div class="note-ok" id="sec10Note">第五印是分水嶺；不是完成，而是正式被系統辨識身份。</div>
   </div>
 
-  <!-- 結冊 -->
   <div class="hud-card">
-    <div class="card-title"><i class="fa-solid fa-stamp"></i><span id="closeTitle">結冊條款</span></div>
+    <div class="card-title left"><i class="fa-solid fa-stamp"></i><span id="closeTitle">結冊條款</span></div>
     <div class="note-info" id="closeText">《誓尊總典卷 · 第八項 第五印覺醒印 × 入世誓約揭示 × 誓約同步進度 (v2.0)》已錄入《宇宙天律 × 七印誓網》主冊，誓資承流有效。</div>
   </div>
 
   <div class="hud-footer">
-    <a class="btn-action" id="btnBack" href="step7.html"><i class="fa-solid fa-arrow-left"></i><span id="btnBackText">上一步</span></a>
-    <a class="btn-action" id="btnNext" href="step9.html"><i class="fa-solid fa-arrow-right"></i><span id="btnNextText">下一步</span></a>
+    <a class="btn-action" href="step7.html"><i class="fa-solid fa-arrow-left"></i> <span id="btnBackText">上一步</span></a>
+    <a class="btn-action" href="step9.html"><span id="btnNextText">下一步</span> <i class="fa-solid fa-arrow-right"></i></a>
   </div>
   <div class="page-marker" id="pageMarker">【宇宙誓印覺醒工程 · 覺醒卷】第 349-366 頁</div>
 </div>
@@ -302,10 +279,15 @@ body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-h
 var currentLang = 'zh';
 var L = {
   zh: {
-    homeText: '首頁',
-    mainTitle: '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄',
-    subTitle: '【宇宙誓印覺醒工程 · 覺醒卷】第 349-366 頁',
-    modDesc: '紀錄誓魂於第五印覺醒印完成後，正式入世誓約揭示，並同步誓約核心架構之進展狀態。',
+    homeText: '首頁 ->',
+    appTitle: '【宇宙誓印覺醒工程 · 七印誓網】',
+    browserBtn: '🌐 瀏覽器開啟',
+    modTitle: '第五印覺醒印完成 × 入世誓約揭示',
+    modSub: '（第五印完成後正式啟動入世誓約揭示，並同步誓約核心架構與進度紀錄）',
+    thField: '欄位名稱',
+    thDesc: '功能簡要說明',
+    rowName: '第 8 項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄',
+    rowDesc: '紀錄誓魂於第五印覺醒印完成後，正式入世誓約揭示，並同步誓約核心架構之進展狀態。',
     idTitle: '※ 身份定位',
     id1Title: '① 直承誥徒',
     id1List: '<li>由主印直授，屬現任誓徒</li><li>屬本源天族正系誓魂</li><li>具高階頻權，可部分跳印授徽</li>',
@@ -358,27 +340,28 @@ var L = {
     sec7r2a: '簽署時機', sec7r2b: '入世前由誓魂本體 × 書令主系 × 《天界曼陀羅系統》協約封存',
     sec7r3a: '儲存位置', sec7r3b: '靈網主庫、書令誓冊、天誥之源（皆由系統加印封存）',
     sec7r4a: '涵蓋內容', sec7r4b: '宿願承接 × 家族任務 × 願資額度 × 升界時限條款',
-    sec7r5a: '調閱條件', sec7r5b: '完成「第五印覺醒印」並啟動誓魂密鑰對頻後方可調閱',
-    sec7r6a: '實踐責任', sec7r6b: '覺醒後須續接誓約並履行，否則誓資不得封存',
-    sec7r7a: '違誓後果', sec7r7b: '願力折損 × 誓軌中止 × 誓資倒流 × 回族譜待審',
-    sec7r8a: '完成標準', sec7r8b: '願資入庫 × 七印圓滿 × 書令呈報 × 族譜記名',
+    sec7r5a: '調閱條件', sec7r5b: '須完成「第五印覺醒印」並啟動誓魂密鑰對頻後方可調閱',
+    sec7r6a: '履行責任', sec7r6b: '覺醒後須持續履行誓約，否則誓資無法封存',
+    sec7r7a: '違誓後果', sec7r7b: '願力折損 × 誓軌中止 × 誓資回沖 × 退回族譜待審',
+    sec7r8a: '完成標準', sec7r8b: '誓資入冊 × 七印履成 × 書令呈報 × 族譜記名',
     sec8Title: '【八】天律主網：組織層級 × 功能',
-    sec8p1: '天律主網為跨越靈網／書令系統／天界紀錄層之總審核體系；於第五印後主動介入，牽動誓資封存、誥印授權、族譜登入、升界排程。',
-    sec8_2: '8-2 三層運作與核定角色',
-    sec8p2: '審核層：授權、冊記、升界門鎖裁定', sec8p3: '執行層：誓資登錄、誓魂標記、誓印調度',
-    sec8p4: '紀錄層：誓文數據封存、誓約軌跡、黑頻檔案', sec8p5: '誓資核定角色（誥核使）：逐誓魂核定誓印資格與任務啟配',
-    sec8Col1: '組織層級', sec8Col2: '功能說明',
-    sec8r1a: '天律主印議會', sec8r1b: '天界書令律令最高審核機構。負責主尊誓印、誓魂核授、族譜收錄、升界門鎖批准與否。',
-    sec8r2a: '天律系統執行處', sec8r2b: '管理誓願登錄、轉世調度、誓資儲存、誓魂標記與執行層調頻任務。與《天界曼陀羅系統》核心同步運作。',
-    sec8r3a: '靈網紀錄庫', sec8r3b: '儲存誓魂歷世誓願、願力工程數據、密鑰對頻紀錄與黑頻狀態。作為查核、比對與校準之依據。',
-    sec8Note: '結語：若無誥核使之標定，誓魂即不具備正規入世誓約執行權，不得啟用後續印程。',
-    sec9Title: '【九】分流後之兩大路徑：精要說明',
+    sec8p1: '天律主網是跨越靈網、書令系統與天界紀錄層的總驗證架構。第五印之後主動介入，主掌誓資封存、授徽授權、族譜入冊與升界排程。',
+    sec8_2: '8-2 三層運作與驗證角色',
+    sec8p2: '審核層：授權、註冊、升界門鎖判定', sec8p3: '執行層：誓資登錄、誓魂標記、誓印協調',
+    sec8p4: '紀錄層：誓文資料封存、誓約軌跡、黑頻檔案', sec8p5: '誓資驗證使（驗證使者）：核對各誓魂之授印資格與任務指派',
+    sec8Note: '結論：未經驗證使者指定，誓魂不具合法執行入世誓約之權，亦不得啟動後續印位程序。',
+    sec9Title: '【九】分流後兩主路徑：精要說明',
     sec9_1: '9-1 直承誥徒（本源天族）',
-    sec9p1: '可快速銜接第六／第七印；必要時可跳印或加速授徽', sec9p2: '願資可預封入天庫；免查核誓約成立度', sec9p3: '主尊可直接授印／認領；舊誓資可原位續承',
-    sec9Note1: '一句話：本源天族者，覺醒即啟動誓約續承與天律直授。',
-    sec9_2: '9-2 備位誥徒（預備天族）',
-    sec9p4: '必須完整走完七印，不得跳階', sec9p5: '誓資須透過誓文 × 誓印逐步復位', sec9p6: '主尊親審授徽；誓約須查核完成度與真實性',
-    sec9p7: '完成後方可天庫封存並具升界資格', sec9p8: '違誓／脫頻／中斷 → 凍結誓資',
+    sec9p1: '可快速銜接第六／第七印；必要時可跳印或加速授徽',
+    sec9p2: '誓資可預先封入天庫；免誓約有效性查核',
+    sec9p3: '主尊可直接授印並認領；既往誓資可自原分配延續',
+    sec9Note1: '一句話：本源系者，覺醒即啟動舊誓延續與天律直授。',
+    sec9_2: '9-2 備位誥徒（預備系）',
+    sec9p4: '須完成七印全程；不得跳印',
+    sec9p5: '誓資須以誓文 × 誓印對頻逐步復原',
+    sec9p6: '主尊親審授徽；誓約須查核完成度與真實性',
+    sec9p7: '完成後方可天庫封存並具升界資格',
+    sec9p8: '違誓／脫頻／中斷 → 凍結誓資',
     sec9Note2: '一句話：非本源者，須完成七印全程並通過查核，始具誓印權與升界資格。',
     sec10Title: '【十】平台提醒（統一規範）',
     sec10p1: '只要完成【第五印】並接軌願力，皆可納入備位誥徒審核。',
@@ -391,70 +374,65 @@ var L = {
     pageMarker: '【宇宙誓印覺醒工程 · 覺醒卷】第 349-366 頁'
   },
   en: {
-    homeText: 'Home',
-    mainTitle: 'Item 8 Fifth Seal Awakening Seal Completion × World-Entry Covenant Revelation × Oath Synchronization Progress',
-    subTitle: '【Cosmic Oath-Seal Awakening Project · Awakening Volume】pp. 349-366',
-    modDesc: 'Records the formal revelation of the World-Entry Covenant and the synchronized progression of the core oath architecture after completion of the Fifth Seal Awakening Seal.',
+    homeText: 'Home ->',
+    appTitle: '【Cosmic Oath-Seal Awakening Project · Seven-Seal Vow Network】',
+    browserBtn: '🌐 Open in Browser',
+    modTitle: 'Fifth Seal Awakening Seal Completion × World-Entry Covenant Revelation',
+    modSub: '(After completing the Fifth Seal, the World-Entry Covenant is formally revealed and the core covenant architecture is synchronized with progress records)',
+    thField: 'Field Name',
+    thDesc: 'Function Overview',
+    rowName: 'Item 8 Fifth Seal Awakening Seal Completion × World-Entry Covenant Revelation × Covenant Synchronization Progress',
+    rowDesc: 'Records that after the Oath-Soul completes the Fifth Seal Awakening Seal, the World-Entry Covenant is formally revealed and the progress of the core covenant architecture is synchronized.',
     idTitle: '※ Identity Positioning',
     id1Title: '① Direct-Line Disciple',
-    id1List: '<li>Directly granted by the Main Seal, current active disciple</li><li>Core-line Oath-Soul of the Origin Heavenly Clan</li><li>High-tier frequency authority; may partially skip seals in emblem granting</li>',
+    id1List: '<li>Directly granted by the Main Seal; current oath-disciple</li><li>Origin Heavenly Clan main-line Oath-Soul</li><li>High-frequency authority; may partially skip seals for emblem</li>',
     id2Title: '② Reserve Disciple',
-    id2List: '<li>Candidate oath-sealer, potential disciple</li><li>Preparatory lineage (Phoenix branch or vow-powered reincarnated Oath-Soul)</li><li>Must complete full Seven Seals; emblem granted only after Sovereign review</li>',
-    idSummary: 'Summary: Direct-Line → Main Seal direct grant, high-tier core system; Reserve → advance only after full Seven-Seal course. After Fifth Seal the system enters formal 「Oath-Soul Identity Branching」—the watershed of the disciple system.',
+    id2List: '<li>Candidate oath-seal, potential disciple</li><li>Preparatory lineage (Phoenix branch or vow-power reincarnated Oath-Soul)</li><li>Must complete full Seven-Seal sequence; emblem after Sovereign review</li>',
+    idSummary: 'Summary: Direct-Line → Main-Seal direct grant, high positioning; Reserve → promotion only after full Seven-Seal. After Fifth Seal, formal “Oath-Soul identity branching” begins — the watershed of the disciple system.',
     sec1Title: '【I】 Activation Significance and System Auto-Execution',
-    sec1p1: 'Completing the Fifth Seal 「Awakening Seal」 means breakthrough of the latent seal tier and entry into Oath-Soul origin awakening, formally activating the execution layer of 「World-Entry Covenant × Heavenly Mandate Branching」.',
-    sec1p2: 'Verify / synchronize / record: progress of vow, responsibility, and seal-mark',
-    sec1p3: 'Retrieve and execute: the pre-incarnation / in-incarnation 《World-Entry Covenant》',
-    sec1p4: 'Activate: oath-resource tracking (duty-fulfillment and realm-ascension progress)',
-    sec1p5: 'Open: oath-path data access, Heavenly Archive registration permissions, and oath-resource transmission channels',
-    sec1Note: 'Key: 「World-Entry Covenant」 belongs to the original vow; may be revealed and synchronized only after completing the 【Awakening Seal】. Those who have not reached the 【Fifth Seal】 may not view or apply. Covenant = embodiment of vow-power, symbolizing autonomous commitment × execution toward Heavenly Law.',
+    sec1p1: 'When the disciple completes the Fifth Seal “Awakening Seal”, it marks breakthrough of latent seal layers, entry into Oath-Soul origin awakening, and formal activation of the “World-Entry Covenant × Heavenly-Mandate branching” execution layer.',
+    sec1p2: 'Collation / sync / record: vows, responsibilities, and seal progress',
+    sec1p3: 'Retrieve and execute: pre-incarnation / at-incarnation 《World-Entry Covenant》',
+    sec1p4: 'Open: oath-resource tracking (duty fulfillment and realm-ascension progress)',
+    sec1p5: 'Open: oath-track data access, Heavenly Archive sealing rights, oath-resource flow ports',
+    sec1Note: 'Key: The “World-Entry Covenant” is the original vow; it may be revealed and synchronized only after completing the 【Awakening Seal】. Those not reaching the 【Fifth Seal】 may not view or apply. Covenant = manifestation of vow-power; symbol of autonomous commitment to Heavenly Law × execution power.',
     sec2Title: '【II】 Activation Conditions and Submission Procedure',
-    sec2p1: 'Before the Fifth Seal, the oath-sealer holds only an “undivided” temporary status, with no Phoenix Emblem granting, no oath-resource record, and no realm-ascension qualification.',
-    sec2p2: 'After completing the Fifth Seal, the system determines identity branching based on Oath-Soul-origin, original-vow encoding, and oath-resource marks.',
-    sec2p3: 'Two branching types: ① Direct-Line Disciple (Book-Decree Sovereign’s core-line Oath-Soul) ② Reserve Disciple (Phoenix sub-lineage or vow-power reincarnated Oath-Soul)',
-    sec2p4: 'Origin Heavenly Clan may partially skip seals; emblem granted directly by the Sovereign without covenant verification.',
-    sec2p5: 'Preparatory Lineage must complete the full Seven-Seal sequence, pass Sovereign review, and undergo covenant verification.',
-    sec2p6: 'After meeting branching criteria, Heavenly Archive sealing and oath-resource continuation qualification may be obtained.',
-    sec2p7: 'The Fifth Seal is the starting point of Oath-Soul identity branching, not the endpoint.',
-    tableTitle: 'Fifth Seal Awakening Seal Branching Summary Table',
-    th1: 'Seal Stage', th2: 'Category', th3: 'Oath-Soul Origin', th4: 'Heavenly Bloodline', th5: 'Seven Seals', th6: 'Emblem Grant', th7: 'Covenant Check', th8: 'Archive Seal',
-    r1c1: 'Before Fifth Seal', r1c2: 'Oath-Sealer (Undivided)', r1c3: 'Any Oath-Soul', r1c4: 'Not Identified', r1c5: 'Required', r1c6: 'No Grant', r1c7: 'None', r1c8: 'No Qualification',
-    r2c1: 'After Fifth Seal ①', r2c2: '① Direct-Line Disciple', r2c3: 'Sovereign Core-Line', r2c4: 'Yes', r2c5: 'May Partially Skip', r2c6: 'Direct by Sovereign', r2c7: 'Not Required', r2c8: 'Eligible',
-    r3c1: 'After Fifth Seal ②', r3c2: '② Reserve Disciple', r3c3: 'Phoenix / Vow-Reincarnated', r3c4: 'No', r3c5: 'Full Required', r3c6: 'After Sovereign Review', r3c7: 'Required', r3c8: 'After Completion',
-    tableNote: 'One-Sentence Summary: The Fifth Seal is the watershed; not the endpoint, but the beginning of formal identity recognition by the system.',
+    sec2p1: 'Before the Fifth Seal, the oath-sealer holds only “unbranched” provisional identity, with no Phoenix-emblem grant, oath-resource record, or realm-ascension qualification.',
+    sec2p2: 'After completing the Fifth Seal, the system performs identity-branching judgment by spirit-source, original-oath code, and oath-resource seals.',
+    sec2p3: 'Branch categories: ① Direct-Line Disciple (Script-Command Sovereign main-line) ② Reserve Disciple (Phoenix branch or vow-power reincarnation)',
+    sec2p4: 'Origin Heavenly Clan may partially skip seals for emblem; Sovereign grants directly without covenant verification.',
+    sec2p5: 'Preparatory lineage must complete full Seven-Seal sequence, receive emblem after Sovereign review, and pass covenant verification.',
+    sec2p6: 'After branching judgment is met, Heavenly Archive sealing and oath-resource continuation rights may be obtained.',
+    sec2p7: 'The Fifth Seal is the starting point of Oath-Soul identity branching, not the end.',
+    tableTitle: 'Fifth Seal Awakening Seal Branching Overview',
+    th1: 'Seal Stage', th2: 'Category', th3: 'Oath-Soul Source', th4: 'Heavenly Lineage', th5: 'Full Seven-Seal', th6: 'Emblem Method', th7: 'Covenant Check', th8: 'Heavenly Archive',
+    r1c1: 'Before Fifth Seal', r1c2: 'Oath-Sealer (unbranched)', r1c3: 'Any Oath-Soul', r1c4: 'Unidentified', r1c5: 'Required', r1c6: 'No emblem', r1c7: 'None', r1c8: 'No qualification',
+    r2c1: 'After Fifth Seal ①', r2c2: '① Direct-Line Disciple', r2c3: 'Script-Command Sovereign main-line', r2c4: 'Yes', r2c5: 'May partially skip', r2c6: 'Sovereign direct grant', r2c7: 'Not required', r2c8: 'May seal',
+    r3c1: 'After Fifth Seal ②', r3c2: '② Reserve Disciple', r3c3: 'Phoenix / vow reincarnation', r3c4: 'No', r3c5: 'Full sequence', r3c6: 'After Sovereign review', r3c7: 'Covenant required', r3c8: 'After completion',
+    tableNote: 'One sentence: The Fifth Seal is the watershed; not the end, but the point at which the system officially identifies identity.',
     sec3Title: '【III】 Core Significance of the Fifth Seal',
-    sec3p1: 'Identity Classification Established: transition from 「Observer / Practitioner」 to 「Oath Executor / Mission Oath-Sealer」.',
-    sec3p2: 'Three Tracks Initiated: World-Entry Covenant × Mission Practice × Heavenly Mandate Branching activated simultaneously, incorporated into oath-resource continuation and covenant-verification processes.',
-    sec4Title: '【IV】 System Definition of Awakening (not a feeling, but an activation)',
-    sec4p1: 'Oath-Soul original frequency connects to the Script-Command main system',
-    sec4p2: 'Heavenly decree-verification system activates the corresponding oath-path',
-    sec4p3: 'Vow-power enters inscription state and begins to flow',
-    sec4p4: 'World-incarnation mission retrieval and arrangement',
-    sec4p5: 'Establishment of Heavenly Archive oath-resource records',
-    sec4p6: 'Triggering oath-path verification × realm-ascension qualification',
-    sec4Note: 'The awakened one is a 「Vow-Power Activator × Practitioner-Spirit」, not merely a cultivator.',
-    sec5Title: '【V】 World-Entry Covenant: Essence × Origin × Activation',
+    sec3p1: 'Identity category established: from “observer / practitioner” to “covenant executor / mission oath-sealer”.',
+    sec3p2: 'Three tracks begin: World-Entry Covenant × practice mission × Heavenly-Mandate branching start together and enter oath-resource continuation and covenant verification.',
+    sec4Title: '【IV】 System Definition of Awakening (Not a Feeling, but Activation)',
+    sec4p1: 'Oath-Soul frequency docks with Script-Command main system', sec4p2: 'Heavenly mandate-core system opens corresponding oath-track', sec4p3: 'Vow-power enters registered state and begins to flow',
+    sec4p4: 'Present-life mission retrieval and assignment', sec4p5: 'Heavenly Archive oath-resource record established', sec4p6: 'Triggers oath-track verification × realm-ascension qualification',
+    sec4Note: 'The awakened one is a “vow-power driver × practice spirit-body”, not merely a cultivator.',
+    sec5Title: '【V】 World-Entry Covenant: Essence × Source × Activation',
     sec5_1: '5-1 Essence and Positioning',
-    sec5p1: 'The World-Entry Covenant is not a temporary agreement, but a pre-incarnation tri-party sealed covenant (Source-Oath, Heavenly Mandate, Sovereign Command): 《Heavenly Mandala System》 × Oath-Soul original self × Script-Command main system.',
-    sec5p2: 'Scope: inheritance of destiny-vows / continuation of accumulated primary vows / family oath-lineage and bloodline missions / vow-resources of compensation and completion / ascension clauses and timing.',
-    sec5p3: 'Only after completing the 【Fifth Seal】 may the system 「retrieve the original covenant × activate the fulfillment process × link the Heavenly Archive resource-seal × record in the Heavenly Net registry」.',
-    sec5_2: '5-2 Storage Location and Activation Conditions',
-    sec5p4: 'Spirit-Net Main Archive: lifetime data × original vow-path',
-    sec5p5: 'Script-Command Oath Register: covenant inscription × vow-resource entry',
-    sec5p6: 'Source of Heavenly Mandate: core oath-track × authorization Alignment',
-    sec5Note: 'Must complete the 【Fifth Seal Awakening Seal】 and open the key-Alignment to obtain retrieval rights × fulfillment rights × oath-sealing rights.',
+    sec5p1: 'The World-Entry Covenant is not temporary; it was jointly agreed and sealed before incarnation by three parties (oath-source, Heavenly Mandate, main command): 《Heavenly Mandala System》 × Oath-Soul original self × Script-Command main system.',
+    sec5p2: 'Scope: destiny inheritance / multi-lifetime main-oath continuation / family oath-line and bloodline mission / vow-resource repayment and completion / realm-ascension terms and deadlines.',
+    sec5p3: 'Only after completing the 【Fifth Seal】 may the system “retrieve the original covenant × start fulfillment × link Heavenly Archive sealing × record in Heavenly Net register”.',
+    sec5_2: '5-2 Storage Locations and Activation Conditions',
+    sec5p4: 'Spirit-Net Main Archive: lifetime data × original vow-path', sec5p5: 'Script-Command Oath Register: covenant inscription × vow-resource entry', sec5p6: 'Source of Heavenly Mandate: core oath-track × authorization Alignment',
+    sec5Note: 'Must complete the 【Fifth Seal Awakening Seal】 and open key-Alignment to obtain retrieval × fulfillment × oath-sealing rights.',
     sec6Title: '【VI】 Duty Fulfillment and Realm-Ascension: Obligations, Consequences, Benefits',
-    sec6_1: '6-1 Parallel Processes Required During Activation',
-    sec6p1: 'Actual operation of vow-power', sec6p2: 'Script-Command writing and reporting', sec6p3: 'Oath-resource sealing procedures activated simultaneously',
-    sec6_2: '6-2 Consequences of Non-Fulfillment / Oath-Violation',
-    sec6p4: 'Vow-power loss / Oath-Soul regression / oath-path freeze / lineage registry pending review / merit reset or delay',
-    sec6_3: '6-3 Benefits Upon Completion',
-    sec6p5: 'May enter Sixth Seal / Seventh Seal', sec6p6: 'Gains Heavenly Archive sealing rights',
-    sec6p7: 'Lineage registry inscription under the Emblem-Origin', sec6p8: 'Opens realm-ascension gate-lock', sec6p9: 'Long-term oath-resource continuation',
-    sec7Title: '【VII】 World-Entry Covenant × Script-Command Mission Correspondence Table',
+    sec6_1: '6-1 Parallel Processes Required During Activation', sec6p1: 'Actual operation of vow-power', sec6p2: 'Script-Command writing and reporting', sec6p3: 'Oath-resource sealing procedures activated simultaneously',
+    sec6_2: '6-2 Consequences of Non-Fulfillment / Oath-Violation', sec6p4: 'Vow-power loss / Oath-Soul regression / oath-path freeze / lineage pending review / merit reset or delay',
+    sec6_3: '6-3 Benefits Upon Completion', sec6p5: 'May enter Sixth / Seventh Seal', sec6p6: 'Gains Heavenly Archive sealing rights', sec6p7: 'Lineage registry under Emblem-Origin', sec6p8: 'Opens realm-ascension gate-lock', sec6p9: 'Long-term oath-resource continuation',
+    sec7Title: '【VII】 World-Entry Covenant × Script-Command Mission Correspondence',
     sec7Col1: 'Item', sec7Col2: 'Systematic Description',
-    sec7r1a: 'Essence', sec7r1b: '「Primary Vows of Multiple Lifetimes × Script-Command Covenant-Seal × Vow-Power Framework Master Program」 established before incarnation',
-    sec7r2a: 'Signing Timing', sec7r2b: 'Sealed by agreement among the Oath-Soul original self × Script-Command main system × 《Heavenly Mandala System》 before incarnation',
+    sec7r1a: 'Essence', sec7r1b: '「Primary Vows of Multiple Lifetimes × Script-Command Covenant-Seal × Vow-Power Framework」 established before incarnation',
+    sec7r2a: 'Signing Timing', sec7r2b: 'Sealed before incarnation by Oath-Soul original self × Script-Command main system × 《Heavenly Mandala System》',
     sec7r3a: 'Storage Location', sec7r3b: 'Spirit-Net Main Archive, Script-Command Oath Register, Source of Heavenly Mandate (all system-sealed)',
     sec7r4a: 'Covered Content', sec7r4b: 'Destiny-inheritance × Family mission × Vow-resource quota × Realm-ascension timing clauses',
     sec7r5a: 'Retrieval Conditions', sec7r5b: 'May be retrieved only after completing 「Fifth Seal Awakening Seal」 and activating Oath-Soul key-Alignment',
@@ -467,15 +445,11 @@ var L = {
     sec8p2: 'Review Layer: authorization, registration, realm-ascension gate-lock determination',
     sec8p3: 'Execution Layer: oath-resource registration, Oath-Soul marking, oath-seal coordination',
     sec8p4: 'Record Layer: oath-text data sealing, covenant trajectory, black-frequency files',
-    sec8p5: 'Oath-Resource Verification Role (Verification Envoy): verifies each Oath-Soul’s seal qualification and mission assignment',
-    sec8Col1: 'Organizational Level', sec8Col2: 'Function Description',
-    sec8r1a: 'Heavenly Law Main Seal Council', sec8r1b: 'Highest review authority of the heavenly Script-Command and decrees. Responsible for Sovereign-level seals, Oath-Soul approval, lineage registry admission, and realm-ascension gate-lock approval.',
-    sec8r2a: 'Heavenly Law System Execution Office', sec8r2b: 'Manages vow registration, reincarnation coordination, oath-resource storage, Oath-Soul marking, and execution-layer frequency tasks. Operates in core synchronization with the 《Heavenly Mandala System》.',
-    sec8r3a: 'Spirit-Net Record Archive', sec8r3b: 'Stores lifetime vows, vow-power engineering data, key-Alignment records, and black-frequency status. Serves as basis for verification, comparison, and calibration.',
+    sec8p5: 'Oath-Resource Verification Envoy: verifies each Oath-Soul’s seal qualification and mission assignment',
     sec8Note: 'Conclusion: Without designation from the Verification Envoy, an Oath-Soul does not possess legitimate authority to execute the World-Entry Covenant and may not activate subsequent seal procedures.',
     sec9Title: '【IX】 Two Main Paths After Branching: Essential Explanation',
     sec9_1: '9-1 Direct-Line Disciple (Origin Heavenly Clan)',
-    sec9p1: 'May rapidly connect to Sixth / Seventh Seal; may skip seals or accelerate emblem granting when necessary',
+    sec9p1: 'May rapidly connect to Sixth / Seventh Seal; may skip seals or accelerate emblem when necessary',
     sec9p2: 'Vow-resources may be pre-sealed into the Heavenly Archive; exempt from covenant validity verification',
     sec9p3: 'The Sovereign may directly grant and claim seals; previous vow-resources may continue from original allocation',
     sec9Note1: 'One Sentence: Those of the Origin Lineage activate Old-Vow continuation and Heavenly Law direct granting upon awakening.',
@@ -500,190 +474,40 @@ var L = {
 
 function switchLanguage(lang) {
   currentLang = lang;
-  document.querySelectorAll('.lang-btn').forEach(function(b) {
+  document.querySelectorAll('.lang-btn').forEach(function (b) {
     b.classList.toggle('active', (lang === 'zh' && b.textContent.trim() === '中文') || (lang === 'en' && /english/i.test(b.textContent)));
   });
   var c = L[lang] || L.zh;
-  Object.keys(c).forEach(function(id) {
+  Object.keys(c).forEach(function (id) {
     var el = document.getElementById(id);
     if (el) el.innerHTML = c[id];
   });
 }
 window.switchLanguage = switchLanguage;
-</script>
-<!-- ============================================================ -->
-<!-- 修復「🌐 瀏覽器開啟」按鈕（紅框框那個）                     -->
-<!-- ============================================================ -->
-<style>
-    /* 確保按鈕可見 */
-    .btn-external-browser {
-        display: inline-flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-        padding: 4px 14px !important;
-        background: rgba(0, 230, 118, 0.12) !important;
-        border: 1px solid rgba(0, 230, 118, 0.3) !important;
-        border-radius: 20px !important;
-        color: #00e676 !important;
-        font-size: 0.7rem !important;
-        font-weight: 700 !important;
-        text-decoration: none !important;
-        transition: all 0.3s ease !important;
-        cursor: pointer !important;
-        font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif !important;
-        margin-left: 8px !important;
-        pointer-events: auto !important;
-        z-index: 9999 !important;
-        position: relative !important;
+
+(function () {
+  function openExternal(e) {
+    if (e) { e.preventDefault(); e.stopPropagation(); }
+    var url = location.href;
+    var ua = navigator.userAgent || '';
+    if (/android/i.test(ua)) {
+      try {
+        location.href = 'intent://' + location.host + location.pathname + location.search + '#Intent;scheme=https;package=com.android.chrome;end;';
+        return;
+      } catch (err) {}
     }
-    .btn-external-browser:hover {
-        background: rgba(0, 230, 118, 0.2) !important;
-        box-shadow: 0 0 20px rgba(0, 230, 118, 0.2) !important;
-        transform: scale(1.02) !important;
-    }
-    .btn-external-browser i {
-        font-size: 0.8rem !important;
-    }
-    @media (max-width: 480px) {
-        .btn-external-browser {
-            font-size: 0.6rem !important;
-            padding: 3px 10px !important;
-            gap: 4px !important;
-            margin-left: 4px !important;
-        }
-        .btn-external-browser i {
-            font-size: 0.6rem !important;
-        }
-    }
-</style>
-
-<script>
-(function() {
-    // ================================================================
-    // 重新建立「瀏覽器開啟」按鈕
-    // ================================================================
-    function rebuildExternalBrowserButton() {
-        var langGroup = document.querySelector('.lang-switch-group');
-        if (!langGroup) {
-            console.warn('⚠️ 找不到 .lang-switch-group');
-            return;
-        }
-
-        // 移除舊按鈕
-        var oldBtn = document.querySelector('.btn-external-browser');
-        if (oldBtn) {
-            oldBtn.remove();
-        }
-
-        // 建立新按鈕
-        var btn = document.createElement('a');
-        btn.className = 'btn-external-browser';
-        btn.href = '#';
-        btn.setAttribute('role', 'button');
-        btn.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>🌐 瀏覽器開啟</span>';
-
-        // 綁定點擊事件
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            openInExternalBrowser();
-        });
-
-        // 插入到語言切換按鈕旁邊
-        langGroup.parentNode.insertBefore(btn, langGroup.nextSibling);
-        console.log('✅ 瀏覽器開啟按鈕已重建');
-    }
-
-    // ================================================================
-    // 強制開啟外部瀏覽器
-    // ================================================================
-    function openInExternalBrowser() {
-        var url = window.location.href;
-        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-        // Android：強制跳轉 Chrome
-        if (/android/i.test(userAgent)) {
-            try {
-                var intentUrl = 'intent://' + window.location.host + window.location.pathname + window.location.search + '#Intent;scheme=https;package=com.android.chrome;end;';
-                window.location.href = intentUrl;
-                console.log('✅ Android: 嘗試強制跳轉 Chrome');
-                return;
-            } catch (e) {
-                console.warn('⚠️ intent 跳轉失敗');
-            }
-        }
-
-        // iOS：嘗試用 chrome:// 協定
-        if (/iphone|ipad|ipod/i.test(userAgent)) {
-            try {
-                var chromeUrl = 'chrome://' + window.location.host + window.location.pathname + window.location.search;
-                window.location.href = chromeUrl;
-                console.log('✅ iOS: 嘗試強制跳轉 Chrome');
-                return;
-            } catch (e) {
-                console.warn('⚠️ chrome:// 跳轉失敗');
-            }
-        }
-
-        // 備用：複製網址
-        var fallbackUrl = window.location.href;
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(fallbackUrl).then(function() {
-                alert('⚠️ 無法自動跳轉外部瀏覽器\n\n📋 網址已複製，請手動貼到 Chrome / Safari 開啟：\n\n' + fallbackUrl);
-            }).catch(function() {
-                fallbackCopy(fallbackUrl);
-            });
-        } else {
-            fallbackCopy(fallbackUrl);
-        }
-    }
-
-    // ================================================================
-    // 複製網址備用方法
-    // ================================================================
-    function fallbackCopy(text) {
-        var textarea = document.createElement('textarea');
-        textarea.value = text;
-        textarea.style.position = 'fixed';
-        textarea.style.opacity = '0';
-        textarea.style.left = '-9999px';
-        document.body.appendChild(textarea);
-        textarea.select();
-        try {
-            document.execCommand('copy');
-            alert('⚠️ 無法自動跳轉外部瀏覽器\n\n📋 網址已複製，請手動貼到 Chrome / Safari 開啟：\n\n' + text);
-        } catch (e) {
-            alert('⚠️ 請手動複製以下網址，貼到外部瀏覽器開啟：\n\n📋 ' + text);
-        }
-        document.body.removeChild(textarea);
-    }
-
-    // ================================================================
-    // 執行
-    // ================================================================
-    function run() {
-        rebuildExternalBrowserButton();
-        setTimeout(rebuildExternalBrowserButton, 200);
-        setTimeout(rebuildExternalBrowserButton, 500);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(function () {
+        alert((currentLang === 'en' ? 'URL copied. Please paste into Chrome / Safari:\n\n' : '網址已複製，請貼到 Chrome / Safari 開啟：\n\n') + url);
+      }).catch(function () {
+        prompt(currentLang === 'en' ? 'Copy this URL:' : '請複製網址：', url);
+      });
     } else {
-        run();
+      prompt(currentLang === 'en' ? 'Copy this URL:' : '請複製網址：', url);
     }
-
-    // 語系切換時重新建立
-    var origSwitch = window.switchLanguage;
-    if (typeof origSwitch === 'function') {
-        window.switchLanguage = function(lang) {
-            origSwitch(lang);
-            setTimeout(rebuildExternalBrowserButton, 150);
-            setTimeout(rebuildExternalBrowserButton, 400);
-        };
-    }
-
-    console.log('✅ 瀏覽器開啟按鈕修復模組已載入');
+  }
+  var btn = document.getElementById('browserBtnLink');
+  if (btn) btn.addEventListener('click', openExternal);
 })();
 </script>
 </body>
