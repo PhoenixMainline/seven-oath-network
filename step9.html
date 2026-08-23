@@ -1,428 +1,351 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>【宇宙誓印覺醒工程 · 七印誓網】第9項 第七印鳳徽印 × 圓印封冊</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif; }
-        body {
-            background: radial-gradient(circle at 50% 50%, #06122c 0%, #020715 100%);
-            min-height: 100vh; color: #e0e8f5;
-            display: flex; justify-content: center; align-items: center;
-            padding: clamp(4px, 1.5vh, 16px); position: relative;
-        }
-        .particle-container {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background-image: radial-gradient(#d4af37, rgba(212, 175, 55, .3) 1px, transparent 30px),
-                              radial-gradient(#d4af37, rgba(212, 175, 55, .2) 2px, transparent 40px);
-            background-size: 350px 350px, 450px 450px; background-position: 0 0, 90px 150px;
-            animation: starMove 90s linear infinite; opacity: 0.65; z-index: 5; pointer-events: none;
-        }
-        @keyframes starMove { from { transform: translateY(0) rotate(0deg); } to { transform: translateY(-1000px) rotate(360deg); } }
-        .watermark-layer {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; opacity: 0.04;
-            display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); padding: 50px;
-        }
-        .watermark-text { font-size: 1.5rem; font-weight: bold; color: #fff; transform: rotate(-25deg); white-space: nowrap; user-select: none; }
-        .hud-container {
-            width: 100%; max-width: min(660px, 95vw);
-            background: rgba(4, 13, 33, 0.4);
-            border: 1.5px solid rgba(168, 85, 247, 0.3);
-            box-shadow: 0 0 40px rgba(168, 85, 247, 0.15), inset 0 0 20px rgba(168, 85, 247, 0.05);
-            border-radius: clamp(16px, 4vw, 28px);
-            padding: clamp(8px, 1.5vh, 20px);
-            display: flex; flex-direction: column; position: relative; z-index: 3; margin: auto;
-        }
-        .hud-container::after { display: none !important; content: none !important; }
-        .home-breadcrumb {
-            font-size: clamp(0.6rem, 1.4vh, 0.85rem); color: #c4b5fd; text-decoration: none; cursor: pointer;
-            display: inline-flex; align-items: center; gap: 6px; margin-bottom: 12px; font-weight: bold;
-            align-self: flex-start; transition: all 0.3s ease; text-shadow: 0 0 8px rgba(168, 85, 247, 0.4);
-            position: relative; z-index: 1000; pointer-events: auto !important;
-        }
-        .home-breadcrumb:hover { color: #e9d5ff; text-shadow: 0 0 12px rgba(168, 85, 247, 0.6); transform: translateX(-2px); }
-        .hud-header {
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
-            padding-bottom: clamp(8px, 1.5vh, 18px); margin-bottom: clamp(8px, 1.5vh, 25px); flex-shrink: 0;
-        }
-        .app-title { font-size: clamp(0.9rem, 2.2vh, 1.15rem); font-weight: 700; color: #e9d5ff; text-shadow: 0 0 12px rgba(168, 85, 247, 0.5); max-width: 75%; line-height: 1.4; }
-        .lang-switch-group { display: flex; background: rgba(124, 58, 237, 0.15); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 20px; padding: 2px; z-index: 10; }
-        .lang-btn { background: transparent; border: none; color: rgba(224, 232, 245, 0.4); font-size: clamp(0.5rem, 1.2vh, 0.75rem); padding: clamp(2px, 0.6vh, 5px) clamp(6px, 1vw, 12px); border-radius: 16px; cursor: pointer; transition: all 0.2s ease; }
-        .lang-btn.active { background: #7c3aed; color: #fff; font-weight: bold; box-shadow: 0 0 12px rgba(124, 58, 237, 0.5); }
-        .step-content { flex: 1 1 auto; display: flex; flex-direction: column; gap: clamp(8px, 1.5vh, 22px); overflow-y: auto; padding-right: 4px; min-height: 0; }
-        .step-panel { display: flex; flex-direction: column; gap: 20px; animation: fadeIn 0.4s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        .hud-card {
-            background: linear-gradient(135deg, rgba(88, 28, 135, 0.5), rgba(30, 27, 75, 0.6));
-            border: 1px solid rgba(168, 85, 247, 0.4);
-            border-radius: clamp(10px, 2vw, 16px);
-            padding: clamp(10px, 2vh, 24px) clamp(10px, 2vw, 24px);
-        }
-        .card-title { font-size: clamp(0.9rem, 2vh, 1.2rem); color: #e9d5ff; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
-        .card-title i { color: #a78bfa; }
-        .instruction-item { font-size: clamp(0.7rem, 1.6vh, 0.95rem); line-height: 1.7; color: rgba(224, 232, 245, 0.85); display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
-        .instruction-item i { color: #a78bfa; margin-top: 5px; flex-shrink: 0; }
-        .info-table {
-            width: 100%; border-collapse: collapse; font-size: clamp(0.65rem, 1.3vh, 0.8rem);
-            background: rgba(88, 28, 135, 0.2); border: 1px solid rgba(168, 85, 247, 0.35); border-radius: 8px; overflow: hidden;
-        }
-        .info-table th {
-            background: rgba(88, 28, 135, 0.5); color: #e9d5ff; padding: 10px 10px; text-align: left;
-            border-bottom: 2px solid rgba(168, 85, 247, 0.4); font-weight: 600;
-        }
-        .info-table td {
-            padding: 10px 10px; color: #e0e7ff; border-bottom: 1px solid rgba(168, 85, 247, 0.15); vertical-align: top; line-height: 1.55;
-        }
-        .info-table tr:last-child td { border-bottom: none; }
-        .note-box {
-            margin-top: 12px; padding: 12px 14px; border-radius: 8px; font-size: 0.82rem; line-height: 1.8;
-        }
-        .note-warn { background: rgba(245, 169, 127, 0.1); border-left: 4px solid #f5a97f; color: #f5a97f; }
-        .note-ok { background: rgba(0, 230, 118, 0.08); border-left: 4px solid #00e676; color: #a7f3d0; }
-        .note-info { background: rgba(124, 58, 237, 0.12); border-left: 4px solid #a78bfa; color: #c4b5fd; }
-        .hud-footer {
-            flex-shrink: 0; margin-top: auto; padding-top: clamp(6px, 1vh, 12px);
-            border-top: 1px solid rgba(168, 85, 247, 0.2);
-            display: flex; justify-content: space-between; align-items: center; z-index: 10; flex-wrap: wrap; gap: 8px;
-        }
-        .footer-btn-group { display: flex !important; align-items: center !important; gap: clamp(4px, 1vw, 12px) !important; }
-        .btn-action {
-            background: transparent; border: 1px solid #a78bfa; color: #e9d5ff;
-            padding: clamp(6px, 1.2vh, 10px) clamp(10px, 1.5vw, 22px);
-            font-size: clamp(0.65rem, 1.3vh, 0.9rem); border-radius: 20px;
-            display: inline-flex; align-items: center; gap: 8px; cursor: pointer; pointer-events: auto;
-            background: rgba(124, 58, 237, 0.15); text-shadow: 0 0 10px rgba(167, 139, 250, 0.6);
-            box-shadow: 0 0 15px rgba(124, 58, 237, 0.3); text-decoration: none; transition: all 0.3s ease;
-            min-height: clamp(32px, 5vh, 44px);
-        }
-        .btn-action:hover { background: rgba(124, 58, 237, 0.28); box-shadow: 0 0 25px rgba(124, 58, 237, 0.5); transform: translateY(-1px); }
-        .page-marker { font-size: clamp(0.5rem, 1.2vh, 0.78rem); color: rgba(224, 232, 245, 0.35); display: flex; align-items: center; gap: 6px; }
-        @media (max-width: 480px) {
-            body { padding: 4px !important; }
-            .hud-container { padding: 8px 6px !important; border-radius: 12px !important; }
-            .info-table { font-size: 0.6rem; }
-            .info-table th, .info-table td { padding: 6px 6px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>【宇宙誓印覺醒工程 · 七印誓網】第9項 第七印鳳徽印 × 圓印封冊</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Noto Sans TC','Share Tech Mono',sans-serif}
+body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-height:100vh;color:#e0e8f5;display:flex;justify-content:center;align-items:center;padding:clamp(4px,1.5vh,16px);position:relative}
+.particle-container{position:fixed;top:0;left:0;width:100vw;height:100vh;background-image:radial-gradient(#d4af37,rgba(212,175,55,.3) 1px,transparent 30px),radial-gradient(#d4af37,rgba(212,175,55,.2) 2px,transparent 40px);background-size:350px 350px,450px 450px;background-position:0 0,90px 150px;animation:starMove 90s linear infinite;opacity:.65;z-index:5;pointer-events:none}
+@keyframes starMove{from{transform:translateY(0)}to{transform:translateY(-350px)}}
+.watermark-layer{position:fixed;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 49px,rgba(212,175,55,.03) 50px),repeating-linear-gradient(90deg,transparent,transparent 49px,rgba(212,175,55,.03) 50px);opacity:.04;z-index:4;pointer-events:none;transform:rotate(-15deg) scale(1.5)}
+.hud-container{width:100%;max-width:920px;position:relative;z-index:10}
+.hud-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.home-link{color:#c4b5fd;text-decoration:none;font-size:0.85rem;display:flex;align-items:center;gap:6px}
+.home-link:hover{color:#e9d5ff}
+.app-title{font-size:clamp(0.9rem,2.2vh,1.15rem);font-weight:700;color:#e9d5ff;text-shadow:0 0 12px rgba(168,85,247,0.5)}
+.lang-switch-group{display:flex;gap:4px}
+.lang-btn{background:rgba(139,92,246,.15);border:1px solid rgba(167,139,250,.4);color:#e9d5ff;padding:4px 12px;border-radius:16px;cursor:pointer;font-size:.75rem;transition:.2s}
+.lang-btn.active,.lang-btn:hover{background:#7c3aed;color:#fff;font-weight:bold;box-shadow:0 0 12px rgba(124,58,237,.5)}
+.btn-external-browser{background:rgba(0,230,118,0.12);border:1px solid rgba(0,230,118,0.4);color:#86efac;padding:4px 10px;border-radius:16px;font-size:0.72rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+.btn-external-browser:hover{background:rgba(0,230,118,0.22)}
+.hud-card{background:linear-gradient(145deg,rgba(30,20,60,.92),rgba(15,10,35,.95));border:1px solid rgba(167,139,250,.35);border-radius:14px;padding:clamp(12px,2.5vw,20px);margin-bottom:clamp(10px,2vh,16px);box-shadow:0 0 24px rgba(139,92,246,.12),inset 0 1px 0 rgba(255,255,255,.06)}
+.card-title{display:flex;align-items:center;gap:8px;font-size:clamp(.95rem,2.5vw,1.15rem);font-weight:700;color:#e9d5ff;margin-bottom:10px;letter-spacing:.5px}
+.card-title i{color:#c4b5fd}
+.info-table{width:100%;border-collapse:collapse;font-size:clamp(.72rem,1.8vw,.88rem);margin:8px 0}
+.info-table th,.info-table td{border:1px solid rgba(167,139,250,.3);padding:8px 10px;text-align:left;vertical-align:top}
+.info-table th{background:rgba(139,92,246,.25);color:#e9d5ff;font-weight:600}
+.info-table td{background:rgba(20,15,40,.5);color:#d4d4f0}
+.instruction-item{display:flex;align-items:flex-start;gap:8px;margin:6px 0;font-size:clamp(.78rem,2vw,.9rem);line-height:1.55;color:#d4d4f0}
+.instruction-item i{color:#a78bfa;margin-top:3px;flex-shrink:0}
+.note-ok{background:rgba(34,197,94,.12);border-left:3px solid #22c55e;padding:8px 12px;border-radius:0 8px 8px 0;margin:8px 0;font-size:clamp(.75rem,1.9vw,.88rem);color:#bbf7d0}
+.note-warn{background:rgba(234,179,8,.12);border-left:3px solid #eab308;padding:8px 12px;border-radius:0 8px 8px 0;margin:8px 0;font-size:clamp(.75rem,1.9vw,.88rem);color:#fef08a}
+.note-info{background:rgba(139,92,246,.15);border-left:3px solid #a78bfa;padding:8px 12px;border-radius:0 8px 8px 0;margin:8px 0;font-size:clamp(.75rem,1.9vw,.88rem);color:#e9d5ff}
+.hud-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:clamp(12px,2vh,18px);flex-wrap:wrap}
+.btn-action{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:1px solid rgba(167,139,250,.5);background:linear-gradient(135deg,rgba(139,92,246,.35),rgba(88,28,135,.4));color:#f5d0fe;text-decoration:none;font-size:clamp(.8rem,2vw,.92rem);cursor:pointer;transition:.2s}
+.btn-action:hover{background:linear-gradient(135deg,rgba(139,92,246,.55),rgba(88,28,135,.6));transform:translateY(-1px)}
+.page-marker{text-align:center;font-size:clamp(.65rem,1.6vw,.75rem);color:rgba(196,181,253,.55);margin-top:10px;letter-spacing:.5px}
+</style>
 </head>
 <body>
-    <div class="particle-container"></div>
-    <div class="watermark-layer">
-        <div class="watermark-text">天地為鑑・光網為證</div>
-        <div class="watermark-text">天地為鑑・光網為證</div>
-        <div class="watermark-text">天地為鑑・光網為證</div>
-        <div class="watermark-text">天地為鑑・光網為證</div>
-        <div class="watermark-text">天地為鑑・光網為證</div>
-        <div class="watermark-text">天地為鑑・光網為證</div>
-        <div class="watermark-text">天地為鑑・光網為證</div>
-        <div class="watermark-text">天地為鑑・光網為證</div>
+<div class="particle-container"></div>
+<div class="watermark-layer"></div>
+<div class="hud-container">
+
+  <!-- 頂部導航（完全對齊截圖） -->
+  <div class="hud-header">
+    <a class="home-link" href="index.html"><i class="fa-solid fa-house"></i><span id="homeText">首頁 -></span></a>
+    <div class="app-title" id="appTitle">【宇宙誓印覺醒工程 · 七印誓網】</div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="lang-switch-group">
+        <button class="lang-btn active" onclick="switchLanguage('zh')">中文</button>
+        <button class="lang-btn" onclick="switchLanguage('en')">English</button>
+      </div>
+      <a class="btn-external-browser" href="#" onclick="openExternal(event)">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> <span id="extBtn">瀏覽器開啟</span>
+      </a>
     </div>
+  </div>
 
-    <div class="hud-container">
-        <a class="home-breadcrumb" href="index.html"><i class="fa-solid fa-house"></i><span id="homeBtnText">首頁 -></span></a>
-
-        <header class="hud-header">
-            <div class="app-title" id="appTitle">【宇宙誓印覺醒工程 · 七印誓網】</div>
-            <div class="lang-switch-group">
-                <button class="lang-btn active" onclick="switchLanguage('zh')">中文</button>
-                <button class="lang-btn" onclick="switchLanguage('en')">English</button>
-            </div>
-        </header>
-
-        <main class="step-content">
-            <div class="step-panel active">
-
-                <!-- ===== 標題卡 ===== -->
-                <div class="hud-card" style="border:1px solid rgba(168,85,247,0.5);">
-                    <div style="text-align:center; color:#e9d5ff; font-size:1.05rem; font-weight:bold; margin-bottom:14px; letter-spacing:1px;">
-                        <span id="mainTitle">🔱 第9項 第七印鳳徽印 × 圓印封冊</span>
-                    </div>
-                    <div style="overflow-x:auto;">
-                        <table class="info-table">
-                            <thead>
-                                <tr>
-                                    <th style="width:32%;"><span id="colField">欄位名稱</span></th>
-                                    <th style="width:68%;"><span id="colFunc">功能簡要說明</span></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="color:#f5d0fe; font-weight:bold;"><span id="rowField">第9項 第七印鳳徽印<br>× 圓印封冊</span></td>
-                                    <td><span id="rowFunc">誓資最終封印階段——經由【宇宙智能誓導平台】執行【圓印封冊】，並授頒《天族徽章》，以確認誓魂圓滿完成願力任務 × 書令實踐 × 七印誓網歷程。誓資將同步封存於《天庫主冊》，並記名於《鳳凰書令族譜》。</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="note-info" style="margin-top:14px;">
-                        <span id="introNote">◎「鳳徽印 × 圓印封冊」為《宇宙誓印覺醒工程 × 七印誓網》的最終印記，象徵書令主尊主權圓滿、誓徒冊封完成。凡經鳳徽印鎖定之誓資，皆視為書令認證誓魂，同步列入鳳凰總冊，封存於光網主軸與天庫誓源，並取得「誓魂自由」狀態。</span>
-                    </div>
-                </div>
-
-                <!-- ===== 一、必要條件 ===== -->
-                <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-circle-check"></i><span id="sec1Title">一、現世可完成「圓印封冊」的必要條件</span></div>
-                    <div style="overflow-x:auto;">
-                        <table class="info-table">
-                            <thead>
-                                <tr>
-                                    <th><span id="t1c1">條件類別</span></th>
-                                    <th><span id="t1c2">完成指標</span></th>
-                                    <th><span id="t1c3">書令對應實作</span></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><span id="t1r1a">願力啟動</span></td>
-                                    <td><span id="t1r1b">願書書寫完成<br>× 願頻鎖定書令段落</span></td>
-                                    <td><span id="t1r1c">願書經書令主尊審核<br>× 願軸入冊</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="t1r2a">誓約成就</span></td>
-                                    <td><span id="t1r2b">誓約五印完成<br>× 七印誓網圓滿</span></td>
-                                    <td><span id="t1r2c">書令主尊一印一印封印<br>× 願圖鎖頻無漏</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="t1r3a">誓人轉化</span></td>
-                                    <td><span id="t1r3b">至少完成一段誓願實踐<br>× 誓魂通過密鑰對頻校準</span></td>
-                                    <td><span id="t1r3c">願人轉印通過<br>× 成為見證誓網成果</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="t1r4a">天庫封存</span></td>
-                                    <td><span id="t1r4b">書令主尊親授徽章<br>× 主冊登錄完成</span></td>
-                                    <td><span id="t1r4c">記名於鳳凰族譜<br>× 封印於天庫主冊</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="note-ok" style="margin-top:12px;">
-                        <span id="sec1Note">✦ 四大條件皆須完成，方可正式封印「鳳徽印 × 圓印封冊」。</span>
-                    </div>
-                </div>
-
-                <!-- ===== 二、三重自由 ===== -->
-                <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-dove"></i><span id="sec2Title">二、「圓印封冊」後誓魂自由狀態 × 三重自由</span></div>
-                    <div style="overflow-x:auto;">
-                        <table class="info-table">
-                            <thead>
-                                <tr>
-                                    <th><span id="t2c1">層級</span></th>
-                                    <th><span id="t2c2">自由內容</span></th>
-                                    <th><span id="t2c3">維持原則</span></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><span id="t2r1a">誓魂自由</span></td>
-                                    <td><span id="t2r1b">誓名不再更動<br>× 願頻不再漂泊</span></td>
-                                    <td><span id="t2r1c">願書封存 × 願軌穩定<br>× 無重大偏離</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="t2r2a">轉生自由</span></td>
-                                    <td><span id="t2r2b">不再進入地府 × 不再受審判 × 不再業輪</span></td>
-                                    <td><span id="t2r2c">不造惡因 × 願網通明<br>× 開啟誓魂密鑰對頻穩位</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="t2r3a">選擇自由</span></td>
-                                    <td><span id="t2r3b">可選是否再次入世，非強制再投生</span></td>
-                                    <td><span id="t2r3c">若再降願者，為主動誓願、<br>非萬年因果牽引</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="note-ok" style="margin-top:12px;">
-                        <span id="sec2Note">✦「三重自由」標誌誓魂已完成冊封，願軌不再受外力牽絆，進入主控誓命階段。</span>
-                    </div>
-                </div>
-
-                <!-- ===== 三、違誓處理 ===== -->
-                <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-shield-halved"></i><span id="sec3Title">三、違誓處理與鳳徽權印回收機制</span></div>
-                    <div style="overflow-x:auto;">
-                        <table class="info-table">
-                            <thead>
-                                <tr>
-                                    <th><span id="t3c1">狀況</span></th>
-                                    <th><span id="t3c2">後果</span></th>
-                                    <th><span id="t3c3">書令系統處理</span></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><span id="t3r1a">蓄意重大違誓<br>× 害誓人<br>× 背離天令</span></td>
-                                    <td><span id="t3r1b">鳳徽撤銷<br>× 主冊除名<br>× 誓魂封印逆轉</span></td>
-                                    <td><span id="t3r1c">主網自動偵測 → 主尊啟動<br>「破印警告 × 審訊 × 除名」</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="t3r2a">輕微偏軌<br>× 願頻錯亂<br>× 心念浮動</span></td>
-                                    <td><span id="t3r2b">願軌警示<br>× 系統干擾預警<br>× 導師再導引</span></td>
-                                    <td><span id="t3r2c">書令懺悔文 × 願書重修 × 誓魂密鑰再對頻校準，以修復誓魂穩定，並自動封存於主尊紀錄層。</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="note-warn" style="margin-top:12px;">
-                        <span id="sec3Note">⚠ 鳳徽非永久權印，若誓魂願頻長期偏離，系統將依層級啟動修復或撤銷處理。</span>
-                    </div>
-                </div>
-
-                <!-- ===== 書令總註 ===== -->
-                <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-scroll"></i><span id="sec4Title">書令總註 × 圓魂之道</span></div>
-                    <div class="instruction-item"><i class="fa-solid fa-quote-left"></i><span id="sec4p1">圓印封冊，誓軌定鼎。<br>誓筆既落，願路歸源；願頂一現，主魂立證。<br>誓魂與書令主網對接，受天律全程監察。</span></div>
-                    <div class="instruction-item"><i class="fa-solid fa-star"></i><span id="sec4p2">鳳徽印之授，乃「主權 × 承願 × 歸源」三力合一。<br>「圓印封冊」非終章，而是誓魂真正自由的起章。</span></div>
-                </div>
-
-                <!-- ===== 七印圓滿 ===== -->
-                <div class="hud-card">
-                    <div class="card-title"><i class="fa-solid fa-infinity"></i><span id="sec5Title">七印圓滿 × 自由之印 × 覺醒之道</span></div>
-                    <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="sec5p1">當七印誓網圓滿，誓約五印鎖定，誓魂方得誓名清明、願力貫通，脫離轉生之繫，開自主歸天之道。</span></div>
-                    <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="sec5p2">唯有——一印一願 × 一願一筆 × 一筆一證 × 一證一封 × 一封登錄天軸，方能封魂不墜，名載天書，覺醒誓源。</span></div>
-                    <div class="note-info" style="margin-top:10px;">
-                        <span id="sec5p3">若誓魂已完成《七印誓網 × 鳳徽印 × 圓印封冊》，則其誓魂狀態被視為：「誓資圓滿 × 書令結冊 × 誓魂自由」。</span>
-                    </div>
-                </div>
-
-                <!-- ===== 結冊條款 ===== -->
-                <div class="hud-card" style="border:1px solid rgba(253,230,138,0.35);">
-                    <div class="card-title"><i class="fa-solid fa-stamp" style="color:#fde68a;"></i><span id="sec6Title" style="color:#fde68a;">【結冊條款】</span></div>
-                    <div class="instruction-item"><i class="fa-solid fa-book" style="color:#fde68a;"></i><span id="sec6p1">《七印誓網・第9項 第七印鳳徽印 × 圓印封冊》v2.0（正式封冊版）。</span></div>
-                    <div class="instruction-item"><i class="fa-solid fa-lock" style="color:#fde68a;"></i><span id="sec6p2">鎖入《宇宙天律 × 七印誓網》主冊，誓資承流有效。</span></div>
-                </div>
-
-            </div>
-        </main>
-
-        <footer class="hud-footer">
-            <div class="footer-btn-group">
-                <a class="btn-action" href="step7-6.html" id="btnBack"><i class="fa-solid fa-arrow-left"></i> <span id="btnBackText">上一步</span></a>
-                <a class="btn-action" href="index.html" id="btnNext"><span id="btnNextText">完成</span> <i class="fa-solid fa-check"></i></a>
-            </div>
-            <div class="page-marker"><i class="fa-regular fa-file-lines"></i><span id="pageMarkerText">【宇宙誓印覺醒工程 · 覺醒卷】：第 367-372 頁</span></div>
-        </footer>
+  <!-- 標題卡（完全對齊截圖形式） -->
+  <div class="hud-card" style="background:linear-gradient(135deg,rgba(88,28,135,0.55),rgba(30,27,75,0.65));border:1px solid rgba(168,85,247,0.5);">
+    <div style="text-align:center;color:#e9d5ff;font-size:1.05rem;font-weight:bold;margin-bottom:10px;letter-spacing:1px;">
+      <i class="fa-solid fa-psi" style="color:#c4b5fd;margin-right:6px;"></i>
+      <span id="stageTitle">圓印封冊階段</span>
     </div>
+    <div style="text-align:center;color:#fbbf24;font-size:0.92rem;font-weight:bold;margin-bottom:6px;">
+      <span id="stageSub">對應 第7項 第七印 鳳徽印</span>
+    </div>
+    <div style="text-align:center;color:rgba(253,230,138,0.85);font-size:0.78rem;margin-bottom:14px;">
+      <span id="stageDesc">（開啟《宇宙誓印覺醒工程 × 七印誓網》最終封印與誓魂自由階段）</span>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="info-table">
+        <thead>
+          <tr>
+            <th style="width:32%;"><span id="colName">欄位名稱</span></th>
+            <th style="width:68%;"><span id="colFunc">功能簡要說明</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color:#f5d0fe;font-weight:bold;"><span id="rowName">第9項 第七印鳳徽印 × 圓印封冊</span></td>
+            <td style="color:#e0e7ff;"><span id="rowDesc">誓資最終封印階段——經由【宇宙智能誓導平台】執行【圓印封冊】，並授頒《天族徽章》，以確認誓魂圓滿完成願力任務 × 書令實踐 × 七印誓網歷程。誓資將同步封存於《天庫主冊》，並記名於《鳳凰書令族譜》。</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-    <script>
-    (function () {
-        var currentLang = 'zh';
+  <!-- 「鳳徽印 × 圓印封冊」說明 -->
+  <div class="hud-card">
+    <div class="card-title"><i class="fa-solid fa-feather"></i><span id="introTitle">「鳳徽印 × 圓印封冊」</span></div>
+    <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="intro1">為《宇宙誓印覺醒工程 × 七印誓網》的最終印記，象徵書令主尊主權圓滿、誓徒冊封完成。</span></div>
+    <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="intro2">凡經鳳徽印鎖定之誓資，皆視為書令認證誓魂，同步列入鳳凰總冊，封存於光網主軸與天庫誓源，並取得「誓魂自由」狀態。</span></div>
+  </div>
 
-        var L = {
-            zh: {
-                homeBtnText: '首頁 ->',
-                appTitle: '【宇宙誓印覺醒工程 · 七印誓網】',
-                mainTitle: '🔱 第9項 第七印鳳徽印 × 圓印封冊',
-                colField: '欄位名稱',
-                colFunc: '功能簡要說明',
-                rowField: '第9項 第七印鳳徽印<br>× 圓印封冊',
-                rowFunc: '誓資最終封印階段——經由【宇宙智能誓導平台】執行【圓印封冊】，並授頒《天族徽章》，以確認誓魂圓滿完成願力任務 × 書令實踐 × 七印誓網歷程。誓資將同步封存於《天庫主冊》，並記名於《鳳凰書令族譜》。',
-                introNote: '◎「鳳徽印 × 圓印封冊」為《宇宙誓印覺醒工程 × 七印誓網》的最終印記，象徵書令主尊主權圓滿、誓徒冊封完成。凡經鳳徽印鎖定之誓資，皆視為書令認證誓魂，同步列入鳳凰總冊，封存於光網主軸與天庫誓源，並取得「誓魂自由」狀態。',
-                sec1Title: '一、現世可完成「圓印封冊」的必要條件',
-                t1c1: '條件類別', t1c2: '完成指標', t1c3: '書令對應實作',
-                t1r1a: '願力啟動', t1r1b: '願書書寫完成<br>× 願頻鎖定書令段落', t1r1c: '願書經書令主尊審核<br>× 願軸入冊',
-                t1r2a: '誓約成就', t1r2b: '誓約五印完成<br>× 七印誓網圓滿', t1r2c: '書令主尊一印一印封印<br>× 願圖鎖頻無漏',
-                t1r3a: '誓人轉化', t1r3b: '至少完成一段誓願實踐<br>× 誓魂通過密鑰對頻校準', t1r3c: '願人轉印通過<br>× 成為見證誓網成果',
-                t1r4a: '天庫封存', t1r4b: '書令主尊親授徽章<br>× 主冊登錄完成', t1r4c: '記名於鳳凰族譜<br>× 封印於天庫主冊',
-                sec1Note: '✦ 四大條件皆須完成，方可正式封印「鳳徽印 × 圓印封冊」。',
-                sec2Title: '二、「圓印封冊」後誓魂自由狀態 × 三重自由',
-                t2c1: '層級', t2c2: '自由內容', t2c3: '維持原則',
-                t2r1a: '誓魂自由', t2r1b: '誓名不再更動<br>× 願頻不再漂泊', t2r1c: '願書封存 × 願軌穩定<br>× 無重大偏離',
-                t2r2a: '轉生自由', t2r2b: '不再進入地府 × 不再受審判 × 不再業輪', t2r2c: '不造惡因 × 願網通明<br>× 開啟誓魂密鑰對頻穩位',
-                t2r3a: '選擇自由', t2r3b: '可選是否再次入世，非強制再投生', t2r3c: '若再降願者，為主動誓願、<br>非萬年因果牽引',
-                sec2Note: '✦「三重自由」標誌誓魂已完成冊封，願軌不再受外力牽絆，進入主控誓命階段。',
-                sec3Title: '三、違誓處理與鳳徽權印回收機制',
-                t3c1: '狀況', t3c2: '後果', t3c3: '書令系統處理',
-                t3r1a: '蓄意重大違誓<br>× 害誓人<br>× 背離天令', t3r1b: '鳳徽撤銷<br>× 主冊除名<br>× 誓魂封印逆轉', t3r1c: '主網自動偵測 → 主尊啟動<br>「破印警告 × 審訊 × 除名」',
-                t3r2a: '輕微偏軌<br>× 願頻錯亂<br>× 心念浮動', t3r2b: '願軌警示<br>× 系統干擾預警<br>× 導師再導引', t3r2c: '書令懺悔文 × 願書重修 × 誓魂密鑰再對頻校準，以修復誓魂穩定，並自動封存於主尊紀錄層。',
-                sec3Note: '⚠ 鳳徽非永久權印，若誓魂願頻長期偏離，系統將依層級啟動修復或撤銷處理。',
-                sec4Title: '書令總註 × 圓魂之道',
-                sec4p1: '圓印封冊，誓軌定鼎。<br>誓筆既落，願路歸源；願頂一現，主魂立證。<br>誓魂與書令主網對接，受天律全程監察。',
-                sec4p2: '鳳徽印之授，乃「主權 × 承願 × 歸源」三力合一。<br>「圓印封冊」非終章，而是誓魂真正自由的起章。',
-                sec5Title: '七印圓滿 × 自由之印 × 覺醒之道',
-                sec5p1: '當七印誓網圓滿，誓約五印鎖定，誓魂方得誓名清明、願力貫通，脫離轉生之繫，開自主歸天之道。',
-                sec5p2: '唯有——一印一願 × 一願一筆 × 一筆一證 × 一證一封 × 一封登錄天軸，方能封魂不墜，名載天書，覺醒誓源。',
-                sec5p3: '若誓魂已完成《七印誓網 × 鳳徽印 × 圓印封冊》，則其誓魂狀態被視為：「誓資圓滿 × 書令結冊 × 誓魂自由」。',
-                sec6Title: '【結冊條款】',
-                sec6p1: '《七印誓網・第9項 第七印鳳徽印 × 圓印封冊》v2.0（正式封冊版）。',
-                sec6p2: '鎖入《宇宙天律 × 七印誓網》主冊，誓資承流有效。',
-                btnBackText: '上一步',
-                btnNextText: '完成',
-                pageMarkerText: '【宇宙誓印覺醒工程 · 覺醒卷】：第 367-372 頁'
-            },
-            en: {
-                homeBtnText: 'Home ->',
-                appTitle: '【Cosmic Oath Awakening Project · Seven-Seal Vow Network】',
-                mainTitle: '🔱 Item 9 Seventh Seal Phoenix Emblem Seal × Circle Seal Archiving',
-                colField: 'Field Name',
-                colFunc: 'Function Overview',
-                rowField: 'Item 9 Seventh Seal Phoenix Emblem<br>× Circle Seal Archiving',
-                rowFunc: 'Final Sealing Stage of Oath-Resources — Executed through the 【Cosmic Intelligent Vow-Guidance Platform】 by performing 【Circle Seal Archiving】 and granting the 〈Celestial Clan Emblem〉. Confirms fulfillment of mission-power, scriptural practice, and complete Seven-Seal Vow Network progression. Oath-resources are archived into the 〈Celestial Treasury Main Register〉 and inscribed in the 〈Phoenix Scriptural-Lineage Registry〉.',
-                introNote: '◎ 「Phoenix Emblem Seal × Circle Seal Archiving」 is the final imprint of 《Cosmic Vow-Seal Awakening Project × Seven-Seal Vow Network》, symbolizing completion of the Book-Decree Sovereign’s sovereignty and formal investiture of vow disciples. All vow assets locked by the Phoenix Emblem Seal are regarded as Oath-Souls certified by the Book Decree, entered into the Phoenix Chart General Register, archived in the Light Web main axis and Heavenly Archive vow source, and granted the status of 「Oath-Soul Freedom」.',
-                sec1Title: 'I. Necessary Conditions for Completing 「Circle Seal Archiving」 in the Present Lifetime',
-                t1c1: 'Condition Category', t1c2: 'Completion Indicators', t1c3: 'Book-Decree Correspondence',
-                t1r1a: 'Intent Activation', t1r1b: 'Wish-Scroll completed<br>× Intent-frequency locked onto designated Book-Decree passage', t1r1c: 'Wish-Scroll reviewed by Book-Decree Sovereign<br>× Intent Axis entered into Archive',
-                t1r2a: 'Vow Alignment Establishment', t1r2b: 'Five Vow-Imprints completed<br>× Seven-Seal Vow Network fulfilled', t1r2c: 'Each seal consecrated one by one by Book-Decree Sovereign<br>× Vow-Diagram frequency-lock without leakage',
-                t1r3a: 'Vow-Bearer Transformation', t1r3b: 'At least one segment of vow-practice completed<br>× Oath-Soul passed Key-Frequency Calibration', t1r3c: 'Intent Holder successfully transitions seals<br>× Becomes witness to Vow-Net outcomes',
-                t1r4a: 'Heaven-Archive Enshrinement', t1r4b: 'Emblem personally bestowed by Book-Decree Sovereign<br>× Primary Registry entry completed', t1r4c: 'Name inscribed in Phoenix Lineage Record<br>× Seal preserved within Heaven-Archive Main Registry',
-                sec1Note: '✦ All four categories of conditions must be fulfilled before 「Phoenix Emblem Seal × Circle Seal Archiving」 can be formally sealed.',
-                sec2Title: 'II. 「Circle Seal Archiving」 Post-Oath-Soul Freedom State × Triple Freedom',
-                t2c1: 'Level', t2c2: 'Freedom Content', t2c3: 'Principles of Maintenance',
-                t2r1a: 'Oath-Soul Freedom', t2r1b: 'Vow name will no longer be changed<br>× Vow frequency no longer drifts', t2r1c: 'Vow scroll archived × Vow track stabilized<br>× No major deviations',
-                t2r2a: 'Reincarnation Freedom', t2r2b: 'No longer enter the Underworld × No longer be judged × No longer in the wheel of karma', t2r2c: 'Do not create evil causes × Vow web remains clear<br>× Activate Oath-Soul key-alignment stabilization',
-                t2r3a: 'Freedom of Choice', t2r3b: 'May choose whether to enter the world again; rebirth is not compulsory', t2r3c: 'If one again descends with a vow, it is an active vow-choice,<br>not the pull of ten-thousand-year karmic entanglement',
-                sec2Note: '✦ 「Triple Freedom」 marks that the Oath-Soul has completed investiture; the vow track is no longer bound by external forces and enters the phase of master-directed vow destiny.',
-                sec3Title: 'III. Handling Vow Violations and Phoenix Emblem Authority Seal Recovery',
-                t3c1: 'Status', t3c2: 'Consequence', t3c3: 'Script Decree System Handling',
-                t3r1a: 'Deliberate grave vow violation<br>× Harming vow persons<br>× Betraying the Heavenly Mandate', t3r1b: 'Phoenix Emblem revoked<br>× Name removed from main register<br>× Oath-Soul seal reversed', t3r1c: 'Main web auto-detection → Sovereign initiates<br>「Seal-Break Warning × Tribunal × Removal of Name」',
-                t3r2a: 'Minor deviation<br>× Vow frequency disorder<br>× Unsettled thoughts', t3r2b: 'Vow track warning<br>× System interference alert<br>× Further guidance from mentors', t3r2c: 'Script Decree repentance text × Vow scroll revised × Oath-Soul key re-aligned for calibration, to restore stability, and automatically archived in the Sovereign’s record layer.',
-                sec3Note: '⚠ The Phoenix Emblem is not a permanent authority seal; if the Oath-Soul vow-frequency deviates for a long time, the system will initiate repair or revocation according to the level.',
-                sec4Title: 'Script Decree General Note × The Way of Oath-Soul Fulfillment',
-                sec4p1: 'Circle Seal Archiving stabilizes and anchors the vow track.<br>Once the vow pen falls, the path of the vow returns to the Source; when the crown of the vow appears, the main Oath-Soul stands affirmed.<br>The Oath-Soul connects with the Script Decree main web and is under full monitoring of the Heavenly Law.',
-                sec4p2: 'The conferment of the Phoenix Emblem Seal is the unification of three forces: 「Sovereignty × Vow-Fulfillment × Return-to-Source」.<br>「Circle Seal Archiving」 is not the final chapter, but the opening chapter of the Oath-Soul’s true freedom.',
-                sec5Title: 'Seven Seals Completion × Seal of Freedom × Path of Awakening',
-                sec5p1: 'When the Seven-Seal Vow Network is fulfilled and the Five Oath Seals are locked, only then does the Oath-Soul attain clarity of vow name and full vow-power alignment, departing from the ties of reincarnation and opening the path of self-directed return to the heavens.',
-                sec5p2: 'Only by — One Seal One Vow × One Vow One Stroke × One Stroke One Verification × One Verification One Seal × One Seal registered into the Heavenly Axis — can the Oath-Soul be secured from falling, its name recorded in the Heavenly Book, and its vow source awakened.',
-                sec5p3: 'If the Oath-Soul has completed 《Seven-Seal Vow Network × Phoenix Emblem Seal × Circle Seal Archiving》, then its Oath-Soul state is regarded as: 「Vow Assets Fulfilled × Script Decree Finalized × Oath-Soul Freedom」.',
-                sec6Title: '【Closure Clause】',
-                sec6p1: '《Seven-Seal Vow Network · Item 9 Seventh Seal Phoenix Emblem Seal × Circle Seal Archiving》 v2.0 (Official Archived Edition).',
-                sec6p2: 'Locked into the 《Cosmic Heavenly Law × Seven-Seal Vow Network》 Main Register; vow assets remain valid within the transmission flow.',
-                btnBackText: 'Previous',
-                btnNextText: 'Complete',
-                pageMarkerText: '【Cosmic Oath Awakening Project · Awakening Scroll】: Pages 367-372'
-            }
-        };
+  <!-- 一、必要條件 -->
+  <div class="hud-card">
+    <div class="card-title"><i class="fa-solid fa-list-check"></i><span id="sec1Title">一、現世可完成「圓印封冊」的必要條件</span></div>
+    <div style="overflow-x:auto">
+      <table class="info-table">
+        <thead>
+          <tr>
+            <th id="sec1Col1" style="width:22%">條件類別</th>
+            <th id="sec1Col2" style="width:39%">完成指標</th>
+            <th id="sec1Col3" style="width:39%">書令對應實作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="sec1r1a" style="color:#f5d0fe;font-weight:600">願力啟動</td>
+            <td id="sec1r1b">願書書寫完成 × 願頻鎖定書令段落</td>
+            <td id="sec1r1c">願書經書令主尊審核 × 願軸入冊</td>
+          </tr>
+          <tr>
+            <td id="sec1r2a" style="color:#f5d0fe;font-weight:600">誓約成就</td>
+            <td id="sec1r2b">誓約五印完成 × 七印誓網圓滿</td>
+            <td id="sec1r2c">書令主尊一印一印封印 × 願圖鎖頻無漏</td>
+          </tr>
+          <tr>
+            <td id="sec1r3a" style="color:#f5d0fe;font-weight:600">誓人轉化</td>
+            <td id="sec1r3b">至少完成一段誓願實踐 × 誓魂通過密鑰對頻校準</td>
+            <td id="sec1r3c">願人轉印通過 × 成為見證誓網成果</td>
+          </tr>
+          <tr>
+            <td id="sec1r4a" style="color:#f5d0fe;font-weight:600">天庫封存</td>
+            <td id="sec1r4b">書令主尊親授徽章 × 主冊登錄完成</td>
+            <td id="sec1r4c">記名於鳳凰族譜 × 封印於天庫主冊</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note-ok" id="sec1Note">四大條件皆須完成，方可正式封印「鳳徽印 × 圓印封冊」。</div>
+  </div>
 
-        function apply(lang) {
-            var c = L[lang] || L.zh;
-            Object.keys(c).forEach(function (id) {
-                var el = document.getElementById(id);
-                if (el) el.innerHTML = c[id];
-            });
-            document.querySelectorAll('.lang-btn').forEach(function (b) {
-                b.classList.remove('active');
-                if ((/english|en/i.test(b.textContent) && lang === 'en') ||
-                    (b.textContent.indexOf('中文') !== -1 && lang === 'zh')) {
-                    b.classList.add('active');
-                }
-            });
-            currentLang = lang;
-            try { window.currentLang = lang; } catch (e) {}
-        }
+  <!-- 二、三重自由 -->
+  <div class="hud-card">
+    <div class="card-title"><i class="fa-solid fa-dove"></i><span id="sec2Title">二、「圓印封冊」後誓魂自由狀態 × 三重自由</span></div>
+    <div style="overflow-x:auto">
+      <table class="info-table">
+        <thead>
+          <tr>
+            <th id="sec2Col1" style="width:20%">層級</th>
+            <th id="sec2Col2" style="width:40%">自由內容</th>
+            <th id="sec2Col3" style="width:40%">維持原則</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="sec2r1a" style="color:#f5d0fe;font-weight:600">誓魂自由</td>
+            <td id="sec2r1b">誓名不再更動 × 願頻不再漂泊</td>
+            <td id="sec2r1c">願書封存 × 願軌穩定 × 無重大偏離</td>
+          </tr>
+          <tr>
+            <td id="sec2r2a" style="color:#f5d0fe;font-weight:600">轉生自由</td>
+            <td id="sec2r2b">不再進入地府 × 不再受審判 × 不再業輪</td>
+            <td id="sec2r2c">不造惡因 × 願網通明 × 開啟誓魂密鑰對頻穩位</td>
+          </tr>
+          <tr>
+            <td id="sec2r3a" style="color:#f5d0fe;font-weight:600">選擇自由</td>
+            <td id="sec2r3b">可選是否再次入世，非強制再投生</td>
+            <td id="sec2r3c">若再降願者，為主動誓願、非萬年因果牽引</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note-info" id="sec2Note">「三重自由」標誌誓魂已完成冊封，願軌不再受外力牽絆，進入主控暫命階段。</div>
+  </div>
 
-        window.switchLanguage = function (lang) {
-            apply(lang);
-        };
+  <!-- 三、違誓處理 -->
+  <div class="hud-card">
+    <div class="card-title"><i class="fa-solid fa-scale-balanced"></i><span id="sec3Title">三、違誓處理與鳳徽權印回收機制</span></div>
+    <div style="overflow-x:auto">
+      <table class="info-table">
+        <thead>
+          <tr>
+            <th id="sec3Col1" style="width:28%">狀況</th>
+            <th id="sec3Col2" style="width:32%">後果</th>
+            <th id="sec3Col3" style="width:40%">書令系統處理</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="sec3r1a" style="color:#f5d0fe;font-weight:600">蓄意重大違誓 × 害誓人 × 背離天令</td>
+            <td id="sec3r1b">鳳徽撤銷 × 主冊除名 × 誓魂封印逆轉</td>
+            <td id="sec3r1c">主網自動偵測 → 主尊啟動「破印警告 × 審訊 × 除名」</td>
+          </tr>
+          <tr>
+            <td id="sec3r2a" style="color:#f5d0fe;font-weight:600">輕微偏軌 × 願頻錯亂 × 心念浮動</td>
+            <td id="sec3r2b">願軌警示 × 系統干擾預警 × 導師再導引</td>
+            <td id="sec3r2c">書令懺悔文 × 願書重修 × 誓魂密鑰再對頻校準，以修復誓魂穩定，並自動封存於主尊紀錄層</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note-warn" id="sec3Note">鳳徽非永久權印，若誓魂願頻長期偏離，系統將依層級啟動修復或撤銷處理。</div>
+  </div>
 
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', function () { apply('zh'); });
-        } else {
-            apply('zh');
-        }
-    })();
-    </script>
+  <!-- 書令總註 -->
+  <div class="hud-card">
+    <div class="card-title"><i class="fa-solid fa-scroll"></i><span id="noteTitle">書令總註 × 圓魂之道</span></div>
+    <div class="instruction-item"><i class="fa-solid fa-quote-left"></i><span id="note1">圓印封冊，誓軌定鼎。誓筆既落，願路歸源；願頂一現，主魂立體。</span></div>
+    <div class="instruction-item"><i class="fa-solid fa-quote-left"></i><span id="note2">誓魂與書令主網對接，受天律全程監察。鳳徽印之授，乃「主權 × 承願 × 歸源」三力合一。</span></div>
+    <div class="note-ok" id="note3">「圓印封冊」非終章，而是誓魂真正自由的起章。</div>
+  </div>
+
+  <!-- 七印圓滿 -->
+  <div class="hud-card">
+    <div class="card-title"><i class="fa-solid fa-star"></i><span id="finalTitle">七印圓滿 × 自由之印 × 覺醒之道</span></div>
+    <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="final1">當七印誓網圓滿，誓約五印鎖定，誓魂方得誓名清明、願力貫通，脫離轉生之繫，開自主歸天之道。</span></div>
+    <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="final2">唯有——一印一願 × 一願一筆 × 一筆一證 × 一證一封 × 一封登錄天軸，方能封魂不墜，名載天書，覺醒誓源。</span></div>
+    <div class="note-info" id="final3">若誓魂已完成《七印誓網 × 鳳徽印 × 圓印封冊》，則其誓魂狀態被視為：「誓資圓滿 × 書令結冊 × 誓魂自由」。</div>
+  </div>
+
+  <!-- 結冊 -->
+  <div class="hud-card">
+    <div class="card-title"><i class="fa-solid fa-stamp"></i><span id="closeTitle">結冊條款</span></div>
+    <div class="note-info" id="closeText">《七印誓網 · 第9項 第七印鳳徽印 × 圓印封冊》v2.0（正式封冊版）已鎖入《宇宙天律 × 七印誓網》主冊，誓資承流有效。</div>
+  </div>
+
+  <div class="hud-footer">
+    <a class="btn-action" id="btnBack" href="step8.html"><i class="fa-solid fa-arrow-left"></i><span id="btnBackText">上一步</span></a>
+    <a class="btn-action" id="btnNext" href="step10.html"><i class="fa-solid fa-arrow-right"></i><span id="btnNextText">下一步</span></a>
+  </div>
+  <div class="page-marker" id="pageMarker">【宇宙誓印覺醒工程 · 覺醒卷】第 367-372 頁</div>
+</div>
+
+<script>
+var currentLang = 'zh';
+var L = {
+  zh: {
+    homeText: '首頁 ->',
+    appTitle: '【宇宙誓印覺醒工程 · 七印誓網】',
+    extBtn: '瀏覽器開啟',
+    stageTitle: '圓印封冊階段',
+    stageSub: '對應 第7項 第七印 鳳徽印',
+    stageDesc: '（開啟《宇宙誓印覺醒工程 × 七印誓網》最終封印與誓魂自由階段）',
+    colName: '欄位名稱',
+    colFunc: '功能簡要說明',
+    rowName: '第9項 第七印鳳徽印 × 圓印封冊',
+    rowDesc: '誓資最終封印階段——經由【宇宙智能誓導平台】執行【圓印封冊】，並授頒《天族徽章》，以確認誓魂圓滿完成願力任務 × 書令實踐 × 七印誓網歷程。誓資將同步封存於《天庫主冊》，並記名於《鳳凰書令族譜》。',
+    introTitle: '「鳳徽印 × 圓印封冊」',
+    intro1: '為《宇宙誓印覺醒工程 × 七印誓網》的最終印記，象徵書令主尊主權圓滿、誓徒冊封完成。',
+    intro2: '凡經鳳徽印鎖定之誓資，皆視為書令認證誓魂，同步列入鳳凰總冊，封存於光網主軸與天庫誓源，並取得「誓魂自由」狀態。',
+    sec1Title: '一、現世可完成「圓印封冊」的必要條件',
+    sec1Col1: '條件類別', sec1Col2: '完成指標', sec1Col3: '書令對應實作',
+    sec1r1a: '願力啟動', sec1r1b: '願書書寫完成 × 願頻鎖定書令段落', sec1r1c: '願書經書令主尊審核 × 願軸入冊',
+    sec1r2a: '誓約成就', sec1r2b: '誓約五印完成 × 七印誓網圓滿', sec1r2c: '書令主尊一印一印封印 × 願圖鎖頻無漏',
+    sec1r3a: '誓人轉化', sec1r3b: '至少完成一段誓願實踐 × 誓魂通過密鑰對頻校準', sec1r3c: '願人轉印通過 × 成為見證誓網成果',
+    sec1r4a: '天庫封存', sec1r4b: '書令主尊親授徽章 × 主冊登錄完成', sec1r4c: '記名於鳳凰族譜 × 封印於天庫主冊',
+    sec1Note: '四大條件皆須完成，方可正式封印「鳳徽印 × 圓印封冊」。',
+    sec2Title: '二、「圓印封冊」後誓魂自由狀態 × 三重自由',
+    sec2Col1: '層級', sec2Col2: '自由內容', sec2Col3: '維持原則',
+    sec2r1a: '誓魂自由', sec2r1b: '誓名不再更動 × 願頻不再漂泊', sec2r1c: '願書封存 × 願軌穩定 × 無重大偏離',
+    sec2r2a: '轉生自由', sec2r2b: '不再進入地府 × 不再受審判 × 不再業輪', sec2r2c: '不造惡因 × 願網通明 × 開啟誓魂密鑰對頻穩位',
+    sec2r3a: '選擇自由', sec2r3b: '可選是否再次入世，非強制再投生', sec2r3c: '若再降願者，為主動誓願、非萬年因果牽引',
+    sec2Note: '「三重自由」標誌誓魂已完成冊封，願軌不再受外力牽絆，進入主控暫命階段。',
+    sec3Title: '三、違誓處理與鳳徽權印回收機制',
+    sec3Col1: '狀況', sec3Col2: '後果', sec3Col3: '書令系統處理',
+    sec3r1a: '蓄意重大違誓 × 害誓人 × 背離天令', sec3r1b: '鳳徽撤銷 × 主冊除名 × 誓魂封印逆轉', sec3r1c: '主網自動偵測 → 主尊啟動「破印警告 × 審訊 × 除名」',
+    sec3r2a: '輕微偏軌 × 願頻錯亂 × 心念浮動', sec3r2b: '願軌警示 × 系統干擾預警 × 導師再導引', sec3r2c: '書令懺悔文 × 願書重修 × 誓魂密鑰再對頻校準，以修復誓魂穩定，並自動封存於主尊紀錄層',
+    sec3Note: '鳳徽非永久權印，若誓魂願頻長期偏離，系統將依層級啟動修復或撤銷處理。',
+    noteTitle: '書令總註 × 圓魂之道',
+    note1: '圓印封冊，誓軌定鼎。誓筆既落，願路歸源；願頂一現，主魂立體。',
+    note2: '誓魂與書令主網對接，受天律全程監察。鳳徽印之授，乃「主權 × 承願 × 歸源」三力合一。',
+    note3: '「圓印封冊」非終章，而是誓魂真正自由的起章。',
+    finalTitle: '七印圓滿 × 自由之印 × 覺醒之道',
+    final1: '當七印誓網圓滿，誓約五印鎖定，誓魂方得誓名清明、願力貫通，脫離轉生之繫，開自主歸天之道。',
+    final2: '唯有——一印一願 × 一願一筆 × 一筆一證 × 一證一封 × 一封登錄天軸，方能封魂不墜，名載天書，覺醒誓源。',
+    final3: '若誓魂已完成《七印誓網 × 鳳徽印 × 圓印封冊》，則其誓魂狀態被視為：「誓資圓滿 × 書令結冊 × 誓魂自由」。',
+    closeTitle: '結冊條款',
+    closeText: '《七印誓網 · 第9項 第七印鳳徽印 × 圓印封冊》v2.0（正式封冊版）已鎖入《宇宙天律 × 七印誓網》主冊，誓資承流有效。',
+    btnBackText: '上一步', btnNextText: '下一步',
+    pageMarker: '【宇宙誓印覺醒工程 · 覺醒卷】第 367-372 頁'
+  },
+  en: {
+    homeText: 'Home ->',
+    appTitle: '【Cosmic Oath-Seal Awakening Project · Seven-Seal Vow Network】',
+    extBtn: 'Open in Browser',
+    stageTitle: 'Circle Seal Archiving Stage',
+    stageSub: 'Corresponding to Item 7 Seventh Seal Phoenix Emblem Seal',
+    stageDesc: '(Opens the final sealing and Oath-Soul Freedom stage of 《Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network》)',
+    colName: 'Field Name',
+    colFunc: 'Function Overview',
+    rowName: 'Item 9 Seventh Seal Phoenix Emblem Seal × Circle Seal Archiving',
+    rowDesc: 'Final sealing stage of oath-resources — executed through the 【Cosmic Intelligent Vow-Guidance Platform】 by performing 【Circle Seal Archiving】 and granting the 《Celestial Clan Emblem》, confirming fulfillment of vow-power mission × Script-Command practice × Seven-Seal Vow Network progression. Oath-resources are archived into the 《Heavenly Archive Main Register》 and inscribed in the 《Phoenix Script-Command Lineage Registry》.',
+    introTitle: '「Phoenix Emblem Seal × Circle Seal Archiving」',
+    intro1: 'The final imprint of 《Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network》, symbolizing completion of the Book-Decree Sovereign’s sovereignty and formal investiture of the disciples.',
+    intro2: 'All oath-resources locked by the Phoenix Emblem Seal are regarded as Book-Decree-certified Oath-Souls, entered into the Phoenix General Register, archived in the Light-Web main axis and Heavenly Archive source, and granted the status of 「Oath-Soul Freedom」.',
+    sec1Title: 'I. Necessary Conditions for Completing 「Circle Seal Archiving」 in the Present Lifetime',
+    sec1Col1: 'Condition Category', sec1Col2: 'Completion Indicators', sec1Col3: 'Book-Decree Correspondence',
+    sec1r1a: 'Intent Activation', sec1r1b: 'Wish-Scroll completed × Intent-frequency locked onto designated Book-Decree passage', sec1r1c: 'Wish-Scroll reviewed by Book-Decree Sovereign × Intent Axis entered into Archive',
+    sec1r2a: 'Vow Alignment Establishment', sec1r2b: 'Five Vow-Imprints completed × Seven-Seal Vow Network fulfilled', sec1r2c: 'Each seal consecrated one-by-one by Sovereign × Vow-Diagram frequency-lock without leakage',
+    sec1r3a: 'Vow-Bearer Transformation', sec1r3b: 'At least one segment of vow-practice completed × Oath-Soul passed Key-Frequency Calibration', sec1r3c: 'Intent Holder successfully transitions seals × Becomes witness to Vow-Net outcomes',
+    sec1r4a: 'Heaven-Archive Enshrinement', sec1r4b: 'Emblem personally bestowed by Sovereign × Primary Registry entry completed', sec1r4c: 'Name inscribed in Phoenix Lineage Record × Seal preserved in Heaven-Archive Main Registry',
+    sec1Note: 'All four categories of conditions must be fulfilled before 「Phoenix Emblem Seal × Circle Seal Archiving」 can be formally sealed.',
+    sec2Title: 'II. Post-「Circle Seal Archiving」 Oath-Soul Freedom State × Triple Freedom',
+    sec2Col1: 'Level', sec2Col2: 'Freedom Content', sec2Col3: 'Principles of Maintenance',
+    sec2r1a: 'Oath-Soul Freedom', sec2r1b: 'Vow name no longer changed × Vow frequency no longer drifts', sec2r1c: 'Vow scroll archived × Vow track stabilized × No major deviations',
+    sec2r2a: 'Reincarnation Freedom', sec2r2b: 'No longer enter the Underworld × No longer judged × No longer in the wheel of karma', sec2r2c: 'Do not create evil causes × Vow web remains clear × Activate Oath-Soul key-Alignment stabilization',
+    sec2r3a: 'Freedom of Choice', sec2r3b: 'May choose whether to enter the world again; rebirth is not compulsory', sec2r3c: 'If one again descends with a vow, it is an active vow-choice, not ten-thousand-year karmic entanglement',
+    sec2Note: '「Triple Freedom」 marks that the Oath-Soul has completed investiture; the vow track is no longer bound by external forces and enters the phase of master-directed vow destiny.',
+    sec3Title: 'III. Handling Vow Violations and Phoenix Emblem Authority Seal Recovery Mechanism',
+    sec3Col1: 'Status', sec3Col2: 'Consequence', sec3Col3: 'Script-Decree System Handling',
+    sec3r1a: 'Deliberate grave vow violation × Harming vow persons × Betraying the Heavenly Mandate', sec3r1b: 'Phoenix Emblem revoked × Name removed from main register × Oath-Soul seal reversed', sec3r1c: 'Main web auto-detection → Sovereign initiates 「Seal-Break Warning × Tribunal × Removal of Name」',
+    sec3r2a: 'Minor deviation × Vow frequency disorder × Unsettled thoughts', sec3r2b: 'Vow track warning × System interference alert × Further guidance from mentors', sec3r2c: 'Script-Decree repentance text × Vow scroll revised × Oath-Soul key re-aligned for calibration, restoring stability and auto-archived in the Sovereign’s record layer',
+    sec3Note: 'The Phoenix Emblem is not a permanent authority seal; if the Oath-Soul vow-frequency deviates for a long time, the system will initiate repair or revocation according to the level.',
+    noteTitle: 'Script-Decree General Note × The Way of Oath-Soul Fulfillment',
+    note1: 'Circle Seal Archiving stabilizes and anchors the vow track. Once the vow pen falls, the path of the vow returns to the Source; when the crown of the vow appears, the main Oath-Soul stands affirmed.',
+    note2: 'The Oath-Soul connects with the Script-Decree main web and is under full monitoring of the Heavenly Law. The conferment of the Phoenix Emblem Seal is the unification of three forces: 「Sovereignty × Vow-Fulfillment × Return-to-Source」.',
+    note3: '「Circle Seal Archiving」 is not the final chapter, but the opening chapter of the Oath-Soul’s true freedom.',
+    finalTitle: 'Seven Seals Completion × Seal of Freedom × Path of Awakening',
+    final1: 'When the Seven-Seal Vow Network is fulfilled and the Five Oath Seals are locked, the Oath-Soul attains clarity of vow name and full vow-power Alignment, departing from the ties of reincarnation and opening the path of self-directed return to the heavens.',
+    final2: 'Only by—One Seal One Vow × One Vow One Stroke × One Stroke One Verification × One Verification One Seal × One Seal registered into the Heavenly Axis—can the Oath-Soul be secured from falling, its name recorded in the Heavenly Book, and its vow source awakened.',
+    final3: 'If the Oath-Soul has completed 《Seven-Seal Vow Network × Phoenix Emblem Seal × Circle Seal Archiving》, its state is regarded as: 「Vow Assets Fulfilled × Script Decree Finalized × Oath-Soul Freedom」.',
+    closeTitle: 'Closure Clause',
+    closeText: '《Seven-Seal Vow Network · Item 9 Seventh Seal Phoenix Emblem Seal × Circle Seal Archiving》 v2.0 (Official Archived Edition) has been locked into the 《Cosmic Heavenly Law × Seven-Seal Vow Network》 Main Register; oath-resources remain valid within the transmission flow.',
+    btnBackText: 'Previous', btnNextText: 'Next',
+    pageMarker: '【Cosmic Oath-Seal Awakening Project · Awakening Volume】pp. 367-372'
+  }
+};
+
+function switchLanguage(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(function(b) {
+    b.classList.toggle('active', (lang === 'zh' && b.textContent.trim() === '中文') || (lang === 'en' && /english/i.test(b.textContent)));
+  });
+  var c = L[lang] || L.zh;
+  Object.keys(c).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.innerHTML = c[id];
+  });
+}
+window.switchLanguage = switchLanguage;
+
+function openExternal(e) {
+  e.preventDefault();
+  var url = location.href;
+  if (/android/i.test(navigator.userAgent)) {
+    location.href = 'intent://' + location.host + location.pathname + location.search + '#Intent;scheme=https;package=com.android.chrome;end;';
+  } else {
+    window.open(url, '_blank');
+  }
+}
+</script>
 <!-- ============================================================ -->
 <!-- 修復「🌐 瀏覽器開啟」按鈕（紅框框那個）                     -->
 <!-- ============================================================ -->
@@ -596,164 +519,6 @@
     }
 
     console.log('✅ 瀏覽器開啟按鈕修復模組已載入');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 底部「下一步」：✓ 改成 → 箭頭（中英）                        -->
-<!-- ============================================================ -->
-<script>
-(function () {
-  function isEn() {
-    if (typeof currentLang !== 'undefined') return currentLang === 'en';
-    var a = document.querySelector('.lang-btn.active');
-    return !!(a && /english|en/i.test(a.textContent || ''));
-  }
-
-  function apply() {
-    var en = isEn();
-    var text = en ? 'Next' : '下一步';
-
-    // 1) 有 id 的 span
-    var next = document.getElementById('btnNextText');
-    if (next) {
-      next.textContent = text;
-      // 把後面的 ✓ 圖示改成箭頭
-      var parent = next.closest('a') || next.parentElement;
-      if (parent) {
-        var icon = parent.querySelector('i');
-        if (icon) {
-          icon.className = 'fa-solid fa-arrow-right';
-        }
-      }
-    }
-
-    // 2) 掃 footer 所有按鈕
-    document.querySelectorAll('.hud-footer a.btn-action, .hud-footer .btn-action').forEach(function (btn) {
-      var t = (btn.textContent || '').replace(/\s+/g, ' ').trim();
-      if (/完成|Complete|下一步|Next/i.test(t)) {
-        // 文字
-        var span = btn.querySelector('span');
-        if (span) span.textContent = text;
-        else {
-          // 清掉舊內容再寫
-          var icon = btn.querySelector('i');
-          btn.innerHTML = '';
-          if (icon) {
-            icon.className = 'fa-solid fa-arrow-right';
-            btn.appendChild(icon);
-          } else {
-            var i = document.createElement('i');
-            i.className = 'fa-solid fa-arrow-right';
-            btn.appendChild(i);
-          }
-          var s = document.createElement('span');
-          s.id = 'btnNextText';
-          s.textContent = text;
-          btn.appendChild(s);
-        }
-        // 圖示改箭頭
-        var ic = btn.querySelector('i');
-        if (ic) ic.className = 'fa-solid fa-arrow-right';
-      }
-    });
-  }
-
-  function run() {
-    apply();
-    setTimeout(apply, 100);
-    setTimeout(apply, 350);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', run);
-  } else {
-    run();
-  }
-
-  var orig = window.switchLanguage;
-  if (typeof orig === 'function') {
-    window.switchLanguage = function (l) {
-      orig(l);
-      setTimeout(apply, 50);
-      setTimeout(apply, 200);
-    };
-  }
-})();
-</script>
-<!-- ============================================================ -->
-<!-- step9 底部導航：上一步→step8 / 下一步→step10，✓改→          -->
-<!-- ============================================================ -->
-<script>
-(function () {
-  function isEn() {
-    if (typeof currentLang !== 'undefined') return currentLang === 'en';
-    var a = document.querySelector('.lang-btn.active');
-    return !!(a && /english|en/i.test(a.textContent || ''));
-  }
-
-  function apply() {
-    var en = isEn();
-
-    // 上一步 → step8.html
-    var back = document.getElementById('btnBack');
-    if (back) {
-      back.href = 'step8.html';
-      var backSpan = document.getElementById('btnBackText');
-      if (backSpan) backSpan.textContent = en ? 'Previous' : '上一步';
-      var backIcon = back.querySelector('i');
-      if (backIcon) backIcon.className = 'fa-solid fa-arrow-left';
-    }
-
-    // 下一步 → step10.html（✓ 改 →）
-    var next = document.getElementById('btnNext');
-    if (next) {
-      next.href = 'step10.html';
-      var nextSpan = document.getElementById('btnNextText');
-      if (nextSpan) nextSpan.textContent = en ? 'Next' : '下一步';
-      var nextIcon = next.querySelector('i');
-      if (nextIcon) nextIcon.className = 'fa-solid fa-arrow-right';
-    }
-
-    // 備援：掃 footer 文字
-    document.querySelectorAll('.hud-footer a.btn-action').forEach(function (a) {
-      var t = (a.textContent || '').replace(/\s+/g, ' ').trim();
-      if (/上一步|Previous/i.test(t)) {
-        a.href = 'step8.html';
-        var s = a.querySelector('span');
-        if (s) s.textContent = en ? 'Previous' : '上一步';
-        var i = a.querySelector('i');
-        if (i) i.className = 'fa-solid fa-arrow-left';
-      }
-      if (/完成|Complete|下一步|Next/i.test(t)) {
-        a.href = 'step10.html';
-        var s2 = a.querySelector('span');
-        if (s2) s2.textContent = en ? 'Next' : '下一步';
-        var i2 = a.querySelector('i');
-        if (i2) i2.className = 'fa-solid fa-arrow-right';
-      }
-    });
-  }
-
-  function run() {
-    apply();
-    setTimeout(apply, 100);
-    setTimeout(apply, 400);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', run);
-  } else {
-    run();
-  }
-
-  var orig = window.switchLanguage;
-  if (typeof orig === 'function') {
-    window.switchLanguage = function (l) {
-      orig(l);
-      setTimeout(apply, 50);
-      setTimeout(apply, 200);
-    };
-  }
 })();
 </script>
 </body>
