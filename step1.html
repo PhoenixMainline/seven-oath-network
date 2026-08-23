@@ -1308,5 +1308,155 @@
     console.log('✅ 公版相機掃描已載入（可正常啟動）');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：強制展開並顯示「上一步／下一步」footer                   -->
+<!-- 貼在 </body> 前即可                                           -->
+<!-- ============================================================ -->
+<style>
+    /* 容器不要裁切 footer */
+    .hud-container {
+        overflow: visible !important;
+        height: auto !important;
+        max-height: none !important;
+        min-height: 0 !important;
+    }
+
+    /* footer 固定可見 */
+    .hud-footer {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        flex-shrink: 0 !important;
+        width: 100% !important;
+        margin-top: 12px !important;
+        padding-top: 10px !important;
+        padding-bottom: 8px !important;
+        border-top: 1px solid rgba(168, 85, 247, 0.2) !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        z-index: 100 !important;
+        position: relative !important;
+        background: transparent !important;
+    }
+
+    .hud-footer .footer-btn-group {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        align-items: center !important;
+        gap: 10px !important;
+        flex-wrap: wrap !important;
+    }
+
+    .hud-footer .btn-action {
+        display: inline-flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        align-items: center !important;
+        gap: 8px !important;
+        min-height: 40px !important;
+        padding: 8px 16px !important;
+        font-size: 0.85rem !important;
+        border: 1px solid #a78bfa !important;
+        color: #e9d5ff !important;
+        background: rgba(124, 58, 237, 0.15) !important;
+        border-radius: 20px !important;
+        text-decoration: none !important;
+    }
+
+    .hud-footer .page-marker {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 0.7 !important;
+    }
+
+    /* 手機再加大一點，避免被擋 */
+    @media (max-width: 480px) {
+        .hud-footer {
+            padding-bottom: 16px !important;
+            margin-bottom: 8px !important;
+        }
+        .hud-footer .btn-action {
+            font-size: 0.8rem !important;
+            padding: 8px 14px !important;
+            min-height: 42px !important;
+        }
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__expandFooterBtns) return;
+    window.__expandFooterBtns = true;
+
+    function expand() {
+        var footer = document.querySelector('.hud-footer');
+        if (!footer) return;
+
+        // footer 本體
+        footer.style.setProperty('display', 'flex', 'important');
+        footer.style.setProperty('visibility', 'visible', 'important');
+        footer.style.setProperty('opacity', '1', 'important');
+        footer.style.setProperty('height', 'auto', 'important');
+        footer.style.setProperty('max-height', 'none', 'important');
+        footer.style.setProperty('overflow', 'visible', 'important');
+
+        // 按鈕群組
+        var group = footer.querySelector('.footer-btn-group');
+        if (group) {
+            group.style.setProperty('display', 'flex', 'important');
+            group.style.setProperty('visibility', 'visible', 'important');
+            group.style.setProperty('opacity', '1', 'important');
+        }
+
+        // 每一顆按鈕
+        footer.querySelectorAll('.btn-action').forEach(function (btn) {
+            btn.style.setProperty('display', 'inline-flex', 'important');
+            btn.style.setProperty('visibility', 'visible', 'important');
+            btn.style.setProperty('opacity', '1', 'important');
+            btn.style.setProperty('pointer-events', 'auto', 'important');
+            btn.style.setProperty('cursor', 'pointer', 'important');
+            btn.classList.add('enabled');
+        });
+
+        // 容器不要裁切
+        var container = document.querySelector('.hud-container');
+        if (container) {
+            container.style.setProperty('overflow', 'visible', 'important');
+            container.style.setProperty('height', 'auto', 'important');
+            container.style.setProperty('max-height', 'none', 'important');
+        }
+    }
+
+    function run() {
+        expand();
+        setTimeout(expand, 200);
+        setTimeout(expand, 600);
+        setTimeout(expand, 1200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 語系切換後再確保一次
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(expand, 50);
+            setTimeout(expand, 200);
+        };
+    }
+
+    console.log('✅ 上一步／下一步已強制展開顯示');
+})();
+</script>
 </body>
 </html>
