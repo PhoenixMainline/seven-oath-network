@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>【宇宙誓印覺醒工程 · 七印誓網】第15項 狀態更新時間戳</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Noto Sans TC','Share Tech Mono',sans-serif}
+body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-height:100vh;color:#e0e8f5;display:flex;justify-content:center;align-items:center;padding:clamp(4px,1.5vh,16px);position:relative}
+.particle-container{position:fixed;top:0;left:0;width:100vw;height:100vh;background-image:radial-gradient(#d4af37,rgba(212,175,55,.3) 1px,transparent 30px),radial-gradient(#d4af37,rgba(212,175,55,.2) 2px,transparent 40px);background-size:350px 350px,450px 450px;background-position:0 0,90px 150px;animation:starMove 90s linear infinite;opacity:.65;z-index:5;pointer-events:none}
+@keyframes starMove{from{transform:translateY(0) rotate(0)}to{transform:translateY(-1000px) rotate(360deg)}}
+.watermark-layer{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.04;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);padding:50px}
+.watermark-text{font-size:1.5rem;font-weight:bold;color:#fff;transform:rotate(-25deg);white-space:nowrap}
+.hud-container{width:100%;max-width:min(680px,95vw);background:rgba(4,13,33,.4);border:1.5px solid rgba(168,85,247,.3);box-shadow:0 0 40px rgba(168,85,247,.15);border-radius:clamp(16px,4vw,28px);padding:clamp(8px,1.5vh,20px);display:flex;flex-direction:column;position:relative;z-index:3;margin:auto}
+.home-breadcrumb{font-size:clamp(.6rem,1.4vh,.85rem);color:#c4b5fd;text-decoration:none;display:inline-flex;align-items:center;gap:6px;margin-bottom:12px;font-weight:bold}
+.hud-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(168,85,247,.2);padding-bottom:12px;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.app-title{font-size:clamp(.9rem,2.2vh,1.1rem);font-weight:700;color:#e9d5ff;max-width:70%}
+.right-tools{display:flex;align-items:center;gap:8px}
+.lang-switch-group{display:flex;background:rgba(124,58,237,.15);border:1px solid rgba(168,85,247,.3);border-radius:20px;padding:2px}
+.lang-btn{background:transparent;border:none;color:rgba(224,232,245,.4);font-size:.72rem;padding:4px 12px;border-radius:16px;cursor:pointer}
+.lang-btn.active{background:#7c3aed;color:#fff;font-weight:bold}
+.btn-external-browser{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;background:rgba(0,230,118,.12);border:1px solid rgba(0,230,118,.35);border-radius:20px;color:#00e676;font-size:.7rem;font-weight:700;text-decoration:none}
+.step-content{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
+.hud-card{background:linear-gradient(135deg,rgba(88,28,135,.5),rgba(30,27,75,.6));border:1px solid rgba(168,85,247,.4);border-radius:14px;padding:14px 16px}
+.card-title{font-size:clamp(.9rem,2vh,1.1rem);color:#e9d5ff;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card-title i{color:#a78bfa}
+.instruction-item{font-size:clamp(.72rem,1.6vh,.9rem);line-height:1.65;color:rgba(224,232,245,.9);display:flex;align-items:flex-start;gap:8px;margin-bottom:7px}
+.instruction-item i{color:#a78bfa;margin-top:3px;flex-shrink:0}
+.info-table{width:100%;border-collapse:collapse;font-size:clamp(.62rem,1.2vh,.78rem);background:rgba(88,28,135,.2);border:1px solid rgba(168,85,247,.35);border-radius:8px;overflow:hidden}
+.info-table th{background:rgba(88,28,135,.5);color:#e9d5ff;padding:8px;text-align:left;border-bottom:2px solid rgba(168,85,247,.4)}
+.info-table td{padding:8px;color:#e0e7ff;border-bottom:1px solid rgba(168,85,247,.15);vertical-align:top;line-height:1.5}
+.info-table tr:last-child td{border-bottom:none}
+.note-ok{background:rgba(0,230,118,.08);border-left:4px solid #00e676;color:#a7f3d0;margin:10px 0;padding:10px 12px;border-radius:8px;font-size:.82rem;line-height:1.7}
+.note-info{background:rgba(124,58,237,.12);border-left:4px solid #a78bfa;color:#c4b5fd;margin:10px 0;padding:10px 12px;border-radius:8px;font-size:.82rem;line-height:1.7}
+.note-warn{background:rgba(245,169,127,.1);border-left:4px solid #f5a97f;color:#f5a97f;margin:8px 0;padding:10px 12px;border-radius:8px;font-size:.82rem;line-height:1.7}
+.input-demo-box{background:rgba(88,28,135,.55);border:1px solid rgba(168,85,247,.45);border-radius:12px;padding:12px 14px;margin:10px 0}
+.btn-scan{background:linear-gradient(135deg,#7c3aed,#6d28d9);border:none;color:#fff;font-weight:700;padding:10px 22px;border-radius:24px;cursor:pointer;font-size:.88rem;display:inline-flex;align-items:center;gap:8px}
+.qr-result{color:#00e676;font-size:.88rem;padding:8px 14px;border-radius:20px;background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.2);display:none;margin-top:10px}
+.camera-guide{background:rgba(232,96,74,.08);border-left:4px solid #E8604A;padding:12px 14px;border-radius:12px;color:#e0dcc8;font-size:.82rem;line-height:1.75;display:none;margin-top:10px;white-space:pre-wrap}
+.result-box{background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.35);border-radius:12px;padding:14px 16px;text-align:center;margin-top:12px;display:none}
+.result-box .label{color:#c4b5fd;font-size:.85rem;margin-bottom:6px}
+.result-box .status{font-size:1.15rem;font-weight:800;color:#00e676;line-height:1.5;font-family:'Share Tech Mono',monospace}
+.hud-footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:10px;border-top:1px solid rgba(168,85,247,.2)}
+.btn-action{border:1px solid #a78bfa;color:#e9d5ff;padding:8px 16px;border-radius:20px;display:inline-flex;align-items:center;gap:6px;background:rgba(124,58,237,.15);text-decoration:none;font-size:.85rem}
+.page-marker{font-size:.7rem;color:rgba(224,232,245,.4)}
+.tag-pill{display:inline-block;background:rgba(253,230,138,.12);border:1px solid rgba(253,230,138,.35);color:#fde68a;font-size:.7rem;padding:2px 8px;border-radius:10px;margin:2px}
+</style>
+</head>
+<body>
+<div class="particle-container"></div>
+<div class="watermark-layer">
+  <div class="watermark-text">天地為鑑・光網為證</div><div class="watermark-text">天地為鑑・光網為證</div>
+  <div class="watermark-text">天地為鑑・光網為證</div><div class="watermark-text">天地為鑑・光網為證</div>
+  <div class="watermark-text">天地為鑑・光網為證</div><div class="watermark-text">天地為鑑・光網為證</div>
+  <div class="watermark-text">天地為鑑・光網為證</div><div class="watermark-text">天地為鑑・光網為證</div>
+</div>
+
+<div class="hud-container">
+  <a class="home-breadcrumb" href="index.html"><i class="fa-solid fa-house"></i><span id="homeBtnText">首頁 -&gt;</span></a>
+  <header class="hud-header">
+    <div class="app-title" id="appTitle">【宇宙誓印覺醒工程 · 七印誓網】</div>
+    <div class="right-tools">
+      <div class="lang-switch-group">
+        <button class="lang-btn active" onclick="switchLanguage('zh')">中文</button>
+        <button class="lang-btn" onclick="switchLanguage('en')">English</button>
+      </div>
+      <a class="btn-external-browser" href="#" id="browserBtnLink"><i class="fa-solid fa-arrow-up-right-from-square"></i> <span id="browserBtn">🌐 瀏覽器開啟</span></a>
+    </div>
+  </header>
+
+  <main class="step-content">
+
+    <!-- 標題卡 -->
+    <div class="hud-card" style="border:1px solid rgba(168,85,247,.5)">
+      <div style="text-align:center;color:#e9d5ff;font-size:1.02rem;font-weight:bold;margin-bottom:8px">
+        <span id="mainTitle">⏱️ 第15項 狀態更新時間戳</span>
+      </div>
+      <div style="text-align:center;margin-bottom:10px">
+        <span class="tag-pill" id="tag1">• 顯化與狀態監測階段</span>
+      </div>
+      <table class="info-table">
+        <thead><tr><th style="width:36%"><span id="colField">欄位名稱</span></th><th><span id="colFunc">功能簡要說明</span></th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="color:#f5d0fe;font-weight:bold"><span id="rowField">第 15 項 狀態更新時間戳</span></td>
+            <td><span id="rowFunc">最近一次誓資紀錄更新時間，用於紀錄動態與排程管理。</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note-info" style="margin-top:12px">
+        <span id="introNote">係指該誓魂紀錄最近一次狀態變動或誓資更新之具體時間標記。此欄位用以追蹤誓資動態進程、掌握書令程序排程與任務執行節點，確保整體書令進度、《宇宙誓印覺醒工程 × 七印誓網》資料同步與誓願履行均能有序追溯與統整。</span>
+      </div>
+    </div>
+
+    <!-- 【一】 -->
+    <div class="hud-card">
+      <div class="card-title"><i class="fa-solid fa-circle-info"></i><span id="sec1Title">【一】模組說明</span></div>
+      <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="sec1p1">本模組用以顯示誓印者於七印誓網內之「最近一次誓資紀錄更新時間」，屬於「狀態監測與進程查詢層」，為誓資動態管理與誓願排程追蹤的核心依據。</span></div>
+      <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="sec1p2">系統將自動紀錄並顯示該誓魂最近一次狀態變動與誓資更新的時間戳記，以利任務時序追蹤與誓印進程同步調控。</span></div>
+    </div>
+
+    <!-- 【二】 -->
+    <div class="hud-card">
+      <div class="card-title"><i class="fa-solid fa-list-check"></i><span id="sec2Title">【二】啟動條件與遞交程序</span></div>
+      <div class="instruction-item"><i class="fa-solid fa-1"></i><span id="sec2p1">誓印者需持有效授權誓導碼，登入平台後掃描對應【誓導 QR Code】。</span></div>
+      <div class="instruction-item"><i class="fa-solid fa-2"></i><span id="sec2p2">本程序僅供查詢使用，無需遞交其他資料。</span></div>
+      <div class="instruction-item"><i class="fa-solid fa-3"></i><span id="sec2p3">系統自動擷取《誓資紀錄時間軸模組》資料庫，顯示最新誓資更新時間。</span></div>
+    </div>
+
+    <!-- 【三】略 -->
+    <div class="hud-card">
+      <div class="card-title"><i class="fa-solid fa-book-open"></i><span id="sec3Title">【三】授權誓讀階段（略）</span></div>
+      <div class="note-info" style="margin-top:0"><span id="sec3Note">本項為查詢模組，無需授權誓讀程序。</span></div>
+    </div>
+
+    <!-- 【四】 -->
+    <div class="hud-card">
+      <div class="card-title"><i class="fa-solid fa-route"></i><span id="sec4Title">【四】接續進程</span></div>
+      <div style="color:#c4b5fd;font-weight:600;margin-bottom:8px"><span id="sec4login">（1）登入階段</span></div>
+      <div class="instruction-item"><i class="fa-solid fa-right-to-bracket"></i><span id="sec4p1">登入《宇宙智能誓導平台》（使用個人帳號）。</span></div>
+      <div class="instruction-item"><i class="fa-solid fa-user-check"></i><span id="sec4p2">使用原註冊帳號完成身分登入驗證，即可進入誓印程序。</span></div>
+      <div style="color:#c4b5fd;font-weight:600;margin:14px 0 8px"><span id="sec4scan">（2）掃描階段</span></div>
+      <div class="instruction-item"><i class="fa-solid fa-qrcode"></i><span id="sec4p3">掃描當期【誓導 QR Code】，觸發專屬查詢入口。</span></div>
+      <div class="instruction-item"><i class="fa-solid fa-satellite-dish"></i><span id="sec4p4">系統自動擷取《誓資紀錄時間軸模組》並顯示最新更新時間戳。</span></div>
+    </div>
+
+    <!-- ① 驗證 + QR -->
+    <div class="hud-card">
+      <div class="card-title" style="justify-content:center">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span id="verifyTitle">🧭 ① 驗證階段（啟動觸發）</span>
+      </div>
+      <div class="instruction-item">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="verifyDesc">系統自動驗證授權有效性後，即時顯示該誓魂最近一次狀態變動與誓資更新時間戳記。</span>
+      </div>
+      <div class="input-demo-box">
+        <div style="display:flex;align-items:center;gap:8px;color:#e9d5ff;font-size:.9rem;font-weight:600">
+          <i class="fa-solid fa-keyboard" style="color:#c4b5fd"></i>
+          <span id="demoLabel">⌨️ 輸入示範：請依本卷七印誓網誓導碼操作</span>
+        </div>
+      </div>
+      <div class="note-ok">
+        <span id="freqNote">🔗 送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span>
+      </div>
+      <div class="note-warn">
+        <span id="triggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span>
+      </div>
+      <div style="margin-top:14px;text-align:center;width:100%">
+        <div id="qrTitle" style="font-size:.88rem;font-weight:300;color:#e9d5ff;margin-bottom:10px">📷 請掃描【誓導 QR Code】完成查詢</div>
+        <button class="btn-scan" id="btnScanQR" type="button"><i class="fa-solid fa-camera"></i> <span id="btnScanText">開始掃描</span></button>
+        <div id="qr-reader-container" style="margin-top:12px;max-width:300px;margin-left:auto;margin-right:auto"></div>
+        <div class="qr-result" id="qrScanResult"></div>
+        <div class="camera-guide" id="cameraGuide"></div>
+      </div>
+      <div class="result-box" id="timestampBox">
+        <div class="label" id="resultLabel">最近一次誓資更新時間</div>
+        <div class="status" id="resultStatus">—</div>
+      </div>
+    </div>
+
+    <!-- 📩 ② 回傳誓證（略） -->
+    <div class="hud-card">
+      <div class="card-title" style="justify-content:center">
+        <i class="fa-solid fa-envelope-open-text"></i>
+        <span id="returnTitle">📩 ② 回傳誓證（略）</span>
+      </div>
+      <div class="note-warn" style="margin-top:0">
+        <span id="returnNote">【查詢模組不產生誓證】</span>
+      </div>
+      <div class="instruction-item">
+        <i class="fa-solid fa-square" style="font-size:.55rem;margin-top:7px;color:#a78bfa"></i>
+        <span id="close1">《七印誓網 · 第 15 項 狀態更新時間戳》v2.0（查詢紀錄版）。</span>
+      </div>
+      <div class="instruction-item">
+        <i class="fa-solid fa-square" style="font-size:.55rem;margin-top:7px;color:#a78bfa"></i>
+        <span id="close2">鎖入《宇宙天律 × 七印誓網》主冊，誓資承流有效。</span>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="hud-footer">
+    <a class="btn-action" href="step14.html"><i class="fa-solid fa-arrow-left"></i> <span id="btnBackText">上一步</span></a>
+    <div class="page-marker"><span id="pageMarker">【宇宙誓印覺醒工程 · 覺醒卷】第 417-422 頁</span></div>
+    <a class="btn-action" href="step16.html"><span id="btnNextText">下一步</span> <i class="fa-solid fa-arrow-right"></i></a>
+  </footer>
+</div>
+
+<script>
+var currentLang='zh', html5QrCode=null;
+var L={
+zh:{
+homeBtnText:'首頁 ->',appTitle:'【宇宙誓印覺醒工程 · 七印誓網】',browserBtn:'🌐 瀏覽器開啟',
+mainTitle:'⏱️ 第15項 狀態更新時間戳',
+tag1:'• 顯化與狀態監測階段',
+colField:'欄位名稱',colFunc:'功能簡要說明',
+rowField:'第 15 項 狀態更新時間戳',
+rowFunc:'最近一次誓資紀錄更新時間，用於紀錄動態與排程管理。',
+introNote:'係指該誓魂紀錄最近一次狀態變動或誓資更新之具體時間標記。此欄位用以追蹤誓資動態進程、掌握書令程序排程與任務執行節點，確保整體書令進度、《宇宙誓印覺醒工程 × 七印誓網》資料同步與誓願履行均能有序追溯與統整。',
+sec1Title:'【一】模組說明',
+sec1p1:'本模組用以顯示誓印者於七印誓網內之「最近一次誓資紀錄更新時間」，屬於「狀態監測與進程查詢層」，為誓資動態管理與誓願排程追蹤的核心依據。',
+sec1p2:'系統將自動紀錄並顯示該誓魂最近一次狀態變動與誓資更新的時間戳記，以利任務時序追蹤與誓印進程同步調控。',
+sec2Title:'【二】啟動條件與遞交程序',
+sec2p1:'誓印者需持有效授權誓導碼，登入平台後掃描對應【誓導 QR Code】。',
+sec2p2:'本程序僅供查詢使用，無需遞交其他資料。',
+sec2p3:'系統自動擷取《誓資紀錄時間軸模組》資料庫，顯示最新誓資更新時間。',
+sec3Title:'【三】授權誓讀階段（略）',
+sec3Note:'本項為查詢模組，無需授權誓讀程序。',
+sec4Title:'【四】接續進程',
+sec4login:'（1）登入階段',
+sec4p1:'登入《宇宙智能誓導平台》（使用個人帳號）。',
+sec4p2:'使用原註冊帳號完成身分登入驗證，即可進入誓印程序。',
+sec4scan:'（2）掃描階段',
+sec4p3:'掃描當期【誓導 QR Code】，觸發專屬查詢入口。',
+sec4p4:'系統自動擷取《誓資紀錄時間軸模組》並顯示最新更新時間戳。',
+verifyTitle:'🧭 ① 驗證階段（啟動觸發）',
+verifyDesc:'系統自動驗證授權有效性後，即時顯示該誓魂最近一次狀態變動與誓資更新時間戳記。',
+demoLabel:'⌨️ 輸入示範：請依本卷七印誓網誓導碼操作',
+freqNote:'🔗 送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。',
+triggerNote:'【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。',
+qrTitle:'📷 請掃描【誓導 QR Code】完成查詢',btnScanText:'開始掃描',
+camFail:'📷 無法啟動相機\n⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code',
+resultLabel:'最近一次誓資更新時間',
+resultDemo:'2026-08-23 14:52:07（示範）',
+returnTitle:'📩 ② 回傳誓證（略）',
+returnNote:'【查詢模組不產生誓證】',
+close1:'《七印誓網 · 第 15 項 狀態更新時間戳》v2.0（查詢紀錄版）。',
+close2:'鎖入《宇宙天律 × 七印誓網》主冊，誓資承流有效。',
+btnBackText:'上一步',btnNextText:'下一步',pageMarker:'【宇宙誓印覺醒工程 · 覺醒卷】第 417-422 頁'
+},
+en:{
+homeBtnText:'Home ->',appTitle:'【Cosmic Oath-Seal Awakening Project · Seven-Seal Vow Network】',browserBtn:'🌐 Open in Browser',
+mainTitle:'⏱️ Item 15 Status Update Timestamp',
+tag1:'• Manifestation and State Monitoring Stage',
+colField:'Field Name',colFunc:'Function Overview',
+rowField:'Item 15 Status Update Timestamp',
+rowFunc:'Timestamp of the most recent vow-asset record update, used for dynamic logging and schedule management.',
+introNote:'Refers to the specific time marker of the most recent status change or vow-asset update for this Oath-Soul record. This field tracks vow-asset dynamics, Script Decree scheduling, and task execution nodes, ensuring orderly tracing and integration of overall Script Decree progress, data synchronization of the 《Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network》, and vow fulfillment.',
+sec1Title:'【I】 Module Description',
+sec1p1:'This module displays the Oath-Bearer’s 「most recent vow-asset record update time」 within the Seven-Seal Vow Network. It belongs to the 「State Monitoring and Progress Query Layer」 and is the core basis for vow-asset dynamic management and vow-schedule tracking.',
+sec1p2:'The system automatically records and displays the timestamp of the Oath-Soul’s most recent status change and vow-asset update, facilitating task timeline tracking and synchronized control of the oath-seal progression.',
+sec2Title:'【II】 Activation Conditions and Submission Procedure',
+sec2p1:'The Oath-Bearer must hold a valid authorized Vow-Guidance Code, log into the platform, and scan the corresponding 【Vow-Guidance QR Code】.',
+sec2p2:'This procedure is for query only; no other materials need to be submitted.',
+sec2p3:'The system automatically retrieves data from the 《Vow-Asset Record Timeline Module》 database and displays the latest vow-asset update time.',
+sec3Title:'【III】 Authorized Oath-Recitation Phase (Omitted)',
+sec3Note:'This is a query module; no authorized oath-recitation procedure is required.',
+sec4Title:'【IV】 Subsequent Procedures',
+sec4login:'(1) Login Phase',
+sec4p1:'Log into the 《Cosmic Intelligent Vow-Guidance Platform》(using a personal account).',
+sec4p2:'Using the originally registered account to complete identity verification grants access to the oath-seal procedure.',
+sec4scan:'(2) Scanning Phase',
+sec4p3:'Scan the current 【Vow-Guidance QR Code】 to trigger the dedicated query entrance.',
+sec4p4:'The system automatically retrieves the 《Vow-Asset Record Timeline Module》 and displays the latest update timestamp.',
+verifyTitle:'🧭 ① Verification Phase (Activation Trigger)',
+verifyDesc:'After automatically verifying authorization validity, the system instantly displays the timestamp of this Oath-Soul’s most recent status change and vow-asset update.',
+demoLabel:'⌨️ Input Example: Follow the Seven-Seal Vow Network Vow-Guidance Code in this volume',
+freqNote:'🔗 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Seal Alignment Network is made manifest.',
+triggerNote:'【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.',
+qrTitle:'📷 Please scan the 【Vow-Guidance QR Code】 to complete the query',btnScanText:'Start Scan',
+camFail:'📷 Unable to launch the camera\n⚙️ Open Settings → App Management → Permissions → Camera → Allow\n→ Use 🌐 a browser (Chrome / Yahoo / Edge....)\n⚠️ If it still does not work, scan the physical book QR Code with a scanner app',
+resultLabel:'Most Recent Vow-Asset Update Time',
+resultDemo:'2026-08-23 14:52:07 (demo)',
+returnTitle:'📩 ② Return Oath Certificate (omitted)',
+returnNote:'【Query module does not generate certification】',
+close1:'《Seven-Seal Vow Network · Item 15 Status Update Timestamp》 v2.0 (Record-Query Edition).',
+close2:'Locked into the 《Cosmic Heavenly Law × Seven-Seal Vow Network》 main register, vow assets remain effective within the transmission flow.',
+btnBackText:'Previous',btnNextText:'Next',pageMarker:'【Cosmic Oath-Seal Awakening Project · Awakening Volume】 pp. 417-422'
+}};
+
+function switchLanguage(lang){
+  currentLang=lang;
+  document.querySelectorAll('.lang-btn').forEach(function(b){
+    b.classList.toggle('active',(lang==='zh'&&b.textContent.trim()==='中文')||(lang==='en'&&/english/i.test(b.textContent)));
+  });
+  var p=L[lang]||L.zh;
+  Object.keys(p).forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.innerHTML=p[id];
+  });
+}
+window.switchLanguage=switchLanguage;
+
+function startScan(){
+  var resultEl=document.getElementById('qrScanResult'), guideEl=document.getElementById('cameraGuide'), container=document.getElementById('qr-reader-container'), box=document.getElementById('timestampBox');
+  if(!container) return;
+  if(guideEl) guideEl.style.display='none';
+  if(resultEl){resultEl.style.display='none'; resultEl.textContent='';}
+  if(html5QrCode){try{html5QrCode.stop()}catch(e){} html5QrCode=null;}
+  var camFail=(L[currentLang]||L.zh).camFail;
+  if(typeof Html5Qrcode==='undefined'){if(guideEl){guideEl.style.display='block'; guideEl.textContent=camFail;} return;}
+  html5QrCode=new Html5Qrcode('qr-reader-container');
+  html5QrCode.start({facingMode:'environment'},{fps:8,qrbox:{width:220,height:220}},
+    function(decoded){
+      if(resultEl){resultEl.style.display='block'; resultEl.textContent='✅ '+decoded;}
+      try{html5QrCode.stop()}catch(e){} html5QrCode=null;
+      if(box){
+        box.style.display='block';
+        document.getElementById('resultStatus').textContent=(L[currentLang]||L.zh).resultDemo;
+      }
+    },
+    function(){}
+  ).catch(function(){if(guideEl){guideEl.style.display='block'; guideEl.textContent=camFail;}});
+}
+document.getElementById('btnScanQR').addEventListener('click',startScan);
+
+(function(){
+  function openExternal(e){if(e){e.preventDefault();e.stopPropagation();}
+    var url=location.href;
+    if(/android/i.test(navigator.userAgent||'')){try{location.href='intent://'+location.host+location.pathname+location.search+'#Intent;scheme=https;package=com.android.chrome;end;';return;}catch(err){}}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(function(){alert((currentLang==='en'?'URL copied:\n\n':'網址已複製：\n\n')+url);});}
+    else prompt(currentLang==='en'?'Copy URL:':'請複製網址：',url);
+  }
+  var btn=document.getElementById('browserBtnLink'); if(btn) btn.addEventListener('click',openExternal);
+})();
+window.onload=function(){switchLanguage('zh');};
+</script>
+</body>
+</html>
