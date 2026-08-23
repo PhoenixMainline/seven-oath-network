@@ -1488,5 +1488,197 @@
     });
 })();
 </script>
+<script>
+(function () {
+  if (window.__fixIndexLangDisplay) return;
+  window.__fixIndexLangDisplay = true;
+
+  var SUB_ZH = '對應級距項目 × 解鎖誓魂血脈身份記載歷程程序';
+  var SUB_EN = 'Corresponding Tier Items × Unlock Oath-Soul Bloodline Identity Record Process';
+
+  var TITLE_ZH = '【宇宙誓印覺醒工程 · 七印誓網】啟動入口';
+  var TITLE_EN = '【Cosmic Oath-Seal Awakening Project · Seven-Seal Vow Network】 Activation Entrance';
+
+  function isEn() {
+    if (typeof currentLang !== 'undefined') return currentLang === 'en';
+    var a = document.querySelector('.lang-btn.active');
+    return !!(a && /english|en/i.test(a.textContent || ''));
+  }
+
+  function apply() {
+    var en = isEn();
+
+    var sub = document.getElementById('subText');
+    if (sub) sub.textContent = en ? SUB_EN : SUB_ZH;
+
+    var title = document.getElementById('mainTitle');
+    if (title) title.textContent = en ? TITLE_EN : TITLE_ZH;
+
+    // 瀏覽器按鈕
+    var browserSpan = document.querySelector('.btn-external-browser span');
+    if (browserSpan) {
+      browserSpan.textContent = en ? '🌐 Open in Browser' : '🌐 瀏覽器開啟';
+    }
+  }
+
+  function run() {
+    apply();
+    setTimeout(apply, 150);
+    setTimeout(apply, 400);
+    setTimeout(apply, 900);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+
+  var orig = window.switchLanguage;
+  if (typeof orig === 'function') {
+    window.switchLanguage = function (l) {
+      orig(l);
+      setTimeout(apply, 50);
+      setTimeout(apply, 200);
+    };
+  }
+
+  document.addEventListener('click', function (e) {
+    if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
+      setTimeout(apply, 80);
+      setTimeout(apply, 300);
+    }
+  });
+})();
+</script>
+<script>
+(function () {
+  if (window.__fixIndexTitleFull) return;
+  window.__fixIndexTitleFull = true;
+
+  var TITLE_ZH = '【宇宙誓印覺醒工程 · 七印誓網】啟動入口';
+  var TITLE_EN = '【Cosmic Oath-Seal Awakening Project · Seven-Seal Vow Network】 Activation Entrance';
+
+  var SUB_ZH = '對應級距項目 × 解鎖誓魂血脈身份記載歷程程序';
+  var SUB_EN = 'Corresponding Tier Items × Unlock Oath-Soul Bloodline Identity Record Process';
+
+  function isEn() {
+    if (typeof currentLang !== 'undefined') return currentLang === 'en';
+    var a = document.querySelector('.lang-btn.active');
+    return !!(a && /english|en/i.test(a.textContent || ''));
+  }
+
+  function apply() {
+    var en = isEn();
+
+    // 主標題（含 icon 的 h1）
+    var h1 = document.querySelector('.header h1');
+    if (h1) {
+      var icon = h1.querySelector('i');
+      var iconHtml = icon ? icon.outerHTML + ' ' : '';
+      h1.innerHTML = iconHtml + (en ? TITLE_EN : TITLE_ZH);
+    }
+
+    // 備用 id
+    var title = document.getElementById('mainTitle');
+    if (title) title.textContent = en ? TITLE_EN : TITLE_ZH;
+
+    // 副標題
+    var sub = document.getElementById('subText');
+    if (sub) sub.textContent = en ? SUB_EN : SUB_ZH;
+
+    // 瀏覽器按鈕
+    var browserSpan = document.querySelector('.btn-external-browser span');
+    if (browserSpan) {
+      browserSpan.textContent = en ? '🌐 Open in Browser' : '🌐 瀏覽器開啟';
+    }
+  }
+
+  function run() {
+    apply();
+    setTimeout(apply, 100);
+    setTimeout(apply, 300);
+    setTimeout(apply, 700);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+
+  var orig = window.switchLanguage;
+  if (typeof orig === 'function') {
+    window.switchLanguage = function (l) {
+      orig(l);
+      setTimeout(apply, 50);
+      setTimeout(apply, 200);
+    };
+  }
+
+  document.addEventListener('click', function (e) {
+    if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
+      setTimeout(apply, 60);
+      setTimeout(apply, 250);
+    }
+  });
+})();
+</script>
+<script>
+(function () {
+  if (window.__fixLangBtnLabels) return;
+  window.__fixLangBtnLabels = true;
+
+  function isEn() {
+    if (typeof currentLang !== 'undefined') return currentLang === 'en';
+    var a = document.querySelector('.lang-btn.active');
+    return !!(a && /english|en/i.test(a.textContent || ''));
+  }
+
+  function apply() {
+    var en = isEn();
+    var btns = document.querySelectorAll('.lang-btn');
+    btns.forEach(function (btn) {
+      var t = (btn.textContent || '').trim();
+      // 中文按鈕
+      if (/中文|chinese/i.test(t) || btn.getAttribute('data-lang') === 'zh' || btn.getAttribute('onclick') === "switchLanguage('zh')") {
+        btn.textContent = en ? 'Chinese' : '中文';
+      }
+      // 英文按鈕
+      if (/english|en/i.test(t) || btn.getAttribute('data-lang') === 'en' || btn.getAttribute('onclick') === "switchLanguage('en')") {
+        btn.textContent = 'English';
+      }
+    });
+  }
+
+  function run() {
+    apply();
+    setTimeout(apply, 100);
+    setTimeout(apply, 400);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+
+  var orig = window.switchLanguage;
+  if (typeof orig === 'function') {
+    window.switchLanguage = function (l) {
+      orig(l);
+      setTimeout(apply, 50);
+      setTimeout(apply, 200);
+    };
+  }
+
+  document.addEventListener('click', function (e) {
+    if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
+      setTimeout(apply, 60);
+      setTimeout(apply, 250);
+    }
+  });
+})();
+</script>
 </body>
 </html>
