@@ -3652,5 +3652,150 @@
     }
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：相機 QR 掃描（可正常啟動）                               -->
+<!-- 貼在 </body> 前即可                                           -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__qrScanPublicFix) return;
+    window.__qrScanPublicFix = true;
+
+    // 若頁面沒有 startQRScanner，就補一個完整版
+    if (typeof window.startQRScanner !== 'function') {
+        window.startQRScanner = function (containerId, resultId, guideId) {
+            var container = document.getElementById(containerId);
+            if (!container) return;
+
+            // 停止上一次掃描
+            if (window._currentScanner) {
+                try {
+                    window._currentScanner.stop().catch(function () {});
+                } catch (e) {}
+                window._currentScanner = null;
+            }
+            container.innerHTML = '';
+
+            var guide = guideId ? document.getElementById(guideId) : null;
+            var resultEl = resultId ? document.getElementById(resultId) : null;
+            if (guide) {
+                guide.style.display = 'none';
+                guide.classList.remove('show-fail');
+            }
+            if (resultEl) {
+                resultEl.style.display = 'none';
+                resultEl.innerHTML = '';
+            }
+
+            // 檢查環境
+            if (typeof Html5Qrcode === 'undefined' ||
+                !navigator.mediaDevices ||
+                !navigator.mediaDevices.getUserMedia) {
+                if (guide) {
+                    guide.style.display = 'block';
+                    guide.classList.add('show-fail');
+                }
+                return;
+            }
+
+            try {
+                var instance = new Html5Qrcode(containerId);
+                window._currentScanner = instance;
+
+                instance.start(
+                    { facingMode: 'environment' },
+                    { fps: 15, qrbox: { width: 220, height: 220 } },
+                    function (decodedText) {
+                        // 掃到內容
+                        if (resultEl) {
+                            resultEl.style.display = 'block';
+                            resultEl.innerHTML = '<i class="fa-solid fa-check-circle"></i> ' + decodedText;
+                        }
+                        instance.stop().then(function () {
+                            window._currentScanner = null;
+                        }).catch(function () {
+                            window._currentScanner = null;
+                        });
+                    },
+                    function () { /* 掃不到就持續掃 */ }
+                ).catch(function () {
+                    // 啟動失敗 → 顯示引導
+                    if (guide) {
+                        guide.style.display = 'block';
+                        guide.classList.add('show-fail');
+                    }
+                    window._currentScanner = null;
+                });
+            } catch (e) {
+                if (guide) {
+                    guide.style.display = 'block';
+                    guide.classList.add('show-fail');
+                }
+                window._currentScanner = null;
+            }
+        };
+    }
+
+    // 綁定按鈕（驗證區 + 回傳區）
+    function bindButtons() {
+        var configs = [
+            {
+                btn: 'btnScanQRStep8',
+                box: 'qr-reader-container-step8',
+                result: 'qrScanResultStep8',
+                guide: 'cameraGuideStep8'
+            },
+            {
+                btn: 'btnScanQRStep9',
+                box: 'qr-reader-container-step9',
+                result: 'qrScanResultStep9',
+                guide: 'cameraGuideStep9'
+            }
+        ];
+
+        configs.forEach(function (cfg) {
+            var btn = document.getElementById(cfg.btn);
+            if (!btn || btn._qrBound) return;
+            btn._qrBound = true;
+
+            // 確保按鈕可點
+            btn.style.pointerEvents = 'auto';
+            btn.style.cursor = 'pointer';
+            btn.disabled = false;
+
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.startQRScanner(cfg.box, cfg.result, cfg.guide);
+            });
+        });
+    }
+
+    function run() {
+        bindButtons();
+        setTimeout(bindButtons, 300);
+        setTimeout(bindButtons, 800);
+        setTimeout(bindButtons, 1500);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 語系切換後再綁一次
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(bindButtons, 100);
+            setTimeout(bindButtons, 400);
+        };
+    }
+
+    console.log('✅ 公版相機掃描已載入（可正常啟動）');
+})();
+</script>
 </body>
 </html>
