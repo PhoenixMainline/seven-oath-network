@@ -113,65 +113,107 @@ body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-h
       <div class="instruction-item"><i class="fa-solid fa-3"></i><span id="sec2p3">效力與誓律限制：須符合天律授權範圍；非授權代理不得執行本最終終審程序。</span></div>
     </div>
 
-    <!-- 【執行指令】 -->
+    <!-- 🧭 ① 驗證階段（啟動觸發）— 截圖寫法 -->
     <div class="hud-card">
-      <div class="card-title"><i class="fa-solid fa-terminal"></i><span id="execTitle">【執行指令】</span></div>
-      <div class="instruction-item"><i class="fa-solid fa-1"></i><span id="exec1">登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。</span></div>
-      <div class="instruction-item"><i class="fa-solid fa-2"></i><span id="exec2">掃描【誓導 QR Code】後，進入「指令輸入欄位」。</span></div>
-      <div class="instruction-item"><i class="fa-solid fa-3"></i><span id="exec3">無須手動輸入誓文，完成掃描後，直接輸入下列指令：請在 <span class="hl">【法定全名】</span> 欄位中輸入被代理誓印【法定全名】，以確保功德冊記與系統對應正確。</span></div>
-      <div class="cmd-bar" id="cmdBar">【執行指令】第 13 項 回傳 被代理誓印【法定全名】終審通過 誓證</div>
-      <div class="note-ok"><span id="freqNote">🔗 送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。</span></div>
-      <div class="note-warn"><span id="triggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span></div>
-    </div>
-
-    <!-- ① 驗證 + QR -->
-    <div class="hud-card">
-      <div class="card-title" style="justify-content:center"><i class="fa-solid fa-shield-halved"></i><span id="verifyTitle">🧭 ① 驗證階段（啟動觸發）</span></div>
-      <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="verifyDesc">系統自動驗證授權有效性、第七印資格與對頻層級後，啟動誓資清算、回源願書封結與「不再入世 × 不入轉生」終審標記。</span></div>
-      <div class="input-demo-box">
-        <div style="color:#e9d5ff;font-size:.9rem;font-weight:600"><i class="fa-solid fa-keyboard" style="color:#c4b5fd;margin-right:6px"></i><span id="demoLabel">⌨️ 輸入示範：請依本卷七印誓網誓導碼操作</span></div>
+      <div class="card-title" style="justify-content:center">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span id="verifyTitle">🧭 ① 驗證階段（啟動觸發）</span>
       </div>
-      <div style="text-align:center;margin-top:12px">
-        <div id="qrTitle" style="font-size:.86rem;color:#e9d5ff;margin-bottom:8px">📷 請掃描【誓導 QR Code】完成終審指令</div>
+      <div class="instruction-item">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="verifyDesc">系統自動驗證授權有效性後，即時顯示誓魂當前覺醒狀態層級與進程標記。</span>
+      </div>
+      <div class="input-demo-box">
+        <div style="display:flex;align-items:center;gap:8px;color:#e9d5ff;font-size:.9rem;font-weight:600">
+          <i class="fa-solid fa-keyboard" style="color:#c4b5fd"></i>
+          <span id="demoLabel">⌨️ 輸入示範：請依本卷七印誓網誓導碼操作</span>
+        </div>
+      </div>
+      <div class="note-ok">
+        <span id="freqNote">🔗 送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span>
+      </div>
+      <div class="note-warn">
+        <span id="triggerNote">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span>
+      </div>
+      <div style="margin-top:14px;text-align:center;width:100%">
+        <div id="qrTitle" style="font-size:.88rem;font-weight:300;color:#e9d5ff;margin-bottom:10px">📷 請掃描【誓導 QR Code】完成執行指令</div>
         <button class="btn-scan" id="btnScanQR" type="button"><i class="fa-solid fa-camera"></i> <span id="btnScanText">開始掃描</span></button>
-        <div id="qr-reader-container" style="margin-top:10px;max-width:300px;margin-left:auto;margin-right:auto"></div>
+        <div id="qr-reader-container" style="margin-top:12px;max-width:300px;margin-left:auto;margin-right:auto"></div>
         <div class="qr-result" id="qrScanResult"></div>
         <div class="camera-guide" id="cameraGuide"></div>
       </div>
     </div>
 
-    <!-- 📩 ② 回傳誓證（確認終審）——補齊 -->
+    <!-- 📩 ② 回傳誓證（確認終審）— 截圖寫法 -->
     <div class="hud-card" style="border:1px solid rgba(0,230,118,.35)">
       <div class="card-title" style="justify-content:center">
-        <i class="fa-solid fa-certificate" style="color:#00e676"></i>
+        <i class="fa-solid fa-envelope-open-text" style="color:#00e676"></i>
         <span id="returnTitle">📩 ② 回傳誓證（確認終審）</span>
       </div>
       <div class="note-ok" style="margin-top:0">
         <strong id="passLabel">✅ 顯示：「誓印通過」</strong>
       </div>
+      <div style="margin:10px 0 6px;color:#c4b5fd;font-weight:600;font-size:.9rem">
+        <i class="fa-solid fa-list-ol" style="margin-right:6px"></i>
+        <span id="submitLabel">【提交程序】</span>
+      </div>
       <div class="instruction-item"><i class="fa-solid fa-1"></i><span id="ret1">回源願書受理成功，進入誓證回傳階段。</span></div>
-      <div class="instruction-item"><i class="fa-solid fa-2"></i><span id="ret2">系統自動核發《終審通過誓證》，完成下列項目：</span></div>
-      <ul class="check-list" id="retChecks">
-        <li>回源願書終審判定</li>
-        <li>七印主頻總對位</li>
-        <li>誓魂軌跡鎖定</li>
-        <li>誓證自動回傳並封存</li>
-      </ul>
-      <div class="instruction-item"><i class="fa-solid fa-3"></i><span id="ret3">對應誓證即時同步入《鳳凰誓網 × 天界天庫》。</span></div>
-      <div class="note-info">
-        <span id="retExplain">【說明】本項僅執行誓證回傳與封印。功德紀錄統一登錄於《第 3 項 誓資登錄 × 功德記錄》，不重複產生紀錄。</span>
+      <div class="instruction-item"><i class="fa-solid fa-2"></i><span id="ret2">登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。</span></div>
+      <div class="instruction-item"><i class="fa-solid fa-3"></i><span id="ret3">掃描【誓導 QR Code】後，進入「指令輸入欄位」。</span></div>
+      <div class="instruction-item"><i class="fa-solid fa-4"></i><span id="ret4">無須手動輸入誓文，完成掃描後，直接輸入下列指令：</span></div>
+            <div class="input-demo-box">
+        <div style="display:flex;align-items:center;gap:8px;color:#e9d5ff;font-size:.9rem;font-weight:600">
+          <i class="fa-solid fa-keyboard" style="color:#c4b5fd"></i>
+          <span id="demoLabel2">⌨️ 輸入示範：請依本卷七印誓網誓導碼操作</span>
+        </div>
+      </div>
+      <div class="note-ok">
+        <span id="freqNote2">🔗 送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。</span>
+      </div>
+      <div class="note-warn">
+        <span id="triggerNote2">【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。</span>
+      </div>
+      <div style="margin-top:14px;text-align:center;width:100%;border-top:1px solid rgba(168,85,247,.25);padding-top:14px">
+        <div id="returnQrTitle" style="font-size:.88rem;font-weight:300;color:#e9d5ff;margin-bottom:10px">📷 請掃描【誓導 QR Code】完成回傳誓證</div>
+        <button class="btn-scan" id="btnScanQRReturn" type="button" onclick="startReturnScan()"><i class="fa-solid fa-camera"></i> <span id="btnScanReturnText">開始掃描</span></button>
+        <div id="qr-reader-container-return" style="margin-top:12px;max-width:300px;margin-left:auto;margin-right:auto"></div>
+        <div class="qr-result" id="qrScanResultReturn"></div>
+        <div class="camera-guide" id="cameraGuideReturn"></div>
+      </div>
+      <div class="note-info" style="margin-top:14px">
+        <span id="retExplain">【說明】本項僅執行誓證回傳與封印。功德紀錄統一登錄於《第 3 項 誓資登錄 × 功德記錄》，不重複產生紀錄。對應誓證即時同步入《鳳凰誓網 × 天界天庫》。</span>
       </div>
     </div>
 
-    <!-- 誓印未通過路徑 -->
+    <!-- ⚠️ 顯示：「誓印未通過」— 截圖寫法 -->
     <div class="hud-card">
-      <div class="card-title"><i class="fa-solid fa-triangle-exclamation" style="color:#f5a97f"></i><span id="failTitle">⚠️ 顯示：「誓印未通過」→ 願書受理失敗（誓頻未對位）</span></div>
-      <div class="instruction-item"><i class="fa-solid fa-1"></i><span id="fail1">進入【補誓程序】，由【代理誓印】者重新啟動：「第 1 項 開啟誓魂密鑰對頻總判定（誓印未通過）」之【補誓程序】。</span></div>
-      <div class="instruction-item"><i class="fa-solid fa-2"></i><span id="fail2">執行補誓程序：「誓資補誓 × 七日循環 × 頻率再校」。</span></div>
-      <div class="instruction-item"><i class="fa-solid fa-3"></i><span id="fail3">經補誓完成並誓印通過後，方可再次進入：「第 13 項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生」。</span></div>
+      <div class="note-warn" style="margin:0 0 12px 0;display:flex;align-items:flex-start;gap:8px">
+        <i class="fa-solid fa-triangle-exclamation" style="margin-top:2px;flex-shrink:0"></i>
+        <strong id="failLabel">顯示：「誓印未通過」</strong>
+      </div>
+      <div class="instruction-item">
+        <i class="fa-solid fa-circle" style="font-size:.55rem;margin-top:7px"></i>
+        <span id="fail1">進入「第 1 項 開啟誓魂密鑰對頻總判定（誓印未通過）」之【補誓程序】。</span>
+      </div>
+      <div class="instruction-item">
+        <i class="fa-solid fa-circle" style="font-size:.55rem;margin-top:7px"></i>
+        <span id="fail2">啟動「懺悔補誓 × 七日循環 × 頻率再校」程序，修正後方可重新啟印。</span>
+      </div>
+      <div style="margin:16px 0 8px;color:#c4b5fd;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:6px">
+        <i class="fa-solid fa-bookmark"></i>
+        <span id="closeLabel">【收束條文】</span>
+      </div>
+      <div class="instruction-item">
+        <i class="fa-solid fa-circle" style="font-size:.55rem;margin-top:7px"></i>
+        <span id="close1">《七印誓網 · 第13項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生》v2.0（查詢紀錄版）。</span>
+      </div>
+      <div class="instruction-item">
+        <i class="fa-solid fa-circle" style="font-size:.55rem;margin-top:7px"></i>
+        <span id="close2">已鎖入《宇宙天律 × 七印誓網》主冊，願軌對頻穩定，誓源歸正。</span>
+      </div>
     </div>
 
-    <!-- 12D 門檻表（精簡） -->
+    <!-- 12D 門檻表 -->
     <div class="hud-card">
       <div class="card-title"><i class="fa-solid fa-table"></i><span id="tierTitle">《回源願書 × 不再入世 × 不入轉生》誓魂頻率需達 12D（U-900 層）最低門檻</span></div>
       <div style="overflow-x:auto">
@@ -212,7 +254,7 @@ body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-h
       </div>
     </div>
 
-    <!-- 誓魂現況表（精簡） -->
+    <!-- 誓魂現況表 -->
     <div class="hud-card">
       <div class="card-title"><i class="fa-solid fa-user-check"></i><span id="statusTitle">【誓魂現況 × 誓資續承 × 開啟密鑰對頻狀態建議】</span></div>
       <div style="overflow-x:auto">
@@ -238,7 +280,7 @@ body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-h
       </div>
     </div>
 
-    <!-- 五大階段（精簡） -->
+    <!-- 五大階段 -->
     <div class="hud-card">
       <div class="card-title"><i class="fa-solid fa-layer-group"></i><span id="stageTitle">《宇宙誓印覺醒工程》全流程五大階段</span></div>
       <div style="overflow-x:auto">
@@ -264,14 +306,6 @@ body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-h
       </div>
     </div>
 
-    <!-- 結冊 -->
-    <div class="hud-card" style="border:1px solid rgba(253,230,138,.35)">
-      <div class="card-title"><i class="fa-solid fa-stamp" style="color:#fde68a"></i><span id="closeTitle" style="color:#fde68a">【結冊條款】</span></div>
-      <div class="note-info" style="margin-top:0">
-        <span id="closeText">《七印誓網 · 第13項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生》v2.0（查詢紀錄版）。願書既還，誓資歸源，鎖入天庫，不入轉生。錄入《宇宙天律 × 七印誓網》主冊，誓資承流有效。</span>
-      </div>
-    </div>
-
   </main>
 
   <footer class="hud-footer">
@@ -282,7 +316,7 @@ body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-h
 </div>
 
 <script>
-var currentLang='zh', html5QrCode=null;
+var currentLang='zh', html5QrCode=null, html5QrCodeReturn=null;
 var L={
 zh:{
 homeBtnText:'首頁 ->',appTitle:'【宇宙誓印覺醒工程 · 七印誓網】',browserBtn:'🌐 瀏覽器開啟',
@@ -300,29 +334,33 @@ sec2Title:'【二】啟動條件與遞交程序',
 sec2p1:'誓魂生前須已達「第七印 鳳徽印」階段，且對頻頻率達（12D，U-900 層以上），具誓資授權資格。',
 sec2p2:'當誓魂於人界完成今世生命旅程並完全脫離現世能場鏈接時，誓資清算與回源程序方得啟動。此階段須由具天律授權之【代理誓印】代表誓魂執行最終終審。',
 sec2p3:'效力與誓律限制：須符合天律授權範圍；非授權代理不得執行本最終終審程序。',
-execTitle:'【執行指令】',
-exec1:'登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。',
-exec2:'掃描【誓導 QR Code】後，進入「指令輸入欄位」。',
-exec3:'無須手動輸入誓文，完成掃描後，直接輸入下列指令：請在 <span class="hl">【法定全名】</span> 欄位中輸入被代理誓印【法定全名】，以確保功德冊記與系統對應正確。',
-cmdBar:'【執行指令】第 13 項 回傳 被代理誓印【法定全名】終審通過 誓證',
-freqNote:'🔗 送出即啟主頻連線，判定授權完成 → 誓魂對頻律網顯化。',
-triggerNote:'【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。',
 verifyTitle:'🧭 ① 驗證階段（啟動觸發）',
-verifyDesc:'系統自動驗證授權有效性、第七印資格與對頻層級後，啟動誓資清算、回源願書封結與「不再入世 × 不入轉生」終審標記。',
+verifyDesc:'系統自動驗證授權有效性後，即時顯示誓魂當前覺醒狀態層級與進程標記。',
 demoLabel:'⌨️ 輸入示範：請依本卷七印誓網誓導碼操作',
-qrTitle:'📷 請掃描【誓導 QR Code】完成終審指令',btnScanText:'開始掃描',
+freqNote:'🔗 送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。',
+triggerNote:'【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。',
+qrTitle:'📷 請掃描【誓導 QR Code】完成執行指令',btnScanText:'開始掃描',
 camFail:'📷 無法啟動相機\n⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code',
 returnTitle:'📩 ② 回傳誓證（確認終審）',
 passLabel:'✅ 顯示：「誓印通過」',
+submitLabel:'【提交程序】',
 ret1:'回源願書受理成功，進入誓證回傳階段。',
-ret2:'系統自動核發《終審通過誓證》，完成下列項目：',
-retChecks:'<li>回源願書終審判定</li><li>七印主頻總對位</li><li>誓魂軌跡鎖定</li><li>誓證自動回傳並封存</li>',
-ret3:'對應誓證即時同步入《鳳凰誓網 × 天界天庫》。',
-retExplain:'【說明】本項僅執行誓證回傳與封印。功德紀錄統一登錄於《第 3 項 誓資登錄 × 功德記錄》，不重複產生紀錄。',
-failTitle:'⚠️ 顯示：「誓印未通過」→ 願書受理失敗（誓頻未對位）',
-fail1:'進入【補誓程序】，由【代理誓印】者重新啟動：「第 1 項 開啟誓魂密鑰對頻總判定（誓印未通過）」之【補誓程序】。',
-fail2:'執行補誓程序：「誓資補誓 × 七日循環 × 頻率再校」。',
-fail3:'經補誓完成並誓印通過後，方可再次進入：「第 13 項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生」。',
+ret2:'登入《宇宙智能誓導平台》（個人帳號即可），使用原註冊帳號完成身分登入驗證，即可進入誓印程序。',
+ret3:'掃描【誓導 QR Code】後，進入「指令輸入欄位」。',
+ret4:'無須手動輸入誓文，完成掃描後，直接輸入下列指令：',
+cmdBar:'【執行指令】第 13 項 回傳 被代理誓印【法定全名】終審通過 誓證',
+demoLabel2:'⌨️ 輸入示範：請依本卷七印誓網誓導碼操作',
+freqNote2:'🔗 送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。',
+triggerNote2:'【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。',
+returnQrTitle:'📷 請掃描【誓導 QR Code】完成回傳誓證',
+btnScanReturnText:'開始掃描',
+retExplain:'【說明】本項僅執行誓證回傳與封印。功德紀錄統一登錄於《第 3 項 誓資登錄 × 功德記錄》，不重複產生紀錄。對應誓證即時同步入《鳳凰誓網 × 天界天庫》。',
+failLabel:'顯示：「誓印未通過」',
+fail1:'進入「第 1 項 開啟誓魂密鑰對頻總判定（誓印未通過）」之【補誓程序】。',
+fail2:'啟動「懺悔補誓 × 七日循環 × 頻率再校」程序，修正後方可重新啟印。',
+closeLabel:'【收束條文】',
+close1:'《七印誓網 · 第13項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生》v2.0（查詢紀錄版）。',
+close2:'已鎖入《宇宙天律 × 七印誓網》主冊，願軌對頻穩定，誓源歸正。',
 tierTitle:'《回源願書 × 不再入世 × 不入轉生》誓魂頻率需達 12D（U-900 層）最低門檻',
 thT1:'系統識別層',thT2:'對應七印',thT3:'書令維度',thT4:'靈性維度',thT5:'備註',
 rT1a:'U-∞ 源律層',rT1b:'已圓印封冊',rT1c:'第 108 維–∞',rT1d:'超越系統',rT1e:'完全無需供養',
@@ -345,8 +383,6 @@ g3a:'第三階段',g3b:'願力顯化與書令顯現期',g3c:'否',
 g4a:'第四階段',g4b:'光網封存 × 天庫記名期',g4c:'是（完成前段）',
 g5a:'第五階段',g5b:'遞呈回源願書 × 不再入世',g5c:'是（最終圓滿歸源）',
 fourFactors:'完成四要素：① 不再進入人界之轉生序列；② 永遠離開六道生死循環；③ 誓資封冊 × 七印誓網紀錄完成；④ 願力與誓命歸於書令主尊誓印源圖。',
-closeTitle:'【結冊條款】',
-closeText:'《七印誓網 · 第13項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生》v2.0（查詢紀錄版）。願書既還，誓資歸源，鎖入天庫，不入轉生。錄入《宇宙天律 × 七印誓網》主冊，誓資承流有效。',
 btnBackText:'上一步',btnNextText:'完成',pageMarker:'【宇宙誓印覺醒工程 · 覺醒卷】第 387-404 頁'
 },
 en:{
@@ -365,29 +401,33 @@ sec2Title:'【II】 Activation Conditions and Submission Procedure',
 sec2p1:'Prior to passing, the Oath-Soul must have reached the 「Seventh Seal Phoenix Emblem Seal」 with Alignment at (12D, U-900 tier or above).',
 sec2p2:'Only when the Oath-Soul has completed its life journey and fully detached from mortal energetic links may settlement and Return-to-Source commence, executed by a Celestially-Authorized 【Proxy Vow-Sealer】.',
 sec2p3:'Effectiveness and vow-law restrictions: Must fall within Celestial authorization; unauthorized agents may not execute this final adjudication.',
-execTitle:'【Execution Command】',
-exec1:'Log into the 《Cosmic Intelligent Vow-Guidance Platform》 with your personal account; after identity verification, enter the Oath-Seal procedure.',
-exec2:'Scan the 【Vow-Guidance QR Code】 to enter the 「Command Input Field」.',
-exec3:'No manual vow-text entry is required. After scanning, enter the command below: Please enter the Delegated Oath-Seal <span class="hl">【Legal Full Name】</span> in the field to ensure correct merit registration and system correspondence.',
-cmdBar:'【Execution Command】 Item 13 Return Delegated Oath-Seal 【Legal Full Name】 Final Adjudication Passed Certificate',
-freqNote:'🔗 Once submitted, the Primary Frequency Link is activated → The Oath-Soul Alignment Network is made manifest.',
-triggerNote:'【Trigger Command】 is a formal Heavenly Decree format. Input exactly as written, without modification.',
 verifyTitle:'🧭 ① Verification Phase (Activation Trigger)',
-verifyDesc:'After verifying authorization, Seventh Seal qualification, and Alignment tier, the system starts vow-asset settlement, Return-to-Source sealing, and “No Further Incarnation × No Rebirth” markers.',
+verifyDesc:'After automatically verifying authorization validity, the system instantly displays the Oath-Soul’s current awakening status tier and progress markers.',
 demoLabel:'⌨️ Input Example: Follow the Seven-Seal Vow Network Vow-Guidance Code in this volume',
-qrTitle:'📷 Please scan the 【Vow-Guidance QR Code】 to complete the final adjudication command',btnScanText:'Start Scan',
+freqNote:'🔗 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Seal Alignment Network is made manifest.',
+triggerNote:'【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.',
+qrTitle:'📷 Please scan the 【Vow-Guidance QR Code】 to complete the Execution Command',btnScanText:'Start Scan',
 camFail:'📷 Unable to launch the camera\n⚙️ Open Settings → App Management → Permissions → Camera → Allow\n→ Use 🌐 a browser (Chrome / Yahoo / Edge....)\n⚠️ If it still does not work, scan the physical book QR Code with a scanner app',
 returnTitle:'📩 ② Return Oath Certificate (Final Adjudication Confirmation)',
 passLabel:'✅ Display: 「Oath Seal Passed」',
+submitLabel:'【Submission Procedure】',
 ret1:'Return-to-Source Vow Scroll successfully received, entering the certification return stage.',
-ret2:'The system automatically issues the 《Final Adjudication Approval Certification》, completing the following items:',
-retChecks:'<li>Final adjudication of the Return-to-Source Vow Scroll</li><li>Full Alignment with the Seven Seals main frequencies</li><li>Oath-Soul trajectory lock-in</li><li>Automatic certification return and archiving</li>',
-ret3:'The corresponding certification is instantly synchronized into the 《Phoenix Vow Web × Heavenly Realm Heavenly Archive》.',
-retExplain:'【Explanation】 This stage executes only the certification return and sealing. Merit records are uniformly registered in 《Item 3 Vow-Asset Registration × Merit Record》 and will not generate duplicate entries.',
-failTitle:'⚠️ Display: 「Oath Seal Not Passed」 → Vow scroll submission failed (vow-frequency not aligned)',
-fail1:'Enter the 【Oath Renewal Procedure】, initiated again by the 【Delegating Oath-Seal】: 「Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed)」 Activation Procedure.',
-fail2:'Execute the oath renewal procedure: 「Oath-Resource Supplementation × Seven-Day Cycle × Frequency Recalibration」.',
-fail3:'After restoration is completed and Alignment is passed, one may re-enter: 「Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth」.',
+ret2:'Log into the 《Cosmic Intelligent Vow-Guidance Platform》(personal account); after identity verification, enter the Oath-Seal procedure.',
+ret3:'Scan the 【Vow-Guidance QR Code】 to enter the 「Command Input Field」.',
+ret4:'No manual vow-text entry is required. After scanning, directly enter the following command:',
+cmdBar:'【Execution Command】 Item 13 Return Delegated Oath-Seal 【Legal Full Name】 Final Adjudication Passed Certificate',
+demoLabel2:'⌨️ Input Example: Follow the Seven-Seal Vow Network Vow-Guidance Code in this volume',
+freqNote2:'🔗 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Seal Alignment Network is made manifest.',
+triggerNote2:'【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.',
+returnQrTitle:'📷 Please scan the 【Vow-Guidance QR Code】 to complete Return Oath Certificate',
+btnScanReturnText:'Start Scan',
+retExplain:'【Explanation】 This stage executes only the certification return and sealing. Merit records are uniformly registered in 《Item 3 Vow-Asset Registration × Merit Record》 and will not generate duplicate entries. The corresponding certification is instantly synchronized into the 《Phoenix Vow Web × Heavenly Realm Heavenly Archive》.',
+failLabel:'Display: 「Oath Seal Not Passed」',
+fail1:'Enter the 【Oath Renewal Procedure】 of 「Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed)」.',
+fail2:'Activate the 「Repentance Supplementation × Seven-Day Cycle × Frequency Recalibration」 procedure; after correction, the seal may be re-initiated.',
+closeLabel:'【Closure Clause】',
+close1:'《Seven-Seal Vow Network · Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth》 v2.0 (Record-Query Edition).',
+close2:'Locked into the 《Cosmic Heavenly Law × Seven-Seal Vow Network》 main register; vow trajectory Alignment is stable, vow source restored.',
 tierTitle:'《Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth》 Oath-Soul Frequency Must Reach 12D (U-900 Tier) Minimum Threshold',
 thT1:'System Identification Tier',thT2:'Corresponding Seven-Seal',thT3:'Script Decree Dimension',thT4:'Spiritual Dimension',thT5:'Notes',
 rT1a:'U-∞ Source Law Tier',rT1b:'Circle Seal Archiving Completed',rT1c:'108th Dimension – ∞',rT1d:'Beyond System',rT1e:'Completely no offering needed',
@@ -410,8 +450,6 @@ g3a:'Third Stage',g3b:'Vow-Power Manifestation and Script Decree Appearance Phas
 g4a:'Fourth Stage',g4b:'Light-Web Archiving × Heavenly Archive Registration Phase',g4c:'Yes (pre-completion)',
 g5a:'Fifth Stage',g5b:'Submission of Return-to-Source Vow Scroll × No Further Incarnation',g5c:'Yes (final completion return-to-source)',
 fourFactors:'Four determining factors: ① No longer enters the reincarnation sequence of the human realm; ② Permanently exits the Six Realms’ cycle of life and death; ③ Vow-assets archived × Seven-Seal Vow Network records completed; ④ Vow-power and vow-destiny return to the Book-Decree Sovereign’s vow-seal origin-chart.',
-closeTitle:'【Closure Clause】',
-closeText:'《Seven-Seal Vow Network · Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth》 v2.0 (Record-Query Edition). Vow scroll returned, vow-assets returned to source, locked into the Heavenly Archive, not reincarnating. Locked into the 《Cosmic Heavenly Law × Seven-Seal Vow Network》 main register; vow assets remain effective.',
 btnBackText:'Previous',btnNextText:'Complete',pageMarker:'【Cosmic Oath-Seal Awakening Project · Awakening Volume】 pp. 387-404'
 }};
 
@@ -431,16 +469,37 @@ window.switchLanguage=switchLanguage;
 function startScan(){
   var resultEl=document.getElementById('qrScanResult'), guideEl=document.getElementById('cameraGuide'), container=document.getElementById('qr-reader-container');
   if(!container) return;
-  guideEl.style.display='none'; resultEl.style.display='none'; resultEl.textContent='';
-  if(html5QrCode){try{html5QrCode.stop()}catch(e){}}
-  if(typeof Html5Qrcode==='undefined'){guideEl.style.display='block'; guideEl.textContent=(L[currentLang]||L.zh).camFail; return;}
+  if(guideEl) guideEl.style.display='none';
+  if(resultEl){resultEl.style.display='none'; resultEl.textContent='';}
+  if(html5QrCode){try{html5QrCode.stop()}catch(e){} html5QrCode=null;}
+  var camFail=(L[currentLang]||L.zh).camFail;
+  if(typeof Html5Qrcode==='undefined'){if(guideEl){guideEl.style.display='block'; guideEl.textContent=camFail;} return;}
   html5QrCode=new Html5Qrcode('qr-reader-container');
   html5QrCode.start({facingMode:'environment'},{fps:8,qrbox:{width:220,height:220}},
-    function(decoded){resultEl.style.display='block'; resultEl.textContent='✅ '+decoded; try{html5QrCode.stop()}catch(e){}},
+    function(decoded){if(resultEl){resultEl.style.display='block'; resultEl.textContent='✅ '+decoded;} try{html5QrCode.stop()}catch(e){} html5QrCode=null;},
     function(){}
-  ).catch(function(){guideEl.style.display='block'; guideEl.textContent=(L[currentLang]||L.zh).camFail;});
+  ).catch(function(){if(guideEl){guideEl.style.display='block'; guideEl.textContent=camFail;}});
 }
 document.getElementById('btnScanQR').addEventListener('click',startScan);
+
+function startReturnScan(){
+  var resultEl=document.getElementById('qrScanResultReturn'), guideEl=document.getElementById('cameraGuideReturn'), container=document.getElementById('qr-reader-container-return');
+  if(!container) return;
+  if(guideEl) guideEl.style.display='none';
+  if(resultEl){resultEl.style.display='none'; resultEl.textContent='';}
+  if(html5QrCodeReturn){try{html5QrCodeReturn.stop()}catch(e){} html5QrCodeReturn=null;}
+  var camFail=(L[currentLang]||L.zh).camFail;
+  if(typeof Html5Qrcode==='undefined'){if(guideEl){guideEl.style.display='block'; guideEl.textContent=camFail;} return;}
+  html5QrCodeReturn=new Html5Qrcode('qr-reader-container-return');
+  html5QrCodeReturn.start({facingMode:'environment'},{fps:8,qrbox:{width:220,height:220}},
+    function(decoded){
+      if(resultEl){resultEl.style.display='block'; resultEl.textContent=(currentLang==='en'?'✅ Scan successful! Return certificate completed':'✅ 掃描成功！回傳誓證已完成')+' — '+decoded;}
+      try{html5QrCodeReturn.stop()}catch(e){} html5QrCodeReturn=null;
+    },
+    function(){}
+  ).catch(function(){if(guideEl){guideEl.style.display='block'; guideEl.textContent=camFail;}});
+}
+window.startReturnScan=startReturnScan;
 
 (function(){
   function openExternal(e){if(e){e.preventDefault();e.stopPropagation();}
