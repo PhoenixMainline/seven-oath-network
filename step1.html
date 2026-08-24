@@ -2383,5 +2383,167 @@
     console.log('✅ 上一步／下一步加強展開完成');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版最強：上一步／下一步一定展開（解除 100vh 鎖定）            -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<style>
+    html {
+        height: auto !important;
+        max-height: none !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+    body {
+        height: auto !important;
+        max-height: none !important;
+        min-height: 100% !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        display: block !important;
+        align-items: flex-start !important;
+        padding-bottom: calc(40px + env(safe-area-inset-bottom, 16px)) !important;
+    }
+
+    .hud-container {
+        height: auto !important;
+        max-height: none !important;
+        min-height: auto !important;
+        overflow: visible !important;
+        display: flex !important;
+        flex-direction: column !important;
+        margin-bottom: 24px !important;
+    }
+
+    .step-content {
+        flex: 0 1 auto !important;
+        overflow: visible !important;
+        max-height: none !important;
+        min-height: 0 !important;
+    }
+
+    .hud-footer {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        flex-shrink: 0 !important;
+        width: 100% !important;
+        margin-top: 20px !important;
+        margin-bottom: 8px !important;
+        padding: 14px 8px 24px 8px !important;
+        border-top: 1px solid rgba(168, 85, 247, 0.3) !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 12px !important;
+        z-index: 9999 !important;
+        pointer-events: auto !important;
+        background: rgba(4, 13, 33, 0.9) !important;
+        box-sizing: border-box !important;
+    }
+
+    .hud-footer .footer-btn-group {
+        display: flex !important;
+        gap: 12px !important;
+        pointer-events: auto !important;
+        z-index: 10000 !important;
+    }
+
+    .hud-footer .btn-action,
+    .hud-footer a.btn-action {
+        display: inline-flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        min-height: 48px !important;
+        padding: 12px 20px !important;
+        font-size: 0.9rem !important;
+        font-weight: 700 !important;
+        border: 1px solid #a78bfa !important;
+        color: #e9d5ff !important;
+        background: rgba(124, 58, 237, 0.4) !important;
+        border-radius: 24px !important;
+        text-decoration: none !important;
+        z-index: 10001 !important;
+        position: relative !important;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__footerNuclear) return;
+    window.__footerNuclear = true;
+
+    function force() {
+        // 解除所有高度鎖定
+        ['html', 'body'].forEach(function (sel) {
+            var el = document.querySelector(sel);
+            if (!el) return;
+            el.style.setProperty('height', 'auto', 'important');
+            el.style.setProperty('max-height', 'none', 'important');
+            el.style.setProperty('overflow-y', 'auto', 'important');
+            el.style.setProperty('overflow-x', 'hidden', 'important');
+        });
+        document.body.style.setProperty('display', 'block', 'important');
+        document.body.style.setProperty('align-items', 'flex-start', 'important');
+        document.body.style.setProperty('padding-bottom', 'calc(40px + env(safe-area-inset-bottom, 16px))', 'important');
+
+        var c = document.querySelector('.hud-container');
+        if (c) {
+            c.style.setProperty('height', 'auto', 'important');
+            c.style.setProperty('max-height', 'none', 'important');
+            c.style.setProperty('min-height', 'auto', 'important');
+            c.style.setProperty('overflow', 'visible', 'important');
+        }
+
+        var sc = document.querySelector('.step-content');
+        if (sc) {
+            sc.style.setProperty('overflow', 'visible', 'important');
+            sc.style.setProperty('max-height', 'none', 'important');
+            sc.style.setProperty('flex', '0 1 auto', 'important');
+        }
+
+        var footer = document.querySelector('.hud-footer');
+        if (!footer) return;
+
+        footer.style.cssText += ';display:flex!important;visibility:visible!important;opacity:1!important;position:relative!important;pointer-events:auto!important;z-index:9999!important;height:auto!important;max-height:none!important;';
+
+        footer.querySelectorAll('a.btn-action, .btn-action').forEach(function (btn) {
+            btn.style.cssText += ';display:inline-flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;cursor:pointer!important;z-index:10001!important;';
+            btn.classList.add('enabled');
+            btn.removeAttribute('disabled');
+        });
+    }
+
+    function run() {
+        force();
+        [50, 150, 400, 800, 1500, 2500].forEach(function (ms) {
+            setTimeout(force, ms);
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    window.addEventListener('load', function () { setTimeout(force, 100); });
+    window.addEventListener('resize', function () {
+        clearTimeout(window.__fnT);
+        window.__fnT = setTimeout(force, 80);
+    });
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__fnObs);
+        window.__fnObs = setTimeout(force, 50);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+    console.log('✅ footer 最強展開已套用');
+})();
+</script>
 </body>
 </html>
