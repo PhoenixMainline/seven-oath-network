@@ -3947,6 +3947,185 @@
     console.log('✅ 公版相機 QR：可啟動、掃到顯示文字、失敗才顯示引導');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 只保留一組上一步／下一步（刪除重複 footer）                    -->
+<!-- 先刪掉之前所有 footer 展開腳本，再貼這段，Ctrl+F5              -->
+<!-- ============================================================ -->
+<style>
+    html, body {
+        height: auto !important;
+        max-height: none !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+    body {
+        display: block !important;
+        align-items: flex-start !important;
+        padding-bottom: calc(40px + env(safe-area-inset-bottom, 12px)) !important;
+    }
+    .hud-container {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+    .step-content {
+        overflow: visible !important;
+        max-height: none !important;
+        height: auto !important;
+    }
+    .hud-footer {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        flex-shrink: 0 !important;
+        width: 100% !important;
+        margin-top: 16px !important;
+        padding: 12px 6px 18px 6px !important;
+        z-index: 9999 !important;
+        pointer-events: auto !important;
+    }
+    .hud-footer .btn-action,
+    .hud-footer a.btn-action {
+        display: inline-flex !important;
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        min-height: 46px !important;
+    }
+</style>
+<script>
+(function () {
+    if (window.__oneFooterOnly) return;
+    window.__oneFooterOnly = true;
 
+    function dedupe() {
+        var footers = document.querySelectorAll('.hud-footer');
+        if (footers.length <= 1) {
+            // 確保唯一的那組可點
+            if (footers[0]) {
+                footers[0].style.setProperty('display', 'flex', 'important');
+                footers[0].style.setProperty('visibility', 'visible', 'important');
+                footers[0].querySelectorAll('a.btn-action, .btn-action').forEach(function (b) {
+                    b.style.setProperty('pointer-events', 'auto', 'important');
+                    b.removeAttribute('disabled');
+                });
+            }
+            return;
+        }
+        // 留第一個，後面的全部移除
+        for (var i = 1; i < footers.length; i++) {
+            footers[i].remove();
+        }
+        console.log('✅ 已刪除重複 footer，只留 1 組');
+    }
+
+    function run() {
+        dedupe();
+        setTimeout(dedupe, 100);
+        setTimeout(dedupe, 400);
+        setTimeout(dedupe, 900);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 若有腳本又插回來，再清一次
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__dedupeT);
+        window.__dedupeT = setTimeout(dedupe, 60);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 強制只留一組「上一步／下一步」（不管包在哪裡）                  -->
+<!-- 刪掉舊腳本後只貼這段，Ctrl+F5                                  -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__killDupNav) return;
+    window.__killDupNav = true;
+
+    function isNavBtn(el) {
+        var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+        return t.indexOf('上一步') !== -1 || t.indexOf('下一步') !== -1 ||
+               t.indexOf('Previous') !== -1 || t.indexOf('Next') !== -1;
+    }
+
+    function clean() {
+        // 1) 多個 .hud-footer → 只留第一個
+        var footers = Array.prototype.slice.call(document.querySelectorAll('.hud-footer'));
+        for (var i = 1; i < footers.length; i++) {
+            footers[i].parentNode && footers[i].parentNode.removeChild(footers[i]);
+        }
+
+        // 2) 找出所有含上一步/下一步的按鈕群
+        var groups = [];
+        document.querySelectorAll('.footer-btn-group, .hud-footer, div').forEach(function (box) {
+            if (!box || box.__navChecked) return;
+            var btns = box.querySelectorAll('a, button, .btn-action');
+            var hasPrev = false, hasNext = false;
+            btns.forEach(function (b) {
+                var t = (b.textContent || '');
+                if (t.indexOf('上一步') !== -1 || t.indexOf('Previous') !== -1) hasPrev = true;
+                if (t.indexOf('下一步') !== -1 || t.indexOf('Next') !== -1) hasNext = true;
+            });
+            if (hasPrev && hasNext) {
+                box.__navChecked = true;
+                groups.push(box);
+            }
+        });
+
+        // 只留第一組，其餘整組刪除
+        for (var j = 1; j < groups.length; j++) {
+            var g = groups[j];
+            // 若是 footer 本身已在步驟1處理過就跳過
+            if (g.classList && g.classList.contains('hud-footer') && footers[0] === g) continue;
+            // 刪掉這一組（若父層只剩這組也可刪父層）
+            if (g.parentNode) g.parentNode.removeChild(g);
+        }
+
+        // 3) 確保留下的那組可點、可見
+        var keep = document.querySelector('.hud-footer') || groups[0];
+        if (keep) {
+            keep.style.setProperty('display', 'flex', 'important');
+            keep.style.setProperty('visibility', 'visible', 'important');
+            keep.style.setProperty('opacity', '1', 'important');
+            keep.querySelectorAll('a, button, .btn-action').forEach(function (b) {
+                if (!isNavBtn(b)) return;
+                b.style.setProperty('display', 'inline-flex', 'important');
+                b.style.setProperty('pointer-events', 'auto', 'important');
+                b.style.setProperty('opacity', '1', 'important');
+                b.removeAttribute('disabled');
+            });
+        }
+    }
+
+    function run() {
+        clean();
+        setTimeout(clean, 80);
+        setTimeout(clean, 300);
+        setTimeout(clean, 700);
+        setTimeout(clean, 1500);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__killDupT);
+        window.__killDupT = setTimeout(clean, 50);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ 重複上一步/下一步已清除');
+})();
+</script>
 </body>
 </html>
