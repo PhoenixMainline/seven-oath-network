@@ -1680,5 +1680,109 @@
   });
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 第1項「進入 →」連結到 step1.html                              -->
+<!-- 貼在 index.html 的 </body> 前，Ctrl+F5                        -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__enterStep1Link) return;
+    window.__enterStep1Link = true;
+
+    function apply() {
+        // 1) 找含「進入」的按鈕／連結
+        document.querySelectorAll('a, button, span, div').forEach(function (el) {
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t) return;
+
+            // 必須是「進入」且附近／本身與第1項對頻有關
+            var isEnter = t === '進入 →' || t === '進入->' || t === '進入' ||
+                          t.indexOf('進入 →') !== -1 || t.indexOf('進入->') !== -1;
+
+            if (!isEnter) return;
+
+            // 向上找同一列／卡片，確認是第1項
+            var row = el.closest('tr') || el.closest('.hud-card') || el.parentElement;
+            var ctx = (row ? row.textContent : '') || '';
+            var isItem1 =
+                ctx.indexOf('第1項') !== -1 ||
+                ctx.indexOf('第 1 項') !== -1 ||
+                ctx.indexOf('對頻總判定') !== -1 ||
+                ctx.indexOf('開啟誓魂密鑰') !== -1;
+
+            if (!isItem1) return;
+
+            // 設成連結
+            if (el.tagName === 'A') {
+                el.setAttribute('href', 'step1.html');
+                el.style.cursor = 'pointer';
+                el.style.pointerEvents = 'auto';
+            } else {
+                // 不是 <a> 就包一層或改成跳轉
+                el.style.cursor = 'pointer';
+                el.style.pointerEvents = 'auto';
+                el.onclick = function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.location.href = 'step1.html';
+                };
+                // 若父層是 a，直接改 href
+                var parentA = el.closest('a');
+                if (parentA) {
+                    parentA.setAttribute('href', 'step1.html');
+                    parentA.style.pointerEvents = 'auto';
+                }
+            }
+        });
+
+        // 2) 表格內「進入」欄位備援
+        document.querySelectorAll('td, th').forEach(function (td) {
+            var t = (td.textContent || '').replace(/\s+/g, ' ').trim();
+            if (t.indexOf('進入') === -1) return;
+            var row = td.closest('tr');
+            if (!row) return;
+            var rowText = row.textContent || '';
+            if (rowText.indexOf('第1項') === -1 &&
+                rowText.indexOf('第 1 項') === -1 &&
+                rowText.indexOf('對頻總判定') === -1) return;
+
+            var a = td.querySelector('a');
+            if (a) {
+                a.setAttribute('href', 'step1.html');
+                a.style.pointerEvents = 'auto';
+            } else {
+                td.style.cursor = 'pointer';
+                td.onclick = function () {
+                    window.location.href = 'step1.html';
+                };
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 400);
+        setTimeout(apply, 900);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+        };
+    }
+
+    console.log('✅ 第1項「進入 →」→ step1.html');
+})();
+</script>
 </body>
 </html>
