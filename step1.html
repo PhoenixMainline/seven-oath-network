@@ -1144,174 +1144,39 @@
 })();
 </script>
 <!-- ============================================================ -->
-<!-- 公版最強：上一步／下一步一定展開（解除 100vh 鎖定）            -->
+<!-- 公版：外部瀏覽器開啟 + 相機 QR 掃描（掃到顯示文字）            -->
 <!-- 貼在 </body> 前，Ctrl+F5                                      -->
 <!-- ============================================================ -->
 <style>
-    html {
-        height: auto !important;
-        max-height: none !important;
-        overflow-y: auto !important;
-        overflow-x: hidden !important;
-    }
-    body {
-        height: auto !important;
-        max-height: none !important;
-        min-height: 100% !important;
-        overflow-y: auto !important;
-        overflow-x: hidden !important;
-        display: block !important;
-        align-items: flex-start !important;
-        padding-bottom: calc(40px + env(safe-area-inset-bottom, 16px)) !important;
-    }
-
-    .hud-container {
-        height: auto !important;
-        max-height: none !important;
-        min-height: auto !important;
-        overflow: visible !important;
-        display: flex !important;
-        flex-direction: column !important;
-        margin-bottom: 24px !important;
-    }
-
-    .step-content {
-        flex: 0 1 auto !important;
-        overflow: visible !important;
-        max-height: none !important;
-        min-height: 0 !important;
-    }
-
-    .hud-footer {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        position: relative !important;
-        flex-shrink: 0 !important;
-        width: 100% !important;
-        margin-top: 20px !important;
-        margin-bottom: 8px !important;
-        padding: 14px 8px 24px 8px !important;
-        border-top: 1px solid rgba(168, 85, 247, 0.3) !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        flex-wrap: wrap !important;
-        gap: 12px !important;
-        z-index: 9999 !important;
-        pointer-events: auto !important;
-        background: rgba(4, 13, 33, 0.9) !important;
-        box-sizing: border-box !important;
-    }
-
-    .hud-footer .footer-btn-group {
-        display: flex !important;
-        gap: 12px !important;
-        pointer-events: auto !important;
-        z-index: 10000 !important;
-    }
-
-    .hud-footer .btn-action,
-    .hud-footer a.btn-action {
+    .btn-external-browser {
         display: inline-flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        cursor: pointer !important;
-        min-height: 48px !important;
-        padding: 12px 20px !important;
-        font-size: 0.9rem !important;
-        font-weight: 700 !important;
-        border: 1px solid #a78bfa !important;
-        color: #e9d5ff !important;
-        background: rgba(124, 58, 237, 0.4) !important;
-        border-radius: 24px !important;
-        text-decoration: none !important;
-        z-index: 10001 !important;
-        position: relative !important;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 14px;
+        background: rgba(0, 230, 118, 0.12);
+        border: 1px solid rgba(0, 230, 118, 0.35);
+        border-radius: 20px;
+        color: #00e676;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        margin-left: 8px;
+        white-space: nowrap;
     }
-</style>
-
-<script>
-(function () {
-    if (window.__footerNuclear) return;
-    window.__footerNuclear = true;
-
-    function force() {
-        // 解除所有高度鎖定
-        ['html', 'body'].forEach(function (sel) {
-            var el = document.querySelector(sel);
-            if (!el) return;
-            el.style.setProperty('height', 'auto', 'important');
-            el.style.setProperty('max-height', 'none', 'important');
-            el.style.setProperty('overflow-y', 'auto', 'important');
-            el.style.setProperty('overflow-x', 'hidden', 'important');
-        });
-        document.body.style.setProperty('display', 'block', 'important');
-        document.body.style.setProperty('align-items', 'flex-start', 'important');
-        document.body.style.setProperty('padding-bottom', 'calc(40px + env(safe-area-inset-bottom, 16px))', 'important');
-
-        var c = document.querySelector('.hud-container');
-        if (c) {
-            c.style.setProperty('height', 'auto', 'important');
-            c.style.setProperty('max-height', 'none', 'important');
-            c.style.setProperty('min-height', 'auto', 'important');
-            c.style.setProperty('overflow', 'visible', 'important');
-        }
-
-        var sc = document.querySelector('.step-content');
-        if (sc) {
-            sc.style.setProperty('overflow', 'visible', 'important');
-            sc.style.setProperty('max-height', 'none', 'important');
-            sc.style.setProperty('flex', '0 1 auto', 'important');
-        }
-
-        var footer = document.querySelector('.hud-footer');
-        if (!footer) return;
-
-        footer.style.cssText += ';display:flex!important;visibility:visible!important;opacity:1!important;position:relative!important;pointer-events:auto!important;z-index:9999!important;height:auto!important;max-height:none!important;';
-
-        footer.querySelectorAll('a.btn-action, .btn-action').forEach(function (btn) {
-            btn.style.cssText += ';display:inline-flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;cursor:pointer!important;z-index:10001!important;';
-            btn.classList.add('enabled');
-            btn.removeAttribute('disabled');
-        });
-    }
-
-    function run() {
-        force();
-        [50, 150, 400, 800, 1500, 2500].forEach(function (ms) {
-            setTimeout(force, ms);
-        });
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    window.addEventListener('load', function () { setTimeout(force, 100); });
-    window.addEventListener('resize', function () {
-        clearTimeout(window.__fnT);
-        window.__fnT = setTimeout(force, 80);
-    });
-
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__fnObs);
-        window.__fnObs = setTimeout(force, 50);
-    });
-    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
-
-    console.log('✅ footer 最強展開已套用');
-})();
-</script>
-  <!-- ============================================================ -->
-<!-- 公版：相機 QR 掃描（可正常啟動 + 顯示掃到的文字）              -->
-<!-- 貼在 </body> 前，Ctrl+F5                                      -->
-<!-- ============================================================ -->
-<style>
     .camera-guide { display: none !important; }
-    .camera-guide.show-fail { display: block !important; text-align: left !important; }
+    .camera-guide.show-fail {
+        display: block !important;
+        text-align: left !important;
+        background: rgba(232, 96, 74, 0.08);
+        border-left: 4px solid #E8604A;
+        padding: 12px 14px;
+        border-radius: 10px;
+        font-size: 0.82rem;
+        line-height: 1.7;
+        color: #e0dcc8;
+        margin-top: 10px;
+    }
     .qr-result-ok {
         display: block !important;
         margin-top: 10px;
@@ -1328,9 +1193,68 @@
 
 <script>
 (function () {
-    if (window.__qrScanPublicV2) return;
-    window.__qrScanPublicV2 = true;
+    if (window.__browserAndQrPublic) return;
+    window.__browserAndQrPublic = true;
 
+    /* ========== 1. 外部瀏覽器開啟 ========== */
+    function openExternalBrowser() {
+        var url = window.location.href;
+        var ua = navigator.userAgent || '';
+
+        // Android → 強制 Chrome
+        if (/android/i.test(ua)) {
+            try {
+                var intent =
+                    'intent://' + window.location.host + window.location.pathname +
+                    window.location.search +
+                    '#Intent;scheme=https;package=com.android.chrome;end;';
+                window.location.href = intent;
+                return;
+            } catch (e) {}
+        }
+
+        // iOS → 嘗試 Safari / 複製
+        if (/iphone|ipad|ipod/i.test(ua)) {
+            // 無法真正強制跳出 App 內建瀏覽器，改為複製網址
+            copyAndAlert(url);
+            return;
+        }
+
+        // 桌面或其他：新開分頁
+        window.open(url, '_blank');
+    }
+
+    function copyAndAlert(url) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(function () {
+                alert((isEn() ? 'URL copied. Please paste it in Chrome / Safari:\n\n' : '網址已複製，請貼到 Chrome / Safari 開啟：\n\n') + url);
+            }).catch(function () {
+                alert(url);
+            });
+        } else {
+            alert(url);
+        }
+    }
+
+    function addBrowserBtn() {
+        if (document.querySelector('.btn-external-browser')) return;
+        var langGroup = document.querySelector('.lang-switch-group');
+        if (!langGroup) return;
+
+        var btn = document.createElement('a');
+        btn.className = 'btn-external-browser';
+        btn.href = '#';
+        btn.innerHTML = isEn()
+            ? '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>Open in Browser</span>'
+            : '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>🌐 瀏覽器開啟</span>';
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            openExternalBrowser();
+        });
+        langGroup.parentNode.insertBefore(btn, langGroup.nextSibling);
+    }
+
+    /* ========== 2. 相機 QR 掃描 ========== */
     var GUIDE_ZH =
         '📷 無法啟動相機<br>' +
         '⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>' +
@@ -1377,7 +1301,6 @@
         });
     }
 
-    // 統一啟動：掃到碼 → 顯示文字；失敗 → 顯示引導
     window.startQRScanner = function (containerId, resultId, guideId) {
         if (starting) return;
         starting = true;
@@ -1392,14 +1315,8 @@
             resultEl.classList.remove('qr-result-ok');
         }
 
-        if (!container) {
-            starting = false;
-            showGuide(guideId);
-            return;
-        }
-        if (typeof Html5Qrcode === 'undefined' ||
-            !navigator.mediaDevices ||
-            !navigator.mediaDevices.getUserMedia) {
+        if (!container || typeof Html5Qrcode === 'undefined' ||
+            !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
             starting = false;
             showGuide(guideId);
             return;
@@ -1414,7 +1331,6 @@
                 { facingMode: 'environment' },
                 { fps: 12, qrbox: { width: 220, height: 220 } },
                 function (decodedText) {
-                    // ★ 掃到 QR 文字 → 顯示
                     stopActive().then(function () {
                         container.innerHTML = '';
                         if (resultEl) {
@@ -1429,7 +1345,7 @@
                         starting = false;
                     });
                 },
-                function () { /* 掃不到持續掃，不顯示失敗 */ }
+                function () {}
             );
         }).then(function () {
             hideGuides();
@@ -1443,7 +1359,6 @@
         setTimeout(function () { starting = false; }, 4000);
     };
 
-    // 相容舊函式名
     window.smoothStartScan = window.startQRScanner;
     window.startQRScannerStep8 = function () {
         window.startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
@@ -1452,7 +1367,6 @@
         window.startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
     };
 
-    // 按鈕對應
     var MAP = [
         { btn: 'btnScanQRStep8', box: 'qr-reader-container-step8', result: 'qrScanResultStep8', guide: 'cameraGuideStep8' },
         { btn: 'btnScanQRStep9', box: 'qr-reader-container-step9', result: 'qrScanResultStep9', guide: 'cameraGuideStep9' },
@@ -1460,15 +1374,14 @@
         { btn: 'btnScanQRStep4', box: 'qr-reader-container-step4', result: 'qrScanResultStep4', guide: 'cameraGuideStep4' }
     ];
 
-    function bind() {
+    function bindQr() {
         MAP.forEach(function (c) {
             var btn = document.getElementById(c.btn);
-            if (!btn || btn.__qrBoundV2) return;
-            btn.__qrBoundV2 = true;
+            if (!btn || btn.__qrBoundPublic) return;
+            btn.__qrBoundPublic = true;
             btn.disabled = false;
             btn.style.pointerEvents = 'auto';
             btn.style.cursor = 'pointer';
-
             btn.addEventListener('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -1478,11 +1391,13 @@
         });
     }
 
+    /* ========== 啟動 ========== */
     function run() {
+        addBrowserBtn();
         hideGuides();
-        bind();
-        setTimeout(bind, 300);
-        setTimeout(bind, 800);
+        bindQr();
+        setTimeout(function () { addBrowserBtn(); bindQr(); }, 300);
+        setTimeout(function () { addBrowserBtn(); bindQr(); }, 800);
     }
 
     if (document.readyState === 'loading') {
@@ -1496,80 +1411,94 @@
         window.switchLanguage = function (l) {
             orig(l);
             setTimeout(function () {
+                // 更新瀏覽器按鈕文字
+                var b = document.querySelector('.btn-external-browser');
+                if (b) {
+                    b.innerHTML = isEn()
+                        ? '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>Open in Browser</span>'
+                        : '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>🌐 瀏覽器開啟</span>';
+                }
                 document.querySelectorAll('.camera-guide.show-fail').forEach(function (el) {
                     el.innerHTML = isEn() ? GUIDE_EN : GUIDE_ZH;
                 });
-                bind();
+                bindQr();
             }, 100);
         };
     }
 
-    console.log('✅ 公版相機 QR：可啟動、掃到顯示文字、失敗才顯示引導');
+    console.log('✅ 公版：外部瀏覽器 + 相機 QR 已載入');
 })();
 </script>
 <!-- ============================================================ -->
-<!-- 只靠左：誓印通過 + 兩行進入步驟（其他不動）                    -->
-<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- 強制只留一組「上一步／下一步」（不管包在哪裡）                  -->
+<!-- 刪掉舊腳本後只貼這段，Ctrl+F5                                  -->
 <!-- ============================================================ -->
 <script>
 (function () {
-    if (window.__onlyLeft3) return;
-    window.__onlyLeft3 = true;
+    if (window.__killDupNav) return;
+    window.__killDupNav = true;
 
-    function apply() {
-        // 1) ✅ 顯示：「誓印通過」
-        document.querySelectorAll('div, span').forEach(function (el) {
-            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
-            if (t === '✅ 顯示：「誓印通過」' ||
-                t === '顯示：「誓印通過」' ||
-                t.indexOf('顯示：「誓印通過」') !== -1 ||
-                t.indexOf('Display : 「Oath Seal Passed」') !== -1 ||
-                t.indexOf('Oath Seal Passed') !== -1 && t.length < 40) {
-                el.style.setProperty('text-align', 'left', 'important');
-                el.style.setProperty('display', 'block', 'important');
-                el.style.setProperty('width', '100%', 'important');
-                if (el.parentElement) {
-                    el.parentElement.style.setProperty('text-align', 'left', 'important');
-                    el.parentElement.style.setProperty('justify-content', 'flex-start', 'important');
-                }
+    function isNavBtn(el) {
+        var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+        return t.indexOf('上一步') !== -1 || t.indexOf('下一步') !== -1 ||
+               t.indexOf('Previous') !== -1 || t.indexOf('Next') !== -1;
+    }
+
+    function clean() {
+        // 1) 多個 .hud-footer → 只留第一個
+        var footers = Array.prototype.slice.call(document.querySelectorAll('.hud-footer'));
+        for (var i = 1; i < footers.length; i++) {
+            footers[i].parentNode && footers[i].parentNode.removeChild(footers[i]);
+        }
+
+        // 2) 找出所有含上一步/下一步的按鈕群
+        var groups = [];
+        document.querySelectorAll('.footer-btn-group, .hud-footer, div').forEach(function (box) {
+            if (!box || box.__navChecked) return;
+            var btns = box.querySelectorAll('a, button, .btn-action');
+            var hasPrev = false, hasNext = false;
+            btns.forEach(function (b) {
+                var t = (b.textContent || '');
+                if (t.indexOf('上一步') !== -1 || t.indexOf('Previous') !== -1) hasPrev = true;
+                if (t.indexOf('下一步') !== -1 || t.indexOf('Next') !== -1) hasNext = true;
+            });
+            if (hasPrev && hasNext) {
+                box.__navChecked = true;
+                groups.push(box);
             }
         });
 
-        // 2) 兩行「進入」
-        document.querySelectorAll('div, span, p').forEach(function (el) {
-            if (el.children && el.children.length > 5) return;
-            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
-            if (!t || t.length > 80) return;
+        // 只留第一組，其餘整組刪除
+        for (var j = 1; j < groups.length; j++) {
+            var g = groups[j];
+            // 若是 footer 本身已在步驟1處理過就跳過
+            if (g.classList && g.classList.contains('hud-footer') && footers[0] === g) continue;
+            // 刪掉這一組（若父層只剩這組也可刪父層）
+            if (g.parentNode) g.parentNode.removeChild(g);
+        }
 
-            var hit =
-                (t.indexOf('進入') !== -1 && (
-                    t.indexOf('回傳誓證') !== -1 ||
-                    t.indexOf('執行階段') !== -1 ||
-                    t.indexOf('七印誓網') !== -1 ||
-                    t.indexOf('第 7') !== -1 ||
-                    t.indexOf('第7') !== -1
-                )) ||
-                (t.indexOf('Enter') !== -1 && (
-                    t.indexOf('Return') !== -1 ||
-                    t.indexOf('Seven-Seal') !== -1
-                ));
-
-            if (!hit) return;
-
-            el.style.setProperty('text-align', 'left', 'important');
-            el.style.setProperty('justify-content', 'flex-start', 'important');
-            el.style.setProperty('width', '100%', 'important');
-            if (el.parentElement) {
-                el.parentElement.style.setProperty('text-align', 'left', 'important');
-                el.parentElement.style.setProperty('justify-content', 'flex-start', 'important');
-            }
-        });
+        // 3) 確保留下的那組可點、可見
+        var keep = document.querySelector('.hud-footer') || groups[0];
+        if (keep) {
+            keep.style.setProperty('display', 'flex', 'important');
+            keep.style.setProperty('visibility', 'visible', 'important');
+            keep.style.setProperty('opacity', '1', 'important');
+            keep.querySelectorAll('a, button, .btn-action').forEach(function (b) {
+                if (!isNavBtn(b)) return;
+                b.style.setProperty('display', 'inline-flex', 'important');
+                b.style.setProperty('pointer-events', 'auto', 'important');
+                b.style.setProperty('opacity', '1', 'important');
+                b.removeAttribute('disabled');
+            });
+        }
     }
 
     function run() {
-        apply();
-        setTimeout(apply, 100);
-        setTimeout(apply, 400);
+        clean();
+        setTimeout(clean, 80);
+        setTimeout(clean, 300);
+        setTimeout(clean, 700);
+        setTimeout(clean, 1500);
     }
 
     if (document.readyState === 'loading') {
@@ -1578,16 +1507,124 @@
         run();
     }
 
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 50);
-            setTimeout(apply, 200);
-        };
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__killDupT);
+        window.__killDupT = setTimeout(clean, 50);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ 重複上一步/下一步已清除');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 一次到位：解除 100vh / flex 置中，footer 跟在內容後面          -->
+<!-- 先刪除舊的 footer 展開腳本，再貼這段，Ctrl+F5                  -->
+<!-- ============================================================ -->
+<style id="footer-expand-final">
+    html {
+        height: auto !important;
+        max-height: none !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+    body {
+        height: auto !important;
+        max-height: none !important;
+        min-height: 100% !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        display: block !important;          /* 關鍵：不要 flex 置中 */
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        padding: 8px 8px 48px 8px !important;
+        padding-bottom: calc(48px + env(safe-area-inset-bottom, 16px)) !important;
+    }
+    .particle-container,
+    .watermark-layer {
+        position: fixed !important;
+        pointer-events: none !important;
+    }
+    .hud-container {
+        height: auto !important;
+        max-height: none !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+        display: flex !important;
+        flex-direction: column !important;
+        margin: 0 auto 24px auto !important;
+        position: relative !important;
+    }
+    .step-content {
+        flex: 0 1 auto !important;
+        overflow: visible !important;       /* 關鍵：不要內部捲動裁切 */
+        max-height: none !important;
+        min-height: 0 !important;
+        height: auto !important;
+    }
+    .hud-footer {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        flex-shrink: 0 !important;
+        width: 100% !important;
+        margin-top: 20px !important;
+        margin-bottom: 0 !important;
+        padding: 14px 6px 20px 6px !important;
+        border-top: 1px solid rgba(168, 85, 247, 0.3) !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+        z-index: 9999 !important;
+        pointer-events: auto !important;
+        background: rgba(4, 13, 33, 0.95) !important;
+    }
+    .hud-footer .footer-btn-group {
+        display: flex !important;
+        gap: 12px !important;
+        pointer-events: auto !important;
+    }
+    .hud-footer .btn-action,
+    .hud-footer a.btn-action {
+        display: inline-flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        min-height: 48px !important;
+        padding: 12px 20px !important;
+        z-index: 10001 !important;
+    }
+</style>
+<script>
+(function () {
+    if (window.__footerFinal) return;
+    window.__footerFinal = true;
+
+    function force() {
+        document.documentElement.style.cssText += ';height:auto!important;max-height:none!important;overflow-y:auto!important;';
+        document.body.style.cssText += ';height:auto!important;max-height:none!important;overflow-y:auto!important;display:block!important;align-items:flex-start!important;padding-bottom:calc(48px + env(safe-area-inset-bottom,16px))!important;';
+
+        var c = document.querySelector('.hud-container');
+        if (c) c.style.cssText += ';height:auto!important;max-height:none!important;overflow:visible!important;';
+
+        var sc = document.querySelector('.step-content');
+        if (sc) sc.style.cssText += ';overflow:visible!important;max-height:none!important;height:auto!important;flex:0 1 auto!important;';
+
+        var f = document.querySelector('.hud-footer');
+        if (f) {
+            f.style.cssText += ';display:flex!important;visibility:visible!important;opacity:1!important;position:relative!important;pointer-events:auto!important;z-index:9999!important;';
+            f.querySelectorAll('a.btn-action,.btn-action').forEach(function (b) {
+                b.style.cssText += ';display:inline-flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;cursor:pointer!important;';
+                b.removeAttribute('disabled');
+            });
+        }
     }
 
-    console.log('✅ 三行靠左（其他不動）');
+    force();
+    [100, 300, 600, 1200].forEach(function (t) { setTimeout(force, t); });
+    window.addEventListener('load', function () { setTimeout(force, 100); });
 })();
 </script>
 </body>
