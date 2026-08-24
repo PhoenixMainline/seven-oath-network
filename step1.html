@@ -1627,5 +1627,602 @@
     console.log('✅ 公版：外部瀏覽器 + 相機 QR 已載入');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：若沒有上一步／下一步就自動補上 + 正確連結                -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<style>
+    html, body {
+        height: auto !important;
+        max-height: none !important;
+        overflow-y: auto !important;
+    }
+    body {
+        display: block !important;
+        padding-bottom: calc(40px + env(safe-area-inset-bottom, 12px)) !important;
+    }
+    .hud-container {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+    .step-content {
+        overflow: visible !important;
+        max-height: none !important;
+    }
+    .hud-footer {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        width: 100% !important;
+        margin-top: 16px !important;
+        padding: 12px 6px 18px 6px !important;
+        border-top: 1px solid rgba(168, 85, 247, 0.3) !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+        z-index: 9999 !important;
+        pointer-events: auto !important;
+        background: rgba(4, 13, 33, 0.9) !important;
+        box-sizing: border-box !important;
+    }
+    .hud-footer .footer-btn-group {
+        display: flex !important;
+        gap: 12px !important;
+        pointer-events: auto !important;
+    }
+    .hud-footer .btn-action {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        min-height: 46px !important;
+        padding: 10px 18px !important;
+        border: 1px solid #a78bfa !important;
+        color: #e9d5ff !important;
+        background: rgba(124, 58, 237, 0.25) !important;
+        border-radius: 22px !important;
+        text-decoration: none !important;
+        font-size: 0.9rem !important;
+        font-weight: 700 !important;
+        cursor: pointer !important;
+        pointer-events: auto !important;
+    }
+    .hud-footer .page-marker {
+        font-size: 0.7rem !important;
+        color: rgba(224, 232, 245, 0.4) !important;
+        margin-left: auto !important;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__injectNavBtns) return;
+    window.__injectNavBtns = true;
+
+    var NAV_MAP = {
+        'index.html':   { prev: null,           next: 'step0.html' },
+        'step0.html':   { prev: 'index.html',   next: 'step1.html' },
+        'step1.html':   { prev: 'step0.html',   next: 'step1-1.html' },
+        'step1-1.html': { prev: 'step1.html',   next: 'step2.html' },
+        'step2.html':   { prev: 'step1-1.html', next: 'step3.html' },
+        'step3.html':   { prev: 'step2.html',   next: 'step4.html' },
+        'step4.html':   { prev: 'step3.html',   next: 'step5.html' },
+        'step5.html':   { prev: 'step4.html',   next: 'step6.html' },
+        'step6.html':   { prev: 'step5.html',   next: 'step7.html' },
+        'step7.html':   { prev: 'step6.html',   next: 'step7-1.html' },
+        'step7-1.html': { prev: 'step7.html',   next: 'step7-2.html' },
+        'step7-2.html': { prev: 'step7-1.html', next: 'step7-3.html' },
+        'step7-3.html': { prev: 'step7-2.html', next: 'step7-4.html' },
+        'step7-4.html': { prev: 'step7-3.html', next: 'step7-5.html' },
+        'step7-5.html': { prev: 'step7-4.html', next: 'step7-6.html' },
+        'step7-6.html': { prev: 'step7-5.html', next: 'step7-7.html' },
+        'step7-7.html': { prev: 'step7-6.html', next: 'step8.html' },
+        'step8.html':   { prev: 'step7-7.html', next: 'step9.html' },
+        'step9.html':   { prev: 'step8.html',   next: 'step10.html' },
+        'step10.html':  { prev: 'step9.html',   next: 'step11.html' },
+        'step11.html':  { prev: 'step10.html',  next: 'step12.html' },
+        'step12.html':  { prev: 'step11.html',  next: 'step13.html' },
+        'step13.html':  { prev: 'step12.html',  next: 'step14.html' },
+        'step14.html':  { prev: 'step13.html',  next: 'step15.html' },
+        'step15.html':  { prev: 'step14.html',  next: 'step16.html' },
+        'step16.html':  { prev: 'step15.html',  next: null }
+    };
+
+    function fileName() {
+        var p = (window.location.pathname || '').split('/').pop() || '';
+        return (p || 'index.html').toLowerCase();
+    }
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function ensureFooter() {
+        var container = document.querySelector('.hud-container');
+        if (!container) return null;
+
+        // 刪重複 footer，只留一個
+        var footers = Array.prototype.slice.call(document.querySelectorAll('.hud-footer'));
+        for (var i = 1; i < footers.length; i++) {
+            if (footers[i].parentNode) footers[i].parentNode.removeChild(footers[i]);
+        }
+
+        var footer = document.querySelector('.hud-footer');
+        if (!footer) {
+            footer = document.createElement('footer');
+            footer.className = 'hud-footer';
+            container.appendChild(footer);
+        }
+
+        // 若沒有按鈕群就建立
+        var group = footer.querySelector('.footer-btn-group');
+        if (!group) {
+            group = document.createElement('div');
+            group.className = 'footer-btn-group';
+            footer.insertBefore(group, footer.firstChild);
+        }
+
+        // 檢查是否已有上一步／下一步
+        var hasPrev = false, hasNext = false;
+        group.querySelectorAll('a, button').forEach(function (b) {
+            var t = b.textContent || '';
+            if (t.indexOf('上一步') !== -1 || t.indexOf('Previous') !== -1) hasPrev = true;
+            if (t.indexOf('下一步') !== -1 || t.indexOf('Next') !== -1) hasNext = true;
+        });
+
+        var map = NAV_MAP[fileName()] || {};
+        var en = isEn();
+
+        if (!hasPrev) {
+            var prev = document.createElement('a');
+            prev.className = 'btn-action enabled';
+            prev.id = 'btnBack';
+            prev.innerHTML = en ? '← Previous' : '← 上一步';
+            if (map.prev) prev.href = map.prev;
+            else {
+                prev.href = '#';
+                prev.style.opacity = '0.4';
+                prev.style.pointerEvents = 'none';
+            }
+            group.insertBefore(prev, group.firstChild);
+        }
+
+        if (!hasNext) {
+            var next = document.createElement('a');
+            next.className = 'btn-action enabled';
+            next.id = 'btnNext';
+            next.innerHTML = en ? 'Next →' : '下一步 →';
+            if (map.next) next.href = map.next;
+            else {
+                next.href = '#';
+                next.style.opacity = '0.4';
+                next.style.pointerEvents = 'none';
+            }
+            group.appendChild(next);
+        }
+
+        // 確保現有按鈕也有 href
+        group.querySelectorAll('a, button').forEach(function (btn) {
+            var t = btn.textContent || '';
+            var isPrev = t.indexOf('上一步') !== -1 || t.indexOf('Previous') !== -1;
+            var isNext = t.indexOf('下一步') !== -1 || t.indexOf('Next') !== -1;
+            var href = isPrev ? map.prev : (isNext ? map.next : null);
+            btn.classList.add('enabled');
+            btn.style.pointerEvents = 'auto';
+            btn.style.cursor = 'pointer';
+            if (btn.tagName === 'A' && href) btn.setAttribute('href', href);
+            if (btn.tagName !== 'A' && href) {
+                btn.onclick = function (e) {
+                    e.preventDefault();
+                    window.location.href = href;
+                };
+            }
+        });
+
+        // 頁碼標記（若沒有）
+        if (!footer.querySelector('.page-marker')) {
+            var marker = document.createElement('div');
+            marker.className = 'page-marker';
+            marker.innerHTML = '<i class="fa-solid fa-book"></i> <span id="pageMarkerText"></span>';
+            footer.appendChild(marker);
+        }
+
+        footer.style.setProperty('display', 'flex', 'important');
+        footer.style.setProperty('visibility', 'visible', 'important');
+        return footer;
+    }
+
+    function run() {
+        ensureFooter();
+        setTimeout(ensureFooter, 150);
+        setTimeout(ensureFooter, 500);
+        setTimeout(ensureFooter, 1000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(function () {
+                // 更新按鈕文字
+                var footer = document.querySelector('.hud-footer');
+                if (!footer) return;
+                var en = isEn();
+                footer.querySelectorAll('a, button').forEach(function (btn) {
+                    var t = btn.textContent || '';
+                    if (t.indexOf('上一步') !== -1 || t.indexOf('Previous') !== -1) {
+                        btn.innerHTML = en ? '← Previous' : '← 上一步';
+                    }
+                    if (t.indexOf('下一步') !== -1 || t.indexOf('Next') !== -1) {
+                        btn.innerHTML = en ? 'Next →' : '下一步 →';
+                    }
+                });
+            }, 80);
+        };
+    }
+
+    console.log('✅ 已自動補上上一步／下一步');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 公版：外部瀏覽器 + 相機 QR + 刪除掃描區多餘「輸入示範」        -->
+<!-- 刪舊腳本後只貼這段，Ctrl+F5                                    -->
+<!-- ============================================================ -->
+<style>
+    .btn-external-browser {
+        display: inline-flex !important;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 14px;
+        background: rgba(0, 230, 118, 0.12);
+        border: 1px solid rgba(0, 230, 118, 0.35);
+        border-radius: 20px;
+        color: #00e676;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        margin-left: 8px;
+        white-space: nowrap;
+    }
+    .camera-guide { display: none !important; }
+    .camera-guide.show-fail {
+        display: block !important;
+        text-align: left !important;
+        background: rgba(232, 96, 74, 0.08);
+        border-left: 4px solid #E8604A;
+        padding: 12px 14px;
+        border-radius: 10px;
+        font-size: 0.82rem;
+        line-height: 1.7;
+        color: #e0dcc8;
+        margin-top: 10px;
+    }
+    .qr-result-ok {
+        display: block !important;
+        margin-top: 10px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        background: rgba(0, 230, 118, 0.12);
+        border: 1px solid rgba(0, 230, 118, 0.35);
+        color: #00e676;
+        font-size: 0.85rem;
+        word-break: break-all;
+        text-align: left;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__browserQrCleanV3) return;
+    window.__browserQrCleanV3 = true;
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    /* ========== 刪除掃描區下面多餘的「輸入示範」 ========== */
+    function removeDupDemo() {
+        // 找出所有含「輸入示範／Please follow」的區塊
+        var demos = [];
+        document.querySelectorAll('div, span, p').forEach(function (el) {
+            if (el.children && el.children.length > 4) return;
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t || t.length > 80) return;
+            if (t.indexOf('輸入示範') !== -1 ||
+                t.indexOf('Please follow the Seven-Seal') !== -1 ||
+                t.indexOf('請依本卷七印誓網') !== -1) {
+                demos.push(el);
+            }
+        });
+
+        if (demos.length <= 1) return;
+
+        // 保留第一個（上方正確的紫色框），其餘若在掃描按鈕之後就刪
+        var scanBtns = document.querySelectorAll(
+            '#btnScanQRStep8, #btnScanQRStep9, #btnScanQR, #btnScanQRStep4, button, a'
+        );
+        var scanPos = null;
+        for (var i = 0; i < scanBtns.length; i++) {
+            var bt = scanBtns[i].textContent || '';
+            if (bt.indexOf('開始掃描') !== -1 || bt.indexOf('掃描') !== -1 ||
+                bt.indexOf('Start Scan') !== -1 || bt.indexOf('Scan') !== -1) {
+                scanPos = scanBtns[i];
+                break;
+            }
+        }
+
+        demos.forEach(function (el, idx) {
+            if (idx === 0) return; // 留第一個
+            // 在掃描按鈕後面、或綠色樣式 → 刪
+            var isAfterScan = false;
+            if (scanPos && el.compareDocumentPosition) {
+                // DOCUMENT_POSITION_FOLLOWING = 4
+                if (scanPos.compareDocumentPosition(el) & 4) isAfterScan = true;
+            }
+            var style = window.getComputedStyle ? window.getComputedStyle(el) : null;
+            var isGreen = style && (
+                (style.color || '').indexOf('0, 230, 118') !== -1 ||
+                (style.color || '').indexOf('00e676') !== -1 ||
+                (el.style && el.style.color && el.style.color.indexOf('00e676') !== -1)
+            );
+            // 或包在 qr / camera 相關容器內
+            var inQr = el.closest && (
+                el.closest('[id*="qr"]') ||
+                el.closest('[id*="camera"]') ||
+                el.closest('.qr-result') ||
+                el.closest('#qrScanResultStep8') ||
+                el.closest('#qrScanResultStep9')
+            );
+
+            if (isAfterScan || isGreen || inQr) {
+                var box = el.closest('div[style], .hud-card > div') || el;
+                if (box && box.parentNode) {
+                    box.style.setProperty('display', 'none', 'important');
+                    // 若整個是多餘框就移除
+                    if ((box.textContent || '').replace(/\s+/g, ' ').trim().length < 60) {
+                        try { box.parentNode.removeChild(box); } catch (e) {}
+                    }
+                }
+            }
+        });
+    }
+
+    /* ========== 外部瀏覽器 ========== */
+    function openExternalBrowser() {
+        var url = window.location.href;
+        var ua = navigator.userAgent || '';
+        if (/android/i.test(ua)) {
+            try {
+                window.location.href =
+                    'intent://' + window.location.host + window.location.pathname +
+                    window.location.search +
+                    '#Intent;scheme=https;package=com.android.chrome;end;';
+                return;
+            } catch (e) {}
+        }
+        if (/iphone|ipad|ipod/i.test(ua)) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(function () {
+                    alert((isEn() ? 'URL copied:\n\n' : '網址已複製：\n\n') + url);
+                });
+            } else {
+                alert(url);
+            }
+            return;
+        }
+        window.open(url, '_blank');
+    }
+
+    function addBrowserBtn() {
+        if (document.querySelector('.btn-external-browser')) return;
+        var langGroup = document.querySelector('.lang-switch-group');
+        if (!langGroup) return;
+        var btn = document.createElement('a');
+        btn.className = 'btn-external-browser';
+        btn.href = '#';
+        btn.innerHTML = isEn()
+            ? '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>Open in Browser</span>'
+            : '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>🌐 瀏覽器開啟</span>';
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            openExternalBrowser();
+        });
+        langGroup.parentNode.insertBefore(btn, langGroup.nextSibling);
+    }
+
+    /* ========== 相機 QR ========== */
+    var GUIDE_ZH =
+        '📷 無法啟動相機<br>' +
+        '⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>' +
+        '→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>' +
+        '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+    var GUIDE_EN =
+        '📷 Unable to launch the feature<br>' +
+        '⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"<br>' +
+        '→ Open using a web browser (Chrome / Yahoo / Edge...)<br>' +
+        '⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
+
+    var starting = false;
+    var activeQr = null;
+
+    function hideGuides() {
+        document.querySelectorAll('.camera-guide, [id*="cameraGuide"]').forEach(function (el) {
+            el.classList.remove('show-fail');
+            el.style.setProperty('display', 'none', 'important');
+        });
+    }
+
+    function showGuide(guideId) {
+        var g = guideId ? document.getElementById(guideId) : document.querySelector('.camera-guide');
+        if (!g) return;
+        g.innerHTML = isEn() ? GUIDE_EN : GUIDE_ZH;
+        g.classList.add('show-fail');
+        g.style.setProperty('display', 'block', 'important');
+    }
+
+    function stopActive() {
+        if (!activeQr) return Promise.resolve();
+        var inst = activeQr;
+        activeQr = null;
+        return inst.stop().catch(function () {}).then(function () {
+            try { inst.clear(); } catch (e) {}
+        });
+    }
+
+    window.startQRScanner = function (containerId, resultId, guideId) {
+        if (starting) return;
+        starting = true;
+        var container = document.getElementById(containerId);
+        var resultEl = resultId ? document.getElementById(resultId) : null;
+        hideGuides();
+        removeDupDemo();
+        if (resultEl) {
+            resultEl.style.display = 'none';
+            resultEl.innerHTML = '';
+            resultEl.classList.remove('qr-result-ok');
+        }
+        if (!container || typeof Html5Qrcode === 'undefined' ||
+            !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            starting = false;
+            showGuide(guideId);
+            return;
+        }
+        stopActive().then(function () {
+            container.innerHTML = '';
+            var qr = new Html5Qrcode(containerId);
+            activeQr = qr;
+            return qr.start(
+                { facingMode: 'environment' },
+                { fps: 12, qrbox: { width: 220, height: 220 } },
+                function (decodedText) {
+                    stopActive().then(function () {
+                        container.innerHTML = '';
+                        if (resultEl) {
+                            resultEl.classList.add('qr-result-ok');
+                            resultEl.style.display = 'block';
+                            resultEl.innerHTML =
+                                '<i class="fa-solid fa-check-circle" style="margin-right:6px;"></i>' +
+                                (isEn() ? 'Scan successful: ' : '掃描成功：') +
+                                '<span style="color:#e0e8f5;">' + (decodedText || '') + '</span>';
+                        }
+                        hideGuides();
+                        removeDupDemo();
+                        starting = false;
+                    });
+                },
+                function () {}
+            );
+        }).then(function () {
+            hideGuides();
+            starting = false;
+        }).catch(function () {
+            activeQr = null;
+            starting = false;
+            showGuide(guideId);
+        });
+        setTimeout(function () { starting = false; }, 4000);
+    };
+
+    window.smoothStartScan = window.startQRScanner;
+    window.startQRScannerStep8 = function () {
+        window.startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+    };
+    window.startQRScannerStep9 = function () {
+        window.startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
+    };
+
+    var MAP = [
+        { btn: 'btnScanQRStep8', box: 'qr-reader-container-step8', result: 'qrScanResultStep8', guide: 'cameraGuideStep8' },
+        { btn: 'btnScanQRStep9', box: 'qr-reader-container-step9', result: 'qrScanResultStep9', guide: 'cameraGuideStep9' },
+        { btn: 'btnScanQR', box: 'qr-reader-container', result: 'qrScanResult', guide: 'cameraGuide' },
+        { btn: 'btnScanQRStep4', box: 'qr-reader-container-step4', result: 'qrScanResultStep4', guide: 'cameraGuideStep4' }
+    ];
+
+    function bindQr() {
+        MAP.forEach(function (c) {
+            var btn = document.getElementById(c.btn);
+            if (!btn || btn.__qrV3) return;
+            btn.__qrV3 = true;
+            btn.disabled = false;
+            btn.style.pointerEvents = 'auto';
+            btn.style.cursor = 'pointer';
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                window.startQRScanner(c.box, c.result, c.guide);
+            }, true);
+        });
+        // 備援：文字含「開始掃描」
+        document.querySelectorAll('button, a').forEach(function (btn) {
+            var t = btn.textContent || '';
+            if (t.indexOf('開始掃描') === -1 && t.indexOf('Start Scan') === -1) return;
+            if (btn.__qrV3) return;
+            btn.__qrV3 = true;
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var card = btn.closest('.hud-card') || document;
+                var box = card.querySelector('[id*="qr-reader"]') || document.querySelector('[id*="qr-reader"]');
+                var result = card.querySelector('[id*="qrScanResult"], .qr-result');
+                var guide = card.querySelector('[id*="cameraGuide"], .camera-guide');
+                window.startQRScanner(
+                    box ? box.id : 'qr-reader-container-step8',
+                    result ? result.id : 'qrScanResultStep8',
+                    guide ? guide.id : 'cameraGuideStep8'
+                );
+            }, true);
+        });
+    }
+
+    function run() {
+        addBrowserBtn();
+        hideGuides();
+        removeDupDemo();
+        bindQr();
+        setTimeout(function () { removeDupDemo(); bindQr(); }, 200);
+        setTimeout(function () { removeDupDemo(); bindQr(); }, 600);
+        setTimeout(removeDupDemo, 1200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(function () {
+                removeDupDemo();
+                bindQr();
+            }, 100);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__dupDemoT);
+        window.__dupDemoT = setTimeout(removeDupDemo, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ 公版：瀏覽器 + 相機 + 刪多餘輸入示範');
+})();
+</script>
 </body>
 </html>
