@@ -1144,6 +1144,204 @@
 })();
 </script>
 <!-- ============================================================ -->
+<!-- 強制只留一組「上一步／下一步」（不管包在哪裡）                  -->
+<!-- 刪掉舊腳本後只貼這段，Ctrl+F5                                  -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__killDupNav) return;
+    window.__killDupNav = true;
+
+    function isNavBtn(el) {
+        var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+        return t.indexOf('上一步') !== -1 || t.indexOf('下一步') !== -1 ||
+               t.indexOf('Previous') !== -1 || t.indexOf('Next') !== -1;
+    }
+
+    function clean() {
+        // 1) 多個 .hud-footer → 只留第一個
+        var footers = Array.prototype.slice.call(document.querySelectorAll('.hud-footer'));
+        for (var i = 1; i < footers.length; i++) {
+            footers[i].parentNode && footers[i].parentNode.removeChild(footers[i]);
+        }
+
+        // 2) 找出所有含上一步/下一步的按鈕群
+        var groups = [];
+        document.querySelectorAll('.footer-btn-group, .hud-footer, div').forEach(function (box) {
+            if (!box || box.__navChecked) return;
+            var btns = box.querySelectorAll('a, button, .btn-action');
+            var hasPrev = false, hasNext = false;
+            btns.forEach(function (b) {
+                var t = (b.textContent || '');
+                if (t.indexOf('上一步') !== -1 || t.indexOf('Previous') !== -1) hasPrev = true;
+                if (t.indexOf('下一步') !== -1 || t.indexOf('Next') !== -1) hasNext = true;
+            });
+            if (hasPrev && hasNext) {
+                box.__navChecked = true;
+                groups.push(box);
+            }
+        });
+
+        // 只留第一組，其餘整組刪除
+        for (var j = 1; j < groups.length; j++) {
+            var g = groups[j];
+            // 若是 footer 本身已在步驟1處理過就跳過
+            if (g.classList && g.classList.contains('hud-footer') && footers[0] === g) continue;
+            // 刪掉這一組（若父層只剩這組也可刪父層）
+            if (g.parentNode) g.parentNode.removeChild(g);
+        }
+
+        // 3) 確保留下的那組可點、可見
+        var keep = document.querySelector('.hud-footer') || groups[0];
+        if (keep) {
+            keep.style.setProperty('display', 'flex', 'important');
+            keep.style.setProperty('visibility', 'visible', 'important');
+            keep.style.setProperty('opacity', '1', 'important');
+            keep.querySelectorAll('a, button, .btn-action').forEach(function (b) {
+                if (!isNavBtn(b)) return;
+                b.style.setProperty('display', 'inline-flex', 'important');
+                b.style.setProperty('pointer-events', 'auto', 'important');
+                b.style.setProperty('opacity', '1', 'important');
+                b.removeAttribute('disabled');
+            });
+        }
+    }
+
+    function run() {
+        clean();
+        setTimeout(clean, 80);
+        setTimeout(clean, 300);
+        setTimeout(clean, 700);
+        setTimeout(clean, 1500);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__killDupT);
+        window.__killDupT = setTimeout(clean, 50);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ 重複上一步/下一步已清除');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 一次到位：解除 100vh / flex 置中，footer 跟在內容後面          -->
+<!-- 先刪除舊的 footer 展開腳本，再貼這段，Ctrl+F5                  -->
+<!-- ============================================================ -->
+<style id="footer-expand-final">
+    html {
+        height: auto !important;
+        max-height: none !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+    body {
+        height: auto !important;
+        max-height: none !important;
+        min-height: 100% !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        display: block !important;          /* 關鍵：不要 flex 置中 */
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        padding: 8px 8px 48px 8px !important;
+        padding-bottom: calc(48px + env(safe-area-inset-bottom, 16px)) !important;
+    }
+    .particle-container,
+    .watermark-layer {
+        position: fixed !important;
+        pointer-events: none !important;
+    }
+    .hud-container {
+        height: auto !important;
+        max-height: none !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+        display: flex !important;
+        flex-direction: column !important;
+        margin: 0 auto 24px auto !important;
+        position: relative !important;
+    }
+    .step-content {
+        flex: 0 1 auto !important;
+        overflow: visible !important;       /* 關鍵：不要內部捲動裁切 */
+        max-height: none !important;
+        min-height: 0 !important;
+        height: auto !important;
+    }
+    .hud-footer {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        flex-shrink: 0 !important;
+        width: 100% !important;
+        margin-top: 20px !important;
+        margin-bottom: 0 !important;
+        padding: 14px 6px 20px 6px !important;
+        border-top: 1px solid rgba(168, 85, 247, 0.3) !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+        z-index: 9999 !important;
+        pointer-events: auto !important;
+        background: rgba(4, 13, 33, 0.95) !important;
+    }
+    .hud-footer .footer-btn-group {
+        display: flex !important;
+        gap: 12px !important;
+        pointer-events: auto !important;
+    }
+    .hud-footer .btn-action,
+    .hud-footer a.btn-action {
+        display: inline-flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        min-height: 48px !important;
+        padding: 12px 20px !important;
+        z-index: 10001 !important;
+    }
+</style>
+<script>
+(function () {
+    if (window.__footerFinal) return;
+    window.__footerFinal = true;
+
+    function force() {
+        document.documentElement.style.cssText += ';height:auto!important;max-height:none!important;overflow-y:auto!important;';
+        document.body.style.cssText += ';height:auto!important;max-height:none!important;overflow-y:auto!important;display:block!important;align-items:flex-start!important;padding-bottom:calc(48px + env(safe-area-inset-bottom,16px))!important;';
+
+        var c = document.querySelector('.hud-container');
+        if (c) c.style.cssText += ';height:auto!important;max-height:none!important;overflow:visible!important;';
+
+        var sc = document.querySelector('.step-content');
+        if (sc) sc.style.cssText += ';overflow:visible!important;max-height:none!important;height:auto!important;flex:0 1 auto!important;';
+
+        var f = document.querySelector('.hud-footer');
+        if (f) {
+            f.style.cssText += ';display:flex!important;visibility:visible!important;opacity:1!important;position:relative!important;pointer-events:auto!important;z-index:9999!important;';
+            f.querySelectorAll('a.btn-action,.btn-action').forEach(function (b) {
+                b.style.cssText += ';display:inline-flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;cursor:pointer!important;';
+                b.removeAttribute('disabled');
+            });
+        }
+    }
+
+    force();
+    [100, 300, 600, 1200].forEach(function (t) { setTimeout(force, t); });
+    window.addEventListener('load', function () { setTimeout(force, 100); });
+})();
+</script>
+<!-- ============================================================ -->
 <!-- 公版：外部瀏覽器開啟 + 相機 QR 掃描（掃到顯示文字）            -->
 <!-- 貼在 </body> 前，Ctrl+F5                                      -->
 <!-- ============================================================ -->
@@ -1427,204 +1625,6 @@
     }
 
     console.log('✅ 公版：外部瀏覽器 + 相機 QR 已載入');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 強制只留一組「上一步／下一步」（不管包在哪裡）                  -->
-<!-- 刪掉舊腳本後只貼這段，Ctrl+F5                                  -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    if (window.__killDupNav) return;
-    window.__killDupNav = true;
-
-    function isNavBtn(el) {
-        var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
-        return t.indexOf('上一步') !== -1 || t.indexOf('下一步') !== -1 ||
-               t.indexOf('Previous') !== -1 || t.indexOf('Next') !== -1;
-    }
-
-    function clean() {
-        // 1) 多個 .hud-footer → 只留第一個
-        var footers = Array.prototype.slice.call(document.querySelectorAll('.hud-footer'));
-        for (var i = 1; i < footers.length; i++) {
-            footers[i].parentNode && footers[i].parentNode.removeChild(footers[i]);
-        }
-
-        // 2) 找出所有含上一步/下一步的按鈕群
-        var groups = [];
-        document.querySelectorAll('.footer-btn-group, .hud-footer, div').forEach(function (box) {
-            if (!box || box.__navChecked) return;
-            var btns = box.querySelectorAll('a, button, .btn-action');
-            var hasPrev = false, hasNext = false;
-            btns.forEach(function (b) {
-                var t = (b.textContent || '');
-                if (t.indexOf('上一步') !== -1 || t.indexOf('Previous') !== -1) hasPrev = true;
-                if (t.indexOf('下一步') !== -1 || t.indexOf('Next') !== -1) hasNext = true;
-            });
-            if (hasPrev && hasNext) {
-                box.__navChecked = true;
-                groups.push(box);
-            }
-        });
-
-        // 只留第一組，其餘整組刪除
-        for (var j = 1; j < groups.length; j++) {
-            var g = groups[j];
-            // 若是 footer 本身已在步驟1處理過就跳過
-            if (g.classList && g.classList.contains('hud-footer') && footers[0] === g) continue;
-            // 刪掉這一組（若父層只剩這組也可刪父層）
-            if (g.parentNode) g.parentNode.removeChild(g);
-        }
-
-        // 3) 確保留下的那組可點、可見
-        var keep = document.querySelector('.hud-footer') || groups[0];
-        if (keep) {
-            keep.style.setProperty('display', 'flex', 'important');
-            keep.style.setProperty('visibility', 'visible', 'important');
-            keep.style.setProperty('opacity', '1', 'important');
-            keep.querySelectorAll('a, button, .btn-action').forEach(function (b) {
-                if (!isNavBtn(b)) return;
-                b.style.setProperty('display', 'inline-flex', 'important');
-                b.style.setProperty('pointer-events', 'auto', 'important');
-                b.style.setProperty('opacity', '1', 'important');
-                b.removeAttribute('disabled');
-            });
-        }
-    }
-
-    function run() {
-        clean();
-        setTimeout(clean, 80);
-        setTimeout(clean, 300);
-        setTimeout(clean, 700);
-        setTimeout(clean, 1500);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__killDupT);
-        window.__killDupT = setTimeout(clean, 50);
-    });
-    obs.observe(document.body, { childList: true, subtree: true });
-
-    console.log('✅ 重複上一步/下一步已清除');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 一次到位：解除 100vh / flex 置中，footer 跟在內容後面          -->
-<!-- 先刪除舊的 footer 展開腳本，再貼這段，Ctrl+F5                  -->
-<!-- ============================================================ -->
-<style id="footer-expand-final">
-    html {
-        height: auto !important;
-        max-height: none !important;
-        overflow-y: auto !important;
-        overflow-x: hidden !important;
-    }
-    body {
-        height: auto !important;
-        max-height: none !important;
-        min-height: 100% !important;
-        overflow-y: auto !important;
-        overflow-x: hidden !important;
-        display: block !important;          /* 關鍵：不要 flex 置中 */
-        align-items: flex-start !important;
-        justify-content: flex-start !important;
-        padding: 8px 8px 48px 8px !important;
-        padding-bottom: calc(48px + env(safe-area-inset-bottom, 16px)) !important;
-    }
-    .particle-container,
-    .watermark-layer {
-        position: fixed !important;
-        pointer-events: none !important;
-    }
-    .hud-container {
-        height: auto !important;
-        max-height: none !important;
-        min-height: 0 !important;
-        overflow: visible !important;
-        display: flex !important;
-        flex-direction: column !important;
-        margin: 0 auto 24px auto !important;
-        position: relative !important;
-    }
-    .step-content {
-        flex: 0 1 auto !important;
-        overflow: visible !important;       /* 關鍵：不要內部捲動裁切 */
-        max-height: none !important;
-        min-height: 0 !important;
-        height: auto !important;
-    }
-    .hud-footer {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        position: relative !important;
-        flex-shrink: 0 !important;
-        width: 100% !important;
-        margin-top: 20px !important;
-        margin-bottom: 0 !important;
-        padding: 14px 6px 20px 6px !important;
-        border-top: 1px solid rgba(168, 85, 247, 0.3) !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        flex-wrap: wrap !important;
-        gap: 10px !important;
-        z-index: 9999 !important;
-        pointer-events: auto !important;
-        background: rgba(4, 13, 33, 0.95) !important;
-    }
-    .hud-footer .footer-btn-group {
-        display: flex !important;
-        gap: 12px !important;
-        pointer-events: auto !important;
-    }
-    .hud-footer .btn-action,
-    .hud-footer a.btn-action {
-        display: inline-flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        cursor: pointer !important;
-        min-height: 48px !important;
-        padding: 12px 20px !important;
-        z-index: 10001 !important;
-    }
-</style>
-<script>
-(function () {
-    if (window.__footerFinal) return;
-    window.__footerFinal = true;
-
-    function force() {
-        document.documentElement.style.cssText += ';height:auto!important;max-height:none!important;overflow-y:auto!important;';
-        document.body.style.cssText += ';height:auto!important;max-height:none!important;overflow-y:auto!important;display:block!important;align-items:flex-start!important;padding-bottom:calc(48px + env(safe-area-inset-bottom,16px))!important;';
-
-        var c = document.querySelector('.hud-container');
-        if (c) c.style.cssText += ';height:auto!important;max-height:none!important;overflow:visible!important;';
-
-        var sc = document.querySelector('.step-content');
-        if (sc) sc.style.cssText += ';overflow:visible!important;max-height:none!important;height:auto!important;flex:0 1 auto!important;';
-
-        var f = document.querySelector('.hud-footer');
-        if (f) {
-            f.style.cssText += ';display:flex!important;visibility:visible!important;opacity:1!important;position:relative!important;pointer-events:auto!important;z-index:9999!important;';
-            f.querySelectorAll('a.btn-action,.btn-action').forEach(function (b) {
-                b.style.cssText += ';display:inline-flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;cursor:pointer!important;';
-                b.removeAttribute('disabled');
-            });
-        }
-    }
-
-    force();
-    [100, 300, 600, 1200].forEach(function (t) { setTimeout(force, t); });
-    window.addEventListener('load', function () { setTimeout(force, 100); });
 })();
 </script>
 </body>
