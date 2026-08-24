@@ -1488,5 +1488,290 @@
     console.log('✅ 上一步／下一步已強制展開且可點');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：相機 QR 掃描（可正常啟動 + 顯示掃到的文字）              -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<style>
+    .camera-guide { display: none !important; }
+    .camera-guide.show-fail { display: block !important; text-align: left !important; }
+    .qr-result-ok {
+        display: block !important;
+        margin-top: 10px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        background: rgba(0, 230, 118, 0.12);
+        border: 1px solid rgba(0, 230, 118, 0.35);
+        color: #00e676;
+        font-size: 0.85rem;
+        word-break: break-all;
+        text-align: left;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__qrScanPublicV2) return;
+    window.__qrScanPublicV2 = true;
+
+    var GUIDE_ZH =
+        '📷 無法啟動相機<br>' +
+        '⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>' +
+        '→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>' +
+        '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+
+    var GUIDE_EN =
+        '📷 Unable to launch the feature<br>' +
+        '⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"<br>' +
+        '→ Open using a web browser (Chrome / Yahoo / Edge...)<br>' +
+        '⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
+
+    var starting = false;
+    var activeQr = null;
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function hideGuides() {
+        document.querySelectorAll('.camera-guide, [id*="cameraGuide"], [id*="CameraGuide"]').forEach(function (el) {
+            el.classList.remove('show-fail');
+            el.style.setProperty('display', 'none', 'important');
+        });
+    }
+
+    function showGuide(guideId) {
+        var g = guideId ? document.getElementById(guideId) : document.querySelector('.camera-guide');
+        if (!g) return;
+        g.innerHTML = isEn() ? GUIDE_EN : GUIDE_ZH;
+        g.classList.add('show-fail');
+        g.style.setProperty('display', 'block', 'important');
+        g.style.setProperty('text-align', 'left', 'important');
+    }
+
+    function stopActive() {
+        if (!activeQr) return Promise.resolve();
+        var inst = activeQr;
+        activeQr = null;
+        return inst.stop().catch(function () {}).then(function () {
+            try { inst.clear(); } catch (e) {}
+        });
+    }
+
+    // 統一啟動：掃到碼 → 顯示文字；失敗 → 顯示引導
+    window.startQRScanner = function (containerId, resultId, guideId) {
+        if (starting) return;
+        starting = true;
+
+        var container = document.getElementById(containerId);
+        var resultEl = resultId ? document.getElementById(resultId) : null;
+
+        hideGuides();
+        if (resultEl) {
+            resultEl.style.display = 'none';
+            resultEl.innerHTML = '';
+            resultEl.classList.remove('qr-result-ok');
+        }
+
+        if (!container) {
+            starting = false;
+            showGuide(guideId);
+            return;
+        }
+        if (typeof Html5Qrcode === 'undefined' ||
+            !navigator.mediaDevices ||
+            !navigator.mediaDevices.getUserMedia) {
+            starting = false;
+            showGuide(guideId);
+            return;
+        }
+
+        stopActive().then(function () {
+            container.innerHTML = '';
+            var qr = new Html5Qrcode(containerId);
+            activeQr = qr;
+
+            return qr.start(
+                { facingMode: 'environment' },
+                { fps: 12, qrbox: { width: 220, height: 220 } },
+                function (decodedText) {
+                    // ★ 掃到 QR 文字 → 顯示
+                    stopActive().then(function () {
+                        container.innerHTML = '';
+                        if (resultEl) {
+                            resultEl.classList.add('qr-result-ok');
+                            resultEl.style.display = 'block';
+                            resultEl.innerHTML =
+                                '<i class="fa-solid fa-check-circle" style="margin-right:6px;"></i>' +
+                                (isEn() ? 'Scan successful: ' : '掃描成功：') +
+                                '<span style="color:#e0e8f5;">' + (decodedText || '') + '</span>';
+                        }
+                        hideGuides();
+                        starting = false;
+                    });
+                },
+                function () { /* 掃不到持續掃，不顯示失敗 */ }
+            );
+        }).then(function () {
+            hideGuides();
+            starting = false;
+        }).catch(function () {
+            activeQr = null;
+            starting = false;
+            showGuide(guideId);
+        });
+
+        setTimeout(function () { starting = false; }, 4000);
+    };
+
+    // 相容舊函式名
+    window.smoothStartScan = window.startQRScanner;
+    window.startQRScannerStep8 = function () {
+        window.startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+    };
+    window.startQRScannerStep9 = function () {
+        window.startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
+    };
+
+    // 按鈕對應
+    var MAP = [
+        { btn: 'btnScanQRStep8', box: 'qr-reader-container-step8', result: 'qrScanResultStep8', guide: 'cameraGuideStep8' },
+        { btn: 'btnScanQRStep9', box: 'qr-reader-container-step9', result: 'qrScanResultStep9', guide: 'cameraGuideStep9' },
+        { btn: 'btnScanQR',      box: 'qr-reader-container',      result: 'qrScanResult',      guide: 'cameraGuide' },
+        { btn: 'btnScanQRStep4', box: 'qr-reader-container-step4', result: 'qrScanResultStep4', guide: 'cameraGuideStep4' }
+    ];
+
+    function bind() {
+        MAP.forEach(function (c) {
+            var btn = document.getElementById(c.btn);
+            if (!btn || btn.__qrBoundV2) return;
+            btn.__qrBoundV2 = true;
+            btn.disabled = false;
+            btn.style.pointerEvents = 'auto';
+            btn.style.cursor = 'pointer';
+
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                window.startQRScanner(c.box, c.result, c.guide);
+            }, true);
+        });
+    }
+
+    function run() {
+        hideGuides();
+        bind();
+        setTimeout(bind, 300);
+        setTimeout(bind, 800);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(function () {
+                document.querySelectorAll('.camera-guide.show-fail').forEach(function (el) {
+                    el.innerHTML = isEn() ? GUIDE_EN : GUIDE_ZH;
+                });
+                bind();
+            }, 100);
+        };
+    }
+
+    console.log('✅ 公版相機 QR：可啟動、掃到顯示文字、失敗才顯示引導');
+})();
+</script>
+  <!-- ============================================================ -->
+<!-- 只靠左：誓印通過 + 兩行進入步驟（其他不動）                    -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__onlyLeft3) return;
+    window.__onlyLeft3 = true;
+
+    function apply() {
+        // 1) ✅ 顯示：「誓印通過」
+        document.querySelectorAll('div, span').forEach(function (el) {
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (t === '✅ 顯示：「誓印通過」' ||
+                t === '顯示：「誓印通過」' ||
+                t.indexOf('顯示：「誓印通過」') !== -1 ||
+                t.indexOf('Display : 「Oath Seal Passed」') !== -1 ||
+                t.indexOf('Oath Seal Passed') !== -1 && t.length < 40) {
+                el.style.setProperty('text-align', 'left', 'important');
+                el.style.setProperty('display', 'block', 'important');
+                el.style.setProperty('width', '100%', 'important');
+                if (el.parentElement) {
+                    el.parentElement.style.setProperty('text-align', 'left', 'important');
+                    el.parentElement.style.setProperty('justify-content', 'flex-start', 'important');
+                }
+            }
+        });
+
+        // 2) 兩行「進入」
+        document.querySelectorAll('div, span, p').forEach(function (el) {
+            if (el.children && el.children.length > 5) return;
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t || t.length > 80) return;
+
+            var hit =
+                (t.indexOf('進入') !== -1 && (
+                    t.indexOf('回傳誓證') !== -1 ||
+                    t.indexOf('執行階段') !== -1 ||
+                    t.indexOf('七印誓網') !== -1 ||
+                    t.indexOf('第 7') !== -1 ||
+                    t.indexOf('第7') !== -1
+                )) ||
+                (t.indexOf('Enter') !== -1 && (
+                    t.indexOf('Return') !== -1 ||
+                    t.indexOf('Seven-Seal') !== -1
+                ));
+
+            if (!hit) return;
+
+            el.style.setProperty('text-align', 'left', 'important');
+            el.style.setProperty('justify-content', 'flex-start', 'important');
+            el.style.setProperty('width', '100%', 'important');
+            if (el.parentElement) {
+                el.parentElement.style.setProperty('text-align', 'left', 'important');
+                el.parentElement.style.setProperty('justify-content', 'flex-start', 'important');
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+        };
+    }
+
+    console.log('✅ 三行靠左（其他不動）');
+})();
+</script>
 </body>
 </html>
