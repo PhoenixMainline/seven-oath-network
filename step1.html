@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>【宇宙誓印覺醒工程 · 七印誓網】公版範本</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
@@ -1025,6 +1025,95 @@
 })();
 </script>
 <!-- ============================================================ -->
+<!-- 輸入示範：完整一行（含 ⌨️ 標籤）                              -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__fullDemoLine) return;
+    window.__fullDemoLine = true;
+
+    var FULL_ZH = '⌨️ 輸入示範：請依本卷七印誓網誓導碼操作';
+    var FULL_EN = '⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.';
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var en = isEn();
+        var full = en ? FULL_EN : FULL_ZH;
+
+        // 1) 常見 ID
+        document.querySelectorAll('[id*="InputLabel"], [id*="inputLabel"]').forEach(function (el) {
+            el.textContent = full;
+        });
+        document.querySelectorAll('[id*="Command"], [id*="command"]').forEach(function (el) {
+            var id = el.id || '';
+            if (/Trigger|trigger/i.test(id)) return;
+            el.textContent = '';
+            el.style.setProperty('display', 'none', 'important');
+        });
+
+        // 2) 畫面上的示範框文字
+        document.querySelectorAll('div, span, p').forEach(function (el) {
+            if (el.children && el.children.length > 3) return;
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t || t.length > 100) return;
+
+            // 已是示範相關
+            var isDemo =
+                t.indexOf('輸入示範') !== -1 ||
+                t.indexOf('Input Example') !== -1 ||
+                t.indexOf('請依本卷') !== -1 ||
+                t.indexOf('Please follow the Seven-Seal') !== -1 ||
+                (t.indexOf('【執行指令】') !== -1 && (t.indexOf('第') !== -1 || t.indexOf('回傳') !== -1 || t.indexOf('結果') !== -1));
+
+            if (!isDemo) return;
+            el.textContent = full;
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 200);
+        setTimeout(apply, 600);
+        setTimeout(apply, 1200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
+            setTimeout(apply, 60);
+            setTimeout(apply, 250);
+        }
+    });
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__fullDemoTimer);
+        window.__fullDemoTimer = setTimeout(apply, 100);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 輸入示範完整一行已套用');
+})();
+</script>
+<!-- ============================================================ -->
 <!-- step1 下一步：改連到 step1-1（第1項 誓印未通過）              -->
 <!-- ============================================================ -->
 <script>
@@ -1054,195 +1143,7 @@
     setTimeout(fix, 200);
 })();
 </script>
-<script>
-(function() {
-    if (window.__fixQrDisplay) return;
-    window.__fixQrDisplay = true;
-
-    var langPack = window.langPack || {
-        zh: { scanSuccess: '掃描成功：' },
-        en: { scanSuccess: 'Scan successful: ' }
-    };
-    var currentLang = window.currentLang || 'zh';
-
-    function isEn() {
-        if (typeof window.currentLang !== 'undefined') return window.currentLang === 'en';
-        var a = document.querySelector('.lang-btn.active');
-        return !!(a && /english|en/i.test(a.textContent || ''));
-    }
-
-    // === 修復 step8 ===
-    window.startQRScannerStep8 = function() {
-        var container = document.getElementById('qr-reader-container-step8');
-        var guide = document.getElementById('cameraGuideStep8');
-        var result = document.getElementById('qrScanResultStep8');
-
-        if (!container || typeof Html5Qrcode === 'undefined') {
-            if (guide) {
-                guide.style.display = 'block';
-                guide.classList.add('show-fail');
-                guide.textContent = langPack[currentLang]?.step1CameraGuide || '📷 無法啟動相機';
-            }
-            return;
-        }
-
-        if (window.html5QrCodeStep8) {
-            window.html5QrCodeStep8.stop().catch(function() {});
-            window.html5QrCodeStep8 = null;
-        }
-
-        container.innerHTML = '';
-        if (guide) { guide.style.display = 'none'; guide.classList.remove('show-fail'); }
-        if (result) { result.style.display = 'none'; result.classList.remove('show'); result.innerHTML = ''; }
-
-        try {
-            window.html5QrCodeStep8 = new Html5Qrcode('qr-reader-container-step8');
-            window.html5QrCodeStep8.start(
-                { facingMode: "environment" },
-                { fps: 10, qrbox: { width: 220, height: 220 } },
-                function(decodedText) {
-                    window.html5QrCodeStep8.stop().then(function() {
-                        window.html5QrCodeStep8 = null;
-                        container.innerHTML = '';
-                        if (result) {
-                            result.style.display = 'block';
-                            result.classList.add('show');
-                            result.innerHTML =
-                                '<i class="fa-solid fa-check-circle" style="margin-right:6px;color:#00e676;"></i> ' +
-                                (isEn() ? 'Scan successful: ' : '掃描成功：') +
-                                '<span class="qr-text" style="color:#e0e8f5;font-weight:600;display:block;margin-top:4px;padding:6px 10px;background:#0b0d12;border-radius:8px;font-size:0.85rem;word-break:break-all;">' + 
-                                (decodedText || '') + '</span>';
-                        }
-                        if (guide) { guide.style.display = 'none'; guide.classList.remove('show-fail'); }
-                    }).catch(function() {
-                        if (result) {
-                            result.style.display = 'block';
-                            result.classList.add('show');
-                            result.innerHTML =
-                                '<i class="fa-solid fa-check-circle" style="margin-right:6px;color:#00e676;"></i> ' +
-                                (isEn() ? 'Scan successful: ' : '掃描成功：') +
-                                '<span class="qr-text" style="color:#e0e8f5;font-weight:600;display:block;margin-top:4px;padding:6px 10px;background:#0b0d12;border-radius:8px;font-size:0.85rem;word-break:break-all;">' + 
-                                (decodedText || '') + '</span>';
-                        }
-                    });
-                },
-                function() {}
-            ).catch(function() {
-                if (guide) {
-                    guide.style.display = 'block';
-                    guide.classList.add('show-fail');
-                    guide.textContent = langPack[currentLang]?.step1CameraGuide || '📷 無法啟動相機';
-                }
-                window.html5QrCodeStep8 = null;
-            });
-        } catch (err) {
-            if (guide) {
-                guide.style.display = 'block';
-                guide.classList.add('show-fail');
-                guide.textContent = langPack[currentLang]?.step1CameraGuide || '📷 無法啟動相機';
-            }
-        }
-    };
-
-    // === 修復 step9 ===
-    window.startQRScannerStep9 = function() {
-        var container = document.getElementById('qr-reader-container-step9');
-        var guide = document.getElementById('cameraGuideStep9');
-        var result = document.getElementById('qrScanResultStep9');
-
-        if (!container || typeof Html5Qrcode === 'undefined') {
-            if (guide) {
-                guide.style.display = 'block';
-                guide.classList.add('show-fail');
-                guide.textContent = langPack[currentLang]?.step1ReturnCameraGuide || '📷 無法啟動相機（補誓程序）';
-            }
-            return;
-        }
-
-        if (window.html5QrCodeStep9) {
-            window.html5QrCodeStep9.stop().catch(function() {});
-            window.html5QrCodeStep9 = null;
-        }
-
-        container.innerHTML = '';
-        if (guide) { guide.style.display = 'none'; guide.classList.remove('show-fail'); }
-        if (result) { result.style.display = 'none'; result.classList.remove('show'); result.innerHTML = ''; }
-
-        try {
-            window.html5QrCodeStep9 = new Html5Qrcode('qr-reader-container-step9');
-            window.html5QrCodeStep9.start(
-                { facingMode: "environment" },
-                { fps: 10, qrbox: { width: 220, height: 220 } },
-                function(decodedText) {
-                    window.html5QrCodeStep9.stop().then(function() {
-                        window.html5QrCodeStep9 = null;
-                        container.innerHTML = '';
-                        if (result) {
-                            result.style.display = 'block';
-                            result.classList.add('show');
-                            result.innerHTML =
-                                '<i class="fa-solid fa-check-circle" style="margin-right:6px;color:#00e676;"></i> ' +
-                                (isEn() ? 'Scan successful: ' : '掃描成功：') +
-                                '<span class="qr-text" style="color:#e0e8f5;font-weight:600;display:block;margin-top:4px;padding:6px 10px;background:#0b0d12;border-radius:8px;font-size:0.85rem;word-break:break-all;">' + 
-                                (decodedText || '') + '</span>';
-                        }
-                        if (guide) { guide.style.display = 'none'; guide.classList.remove('show-fail'); }
-                    }).catch(function() {
-                        if (result) {
-                            result.style.display = 'block';
-                            result.classList.add('show');
-                            result.innerHTML =
-                                '<i class="fa-solid fa-check-circle" style="margin-right:6px;color:#00e676;"></i> ' +
-                                (isEn() ? 'Scan successful: ' : '掃描成功：') +
-                                '<span class="qr-text" style="color:#e0e8f5;font-weight:600;display:block;margin-top:4px;padding:6px 10px;background:#0b0d12;border-radius:8px;font-size:0.85rem;word-break:break-all;">' + 
-                                (decodedText || '') + '</span>';
-                        }
-                    });
-                },
-                function() {}
-            ).catch(function() {
-                if (guide) {
-                    guide.style.display = 'block';
-                    guide.classList.add('show-fail');
-                    guide.textContent = langPack[currentLang]?.step1ReturnCameraGuide || '📷 無法啟動相機（補誓程序）';
-                }
-                window.html5QrCodeStep9 = null;
-            });
-        } catch (err) {
-            if (guide) {
-                guide.style.display = 'block';
-                guide.classList.add('show-fail');
-                guide.textContent = langPack[currentLang]?.step1ReturnCameraGuide || '📷 無法啟動相機（補誓程序）';
-            }
-        }
-    };
-
-    // 重新綁定按鈕
-    function rebind() {
-        var btn8 = document.getElementById('btnScanQRStep8');
-        var btn9 = document.getElementById('btnScanQRStep9');
-        if (btn8 && !btn8.dataset.fixed) {
-            btn8.dataset.fixed = '1';
-            btn8.removeEventListener('click', window.startQRScannerStep8);
-            btn8.addEventListener('click', function(e) { e.preventDefault(); window.startQRScannerStep8(); });
-        }
-        if (btn9 && !btn9.dataset.fixed) {
-            btn9.dataset.fixed = '1';
-            btn9.removeEventListener('click', window.startQRScannerStep9);
-            btn9.addEventListener('click', function(e) { e.preventDefault(); window.startQRScannerStep9(); });
-        }
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() { setTimeout(rebind, 300); });
-    } else {
-        setTimeout(rebind, 300);
-    }
-
-    console.log('✅ 已啟用：掃描成功顯示 QR 真實文字');
-})();
-</script>
-    <!-- ============================================================ -->
+<!-- ============================================================ -->
 <!-- 刪除「沒展開」的那組上一步／下一步，只留 #forceNavFooter      -->
 <!-- 貼在 </body> 前，Ctrl+F5                                      -->
 <!-- ============================================================ -->
@@ -1454,19 +1355,14 @@
 })();
 </script>
 <!-- ============================================================ -->
-<!-- 公版：輸入示範 同一行細字 + 靠左                               -->
+<!-- 公版：誓印通過 3 行靠左                                        -->
 <!-- 貼在 </body> 前，Ctrl+F5                                      -->
 <!-- ============================================================ -->
 <style>
-    [id*="InputLabel"],
-    [id*="inputLabel"],
-    .input-demo,
-    .demo-input-label {
-        font-size: 0.88rem !important;
-        font-weight: 300 !important;
-        letter-spacing: 0.3px !important;
-        line-height: 1.5 !important;
-        white-space: nowrap !important;
+    /* 誓印通過標題 + 兩行步驟 靠左 */
+    #step7_2Success,
+    [id*="Success"],
+    [id*="success"] {
         text-align: left !important;
         display: block !important;
         width: 100% !important;
@@ -1475,71 +1371,54 @@
 
 <script>
 (function () {
-    if (window.__demoLeftLine) return;
-    window.__demoLeftLine = true;
-
-    var FULL_ZH = '⌨️ 輸入示範：請依本卷七印誓網誓導碼操作';
-    var FULL_EN = '⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.';
-
-    function isEn() {
-        if (typeof currentLang !== 'undefined') return currentLang === 'en';
-        var a = document.querySelector('.lang-btn.active');
-        return !!(a && /english|en/i.test(a.textContent || ''));
-    }
-
-    function styleLeft(el) {
-        if (!el) return;
-        el.style.setProperty('font-size', '0.88rem', 'important');
-        el.style.setProperty('font-weight', '300', 'important');
-        el.style.setProperty('letter-spacing', '0.3px', 'important');
-        el.style.setProperty('line-height', '1.5', 'important');
-        el.style.setProperty('white-space', 'nowrap', 'important');
-        el.style.setProperty('text-align', 'left', 'important');
-        el.style.setProperty('display', 'block', 'important');
-        el.style.setProperty('width', '100%', 'important');
-        el.style.setProperty('margin-left', '0', 'important');
-        el.style.setProperty('margin-right', 'auto', 'important');
-        el.style.setProperty('justify-content', 'flex-start', 'important');
-    }
+    if (window.__passLeft3) return;
+    window.__passLeft3 = true;
 
     function apply() {
-        var en = isEn();
-        var full = en ? FULL_EN : FULL_ZH;
+        // 1) 「誓印通過」標題
+        document.querySelectorAll('div, span, p').forEach(function (el) {
+            if (el.children && el.children.length > 4) return;
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t || t.length > 40) return;
 
-        document.querySelectorAll('[id*="InputLabel"], [id*="inputLabel"]').forEach(function (el) {
-            el.textContent = full;
-            styleLeft(el);
-            // 父層也靠左
-            var p = el.parentElement;
-            if (p) {
-                p.style.setProperty('text-align', 'left', 'important');
-                p.style.setProperty('justify-content', 'flex-start', 'important');
+            if (t.indexOf('顯示：「誓印通過」') !== -1 ||
+                t.indexOf('顯示:「誓印通過」') !== -1 ||
+                t.indexOf('Display: 「Oath Seal Passed」') !== -1 ||
+                t.indexOf('Oath Seal Passed') !== -1 && t.indexOf('顯示') !== -1) {
+                el.style.setProperty('text-align', 'left', 'important');
+                var box = el.closest('div') || el.parentElement;
+                if (box) {
+                    box.style.setProperty('text-align', 'left', 'important');
+                    box.style.setProperty('justify-content', 'flex-start', 'important');
+                }
             }
         });
 
-        document.querySelectorAll('div, span, p, label').forEach(function (el) {
-            if (el.children && el.children.length > 3) return;
+        // 2) 兩行步驟（進入回傳誓證 / 進入第7項）
+        document.querySelectorAll('.instruction-item, .instruction-box > div, div').forEach(function (el) {
             var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
             if (!t || t.length > 80) return;
 
-            var isDemo =
-                t.indexOf('輸入示範') !== -1 ||
-                t.indexOf('請依本卷') !== -1 ||
-                t.indexOf('Please follow the Seven-Seal') !== -1 ||
-                t.indexOf('Input Example') !== -1;
+            var isStep =
+                (t.indexOf('進入') !== -1 && (t.indexOf('回傳誓證') !== -1 || t.indexOf('Return Oath') !== -1)) ||
+                (t.indexOf('進入') !== -1 && (t.indexOf('第 7 項') !== -1 || t.indexOf('第7項') !== -1 || t.indexOf('Item 7') !== -1)) ||
+                (t.indexOf('Enter') !== -1 && (t.indexOf('Return') !== -1 || t.indexOf('Seven-Seal') !== -1));
 
-            if (!isDemo) return;
+            if (!isStep) return;
 
-            el.textContent = full;
-            styleLeft(el);
+            el.style.setProperty('text-align', 'left', 'important');
+            el.style.setProperty('justify-content', 'flex-start', 'important');
+            el.style.setProperty('display', 'flex', 'important');
+            el.style.setProperty('align-items', 'flex-start', 'important');
+        });
 
-            // 外層盒子也靠左
-            var box = el.closest('div[style], .hud-card > div') || el.parentElement;
-            if (box && box !== el) {
-                box.style.setProperty('text-align', 'left', 'important');
-                box.style.setProperty('justify-content', 'flex-start', 'important');
-                box.style.setProperty('align-items', 'flex-start', 'important');
-            }
+        // 3) 外層 instruction-box 靠左
+        document.querySelectorAll('.instruction-box').forEach(function (box) {
+            var t = (box.textContent || '');
+            if (t.indexOf('回傳誓證') === -1 && t.indexOf('第 7 項') === -1 &&
+                t.indexOf('Return Oath') === -1 && t.indexOf('Item 7') === -1) return;
+            box.style.setProperty('text-align', 'left', 'important');
+            box.style.setProperty('align-items', 'flex-start', 'important');
         });
     }
 
@@ -1547,7 +1426,6 @@
         apply();
         setTimeout(apply, 150);
         setTimeout(apply, 500);
-        setTimeout(apply, 1000);
     }
 
     if (document.readyState === 'loading') {
@@ -1560,19 +1438,93 @@
     if (typeof orig === 'function') {
         window.switchLanguage = function (l) {
             orig(l);
-            setTimeout(apply, 50);
-            setTimeout(apply, 200);
+            setTimeout(apply, 80);
         };
     }
 
-    document.addEventListener('click', function (e) {
-        if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
-            setTimeout(apply, 60);
-            setTimeout(apply, 250);
-        }
-    });
+    console.log('✅ 誓印通過 3 行已靠左');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 公版：進入回傳誓證／第7項 兩行強制靠左                          -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<style>
+    .instruction-box {
+        align-items: flex-start !important;
+        text-align: left !important;
+    }
+    .instruction-item {
+        justify-content: flex-start !important;
+        text-align: left !important;
+        display: flex !important;
+        width: 100% !important;
+    }
+</style>
 
-    console.log('✅ 輸入示範：同一行細字 + 靠左');
+<script>
+(function () {
+    if (window.__twoStepsLeft) return;
+    window.__twoStepsLeft = true;
+
+    function apply() {
+        document.querySelectorAll('.instruction-item, div, span, p, li').forEach(function (el) {
+            if (el.children && el.children.length > 6) return;
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t || t.length > 90) return;
+
+            var hit =
+                (t.indexOf('進入') !== -1 && t.indexOf('回傳誓證') !== -1) ||
+                (t.indexOf('進入') !== -1 && (t.indexOf('第 7 項') !== -1 || t.indexOf('第7項') !== -1 || t.indexOf('七印誓網') !== -1)) ||
+                (t.indexOf('Enter') !== -1 && (t.indexOf('Return Oath') !== -1 || t.indexOf('Item 7') !== -1 || t.indexOf('Seven-Seal') !== -1));
+
+            if (!hit) return;
+
+            el.style.setProperty('text-align', 'left', 'important');
+            el.style.setProperty('justify-content', 'flex-start', 'important');
+            el.style.setProperty('align-items', 'flex-start', 'important');
+            el.style.setProperty('display', 'flex', 'important');
+            el.style.setProperty('width', '100%', 'important');
+            el.style.setProperty('margin-left', '0', 'important');
+            el.style.setProperty('margin-right', 'auto', 'important');
+
+            // 父層一併靠左
+            var p = el.parentElement;
+            if (p) {
+                p.style.setProperty('text-align', 'left', 'important');
+                p.style.setProperty('align-items', 'flex-start', 'important');
+                p.style.setProperty('justify-content', 'flex-start', 'important');
+            }
+            var box = el.closest('.instruction-box, .hud-card');
+            if (box) {
+                box.style.setProperty('text-align', 'left', 'important');
+                box.style.setProperty('align-items', 'flex-start', 'important');
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 400);
+        setTimeout(apply, 900);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 80);
+        };
+    }
+
+    console.log('✅ 兩行步驟已靠左');
 })();
 </script>
 </body>
