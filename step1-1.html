@@ -3221,5 +3221,262 @@
     console.log('✅ 已刪除上方未展開那組，只留一組');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- QR 掃描器 精簡穩定版（只顯示 QR Code 真實文字）              -->
+<!-- ============================================================ -->
+<script>
+(function() {
+    // 清除所有舊的掃描器變數
+    window.html5QrCodeStep8 = null;
+    window.html5QrCodeStep9 = null;
+    window._scannerStep8 = null;
+    window._scannerStep9 = null;
+
+    // ===== 取得當前語系 =====
+    function getLang() {
+        if (typeof currentLang !== 'undefined') return currentLang;
+        var a = document.querySelector('.lang-btn.active');
+        return (a && /english|en/i.test(a.textContent || '')) ? 'en' : 'zh';
+    }
+
+    function getCameraGuide() {
+        var isEn = getLang() === 'en';
+        return isEn
+            ? '📷 Unable to launch the feature<br>⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"<br>→ Open using a web browser (Chrome / Yahoo / Edge...)<br>⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.'
+            : '📷 無法啟動相機<br>⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+    }
+
+    // ===== 停止所有掃描器 =====
+    function stopAllScanners() {
+        var scanners = [
+            window.html5QrCodeStep8,
+            window.html5QrCodeStep9,
+            window._scannerStep8,
+            window._scannerStep9
+        ];
+        scanners.forEach(function(s) {
+            if (s) {
+                try { s.stop().catch(function() {}); } catch(e) {}
+            }
+        });
+        window.html5QrCodeStep8 = null;
+        window.html5QrCodeStep9 = null;
+        window._scannerStep8 = null;
+        window._scannerStep9 = null;
+    }
+
+    // ===== Step8 掃描器 =====
+    window.startQRScannerStep8 = function() {
+        stopAllScanners();
+
+        var container = document.getElementById('qr-reader-container-step8');
+        var guide = document.getElementById('cameraGuideStep8');
+        var result = document.getElementById('qrScanResultStep8');
+
+        if (!container) {
+            console.warn('找不到容器 qr-reader-container-step8');
+            return;
+        }
+
+        // 清空狀態
+        container.innerHTML = '';
+        if (guide) { guide.style.display = 'none'; guide.classList.remove('show-fail'); }
+        if (result) {
+            result.style.display = 'none';
+            result.innerHTML = '';
+            result.classList.remove('show');
+        }
+
+        // 檢查函式庫
+        if (typeof Html5Qrcode === 'undefined') {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.classList.add('show-fail');
+                guide.innerHTML = getCameraGuide();
+            }
+            return;
+        }
+
+        // 檢查相機權限
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.classList.add('show-fail');
+                guide.innerHTML = getCameraGuide();
+            }
+            return;
+        }
+
+        try {
+            var scanner = new Html5Qrcode('qr-reader-container-step8');
+            window._scannerStep8 = scanner;
+
+            scanner.start(
+                { facingMode: "environment" },
+                { fps: 12, qrbox: { width: 200, height: 200 } },
+                // ----- 掃描成功 -----
+                function(decodedText) {
+                    // ★★★ 只顯示 QR Code 的真實文字 ★★★
+                    if (result) {
+                        result.style.display = 'block';
+                        result.classList.add('show');
+                        // 只放解碼文字，不加任何前綴
+                        result.innerHTML = decodedText;
+                    }
+                    // 停止掃描
+                    scanner.stop().then(function() {
+                        window._scannerStep8 = null;
+                    }).catch(function() {
+                        window._scannerStep8 = null;
+                    });
+                },
+                // ----- 掃描中（持續） -----
+                function() {}
+            ).catch(function(err) {
+                if (guide) {
+                    guide.style.display = 'block';
+                    guide.classList.add('show-fail');
+                    guide.innerHTML = getCameraGuide();
+                }
+                window._scannerStep8 = null;
+            });
+        } catch (err) {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.classList.add('show-fail');
+                guide.innerHTML = getCameraGuide();
+            }
+            window._scannerStep8 = null;
+        }
+    };
+
+    // ===== Step9 掃描器 =====
+    window.startQRScannerStep9 = function() {
+        stopAllScanners();
+
+        var container = document.getElementById('qr-reader-container-step9');
+        var guide = document.getElementById('cameraGuideStep9');
+        var result = document.getElementById('qrScanResultStep9');
+
+        if (!container) {
+            console.warn('找不到容器 qr-reader-container-step9');
+            return;
+        }
+
+        container.innerHTML = '';
+        if (guide) { guide.style.display = 'none'; guide.classList.remove('show-fail'); }
+        if (result) {
+            result.style.display = 'none';
+            result.innerHTML = '';
+            result.classList.remove('show');
+        }
+
+        if (typeof Html5Qrcode === 'undefined') {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.classList.add('show-fail');
+                guide.innerHTML = getCameraGuide();
+            }
+            return;
+        }
+
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.classList.add('show-fail');
+                guide.innerHTML = getCameraGuide();
+            }
+            return;
+        }
+
+        try {
+            var scanner = new Html5Qrcode('qr-reader-container-step9');
+            window._scannerStep9 = scanner;
+
+            scanner.start(
+                { facingMode: "environment" },
+                { fps: 12, qrbox: { width: 200, height: 200 } },
+                function(decodedText) {
+                    if (result) {
+                        result.style.display = 'block';
+                        result.classList.add('show');
+                        result.innerHTML = decodedText;
+                    }
+                    scanner.stop().then(function() {
+                        window._scannerStep9 = null;
+                    }).catch(function() {
+                        window._scannerStep9 = null;
+                    });
+                },
+                function() {}
+            ).catch(function(err) {
+                if (guide) {
+                    guide.style.display = 'block';
+                    guide.classList.add('show-fail');
+                    guide.innerHTML = getCameraGuide();
+                }
+                window._scannerStep9 = null;
+            });
+        } catch (err) {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.classList.add('show-fail');
+                guide.innerHTML = getCameraGuide();
+            }
+            window._scannerStep9 = null;
+        }
+    };
+
+    // ===== 重新綁定按鈕 =====
+    function rebindButtons() {
+        var btn8 = document.getElementById('btnScanQRStep8');
+        var btn9 = document.getElementById('btnScanQRStep9');
+
+        if (btn8) {
+            var newBtn8 = btn8.cloneNode(true);
+            btn8.parentNode.replaceChild(newBtn8, btn8);
+            newBtn8.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.startQRScannerStep8();
+            };
+        }
+
+        if (btn9) {
+            var newBtn9 = btn9.cloneNode(true);
+            btn9.parentNode.replaceChild(newBtn9, btn9);
+            newBtn9.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.startQRScannerStep9();
+            };
+        }
+        console.log('✅ QR 掃描按鈕已重新綁定');
+    }
+
+    // ===== 語系切換時更新引導文字 =====
+    var origSwitch = window.switchLanguage;
+    if (typeof origSwitch === 'function') {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            // 更新已經顯示的引導文字
+            document.querySelectorAll('.camera-guide.show-fail').forEach(function(el) {
+                el.innerHTML = getCameraGuide();
+            });
+        };
+    }
+
+    // ===== 執行 =====
+    if (document.readyState === 'complete') {
+        setTimeout(rebindButtons, 200);
+    } else {
+        window.addEventListener('load', function() {
+            setTimeout(rebindButtons, 300);
+        });
+    }
+
+    console.log('✅ QR 掃描器精簡穩定版已載入');
+})();
+</script>
 </body>
 </html>
