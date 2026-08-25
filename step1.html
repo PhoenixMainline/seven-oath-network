@@ -1143,492 +1143,196 @@
     setTimeout(fix, 200);
 })();
 </script>
-<!-- ============================================================ -->
-<!-- 強制只留一組「上一步／下一步」（不管包在哪裡）                  -->
-<!-- 刪掉舊腳本後只貼這段，Ctrl+F5                                  -->
-<!-- ============================================================ -->
 <script>
-(function () {
-    if (window.__killDupNav) return;
-    window.__killDupNav = true;
+(function() {
+    if (window.__fixQrDisplay) return;
+    window.__fixQrDisplay = true;
 
-    function isNavBtn(el) {
-        var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
-        return t.indexOf('上一步') !== -1 || t.indexOf('下一步') !== -1 ||
-               t.indexOf('Previous') !== -1 || t.indexOf('Next') !== -1;
-    }
-
-    function clean() {
-        // 1) 多個 .hud-footer → 只留第一個
-        var footers = Array.prototype.slice.call(document.querySelectorAll('.hud-footer'));
-        for (var i = 1; i < footers.length; i++) {
-            footers[i].parentNode && footers[i].parentNode.removeChild(footers[i]);
-        }
-
-        // 2) 找出所有含上一步/下一步的按鈕群
-        var groups = [];
-        document.querySelectorAll('.footer-btn-group, .hud-footer, div').forEach(function (box) {
-            if (!box || box.__navChecked) return;
-            var btns = box.querySelectorAll('a, button, .btn-action');
-            var hasPrev = false, hasNext = false;
-            btns.forEach(function (b) {
-                var t = (b.textContent || '');
-                if (t.indexOf('上一步') !== -1 || t.indexOf('Previous') !== -1) hasPrev = true;
-                if (t.indexOf('下一步') !== -1 || t.indexOf('Next') !== -1) hasNext = true;
-            });
-            if (hasPrev && hasNext) {
-                box.__navChecked = true;
-                groups.push(box);
-            }
-        });
-
-        // 只留第一組，其餘整組刪除
-        for (var j = 1; j < groups.length; j++) {
-            var g = groups[j];
-            // 若是 footer 本身已在步驟1處理過就跳過
-            if (g.classList && g.classList.contains('hud-footer') && footers[0] === g) continue;
-            // 刪掉這一組（若父層只剩這組也可刪父層）
-            if (g.parentNode) g.parentNode.removeChild(g);
-        }
-
-        // 3) 確保留下的那組可點、可見
-        var keep = document.querySelector('.hud-footer') || groups[0];
-        if (keep) {
-            keep.style.setProperty('display', 'flex', 'important');
-            keep.style.setProperty('visibility', 'visible', 'important');
-            keep.style.setProperty('opacity', '1', 'important');
-            keep.querySelectorAll('a, button, .btn-action').forEach(function (b) {
-                if (!isNavBtn(b)) return;
-                b.style.setProperty('display', 'inline-flex', 'important');
-                b.style.setProperty('pointer-events', 'auto', 'important');
-                b.style.setProperty('opacity', '1', 'important');
-                b.removeAttribute('disabled');
-            });
-        }
-    }
-
-    function run() {
-        clean();
-        setTimeout(clean, 80);
-        setTimeout(clean, 300);
-        setTimeout(clean, 700);
-        setTimeout(clean, 1500);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__killDupT);
-        window.__killDupT = setTimeout(clean, 50);
-    });
-    obs.observe(document.body, { childList: true, subtree: true });
-
-    console.log('✅ 重複上一步/下一步已清除');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 一次到位：解除 100vh / flex 置中，footer 跟在內容後面          -->
-<!-- 先刪除舊的 footer 展開腳本，再貼這段，Ctrl+F5                  -->
-<!-- ============================================================ -->
-<style id="footer-expand-final">
-    html {
-        height: auto !important;
-        max-height: none !important;
-        overflow-y: auto !important;
-        overflow-x: hidden !important;
-    }
-    body {
-        height: auto !important;
-        max-height: none !important;
-        min-height: 100% !important;
-        overflow-y: auto !important;
-        overflow-x: hidden !important;
-        display: block !important;          /* 關鍵：不要 flex 置中 */
-        align-items: flex-start !important;
-        justify-content: flex-start !important;
-        padding: 8px 8px 48px 8px !important;
-        padding-bottom: calc(48px + env(safe-area-inset-bottom, 16px)) !important;
-    }
-    .particle-container,
-    .watermark-layer {
-        position: fixed !important;
-        pointer-events: none !important;
-    }
-    .hud-container {
-        height: auto !important;
-        max-height: none !important;
-        min-height: 0 !important;
-        overflow: visible !important;
-        display: flex !important;
-        flex-direction: column !important;
-        margin: 0 auto 24px auto !important;
-        position: relative !important;
-    }
-    .step-content {
-        flex: 0 1 auto !important;
-        overflow: visible !important;       /* 關鍵：不要內部捲動裁切 */
-        max-height: none !important;
-        min-height: 0 !important;
-        height: auto !important;
-    }
-    .hud-footer {
-        display: flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        position: relative !important;
-        flex-shrink: 0 !important;
-        width: 100% !important;
-        margin-top: 20px !important;
-        margin-bottom: 0 !important;
-        padding: 14px 6px 20px 6px !important;
-        border-top: 1px solid rgba(168, 85, 247, 0.3) !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        flex-wrap: wrap !important;
-        gap: 10px !important;
-        z-index: 9999 !important;
-        pointer-events: auto !important;
-        background: rgba(4, 13, 33, 0.95) !important;
-    }
-    .hud-footer .footer-btn-group {
-        display: flex !important;
-        gap: 12px !important;
-        pointer-events: auto !important;
-    }
-    .hud-footer .btn-action,
-    .hud-footer a.btn-action {
-        display: inline-flex !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        cursor: pointer !important;
-        min-height: 48px !important;
-        padding: 12px 20px !important;
-        z-index: 10001 !important;
-    }
-</style>
-<script>
-(function () {
-    if (window.__footerFinal) return;
-    window.__footerFinal = true;
-
-    function force() {
-        document.documentElement.style.cssText += ';height:auto!important;max-height:none!important;overflow-y:auto!important;';
-        document.body.style.cssText += ';height:auto!important;max-height:none!important;overflow-y:auto!important;display:block!important;align-items:flex-start!important;padding-bottom:calc(48px + env(safe-area-inset-bottom,16px))!important;';
-
-        var c = document.querySelector('.hud-container');
-        if (c) c.style.cssText += ';height:auto!important;max-height:none!important;overflow:visible!important;';
-
-        var sc = document.querySelector('.step-content');
-        if (sc) sc.style.cssText += ';overflow:visible!important;max-height:none!important;height:auto!important;flex:0 1 auto!important;';
-
-        var f = document.querySelector('.hud-footer');
-        if (f) {
-            f.style.cssText += ';display:flex!important;visibility:visible!important;opacity:1!important;position:relative!important;pointer-events:auto!important;z-index:9999!important;';
-            f.querySelectorAll('a.btn-action,.btn-action').forEach(function (b) {
-                b.style.cssText += ';display:inline-flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;cursor:pointer!important;';
-                b.removeAttribute('disabled');
-            });
-        }
-    }
-
-    force();
-    [100, 300, 600, 1200].forEach(function (t) { setTimeout(force, t); });
-    window.addEventListener('load', function () { setTimeout(force, 100); });
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 公版：外部瀏覽器開啟 + 相機 QR 掃描（掃到顯示文字）            -->
-<!-- 貼在 </body> 前，Ctrl+F5                                      -->
-<!-- ============================================================ -->
-<style>
-    .btn-external-browser {
-        display: inline-flex !important;
-        align-items: center;
-        gap: 6px;
-        padding: 4px 14px;
-        background: rgba(0, 230, 118, 0.12);
-        border: 1px solid rgba(0, 230, 118, 0.35);
-        border-radius: 20px;
-        color: #00e676;
-        font-size: 0.7rem;
-        font-weight: 700;
-        text-decoration: none;
-        cursor: pointer;
-        margin-left: 8px;
-        white-space: nowrap;
-    }
-    .camera-guide { display: none !important; }
-    .camera-guide.show-fail {
-        display: block !important;
-        text-align: left !important;
-        background: rgba(232, 96, 74, 0.08);
-        border-left: 4px solid #E8604A;
-        padding: 12px 14px;
-        border-radius: 10px;
-        font-size: 0.82rem;
-        line-height: 1.7;
-        color: #e0dcc8;
-        margin-top: 10px;
-    }
-    .qr-result-ok {
-        display: block !important;
-        margin-top: 10px;
-        padding: 10px 14px;
-        border-radius: 10px;
-        background: rgba(0, 230, 118, 0.12);
-        border: 1px solid rgba(0, 230, 118, 0.35);
-        color: #00e676;
-        font-size: 0.85rem;
-        word-break: break-all;
-        text-align: left;
-    }
-</style>
-
-<script>
-(function () {
-    if (window.__browserAndQrPublic) return;
-    window.__browserAndQrPublic = true;
-
-    /* ========== 1. 外部瀏覽器開啟 ========== */
-    function openExternalBrowser() {
-        var url = window.location.href;
-        var ua = navigator.userAgent || '';
-
-        // Android → 強制 Chrome
-        if (/android/i.test(ua)) {
-            try {
-                var intent =
-                    'intent://' + window.location.host + window.location.pathname +
-                    window.location.search +
-                    '#Intent;scheme=https;package=com.android.chrome;end;';
-                window.location.href = intent;
-                return;
-            } catch (e) {}
-        }
-
-        // iOS → 嘗試 Safari / 複製
-        if (/iphone|ipad|ipod/i.test(ua)) {
-            // 無法真正強制跳出 App 內建瀏覽器，改為複製網址
-            copyAndAlert(url);
-            return;
-        }
-
-        // 桌面或其他：新開分頁
-        window.open(url, '_blank');
-    }
-
-    function copyAndAlert(url) {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(url).then(function () {
-                alert((isEn() ? 'URL copied. Please paste it in Chrome / Safari:\n\n' : '網址已複製，請貼到 Chrome / Safari 開啟：\n\n') + url);
-            }).catch(function () {
-                alert(url);
-            });
-        } else {
-            alert(url);
-        }
-    }
-
-    function addBrowserBtn() {
-        if (document.querySelector('.btn-external-browser')) return;
-        var langGroup = document.querySelector('.lang-switch-group');
-        if (!langGroup) return;
-
-        var btn = document.createElement('a');
-        btn.className = 'btn-external-browser';
-        btn.href = '#';
-        btn.innerHTML = isEn()
-            ? '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>Open in Browser</span>'
-            : '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>🌐 瀏覽器開啟</span>';
-        btn.addEventListener('click', function (e) {
-            e.preventDefault();
-            openExternalBrowser();
-        });
-        langGroup.parentNode.insertBefore(btn, langGroup.nextSibling);
-    }
-
-    /* ========== 2. 相機 QR 掃描 ========== */
-    var GUIDE_ZH =
-        '📷 無法啟動相機<br>' +
-        '⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>' +
-        '→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>' +
-        '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
-
-    var GUIDE_EN =
-        '📷 Unable to launch the feature<br>' +
-        '⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"<br>' +
-        '→ Open using a web browser (Chrome / Yahoo / Edge...)<br>' +
-        '⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
-
-    var starting = false;
-    var activeQr = null;
+    var langPack = window.langPack || {
+        zh: { scanSuccess: '掃描成功：' },
+        en: { scanSuccess: 'Scan successful: ' }
+    };
+    var currentLang = window.currentLang || 'zh';
 
     function isEn() {
-        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        if (typeof window.currentLang !== 'undefined') return window.currentLang === 'en';
         var a = document.querySelector('.lang-btn.active');
         return !!(a && /english|en/i.test(a.textContent || ''));
     }
 
-    function hideGuides() {
-        document.querySelectorAll('.camera-guide, [id*="cameraGuide"], [id*="CameraGuide"]').forEach(function (el) {
-            el.classList.remove('show-fail');
-            el.style.setProperty('display', 'none', 'important');
-        });
-    }
+    // === 修復 step8 ===
+    window.startQRScannerStep8 = function() {
+        var container = document.getElementById('qr-reader-container-step8');
+        var guide = document.getElementById('cameraGuideStep8');
+        var result = document.getElementById('qrScanResultStep8');
 
-    function showGuide(guideId) {
-        var g = guideId ? document.getElementById(guideId) : document.querySelector('.camera-guide');
-        if (!g) return;
-        g.innerHTML = isEn() ? GUIDE_EN : GUIDE_ZH;
-        g.classList.add('show-fail');
-        g.style.setProperty('display', 'block', 'important');
-        g.style.setProperty('text-align', 'left', 'important');
-    }
-
-    function stopActive() {
-        if (!activeQr) return Promise.resolve();
-        var inst = activeQr;
-        activeQr = null;
-        return inst.stop().catch(function () {}).then(function () {
-            try { inst.clear(); } catch (e) {}
-        });
-    }
-
-    window.startQRScanner = function (containerId, resultId, guideId) {
-        if (starting) return;
-        starting = true;
-
-        var container = document.getElementById(containerId);
-        var resultEl = resultId ? document.getElementById(resultId) : null;
-
-        hideGuides();
-        if (resultEl) {
-            resultEl.style.display = 'none';
-            resultEl.innerHTML = '';
-            resultEl.classList.remove('qr-result-ok');
-        }
-
-        if (!container || typeof Html5Qrcode === 'undefined' ||
-            !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            starting = false;
-            showGuide(guideId);
+        if (!container || typeof Html5Qrcode === 'undefined') {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.classList.add('show-fail');
+                guide.textContent = langPack[currentLang]?.step1CameraGuide || '📷 無法啟動相機';
+            }
             return;
         }
 
-        stopActive().then(function () {
-            container.innerHTML = '';
-            var qr = new Html5Qrcode(containerId);
-            activeQr = qr;
+        if (window.html5QrCodeStep8) {
+            window.html5QrCodeStep8.stop().catch(function() {});
+            window.html5QrCodeStep8 = null;
+        }
 
-            return qr.start(
-                { facingMode: 'environment' },
-                { fps: 12, qrbox: { width: 220, height: 220 } },
-                function (decodedText) {
-                    stopActive().then(function () {
+        container.innerHTML = '';
+        if (guide) { guide.style.display = 'none'; guide.classList.remove('show-fail'); }
+        if (result) { result.style.display = 'none'; result.classList.remove('show'); result.innerHTML = ''; }
+
+        try {
+            window.html5QrCodeStep8 = new Html5Qrcode('qr-reader-container-step8');
+            window.html5QrCodeStep8.start(
+                { facingMode: "environment" },
+                { fps: 10, qrbox: { width: 220, height: 220 } },
+                function(decodedText) {
+                    window.html5QrCodeStep8.stop().then(function() {
+                        window.html5QrCodeStep8 = null;
                         container.innerHTML = '';
-                        if (resultEl) {
-                            resultEl.classList.add('qr-result-ok');
-                            resultEl.style.display = 'block';
-                            resultEl.innerHTML =
-                                '<i class="fa-solid fa-check-circle" style="margin-right:6px;"></i>' +
+                        if (result) {
+                            result.style.display = 'block';
+                            result.classList.add('show');
+                            result.innerHTML =
+                                '<i class="fa-solid fa-check-circle" style="margin-right:6px;color:#00e676;"></i> ' +
                                 (isEn() ? 'Scan successful: ' : '掃描成功：') +
-                                '<span style="color:#e0e8f5;">' + (decodedText || '') + '</span>';
+                                '<span class="qr-text" style="color:#e0e8f5;font-weight:600;display:block;margin-top:4px;padding:6px 10px;background:#0b0d12;border-radius:8px;font-size:0.85rem;word-break:break-all;">' + 
+                                (decodedText || '') + '</span>';
                         }
-                        hideGuides();
-                        starting = false;
+                        if (guide) { guide.style.display = 'none'; guide.classList.remove('show-fail'); }
+                    }).catch(function() {
+                        if (result) {
+                            result.style.display = 'block';
+                            result.classList.add('show');
+                            result.innerHTML =
+                                '<i class="fa-solid fa-check-circle" style="margin-right:6px;color:#00e676;"></i> ' +
+                                (isEn() ? 'Scan successful: ' : '掃描成功：') +
+                                '<span class="qr-text" style="color:#e0e8f5;font-weight:600;display:block;margin-top:4px;padding:6px 10px;background:#0b0d12;border-radius:8px;font-size:0.85rem;word-break:break-all;">' + 
+                                (decodedText || '') + '</span>';
+                        }
                     });
                 },
-                function () {}
-            );
-        }).then(function () {
-            hideGuides();
-            starting = false;
-        }).catch(function () {
-            activeQr = null;
-            starting = false;
-            showGuide(guideId);
-        });
-
-        setTimeout(function () { starting = false; }, 4000);
+                function() {}
+            ).catch(function() {
+                if (guide) {
+                    guide.style.display = 'block';
+                    guide.classList.add('show-fail');
+                    guide.textContent = langPack[currentLang]?.step1CameraGuide || '📷 無法啟動相機';
+                }
+                window.html5QrCodeStep8 = null;
+            });
+        } catch (err) {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.classList.add('show-fail');
+                guide.textContent = langPack[currentLang]?.step1CameraGuide || '📷 無法啟動相機';
+            }
+        }
     };
 
-    window.smoothStartScan = window.startQRScanner;
-    window.startQRScannerStep8 = function () {
-        window.startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+    // === 修復 step9 ===
+    window.startQRScannerStep9 = function() {
+        var container = document.getElementById('qr-reader-container-step9');
+        var guide = document.getElementById('cameraGuideStep9');
+        var result = document.getElementById('qrScanResultStep9');
+
+        if (!container || typeof Html5Qrcode === 'undefined') {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.classList.add('show-fail');
+                guide.textContent = langPack[currentLang]?.step1ReturnCameraGuide || '📷 無法啟動相機（補誓程序）';
+            }
+            return;
+        }
+
+        if (window.html5QrCodeStep9) {
+            window.html5QrCodeStep9.stop().catch(function() {});
+            window.html5QrCodeStep9 = null;
+        }
+
+        container.innerHTML = '';
+        if (guide) { guide.style.display = 'none'; guide.classList.remove('show-fail'); }
+        if (result) { result.style.display = 'none'; result.classList.remove('show'); result.innerHTML = ''; }
+
+        try {
+            window.html5QrCodeStep9 = new Html5Qrcode('qr-reader-container-step9');
+            window.html5QrCodeStep9.start(
+                { facingMode: "environment" },
+                { fps: 10, qrbox: { width: 220, height: 220 } },
+                function(decodedText) {
+                    window.html5QrCodeStep9.stop().then(function() {
+                        window.html5QrCodeStep9 = null;
+                        container.innerHTML = '';
+                        if (result) {
+                            result.style.display = 'block';
+                            result.classList.add('show');
+                            result.innerHTML =
+                                '<i class="fa-solid fa-check-circle" style="margin-right:6px;color:#00e676;"></i> ' +
+                                (isEn() ? 'Scan successful: ' : '掃描成功：') +
+                                '<span class="qr-text" style="color:#e0e8f5;font-weight:600;display:block;margin-top:4px;padding:6px 10px;background:#0b0d12;border-radius:8px;font-size:0.85rem;word-break:break-all;">' + 
+                                (decodedText || '') + '</span>';
+                        }
+                        if (guide) { guide.style.display = 'none'; guide.classList.remove('show-fail'); }
+                    }).catch(function() {
+                        if (result) {
+                            result.style.display = 'block';
+                            result.classList.add('show');
+                            result.innerHTML =
+                                '<i class="fa-solid fa-check-circle" style="margin-right:6px;color:#00e676;"></i> ' +
+                                (isEn() ? 'Scan successful: ' : '掃描成功：') +
+                                '<span class="qr-text" style="color:#e0e8f5;font-weight:600;display:block;margin-top:4px;padding:6px 10px;background:#0b0d12;border-radius:8px;font-size:0.85rem;word-break:break-all;">' + 
+                                (decodedText || '') + '</span>';
+                        }
+                    });
+                },
+                function() {}
+            ).catch(function() {
+                if (guide) {
+                    guide.style.display = 'block';
+                    guide.classList.add('show-fail');
+                    guide.textContent = langPack[currentLang]?.step1ReturnCameraGuide || '📷 無法啟動相機（補誓程序）';
+                }
+                window.html5QrCodeStep9 = null;
+            });
+        } catch (err) {
+            if (guide) {
+                guide.style.display = 'block';
+                guide.classList.add('show-fail');
+                guide.textContent = langPack[currentLang]?.step1ReturnCameraGuide || '📷 無法啟動相機（補誓程序）';
+            }
+        }
     };
-    window.startQRScannerStep9 = function () {
-        window.startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
-    };
 
-    var MAP = [
-        { btn: 'btnScanQRStep8', box: 'qr-reader-container-step8', result: 'qrScanResultStep8', guide: 'cameraGuideStep8' },
-        { btn: 'btnScanQRStep9', box: 'qr-reader-container-step9', result: 'qrScanResultStep9', guide: 'cameraGuideStep9' },
-        { btn: 'btnScanQR',      box: 'qr-reader-container',      result: 'qrScanResult',      guide: 'cameraGuide' },
-        { btn: 'btnScanQRStep4', box: 'qr-reader-container-step4', result: 'qrScanResultStep4', guide: 'cameraGuideStep4' }
-    ];
-
-    function bindQr() {
-        MAP.forEach(function (c) {
-            var btn = document.getElementById(c.btn);
-            if (!btn || btn.__qrBoundPublic) return;
-            btn.__qrBoundPublic = true;
-            btn.disabled = false;
-            btn.style.pointerEvents = 'auto';
-            btn.style.cursor = 'pointer';
-            btn.addEventListener('click', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-                window.startQRScanner(c.box, c.result, c.guide);
-            }, true);
-        });
-    }
-
-    /* ========== 啟動 ========== */
-    function run() {
-        addBrowserBtn();
-        hideGuides();
-        bindQr();
-        setTimeout(function () { addBrowserBtn(); bindQr(); }, 300);
-        setTimeout(function () { addBrowserBtn(); bindQr(); }, 800);
+    // 重新綁定按鈕
+    function rebind() {
+        var btn8 = document.getElementById('btnScanQRStep8');
+        var btn9 = document.getElementById('btnScanQRStep9');
+        if (btn8 && !btn8.dataset.fixed) {
+            btn8.dataset.fixed = '1';
+            btn8.removeEventListener('click', window.startQRScannerStep8);
+            btn8.addEventListener('click', function(e) { e.preventDefault(); window.startQRScannerStep8(); });
+        }
+        if (btn9 && !btn9.dataset.fixed) {
+            btn9.dataset.fixed = '1';
+            btn9.removeEventListener('click', window.startQRScannerStep9);
+            btn9.addEventListener('click', function(e) { e.preventDefault(); window.startQRScannerStep9(); });
+        }
     }
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
+        document.addEventListener('DOMContentLoaded', function() { setTimeout(rebind, 300); });
     } else {
-        run();
+        setTimeout(rebind, 300);
     }
 
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(function () {
-                // 更新瀏覽器按鈕文字
-                var b = document.querySelector('.btn-external-browser');
-                if (b) {
-                    b.innerHTML = isEn()
-                        ? '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>Open in Browser</span>'
-                        : '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>🌐 瀏覽器開啟</span>';
-                }
-                document.querySelectorAll('.camera-guide.show-fail').forEach(function (el) {
-                    el.innerHTML = isEn() ? GUIDE_EN : GUIDE_ZH;
-                });
-                bindQr();
-            }, 100);
-        };
-    }
-
-    console.log('✅ 公版：外部瀏覽器 + 相機 QR 已載入');
+    console.log('✅ 已啟用：掃描成功顯示 QR 真實文字');
 })();
 </script>
-<!-- ============================================================ -->
-<!-- 公版：若沒有上一步／下一步就自動補上 + 正確連結                -->
+    <!-- ============================================================ -->
+<!-- 刪除「沒展開」的那組上一步／下一步，只留 #forceNavFooter      -->
 <!-- 貼在 </body> 前，Ctrl+F5                                      -->
 <!-- ============================================================ -->
 <style>
@@ -1639,7 +1343,7 @@
     }
     body {
         display: block !important;
-        padding-bottom: calc(40px + env(safe-area-inset-bottom, 12px)) !important;
+        padding-bottom: calc(56px + env(safe-area-inset-bottom, 16px)) !important;
     }
     .hud-container {
         height: auto !important;
@@ -1649,57 +1353,56 @@
     .step-content {
         overflow: visible !important;
         max-height: none !important;
+        height: auto !important;
     }
-    .hud-footer {
+
+    /* 舊 footer 全部藏 */
+    .hud-footer,
+    .footer-btn-group {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        overflow: hidden !important;
+    }
+
+    #forceNavFooter {
         display: flex !important;
         visibility: visible !important;
         opacity: 1 !important;
-        position: relative !important;
         width: 100% !important;
-        margin-top: 16px !important;
-        padding: 12px 6px 18px 6px !important;
-        border-top: 1px solid rgba(168, 85, 247, 0.3) !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        flex-wrap: wrap !important;
-        gap: 10px !important;
-        z-index: 9999 !important;
-        pointer-events: auto !important;
-        background: rgba(4, 13, 33, 0.9) !important;
-        box-sizing: border-box !important;
-    }
-    .hud-footer .footer-btn-group {
-        display: flex !important;
+        margin: 16px 0 20px 0 !important;
+        padding: 12px 8px 16px 8px !important;
         gap: 12px !important;
+        z-index: 99999 !important;
         pointer-events: auto !important;
+        position: relative !important;
+        border-top: 1px solid rgba(168, 85, 247, 0.35) !important;
+        background: rgba(4, 13, 33, 0.95) !important;
     }
-    .hud-footer .btn-action {
+    #forceNavFooter a {
         display: inline-flex !important;
         align-items: center !important;
-        gap: 8px !important;
         min-height: 46px !important;
-        padding: 10px 18px !important;
+        padding: 10px 20px !important;
         border: 1px solid #a78bfa !important;
         color: #e9d5ff !important;
-        background: rgba(124, 58, 237, 0.25) !important;
+        background: rgba(124, 58, 237, 0.35) !important;
         border-radius: 22px !important;
         text-decoration: none !important;
-        font-size: 0.9rem !important;
         font-weight: 700 !important;
         cursor: pointer !important;
         pointer-events: auto !important;
-    }
-    .hud-footer .page-marker {
-        font-size: 0.7rem !important;
-        color: rgba(224, 232, 245, 0.4) !important;
-        margin-left: auto !important;
+        opacity: 1 !important;
     }
 </style>
 
 <script>
 (function () {
-    if (window.__injectNavBtns) return;
-    window.__injectNavBtns = true;
+    if (window.__killUpperNav) return;
+    window.__killUpperNav = true;
 
     var NAV_MAP = {
         'index.html':   { prev: null,           next: 'step0.html' },
@@ -1741,461 +1444,86 @@
         return !!(a && /english|en/i.test(a.textContent || ''));
     }
 
-    function ensureFooter() {
-        var container = document.querySelector('.hud-container');
-        if (!container) return null;
+    function killUpper() {
+        // 刪／藏所有「上一步+下一步」區塊，但跳過 #forceNavFooter
+        document.querySelectorAll('div, footer, section, nav').forEach(function (el) {
+            if (el.id === 'forceNavFooter') return;
+            if (el.closest && el.closest('#forceNavFooter')) return;
 
-        // 刪重複 footer，只留一個
-        var footers = Array.prototype.slice.call(document.querySelectorAll('.hud-footer'));
-        for (var i = 1; i < footers.length; i++) {
-            if (footers[i].parentNode) footers[i].parentNode.removeChild(footers[i]);
-        }
+            var t = (el.textContent || '').replace(/\s+/g, ' ');
+            // 必須同時有上一步和下一步，且文字不長（避免誤刪大區塊）
+            if (t.length > 80) return;
+            var hasPrev = t.indexOf('上一步') !== -1 || t.indexOf('Previous') !== -1;
+            var hasNext = t.indexOf('下一步') !== -1 || t.indexOf('Next') !== -1;
+            if (!hasPrev || !hasNext) return;
 
-        var footer = document.querySelector('.hud-footer');
-        if (!footer) {
-            footer = document.createElement('footer');
-            footer.className = 'hud-footer';
-            container.appendChild(footer);
-        }
-
-        // 若沒有按鈕群就建立
-        var group = footer.querySelector('.footer-btn-group');
-        if (!group) {
-            group = document.createElement('div');
-            group.className = 'footer-btn-group';
-            footer.insertBefore(group, footer.firstChild);
-        }
-
-        // 檢查是否已有上一步／下一步
-        var hasPrev = false, hasNext = false;
-        group.querySelectorAll('a, button').forEach(function (b) {
-            var t = b.textContent || '';
-            if (t.indexOf('上一步') !== -1 || t.indexOf('Previous') !== -1) hasPrev = true;
-            if (t.indexOf('下一步') !== -1 || t.indexOf('Next') !== -1) hasNext = true;
+            // 藏起來或刪掉
+            el.style.setProperty('display', 'none', 'important');
+            el.style.setProperty('visibility', 'hidden', 'important');
+            el.style.setProperty('height', '0', 'important');
+            el.style.setProperty('overflow', 'hidden', 'important');
+            el.style.setProperty('margin', '0', 'important');
+            el.style.setProperty('padding', '0', 'important');
         });
 
-        var map = NAV_MAP[fileName()] || {};
-        var en = isEn();
-
-        if (!hasPrev) {
-            var prev = document.createElement('a');
-            prev.className = 'btn-action enabled';
-            prev.id = 'btnBack';
-            prev.innerHTML = en ? '← Previous' : '← 上一步';
-            if (map.prev) prev.href = map.prev;
-            else {
-                prev.href = '#';
-                prev.style.opacity = '0.4';
-                prev.style.pointerEvents = 'none';
-            }
-            group.insertBefore(prev, group.firstChild);
-        }
-
-        if (!hasNext) {
-            var next = document.createElement('a');
-            next.className = 'btn-action enabled';
-            next.id = 'btnNext';
-            next.innerHTML = en ? 'Next →' : '下一步 →';
-            if (map.next) next.href = map.next;
-            else {
-                next.href = '#';
-                next.style.opacity = '0.4';
-                next.style.pointerEvents = 'none';
-            }
-            group.appendChild(next);
-        }
-
-        // 確保現有按鈕也有 href
-        group.querySelectorAll('a, button').forEach(function (btn) {
-            var t = btn.textContent || '';
-            var isPrev = t.indexOf('上一步') !== -1 || t.indexOf('Previous') !== -1;
-            var isNext = t.indexOf('下一步') !== -1 || t.indexOf('Next') !== -1;
-            var href = isPrev ? map.prev : (isNext ? map.next : null);
-            btn.classList.add('enabled');
-            btn.style.pointerEvents = 'auto';
-            btn.style.cursor = 'pointer';
-            if (btn.tagName === 'A' && href) btn.setAttribute('href', href);
-            if (btn.tagName !== 'A' && href) {
-                btn.onclick = function (e) {
-                    e.preventDefault();
-                    window.location.href = href;
-                };
-            }
-        });
-
-        // 頁碼標記（若沒有）
-        if (!footer.querySelector('.page-marker')) {
-            var marker = document.createElement('div');
-            marker.className = 'page-marker';
-            marker.innerHTML = '<i class="fa-solid fa-book"></i> <span id="pageMarkerText"></span>';
-            footer.appendChild(marker);
-        }
-
-        footer.style.setProperty('display', 'flex', 'important');
-        footer.style.setProperty('visibility', 'visible', 'important');
-        return footer;
-    }
-
-    function run() {
-        ensureFooter();
-        setTimeout(ensureFooter, 150);
-        setTimeout(ensureFooter, 500);
-        setTimeout(ensureFooter, 1000);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(function () {
-                // 更新按鈕文字
-                var footer = document.querySelector('.hud-footer');
-                if (!footer) return;
-                var en = isEn();
-                footer.querySelectorAll('a, button').forEach(function (btn) {
-                    var t = btn.textContent || '';
-                    if (t.indexOf('上一步') !== -1 || t.indexOf('Previous') !== -1) {
-                        btn.innerHTML = en ? '← Previous' : '← 上一步';
-                    }
-                    if (t.indexOf('下一步') !== -1 || t.indexOf('Next') !== -1) {
-                        btn.innerHTML = en ? 'Next →' : '下一步 →';
-                    }
-                });
-            }, 80);
-        };
-    }
-
-    console.log('✅ 已自動補上上一步／下一步');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 公版：外部瀏覽器 + 相機 QR + 刪除掃描區多餘「輸入示範」        -->
-<!-- 刪舊腳本後只貼這段，Ctrl+F5                                    -->
-<!-- ============================================================ -->
-<style>
-    .btn-external-browser {
-        display: inline-flex !important;
-        align-items: center;
-        gap: 6px;
-        padding: 4px 14px;
-        background: rgba(0, 230, 118, 0.12);
-        border: 1px solid rgba(0, 230, 118, 0.35);
-        border-radius: 20px;
-        color: #00e676;
-        font-size: 0.7rem;
-        font-weight: 700;
-        text-decoration: none;
-        cursor: pointer;
-        margin-left: 8px;
-        white-space: nowrap;
-    }
-    .camera-guide { display: none !important; }
-    .camera-guide.show-fail {
-        display: block !important;
-        text-align: left !important;
-        background: rgba(232, 96, 74, 0.08);
-        border-left: 4px solid #E8604A;
-        padding: 12px 14px;
-        border-radius: 10px;
-        font-size: 0.82rem;
-        line-height: 1.7;
-        color: #e0dcc8;
-        margin-top: 10px;
-    }
-    .qr-result-ok {
-        display: block !important;
-        margin-top: 10px;
-        padding: 10px 14px;
-        border-radius: 10px;
-        background: rgba(0, 230, 118, 0.12);
-        border: 1px solid rgba(0, 230, 118, 0.35);
-        color: #00e676;
-        font-size: 0.85rem;
-        word-break: break-all;
-        text-align: left;
-    }
-</style>
-
-<script>
-(function () {
-    if (window.__browserQrCleanV3) return;
-    window.__browserQrCleanV3 = true;
-
-    function isEn() {
-        if (typeof currentLang !== 'undefined') return currentLang === 'en';
-        var a = document.querySelector('.lang-btn.active');
-        return !!(a && /english|en/i.test(a.textContent || ''));
-    }
-
-    /* ========== 刪除掃描區下面多餘的「輸入示範」 ========== */
-    function removeDupDemo() {
-        // 找出所有含「輸入示範／Please follow」的區塊
-        var demos = [];
-        document.querySelectorAll('div, span, p').forEach(function (el) {
-            if (el.children && el.children.length > 4) return;
-            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
-            if (!t || t.length > 80) return;
-            if (t.indexOf('輸入示範') !== -1 ||
-                t.indexOf('Please follow the Seven-Seal') !== -1 ||
-                t.indexOf('請依本卷七印誓網') !== -1) {
-                demos.push(el);
-            }
-        });
-
-        if (demos.length <= 1) return;
-
-        // 保留第一個（上方正確的紫色框），其餘若在掃描按鈕之後就刪
-        var scanBtns = document.querySelectorAll(
-            '#btnScanQRStep8, #btnScanQRStep9, #btnScanQR, #btnScanQRStep4, button, a'
-        );
-        var scanPos = null;
-        for (var i = 0; i < scanBtns.length; i++) {
-            var bt = scanBtns[i].textContent || '';
-            if (bt.indexOf('開始掃描') !== -1 || bt.indexOf('掃描') !== -1 ||
-                bt.indexOf('Start Scan') !== -1 || bt.indexOf('Scan') !== -1) {
-                scanPos = scanBtns[i];
-                break;
-            }
-        }
-
-        demos.forEach(function (el, idx) {
-            if (idx === 0) return; // 留第一個
-            // 在掃描按鈕後面、或綠色樣式 → 刪
-            var isAfterScan = false;
-            if (scanPos && el.compareDocumentPosition) {
-                // DOCUMENT_POSITION_FOLLOWING = 4
-                if (scanPos.compareDocumentPosition(el) & 4) isAfterScan = true;
-            }
-            var style = window.getComputedStyle ? window.getComputedStyle(el) : null;
-            var isGreen = style && (
-                (style.color || '').indexOf('0, 230, 118') !== -1 ||
-                (style.color || '').indexOf('00e676') !== -1 ||
-                (el.style && el.style.color && el.style.color.indexOf('00e676') !== -1)
-            );
-            // 或包在 qr / camera 相關容器內
-            var inQr = el.closest && (
-                el.closest('[id*="qr"]') ||
-                el.closest('[id*="camera"]') ||
-                el.closest('.qr-result') ||
-                el.closest('#qrScanResultStep8') ||
-                el.closest('#qrScanResultStep9')
-            );
-
-            if (isAfterScan || isGreen || inQr) {
-                var box = el.closest('div[style], .hud-card > div') || el;
-                if (box && box.parentNode) {
-                    box.style.setProperty('display', 'none', 'important');
-                    // 若整個是多餘框就移除
-                    if ((box.textContent || '').replace(/\s+/g, ' ').trim().length < 60) {
-                        try { box.parentNode.removeChild(box); } catch (e) {}
-                    }
-                }
-            }
-        });
-    }
-
-    /* ========== 外部瀏覽器 ========== */
-    function openExternalBrowser() {
-        var url = window.location.href;
-        var ua = navigator.userAgent || '';
-        if (/android/i.test(ua)) {
-            try {
-                window.location.href =
-                    'intent://' + window.location.host + window.location.pathname +
-                    window.location.search +
-                    '#Intent;scheme=https;package=com.android.chrome;end;';
-                return;
-            } catch (e) {}
-        }
-        if (/iphone|ipad|ipod/i.test(ua)) {
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(url).then(function () {
-                    alert((isEn() ? 'URL copied:\n\n' : '網址已複製：\n\n') + url);
-                });
-            } else {
-                alert(url);
-            }
-            return;
-        }
-        window.open(url, '_blank');
-    }
-
-    function addBrowserBtn() {
-        if (document.querySelector('.btn-external-browser')) return;
-        var langGroup = document.querySelector('.lang-switch-group');
-        if (!langGroup) return;
-        var btn = document.createElement('a');
-        btn.className = 'btn-external-browser';
-        btn.href = '#';
-        btn.innerHTML = isEn()
-            ? '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>Open in Browser</span>'
-            : '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>🌐 瀏覽器開啟</span>';
-        btn.addEventListener('click', function (e) {
-            e.preventDefault();
-            openExternalBrowser();
-        });
-        langGroup.parentNode.insertBefore(btn, langGroup.nextSibling);
-    }
-
-    /* ========== 相機 QR ========== */
-    var GUIDE_ZH =
-        '📷 無法啟動相機<br>' +
-        '⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>' +
-        '→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>' +
-        '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
-    var GUIDE_EN =
-        '📷 Unable to launch the feature<br>' +
-        '⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"<br>' +
-        '→ Open using a web browser (Chrome / Yahoo / Edge...)<br>' +
-        '⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
-
-    var starting = false;
-    var activeQr = null;
-
-    function hideGuides() {
-        document.querySelectorAll('.camera-guide, [id*="cameraGuide"]').forEach(function (el) {
-            el.classList.remove('show-fail');
+        // 舊 class 再藏一次
+        document.querySelectorAll('.hud-footer, .footer-btn-group').forEach(function (el) {
+            if (el.id === 'forceNavFooter') return;
             el.style.setProperty('display', 'none', 'important');
         });
     }
 
-    function showGuide(guideId) {
-        var g = guideId ? document.getElementById(guideId) : document.querySelector('.camera-guide');
-        if (!g) return;
-        g.innerHTML = isEn() ? GUIDE_EN : GUIDE_ZH;
-        g.classList.add('show-fail');
-        g.style.setProperty('display', 'block', 'important');
-    }
+    function build() {
+        var map = NAV_MAP[fileName()] || {};
+        var en = isEn();
+        var bar = document.getElementById('forceNavFooter');
 
-    function stopActive() {
-        if (!activeQr) return Promise.resolve();
-        var inst = activeQr;
-        activeQr = null;
-        return inst.stop().catch(function () {}).then(function () {
-            try { inst.clear(); } catch (e) {}
-        });
-    }
+        if (!bar) {
+            bar = document.createElement('div');
+            bar.id = 'forceNavFooter';
+            var prev = document.createElement('a');
+            prev.id = 'forcePrev';
+            var next = document.createElement('a');
+            next.id = 'forceNext';
+            bar.appendChild(prev);
+            bar.appendChild(next);
 
-    window.startQRScanner = function (containerId, resultId, guideId) {
-        if (starting) return;
-        starting = true;
-        var container = document.getElementById(containerId);
-        var resultEl = resultId ? document.getElementById(resultId) : null;
-        hideGuides();
-        removeDupDemo();
-        if (resultEl) {
-            resultEl.style.display = 'none';
-            resultEl.innerHTML = '';
-            resultEl.classList.remove('qr-result-ok');
+            var container = document.querySelector('.hud-container');
+            if (container) container.appendChild(bar);
+            else document.body.appendChild(bar);
         }
-        if (!container || typeof Html5Qrcode === 'undefined' ||
-            !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            starting = false;
-            showGuide(guideId);
-            return;
+
+        var prev = document.getElementById('forcePrev');
+        var next = document.getElementById('forceNext');
+        prev.textContent = en ? '← Previous' : '← 上一步';
+        next.textContent = en ? 'Next →' : '下一步 →';
+
+        if (map.prev) {
+            prev.href = map.prev;
+            prev.style.opacity = '1';
+            prev.style.pointerEvents = 'auto';
+        } else {
+            prev.removeAttribute('href');
+            prev.style.opacity = '0.35';
+            prev.style.pointerEvents = 'none';
         }
-        stopActive().then(function () {
-            container.innerHTML = '';
-            var qr = new Html5Qrcode(containerId);
-            activeQr = qr;
-            return qr.start(
-                { facingMode: 'environment' },
-                { fps: 12, qrbox: { width: 220, height: 220 } },
-                function (decodedText) {
-                    stopActive().then(function () {
-                        container.innerHTML = '';
-                        if (resultEl) {
-                            resultEl.classList.add('qr-result-ok');
-                            resultEl.style.display = 'block';
-                            resultEl.innerHTML =
-                                '<i class="fa-solid fa-check-circle" style="margin-right:6px;"></i>' +
-                                (isEn() ? 'Scan successful: ' : '掃描成功：') +
-                                '<span style="color:#e0e8f5;">' + (decodedText || '') + '</span>';
-                        }
-                        hideGuides();
-                        removeDupDemo();
-                        starting = false;
-                    });
-                },
-                function () {}
-            );
-        }).then(function () {
-            hideGuides();
-            starting = false;
-        }).catch(function () {
-            activeQr = null;
-            starting = false;
-            showGuide(guideId);
-        });
-        setTimeout(function () { starting = false; }, 4000);
-    };
-
-    window.smoothStartScan = window.startQRScanner;
-    window.startQRScannerStep8 = function () {
-        window.startQRScanner('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
-    };
-    window.startQRScannerStep9 = function () {
-        window.startQRScanner('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
-    };
-
-    var MAP = [
-        { btn: 'btnScanQRStep8', box: 'qr-reader-container-step8', result: 'qrScanResultStep8', guide: 'cameraGuideStep8' },
-        { btn: 'btnScanQRStep9', box: 'qr-reader-container-step9', result: 'qrScanResultStep9', guide: 'cameraGuideStep9' },
-        { btn: 'btnScanQR', box: 'qr-reader-container', result: 'qrScanResult', guide: 'cameraGuide' },
-        { btn: 'btnScanQRStep4', box: 'qr-reader-container-step4', result: 'qrScanResultStep4', guide: 'cameraGuideStep4' }
-    ];
-
-    function bindQr() {
-        MAP.forEach(function (c) {
-            var btn = document.getElementById(c.btn);
-            if (!btn || btn.__qrV3) return;
-            btn.__qrV3 = true;
-            btn.disabled = false;
-            btn.style.pointerEvents = 'auto';
-            btn.style.cursor = 'pointer';
-            btn.addEventListener('click', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-                window.startQRScanner(c.box, c.result, c.guide);
-            }, true);
-        });
-        // 備援：文字含「開始掃描」
-        document.querySelectorAll('button, a').forEach(function (btn) {
-            var t = btn.textContent || '';
-            if (t.indexOf('開始掃描') === -1 && t.indexOf('Start Scan') === -1) return;
-            if (btn.__qrV3) return;
-            btn.__qrV3 = true;
-            btn.addEventListener('click', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                var card = btn.closest('.hud-card') || document;
-                var box = card.querySelector('[id*="qr-reader"]') || document.querySelector('[id*="qr-reader"]');
-                var result = card.querySelector('[id*="qrScanResult"], .qr-result');
-                var guide = card.querySelector('[id*="cameraGuide"], .camera-guide');
-                window.startQRScanner(
-                    box ? box.id : 'qr-reader-container-step8',
-                    result ? result.id : 'qrScanResultStep8',
-                    guide ? guide.id : 'cameraGuideStep8'
-                );
-            }, true);
-        });
+        if (map.next) {
+            next.href = map.next;
+            next.style.opacity = '1';
+            next.style.pointerEvents = 'auto';
+        } else {
+            next.removeAttribute('href');
+            next.style.opacity = '0.35';
+            next.style.pointerEvents = 'none';
+        }
     }
 
     function run() {
-        addBrowserBtn();
-        hideGuides();
-        removeDupDemo();
-        bindQr();
-        setTimeout(function () { removeDupDemo(); bindQr(); }, 200);
-        setTimeout(function () { removeDupDemo(); bindQr(); }, 600);
-        setTimeout(removeDupDemo, 1200);
+        killUpper();
+        build();
+        setTimeout(function () { killUpper(); build(); }, 100);
+        setTimeout(function () { killUpper(); build(); }, 400);
+        setTimeout(function () { killUpper(); build(); }, 900);
     }
 
     if (document.readyState === 'loading') {
@@ -2204,172 +1532,14 @@
         run();
     }
 
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(function () {
-                removeDupDemo();
-                bindQr();
-            }, 100);
-        };
-    }
-
+    // 若舊的又被顯示，持續清
     var obs = new MutationObserver(function () {
-        clearTimeout(window.__dupDemoT);
-        window.__dupDemoT = setTimeout(removeDupDemo, 80);
+        clearTimeout(window.__killUpperT);
+        window.__killUpperT = setTimeout(killUpper, 50);
     });
-    obs.observe(document.body, { childList: true, subtree: true });
+    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
 
-    console.log('✅ 公版：瀏覽器 + 相機 + 刪多餘輸入示範');
-})();
-</script>
-<script>
-(function() {
-    if (window.__removeDupDemo) return;
-    window.__removeDupDemo = true;
-
-    function removeDupDemo() {
-        var demos = [];
-        document.querySelectorAll('div, span, p').forEach(function(el) {
-            if (el.children && el.children.length > 4) return;
-            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
-            if (!t || t.length > 80) return;
-            if (t.indexOf('輸入示範') !== -1 ||
-                t.indexOf('Please follow the Seven-Seal') !== -1 ||
-                t.indexOf('請依本卷七印誓網') !== -1) {
-                demos.push(el);
-            }
-        });
-
-        if (demos.length <= 1) return;
-
-        // 找出「開始掃描」按鈕位置
-        var scanBtn = null;
-        document.querySelectorAll('#btnScanQRStep8, #btnScanQRStep9, #btnScanQR, button, a').forEach(function(b) {
-            var t = b.textContent || '';
-            if (t.indexOf('開始掃描') !== -1 || t.indexOf('Start Scan') !== -1) {
-                if (!scanBtn) scanBtn = b;
-            }
-        });
-
-        demos.forEach(function(el, idx) {
-            if (idx === 0) return;
-            var isAfterScan = false;
-            if (scanBtn && el.compareDocumentPosition) {
-                if (scanBtn.compareDocumentPosition(el) & 4) isAfterScan = true;
-            }
-            var inQr = el.closest && (
-                el.closest('#qr-reader-container-step8') ||
-                el.closest('#qr-reader-container-step9') ||
-                el.closest('.qr-result') ||
-                el.closest('#qrScanResultStep8') ||
-                el.closest('#qrScanResultStep9')
-            );
-            if (isAfterScan || inQr) {
-                try { el.parentNode.removeChild(el); } catch (e) {}
-            }
-        });
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(removeDupDemo, 200);
-        });
-    } else {
-        setTimeout(removeDupDemo, 200);
-    }
-
-    var obs = new MutationObserver(function() {
-        clearTimeout(window.__dupDemoT);
-        window.__dupDemoT = setTimeout(removeDupDemo, 150);
-    });
-    obs.observe(document.body, { childList: true, subtree: true });
-
-    console.log('✅ 已啟用：刪除多餘輸入示範區塊');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 只靠左：誓印通過 + 兩行進入步驟（其他不動）                    -->
-<!-- 貼在 </body> 前，Ctrl+F5                                      -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    if (window.__onlyLeft3) return;
-    window.__onlyLeft3 = true;
-
-    function apply() {
-        // 1) ✅ 顯示：「誓印通過」
-        document.querySelectorAll('div, span').forEach(function (el) {
-            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
-            if (t === '✅ 顯示：「誓印通過」' ||
-                t === '顯示：「誓印通過」' ||
-                t.indexOf('顯示：「誓印通過」') !== -1 ||
-                t.indexOf('Display : 「Oath Seal Passed」') !== -1 ||
-                t.indexOf('Oath Seal Passed') !== -1 && t.length < 40) {
-                el.style.setProperty('text-align', 'left', 'important');
-                el.style.setProperty('display', 'block', 'important');
-                el.style.setProperty('width', '100%', 'important');
-                if (el.parentElement) {
-                    el.parentElement.style.setProperty('text-align', 'left', 'important');
-                    el.parentElement.style.setProperty('justify-content', 'flex-start', 'important');
-                }
-            }
-        });
-
-        // 2) 兩行「進入」
-        document.querySelectorAll('div, span, p').forEach(function (el) {
-            if (el.children && el.children.length > 5) return;
-            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
-            if (!t || t.length > 80) return;
-
-            var hit =
-                (t.indexOf('進入') !== -1 && (
-                    t.indexOf('回傳誓證') !== -1 ||
-                    t.indexOf('執行階段') !== -1 ||
-                    t.indexOf('七印誓網') !== -1 ||
-                    t.indexOf('第 7') !== -1 ||
-                    t.indexOf('第7') !== -1
-                )) ||
-                (t.indexOf('Enter') !== -1 && (
-                    t.indexOf('Return') !== -1 ||
-                    t.indexOf('Seven-Seal') !== -1
-                ));
-
-            if (!hit) return;
-
-            el.style.setProperty('text-align', 'left', 'important');
-            el.style.setProperty('justify-content', 'flex-start', 'important');
-            el.style.setProperty('width', '100%', 'important');
-            if (el.parentElement) {
-                el.parentElement.style.setProperty('text-align', 'left', 'important');
-                el.parentElement.style.setProperty('justify-content', 'flex-start', 'important');
-            }
-        });
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 100);
-        setTimeout(apply, 400);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 50);
-            setTimeout(apply, 200);
-        };
-    }
-
-    console.log('✅ 三行靠左（其他不動）');
+    console.log('✅ 已刪除上方未展開那組，只留一組');
 })();
 </script>
 </body>
