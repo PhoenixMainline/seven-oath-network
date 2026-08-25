@@ -2224,5 +2224,153 @@
     console.log('✅ 公版：瀏覽器 + 相機 + 刪多餘輸入示範');
 })();
 </script>
+<script>
+(function() {
+    if (window.__removeDupDemo) return;
+    window.__removeDupDemo = true;
+
+    function removeDupDemo() {
+        var demos = [];
+        document.querySelectorAll('div, span, p').forEach(function(el) {
+            if (el.children && el.children.length > 4) return;
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t || t.length > 80) return;
+            if (t.indexOf('輸入示範') !== -1 ||
+                t.indexOf('Please follow the Seven-Seal') !== -1 ||
+                t.indexOf('請依本卷七印誓網') !== -1) {
+                demos.push(el);
+            }
+        });
+
+        if (demos.length <= 1) return;
+
+        // 找出「開始掃描」按鈕位置
+        var scanBtn = null;
+        document.querySelectorAll('#btnScanQRStep8, #btnScanQRStep9, #btnScanQR, button, a').forEach(function(b) {
+            var t = b.textContent || '';
+            if (t.indexOf('開始掃描') !== -1 || t.indexOf('Start Scan') !== -1) {
+                if (!scanBtn) scanBtn = b;
+            }
+        });
+
+        demos.forEach(function(el, idx) {
+            if (idx === 0) return;
+            var isAfterScan = false;
+            if (scanBtn && el.compareDocumentPosition) {
+                if (scanBtn.compareDocumentPosition(el) & 4) isAfterScan = true;
+            }
+            var inQr = el.closest && (
+                el.closest('#qr-reader-container-step8') ||
+                el.closest('#qr-reader-container-step9') ||
+                el.closest('.qr-result') ||
+                el.closest('#qrScanResultStep8') ||
+                el.closest('#qrScanResultStep9')
+            );
+            if (isAfterScan || inQr) {
+                try { el.parentNode.removeChild(el); } catch (e) {}
+            }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(removeDupDemo, 200);
+        });
+    } else {
+        setTimeout(removeDupDemo, 200);
+    }
+
+    var obs = new MutationObserver(function() {
+        clearTimeout(window.__dupDemoT);
+        window.__dupDemoT = setTimeout(removeDupDemo, 150);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ 已啟用：刪除多餘輸入示範區塊');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 只靠左：誓印通過 + 兩行進入步驟（其他不動）                    -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__onlyLeft3) return;
+    window.__onlyLeft3 = true;
+
+    function apply() {
+        // 1) ✅ 顯示：「誓印通過」
+        document.querySelectorAll('div, span').forEach(function (el) {
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (t === '✅ 顯示：「誓印通過」' ||
+                t === '顯示：「誓印通過」' ||
+                t.indexOf('顯示：「誓印通過」') !== -1 ||
+                t.indexOf('Display : 「Oath Seal Passed」') !== -1 ||
+                t.indexOf('Oath Seal Passed') !== -1 && t.length < 40) {
+                el.style.setProperty('text-align', 'left', 'important');
+                el.style.setProperty('display', 'block', 'important');
+                el.style.setProperty('width', '100%', 'important');
+                if (el.parentElement) {
+                    el.parentElement.style.setProperty('text-align', 'left', 'important');
+                    el.parentElement.style.setProperty('justify-content', 'flex-start', 'important');
+                }
+            }
+        });
+
+        // 2) 兩行「進入」
+        document.querySelectorAll('div, span, p').forEach(function (el) {
+            if (el.children && el.children.length > 5) return;
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t || t.length > 80) return;
+
+            var hit =
+                (t.indexOf('進入') !== -1 && (
+                    t.indexOf('回傳誓證') !== -1 ||
+                    t.indexOf('執行階段') !== -1 ||
+                    t.indexOf('七印誓網') !== -1 ||
+                    t.indexOf('第 7') !== -1 ||
+                    t.indexOf('第7') !== -1
+                )) ||
+                (t.indexOf('Enter') !== -1 && (
+                    t.indexOf('Return') !== -1 ||
+                    t.indexOf('Seven-Seal') !== -1
+                ));
+
+            if (!hit) return;
+
+            el.style.setProperty('text-align', 'left', 'important');
+            el.style.setProperty('justify-content', 'flex-start', 'important');
+            el.style.setProperty('width', '100%', 'important');
+            if (el.parentElement) {
+                el.parentElement.style.setProperty('text-align', 'left', 'important');
+                el.parentElement.style.setProperty('justify-content', 'flex-start', 'important');
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 400);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+        };
+    }
+
+    console.log('✅ 三行靠左（其他不動）');
+})();
+</script>
 </body>
 </html>
