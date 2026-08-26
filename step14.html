@@ -1135,5 +1135,150 @@ window.onload=function(){switchLanguage('zh');};
     console.log('✅ 已刪除上方未展開那組，只留一組');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：step14 頁碼 → 第 405-416 頁（中英）                      -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<style>
+    .hud-footer {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        gap: 12px !important;
+    }
+    .hud-footer .footer-btn-group {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 12px !important;
+        flex: 0 0 auto !important;
+    }
+    .hud-footer .page-marker,
+    #forcePageMarker {
+        flex: 0 0 100% !important;
+        width: 100% !important;
+        order: 99 !important;
+        margin-top: 6px !important;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        font-size: clamp(0.5rem, 1.2vh, 0.78rem) !important;
+        color: rgba(224, 232, 245, 0.55) !important;
+        align-items: center !important;
+        gap: 6px !important;
+    }
+    #forceNavFooter {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        gap: 12px !important;
+    }
+    #forceNavFooter a {
+        flex: 0 0 auto !important;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__forcePage405) return;
+    window.__forcePage405 = true;
+
+    var PAGE_ZH = '【宇宙誓印覺醒工程 · 覺醒卷】第 405-416 頁';
+    var PAGE_EN = '【Cosmic Oath-Seal Awakening Project · Awakening Volume】Pages 405-416';
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var text = isEn() ? PAGE_EN : PAGE_ZH;
+
+        document.querySelectorAll('.page-marker, #pageMarker, [id*="pageMarker"]').forEach(function (el) {
+            if (el.tagName === 'SPAN' || !el.querySelector('span')) {
+                el.textContent = text;
+            } else {
+                var span = el.querySelector('span') || el;
+                span.textContent = text;
+            }
+            el.style.setProperty('display', 'flex', 'important');
+            el.style.setProperty('visibility', 'visible', 'important');
+            el.style.setProperty('opacity', '1', 'important');
+            el.style.setProperty('flex', '0 0 100%', 'important');
+            el.style.setProperty('width', '100%', 'important');
+            el.style.setProperty('order', '99', 'important');
+        });
+
+        var bar = document.getElementById('forceNavFooter');
+        if (bar) {
+            var marker = document.getElementById('forcePageMarker');
+            if (!marker) {
+                marker = document.createElement('div');
+                marker.id = 'forcePageMarker';
+                marker.className = 'page-marker';
+                marker.innerHTML = '<i class="fa-solid fa-bookmark"></i> <span></span>';
+                bar.appendChild(marker);
+            }
+            var s = marker.querySelector('span') || marker;
+            s.textContent = text;
+            marker.style.setProperty('display', 'flex', 'important');
+            marker.style.setProperty('visibility', 'visible', 'important');
+            marker.style.setProperty('opacity', '1', 'important');
+            marker.style.setProperty('flex', '0 0 100%', 'important');
+            marker.style.setProperty('width', '100%', 'important');
+            marker.style.setProperty('order', '99', 'important');
+            marker.style.setProperty('margin-top', '6px', 'important');
+        }
+
+        if (typeof langPack !== 'undefined') {
+            if (langPack.zh) langPack.zh.pageMarker = PAGE_ZH;
+            if (langPack.en) langPack.en.pageMarker = PAGE_EN;
+        }
+        if (typeof L !== 'undefined') {
+            if (L.zh) L.zh.pageMarker = PAGE_ZH;
+            if (L.en) L.en.pageMarker = PAGE_EN;
+        }
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
+            setTimeout(apply, 60);
+            setTimeout(apply, 250);
+        }
+    });
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__page405T);
+        window.__page405T = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ step14 頁碼：第 405-416 頁');
+})();
+</script>
 </body>
 </html>
