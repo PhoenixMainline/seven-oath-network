@@ -5446,5 +5446,314 @@
     console.log('✅ step7-1 相機掃描已修復：可啟動 + 顯示 QR 真實文字');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：輸入示範 同一行細字 + 靠左                               -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<style>
+    [id*="InputLabel"],
+    [id*="inputLabel"],
+    .input-demo,
+    .demo-input-label {
+        font-size: 0.88rem !important;
+        font-weight: 300 !important;
+        letter-spacing: 0.3px !important;
+        line-height: 1.5 !important;
+        white-space: nowrap !important;
+        text-align: left !important;
+        display: block !important;
+        width: 100% !important;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__demoLeftLine) return;
+    window.__demoLeftLine = true;
+
+    var FULL_ZH = '⌨️ 輸入示範：請依本卷七印誓網誓導碼操作';
+    var FULL_EN = '⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.';
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function styleLeft(el) {
+        if (!el) return;
+        el.style.setProperty('font-size', '0.88rem', 'important');
+        el.style.setProperty('font-weight', '300', 'important');
+        el.style.setProperty('letter-spacing', '0.3px', 'important');
+        el.style.setProperty('line-height', '1.5', 'important');
+        el.style.setProperty('white-space', 'nowrap', 'important');
+        el.style.setProperty('text-align', 'left', 'important');
+        el.style.setProperty('display', 'block', 'important');
+        el.style.setProperty('width', '100%', 'important');
+        el.style.setProperty('margin-left', '0', 'important');
+        el.style.setProperty('margin-right', 'auto', 'important');
+        el.style.setProperty('justify-content', 'flex-start', 'important');
+    }
+
+    function apply() {
+        var en = isEn();
+        var full = en ? FULL_EN : FULL_ZH;
+
+        document.querySelectorAll('[id*="InputLabel"], [id*="inputLabel"]').forEach(function (el) {
+            el.textContent = full;
+            styleLeft(el);
+            // 父層也靠左
+            var p = el.parentElement;
+            if (p) {
+                p.style.setProperty('text-align', 'left', 'important');
+                p.style.setProperty('justify-content', 'flex-start', 'important');
+            }
+        });
+
+        document.querySelectorAll('div, span, p, label').forEach(function (el) {
+            if (el.children && el.children.length > 3) return;
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t || t.length > 80) return;
+
+            var isDemo =
+                t.indexOf('輸入示範') !== -1 ||
+                t.indexOf('請依本卷') !== -1 ||
+                t.indexOf('Please follow the Seven-Seal') !== -1 ||
+                t.indexOf('Input Example') !== -1;
+
+            if (!isDemo) return;
+
+            el.textContent = full;
+            styleLeft(el);
+
+            // 外層盒子也靠左
+            var box = el.closest('div[style], .hud-card > div') || el.parentElement;
+            if (box && box !== el) {
+                box.style.setProperty('text-align', 'left', 'important');
+                box.style.setProperty('justify-content', 'flex-start', 'important');
+                box.style.setProperty('align-items', 'flex-start', 'important');
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
+            setTimeout(apply, 60);
+            setTimeout(apply, 250);
+        }
+    });
+
+    console.log('✅ 輸入示範：同一行細字 + 靠左');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 公版：①② 各留一列「輸入示範」（刪區塊內重複）                 -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<style>
+    [id*="InputLabel"],
+    [id*="inputLabel"],
+    .input-demo,
+    .demo-input-label {
+        font-size: 0.88rem !important;
+        font-weight: 300 !important;
+        letter-spacing: 0.3px !important;
+        line-height: 1.5 !important;
+        white-space: nowrap !important;
+        text-align: left !important;
+        display: block !important;
+        width: 100% !important;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__demoOnePerSection) return;
+    window.__demoOnePerSection = true;
+
+    var FULL_ZH = '⌨️ 輸入示範：請依本卷七印誓網誓導碼操作';
+    var FULL_EN = '⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.';
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function isDemoText(t) {
+        t = (t || '').replace(/\s+/g, ' ').trim();
+        return t.indexOf('輸入示範') !== -1 ||
+               t.indexOf('請依本卷') !== -1 ||
+               t.indexOf('Please follow the Seven-Seal') !== -1 ||
+               t.indexOf('Input Example') !== -1 ||
+               t.indexOf('Vow-Guidance Code') !== -1;
+    }
+
+    function styleOne(el, full) {
+        el.textContent = full;
+        el.style.setProperty('display', 'block', 'important');
+        el.style.setProperty('visibility', 'visible', 'important');
+        el.style.setProperty('opacity', '1', 'important');
+        el.style.setProperty('text-align', 'left', 'important');
+        el.style.setProperty('font-size', '0.88rem', 'important');
+        el.style.setProperty('font-weight', '300', 'important');
+        el.style.setProperty('white-space', 'nowrap', 'important');
+        el.style.setProperty('width', '100%', 'important');
+        // 父層若被藏也打開
+        var p = el.parentElement;
+        if (p) {
+            p.style.setProperty('display', '', 'important');
+            p.style.setProperty('visibility', 'visible', 'important');
+            p.style.setProperty('text-align', 'left', 'important');
+        }
+    }
+
+    function hideOne(el) {
+        el.style.setProperty('display', 'none', 'important');
+    }
+
+    function dedupeInRoot(root, full) {
+        if (!root) return;
+        var nodes = [];
+        root.querySelectorAll('div, span, p, label').forEach(function (el) {
+            if (el.children && el.children.length > 2) return;
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t || t.length > 90) return;
+            if (!isDemoText(t)) return;
+            nodes.push(el);
+        });
+        // 也收有 ID 的
+        root.querySelectorAll('[id*="InputLabel"], [id*="inputLabel"]').forEach(function (el) {
+            if (nodes.indexOf(el) === -1) nodes.push(el);
+        });
+
+        nodes.forEach(function (el, i) {
+            if (i === 0) styleOne(el, full);
+            else hideOne(el);
+        });
+    }
+
+    function findSection(keyword) {
+        var found = null;
+        document.querySelectorAll('.hud-card, .center-card, div').forEach(function (box) {
+            if (found) return;
+            var t = (box.textContent || '');
+            if (t.indexOf(keyword) !== -1 && box.querySelectorAll('.hud-card').length < 3) {
+                // 取較小的卡片層
+                if (!found || box.textContent.length < found.textContent.length) {
+                    found = box;
+                }
+            }
+        });
+        return found;
+    }
+
+    function apply() {
+        var full = isEn() ? FULL_EN : FULL_ZH;
+
+        // ① 驗證階段
+        var sec1 = document.getElementById('step7_4VerifyTitle') ||
+                   document.getElementById('step7_1VerifyTitle') ||
+                   findSection('驗證階段') ||
+                   findSection('Verify');
+        if (sec1) {
+            var card1 = sec1.closest('.hud-card') || sec1.parentElement;
+            dedupeInRoot(card1, full);
+        }
+
+        // ② 回傳誓證
+        var sec2 = document.getElementById('step7_4ReturnTitle') ||
+                   document.getElementById('step7_2ReturnTitle') ||
+                   findSection('回傳誓證') ||
+                   findSection('Return');
+        if (sec2) {
+            var card2 = sec2.closest('.hud-card') || sec2.parentElement;
+            dedupeInRoot(card2, full);
+        }
+
+        // 若找不到分區，全頁依「相鄰重複」去重：連續兩個 demo 只留第一個
+        var all = [];
+        document.querySelectorAll('div, span, p, label').forEach(function (el) {
+            if (el.children && el.children.length > 2) return;
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t || t.length > 90) return;
+            if (isDemoText(t)) all.push(el);
+        });
+        // 若總數 > 2，代表每區各有重複；兩兩一組去重
+        if (all.length >= 2) {
+            var seenParent = {};
+            all.forEach(function (el) {
+                var key = (el.closest('.hud-card') || el.parentElement || el);
+                var k = key && key.outerHTML ? key.outerHTML.slice(0, 80) : String(key);
+                if (!seenParent[k]) {
+                    styleOne(el, full);
+                    seenParent[k] = true;
+                } else {
+                    hideOne(el);
+                }
+            });
+        }
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
+            setTimeout(apply, 60);
+            setTimeout(apply, 250);
+        }
+    });
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__demoSecT);
+        window.__demoSecT = setTimeout(apply, 100);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ ①② 各留一列輸入示範');
+})();
+</script>
 </body>
   </html>
