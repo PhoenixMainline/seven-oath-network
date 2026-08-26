@@ -2639,5 +2639,117 @@
     console.log('✅ 公版相機：掃到顯示 QR 真實文字');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：step5 頁碼 → 第 223-232 頁（中英）                      -->
+<!-- 按鈕維持同一列，頁碼另起一行                                   -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<style>
+    #forceNavFooter {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        gap: 12px !important;
+    }
+    #forceNavFooter a {
+        flex: 0 0 auto !important;
+    }
+    #forcePageMarker {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        font-size: clamp(0.5rem, 1.2vh, 0.78rem) !important;
+        color: rgba(224, 232, 245, 0.45) !important;
+        flex: 0 0 100% !important;
+        width: 100% !important;
+        margin-top: 4px !important;
+        order: 99 !important;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__forcePage223) return;
+    window.__forcePage223 = true;
+
+    var PAGE_ZH = '【宇宙誓印覺醒工程 · 覺醒卷】第 223-232 頁';
+    var PAGE_EN = '【Cosmic Oath-Seal Awakening Project · Awakening Volume】Pages 223-232';
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var text = isEn() ? PAGE_EN : PAGE_ZH;
+
+        var old = document.getElementById('pageMarkerText');
+        if (old) old.textContent = text;
+
+        if (typeof langPack !== 'undefined') {
+            if (langPack.zh) langPack.zh.pageMarker = PAGE_ZH;
+            if (langPack.en) langPack.en.pageMarker = PAGE_EN;
+        }
+
+        var footer = document.getElementById('forceNavFooter');
+        if (!footer) {
+            document.querySelectorAll('.page-marker').forEach(function (node) {
+                var span = node.querySelector('span') || node;
+                if (span) span.textContent = text;
+            });
+            return;
+        }
+
+        var marker = document.getElementById('forcePageMarker');
+        if (!marker) {
+            marker = document.createElement('div');
+            marker.id = 'forcePageMarker';
+            marker.innerHTML = '<i class="fa-regular fa-file-lines"></i><span id="forcePageMarkerText"></span>';
+            footer.appendChild(marker);
+        }
+        var span = document.getElementById('forcePageMarkerText');
+        if (span) span.textContent = text;
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
+            setTimeout(apply, 60);
+            setTimeout(apply, 250);
+        }
+    });
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__forcePageT);
+        window.__forcePageT = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ 頁碼已改為第 223-232 頁');
+})();
+</script>
 </body>
 </html>
