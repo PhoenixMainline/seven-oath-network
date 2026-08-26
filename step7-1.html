@@ -4669,6 +4669,95 @@
 })();
 </script>
 <!-- ============================================================ -->
+<!-- 輸入示範：完整一行（含 ⌨️ 標籤）                              -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__fullDemoLine) return;
+    window.__fullDemoLine = true;
+
+    var FULL_ZH = '⌨️ 輸入示範：請依本卷七印誓網誓導碼操作';
+    var FULL_EN = '⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.';
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var en = isEn();
+        var full = en ? FULL_EN : FULL_ZH;
+
+        // 1) 常見 ID
+        document.querySelectorAll('[id*="InputLabel"], [id*="inputLabel"]').forEach(function (el) {
+            el.textContent = full;
+        });
+        document.querySelectorAll('[id*="Command"], [id*="command"]').forEach(function (el) {
+            var id = el.id || '';
+            if (/Trigger|trigger/i.test(id)) return;
+            el.textContent = '';
+            el.style.setProperty('display', 'none', 'important');
+        });
+
+        // 2) 畫面上的示範框文字
+        document.querySelectorAll('div, span, p').forEach(function (el) {
+            if (el.children && el.children.length > 3) return;
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t || t.length > 100) return;
+
+            // 已是示範相關
+            var isDemo =
+                t.indexOf('輸入示範') !== -1 ||
+                t.indexOf('Input Example') !== -1 ||
+                t.indexOf('請依本卷') !== -1 ||
+                t.indexOf('Please follow the Seven-Seal') !== -1 ||
+                (t.indexOf('【執行指令】') !== -1 && (t.indexOf('第') !== -1 || t.indexOf('回傳') !== -1 || t.indexOf('結果') !== -1));
+
+            if (!isDemo) return;
+            el.textContent = full;
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 200);
+        setTimeout(apply, 600);
+        setTimeout(apply, 1200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
+            setTimeout(apply, 60);
+            setTimeout(apply, 250);
+        }
+    });
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__fullDemoTimer);
+        window.__fullDemoTimer = setTimeout(apply, 100);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 輸入示範完整一行已套用');
+})();
+</script>
+<!-- ============================================================ -->
 <!-- 輸入示範：字級、字重對齊右圖（細、小）                        -->
 <!-- ============================================================ -->
 <style>
@@ -5142,15 +5231,65 @@
 })();
 </script>
 <!-- ============================================================ -->
-<!-- 相機掃描：一次點擊順暢啟動（防重複綁定／防連點）              -->
+<!-- 公版：相機 QR 掃描成功 → 顯示真實文字                         -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
 <!-- ============================================================ -->
+<style>
+    .camera-guide { display: none !important; }
+    .camera-guide.show-fail {
+        display: block !important;
+        text-align: left !important;
+        background: rgba(232, 96, 74, 0.08);
+        border-left: 4px solid #E8604A;
+        padding: 14px 16px;
+        border-radius: 12px;
+        color: #e0dcc8;
+        font-size: 0.85rem;
+        line-height: 1.8;
+        white-space: pre-wrap;
+        margin-top: 12px;
+    }
+    .qr-result,
+    #qrScanResultStep8,
+    #qrScanResultStep9,
+    #qrScanResult {
+        display: none;
+        color: #00e676;
+        font-size: 0.9rem;
+        padding: 10px 14px;
+        border-radius: 12px;
+        background: rgba(0, 230, 118, 0.1);
+        border: 1px solid rgba(0, 230, 118, 0.3);
+        word-break: break-all;
+        text-align: left;
+        margin-top: 10px;
+    }
+    .qr-result.show,
+    #qrScanResultStep8.show,
+    #qrScanResultStep9.show,
+    #qrScanResult.show {
+        display: block !important;
+    }
+</style>
+
 <script>
 (function () {
-    if (window.__smoothQrScan) return;
-    window.__smoothQrScan = true;
+    if (window.__qrShowRealText) return;
+    window.__qrShowRealText = true;
 
-    var starting = false;   // 防連點
-    var activeQr = null;    // 目前實例
+    var GUIDE_ZH =
+        '📷 無法啟動相機\n' +
+        '⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n' +
+        '→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n' +
+        '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+
+    var GUIDE_EN =
+        '📷 Unable to launch the feature\n' +
+        '⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"\n' +
+        '→ Open using a web browser (Chrome / Yahoo / Edge...)\n' +
+        '⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
+
+    var active = null;
 
     function isEn() {
         if (typeof currentLang !== 'undefined') return currentLang === 'en';
@@ -5158,167 +5297,132 @@
         return !!(a && /english|en/i.test(a.textContent || ''));
     }
 
-    function hideGuide(guideId) {
-        var g = guideId ? document.getElementById(guideId) : null;
-        document.querySelectorAll('.camera-guide, [id*="cameraGuide"]').forEach(function (el) {
-            el.classList.remove('show-fail');
-            el.style.setProperty('display', 'none', 'important');
-        });
-        if (g) {
-            g.classList.remove('show-fail');
-            g.style.setProperty('display', 'none', 'important');
-        }
-    }
-
-    function showGuide(guideId) {
-        var g = guideId ? document.getElementById(guideId) : document.querySelector('.camera-guide');
-        if (!g) return;
-        var zh =
-            '📷 無法啟動相機<br>' +
-            '⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」<br>' +
-            '→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）<br>' +
-            '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
-        var en =
-            '📷 Unable to launch the feature<br>' +
-            '⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"<br>' +
-            '→ Open using a web browser (Chrome / Yahoo / Edge...)<br>' +
-            '⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
-        g.innerHTML = isEn() ? en : zh;
-        g.classList.add('show-fail');
-        g.style.setProperty('display', 'block', 'important');
-        g.style.setProperty('text-align', 'left', 'important');
-    }
-
     function stopActive() {
-        if (!activeQr) return Promise.resolve();
-        var inst = activeQr;
-        activeQr = null;
-        return inst.stop().catch(function () {}).then(function () {
-            try { inst.clear(); } catch (e) {}
+        if (!active) return Promise.resolve();
+        var s = active;
+        active = null;
+        return s.stop().catch(function () {}).then(function () {
+            try { s.clear(); } catch (e) {}
         });
     }
 
-    // 統一啟動
-    window.smoothStartScan = function (containerId, resultId, guideId) {
-        if (starting) return; // 防連點
-        starting = true;
+    function showGuide(el) {
+        if (!el) return;
+        el.textContent = isEn() ? GUIDE_EN : GUIDE_ZH;
+        el.classList.add('show-fail');
+        el.style.setProperty('display', 'block', 'important');
+    }
 
-        var container = document.getElementById(containerId);
-        var result = resultId ? document.getElementById(resultId) : null;
-        hideGuide(guideId);
+    function hideGuide(el) {
+        if (!el) return;
+        el.classList.remove('show-fail');
+        el.style.setProperty('display', 'none', 'important');
+    }
 
-        if (!container) {
-            starting = false;
-            showGuide(guideId);
-            return;
-        }
-        if (typeof Html5Qrcode === 'undefined') {
-            starting = false;
-            showGuide(guideId);
-            return;
-        }
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            starting = false;
-            showGuide(guideId);
-            return;
+    function showResult(el, decodedText) {
+        if (!el) return;
+        var text = (decodedText || '').trim();
+        el.classList.add('show');
+        el.style.display = 'block';
+        el.innerHTML =
+            '<i class="fa-solid fa-check-circle" style="margin-right:6px;color:#00e676;"></i>' +
+            (isEn() ? 'Scan successful: ' : '掃描成功：') +
+            '<span class="qr-text" style="color:#e0e8f5;font-weight:600;display:block;margin-top:4px;padding:6px 10px;background:#0b0d12;border-radius:8px;font-size:0.85rem;word-break:break-all;">' +
+            text + '</span>';
+    }
+
+    function startScan(boxId, resultId, guideId) {
+        var container = document.getElementById(boxId);
+        var result = document.getElementById(resultId);
+        var guide = document.getElementById(guideId);
+        if (!container) return;
+
+        hideGuide(guide);
+        if (result) {
+            result.style.display = 'none';
+            result.classList.remove('show');
+            result.innerHTML = '';
         }
 
-        // 先停舊的，再清容器，再啟動
         stopActive().then(function () {
             container.innerHTML = '';
-            if (result) result.style.display = 'none';
 
-            var qr = new Html5Qrcode(containerId);
-            activeQr = qr;
+            setTimeout(function () {
+                if (typeof Html5Qrcode === 'undefined' ||
+                    !navigator.mediaDevices ||
+                    !navigator.mediaDevices.getUserMedia) {
+                    showGuide(guide);
+                    return;
+                }
 
-            return qr.start(
-                { facingMode: 'environment' },
-                { fps: 12, qrbox: { width: 220, height: 220 } },
-                function (decodedText) {
-                    // 掃到碼
-                    stopActive().then(function () {
-                        container.innerHTML = '';
-                        if (result) {
-                            result.style.display = 'block';
-                            var span = result.querySelector('span') || result;
-                            // 保留原有成功文案，若空再補
-                            if (!(span.textContent || '').trim()) {
-                                span.textContent = isEn()
-                                    ? 'Scan successful!'
-                                    : '掃描成功！';
-                            }
-                        }
-                        hideGuide(guideId);
-                        starting = false;
+                try {
+                    var scanner = new Html5Qrcode(boxId);
+                    active = scanner;
+
+                    scanner.start(
+                        { facingMode: 'environment' },
+                        { fps: 10, qrbox: { width: 220, height: 220 } },
+                        function (decodedText) {
+                            if (!(decodedText || '').trim()) return;
+                            stopActive().then(function () {
+                                container.innerHTML = '';
+                                showResult(result, decodedText);
+                                hideGuide(guide);
+                            });
+                        },
+                        function () {}
+                    ).catch(function () {
+                        active = null;
+                        showGuide(guide);
                     });
-                },
-                function () { /* 掃不到碼時持續掃，不顯示失敗 */ }
-            );
-        }).then(function () {
-            // 相機已起來
-            hideGuide(guideId);
-            starting = false;
-        }).catch(function () {
-            activeQr = null;
-            starting = false;
-            showGuide(guideId);
+                } catch (e) {
+                    active = null;
+                    showGuide(guide);
+                }
+            }, 300);
         });
+    }
 
-        // 安全鎖：4 秒後解除 starting，避免卡死
-        setTimeout(function () { starting = false; }, 4000);
+    window.startQRScannerStep8 = function () {
+        startScan('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+    };
+    window.startQRScannerStep9 = function () {
+        startScan('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
+    };
+    window.startQRScanner = function (step) {
+        if (step === 'step4' || step === 'step9' || step === 'return') {
+            window.startQRScannerStep9();
+        } else {
+            window.startQRScannerStep8();
+        }
     };
 
-    // 按鈕對應表
-    var MAP = [
-        { btn: 'btnScanQRStep8', box: 'qr-reader-container-step8', result: 'qrScanResultStep8', guide: 'cameraGuideStep8' },
-        { btn: 'btnScanQRStep9', box: 'qr-reader-container-step9', result: 'qrScanResultStep9', guide: 'cameraGuideStep9' },
-        { btn: 'btnScanQR',      box: 'qr-reader-container',      result: 'qrScanResult',      guide: 'cameraGuide' },
-        { btn: 'btnScanQRStep4', box: 'qr-reader-container-step4', result: 'qrScanResultStep4', guide: 'cameraGuideStep4' },
-        { btn: 'forceExecQrBtn', box: 'forceExecQrReader',         result: 'forceExecQrResult',  guide: 'forceExecQrGuide' }
-    ];
-
     function bind() {
-        MAP.forEach(function (c) {
-            var btn = document.getElementById(c.btn);
-            if (!btn || btn.__smoothBound) return;
-            btn.__smoothBound = true;
-
-            // 用 capture 搶先處理，避免舊 listener 重複啟動
+        var map = [
+            { id: 'btnScanQRStep8', fn: window.startQRScannerStep8 },
+            { id: 'btnScanQRStep9', fn: window.startQRScannerStep9 },
+            { id: 'btnScanQR', fn: function () { window.startQRScanner('step3'); } },
+            { id: 'btnScanQRStep4', fn: function () { window.startQRScanner('step4'); } }
+        ];
+        map.forEach(function (m) {
+            var btn = document.getElementById(m.id);
+            if (!btn || btn.__qrRealBound) return;
+            btn.__qrRealBound = true;
+            btn.disabled = false;
+            btn.style.pointerEvents = 'auto';
+            btn.style.cursor = 'pointer';
             btn.addEventListener('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-                e.stopImmediatePropagation();
-                window.smoothStartScan(c.box, c.result, c.guide);
+                m.fn();
             }, true);
-        });
-    }
-
-    // 若頁面有既有 startQRScanner*，導向 smooth
-    function redirectOld() {
-        ['startQRScanner', 'startQRScannerStep8', 'startQRScannerStep9'].forEach(function (name) {
-            if (typeof window[name] !== 'function') return;
-            if (window[name].__smoothRedirected) return;
-            window[name] = function (a, b, c) {
-                // 相容舊參數：containerId, resultId, guideId
-                var box = typeof a === 'string' ? a : 'qr-reader-container-step8';
-                var result = typeof b === 'string' ? b : 'qrScanResultStep8';
-                var guide = typeof c === 'string' ? c : 'cameraGuideStep8';
-                if (name.indexOf('Step9') !== -1) {
-                    box = 'qr-reader-container-step9';
-                    result = 'qrScanResultStep9';
-                    guide = 'cameraGuideStep9';
-                }
-                window.smoothStartScan(box, result, guide);
-            };
-            window[name].__smoothRedirected = true;
         });
     }
 
     function run() {
         bind();
-        redirectOld();
-        setTimeout(function () { bind(); redirectOld(); }, 300);
-        setTimeout(function () { bind(); redirectOld(); }, 800);
+        setTimeout(bind, 200);
+        setTimeout(bind, 600);
     }
 
     if (document.readyState === 'loading') {
@@ -5327,158 +5431,140 @@
         run();
     }
 
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__smoothQrT);
-        window.__smoothQrT = setTimeout(bind, 100);
-    });
-    obs.observe(document.body, { childList: true, subtree: true });
-
-    console.log('✅ 相機掃描：一次點擊順暢啟動');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 公版：相機 QR 掃描（可正常啟動）                               -->
-<!-- 貼在 </body> 前即可                                           -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    if (window.__qrScanPublicFix) return;
-    window.__qrScanPublicFix = true;
-
-    // 若頁面沒有 startQRScanner，就補一個完整版
-    if (typeof window.startQRScanner !== 'function') {
-        window.startQRScanner = function (containerId, resultId, guideId) {
-            var container = document.getElementById(containerId);
-            if (!container) return;
-
-            // 停止上一次掃描
-            if (window._currentScanner) {
-                try {
-                    window._currentScanner.stop().catch(function () {});
-                } catch (e) {}
-                window._currentScanner = null;
-            }
-            container.innerHTML = '';
-
-            var guide = guideId ? document.getElementById(guideId) : null;
-            var resultEl = resultId ? document.getElementById(resultId) : null;
-            if (guide) {
-                guide.style.display = 'none';
-                guide.classList.remove('show-fail');
-            }
-            if (resultEl) {
-                resultEl.style.display = 'none';
-                resultEl.innerHTML = '';
-            }
-
-            // 檢查環境
-            if (typeof Html5Qrcode === 'undefined' ||
-                !navigator.mediaDevices ||
-                !navigator.mediaDevices.getUserMedia) {
-                if (guide) {
-                    guide.style.display = 'block';
-                    guide.classList.add('show-fail');
-                }
-                return;
-            }
-
-            try {
-                var instance = new Html5Qrcode(containerId);
-                window._currentScanner = instance;
-
-                instance.start(
-                    { facingMode: 'environment' },
-                    { fps: 15, qrbox: { width: 220, height: 220 } },
-                    function (decodedText) {
-                        // 掃到內容
-                        if (resultEl) {
-                            resultEl.style.display = 'block';
-                            resultEl.innerHTML = '<i class="fa-solid fa-check-circle"></i> ' + decodedText;
-                        }
-                        instance.stop().then(function () {
-                            window._currentScanner = null;
-                        }).catch(function () {
-                            window._currentScanner = null;
-                        });
-                    },
-                    function () { /* 掃不到就持續掃 */ }
-                ).catch(function () {
-                    // 啟動失敗 → 顯示引導
-                    if (guide) {
-                        guide.style.display = 'block';
-                        guide.classList.add('show-fail');
-                    }
-                    window._currentScanner = null;
-                });
-            } catch (e) {
-                if (guide) {
-                    guide.style.display = 'block';
-                    guide.classList.add('show-fail');
-                }
-                window._currentScanner = null;
-            }
-        };
-    }
-
-    // 綁定按鈕（驗證區 + 回傳區）
-    function bindButtons() {
-        var configs = [
-            {
-                btn: 'btnScanQRStep8',
-                box: 'qr-reader-container-step8',
-                result: 'qrScanResultStep8',
-                guide: 'cameraGuideStep8'
-            },
-            {
-                btn: 'btnScanQRStep9',
-                box: 'qr-reader-container-step9',
-                result: 'qrScanResultStep9',
-                guide: 'cameraGuideStep9'
-            }
-        ];
-
-        configs.forEach(function (cfg) {
-            var btn = document.getElementById(cfg.btn);
-            if (!btn || btn._qrBound) return;
-            btn._qrBound = true;
-
-            // 確保按鈕可點
-            btn.style.pointerEvents = 'auto';
-            btn.style.cursor = 'pointer';
-            btn.disabled = false;
-
-            btn.addEventListener('click', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                window.startQRScanner(cfg.box, cfg.result, cfg.guide);
-            });
-        });
-    }
-
-    function run() {
-        bindButtons();
-        setTimeout(bindButtons, 300);
-        setTimeout(bindButtons, 800);
-        setTimeout(bindButtons, 1500);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    // 語系切換後再綁一次
     var orig = window.switchLanguage;
     if (typeof orig === 'function') {
         window.switchLanguage = function (l) {
             orig(l);
-            setTimeout(bindButtons, 100);
-            setTimeout(bindButtons, 400);
+            document.querySelectorAll('.camera-guide.show-fail').forEach(function (el) {
+                el.textContent = isEn() ? GUIDE_EN : GUIDE_ZH;
+            });
+            setTimeout(bind, 80);
         };
     }
 
-    console.log('✅ 公版相機掃描已載入（可正常啟動）');
+    console.log('✅ 公版相機：掃到顯示 QR 真實文字');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 公版：輸入示範 同一行細字 + 靠左                               -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<style>
+    [id*="InputLabel"],
+    [id*="inputLabel"],
+    .input-demo,
+    .demo-input-label {
+        font-size: 0.88rem !important;
+        font-weight: 300 !important;
+        letter-spacing: 0.3px !important;
+        line-height: 1.5 !important;
+        white-space: nowrap !important;
+        text-align: left !important;
+        display: block !important;
+        width: 100% !important;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__demoLeftLine) return;
+    window.__demoLeftLine = true;
+
+    var FULL_ZH = '⌨️ 輸入示範：請依本卷七印誓網誓導碼操作';
+    var FULL_EN = '⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.';
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function styleLeft(el) {
+        if (!el) return;
+        el.style.setProperty('font-size', '0.88rem', 'important');
+        el.style.setProperty('font-weight', '300', 'important');
+        el.style.setProperty('letter-spacing', '0.3px', 'important');
+        el.style.setProperty('line-height', '1.5', 'important');
+        el.style.setProperty('white-space', 'nowrap', 'important');
+        el.style.setProperty('text-align', 'left', 'important');
+        el.style.setProperty('display', 'block', 'important');
+        el.style.setProperty('width', '100%', 'important');
+        el.style.setProperty('margin-left', '0', 'important');
+        el.style.setProperty('margin-right', 'auto', 'important');
+        el.style.setProperty('justify-content', 'flex-start', 'important');
+    }
+
+    function apply() {
+        var en = isEn();
+        var full = en ? FULL_EN : FULL_ZH;
+
+        document.querySelectorAll('[id*="InputLabel"], [id*="inputLabel"]').forEach(function (el) {
+            el.textContent = full;
+            styleLeft(el);
+            // 父層也靠左
+            var p = el.parentElement;
+            if (p) {
+                p.style.setProperty('text-align', 'left', 'important');
+                p.style.setProperty('justify-content', 'flex-start', 'important');
+            }
+        });
+
+        document.querySelectorAll('div, span, p, label').forEach(function (el) {
+            if (el.children && el.children.length > 3) return;
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t || t.length > 80) return;
+
+            var isDemo =
+                t.indexOf('輸入示範') !== -1 ||
+                t.indexOf('請依本卷') !== -1 ||
+                t.indexOf('Please follow the Seven-Seal') !== -1 ||
+                t.indexOf('Input Example') !== -1;
+
+            if (!isDemo) return;
+
+            el.textContent = full;
+            styleLeft(el);
+
+            // 外層盒子也靠左
+            var box = el.closest('div[style], .hud-card > div') || el.parentElement;
+            if (box && box !== el) {
+                box.style.setProperty('text-align', 'left', 'important');
+                box.style.setProperty('justify-content', 'flex-start', 'important');
+                box.style.setProperty('align-items', 'flex-start', 'important');
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
+            setTimeout(apply, 60);
+            setTimeout(apply, 250);
+        }
+    });
+
+    console.log('✅ 輸入示範：同一行細字 + 靠左');
 })();
 </script>
 </body>
