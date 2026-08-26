@@ -246,7 +246,7 @@ body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-h
     <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec9p2">誓資可預先封入天庫；免誓約有效性查核</span></div>
     <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec9p3">主尊可直接授印並認領；既往誓資可自原分配延續</span></div>
     <div class="note-ok" id="sec9Note1">一句話：本源系者，覺醒即啟動舊誓延續與天律直授。</div>
-    <div style="color:#c4b5fd;font-weight:600;margin:10px 0 4px" id="sec9_2">9-2 備位誥徒（預備系）</div>
+    <div style="color:#c4b5fd;font-weight:600;margin:10px 0 4px" id="sec9_2">9-2 備位誥徒（預備天族）</div>
     <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec9p4">須完成七印全程；不得跳印</span></div>
     <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec9p5">誓資須以誓文 × 誓印對頻逐步復原</span></div>
     <div class="instruction-item"><i class="fa-solid fa-check"></i><span id="sec9p6">主尊親審授徽；誓約須查核完成度與真實性</span></div>
@@ -508,6 +508,220 @@ window.switchLanguage = switchLanguage;
   }
   var btn = document.getElementById('browserBtnLink');
   if (btn) btn.addEventListener('click', openExternal);
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 公版：補頁碼 207-216（按鈕維持同一列不拆）                     -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<style>
+    #forceNavFooter {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        gap: 12px !important;
+    }
+    #forceNavFooter a {
+        flex: 0 0 auto !important;
+    }
+    #forcePageMarker {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        font-size: clamp(0.5rem, 1.2vh, 0.78rem) !important;
+        color: rgba(224, 232, 245, 0.45) !important;
+        flex: 0 0 100% !important;
+        width: 100% !important;
+        margin-top: 4px !important;
+        order: 99 !important;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__forcePage207b) return;
+    window.__forcePage207b = true;
+
+    var PAGE_ZH = '【宇宙誓印覺醒工程 · 覺醒卷】第 207-216 頁';
+    var PAGE_EN = '【Cosmic Oath-Seal Awakening Project · Awakening Volume】Pages 207-216';
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var text = isEn() ? PAGE_EN : PAGE_ZH;
+
+        var old = document.getElementById('pageMarkerText');
+        if (old) old.textContent = text;
+
+        if (typeof langPack !== 'undefined') {
+            if (langPack.zh) langPack.zh.pageMarker = PAGE_ZH;
+            if (langPack.en) langPack.en.pageMarker = PAGE_EN;
+        }
+
+        var footer = document.getElementById('forceNavFooter');
+        if (!footer) return;
+
+        // 不改按鈕，只補頁碼
+        var marker = document.getElementById('forcePageMarker');
+        if (!marker) {
+            marker = document.createElement('div');
+            marker.id = 'forcePageMarker';
+            marker.innerHTML = '<i class="fa-regular fa-file-lines"></i><span id="forcePageMarkerText"></span>';
+            footer.appendChild(marker);
+        }
+        var span = document.getElementById('forcePageMarkerText');
+        if (span) span.textContent = text;
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__forcePageT);
+        window.__forcePageT = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ 頁碼 207-216 已補，按鈕維持同列');
+})();
+</script>
+  <!-- ============================================================ -->
+<!-- 公版：上一步／下一步 並排不拆開                                -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<style>
+    /* 原 footer */
+    .hud-footer {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        gap: 12px !important;
+    }
+    .hud-footer .footer-btn-group {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 12px !important;
+        flex: 0 0 auto !important;
+        width: auto !important;
+    }
+    .hud-footer .btn-action {
+        flex: 0 0 auto !important;
+    }
+    .hud-footer .page-marker {
+        flex: 0 0 100% !important;
+        width: 100% !important;
+        margin-top: 6px !important;
+        order: 99 !important;
+    }
+
+    /* 強制導航列 */
+    #forceNavFooter {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        gap: 12px !important;
+    }
+    #forceNavFooter a {
+        flex: 0 0 auto !important;
+        margin: 0 !important;
+    }
+    #forcePageMarker {
+        flex: 0 0 100% !important;
+        width: 100% !important;
+        order: 99 !important;
+        margin-top: 6px !important;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__navKeepTogether) return;
+    window.__navKeepTogether = true;
+
+    function apply() {
+        // 原 footer
+        document.querySelectorAll('.hud-footer').forEach(function (f) {
+            f.style.setProperty('justify-content', 'flex-start', 'important');
+            f.style.setProperty('flex-wrap', 'wrap', 'important');
+            f.style.setProperty('gap', '12px', 'important');
+        });
+        document.querySelectorAll('.footer-btn-group').forEach(function (g) {
+            g.style.setProperty('display', 'flex', 'important');
+            g.style.setProperty('flex-direction', 'row', 'important');
+            g.style.setProperty('gap', '12px', 'important');
+            g.style.setProperty('width', 'auto', 'important');
+            g.style.setProperty('flex', '0 0 auto', 'important');
+        });
+
+        // 強制導航
+        var force = document.getElementById('forceNavFooter');
+        if (force) {
+            force.style.setProperty('justify-content', 'flex-start', 'important');
+            force.style.setProperty('flex-wrap', 'wrap', 'important');
+            force.style.setProperty('gap', '12px', 'important');
+            force.querySelectorAll('a').forEach(function (a) {
+                a.style.setProperty('flex', '0 0 auto', 'important');
+                a.style.setProperty('margin-left', '0', 'important');
+                a.style.setProperty('margin-right', '0', 'important');
+            });
+        }
+
+        // 頁碼另起一行
+        document.querySelectorAll('.page-marker, #forcePageMarker').forEach(function (m) {
+            m.style.setProperty('flex', '0 0 100%', 'important');
+            m.style.setProperty('width', '100%', 'important');
+            m.style.setProperty('order', '99', 'important');
+            m.style.setProperty('margin-top', '6px', 'important');
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__navTogetherT);
+        window.__navTogetherT = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+    console.log('✅ 上一步／下一步維持並排');
 })();
 </script>
 </body>
