@@ -1527,5 +1527,220 @@
     console.log('✅ 兩行步驟已靠左');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：相機 QR 掃描成功 → 顯示真實文字                         -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<style>
+    .camera-guide { display: none !important; }
+    .camera-guide.show-fail {
+        display: block !important;
+        text-align: left !important;
+        background: rgba(232, 96, 74, 0.08);
+        border-left: 4px solid #E8604A;
+        padding: 14px 16px;
+        border-radius: 12px;
+        color: #e0dcc8;
+        font-size: 0.85rem;
+        line-height: 1.8;
+        white-space: pre-wrap;
+        margin-top: 12px;
+    }
+    .qr-result,
+    #qrScanResultStep8,
+    #qrScanResultStep9,
+    #qrScanResult {
+        display: none;
+        color: #00e676;
+        font-size: 0.9rem;
+        padding: 10px 14px;
+        border-radius: 12px;
+        background: rgba(0, 230, 118, 0.1);
+        border: 1px solid rgba(0, 230, 118, 0.3);
+        word-break: break-all;
+        text-align: left;
+        margin-top: 10px;
+    }
+    .qr-result.show,
+    #qrScanResultStep8.show,
+    #qrScanResultStep9.show,
+    #qrScanResult.show {
+        display: block !important;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__qrShowRealText) return;
+    window.__qrShowRealText = true;
+
+    var GUIDE_ZH =
+        '📷 無法啟動相機\n' +
+        '⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n' +
+        '→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n' +
+        '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+
+    var GUIDE_EN =
+        '📷 Unable to launch the feature\n' +
+        '⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"\n' +
+        '→ Open using a web browser (Chrome / Yahoo / Edge...)\n' +
+        '⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
+
+    var active = null;
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function stopActive() {
+        if (!active) return Promise.resolve();
+        var s = active;
+        active = null;
+        return s.stop().catch(function () {}).then(function () {
+            try { s.clear(); } catch (e) {}
+        });
+    }
+
+    function showGuide(el) {
+        if (!el) return;
+        el.textContent = isEn() ? GUIDE_EN : GUIDE_ZH;
+        el.classList.add('show-fail');
+        el.style.setProperty('display', 'block', 'important');
+    }
+
+    function hideGuide(el) {
+        if (!el) return;
+        el.classList.remove('show-fail');
+        el.style.setProperty('display', 'none', 'important');
+    }
+
+    function showResult(el, decodedText) {
+        if (!el) return;
+        var text = (decodedText || '').trim();
+        el.classList.add('show');
+        el.style.display = 'block';
+        el.innerHTML =
+            '<i class="fa-solid fa-check-circle" style="margin-right:6px;color:#00e676;"></i>' +
+            (isEn() ? 'Scan successful: ' : '掃描成功：') +
+            '<span class="qr-text" style="color:#e0e8f5;font-weight:600;display:block;margin-top:4px;padding:6px 10px;background:#0b0d12;border-radius:8px;font-size:0.85rem;word-break:break-all;">' +
+            text + '</span>';
+    }
+
+    function startScan(boxId, resultId, guideId) {
+        var container = document.getElementById(boxId);
+        var result = document.getElementById(resultId);
+        var guide = document.getElementById(guideId);
+        if (!container) return;
+
+        hideGuide(guide);
+        if (result) {
+            result.style.display = 'none';
+            result.classList.remove('show');
+            result.innerHTML = '';
+        }
+
+        stopActive().then(function () {
+            container.innerHTML = '';
+
+            setTimeout(function () {
+                if (typeof Html5Qrcode === 'undefined' ||
+                    !navigator.mediaDevices ||
+                    !navigator.mediaDevices.getUserMedia) {
+                    showGuide(guide);
+                    return;
+                }
+
+                try {
+                    var scanner = new Html5Qrcode(boxId);
+                    active = scanner;
+
+                    scanner.start(
+                        { facingMode: 'environment' },
+                        { fps: 10, qrbox: { width: 220, height: 220 } },
+                        function (decodedText) {
+                            if (!(decodedText || '').trim()) return;
+                            stopActive().then(function () {
+                                container.innerHTML = '';
+                                showResult(result, decodedText);
+                                hideGuide(guide);
+                            });
+                        },
+                        function () {}
+                    ).catch(function () {
+                        active = null;
+                        showGuide(guide);
+                    });
+                } catch (e) {
+                    active = null;
+                    showGuide(guide);
+                }
+            }, 300);
+        });
+    }
+
+    window.startQRScannerStep8 = function () {
+        startScan('qr-reader-container-step8', 'qrScanResultStep8', 'cameraGuideStep8');
+    };
+    window.startQRScannerStep9 = function () {
+        startScan('qr-reader-container-step9', 'qrScanResultStep9', 'cameraGuideStep9');
+    };
+    window.startQRScanner = function (step) {
+        if (step === 'step4' || step === 'step9' || step === 'return') {
+            window.startQRScannerStep9();
+        } else {
+            window.startQRScannerStep8();
+        }
+    };
+
+    function bind() {
+        var map = [
+            { id: 'btnScanQRStep8', fn: window.startQRScannerStep8 },
+            { id: 'btnScanQRStep9', fn: window.startQRScannerStep9 },
+            { id: 'btnScanQR', fn: function () { window.startQRScanner('step3'); } },
+            { id: 'btnScanQRStep4', fn: function () { window.startQRScanner('step4'); } }
+        ];
+        map.forEach(function (m) {
+            var btn = document.getElementById(m.id);
+            if (!btn || btn.__qrRealBound) return;
+            btn.__qrRealBound = true;
+            btn.disabled = false;
+            btn.style.pointerEvents = 'auto';
+            btn.style.cursor = 'pointer';
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                m.fn();
+            }, true);
+        });
+    }
+
+    function run() {
+        bind();
+        setTimeout(bind, 200);
+        setTimeout(bind, 600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            document.querySelectorAll('.camera-guide.show-fail').forEach(function (el) {
+                el.textContent = isEn() ? GUIDE_EN : GUIDE_ZH;
+            });
+            setTimeout(bind, 80);
+        };
+    }
+
+    console.log('✅ 公版相機：掃到顯示 QR 真實文字');
+})();
+</script>
 </body>
 </html>
