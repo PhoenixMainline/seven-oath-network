@@ -1784,5 +1784,111 @@
     console.log('✅ 第1項「進入 →」→ step1.html');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：第11項 願力誓證 → step11.html                            -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__fixStep11Link) return;
+    window.__fixStep11Link = true;
+
+    function isTargetRow(text) {
+        text = (text || '').replace(/\s+/g, ' ');
+        return (
+            (text.indexOf('第11項') !== -1 || text.indexOf('第 11 項') !== -1 || text.indexOf('Item 11') !== -1) &&
+            (text.indexOf('願力誓證') !== -1 || text.indexOf('Vow-Power') !== -1 || text.indexOf('Vow Power') !== -1)
+        ) || (
+            text.indexOf('願力誓證') !== -1 &&
+            (text.indexOf('第11') !== -1 || text.indexOf('Item 11') !== -1)
+        );
+    }
+
+    function apply() {
+        // 1) 表格列
+        document.querySelectorAll('tr').forEach(function (row) {
+            var rowText = row.textContent || '';
+            if (!isTargetRow(rowText)) return;
+
+            row.querySelectorAll('a, button, span, div').forEach(function (el) {
+                var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+                var isEnter =
+                    t === '進入 →' || t === '進入->' || t === '進入' ||
+                    t.indexOf('進入') !== -1 || t.indexOf('Enter') !== -1 ||
+                    (el.classList && el.classList.contains('unit-link'));
+
+                if (!isEnter && el.tagName !== 'A') return;
+
+                if (el.tagName === 'A') {
+                    el.setAttribute('href', 'step11.html');
+                    el.style.pointerEvents = 'auto';
+                    el.style.cursor = 'pointer';
+                } else {
+                    el.style.cursor = 'pointer';
+                    el.style.pointerEvents = 'auto';
+                    el.onclick = function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        location.href = 'step11.html';
+                    };
+                    var parentA = el.closest('a');
+                    if (parentA) {
+                        parentA.setAttribute('href', 'step11.html');
+                        parentA.style.pointerEvents = 'auto';
+                    }
+                }
+            });
+
+            // 整列點擊備援
+            row.style.cursor = 'pointer';
+            if (!row.__step11Bound) {
+                row.__step11Bound = true;
+                row.addEventListener('click', function (e) {
+                    if (e.target && e.target.closest('a')) return;
+                    location.href = 'step11.html';
+                });
+            }
+        });
+
+        // 2) 資料陣列裡若有 link 欄位也改
+        if (typeof level2Data !== 'undefined') {
+            ['zh', 'en'].forEach(function (lang) {
+                var items = level2Data[lang] && level2Data[lang].items;
+                if (!items) return;
+                items.forEach(function (it) {
+                    var blob = (it.no || '') + ' ' + (it.field || '') + ' ' + (it.func || '');
+                    if (isTargetRow(blob) || /第11項|Item 11|願力誓證/i.test(blob)) {
+                        it.link = 'step11.html';
+                    }
+                });
+            });
+        }
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 80);
+            setTimeout(apply, 300);
+        };
+    }
+
+    console.log('✅ 第11項 願力誓證 → step11.html');
+})();
+</script>
 </body>
 </html>
