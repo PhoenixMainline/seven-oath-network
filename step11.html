@@ -576,5 +576,216 @@ window.onload = function () { switchLanguage('zh'); };
     console.log('✅ 相機掃描：一次點擊順暢啟動');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 刪除「沒展開」的那組上一步／下一步，只留 #forceNavFooter      -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<style>
+    html, body {
+        height: auto !important;
+        max-height: none !important;
+        overflow-y: auto !important;
+    }
+    body {
+        display: block !important;
+        padding-bottom: calc(56px + env(safe-area-inset-bottom, 16px)) !important;
+    }
+    .hud-container {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+    .step-content {
+        overflow: visible !important;
+        max-height: none !important;
+        height: auto !important;
+    }
+
+    /* 舊 footer 全部藏 */
+    .hud-footer,
+    .footer-btn-group {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        overflow: hidden !important;
+    }
+
+    #forceNavFooter {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: 100% !important;
+        margin: 16px 0 20px 0 !important;
+        padding: 12px 8px 16px 8px !important;
+        gap: 12px !important;
+        z-index: 99999 !important;
+        pointer-events: auto !important;
+        position: relative !important;
+        border-top: 1px solid rgba(168, 85, 247, 0.35) !important;
+        background: rgba(4, 13, 33, 0.95) !important;
+    }
+    #forceNavFooter a {
+        display: inline-flex !important;
+        align-items: center !important;
+        min-height: 46px !important;
+        padding: 10px 20px !important;
+        border: 1px solid #a78bfa !important;
+        color: #e9d5ff !important;
+        background: rgba(124, 58, 237, 0.35) !important;
+        border-radius: 22px !important;
+        text-decoration: none !important;
+        font-weight: 700 !important;
+        cursor: pointer !important;
+        pointer-events: auto !important;
+        opacity: 1 !important;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__killUpperNav) return;
+    window.__killUpperNav = true;
+
+    var NAV_MAP = {
+        'index.html':   { prev: null,           next: 'step0.html' },
+        'step0.html':   { prev: 'index.html',   next: 'step1.html' },
+        'step1.html':   { prev: 'step0.html',   next: 'step1-1.html' },
+        'step1-1.html': { prev: 'step1.html',   next: 'step2.html' },
+        'step2.html':   { prev: 'step1-1.html', next: 'step3.html' },
+        'step3.html':   { prev: 'step2.html',   next: 'step4.html' },
+        'step4.html':   { prev: 'step3.html',   next: 'step5.html' },
+        'step5.html':   { prev: 'step4.html',   next: 'step6.html' },
+        'step6.html':   { prev: 'step5.html',   next: 'step7.html' },
+        'step7.html':   { prev: 'step6.html',   next: 'step7-1.html' },
+        'step7-1.html': { prev: 'step7.html',   next: 'step7-2.html' },
+        'step7-2.html': { prev: 'step7-1.html', next: 'step7-3.html' },
+        'step7-3.html': { prev: 'step7-2.html', next: 'step7-4.html' },
+        'step7-4.html': { prev: 'step7-3.html', next: 'step7-5.html' },
+        'step7-5.html': { prev: 'step7-4.html', next: 'step7-6.html' },
+        'step7-6.html': { prev: 'step7-5.html', next: 'step7-7.html' },
+        'step7-7.html': { prev: 'step7-6.html', next: 'step8.html' },
+        'step8.html':   { prev: 'step7-7.html', next: 'step9.html' },
+        'step9.html':   { prev: 'step8.html',   next: 'step10.html' },
+        'step10.html':  { prev: 'step9.html',   next: 'step11.html' },
+        'step11.html':  { prev: 'step10.html',  next: 'step12.html' },
+        'step12.html':  { prev: 'step11.html',  next: 'step13.html' },
+        'step13.html':  { prev: 'step12.html',  next: 'step14.html' },
+        'step14.html':  { prev: 'step13.html',  next: 'step15.html' },
+        'step15.html':  { prev: 'step14.html',  next: 'step16.html' },
+        'step16.html':  { prev: 'step15.html',  next: null }
+    };
+
+    function fileName() {
+        var p = (window.location.pathname || '').split('/').pop() || '';
+        return (p || 'index.html').toLowerCase();
+    }
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function killUpper() {
+        // 刪／藏所有「上一步+下一步」區塊，但跳過 #forceNavFooter
+        document.querySelectorAll('div, footer, section, nav').forEach(function (el) {
+            if (el.id === 'forceNavFooter') return;
+            if (el.closest && el.closest('#forceNavFooter')) return;
+
+            var t = (el.textContent || '').replace(/\s+/g, ' ');
+            // 必須同時有上一步和下一步，且文字不長（避免誤刪大區塊）
+            if (t.length > 80) return;
+            var hasPrev = t.indexOf('上一步') !== -1 || t.indexOf('Previous') !== -1;
+            var hasNext = t.indexOf('下一步') !== -1 || t.indexOf('Next') !== -1;
+            if (!hasPrev || !hasNext) return;
+
+            // 藏起來或刪掉
+            el.style.setProperty('display', 'none', 'important');
+            el.style.setProperty('visibility', 'hidden', 'important');
+            el.style.setProperty('height', '0', 'important');
+            el.style.setProperty('overflow', 'hidden', 'important');
+            el.style.setProperty('margin', '0', 'important');
+            el.style.setProperty('padding', '0', 'important');
+        });
+
+        // 舊 class 再藏一次
+        document.querySelectorAll('.hud-footer, .footer-btn-group').forEach(function (el) {
+            if (el.id === 'forceNavFooter') return;
+            el.style.setProperty('display', 'none', 'important');
+        });
+    }
+
+    function build() {
+        var map = NAV_MAP[fileName()] || {};
+        var en = isEn();
+        var bar = document.getElementById('forceNavFooter');
+
+        if (!bar) {
+            bar = document.createElement('div');
+            bar.id = 'forceNavFooter';
+            var prev = document.createElement('a');
+            prev.id = 'forcePrev';
+            var next = document.createElement('a');
+            next.id = 'forceNext';
+            bar.appendChild(prev);
+            bar.appendChild(next);
+
+            var container = document.querySelector('.hud-container');
+            if (container) container.appendChild(bar);
+            else document.body.appendChild(bar);
+        }
+
+        var prev = document.getElementById('forcePrev');
+        var next = document.getElementById('forceNext');
+        prev.textContent = en ? '← Previous' : '← 上一步';
+        next.textContent = en ? 'Next →' : '下一步 →';
+
+        if (map.prev) {
+            prev.href = map.prev;
+            prev.style.opacity = '1';
+            prev.style.pointerEvents = 'auto';
+        } else {
+            prev.removeAttribute('href');
+            prev.style.opacity = '0.35';
+            prev.style.pointerEvents = 'none';
+        }
+        if (map.next) {
+            next.href = map.next;
+            next.style.opacity = '1';
+            next.style.pointerEvents = 'auto';
+        } else {
+            next.removeAttribute('href');
+            next.style.opacity = '0.35';
+            next.style.pointerEvents = 'none';
+        }
+    }
+
+    function run() {
+        killUpper();
+        build();
+        setTimeout(function () { killUpper(); build(); }, 100);
+        setTimeout(function () { killUpper(); build(); }, 400);
+        setTimeout(function () { killUpper(); build(); }, 900);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 若舊的又被顯示，持續清
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__killUpperT);
+        window.__killUpperT = setTimeout(killUpper, 50);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+    console.log('✅ 已刪除上方未展開那組，只留一組');
+})();
+</script>
 </body>
 </html>
