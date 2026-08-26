@@ -1775,5 +1775,180 @@
     console.log('✅ 輸入示範：同一行細字 + 靠左');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 修復「🌐 瀏覽器開啟」按鈕（紅框框那個）                     -->
+<!-- ============================================================ -->
+<style>
+    /* 確保按鈕可見 */
+    .btn-external-browser {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        padding: 4px 14px !important;
+        background: rgba(0, 230, 118, 0.12) !important;
+        border: 1px solid rgba(0, 230, 118, 0.3) !important;
+        border-radius: 20px !important;
+        color: #00e676 !important;
+        font-size: 0.7rem !important;
+        font-weight: 700 !important;
+        text-decoration: none !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+        font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif !important;
+        margin-left: 8px !important;
+        pointer-events: auto !important;
+        z-index: 9999 !important;
+        position: relative !important;
+    }
+    .btn-external-browser:hover {
+        background: rgba(0, 230, 118, 0.2) !important;
+        box-shadow: 0 0 20px rgba(0, 230, 118, 0.2) !important;
+        transform: scale(1.02) !important;
+    }
+    .btn-external-browser i {
+        font-size: 0.8rem !important;
+    }
+    @media (max-width: 480px) {
+        .btn-external-browser {
+            font-size: 0.6rem !important;
+            padding: 3px 10px !important;
+            gap: 4px !important;
+            margin-left: 4px !important;
+        }
+        .btn-external-browser i {
+            font-size: 0.6rem !important;
+        }
+    }
+</style>
+
+<script>
+(function() {
+    // ================================================================
+    // 重新建立「瀏覽器開啟」按鈕
+    // ================================================================
+    function rebuildExternalBrowserButton() {
+        var langGroup = document.querySelector('.lang-switch-group');
+        if (!langGroup) {
+            console.warn('⚠️ 找不到 .lang-switch-group');
+            return;
+        }
+
+        // 移除舊按鈕
+        var oldBtn = document.querySelector('.btn-external-browser');
+        if (oldBtn) {
+            oldBtn.remove();
+        }
+
+        // 建立新按鈕
+        var btn = document.createElement('a');
+        btn.className = 'btn-external-browser';
+        btn.href = '#';
+        btn.setAttribute('role', 'button');
+        btn.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>🌐 瀏覽器開啟</span>';
+
+        // 綁定點擊事件
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openInExternalBrowser();
+        });
+
+        // 插入到語言切換按鈕旁邊
+        langGroup.parentNode.insertBefore(btn, langGroup.nextSibling);
+        console.log('✅ 瀏覽器開啟按鈕已重建');
+    }
+
+    // ================================================================
+    // 強制開啟外部瀏覽器
+    // ================================================================
+    function openInExternalBrowser() {
+        var url = window.location.href;
+        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+        // Android：強制跳轉 Chrome
+        if (/android/i.test(userAgent)) {
+            try {
+                var intentUrl = 'intent://' + window.location.host + window.location.pathname + window.location.search + '#Intent;scheme=https;package=com.android.chrome;end;';
+                window.location.href = intentUrl;
+                console.log('✅ Android: 嘗試強制跳轉 Chrome');
+                return;
+            } catch (e) {
+                console.warn('⚠️ intent 跳轉失敗');
+            }
+        }
+
+        // iOS：嘗試用 chrome:// 協定
+        if (/iphone|ipad|ipod/i.test(userAgent)) {
+            try {
+                var chromeUrl = 'chrome://' + window.location.host + window.location.pathname + window.location.search;
+                window.location.href = chromeUrl;
+                console.log('✅ iOS: 嘗試強制跳轉 Chrome');
+                return;
+            } catch (e) {
+                console.warn('⚠️ chrome:// 跳轉失敗');
+            }
+        }
+
+        // 備用：複製網址
+        var fallbackUrl = window.location.href;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(fallbackUrl).then(function() {
+                alert('⚠️ 無法自動跳轉外部瀏覽器\n\n📋 網址已複製，請手動貼到 Chrome / Safari 開啟：\n\n' + fallbackUrl);
+            }).catch(function() {
+                fallbackCopy(fallbackUrl);
+            });
+        } else {
+            fallbackCopy(fallbackUrl);
+        }
+    }
+
+    // ================================================================
+    // 複製網址備用方法
+    // ================================================================
+    function fallbackCopy(text) {
+        var textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+            document.execCommand('copy');
+            alert('⚠️ 無法自動跳轉外部瀏覽器\n\n📋 網址已複製，請手動貼到 Chrome / Safari 開啟：\n\n' + text);
+        } catch (e) {
+            alert('⚠️ 請手動複製以下網址，貼到外部瀏覽器開啟：\n\n📋 ' + text);
+        }
+        document.body.removeChild(textarea);
+    }
+
+    // ================================================================
+    // 執行
+    // ================================================================
+    function run() {
+        rebuildExternalBrowserButton();
+        setTimeout(rebuildExternalBrowserButton, 200);
+        setTimeout(rebuildExternalBrowserButton, 500);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 語系切換時重新建立
+    var origSwitch = window.switchLanguage;
+    if (typeof origSwitch === 'function') {
+        window.switchLanguage = function(lang) {
+            origSwitch(lang);
+            setTimeout(rebuildExternalBrowserButton, 150);
+            setTimeout(rebuildExternalBrowserButton, 400);
+        };
+    }
+
+    console.log('✅ 瀏覽器開啟按鈕修復模組已載入');
+})();
+</script>
 </body>
 </html>
