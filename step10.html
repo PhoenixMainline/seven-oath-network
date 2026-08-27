@@ -87,7 +87,7 @@ body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-h
       <!-- 模組總表 -->
       <div class="hud-card" style="border:1px solid rgba(168,85,247,.5)">
         <div style="text-align:center;color:#e9d5ff;font-size:1.05rem;font-weight:bold;margin-bottom:14px;letter-spacing:1px">
-          <span id="step10Title">📜 第10項 誓文印記追蹤</span>
+          <span id="step10Title">📜 誓文印記追蹤</span>
         </div>
         <div style="text-align:center;margin-bottom:12px">
           <div style="color:#fbbf24;font-size:.92rem;font-weight:bold;margin-bottom:4px">
@@ -241,7 +241,7 @@ var langPack = {
     homeBtnText: '首頁 ->',
     appTitle: '【宇宙誓印覺醒工程 · 七印誓網】',
     browserBtn: '🌐 瀏覽器開啟',
-    step10Title: '📜 第10項 誓文印記追蹤',
+    step10Title: '📜 誓文印記追蹤',
     step10Tag: '• 數據與誓證檢核階段',
     step10Col1: '欄位名稱',
     step10Col2: '功能簡要說明',
@@ -287,7 +287,7 @@ var langPack = {
     homeBtnText: 'Home ->',
     appTitle: '【Cosmic Oath-Seal Awakening Project · Seven-Seal Vow Network】',
     browserBtn: '🌐 Open in Browser',
-    step10Title: '📜 Item 10 Vow-Text Seal Tracking',
+    step10Title: '📜 Vow-Text Seal Tracking',
     step10Tag: '• Data and Oath Verification Stage',
     step10Col1: 'Field Name',
     step10Col2: 'Function Overview',
@@ -1584,6 +1584,238 @@ window.onload = function () { switchLanguage('zh'); };
     obs.observe(document.body, { childList: true, subtree: true });
 
     console.log('✅ step10 頁碼：第 373-376 頁');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 公版：step10 相機 QR（可啟動 + 顯示掃到文字 + 失敗才引導）     -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<style>
+    .camera-guide { display: none !important; }
+    .camera-guide.show-fail {
+        display: block !important;
+        text-align: left !important;
+        white-space: pre-wrap !important;
+    }
+    .qr-result,
+    #qrScanResultStep10 {
+        display: none;
+    }
+    .qr-result.show,
+    #qrScanResultStep10.show {
+        display: block !important;
+        margin-top: 10px !important;
+        padding: 10px 14px !important;
+        border-radius: 10px !important;
+        background: rgba(0, 230, 118, 0.12) !important;
+        border: 1px solid rgba(0, 230, 118, 0.35) !important;
+        color: #00e676 !important;
+        font-size: 0.85rem !important;
+        word-break: break-all !important;
+        text-align: left !important;
+    }
+    #qr-reader-container-step10 {
+        display: block !important;
+        width: 100% !important;
+        max-width: 300px !important;
+        margin: 12px auto 0 !important;
+    }
+    #btnScanQRStep10 {
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        opacity: 1 !important;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__step10CamFix) return;
+    window.__step10CamFix = true;
+
+    var GUIDE_ZH =
+        '📷 無法啟動相機\n' +
+        '⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n' +
+        '→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n' +
+        '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+
+    var GUIDE_EN =
+        '📷 Unable to launch the feature\n' +
+        '⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"\n' +
+        '→ Open using a web browser (Chrome / Yahoo / Edge...)\n' +
+        '⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
+
+    var starting = false;
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function hideGuide() {
+        var g = document.getElementById('cameraGuideStep10');
+        if (!g) return;
+        g.classList.remove('show-fail');
+        g.style.setProperty('display', 'none', 'important');
+    }
+
+    function showGuide() {
+        var g = document.getElementById('cameraGuideStep10');
+        if (!g) return;
+        g.innerHTML = isEn() ? GUIDE_EN : GUIDE_ZH;
+        g.classList.add('show-fail');
+        g.style.setProperty('display', 'block', 'important');
+    }
+
+    function showResult(text) {
+        var el = document.getElementById('qrScanResultStep10');
+        if (!el) return;
+        var prefix = isEn() ? 'Scan successful: ' : '掃描成功：';
+        el.innerHTML = '<i class="fa-solid fa-check-circle"></i> ' + prefix + (text || '');
+        el.classList.add('show');
+        el.style.setProperty('display', 'block', 'important');
+    }
+
+    function stopActive() {
+        return new Promise(function (resolve) {
+            try {
+                if (window.html5QrCodeStep10) {
+                    window.html5QrCodeStep10.stop().then(function () {
+                        try { window.html5QrCodeStep10.clear(); } catch (e) {}
+                        window.html5QrCodeStep10 = null;
+                        resolve();
+                    }).catch(function () {
+                        window.html5QrCodeStep10 = null;
+                        resolve();
+                    });
+                    return;
+                }
+            } catch (e) {}
+            resolve();
+        });
+    }
+
+    window.startQRScannerStep10 = function () {
+        if (starting) return;
+        starting = true;
+
+        var container = document.getElementById('qr-reader-container-step10');
+        if (!container) {
+            starting = false;
+            showGuide();
+            return;
+        }
+
+        hideGuide();
+        var resultEl = document.getElementById('qrScanResultStep10');
+        if (resultEl) {
+            resultEl.classList.remove('show');
+            resultEl.style.setProperty('display', 'none', 'important');
+            resultEl.innerHTML = '';
+        }
+
+        if (typeof Html5Qrcode === 'undefined' ||
+            !navigator.mediaDevices ||
+            !navigator.mediaDevices.getUserMedia) {
+            showGuide();
+            starting = false;
+            return;
+        }
+
+        stopActive().then(function () {
+            container.innerHTML = '';
+            container.style.setProperty('display', 'block', 'important');
+
+            var scanner = new Html5Qrcode('qr-reader-container-step10');
+            window.html5QrCodeStep10 = scanner;
+
+            scanner.start(
+                { facingMode: 'environment' },
+                { fps: 10, qrbox: { width: 220, height: 220 } },
+                function (decodedText) {
+                    // 掃到後先顯示文字，再停相機（避免太快跳開）
+                    showResult(decodedText);
+                    hideGuide();
+                    try {
+                        scanner.stop().then(function () {
+                            try { scanner.clear(); } catch (e) {}
+                            window.html5QrCodeStep10 = null;
+                            starting = false;
+                        }).catch(function () {
+                            window.html5QrCodeStep10 = null;
+                            starting = false;
+                        });
+                    } catch (e) {
+                        starting = false;
+                    }
+                },
+                function () { /* ignore frame miss */ }
+            ).then(function () {
+                starting = false;
+            }).catch(function () {
+                showGuide();
+                window.html5QrCodeStep10 = null;
+                starting = false;
+            });
+        });
+    };
+
+    // 也掛到通用名稱，避免被其他腳本覆蓋
+    window.startQRScanner = function (boxId, resultId, guideId) {
+        if (boxId === 'qr-reader-container-step10' || !boxId) {
+            window.startQRScannerStep10();
+            return;
+        }
+        // 其他頁面若有呼叫，至少不報錯
+        if (typeof Html5Qrcode === 'undefined') return;
+    };
+
+    function bind() {
+        var btn = document.getElementById('btnScanQRStep10');
+        if (!btn) return;
+        btn.disabled = false;
+        btn.style.pointerEvents = 'auto';
+        btn.style.cursor = 'pointer';
+        // 移除舊 onclick，改用 addEventListener（避免重複）
+        btn.onclick = null;
+        if (btn.__step10Bound) return;
+        btn.__step10Bound = true;
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            window.startQRScannerStep10();
+        }, true);
+    }
+
+    function run() {
+        hideGuide();
+        bind();
+        setTimeout(bind, 200);
+        setTimeout(bind, 600);
+        setTimeout(bind, 1200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(function () {
+                var g = document.getElementById('cameraGuideStep10');
+                if (g && g.classList.contains('show-fail')) {
+                    g.innerHTML = isEn() ? GUIDE_EN : GUIDE_ZH;
+                }
+                bind();
+            }, 100);
+        };
+    }
+
+    console.log('✅ step10 相機 QR：可啟動、掃到顯示文字、失敗才引導');
 })();
 </script>
 </body>
