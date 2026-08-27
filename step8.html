@@ -724,5 +724,61 @@ window.switchLanguage = switchLanguage;
     console.log('✅ 上一步／下一步維持並排');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：step8 上一步 → step7-7.html（第七印 × 鳳徽印）           -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__fixStep8Prev) return;
+    window.__fixStep8Prev = true;
+
+    function apply() {
+        // 1) 原 footer 的上一步
+        document.querySelectorAll('a.btn-action, a[href], #btnBack, #forcePrev').forEach(function (a) {
+            var t = (a.textContent || '').replace(/\s+/g, ' ');
+            if (t.indexOf('上一步') === -1 && t.indexOf('Previous') === -1) return;
+            a.setAttribute('href', 'step7-7.html');
+            a.style.pointerEvents = 'auto';
+            a.style.cursor = 'pointer';
+            a.style.opacity = '1';
+        });
+
+        // 2) forceNavFooter 的上一頁
+        var prev = document.getElementById('forcePrev');
+        if (prev) {
+            prev.setAttribute('href', 'step7-7.html');
+            prev.style.opacity = '1';
+            prev.style.pointerEvents = 'auto';
+        }
+
+        // 3) 若有 NAV_MAP，一併修正
+        if (typeof window.NAV_MAP === 'object' && window.NAV_MAP['step8.html']) {
+            window.NAV_MAP['step8.html'].prev = 'step7-7.html';
+        }
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__step8PrevT);
+        window.__step8PrevT = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+    console.log('✅ step8 上一步 → step7-7.html');
+})();
+</script>
 </body>
 </html>
