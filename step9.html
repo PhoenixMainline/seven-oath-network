@@ -636,5 +636,89 @@ function openExternal(e) {
     console.log('✅ 上一步／下一步維持並排');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：下一步箭頭改到文字右邊（下一步 →）                      -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__fixNextArrow) return;
+    window.__fixNextArrow = true;
+
+    function fix() {
+        // 1) 原 footer 的下一步
+        var next = document.getElementById('btnNext');
+        if (next) {
+            var textSpan = next.querySelector('#btnNextText') || next.querySelector('span');
+            var icon = next.querySelector('i');
+            if (textSpan && icon) {
+                // 先清空，再依序放：文字 → 箭頭
+                next.innerHTML = '';
+                next.appendChild(textSpan);
+                next.appendChild(document.createTextNode(' '));
+                next.appendChild(icon);
+                // 確保是右箭頭
+                icon.className = 'fa-solid fa-arrow-right';
+            } else if (next) {
+                // 沒有結構就直接重寫
+                var label = (typeof currentLang !== 'undefined' && currentLang === 'en') ? 'Next' : '下一步';
+                next.innerHTML = '<span id="btnNextText">' + label + '</span> <i class="fa-solid fa-arrow-right"></i>';
+            }
+        }
+
+        // 2) 強制導航列（若有 #forceNext）
+        var forceNext = document.getElementById('forceNext');
+        if (forceNext) {
+            var flabel = (typeof currentLang !== 'undefined' && currentLang === 'en') ? 'Next' : '下一步';
+            forceNext.innerHTML = '<span>' + flabel + '</span> <i class="fa-solid fa-arrow-right"></i>';
+        }
+
+        // 3) 任何含「下一步 / Next」且前面有箭頭的按鈕
+        document.querySelectorAll('a.btn-action, .btn-action').forEach(function (btn) {
+            var t = (btn.textContent || '').replace(/\s+/g, ' ').trim();
+            if (t.indexOf('下一步') === -1 && !/next/i.test(t)) return;
+            if (t.indexOf('上一步') !== -1 || /previous/i.test(t)) return;
+
+            var icon = btn.querySelector('i.fa-arrow-right, i.fa-arrow-left, i.fa-chevron-right, i.fa-chevron-left');
+            var span = btn.querySelector('span');
+            if (icon && span && icon === btn.firstElementChild) {
+                // 箭頭在前面 → 搬到後面
+                btn.appendChild(icon);
+            }
+        });
+    }
+
+    function run() {
+        fix();
+        setTimeout(fix, 150);
+        setTimeout(fix, 400);
+        setTimeout(fix, 900);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 語系切換後再修一次
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (lang) {
+            orig(lang);
+            setTimeout(fix, 80);
+            setTimeout(fix, 250);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__nextArrowT);
+        window.__nextArrowT = setTimeout(fix, 60);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ 下一步箭頭已改為：下一步 →');
+})();
+</script>
 </body>
 </html>
