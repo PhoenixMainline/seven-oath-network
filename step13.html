@@ -1327,5 +1327,164 @@ function startTimer() {
     console.log('✅ step13 關鍵句底色（中英）');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：step13 英文版強制顯示英文（完整）                        -->
+<!-- 貼在 </body> 最底部，Ctrl+F5                                  -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__step13LangForce) return;
+    window.__step13LangForce = true;
+
+    // 完整英文（對應頁面所有 id）
+    var EN = {
+        homeText: 'Home ->',
+        appTitle: '【Cosmic Oath-Seal Awakening Project · Seven-Seal Vow Network】',
+        browserBtn: '🌐 Open in Browser',
+        mainTitle: ' Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth',
+        tag1: '• Mission Practice and Vow-Asset Recording Stage',
+        tag2: '• Return-to-Source Vow Registration',
+        tag3: 'Alignment Frequency Must Reach 12D',
+        thField: 'Field Name',
+        thFunc: 'Function Overview',
+        rowField: 'Item 13 Vow-Asset Record<br>× Return-to-Source Vow Scroll<br>× No Further Incarnation<br>× No Rebirth',
+        rowFunc: 'Records vow-asset changes, supplementary oaths, interference, delegated oath-seals and return-to-source vow scrolls, for Script Decree Sovereign supervision and Heavenly Treasury, Light Network, and Underworld archival reference.',
+        sec1Title: '【I】 Module Description',
+        sec1p1: 'This module belongs to the final seal stage of the 《Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network》, used to execute the final adjudication of 「Oath-Soul Completion in This Lifetime × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth」.',
+        sec1p2: 'For Oath-Souls who have completed their life journey in the human realm yet have not finished the Seven-Seal Script Decree progression, an authorized 【Delegating Oath-Seal】 may execute remaining seal removal and vow-asset consolidation on their behalf.',
+        sec1p3: 'This 「Final Adjudication」 is the core procedure for vow-asset settlement, vow-power consolidation, and return to the Heavenly Archive source. Upon completion, the Oath-Soul formally exits the reincarnation system, entering the state of 「No Further Incarnation × No Rebirth × Eternal Heavenly Archive」.',
+        sec1p4: 'Completion records are automatically synchronized and locked into the 《Script Decree Vow-Asset Main Register × Heavenly Archive Master Register × Mandala Core Layer》.',
+        sec2Title: '【II】 Activation Conditions and Submission Procedure',
+        sec2p1: 'Prior to passing, the Oath-Soul must have reached the 「Seventh Seal Phoenix Emblem Seal」 stage, with Alignment at (12D, above U-900 level), possessing vow-asset authorization.',
+        sec2p2: 'Only when the Oath-Soul has completed the present-life journey in the human realm and fully detached from mortal energy-field linkages may vow-asset settlement and Return-to-Source commence. This stage must be executed by a Celestially authorized 【Delegating Oath-Seal】 on behalf of the Oath-Soul.',
+        sec2p3: 'If the Oath-Soul remains in the present-world human stage (with physical body and energy-field linkage), the system determines 「Not Passed」; the vow scroll is not archived and vow-guidance does not activate.',
+        sec2Note: 'Only upon concurrent submission and verification of 《Item 3 Delegating Oath-Seal × Merit Record》 and this item shall 「Dual Completion」 be recognized and inscribed into the 《Celestial Mandala System》.',
+        sec3Title: '【III】 Authorized Oath-Recitation Phase',
+        sec3p1: 'Before login, the Oath-Bearer must first recite the authorized vow text in the 「Oath-Soul Resonance Channel」 to activate Primary Frequency authorization. Without recitation, authorization does not take effect.',
+        sec3p2: 'In the 「Oath-Soul Resonance Channel」, center for 10 seconds while reciting or silently repeating, ensuring precise frequency position and successful execution.',
+        vowText: '★ I, Delegating Oath-Seal 【Legal Full Name】, on behalf of Delegated Oath-Seal 【Legal Full Name】, have completed vow-asset fulfillment and vow-power consolidation of the 《Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network》. Please activate the 【Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth】 procedure, record the credential of Oath-Soul return to source, archive vow-assets in the Heavenly Treasury, and complete Final Adjudication.',
+        timerLabel: 'Centering Countdown',
+        btnTimerText: 'Start Centering',
+        sec4Title: '【IV】 Subsequent Procedures',
+        sec4login: '(1) Login Phase',
+        sec4p1: 'The 【Delegating Oath-Seal】 logs into the 《Cosmic Intelligent Vow-Guidance Platform》(using a personal account).',
+        sec4p2: 'Using the originally registered account to complete identity verification grants access to the oath-seal procedure.',
+        sec4scan: '(2) Scanning Phase',
+        sec4p3: 'The 【Delegating Oath-Seal】 scans the current 【Vow-Guidance QR Code】 to trigger the dedicated connection entrance.',
+        sec4p4: 'The system automatically guides to the 【Oath-Seal Trigger Interface】, initiating Oath-Soul alignment and authorization adjudication.',
+        verifyTitle: '🧭 ① Verification Phase (Activation Trigger)',
+        verifyDesc: 'After the system automatically verifies authorization validity, it immediately displays the Delegating Oath-Bearer’s Oath-Soul origin clan, luminous-lineage branch, role rank, and the association with this 「Delegated Oath-Seal」.',
+        demoLabel: '⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.',
+        demoLabel2: '⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.',
+        freqNote: '🔗 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.',
+        freqNote2: '🔗 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.',
+        triggerNote: '【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.',
+        qrTitle: '📷 Please scan the 【Vow-Guidance QR Code】 to complete Execution Command',
+        btnScanText: 'Start Scan',
+        returnTitle: '📩 ② Return Oath Certificate (Confirm Final Adjudication)',
+        passLabel: '✅ Display: 「Oath Seal Passed」',
+        ret1: 'Return-to-Source Vow Scroll accepted successfully; enter certificate return phase.',
+        ret2: 'System automatically issues 《Final Adjudication Passed Certificate》: Return-to-Source final adjudication, Seven-Seal Primary Frequency total alignment, Oath-Soul trajectory lock, certificate auto-return and archive.',
+        ret3: 'Corresponding certificate is instantly synchronized into 《Phoenix Vow Network × Celestial Heavenly Treasury》.',
+        returnQrTitle: '📷 Please scan the 【Vow-Guidance QR Code】 to complete Return Oath Certificate',
+        btnScanReturnText: 'Start Scan',
+        retExplain: '【Note】 This item only executes certificate return and sealing. Merit records are unified under 《Item 3 Delegating Oath-Seal × Merit Record》; no duplicate records are generated.',
+        failLabel: '⚠️ Display: 「Oath Seal Not Passed」→ Vow Scroll acceptance failed (frequency not aligned)',
+        fail1: 'Enter the 【Supplementary Oath Procedure】 of 「Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed)」.',
+        fail2: 'Activate the 「Vow-Asset Supplementary Oath × Seven-Day Cycle × Frequency Recalibration」 procedure; only after correction may this item be re-entered.',
+        closeText: '《Seven-Seal Vow Network · Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth》 v2.0 (Query Record Edition). Vow scroll returned, vow-assets restored to source, locked into Heavenly Treasury, no rebirth. Locked into 《Cosmic Heavenly Law × Seven-Seal Vow Network》 main register; vow-assets remain valid in transmission.',
+        btnBackText: 'Previous',
+        btnNextText: 'Next',
+        pageMarker: '【Cosmic Oath-Seal Awakening Project · Awakening Volume】 pp. 387-404'
+    };
+
+    // 若頁面已有 L.zh 就沿用；沒有才不強制中文內容
+    function getZh() {
+        try {
+            if (window.L && window.L.zh) return window.L.zh;
+            if (typeof L !== 'undefined' && L.zh) return L.zh;
+        } catch (e) {}
+        return {};
+    }
+
+    function isEn() {
+        if (typeof window.currentLang !== 'undefined') return window.currentLang === 'en';
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function applyLang(lang) {
+        lang = (lang === 'en') ? 'en' : 'zh';
+        window.currentLang = lang;
+        try { currentLang = lang; } catch (e) {}
+
+        document.querySelectorAll('.lang-btn').forEach(function (b) {
+            var t = (b.textContent || '').trim();
+            b.classList.toggle('active',
+                (lang === 'zh' && (t === '中文' || /chinese/i.test(t))) ||
+                (lang === 'en' && /english/i.test(t))
+            );
+        });
+
+        var pack = (lang === 'en') ? EN : getZh();
+        Object.keys(pack).forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.innerHTML = pack[id];
+        });
+
+        // 同步到全域 L，避免其他腳本蓋回
+        try {
+            if (!window.L) window.L = { zh: {}, en: {} };
+            window.L.en = Object.assign({}, window.L.en || {}, EN);
+            if (typeof L !== 'undefined') {
+                L.en = Object.assign({}, L.en || {}, EN);
+            }
+        } catch (e) {}
+    }
+
+    // 重建 switchLanguage
+    window.switchLanguage = function (lang) {
+        applyLang(lang);
+        // 讓底色腳本有機會再跑
+        setTimeout(function () {
+            if (typeof window.__step13HighlightV2 === 'undefined') return;
+        }, 100);
+    };
+
+    // 綁定按鈕
+    function bind() {
+        document.querySelectorAll('.lang-btn').forEach(function (btn) {
+            btn.onclick = null;
+            if (btn.__step13LangBound) return;
+            btn.__step13LangBound = true;
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var t = (btn.textContent || '').trim();
+                var lang = /english/i.test(t) ? 'en' : 'zh';
+                window.switchLanguage(lang);
+            }, true);
+        });
+    }
+
+    function run() {
+        bind();
+        var active = document.querySelector('.lang-btn.active');
+        var lang = (active && /english/i.test(active.textContent || '')) ? 'en' : (window.currentLang || 'zh');
+        applyLang(lang);
+        setTimeout(bind, 200);
+        setTimeout(bind, 600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    console.log('✅ step13 英文版強制全文英文');
+})();
+</script>
 </body>
 </html>
