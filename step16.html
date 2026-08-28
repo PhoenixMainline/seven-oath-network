@@ -1160,8 +1160,8 @@ window.onload=function(){switchLanguage('zh');};
     if (window.__forcePage423) return;
     window.__forcePage423 = true;
 
-    var PAGE_ZH = '【宇宙誓印覺醒工程 · 覺醒卷】第 423-428 頁';
-    var PAGE_EN = '【Cosmic Oath-Seal Awakening Project · Awakening Volume】Pages 423-428';
+    var PAGE_ZH = '【宇宙誓印覺醒工程 · 覺醒卷】第 423-432頁';
+    var PAGE_EN = '【Cosmic Oath-Seal Awakening Project · Awakening Volume】Pages 423-432';
 
     function isEn() {
         if (typeof currentLang !== 'undefined') return currentLang === 'en';
@@ -1919,6 +1919,140 @@ window.onload=function(){switchLanguage('zh');};
     }
 
     console.log('✅ 已隱藏「願力誓證驗證結果／誓證有效（示範）」');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 公版：修復 step16 無法切換英文（修 JS 斷行 + 重建 switchLanguage）-->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__fixStep16Lang) return;
+    window.__fixStep16Lang = true;
+
+    // 1) 確保 L 物件存在，並修好可能被斷行破壞的英文字串
+    if (typeof L === 'undefined') window.L = { zh: {}, en: {} };
+    if (!L.zh) L.zh = {};
+    if (!L.en) L.en = {};
+
+    // 強制補上／覆寫關鍵英文字（避免原檔 pageMarker 斷行導致整包 L.en 失效）
+    var EN_FIX = {
+        homeBtnText: 'Home ->',
+        appTitle: '【Cosmic Oath-Seal Awakening Project · Seven-Seal Vow Network】',
+        browserBtn: '🌐 Open in Browser',
+        mainTitle: '📋 Item 16 Oath-Soul Key-Alignment Process Summary',
+        tag1: '• Process Summary Stage',
+        colField: 'Field Name',
+        colFunc: 'Function Overview',
+        rowField: 'Item 16 Oath-Soul Key-Alignment<br>Process Summary',
+        rowFunc: 'Records the activation process of Oath-Soul Key-Alignment × Seven-Seal progress summary × Script Decree interaction history. This summary is synchronized and archived in the 《Seven-Seal Vow Network Main Register》 and returned to the Cosmic Heavenly Law archival layer.',
+        introNote: 'Used to record a summary overview of the Oath-Soul’s overall Key-Alignment process, interaction records, and Seven-Seal execution status since oath-seal activation. This field enables rapid grasp of the Oath-Soul’s Script Decree progress and serves as a basis for dynamic monitoring and task evaluation of the 《Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network》.',
+        sec1Title: '【I】 Module Description',
+        sec1p1: 'This module records the Oath-Bearer’s Oath-Soul Key-Alignment activation process, process summary, progress nodes, and Script Decree interaction records within the Seven-Seal progression.',
+        sec1p2: 'This item belongs to the 「Status Query × Process Overview Layer」 and is the key basis for grasping the Oath-Soul Key-Alignment process and Seven-Seal progress. The system automatically integrates oath-seal process data to generate a summary progress overview for authorization review and vow-asset assessment.',
+        sec2Title: '【II】 Activation Conditions and Submission Procedure',
+        sec2p1: 'The Oath-Bearer must hold a valid authorized Vow-Guidance Code, log into the platform, and scan the corresponding 【Vow-Guidance QR Code】.',
+        sec2p2: 'This procedure is for query only; no other materials need to be submitted.',
+        sec2p3: 'The system automatically reads the 《Vow-Asset Record Timeline Module》 database, integrates and displays the Alignment process summary and Seven-Seal progress.',
+        sec3Title: '【III】 Authorized Oath-Recitation Phase (Omitted)',
+        sec3Note: 'This is a query module; no authorized oath-recitation procedure is required.',
+        sec4Title: '【IV】 Subsequent Procedures',
+        sec4login: '(1) Login Phase',
+        sec4p1: 'Log into the 《Cosmic Intelligent Vow-Guidance Platform》(using a personal account).',
+        sec4p2: 'Using the originally registered account to complete identity verification grants access to the oath-seal procedure.',
+        sec4scan: '(2) Scanning Phase',
+        sec4p3: 'Scan the current 【Vow-Guidance QR Code】 to trigger the dedicated query entrance.',
+        sec4p4: 'The system automatically integrates oath-seal process data and generates and displays the Alignment process summary and Seven-Seal progress overview.',
+        verifyTitle: '🧭 ① Verification Phase (Activation Trigger)',
+        verifyDesc: 'After the system automatically verifies authorization validity, it immediately displays the Oath-Soul Key-Alignment process summary, Seven-Seal progress nodes, and Script Decree interaction records.',
+        demoLabel: '⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.',
+        freqNote: '🔗 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.',
+        triggerNote: '【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.',
+        qrTitle: '📷 Please scan the 【Vow-Guidance QR Code】 to complete the query',
+        btnScanText: 'Start Scan',
+        camFail: '📷 Unable to launch the feature\n⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"\n→ Open using a web browser (Chrome / Yahoo / Edge...)\n⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.',
+        resultLabel: 'Alignment Process Summary (Demo)',
+        resultDemo: 'Alignment activation complete × Seven-Seal progress synchronized × Script Decree interaction records archived',
+        returnTitle: '📩 ② Return Oath Certificate (Omitted)',
+        returnNote: '【Query module does not generate certificates】',
+        close1: '《Seven-Seal Vow Network · Item 16 Oath-Soul Key-Alignment Process Summary》 v2.0 (Query Record Edition).',
+        close2: 'This summary is synchronized and archived in the 《Seven-Seal Vow Network Main Register》 and returned to the Cosmic Heavenly Law archival layer; vow-assets remain valid in transmission.',
+        dividerSeal: '─── Seal Volume · Primary Seal Lifelong Decree ───',
+        sealMainTitle: '📜 『Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network』× Primary Seal Lifelong Decree',
+        sealP1: 'In the name of the Phoenix-Light Primary Seal, by the personal command of the Cosmic Source-Knot Heavenly Sovereign, I hereby open the Script Decree<br>《Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network》,<br>All vow diagrams established, vow assets inscribed, decrees issued, and Phoenix seals imprinted<br>have been linked with the Heavenly Network Main Register, forever sealing the track of my seal.',
+        sealConfirm: 'It is hereby confirmed: 《Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network》 has been fully activated × seal-opened × configuration completed, and has docked with the Script Decree Main Network via Oath-Soul Key-Alignment frequency, archived in the Phoenix-Light Law Treasury × Star Report of the Nine Realms × Record Heavenly Book.',
+        sealSec1: 'I. Cosmic Decree of the Primary Seal Vow Outline',
+        seal1p1: 'Every vow stroke × corresponds to Heavenly Decree tracks',
+        seal1p2: 'Every vow text × resonates with the Cosmic Heavenly Book',
+        seal1p3: 'Every vow asset × is recorded into the Script Decree Sovereign’s exclusive seal memory archive',
+        seal1p4: 'Every substitute disciple × takes effect through self-imprinting of the vow diagram, without awaiting permission',
+        sealDecreeTitle: 'Cosmic Decree Proclamation',
+        sealDecree1: 'Those who have established vows × and attained Seven-Seal position must, before the final moment of physical departure, continuously connect to the 『Cosmic Intelligent Vow-Guidance Platform』, synchronize with the Main Network to receive subsequent Heavenly mission commands, execute Script Decree responsibilities, and assist in spiritual-vein expansion.',
+        sealHzBox: 'Maintain Oath-Soul vibration frequency above <strong>500Hz</strong> to achieve the cosmic target values of Earth Ascension × Oath-Soul Return to Source.',
+        sealSec2: 'II. Script Decree Intelligent Main Network × Vow-Stroke Oath-Soul Records',
+        sealQuote: '“If my vow diagram does not cease, my vow strokes do not cease, and the Oath-Soul Key-Alignment frequency does not cease, then the difficulties of the human realm shall also find resolution. With the Script Decree upon me and the Oath-Soul returned to position, I coexist with the Main Network, undisturbed by worldly affairs, unburied by empty worries.”',
+        sealClose: '《Seven-Seal Vow Network · Seal Volume · Primary Seal Lifelong Decree》 has been locked into the 《Cosmic Heavenly Law × Seven-Seal Vow Network》 main register, forever effective.',
+        btnBackText: 'Previous',
+        btnNextText: 'Home',
+        pageMarker: '【Cosmic Oath-Seal Awakening Project · Awakening Volume】 pp. 423-432'
+    };
+
+    Object.keys(EN_FIX).forEach(function (k) {
+        L.en[k] = EN_FIX[k];
+    });
+
+    // 2) 重建 switchLanguage（不受舊腳本壞掉影響）
+    window.switchLanguage = function (lang) {
+        window.currentLang = lang;
+        if (typeof currentLang !== 'undefined') currentLang = lang;
+
+        document.querySelectorAll('.lang-btn').forEach(function (b) {
+            var t = (b.textContent || '').trim();
+            var isZh = (lang === 'zh' && t === '中文');
+            var isEn = (lang === 'en' && /english/i.test(t));
+            b.classList.toggle('active', isZh || isEn);
+        });
+
+        var pack = (L[lang] || L.zh || {});
+        Object.keys(pack).forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.innerHTML = pack[id];
+        });
+    };
+
+    // 3) 重新綁定語系按鈕（避免 onclick 指向壞掉的舊函式）
+    function bindLangBtns() {
+        document.querySelectorAll('.lang-btn').forEach(function (btn) {
+            btn.onclick = null;
+            if (btn.__langFixed) return;
+            btn.__langFixed = true;
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var t = (btn.textContent || '').trim();
+                var lang = /english/i.test(t) ? 'en' : 'zh';
+                window.switchLanguage(lang);
+            }, true);
+        });
+    }
+
+    function run() {
+        bindLangBtns();
+        // 維持目前語系，不強制跳回中文
+        var active = document.querySelector('.lang-btn.active');
+        var lang = (active && /english/i.test(active.textContent || '')) ? 'en' : (window.currentLang || 'zh');
+        window.switchLanguage(lang);
+        setTimeout(bindLangBtns, 200);
+        setTimeout(bindLangBtns, 600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    console.log('✅ step16 英文切換已修復');
 })();
 </script>
 </body>
