@@ -2446,5 +2446,83 @@ window.onload = function () { switchLanguage('zh'); };
     console.log('✅ 輸入示範已縮小，不超出框框');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：隱藏「願力誓證驗證結果／誓證有效（示範）」               -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<style>
+    #verifyResultBox,
+    .result-box {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        border: none !important;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__hideVerifyResultBox) return;
+    window.__hideVerifyResultBox = true;
+
+    function hide() {
+        var box = document.getElementById('verifyResultBox');
+        if (box) {
+            box.style.setProperty('display', 'none', 'important');
+            box.style.setProperty('visibility', 'hidden', 'important');
+            box.style.setProperty('height', '0', 'important');
+            box.style.setProperty('margin', '0', 'important');
+            box.style.setProperty('padding', '0', 'important');
+            box.style.setProperty('overflow', 'hidden', 'important');
+            box.style.setProperty('border', 'none', 'important');
+        }
+        document.querySelectorAll('.result-box').forEach(function (el) {
+            el.style.setProperty('display', 'none', 'important');
+            el.style.setProperty('visibility', 'hidden', 'important');
+        });
+
+        // 若有人寫進 resultStatus，也清掉
+        var status = document.getElementById('resultStatus');
+        if (status) status.textContent = '';
+        var label = document.getElementById('resultLabel');
+        if (label) label.textContent = '';
+    }
+
+    function run() {
+        hide();
+        setTimeout(hide, 100);
+        setTimeout(hide, 400);
+        setTimeout(hide, 1000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 掃到後若腳本又打開，再藏一次
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__hideResultT);
+        window.__hideResultT = setTimeout(hide, 50);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+    // 語系切換後也藏
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(hide, 50);
+            setTimeout(hide, 200);
+        };
+    }
+
+    console.log('✅ 已隱藏「願力誓證驗證結果／誓證有效（示範）」');
+})();
+</script>
 </body>
 </html>
