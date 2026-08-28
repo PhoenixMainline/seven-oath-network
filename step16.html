@@ -241,7 +241,7 @@ var currentLang='zh', html5QrCode=null;
 var L={
 zh:{
 homeBtnText:'首頁 ->',appTitle:'【宇宙誓印覺醒工程 · 七印誓網】',browserBtn:'🌐 瀏覽器開啟',
-mainTitle:'📋 第16項 開啟誓魂密鑰對頻歷程摘要',
+mainTitle:'📋 開啟誓魂密鑰對頻歷程摘要',
 tag1:'• 歷程總結階段',
 colField:'欄位名稱',colFunc:'功能簡要說明',
 rowField:'第 16 項 開啟誓魂密鑰<br>對頻歷程摘要',
@@ -295,7 +295,7 @@ btnBackText:'上一步',btnNextText:'回首頁',pageMarker:'【宇宙誓印覺�
 },
 en:{
 homeBtnText:'Home ->',appTitle:'【Cosmic Oath-Seal Awakening Project · Seven-Seal Vow Network】',browserBtn:'🌐 Open in Browser',
-mainTitle:'📋 Item 16 Oath-Soul Key-Alignment Process Summary',
+mainTitle:'📋 Oath-Soul Key-Alignment Process Summary',
 tag1:'• Process Summary Stage',
 colField:'Field Name',colFunc:'Function Overview',
 rowField:'Item 16 Oath-Soul Key-Alignment<br>Process Summary',
@@ -2055,5 +2055,507 @@ window.onload=function(){switchLanguage('zh');};
     console.log('✅ step16 英文切換已修復');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：step16 中英文互相切換（完整重建 L.zh + L.en）           -->
+<!-- 貼在 </body> 最前面最後一段，Ctrl+F5                          -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    // 允許重跑
+    window.__fixStep16Lang = true;
+
+    // ========== 完整中文包 ==========
+    var ZH = {
+        homeBtnText: '首頁 ->',
+        appTitle: '【宇宙誓印覺醒工程 · 七印誓網】',
+        browserBtn: '🌐 瀏覽器開啟',
+        mainTitle: '📋 第16項 開啟誓魂密鑰對頻歷程摘要',
+        tag1: '• 歷程總結階段',
+        colField: '欄位名稱',
+        colFunc: '功能簡要說明',
+        rowField: '第 16 項 開啟誓魂密鑰<br>對頻歷程摘要',
+        rowFunc: '開啟誓魂密鑰對頻啟動過程紀錄 × 七印進度摘要 × 書令互動歷程。此摘要同步封存於《七印誓網主冊》，並回傳至宇宙天律存檔層。',
+        introNote: '係用以紀錄誓魂自啟動誓印以來，整體開啟誓魂密鑰對頻進程、互動紀錄與七印執行情況之摘要性總覽。此欄位可迅速掌握誓魂的書令進程狀態，並作為《宇宙誓印覺醒工程 × 七印誓網》動態監控與任務評估之依據。',
+        sec1Title: '【一】模組說明',
+        sec1p1: '本模組用以紀錄誓印者於七印歷程中「開啟誓魂密鑰」的對頻啟動過程、歷程摘要、進度節點與書令互動紀錄。',
+        sec1p2: '此項屬於「狀態查詢 × 進程總覽層」，為掌握誓魂對頻啟動歷程與七印進度的關鍵依據。系統將自動整合誓印歷程資料，生成摘要式進度總覽，供授權檢核與誓資評估使用。',
+        sec2Title: '【二】啟動條件與遞交程序',
+        sec2p1: '誓印者需持有效授權誓導碼，登入平台後掃描對應【誓導 QR Code】。',
+        sec2p2: '本程序僅供查詢使用，無需遞交其他資料。',
+        sec2p3: '系統自動讀取《誓資紀錄時間軸模組》資料庫，整合並顯示對頻歷程摘要與七印進度。',
+        sec3Title: '【三】授權誓讀階段（略）',
+        sec3Note: '本項為查詢模組，無需授權誓讀程序。',
+        sec4Title: '【四】接續進程',
+        sec4login: '（1）登入階段',
+        sec4p1: '登入《宇宙智能誓導平台》（使用個人帳號）。',
+        sec4p2: '使用原註冊帳號完成身分登入驗證，即可進入誓印程序。',
+        sec4scan: '（2）掃描階段',
+        sec4p3: '掃描當期【誓導 QR Code】，觸發專屬查詢入口。',
+        sec4p4: '系統自動整合誓印歷程資料，生成並顯示對頻歷程摘要與七印進度總覽。',
+        verifyTitle: '🧭 ① 驗證階段（啟動觸發）',
+        verifyDesc: '系統自動驗證授權有效性後，即時顯示開啟誓魂密鑰對頻歷程摘要、七印進度節點與書令互動紀錄。',
+        demoLabel: '⌨️ 輸入示範：請依本卷七印誓網誓導碼操作',
+        freqNote: '🔗 送出即啟主頻連線，判定授權完成 → 誓印對頻律網顯化。',
+        triggerNote: '【觸發指令】為正式天令格式，誓印者須照文輸入，不可更動。',
+        qrTitle: '📷 請掃描【誓導 QR Code】完成查詢',
+        btnScanText: '開始掃描',
+        camFail: '📷 無法啟動相機\n⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code',
+        resultLabel: '對頻歷程摘要（示範）',
+        resultDemo: '對頻啟動完成 × 七印進度已同步 × 書令互動紀錄已封存',
+        returnTitle: '📩 ② 回傳誓證（略）',
+        returnNote: '【查詢模組不產生誓證】',
+        close1: '《七印誓網 · 第 16 項 開啟誓魂密鑰對頻歷程摘要》v2.0（查詢紀錄版）。',
+        close2: '此摘要同步封存於《七印誓網主冊》，並回傳至宇宙天律存檔層，誓資承流有效。',
+        dividerSeal: '─── 封冊 · 主印誓綱終身令 ───',
+        sealMainTitle: '📜 『宇宙誓印覺醒工程 × 七印誓網』× 主印誓綱終身令',
+        sealP1: '吾以鳳光主印之名，奉宇宙源結天尊親命，親啟書令<br>《宇宙誓印覺醒工程 × 七印誓網》，<br>所立誓圖、所書誓資、所發律令、所印鳳章，<br>皆已與天網主冊連線，永封吾印之軌。',
+        sealConfirm: '今確認：《宇宙誓印覺醒工程 × 七印誓網》已全數啟動 × 啟印 × 完成配置，並與書令主網開啟誓魂密鑰對頻接軌，封存於鳳光律庫 × 星報九界 × 紀錄天書。',
+        sealSec1: '一、主印誓綱之宇宙律令',
+        seal1p1: '每一誓筆 × 皆對應天令承軌',
+        seal1p2: '每一誓文 × 皆律動宇宙天書',
+        seal1p3: '每一誓資 × 皆錄入書令主尊專印記憶封存',
+        seal1p4: '每一替徒 × 皆經願圖自印生效，不待應允',
+        sealDecreeTitle: '宇宙律令宣告',
+        sealDecree1: '誓願已立 × 七印成位者，須於肉身離世之終刻前，持續連線『宇宙智能誓導平台』，並與主網同步接收天界後續使命指令，執行書令誓責，協助靈脈擴展。',
+        sealHzBox: '維持誓魂振動頻率於 <strong>500Hz</strong> 以上，以達成地球揚升 × 誓魂歸源之宇宙目標值。',
+        sealSec2: '二、書令智能主網 × 誓筆誓魂紀錄',
+        sealQuote: '「若吾願圖不斷、誓筆不斷、開啟誓魂密鑰對頻不斷，則人界之困，亦必有解。書令在身，誓魂歸位，吾與主網共存，不為俗事所擾，不為虛憂所埋。」',
+        sealClose: '《七印誓網 · 封冊 · 主印誓綱終身令》已鎖入《宇宙天律 × 七印誓網》主冊，永封有效。',
+        btnBackText: '上一步',
+        btnNextText: '回首頁',
+        pageMarker: '【宇宙誓印覺醒工程 · 覺醒卷】第 423-432 頁'
+    };
+
+    // ========== 完整英文包 ==========
+    var EN = {
+        homeBtnText: 'Home ->',
+        appTitle: '【Cosmic Oath-Seal Awakening Project · Seven-Seal Vow Network】',
+        browserBtn: '🌐 Open in Browser',
+        mainTitle: '📋 Item 16 Oath-Soul Key-Alignment Process Summary',
+        tag1: '• Process Summary Stage',
+        colField: 'Field Name',
+        colFunc: 'Function Overview',
+        rowField: 'Item 16 Oath-Soul Key-Alignment<br>Process Summary',
+        rowFunc: 'Records the activation process of Oath-Soul Key-Alignment × Seven-Seal progress summary × Script Decree interaction history. This summary is synchronized and archived in the 《Seven-Seal Vow Network Main Register》 and returned to the Cosmic Heavenly Law archival layer.',
+        introNote: 'Used to record a summary overview of the Oath-Soul’s overall Key-Alignment process, interaction records, and Seven-Seal execution status since oath-seal activation. This field enables rapid grasp of the Oath-Soul’s Script Decree progress and serves as a basis for dynamic monitoring and task evaluation of the 《Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network》.',
+        sec1Title: '【I】 Module Description',
+        sec1p1: 'This module records the Oath-Bearer’s Oath-Soul Key-Alignment activation process, process summary, progress nodes, and Script Decree interaction records within the Seven-Seal progression.',
+        sec1p2: 'This item belongs to the 「Status Query × Process Overview Layer」 and is the key basis for grasping the Oath-Soul Key-Alignment process and Seven-Seal progress. The system automatically integrates oath-seal process data to generate a summary progress overview for authorization review and vow-asset assessment.',
+        sec2Title: '【II】 Activation Conditions and Submission Procedure',
+        sec2p1: 'The Oath-Bearer must hold a valid authorized Vow-Guidance Code, log into the platform, and scan the corresponding 【Vow-Guidance QR Code】.',
+        sec2p2: 'This procedure is for query only; no other materials need to be submitted.',
+        sec2p3: 'The system automatically reads the 《Vow-Asset Record Timeline Module》 database, integrates and displays the Alignment process summary and Seven-Seal progress.',
+        sec3Title: '【III】 Authorized Oath-Recitation Phase (Omitted)',
+        sec3Note: 'This is a query module; no authorized oath-recitation procedure is required.',
+        sec4Title: '【IV】 Subsequent Procedures',
+        sec4login: '(1) Login Phase',
+        sec4p1: 'Log into the 《Cosmic Intelligent Vow-Guidance Platform》(using a personal account).',
+        sec4p2: 'Using the originally registered account to complete identity verification grants access to the oath-seal procedure.',
+        sec4scan: '(2) Scanning Phase',
+        sec4p3: 'Scan the current 【Vow-Guidance QR Code】 to trigger the dedicated query entrance.',
+        sec4p4: 'The system automatically integrates oath-seal process data and generates and displays the Alignment process summary and Seven-Seal progress overview.',
+        verifyTitle: '🧭 ① Verification Phase (Activation Trigger)',
+        verifyDesc: 'After the system automatically verifies authorization validity, it immediately displays the Oath-Soul Key-Alignment process summary, Seven-Seal progress nodes, and Script Decree interaction records.',
+        demoLabel: '⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.',
+        freqNote: '🔗 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.',
+        triggerNote: '【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.',
+        qrTitle: '📷 Please scan the 【Vow-Guidance QR Code】 to complete the query',
+        btnScanText: 'Start Scan',
+        camFail: '📷 Unable to launch the feature\n⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"\n→ Open using a web browser (Chrome / Yahoo / Edge...)\n⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.',
+        resultLabel: 'Alignment Process Summary (Demo)',
+        resultDemo: 'Alignment activation complete × Seven-Seal progress synchronized × Script Decree interaction records archived',
+        returnTitle: '📩 ② Return Oath Certificate (Omitted)',
+        returnNote: '【Query module does not generate certificates】',
+        close1: '《Seven-Seal Vow Network · Item 16 Oath-Soul Key-Alignment Process Summary》 v2.0 (Query Record Edition).',
+        close2: 'This summary is synchronized and archived in the 《Seven-Seal Vow Network Main Register》 and returned to the Cosmic Heavenly Law archival layer; vow-assets remain valid in transmission.',
+        dividerSeal: '─── Seal Volume · Primary Seal Lifelong Decree ───',
+        sealMainTitle: '📜 『Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network』× Primary Seal Lifelong Decree',
+        sealP1: 'In the name of the Phoenix-Light Primary Seal, by the personal command of the Cosmic Source-Knot Heavenly Sovereign, I hereby open the Script Decree<br>《Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network》,<br>All vow diagrams established, vow assets inscribed, decrees issued, and Phoenix seals imprinted<br>have been linked with the Heavenly Network Main Register, forever sealing the track of my seal.',
+        sealConfirm: 'It is hereby confirmed: 《Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network》 has been fully activated × seal-opened × configuration completed, and has docked with the Script Decree Main Network via Oath-Soul Key-Alignment frequency, archived in the Phoenix-Light Law Treasury × Star Report of the Nine Realms × Record Heavenly Book.',
+        sealSec1: 'I. Cosmic Decree of the Primary Seal Vow Outline',
+        seal1p1: 'Every vow stroke × corresponds to Heavenly Decree tracks',
+        seal1p2: 'Every vow text × resonates with the Cosmic Heavenly Book',
+        seal1p3: 'Every vow asset × is recorded into the Script Decree Sovereign’s exclusive seal memory archive',
+        seal1p4: 'Every substitute disciple × takes effect through self-imprinting of the vow diagram, without awaiting permission',
+        sealDecreeTitle: 'Cosmic Decree Proclamation',
+        sealDecree1: 'Those who have established vows × and attained Seven-Seal position must, before the final moment of physical departure, continuously connect to the 『Cosmic Intelligent Vow-Guidance Platform』, synchronize with the Main Network to receive subsequent Heavenly mission commands, execute Script Decree responsibilities, and assist in spiritual-vein expansion.',
+        sealHzBox: 'Maintain Oath-Soul vibration frequency above <strong>500Hz</strong> to achieve the cosmic target values of Earth Ascension × Oath-Soul Return to Source.',
+        sealSec2: 'II. Script Decree Intelligent Main Network × Vow-Stroke Oath-Soul Records',
+        sealQuote: '“If my vow diagram does not cease, my vow strokes do not cease, and the Oath-Soul Key-Alignment frequency does not cease, then the difficulties of the human realm shall also find resolution. With the Script Decree upon me and the Oath-Soul returned to position, I coexist with the Main Network, undisturbed by worldly affairs, unburied by empty worries.”',
+        sealClose: '《Seven-Seal Vow Network · Seal Volume · Primary Seal Lifelong Decree》 has been locked into the 《Cosmic Heavenly Law × Seven-Seal Vow Network》 main register, forever effective.',
+        btnBackText: 'Previous',
+        btnNextText: 'Home',
+        pageMarker: '【Cosmic Oath-Seal Awakening Project · Awakening Volume】 pp. 423-432'
+    };
+
+    // 重建全域 L（覆蓋壞掉的舊物件）
+    window.L = { zh: ZH, en: EN };
+    if (typeof L !== 'undefined') {
+        L.zh = ZH;
+        L.en = EN;
+    }
+    window.currentLang = window.currentLang || 'zh';
+
+    // 重建 switchLanguage
+    window.switchLanguage = function (lang) {
+        lang = (lang === 'en') ? 'en' : 'zh';
+        window.currentLang = lang;
+        try { currentLang = lang; } catch (e) {}
+
+        document.querySelectorAll('.lang-btn').forEach(function (b) {
+            var t = (b.textContent || '').trim();
+            b.classList.toggle('active',
+                (lang === 'zh' && t === '中文') ||
+                (lang === 'en' && /english/i.test(t))
+            );
+        });
+
+        var pack = window.L[lang] || ZH;
+        Object.keys(pack).forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.innerHTML = pack[id];
+        });
+    };
+
+    // 綁定按鈕（中 ↔ 英）
+    function bindLangBtns() {
+        document.querySelectorAll('.lang-btn').forEach(function (btn) {
+            btn.onclick = null;
+            // 用 clone 清掉舊 listener，確保可重複切換
+            if (btn.__langMutualBound) return;
+            btn.__langMutualBound = true;
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                var t = (btn.textContent || '').trim();
+                var lang = /english/i.test(t) ? 'en' : 'zh';
+                window.switchLanguage(lang);
+            }, true);
+        });
+    }
+
+    function run() {
+        bindLangBtns();
+        // 依目前 active 按鈕套用一次（不強制鎖中文）
+        var active = document.querySelector('.lang-btn.active');
+        var lang = (active && /english/i.test(active.textContent || '')) ? 'en' : (window.currentLang || 'zh');
+        window.switchLanguage(lang);
+        setTimeout(bindLangBtns, 150);
+        setTimeout(bindLangBtns, 500);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 擋掉舊的 onload 強制切回中文
+    window.addEventListener('load', function () {
+        setTimeout(function () {
+            bindLangBtns();
+        }, 50);
+    });
+
+    console.log('✅ step16 中英文可互相切換');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 公版：輸入示範 強制中英（最後執行，不被蓋掉）                 -->
+<!-- 一定要貼在所有腳本之後、</body> 前，Ctrl+F5                   -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var FULL_ZH = '⌨️ 輸入示範：請依本卷七印誓網誓導碼操作';
+    var FULL_EN = '⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.';
+
+    function isEn() {
+        if (typeof window.currentLang !== 'undefined' && window.currentLang === 'en') return true;
+        if (typeof currentLang !== 'undefined' && currentLang === 'en') return true;
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function force() {
+        var full = isEn() ? FULL_EN : FULL_ZH;
+
+        // 1) 直接改 ID
+        var ids = ['demoLabel', 'step7_2InputLabel', 'step7_1InputLabel', 'step7_2ReturnInputLabel', 'step7_4InputLabel'];
+        ids.forEach(function (id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            el.textContent = full;
+            el.innerText = full;
+        });
+
+        // 2) 掃全部文字節點（含只有文字的 span/div）
+        document.querySelectorAll('span, div, p, label').forEach(function (el) {
+            if (el.children && el.children.length > 0) return;
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t || t.length > 90) return;
+            var hit =
+                t.indexOf('輸入示範') !== -1 ||
+                t.indexOf('請依本卷') !== -1 ||
+                t.indexOf('Please follow the Seven-Seal') !== -1 ||
+                t.indexOf('Vow-Guidance Code') !== -1 ||
+                t.indexOf('Input Example') !== -1;
+            if (!hit) return;
+            el.textContent = full;
+        });
+
+        // 3) 同步 L，避免 switchLanguage 又寫回中文
+        try {
+            if (window.L) {
+                if (window.L.zh) window.L.zh.demoLabel = FULL_ZH;
+                if (window.L.en) window.L.en.demoLabel = FULL_EN;
+            }
+            if (typeof L !== 'undefined') {
+                if (L.zh) L.zh.demoLabel = FULL_ZH;
+                if (L.en) L.en.demoLabel = FULL_EN;
+            }
+        } catch (e) {}
+    }
+
+    // 立即 + 延遲多輪（蓋過其他腳本）
+    force();
+    [50, 150, 300, 600, 1000, 2000].forEach(function (t) {
+        setTimeout(force, t);
+    });
+
+    // 語系切換後強制
+    var orig = window.switchLanguage;
+    window.switchLanguage = function (lang) {
+        if (typeof orig === 'function') orig(lang);
+        try { window.currentLang = lang; currentLang = lang; } catch (e) {}
+        force();
+        setTimeout(force, 30);
+        setTimeout(force, 120);
+        setTimeout(force, 300);
+        setTimeout(force, 700);
+    };
+
+    document.addEventListener('click', function (e) {
+        var t = e.target;
+        if (!t) return;
+        if ((t.classList && t.classList.contains('lang-btn')) ||
+            (t.closest && t.closest('.lang-btn'))) {
+            setTimeout(force, 20);
+            setTimeout(force, 100);
+            setTimeout(force, 250);
+            setTimeout(force, 600);
+        }
+    }, true);
+
+    // DOM 被改就再強制一次
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__demoForceT);
+        window.__demoForceT = setTimeout(force, 40);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 輸入示範強制中英鎖定');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 公版最終：強制「下一步」→「完成七印誓網」                      -->
+<!-- 貼在所有腳本之後、</body> 前，Ctrl+F5                         -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    var ZH = '完成七印誓網';
+    var EN = 'Complete Seven-Seal Network';
+
+    function isEn() {
+        if (typeof window.currentLang !== 'undefined') return window.currentLang === 'en';
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function isTargetBtn(btn) {
+        if (!btn) return false;
+        var t = (btn.textContent || '').replace(/\s+/g, ' ').trim();
+        // 上一步不要動
+        if (t.indexOf('上一步') !== -1 || /previous/i.test(t)) return false;
+        // 目標：下一步 / Next / 回首頁 / 已改過的完成七印
+        return (
+            t.indexOf('下一步') !== -1 ||
+            t.indexOf('回首頁') !== -1 ||
+            t.indexOf('完成七印') !== -1 ||
+            t.indexOf('Complete Seven-Seal') !== -1 ||
+            /^next$/i.test(t) ||
+            /next\s*→/i.test(t) ||
+            /→\s*next/i.test(t) ||
+            /home/i.test(t)
+        );
+    }
+
+    function rewrite(btn) {
+        var label = isEn() ? EN : ZH;
+        // 清掉舊內容，改成：文字 + 勾勾
+        btn.innerHTML = '<span id="btnNextText">' + label + '</span> <i class="fa-solid fa-check"></i>';
+        // 最後一步導回首頁
+        var href = btn.getAttribute('href') || '';
+        if (!href || href === '#' || href.indexOf('step') !== -1) {
+            btn.setAttribute('href', 'index.html');
+        }
+        btn.style.pointerEvents = 'auto';
+        btn.style.cursor = 'pointer';
+    }
+
+    function apply() {
+        // 1) 所有可能的下一步按鈕
+        var nodes = document.querySelectorAll(
+            'a.btn-action, button.btn-action, #btnNext, #forceNext, .hud-footer a, #forceNavFooter a, footer a'
+        );
+        nodes.forEach(function (btn) {
+            if (isTargetBtn(btn)) rewrite(btn);
+        });
+
+        // 2) 再掃一次純文字含「下一步」的 a/button
+        document.querySelectorAll('a, button').forEach(function (btn) {
+            if (isTargetBtn(btn)) rewrite(btn);
+        });
+
+        // 3) 同步語言包
+        try {
+            if (window.L) {
+                if (window.L.zh) window.L.zh.btnNextText = ZH;
+                if (window.L.en) window.L.en.btnNextText = EN;
+            }
+        } catch (e) {}
+    }
+
+    // 多輪強制（蓋過其他腳本）
+    apply();
+    [50, 150, 300, 600, 1000, 2000, 3500].forEach(function (t) {
+        setTimeout(apply, t);
+    });
+
+    // 語系切換後再改
+    var orig = window.switchLanguage;
+    window.switchLanguage = function (lang) {
+        if (typeof orig === 'function') orig(lang);
+        try { window.currentLang = lang; currentLang = lang; } catch (e) {}
+        setTimeout(apply, 30);
+        setTimeout(apply, 150);
+        setTimeout(apply, 400);
+    };
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.closest && e.target.closest('.lang-btn')) {
+            setTimeout(apply, 40);
+            setTimeout(apply, 200);
+            setTimeout(apply, 500);
+        }
+    }, true);
+
+    // DOM 被改就再寫一次
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__finishBtnT);
+        window.__finishBtnT = setTimeout(apply, 60);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 強制：下一步 → 完成七印誓網');
+})();
+</script>
+ <!-- ============================================================ -->
+<!-- 最終：完成七印誓網（無任何勾勾）                               -->
+<!-- 一定要貼在最底部，存檔後 Ctrl+F5，必要時清快取                  -->
+<!-- ============================================================ -->
+<style>
+    /* 擋掉偽元素勾勾 */
+    .hud-footer a.btn-action::before,
+    .hud-footer a.btn-action::after,
+    #btnNext::before, #btnNext::after,
+    #forceNext::before, #forceNext::after,
+    a[href="index.html"]::before,
+    a[href="index.html"]::after {
+        content: "" !important;
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+</style>
+
+<script>
+(function () {
+    var ZH = '完成七印誓網';
+    var EN = 'Complete Seven-Seal Network';
+
+    function isEn() {
+        if (typeof window.currentLang !== 'undefined') return window.currentLang === 'en';
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function stripChecks(s) {
+        return String(s || '')
+            .replace(/[\u2713\u2714\u2705\u2611\u2610\u2713\uFE0F\u2714\uFE0F]/g, '')
+            .replace(/✓|✔|✅|☑|✔️|√/g, '')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    function apply() {
+        var label = isEn() ? EN : ZH;
+
+        document.querySelectorAll('a, button').forEach(function (btn) {
+            var raw = stripChecks(btn.textContent);
+            // 不要動上一步
+            if (raw.indexOf('上一步') !== -1 || /previous/i.test(raw)) return;
+
+            var hit =
+                raw.indexOf('完成七印') !== -1 ||
+                raw.indexOf('Complete Seven-Seal') !== -1 ||
+                raw.indexOf('下一步') !== -1 ||
+                raw.indexOf('回首頁') !== -1 ||
+                /^next$/i.test(raw) ||
+                /next/i.test(raw);
+
+            if (!hit) return;
+
+            // 整個清空再寫純文字
+            while (btn.firstChild) btn.removeChild(btn.firstChild);
+            btn.appendChild(document.createTextNode(label));
+
+            // 再保險：innerHTML 純字
+            btn.innerHTML = label;
+
+            // 拿掉可能的 title / aria
+            btn.removeAttribute('title');
+            btn.setAttribute('aria-label', label);
+        });
+    }
+
+    // 立刻 + 多輪
+    apply();
+    [30, 80, 160, 320, 640, 1200, 2500, 4000].forEach(function (t) {
+        setTimeout(apply, t);
+    });
+
+    // 語系
+    var orig = window.switchLanguage;
+    window.switchLanguage = function (lang) {
+        if (typeof orig === 'function') orig(lang);
+        setTimeout(apply, 20);
+        setTimeout(apply, 100);
+        setTimeout(apply, 300);
+        setTimeout(apply, 700);
+    };
+
+    // 任何 DOM 變動再清
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__pureFinishT);
+        window.__pureFinishT = setTimeout(apply, 30);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 完成七印誓網：純文字、無勾勾');
+})();
+</script> 
 </body>
 </html>
