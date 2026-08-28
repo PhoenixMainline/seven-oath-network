@@ -2001,5 +2001,124 @@
     console.log('✅ 第13項 → step13.html');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：index 全項「進入 →」連結強制對齊（依官方清單）            -->
+<!-- 貼在 </body> 最底部，Ctrl+F5                                  -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__indexAllLinksFinal) return;
+    window.__indexAllLinksFinal = true;
+
+    // 官方對照表（編號關鍵字 → 檔案）
+    var MAP = [
+        { keys: ['第0項', 'Item 0', '購書序號', 'Purchase Serial'], href: 'step0.html' },
+        { keys: ['第1項 誓印未通過', 'Item 1 Oath Seal Not Passed', 'step1-1'], href: 'step1-1.html' },
+        { keys: ['第1項', 'Item 1', '對頻總判定', 'Frequency-Alignment', 'Frequency- Alignment'], href: 'step1.html' },
+        { keys: ['第2項', 'Item 2', '被代理誓印', 'Delegated Oath-Seal'], href: 'step2.html' },
+        { keys: ['第3項', 'Item 3', '代理誓印', 'Delegating Oath-Seal', '功德紀錄'], href: 'step3.html' },
+        { keys: ['第4項', 'Item 4', '誓魂本族', 'Origin Claim', '天族姓脈'], href: 'step4.html' },
+        { keys: ['第5項', 'Item 5', '宇宙總位標', 'Master Coordinate', '維度階級'], href: 'step5.html' },
+        { keys: ['第6項', 'Item 6', '覺醒程度', 'Awakening Level'], href: 'step6.html' },
+        { keys: ['第一印', 'First Seal', '消業印', 'Karmic Purification'], href: 'step7-1.html' },
+        { keys: ['第二印', 'Second Seal', '修心印', 'Mind-Refinement'], href: 'step7-2.html' },
+        { keys: ['第三印', 'Third Seal', '守願印', 'Guardian Vow'], href: 'step7-3.html' },
+        { keys: ['第四印', 'Fourth Seal', '誓令印', 'Decree-Oath'], href: 'step7-4.html' },
+        { keys: ['第五印', 'Fifth Seal', '覺醒印', 'Awakening Seal'], href: 'step7-5.html' },
+        { keys: ['第六印', 'Sixth Seal', '誥徒誓印', 'Disciple-Oath'], href: 'step7-6.html' },
+        { keys: ['第七印', 'Seventh Seal', '鳳徽印', 'Phoenix Emblem'], href: 'step7-7.html' },
+        { keys: ['第7項', 'Item 7', '七印誓網對應', 'Seven-Seal Vow Network Correspondence'], href: 'step7.html' },
+        { keys: ['第8項', 'Item 8', '入世誓約', 'Worldly Vow', '誓約同步'], href: 'step8.html' },
+        { keys: ['第9項', 'Item 9', '圓印封冊', 'Circle Seal'], href: 'step9.html' },
+        { keys: ['第10項', 'Item 10', '誓文印記', 'Vow Text Seal'], href: 'step10.html' },
+        { keys: ['第11項', 'Item 11', '願力誓證', 'Vow-Power'], href: 'step11.html' },
+        { keys: ['第12項', 'Item 12', '誓資任務實踐', 'Mission Practice'], href: 'step12.html' },
+        { keys: ['第13項', 'Item 13', '回源願書', '不再入世', '不入轉生', 'Return-to-Source', 'No Rebirth'], href: 'step13.html' },
+        { keys: ['第14項', 'Item 14', '天庫金脈', 'Heavenly Treasury Gold'], href: 'step14.html' },
+        { keys: ['第15項', 'Item 15', '狀態更新時間', 'Status Update Timestamp'], href: 'step15.html' },
+        { keys: ['第16項', 'Item 16', '對頻歷程摘要', 'Process Summary', 'Key Frequency-Alignment Proces'], href: 'step16.html' }
+    ];
+
+    function matchHref(text) {
+        text = (text || '').replace(/\s+/g, ' ');
+        // 先比對較長／較特殊的（未通過、各印）再比對一般項
+        for (var i = 0; i < MAP.length; i++) {
+            var m = MAP[i];
+            for (var k = 0; k < m.keys.length; k++) {
+                if (text.indexOf(m.keys[k]) !== -1) return m.href;
+            }
+        }
+        return null;
+    }
+
+    function apply() {
+        // 同步資料陣列
+        ['level1Data', 'level2Data'].forEach(function (name) {
+            var data = window[name];
+            if (!data) return;
+            ['zh', 'en'].forEach(function (lang) {
+                var items = data[lang] && data[lang].items;
+                if (!items) return;
+                items.forEach(function (it) {
+                    var blob = [it.no, it.field, it.func, it.segment].join(' ');
+                    var href = matchHref(blob);
+                    if (href) it.link = href;
+                });
+            });
+        });
+
+        // 表格每一列
+        document.querySelectorAll('tr').forEach(function (row) {
+            var rowText = row.textContent || '';
+            var href = matchHref(rowText);
+            if (!href) return;
+
+            // 所有 a.unit-link / 進入 按鈕
+            row.querySelectorAll('a').forEach(function (a) {
+                a.setAttribute('href', href);
+                a.style.pointerEvents = 'auto';
+                a.style.cursor = 'pointer';
+            });
+
+            // 非 a 的「進入」文字
+            row.querySelectorAll('button, span, div').forEach(function (el) {
+                var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+                if (t.indexOf('進入') === -1 && t.indexOf('Enter') === -1) return;
+                el.style.cursor = 'pointer';
+                el.style.pointerEvents = 'auto';
+                el.onclick = function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    location.href = href;
+                };
+            });
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 80);
+            setTimeout(apply, 300);
+        };
+    }
+
+    console.log('✅ index 全項連結已依官方清單對齊');
+})();
+</script>
 </body>
 </html>
