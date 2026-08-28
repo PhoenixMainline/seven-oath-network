@@ -1203,5 +1203,129 @@ function startTimer() {
     console.log('✅ step13 表格加寬 + 關鍵句底色');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：step13 關鍵句底色（中英都有）                            -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<style>
+    .info-table th,
+    .info-table td {
+        padding: 12px 14px !important;
+        line-height: 1.65 !important;
+        vertical-align: top !important;
+    }
+    .info-table td:first-child {
+        min-width: 7.5em !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+    }
+    .hl-key {
+        background: rgba(236, 72, 153, 0.28) !important;
+        color: #fce7f3 !important;
+        padding: 1px 6px !important;
+        border-radius: 4px !important;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__step13HighlightV2) return;
+    window.__step13HighlightV2 = true;
+
+    // 中文 + 英文關鍵句（依畫面實際用詞）
+    var KEYS = [
+        // 中文
+        '凡誓魂於人界完成今世生命旅程',
+        '「最終終審」',
+        '最終終審',
+        // 英文（對應截圖）
+        'completed their life journey in the human realm',
+        'Applicable to all Oath-Souls who have completed their life journey in the human realm',
+        'Final Adjudication Applicability',
+        'final supreme review',
+        'Applicable for final supreme review',
+        'Signifies that the Oath-Soul has formally exited the reincarnation system',
+        'Final Adjudication',
+        'final adjudication procedure'
+    ];
+
+    function wrapText(el, keys) {
+        if (!el) return;
+        // 先還原成純文字再包，避免重複 span
+        var plain = el.textContent || '';
+        var html = plain;
+        keys.forEach(function (k) {
+            if (!k || plain.indexOf(k) === -1) return;
+            var safe = k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            var re = new RegExp(safe, 'g');
+            html = html.replace(re, '<span class="hl-key">' + k + '</span>');
+        });
+        if (html !== plain) el.innerHTML = html;
+    }
+
+    function apply() {
+        document.querySelectorAll('.info-table td, .info-table th').forEach(function (td) {
+            td.style.setProperty('padding', '12px 14px', 'important');
+            td.style.setProperty('line-height', '1.65', 'important');
+        });
+
+        [
+            'sec1p1', 'sec1p2', 'sec1p3', 'sec1p4',
+            'rowFunc', 'rowField', 'sec2p1', 'sec2p2', 'sec2p3'
+        ].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) wrapText(el, KEYS);
+        });
+
+        document.querySelectorAll('.instruction-item span, .instruction-item').forEach(function (el) {
+            var t = el.textContent || '';
+            if (
+                t.indexOf('凡誓魂於人界') !== -1 ||
+                t.indexOf('最終終審') !== -1 ||
+                t.indexOf('life journey') !== -1 ||
+                t.indexOf('Final Adjudication') !== -1 ||
+                t.indexOf('final supreme') !== -1 ||
+                t.indexOf('reincarnation') !== -1
+            ) {
+                wrapText(el, KEYS);
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 200);
+        setTimeout(apply, 600);
+        setTimeout(apply, 1200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (lang) {
+            orig(lang);
+            setTimeout(apply, 80);
+            setTimeout(apply, 250);
+            setTimeout(apply, 500);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
+            setTimeout(apply, 100);
+            setTimeout(apply, 300);
+        }
+    });
+
+    console.log('✅ step13 關鍵句底色（中英）');
+})();
+</script>
 </body>
 </html>
