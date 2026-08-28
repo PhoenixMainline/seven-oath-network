@@ -3257,5 +3257,61 @@
     console.log('✅ 輸入示範：同一行細字 + 靠左');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：step2 上一步 → step1-1.html（誓印未通過）                -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__fixStep2Prev) return;
+    window.__fixStep2Prev = true;
+
+    function apply() {
+        // 1) 原 footer / 所有上一步按鈕
+        document.querySelectorAll('a.btn-action, a[href], #btnBack, #forcePrev').forEach(function (a) {
+            var t = (a.textContent || '').replace(/\s+/g, ' ');
+            if (t.indexOf('上一步') === -1 && t.indexOf('Previous') === -1) return;
+            a.setAttribute('href', 'step1-1.html');
+            a.style.pointerEvents = 'auto';
+            a.style.cursor = 'pointer';
+            a.style.opacity = '1';
+        });
+
+        // 2) forceNavFooter
+        var prev = document.getElementById('forcePrev');
+        if (prev) {
+            prev.setAttribute('href', 'step1-1.html');
+            prev.style.opacity = '1';
+            prev.style.pointerEvents = 'auto';
+        }
+
+        // 3) NAV_MAP（若有）
+        if (typeof window.NAV_MAP === 'object' && window.NAV_MAP['step2.html']) {
+            window.NAV_MAP['step2.html'].prev = 'step1-1.html';
+        }
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__step2PrevT);
+        window.__step2PrevT = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+    console.log('✅ step2 上一步 → step1-1.html');
+})();
+</script>
 </body>
 </html>
