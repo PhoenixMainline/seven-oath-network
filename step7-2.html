@@ -4264,5 +4264,161 @@
     console.log('✅ step7-1 相機掃描已修復：可啟動 + 顯示 QR 真實文字');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：①驗證階段 / ②回傳誓證 標題＋藍色圈圈整組置中            -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<style>
+    /* ① 驗證階段標題列 */
+    #step7_2VerifyTitle,
+    #step7_2ReturnTitle {
+        display: inline !important;
+        width: auto !important;
+        text-align: center !important;
+        font-size: 1.1rem !important;
+        font-weight: bold !important;
+        color: #e9d5ff !important;
+        line-height: 1.4 !important;
+    }
+
+    /* 標題列本體：圖示 + 文字 同一列、整組置中 */
+    .card-title:has(#step7_2VerifyTitle),
+    .card-title:has(#step7_2ReturnTitle),
+    div:has(> #step7_2VerifyTitle),
+    div:has(> #step7_2ReturnTitle),
+    div:has(> i + #step7_2ReturnTitle),
+    div:has(> i + #step7_2VerifyTitle) {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        width: 100% !important;
+        text-align: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        flex-wrap: nowrap !important;
+    }
+
+    /* 藍色圖示本身也置中對齊 */
+    .card-title:has(#step7_2VerifyTitle) > i,
+    .card-title:has(#step7_2ReturnTitle) > i,
+    div:has(> #step7_2VerifyTitle) > i,
+    div:has(> #step7_2ReturnTitle) > i {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #a78bfa !important;
+        margin: 0 !important;
+        float: none !important;
+        position: static !important;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__centerBlueIcons72) return;
+    window.__centerBlueIcons72 = true;
+
+    function centerRow(titleId) {
+        var title = document.getElementById(titleId);
+        if (!title) return;
+
+        // 找最近的標題列容器（通常是 .card-title 或直接包住 icon+span 的 div）
+        var row = title.closest('.card-title') || title.parentElement;
+        if (!row) return;
+
+        // 強制整列 flex 置中
+        row.style.setProperty('display', 'flex', 'important');
+        row.style.setProperty('align-items', 'center', 'important');
+        row.style.setProperty('justify-content', 'center', 'important');
+        row.style.setProperty('gap', '8px', 'important');
+        row.style.setProperty('width', '100%', 'important');
+        row.style.setProperty('text-align', 'center', 'important');
+        row.style.setProperty('margin-left', 'auto', 'important');
+        row.style.setProperty('margin-right', 'auto', 'important');
+        row.style.setProperty('flex-wrap', 'nowrap', 'important');
+
+        // 標題文字本身
+        title.style.setProperty('display', 'inline', 'important');
+        title.style.setProperty('width', 'auto', 'important');
+        title.style.setProperty('text-align', 'center', 'important');
+
+        // 同一列裡的藍色圖示全部置中、取消 float
+        row.querySelectorAll('i').forEach(function (icon) {
+            icon.style.setProperty('display', 'inline-flex', 'important');
+            icon.style.setProperty('align-items', 'center', 'important');
+            icon.style.setProperty('justify-content', 'center', 'important');
+            icon.style.setProperty('margin', '0', 'important');
+            icon.style.setProperty('float', 'none', 'important');
+            icon.style.setProperty('position', 'static', 'important');
+            icon.style.setProperty('color', '#a78bfa', 'important');
+        });
+    }
+
+    function apply() {
+        centerRow('step7_2VerifyTitle');
+        centerRow('step7_2ReturnTitle');
+
+        // 備援：用文字內容再掃一次（防 ID 被改掉）
+        document.querySelectorAll('.card-title, .hud-card > div').forEach(function (row) {
+            var t = (row.textContent || '').replace(/\s+/g, ' ').trim();
+            var isTarget =
+                (t.indexOf('驗證階段') !== -1 || t.indexOf('Verification Phase') !== -1) ||
+                (t.indexOf('回傳誓證') !== -1 || t.indexOf('Return Oath') !== -1);
+
+            if (!isTarget) return;
+            // 只處理短標題列（避免動到內文）
+            if (t.length > 40) return;
+
+            row.style.setProperty('display', 'flex', 'important');
+            row.style.setProperty('align-items', 'center', 'important');
+            row.style.setProperty('justify-content', 'center', 'important');
+            row.style.setProperty('gap', '8px', 'important');
+            row.style.setProperty('width', '100%', 'important');
+            row.style.setProperty('text-align', 'center', 'important');
+
+            row.querySelectorAll('i').forEach(function (icon) {
+                icon.style.setProperty('display', 'inline-flex', 'important');
+                icon.style.setProperty('align-items', 'center', 'important');
+                icon.style.setProperty('justify-content', 'center', 'important');
+                icon.style.setProperty('margin', '0', 'important');
+                icon.style.setProperty('float', 'none', 'important');
+                icon.style.setProperty('position', 'static', 'important');
+            });
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 語系切換後再置中一次
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (lang) {
+            orig(lang);
+            setTimeout(apply, 80);
+            setTimeout(apply, 250);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__centerBlueT);
+        window.__centerBlueT = setTimeout(apply, 60);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ 藍色圈圈＋標題已整組置中');
+})();
+</script>
 </body>
 </html>
