@@ -1782,5 +1782,255 @@ window.onload = function () { switchLanguage('zh'); };
     console.log('✅ step10 相機 QR：可啟動、掃到顯示文字、失敗才引導');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：step11 相機 QR（可啟動 + 顯示真實文字 + 失敗才引導）    -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<style>
+    #qr-reader-container {
+        display: block !important;
+        width: 100% !important;
+        max-width: 300px !important;
+        margin: 12px auto 0 !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+        border-radius: 12px !important;
+    }
+    #qr-reader-container video {
+        width: 100% !important;
+        border-radius: 12px !important;
+    }
+    .camera-guide { display: none !important; }
+    .camera-guide.show-fail {
+        display: block !important;
+        text-align: left !important;
+        white-space: pre-wrap !important;
+        background: rgba(232, 96, 74, 0.08) !important;
+        border-left: 4px solid #E8604A !important;
+        padding: 14px 16px !important;
+        border-radius: 12px !important;
+        color: #e0dcc8 !important;
+        font-size: 0.85rem !important;
+        line-height: 1.8 !important;
+        margin-top: 10px !important;
+    }
+    #qrScanResult {
+        display: none;
+        margin-top: 10px !important;
+        padding: 10px 14px !important;
+        border-radius: 12px !important;
+        background: rgba(0, 230, 118, 0.12) !important;
+        border: 1px solid rgba(0, 230, 118, 0.35) !important;
+        color: #00e676 !important;
+        font-size: 0.9rem !important;
+        word-break: break-all !important;
+        text-align: left !important;
+    }
+    #qrScanResult.show {
+        display: block !important;
+    }
+    #btnScanQR {
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        opacity: 1 !important;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__step11CamFix) return;
+    window.__step11CamFix = true;
+
+    var GUIDE_ZH =
+        '📷 無法啟動相機\n' +
+        '⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n' +
+        '→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n' +
+        '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
+
+    var GUIDE_EN =
+        '📷 Unable to launch the feature\n' +
+        '⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"\n' +
+        '→ Open using a web browser (Chrome / Yahoo / Edge...)\n' +
+        '⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
+
+    var active = null;
+    var starting = false;
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function hideGuide() {
+        var g = document.getElementById('cameraGuide');
+        if (!g) return;
+        g.classList.remove('show-fail');
+        g.style.setProperty('display', 'none', 'important');
+    }
+
+    function showGuide() {
+        var g = document.getElementById('cameraGuide');
+        if (!g) return;
+        g.textContent = isEn() ? GUIDE_EN : GUIDE_ZH;
+        g.classList.add('show-fail');
+        g.style.setProperty('display', 'block', 'important');
+    }
+
+    function showResult(decodedText) {
+        var el = document.getElementById('qrScanResult');
+        if (!el) return;
+        var text = (decodedText || '').trim();
+        var prefix = isEn() ? 'Scan successful: ' : '掃描成功：';
+        el.classList.add('show');
+        el.style.setProperty('display', 'block', 'important');
+        el.innerHTML =
+            '<i class="fa-solid fa-check-circle" style="margin-right:6px;color:#00e676;"></i>' +
+            prefix +
+            '<span style="color:#e0e8f5;font-weight:600;display:block;margin-top:4px;padding:6px 10px;background:#0b0d12;border-radius:8px;font-size:0.85rem;word-break:break-all;">' +
+            text + '</span>';
+
+        // 同步示範結果框（若有）
+        var box = document.getElementById('verifyResultBox');
+        var status = document.getElementById('resultStatus');
+        if (box) box.style.display = 'block';
+        if (status) {
+            status.textContent = isEn() ? '✅ Certificate Valid (Demo)' : '✅ 誓證有效（示範）';
+        }
+    }
+
+    function stopActive() {
+        if (!active) return Promise.resolve();
+        var s = active;
+        active = null;
+        return s.stop().catch(function () {}).then(function () {
+            try { s.clear(); } catch (e) {}
+        });
+    }
+
+    function startScan() {
+        if (starting) return;
+        starting = true;
+
+        var container = document.getElementById('qr-reader-container');
+        if (!container) {
+            starting = false;
+            showGuide();
+            return;
+        }
+
+        hideGuide();
+        var resultEl = document.getElementById('qrScanResult');
+        if (resultEl) {
+            resultEl.classList.remove('show');
+            resultEl.style.setProperty('display', 'none', 'important');
+            resultEl.innerHTML = '';
+        }
+
+        stopActive().then(function () {
+            container.innerHTML = '';
+            container.style.setProperty('display', 'block', 'important');
+
+            setTimeout(function () {
+                if (typeof Html5Qrcode === 'undefined' ||
+                    !navigator.mediaDevices ||
+                    !navigator.mediaDevices.getUserMedia) {
+                    starting = false;
+                    showGuide();
+                    return;
+                }
+
+                try {
+                    var scanner = new Html5Qrcode('qr-reader-container');
+                    active = scanner;
+                    // 同步舊變數，避免衝突
+                    window.html5QrCode = scanner;
+
+                    scanner.start(
+                        { facingMode: 'environment' },
+                        { fps: 10, qrbox: { width: 220, height: 220 } },
+                        function (decodedText) {
+                            if (!(decodedText || '').trim()) return;
+                            // 先顯示真實文字，再停相機
+                            showResult(decodedText);
+                            hideGuide();
+                            stopActive().then(function () {
+                                container.innerHTML = '';
+                                starting = false;
+                            });
+                        },
+                        function () { /* ignore frame miss */ }
+                    ).then(function () {
+                        hideGuide();
+                        starting = false;
+                    }).catch(function () {
+                        active = null;
+                        starting = false;
+                        showGuide();
+                    });
+                } catch (e) {
+                    active = null;
+                    starting = false;
+                    showGuide();
+                }
+            }, 250);
+        });
+
+        setTimeout(function () { starting = false; }, 5000);
+    }
+
+    // 覆蓋頁面原本的 startScan，避免舊邏輯搶走
+    window.startScan = startScan;
+    window.startQRScanner = function () { startScan(); };
+    window.startQRScannerStep11 = startScan;
+
+    function bind() {
+        var btn = document.getElementById('btnScanQR');
+        if (!btn) return;
+        btn.disabled = false;
+        btn.style.pointerEvents = 'auto';
+        btn.style.cursor = 'pointer';
+        btn.onclick = null;
+        if (btn.__step11Bound) return;
+        btn.__step11Bound = true;
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            startScan();
+        }, true);
+    }
+
+    function run() {
+        hideGuide();
+        bind();
+        setTimeout(bind, 200);
+        setTimeout(bind, 600);
+        setTimeout(bind, 1200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(function () {
+                var g = document.getElementById('cameraGuide');
+                if (g && g.classList.contains('show-fail')) {
+                    g.textContent = isEn() ? GUIDE_EN : GUIDE_ZH;
+                }
+                bind();
+            }, 100);
+        };
+    }
+
+    console.log('✅ step11 相機：可啟動、掃到顯示 QR 真實文字、失敗才引導');
+})();
+</script>
 </body>
 </html>
