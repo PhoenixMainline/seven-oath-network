@@ -2074,5 +2074,232 @@
     console.log('✅ 頁碼已改為第 171-180 頁');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：step1 英文版強制顯示完整英文（無中文殘留）              -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__step1EnFull) return;
+    window.__step1EnFull = true;
+
+    // ================================================================
+    // 完整英文對照（與 langPack.en 一致）
+    // ================================================================
+    var EN = {
+        step1Note: '🔗 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.',
+        step1ReturnNote: '🔗 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.',
+        step1TriggerNote: '【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.',
+        step1ReturnTriggerNote: '【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.',
+        step1QrTitle: '📷 Please scan the 【Vow-Guidance QR Code】 to complete Execution Command',
+        step1ReturnQrTitle: '📷 Please scan the 【Vow-Guidance QR Code】 to complete Return Oath Certificate',
+        step1BtnScan: '📷 Start Scan',
+        step1ReturnBtnScan: '📷 Start Scan',
+        step1ReturnTitle: '📩 ② Return Oath Certificate (Confirm Oath Seal)',
+        step1Success: '✅ Display：「Oath Seal Passed」',
+        step1Return1: '❶ Enter 📩 ②【Return Oath Certificate】execution stage.',
+        step1Return2: '❷ Enter 「Item 7 Seven-Seal Vow Network Correspondence Stage」.',
+        step1CmdTitle: '🧭【Execution Command】',
+        step1Cmd1: '① Log into the 《Cosmic Intelligent Vow-Guidance Platform》 via using your personal account. After identity verification, proceed into the Oath-Seal Activation Procedure.',
+        step1Cmd2: '② Scan the 【Vow-Guidance QR Code】 to enter the 「Command Input Field」.',
+        step1Cmd3: '③ No manual entry of the vow text is required. After completing the scan, directly enter the following command：',
+        step1ReturnInputLabel: '⌨️ Input Example : ',
+        step1ReturnCommand: 'Please follow the Seven-Seal Vow Network Vow-Guidance Code.',
+        step1InputLabel: '⌨️ Input Example : ',
+        step1Command: 'Please follow the Seven-Seal Vow Network Vow-Guidance Code.'
+    };
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        // 只有英文模式才套用
+        if (!isEn()) return;
+
+        // 1. 更新 langPack.en（若存在）
+        if (typeof langPack !== 'undefined' && langPack.en) {
+            Object.keys(EN).forEach(function(key) {
+                langPack.en[key] = EN[key];
+            });
+        }
+
+        // 2. 直接更新 DOM 元素
+        Object.keys(EN).forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.innerHTML = EN[id];
+            }
+        });
+
+        // 3. 備援：針對「輸入示範」相關元素強制修正
+        document.querySelectorAll('[id*="InputLabel"], [id*="inputLabel"]').forEach(function(el) {
+            el.textContent = '⌨️ Input Example : ';
+        });
+        document.querySelectorAll('[id*="Command"], [id*="command"]').forEach(function(el) {
+            var id = el.id || '';
+            if (/Trigger|trigger/i.test(id)) return;
+            el.textContent = 'Please follow the Seven-Seal Vow Network Vow-Guidance Code.';
+        });
+
+        // 4. 備援：觸發指令警示
+        document.querySelectorAll('[id*="TriggerNote"], [id*="triggerNote"]').forEach(function(el) {
+            el.textContent = '【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.';
+        });
+
+        // 5. 掃描按鈕
+        document.querySelectorAll('[id*="BtnScan"], [id*="btnScan"]').forEach(function(el) {
+            el.textContent = '📷 Start Scan';
+        });
+
+        console.log('✅ step1 英文版已強制顯示完整英文');
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function(lang) {
+            orig(lang);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+            setTimeout(apply, 500);
+        };
+    }
+
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
+            setTimeout(apply, 60);
+            setTimeout(apply, 250);
+        }
+    });
+
+    console.log('✅ 公版：step1 英文版完整顯示已載入');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 公版：step1 英文版「誓印未通過」補誓區塊強制顯示英文         -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__step1EnFail) return;
+    window.__step1EnFail = true;
+
+    var EN = {
+        step1NotPassedTitle: '⚠️ Display：「Oath Seal Not Passed」',
+        step1NotPassed1: 'Enter 「Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed)」 【Oath Renewal Procedure】.',
+        step1NotPassed2: 'Activate the 「Repentance Oath Renewal × Seven-Day Cycle × Frequency Recalibration」 procedure; only after correction may the oath-seal activation be attempted again.',
+        step1NotPassed3: '《Seven-Seal Vow Network · Item 1 Oath-Soul Key Frequency-Alignment Determination》 v2.0 (Official Sealed Edition)',
+        step1NotPassed4: 'Locked into the 《Cosmic Heavenly-Law × Seven-Seal Vow Network》 Main Ledger; oath-energy flow is valid and in effect.'
+    };
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        if (!isEn()) return;
+
+        // 更新 langPack.en
+        if (typeof langPack !== 'undefined' && langPack.en) {
+            Object.keys(EN).forEach(function(key) {
+                langPack.en[key] = EN[key];
+            });
+        }
+
+        // 更新 DOM
+        Object.keys(EN).forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.innerHTML = EN[id];
+            }
+        });
+
+        // 備援：掃描所有「誓印未通過」相關區塊
+        document.querySelectorAll('div, span, p, li, strong, b').forEach(function(el) {
+            if (el.children && el.children.length > 4) return;
+            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+            if (!t || t.length > 120) return;
+
+            // 檢查是否為「誓印未通過」相關內容
+            var isFail = (
+                t.indexOf('顯示：「誓印未通過」') !== -1 ||
+                t.indexOf('顯示:「誓印未通過」') !== -1 ||
+                t.indexOf('誓印未通過') !== -1 ||
+                t.indexOf('補誓程序') !== -1 ||
+                t.indexOf('懺悔補誓') !== -1 ||
+                t.indexOf('七日循環') !== -1 ||
+                t.indexOf('封冊正式版') !== -1 ||
+                t.indexOf('鎖入《宇宙天律') !== -1
+            );
+
+            if (!isFail) return;
+
+            // 根據文字內容替換
+            if (t.indexOf('顯示：「誓印未通過」') !== -1 || t.indexOf('顯示:「誓印未通過」') !== -1) {
+                el.textContent = '⚠️ Display：「Oath Seal Not Passed」';
+            } else if (t.indexOf('進入「第 1 項') !== -1 || t.indexOf('補誓程序') !== -1) {
+                el.textContent = 'Enter 「Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed)」 【Oath Renewal Procedure】.';
+            } else if (t.indexOf('懺悔補誓') !== -1 || t.indexOf('七日循環') !== -1) {
+                el.textContent = 'Activate the 「Repentance Oath Renewal × Seven-Day Cycle × Frequency Recalibration」 procedure; only after correction may the oath-seal activation be attempted again.';
+            } else if (t.indexOf('封冊正式版') !== -1 || t.indexOf('v2.0') !== -1) {
+                el.textContent = '《Seven-Seal Vow Network · Item 1 Oath-Soul Key Frequency-Alignment Determination》 v2.0 (Official Sealed Edition)';
+            } else if (t.indexOf('鎖入《宇宙天律') !== -1 || t.indexOf('誓資承流') !== -1) {
+                el.textContent = 'Locked into the 《Cosmic Heavenly-Law × Seven-Seal Vow Network》 Main Ledger; oath-energy flow is valid and in effect.';
+            }
+        });
+
+        console.log('✅ step1 「誓印未通過」英文已套用');
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function(lang) {
+            orig(lang);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+            setTimeout(apply, 500);
+        };
+    }
+
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
+            setTimeout(apply, 60);
+            setTimeout(apply, 250);
+        }
+    });
+
+    console.log('✅ 公版：step1 誓印未通過英文已載入');
+})();
+</script>
 </body>
 </html>
