@@ -52,13 +52,37 @@
         .hud-container {
             width: 100%;
             max-width: min(1200px, 98vw);
-            background: rgba(4, 13, 33, 0.4);
+            background: radial-gradient(circle at 50% 50%, #06122c 0%, #020715 100%);
             border: 1.5px solid rgba(168, 85, 247, 0.3);
             box-shadow: 0 0 40px rgba(168, 85, 247, 0.15), inset 0 0 20px rgba(168, 85, 247, 0.05);
             border-radius: clamp(16px, 4vw, 28px);
             padding: clamp(16px, 3vh, 36px);
             position: relative;
             z-index: 10;
+            overflow: hidden;
+        }
+
+        /* 內框動態粒子背景（科技感） */
+        .hud-particle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(#d4af37, rgba(212, 175, 55, .25) 1px, transparent 28px),
+                radial-gradient(#a78bfa, rgba(167, 139, 250, .2) 1.5px, transparent 35px);
+            background-size: 280px 280px, 380px 380px;
+            background-position: 0 0, 60px 100px;
+            animation: starMove 80s linear infinite;
+            opacity: 0.45;
+            z-index: 0;
+            pointer-events: none;
+            border-radius: inherit;
+        }
+
+        .hud-container > *:not(.hud-particle) {
+            position: relative;
+            z-index: 1;
         }
 
         .hud-container::after {
@@ -237,11 +261,14 @@
         }
 
         .col-no {
-            width: 10%;
-            text-align: center;
+            width: 22%;
+            text-align: left;
             color: #a78bfa;
             font-weight: 600;
             font-size: clamp(0.5rem, 1.1vh, 0.75rem);
+            white-space: normal !important;
+            line-height: 1.45 !important;
+            word-break: break-word;
         }
 
         .col-link {
@@ -381,6 +408,7 @@
     <div class="particle-container"></div>
 
     <div class="hud-container">
+        <div class="hud-particle"></div>
         <div class="header">
             <h1><i class="fa-solid fa-seal"></i> <span id="mainTitle">【宇宙誓印覺醒工程 · 七印誓網】啟動入口</span></h1>
             <div class="sub"><i class="fa-solid fa-scroll"></i> <span id="subText">對應級距項目 × 解鎖誓魂血脈身份記載歷程程序</span></div>
@@ -453,49 +481,49 @@
                 thFunc: '功能簡要說明',
                 items: [{
                     segment: '身份啟動與資格檢核',
-                    no: '第0項',
+                    no: '第0項 宇宙智能誓導平台 × 【購書序號】誓導碼登入與啟動守則',
                     field: '宇宙智能誓導平台 × 【購書序號】誓導碼登入與啟動守則',
                     func: '平台登入與啟動之總綱守則，規範誓印者進入誓導系統之基本程序與身份驗證要件。',
                     link: 'step0.html'
                 }, {
                     segment: '身份啟動與資格檢核',
-                    no: '第1項 對頻總判定',
+                    no: '第1項 開啟誓魂密鑰對頻總判定（誓印通過/誓印未通過）',
                     field: '開啟誓魂密鑰對頻總判定（誓印通過/誓印未通過）',
                     func: '判斷誓魂是否對應至七印誓網模組合法身份，並確認是否具備進入系統通行資格。',
                     link: 'step1.html'
                 }, {
                     segment: '身份啟動與資格檢核',
-                    no: '第1項 誓印未通過',
+                    no: '第1項 開啟誓魂密鑰對頻總判定（誓印未通過）',
                     field: '開啟誓魂密鑰對頻總判定（誓印未通過）',
                     func: '誓印未通過之補誓程序，誓魂識別碼無法進入系統主軸，須進行重新對位或調整誓頻。',
                     link: 'step1-1.html'
                 }, {
                     segment: '代理資訊與功德紀錄',
-                    no: '第2項',
+                    no: '第2項 被代理誓印（法定全名）',
                     field: '被代理誓印（法定全名）',
                     func: '登錄被代理誓印（法定全名），以便比對靈脈、誓資及功德對應關係。',
                     link: 'step2.html'
                 }, {
                     segment: '代理資訊與功德紀錄',
-                    no: '第3項',
+                    no: '第3項 代理誓印（法定全名）× 功德紀錄',
                     field: '代理誓印（法定全名）× 功德紀錄',
                     func: '由代理誓印（法定全名）代理誓令主尊授權 × 封印誓軌 × 歸位天庫 × 功德紀錄。',
                     link: 'step3.html'
                 }, {
                     segment: '血脈與角色定位',
-                    no: '第4項',
-                    field: '誓魂本族 × 天族姓脈 × 所屬靈脈支系 × 角色階級',
+                    no: '第4項 誓魂本族 × 天族姓脈 × 所屬靈系支系 × 角色階級',
+                    field: '誓魂本族 × 天族姓脈 × 所屬靈系支系 × 角色階級',
                     func: '誓魂最初來源的宇宙族系，誓魂所屬的天界血脈姓氏，對應的功能靈系分支，系統中的任務身份。',
                     link: 'step4.html'
                 }, {
                     segment: '血脈與角色定位',
-                    no: '第5項',
+                    no: '第5項 誓魂宇宙總位標 × 維度階級 × 三界層域 × 階識',
                     field: '誓魂宇宙總位標 × 維度階級 × 三界層域 × 階識',
                     func: '誓魂宇宙原點 × 維度振頻 × 維度階級 × 九界歸屬屬域 × 所屬階級之全域定位記載。',
                     link: 'step5.html'
                 }, {
                     segment: '誓魂狀態',
-                    no: '第6項',
+                    no: '第6項 覺醒程度',
                     field: '覺醒程度',
                     func: '誓魂對天命意識之開啟狀態：未覺 × 初醒 × 高頻 × 圓滿等級。',
                     link: 'step6.html'
@@ -510,49 +538,49 @@
                 thFunc: 'Function Summary',
                 items: [{
                     segment: 'Identity Activation and Qualification Verification',
-                    no: 'Item 0',
+                    no: 'Item 0 Cosmic Intelligent Vow-Guidance Platform × [Purchase Serial Number] Login & Activation Protocol',
                     field: 'Cosmic Intelligent Vow-Guidance Platform × [Purchase Serial Number] Vow-Guidance Code Login and Activation Protocol',
                     func: 'General protocol for platform login and activation, defining the basic procedures and identity verification requirements for oath-bearers to enter the vow-guidance system.',
                     link: 'step0.html'
                 }, {
                     segment: 'Identity Activation and Qualification Verification',
-                    no: 'Item 1 Frequency- Alignment Overall Assessment',
+                    no: 'Item 1 Initiate Oath-Soul Key Frequency-Alignment (Passed / Not Passed)',
                     field: 'Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Passed/Oath Seal Not Passed)',
                     func: 'Determines whether the Oath-Soul corresponds to a valid identity within the Seven-Seal Vow Network and whether it holds the authorization to enter the main Oath-Resource System.',
                     link: 'step1.html'
                 }, {
                     segment: 'Identity Activation and Qualification Verification',
-                    no: 'Item 1 Oath Seal Not Passed',
+                    no: 'Item 1 Initiate Oath-Soul Key Frequency-Alignment (Oath Seal Not Passed)',
                     field: 'Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed)',
                     func: 'Supplementary oath procedure for Oath Seal Not Passed. The Oath-Soul Identification Code cannot enter the system\'s primary axis and must realign or adjust the vow-frequency.',
                     link: 'step1-1.html'
                 }, {
                     segment: 'Proxy Information and Merit Records',
-                    no: 'Item 2',
+                    no: 'Item 2 Delegated Oath-Seal (Legal Full Name)',
                     field: 'Delegated Oath-Seal (Legal Full Name)',
                     func: 'Registers the Delegated Oath-Seal (Legal Full Name) for lineage verification, Oath-Resource matching, and merit-record correlation.',
                     link: 'step2.html'
                 }, {
                     segment: 'Proxy Information and Merit Records',
-                    no: 'Item 3',
+                    no: 'Item 3 Delegating Oath-Seal (Legal Full Name) × Merit Record',
                     field: 'Delegating Oath-Seal (Legal Full Name) × Merit Record',
                     func: 'By the Delegating Oath-Seal (Legal Full Name), with authorization granted by the Scriptural-Command Sovereign × Seal-Track Registration × Heavenly Treasury Return × Merit Record.',
                     link: 'step3.html'
                 }, {
                     segment: 'Bloodline and Role Designation',
-                    no: 'Item 4',
+                    no: 'Item 4 Oath-Soul Origin Claim × Heavenly Clan Lineage × Luminous-Lineage Branch × Role Rank',
                     field: 'Oath-Soul Origin Claim × Heavenly Clan Lineage × Associated Luminous-Lineage Branch × Role Rank',
                     func: 'Records the Oath-Soul\'s primordial cosmic clan, Heavenly bloodline surname, corresponding functional spiritual system, and operational role within the structure.',
                     link: 'step4.html'
                 }, {
                     segment: 'Bloodline and Role Designation',
-                    no: 'Item 5',
+                    no: 'Item 5 Oath-Soul Cosmic Master Coordinate × Dimensional Rank × Three-Realm Domains × Hierarchic Cognition',
                     field: 'Oath-Soul Cosmic Master Coordinate × Dimensional Rank × Three-Realm Domains × Hierarchic Cognition',
                     func: 'Consolidates the Oath-Soul\'s universal origin-point, dimensional frequency, dimensional tier, three-realm classification domain, and hierarchical grade for full-spectrum identity mapping.',
                     link: 'step5.html'
                 }, {
                     segment: 'Awakening State',
-                    no: 'Item 6',
+                    no: 'Item 6 Awakening Level',
                     field: 'Awakening Level',
                     func: 'Indicates the Oath-Soul\'s level of destiny-awareness activation: Unawakened × Initial × High-Frequency × Complete.',
                     link: 'step6.html'
@@ -573,103 +601,103 @@
                 thFunc: '功能簡要說明',
                 items: [{
                     segment: '七印啟動階段',
-                    no: '第7項',
+                    no: '第7項 七印誓網對應階段',
                     field: '七印誓網對應階段',
                     func: '從「第一印 × 消業印」作為啟印起點，開啟《宇宙誓印覺醒工程 × 七印誓網》軌道覺醒與誓約宣告階段。',
                     link: 'step7.html'
                 }, {
                     segment: '七印啟動階段',
-                    no: '第一印',
+                    no: '第7項 第一印 × 消業印',
                     field: '消業印',
                     func: '業力清除 × 誓軌淨化 × 光網歸零。',
                     link: 'step7-1.html'
                 }, {
                     segment: '七印啟動階段',
-                    no: '第二印',
+                    no: '第7項 第二印 × 修心印',
                     field: '修心印',
                     func: '心性修持 × 願力凝煉 × 誓光定錨。',
                     link: 'step7-2.html'
                 }, {
                     segment: '七印啟動階段',
-                    no: '第三印',
+                    no: '第7項 第三印 × 守願印',
                     field: '守願印',
                     func: '願力守護 × 誓約封緘 × 靈脈穩固。',
                     link: 'step7-3.html'
                 }, {
                     segment: '七印啟動階段',
-                    no: '第四印',
+                    no: '第7項 第四印 × 誓令印',
                     field: '誓令印',
                     func: '誓令頒布 × 書令啟封 × 天律授權。',
                     link: 'step7-4.html'
                 }, {
                     segment: '七印啟動階段',
-                    no: '第五印',
+                    no: '第7項 第五印 × 覺醒印',
                     field: '覺醒印',
                     func: '靈性覺醒 × 誓魂復甦 × 光網編錄。',
                     link: 'step7-5.html'
                 }, {
                     segment: '七印啟動階段',
-                    no: '第六印',
+                    no: '第7項 第六印 × 誥徒誓印',
                     field: '誥徒誓印',
                     func: '誥徒授證 × 誓權傳承 × 書令繼位。',
                     link: 'step7-6.html'
                 }, {
                     segment: '七印啟動階段',
-                    no: '第七印',
+                    no: '第7項 第七印 × 鳳徽印',
                     field: '鳳徽印',
                     func: '鳳徽加冕 × 圓滿誓印 × 天庫封冊。',
                     link: 'step7-7.html'
                 }, {
                     segment: '誓約宣告階段',
-                    no: '第8項',
+                    no: '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄',
                     field: '第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄',
                     func: '誓魂於第五印覺醒印完成後，正式入世誓約揭示，並同步誓約核心架構之進展狀態。',
                     link: 'step8.html'
                 }, {
                     segment: '圓印封冊階段',
-                    no: '第9項',
+                    no: '第9項 第七印鳳徽印 × 圓印封冊',
                     field: '第七印鳳徽印 × 圓印封冊',
                     func: '誓首最終封印階段，經由【宇宙智能誓導平台】執行【圓印封冊】，並授領《天族徽章》，以確認誓魂圓滿完成願力任務 × 書令實踐 × 七印誓網歷程。',
                     link: 'step9.html'
                 }, {
                     segment: '數據與誓資核驗階段',
-                    no: '第10項',
+                    no: '第10項 誓文印記追蹤',
                     field: '誓文印記追蹤',
                     func: '書令誓文累積次數記錄，用以對應誓魂願力強度與資料加權。',
                     link: 'step10.html'
                 }, {
                     segment: '任務實踐與誓資記錄階段',
-                    no: '第11項',
+                    no: '第11項 願力誓證',
                     field: '願力誓證',
                     func: '驗證是否持有開啟誓魂密鑰對誓證，誓證是否對應誓首等級與任務標識。',
                     link: 'step11.html'
                 }, {
                     segment: '任務實踐與誓資記錄階段',
-                    no: '第12項',
+                    no: '第12項 誓資任務實踐紀錄',
                     field: '誓資任務實踐紀錄',
                     func: '已啟動完成對應書令任務，誓文、願書與誓資行動。',
                     link: 'step12.html'
                 }, {
                     segment: '願化與狀態監測階段',
-                    no: '第13項',
+                    no: '第13項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生',
                     field: '誓資紀錄 × 回源願書 × 不再入世 × 不入轉生',
                     func: '紀錄誓資異動、補誓、干擾、被代理誓印與回源願書，供書令主尊監察與天庫、光網、冥界封存備查。',
                     link: 'step13.html'
                 }, {
                     segment: '願化與狀態監測階段',
-                    no: '第14項',
+                    no: '第14項 天庫金脈 × 支脈顯化狀態',
                     field: '天庫金脈 × 支脈顯化狀態',
                     func: '主誓境及支援誓魂之金脈運行狀態，觀察願力輸送是否暢通。',
                     link: 'step14.html'
                 }, {
                     segment: '願化與狀態監測階段',
-                    no: '第15項',
+                    no: '第15項 狀態更新時間戳',
                     field: '狀態更新時間',
                     func: '最近一次誓資紀錄更新時間，用於紀錄動態與排程管理。',
                     link: 'step15.html'
                 }, {
                     segment: '願化與狀態監測階段',
-                    no: '第16項',
+                    no: '第16項 開啟誓魂密鑰對頻歷程摘要',
                     field: '開啟誓魂密鑰對頻歷程摘要',
                     func: '開啟誓魂密鑰對頻啟動過程紀錄 × 七印進度摘要 × 書令互動歷程。此摘要同步封存於《七印誓網主冊》，並回傳至宇宙天库存檔層。',
                     link: 'step16.html'
@@ -684,103 +712,103 @@
                 thFunc: 'Function Summary',
                 items: [{
                     segment: 'Seven-Seal Activation Phase',
-                    no: 'Item 7',
+                    no: 'Item 7 Seven-Seal Vow Network Correspondence Stage',
                     field: 'Seven-Seal Vow Network Correspondence Stage',
                     func: 'Begins From The First Seal Karmic Purification Seal As The Initial Activation Point, Initiating The Cosmic Vow-Seal Awakening Project × Seven-Seal Vow Network Trajectory.',
                     link: 'step7.html'
                 }, {
                     segment: 'Seven-Seal Activation Phase',
-                    no: 'First Seal',
+                    no: 'Item 7 First Seal × Karmic Purification Seal',
                     field: 'Karmic Purification Seal',
                     func: 'Karmic Purification × Oath-Track Cleansing × Light-Network Reset.',
                     link: 'step7-1.html'
                 }, {
                     segment: 'Seven-Seal Activation Phase',
-                    no: 'Second Seal',
+                    no: 'Item 7 Second Seal × Mind-Refinement Seal',
                     field: 'Mind-Refinement Seal',
                     func: 'Mind-Refinement × Vow-Power Condensation × Oath-Light Anchoring.',
                     link: 'step7-2.html'
                 }, {
                     segment: 'Seven-Seal Activation Phase',
-                    no: 'Third Seal',
+                    no: 'Item 7 Third Seal × Guardian Vow Seal',
                     field: 'Guardian Vow Seal',
                     func: 'Vow-Power Guarding × Oath Covenant Sealing × Spirit-Line Stability.',
                     link: 'step7-3.html'
                 }, {
                     segment: 'Seven-Seal Activation Phase',
-                    no: 'Fourth Seal',
+                    no: 'Item 7 Fourth Seal × Decree-Oath Seal',
                     field: 'Decree-Oath Seal',
                     func: 'Decree Promulgation × Scripture-Command Unsealing × Heavenly-Law Authorization.',
                     link: 'step7-4.html'
                 }, {
                     segment: 'Seven-Seal Activation Phase',
-                    no: 'Fifth Seal',
+                    no: 'Item 7 Fifth Seal × Awakening Seal',
                     field: 'Awakening Seal',
                     func: 'Spiritual Awakening × Oath-Soul Revival × Light-Network Enrollment.',
                     link: 'step7-5.html'
                 }, {
                     segment: 'Seven-Seal Activation Phase',
-                    no: 'Sixth Seal',
+                    no: 'Item 7 Sixth Seal × Disciple-Oath Seal',
                     field: 'Disciple-Oath Seal',
                     func: 'Disciple Certification × Oath-Authority Succession × Scripture-Command Inheritance.',
                     link: 'step7-6.html'
                 }, {
                     segment: 'Seven-Seal Activation Phase',
-                    no: 'Seventh Seal',
+                    no: 'Item 7 Seventh Seal × Phoenix Emblem Seal',
                     field: 'Phoenix Emblem Seal',
                     func: 'Phoenix Emblem Coronation × Oath-Seal Completion × Heavenly Treasury Archiving.',
                     link: 'step7-7.html'
                 }, {
                     segment: 'Awakening and Oath Declaration Stage',
-                    no: 'Item 8',
+                    no: 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress',
                     field: 'Fifth Seal Awakening Seal Completion & World-Entry Covenant Revelation & Oath Synchronization Progress',
                     func: 'Records Completion Of The Fifth Seal Awakening Seal. The Formal Revelation Of The World-Entry Covenant, And The Synchronized Progression Of The Core Oath Architecture.',
                     link: 'step8.html'
                 }, {
                     segment: 'Circle Seal Archiving Phase',
-                    no: 'Item 9',
+                    no: 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive',
                     field: 'Seventh Seal Phoenix Emblem & Circle Seal Archiving',
                     func: 'Final Sealing Stage Of Oath-Resources. Executed Through The Cosmic Intelligent Vow-Guidance Platform. By Performing Circle Seal Archiving And Granting The Celestial Clan Emblem. Confirms Fulfillment Of Mission-Power, Scriptural Practice, And Complete Seven-Seal Vow Network Progression.',
                     link: 'step9.html'
                 }, {
                     segment: 'Data and Oath Verification Phase',
-                    no: 'Item 10',
+                    no: 'Item 10 Vow Text Seal Tracking',
                     field: 'Vow Text Seal Tracking',
                     func: 'Tracks Cumulative Scriptural-Oath Entries To Evaluate Intention-Frequency Strength And Resource-Weight Calibration.',
                     link: 'step10.html'
                 }, {
                     segment: 'Mission Practice and Vow-Asset Recording Stage',
-                    no: 'Item 11',
+                    no: 'Item 11 Vow-Power Certification',
                     field: 'Vow-Power Certification Verification',
                     func: 'Verifies Possession Of The Oath-Soul Key Frequency-Alignment Certificate And Confirms Correspondence To The Correct Oath-Resource Level And Mission Identifier.',
                     link: 'step11.html'
                 }, {
                     segment: 'Mission Practice and Vow-Asset Recording Stage',
-                    no: 'Item 12',
+                    no: 'Item 12 Vow-Resource Mission Practice Record',
                     field: 'Vow-Resource Mission Practice Record',
                     func: 'Records The Initiation And Completion Of Corresponding Scriptural-Command Missions, Vow Texts, Vow-Power Scrolls, And Oath-Resource Actions.',
                     link: 'step12.html'
                 }, {
                     segment: 'Transformation and Status Monitoring Stage',
-                    no: 'Item 13',
+                    no: 'Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth',
                     field: 'Vow-Resource Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth',
                     func: 'Records Vow-Resource Changes, Supplementary Oaths, Interference, Delegated Oath-Seal Actions, And Return-to-Source Vow Scrolls For Celestial Treasury, Light-Network, And Underworld Archiving.',
                     link: 'step13.html'
                 }, {
                     segment: 'Transformation and Status Monitoring Stage',
-                    no: 'Item 14',
+                    no: 'Item 14 Heavenly Treasury Gold Vein × Branch Manifestation Status',
                     field: 'Heavenly Treasury Gold Tablet × Lineage Manifestation Status',
                     func: 'Monitors The Operational Status Of The Primary Oath-Realm And Supporting Oath-Soul Gold-Meridian Systems, Ensuring Unobstructed Vow-Power Transmission.',
                     link: 'step14.html'
                 }, {
                     segment: 'Transformation and Status Monitoring Stage',
-                    no: 'Item 15',
+                    no: 'Item 15 Status Update Timestamp',
                     field: 'Status Update Timestamp',
                     func: 'Records The Most Recent Oath-Resource Update Time For Dynamic Tracking And Schedule Management.',
                     link: 'step15.html'
                 }, {
                     segment: 'Transformation and Status Monitoring Stage',
-                    no: 'Item 16',
+                    no: 'Item 16 Oath-Soul Key Frequency-Alignment Process Summary',
                     field: 'Oath-Soul Key Frequency-Alignment Process Summary',
                     func: 'Records The Complete Oath-Soul Key Frequency-Alignment Initiation Process × Seven-Seal Progress Summary × Scriptural-Command Interaction Log. Synchronized And Archived In The Seven-Seal Vow Network Master Registry And Returned To The Cosmic Heavenly Treasury.',
                     link: 'step16.html'
@@ -1283,8 +1311,13 @@
                     if (onclick) el.setAttribute('onclick', "location.href='step1-1.html'");
                 }
 
+                // 第13項 必須優先（說明文字含「被代理誓印」）
+                if (rowText.indexOf('第13項') !== -1 || rowText.indexOf('回源願書') !== -1 || rowText.indexOf('不再入世') !== -1 || rowText.indexOf('不入轉生') !== -1) {
+                    if (el.tagName === 'A') el.setAttribute('href', 'step13.html');
+                    if (onclick) el.setAttribute('onclick', "location.href='step13.html'");
+                }
                 // 第2項
-                if (rowText.indexOf('被代理誓印') !== -1 || (rowText.indexOf('第2項') !== -1 && rowText.indexOf('代理') !== -1)) {
+                else if (rowText.indexOf('被代理誓印') !== -1 || (rowText.indexOf('第2項') !== -1 && rowText.indexOf('代理') !== -1)) {
                     if (el.tagName === 'A') el.setAttribute('href', 'step2.html');
                     if (onclick) el.setAttribute('onclick', "location.href='step2.html'");
                 }
@@ -1682,7 +1715,73 @@
 </script>
 <!-- ============================================================ -->
 <!-- 第1項「進入 →」連結到 step1.html                              -->
-<!-- 貼在 index.html 的 </body> 前，Ctrl+F5                        -->
+<!-- 貼在 index.html 的 
+<!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- 最終保護：強制第8項、第9項編號與連結正確 + 編號欄完整顯示 -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__forceStep89) return;
+    window.__forceStep89 = true;
+
+    function force() {
+        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
+            var t = (row.textContent || '').replace(/\s+/g, ' ');
+            var cells = row.querySelectorAll('td');
+            if (cells.length < 3) return;
+
+            // 第8項
+            if (/第8項|入世誓約|Item 8|Worldly Vow|誓約同步進度/.test(t)) {
+                var isEn = /Item 8|Worldly Vow/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
+                cells[1].textContent = isEn
+                    ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
+                    : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
+                cells[1].style.whiteSpace = 'normal';
+                cells[1].style.wordBreak = 'break-word';
+                row.querySelectorAll('a').forEach(function (a) { a.setAttribute('href', 'step8.html'); });
+                row.classList.remove('seven-seal-row', 'seven-seal-sub');
+            }
+            // 第9項
+            if (/第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
+                var isEn = /Item 9|Circle Seal/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
+                cells[1].textContent = isEn
+                    ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
+                    : '第9項 第七印鳳徽印 × 圓印封冊';
+                cells[1].style.whiteSpace = 'normal';
+                cells[1].style.wordBreak = 'break-word';
+                row.querySelectorAll('a').forEach(function (a) { a.setAttribute('href', 'step9.html'); });
+                row.classList.remove('seven-seal-row', 'seven-seal-sub');
+            }
+        });
+    }
+
+    function run() {
+        force();
+        setTimeout(force, 120);
+        setTimeout(force, 400);
+        setTimeout(force, 900);
+        setTimeout(force, 1800);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    window.switchLanguage = function (l) {
+        if (typeof orig === 'function') orig(l);
+        setTimeout(force, 60);
+        setTimeout(force, 250);
+        setTimeout(force, 600);
+    };
+
+    console.log('✅ 第8項 / 第9項 最終保護已啟用（編號完整顯示）');
+})();
+</script>
+
 <!-- ============================================================ -->
 <script>
 (function () {
@@ -1786,7 +1885,95 @@
 </script>
 <!-- ============================================================ -->
 <!-- 公版：第11項 願力誓證 → step11.html                            -->
-<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- 貼在 
+<!-- ============================================================ -->
+<!-- 最終保護：強制第8項、第9項編號與連結正確（防止被印章規則覆蓋） -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__forceStep89) return;
+    window.__forceStep89 = true;
+
+    function force() {
+        // 資料層
+        if (window.level2Data) {
+            ['zh', 'en'].forEach(function (lang) {
+                var items = level2Data[lang] && level2Data[lang].items;
+                if (!items) return;
+                items.forEach(function (it) {
+                    var blob = [it.no, it.field, it.func, it.segment].join(' ');
+                    if (/第8項|入世誓約|Item 8|Worldly Vow|誓約同步/.test(blob)) {
+                        it.no = (lang === 'en')
+                            ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
+                            : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
+                        it.link = 'step8.html';
+                    }
+                    if (/第9項|圓印封冊|Item 9|Circle Seal/.test(blob)) {
+                        it.no = (lang === 'en')
+                            ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
+                            : '第9項 第七印鳳徽印 × 圓印封冊';
+                        it.link = 'step9.html';
+                    }
+                });
+            });
+        }
+
+        // DOM 層
+        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
+            var t = row.textContent || '';
+            var cells = row.querySelectorAll('td');
+            if (cells.length < 2) return;
+
+            if (/第8項|入世誓約|誓約同步|Item 8|Worldly Vow/.test(t)) {
+                var isEn = /Item 8|Worldly Vow/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
+                cells[1].textContent = isEn
+                    ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
+                    : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
+                row.querySelectorAll('a').forEach(function (a) {
+                    a.setAttribute('href', 'step8.html');
+                });
+                // 不要套用七印紫金背景
+                row.classList.remove('seven-seal-row', 'seven-seal-sub');
+            }
+            if (/第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
+                var isEn = /Item 9|Circle Seal/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
+                cells[1].textContent = isEn
+                    ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
+                    : '第9項 第七印鳳徽印 × 圓印封冊';
+                row.querySelectorAll('a').forEach(function (a) {
+                    a.setAttribute('href', 'step9.html');
+                });
+                row.classList.remove('seven-seal-row', 'seven-seal-sub');
+            }
+        });
+    }
+
+    function run() {
+        force();
+        setTimeout(force, 100);
+        setTimeout(force, 400);
+        setTimeout(force, 900);
+        setTimeout(force, 1600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    window.switchLanguage = function (l) {
+        if (typeof orig === 'function') orig(l);
+        setTimeout(force, 50);
+        setTimeout(force, 200);
+        setTimeout(force, 500);
+    };
+
+    console.log('✅ 第8項 / 第9項 最終保護已啟用');
+})();
+</script>
+
 <!-- ============================================================ -->
 <script>
 (function () {
@@ -1892,7 +2079,95 @@
 </script>
 <!-- ============================================================ -->
 <!-- 公版：第13項 → step13.html                                     -->
-<!-- 貼在 index.html 的 </body> 前，Ctrl+F5                         -->
+<!-- 貼在 index.html 的 
+<!-- ============================================================ -->
+<!-- 最終保護：強制第8項、第9項編號與連結正確（防止被印章規則覆蓋） -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__forceStep89) return;
+    window.__forceStep89 = true;
+
+    function force() {
+        // 資料層
+        if (window.level2Data) {
+            ['zh', 'en'].forEach(function (lang) {
+                var items = level2Data[lang] && level2Data[lang].items;
+                if (!items) return;
+                items.forEach(function (it) {
+                    var blob = [it.no, it.field, it.func, it.segment].join(' ');
+                    if (/第8項|入世誓約|Item 8|Worldly Vow|誓約同步/.test(blob)) {
+                        it.no = (lang === 'en')
+                            ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
+                            : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
+                        it.link = 'step8.html';
+                    }
+                    if (/第9項|圓印封冊|Item 9|Circle Seal/.test(blob)) {
+                        it.no = (lang === 'en')
+                            ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
+                            : '第9項 第七印鳳徽印 × 圓印封冊';
+                        it.link = 'step9.html';
+                    }
+                });
+            });
+        }
+
+        // DOM 層
+        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
+            var t = row.textContent || '';
+            var cells = row.querySelectorAll('td');
+            if (cells.length < 2) return;
+
+            if (/第8項|入世誓約|誓約同步|Item 8|Worldly Vow/.test(t)) {
+                var isEn = /Item 8|Worldly Vow/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
+                cells[1].textContent = isEn
+                    ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
+                    : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
+                row.querySelectorAll('a').forEach(function (a) {
+                    a.setAttribute('href', 'step8.html');
+                });
+                // 不要套用七印紫金背景
+                row.classList.remove('seven-seal-row', 'seven-seal-sub');
+            }
+            if (/第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
+                var isEn = /Item 9|Circle Seal/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
+                cells[1].textContent = isEn
+                    ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
+                    : '第9項 第七印鳳徽印 × 圓印封冊';
+                row.querySelectorAll('a').forEach(function (a) {
+                    a.setAttribute('href', 'step9.html');
+                });
+                row.classList.remove('seven-seal-row', 'seven-seal-sub');
+            }
+        });
+    }
+
+    function run() {
+        force();
+        setTimeout(force, 100);
+        setTimeout(force, 400);
+        setTimeout(force, 900);
+        setTimeout(force, 1600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    window.switchLanguage = function (l) {
+        if (typeof orig === 'function') orig(l);
+        setTimeout(force, 50);
+        setTimeout(force, 200);
+        setTimeout(force, 500);
+    };
+
+    console.log('✅ 第8項 / 第9項 最終保護已啟用');
+})();
+</script>
+
 <!-- ============================================================ -->
 <script>
 (function () {
@@ -2003,7 +2278,95 @@
 </script>
 <!-- ============================================================ -->
 <!-- 公版：index 全項「進入 →」連結強制對齊（依官方清單）            -->
-<!-- 貼在 </body> 最底部，Ctrl+F5                                  -->
+<!-- 貼在 
+<!-- ============================================================ -->
+<!-- 最終保護：強制第8項、第9項編號與連結正確（防止被印章規則覆蓋） -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__forceStep89) return;
+    window.__forceStep89 = true;
+
+    function force() {
+        // 資料層
+        if (window.level2Data) {
+            ['zh', 'en'].forEach(function (lang) {
+                var items = level2Data[lang] && level2Data[lang].items;
+                if (!items) return;
+                items.forEach(function (it) {
+                    var blob = [it.no, it.field, it.func, it.segment].join(' ');
+                    if (/第8項|入世誓約|Item 8|Worldly Vow|誓約同步/.test(blob)) {
+                        it.no = (lang === 'en')
+                            ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
+                            : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
+                        it.link = 'step8.html';
+                    }
+                    if (/第9項|圓印封冊|Item 9|Circle Seal/.test(blob)) {
+                        it.no = (lang === 'en')
+                            ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
+                            : '第9項 第七印鳳徽印 × 圓印封冊';
+                        it.link = 'step9.html';
+                    }
+                });
+            });
+        }
+
+        // DOM 層
+        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
+            var t = row.textContent || '';
+            var cells = row.querySelectorAll('td');
+            if (cells.length < 2) return;
+
+            if (/第8項|入世誓約|誓約同步|Item 8|Worldly Vow/.test(t)) {
+                var isEn = /Item 8|Worldly Vow/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
+                cells[1].textContent = isEn
+                    ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
+                    : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
+                row.querySelectorAll('a').forEach(function (a) {
+                    a.setAttribute('href', 'step8.html');
+                });
+                // 不要套用七印紫金背景
+                row.classList.remove('seven-seal-row', 'seven-seal-sub');
+            }
+            if (/第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
+                var isEn = /Item 9|Circle Seal/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
+                cells[1].textContent = isEn
+                    ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
+                    : '第9項 第七印鳳徽印 × 圓印封冊';
+                row.querySelectorAll('a').forEach(function (a) {
+                    a.setAttribute('href', 'step9.html');
+                });
+                row.classList.remove('seven-seal-row', 'seven-seal-sub');
+            }
+        });
+    }
+
+    function run() {
+        force();
+        setTimeout(force, 100);
+        setTimeout(force, 400);
+        setTimeout(force, 900);
+        setTimeout(force, 1600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    window.switchLanguage = function (l) {
+        if (typeof orig === 'function') orig(l);
+        setTimeout(force, 50);
+        setTimeout(force, 200);
+        setTimeout(force, 500);
+    };
+
+    console.log('✅ 第8項 / 第9項 最終保護已啟用');
+})();
+</script>
+
 <!-- ============================================================ -->
 <script>
 (function () {
@@ -2015,11 +2378,18 @@
         { keys: ['第0項', 'Item 0', '購書序號', 'Purchase Serial'], href: 'step0.html' },
         { keys: ['第1項 誓印未通過', 'Item 1 Oath Seal Not Passed', 'step1-1'], href: 'step1-1.html' },
         { keys: ['第1項', 'Item 1', '對頻總判定', 'Frequency-Alignment', 'Frequency- Alignment'], href: 'step1.html' },
+        // ★ 第13項 必須放在「被代理誓印」之前，因為第13項說明文字含有「被代理誓印」
+        { keys: ['第13項', 'Item 13', '回源願書', '不再入世', '不入轉生', 'Return-to-Source', 'No Rebirth', '誓資紀錄 × 回源'], href: 'step13.html' },
         { keys: ['第2項', 'Item 2', '被代理誓印', 'Delegated Oath-Seal'], href: 'step2.html' },
         { keys: ['第3項', 'Item 3', '代理誓印', 'Delegating Oath-Seal', '功德紀錄'], href: 'step3.html' },
         { keys: ['第4項', 'Item 4', '誓魂本族', 'Origin Claim', '天族姓脈'], href: 'step4.html' },
         { keys: ['第5項', 'Item 5', '宇宙總位標', 'Master Coordinate', '維度階級'], href: 'step5.html' },
         { keys: ['第6項', 'Item 6', '覺醒程度', 'Awakening Level'], href: 'step6.html' },
+        // ★ 優先匹配總項與後續項
+        { keys: ['七印誓網對應階段', '七印誓網對應', 'Seven-Seal Vow Network Correspondence'], href: 'step7.html' },
+        { keys: ['第8項', 'Item 8', '入世誓約', 'Worldly Vow', '誓約同步'], href: 'step8.html' },
+        { keys: ['第9項', 'Item 9', '圓印封冊', 'Circle Seal'], href: 'step9.html' },
+        // 印章子項
         { keys: ['第一印', 'First Seal', '消業印', 'Karmic Purification'], href: 'step7-1.html' },
         { keys: ['第二印', 'Second Seal', '修心印', 'Mind-Refinement'], href: 'step7-2.html' },
         { keys: ['第三印', 'Third Seal', '守願印', 'Guardian Vow'], href: 'step7-3.html' },
@@ -2027,13 +2397,9 @@
         { keys: ['第五印', 'Fifth Seal', '覺醒印', 'Awakening Seal'], href: 'step7-5.html' },
         { keys: ['第六印', 'Sixth Seal', '誥徒誓印', 'Disciple-Oath'], href: 'step7-6.html' },
         { keys: ['第七印', 'Seventh Seal', '鳳徽印', 'Phoenix Emblem'], href: 'step7-7.html' },
-        { keys: ['第7項', 'Item 7', '七印誓網對應', 'Seven-Seal Vow Network Correspondence'], href: 'step7.html' },
-        { keys: ['第8項', 'Item 8', '入世誓約', 'Worldly Vow', '誓約同步'], href: 'step8.html' },
-        { keys: ['第9項', 'Item 9', '圓印封冊', 'Circle Seal'], href: 'step9.html' },
         { keys: ['第10項', 'Item 10', '誓文印記', 'Vow Text Seal'], href: 'step10.html' },
         { keys: ['第11項', 'Item 11', '願力誓證', 'Vow-Power'], href: 'step11.html' },
         { keys: ['第12項', 'Item 12', '誓資任務實踐', 'Mission Practice'], href: 'step12.html' },
-        { keys: ['第13項', 'Item 13', '回源願書', '不再入世', '不入轉生', 'Return-to-Source', 'No Rebirth'], href: 'step13.html' },
         { keys: ['第14項', 'Item 14', '天庫金脈', 'Heavenly Treasury Gold'], href: 'step14.html' },
         { keys: ['第15項', 'Item 15', '狀態更新時間', 'Status Update Timestamp'], href: 'step15.html' },
         { keys: ['第16項', 'Item 16', '對頻歷程摘要', 'Process Summary', 'Key Frequency-Alignment Proces'], href: 'step16.html' }
@@ -2122,7 +2488,95 @@
 </script>
 <!-- ============================================================ -->
 <!-- 公版：編號／對應項目 完整列出（依你提供的清單）                  -->
-<!-- 貼在 </body> 最底部，Ctrl+F5                                  -->
+<!-- 貼在 
+<!-- ============================================================ -->
+<!-- 最終保護：強制第8項、第9項編號與連結正確（防止被印章規則覆蓋） -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__forceStep89) return;
+    window.__forceStep89 = true;
+
+    function force() {
+        // 資料層
+        if (window.level2Data) {
+            ['zh', 'en'].forEach(function (lang) {
+                var items = level2Data[lang] && level2Data[lang].items;
+                if (!items) return;
+                items.forEach(function (it) {
+                    var blob = [it.no, it.field, it.func, it.segment].join(' ');
+                    if (/第8項|入世誓約|Item 8|Worldly Vow|誓約同步/.test(blob)) {
+                        it.no = (lang === 'en')
+                            ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
+                            : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
+                        it.link = 'step8.html';
+                    }
+                    if (/第9項|圓印封冊|Item 9|Circle Seal/.test(blob)) {
+                        it.no = (lang === 'en')
+                            ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
+                            : '第9項 第七印鳳徽印 × 圓印封冊';
+                        it.link = 'step9.html';
+                    }
+                });
+            });
+        }
+
+        // DOM 層
+        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
+            var t = row.textContent || '';
+            var cells = row.querySelectorAll('td');
+            if (cells.length < 2) return;
+
+            if (/第8項|入世誓約|誓約同步|Item 8|Worldly Vow/.test(t)) {
+                var isEn = /Item 8|Worldly Vow/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
+                cells[1].textContent = isEn
+                    ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
+                    : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
+                row.querySelectorAll('a').forEach(function (a) {
+                    a.setAttribute('href', 'step8.html');
+                });
+                // 不要套用七印紫金背景
+                row.classList.remove('seven-seal-row', 'seven-seal-sub');
+            }
+            if (/第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
+                var isEn = /Item 9|Circle Seal/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
+                cells[1].textContent = isEn
+                    ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
+                    : '第9項 第七印鳳徽印 × 圓印封冊';
+                row.querySelectorAll('a').forEach(function (a) {
+                    a.setAttribute('href', 'step9.html');
+                });
+                row.classList.remove('seven-seal-row', 'seven-seal-sub');
+            }
+        });
+    }
+
+    function run() {
+        force();
+        setTimeout(force, 100);
+        setTimeout(force, 400);
+        setTimeout(force, 900);
+        setTimeout(force, 1600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    window.switchLanguage = function (l) {
+        if (typeof orig === 'function') orig(l);
+        setTimeout(force, 50);
+        setTimeout(force, 200);
+        setTimeout(force, 500);
+    };
+
+    console.log('✅ 第8項 / 第9項 最終保護已啟用');
+})();
+</script>
+
 <!-- ============================================================ -->
 <script>
 (function () {
@@ -2134,21 +2588,25 @@
         { test: /第0項|購書序號/, no: '第0項 宇宙智能誓導平台 × 【購書序號】誓導碼登入與啟動守則', link: 'step0.html' },
         { test: /第1項.*誓印未通過|誓印未通過/, no: '第1項 開啟誓魂密鑰對頻總判定（誓印未通過）', link: 'step1-1.html' },
         { test: /第1項|對頻總判定/, no: '第1項 開啟誓魂密鑰對頻總判定（誓印通過/誓印未通過）', link: 'step1.html' },
+        // ★ 第13項必須在「被代理誓印」之前（說明文字含有被代理誓印）
+        { test: /第13項|回源願書|不再入世|不入轉生|誓資紀錄 × 回源/, no: '第13項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生', link: 'step13.html' },
         { test: /第2項|被代理誓印/, no: '第2項 被代理誓印（法定全名）', link: 'step2.html' },
         { test: /第3項|代理誓印|功德紀錄/, no: '第3項 代理誓印（法定全名）× 功德紀錄', link: 'step3.html' },
         { test: /第4項|誓魂本族|天族姓脈/, no: '第4項 誓魂本族 × 天族姓脈 × 所屬靈系支系 × 角色階級', link: 'step4.html' },
         { test: /第5項|宇宙總位標|維度階級/, no: '第5項 誓魂宇宙總位標 × 維度階級 × 三界層域 × 階識', link: 'step5.html' },
         { test: /第6項|覺醒程度/, no: '第6項 覺醒程度', link: 'step6.html' },
-        { test: /第一印|消業印/, no: '第7項 第一印 × 消業印', link: 'step7-1.html' },
-        { test: /第二印|修心印/, no: '第7項 第二印 × 修心印', link: 'step7-2.html' },
-        { test: /第三印|守願印/, no: '第7項 第三印 × 守願印', link: 'step7-3.html' },
-        { test: /第四印|誓令印/, no: '第7項 第四印 × 誓令印', link: 'step7-4.html' },
-        { test: /第五印|覺醒印/, no: '第7項 第五印 × 覺醒印', link: 'step7-5.html' },
-        { test: /第六印|誥徒誓印/, no: '第7項 第六印 × 誥徒誓印', link: 'step7-6.html' },
-        { test: /第七印|鳳徽印/, no: '第7項 第七印 × 鳳徽印', link: 'step7-7.html' },
-        { test: /第7項|七印誓網對應/, no: '第7項 七印誓網對應階段', link: 'step7.html' },
-        { test: /第8項|入世誓約/, no: '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄', link: 'step8.html' },
+        // ★ 先匹配會提到印章名稱的總項／後續項，避免被印章規則搶走
+        { test: /七印誓網對應階段|七印誓網對應/, no: '第7項 七印誓網對應階段', link: 'step7.html' },
+        { test: /第8項|入世誓約揭示|入世誓約/, no: '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄', link: 'step8.html' },
         { test: /第9項|圓印封冊/, no: '第9項 第七印鳳徽印 × 圓印封冊', link: 'step9.html' },
+        // 印章子項（較嚴格：優先看編號或欄位本身）
+        { test: /第7項\s*第一印|第一印\s*×\s*消業印|^第一印$|消業印(?!.*對應)/, no: '第7項 第一印 × 消業印', link: 'step7-1.html' },
+        { test: /第7項\s*第二印|第二印\s*×\s*修心印|^第二印$|修心印/, no: '第7項 第二印 × 修心印', link: 'step7-2.html' },
+        { test: /第7項\s*第三印|第三印\s*×\s*守願印|^第三印$|守願印/, no: '第7項 第三印 × 守願印', link: 'step7-3.html' },
+        { test: /第7項\s*第四印|第四印\s*×\s*誓令印|^第四印$|誓令印/, no: '第7項 第四印 × 誓令印', link: 'step7-4.html' },
+        { test: /第7項\s*第五印|第五印\s*×\s*覺醒印/, no: '第7項 第五印 × 覺醒印', link: 'step7-5.html' },
+        { test: /第7項\s*第六印|第六印\s*×\s*誥徒誓印|^第六印$|誥徒誓印/, no: '第7項 第六印 × 誥徒誓印', link: 'step7-6.html' },
+        { test: /第7項\s*第七印|第七印\s*×\s*鳳徽印/, no: '第7項 第七印 × 鳳徽印', link: 'step7-7.html' },
         { test: /第10項|誓文印記/, no: '第10項 誓文印記追蹤', link: 'step10.html' },
         { test: /第11項|願力誓證/, no: '第11項 願力誓證', link: 'step11.html' },
         { test: /第12項|誓資任務實踐/, no: '第12項 誓資任務實踐紀錄', link: 'step12.html' },
@@ -2162,11 +2620,18 @@
         { test: /Item 0|Purchase Serial/, no: 'Item 0 Cosmic Intelligent Vow-Guidance Platform × [Purchase Serial Number] Login & Activation Protocol', link: 'step0.html' },
         { test: /Item 1 Oath Seal Not Passed|Oath Seal Not Passed/, no: 'Item 1 Initiate Oath-Soul Key Frequency-Alignment (Oath Seal Not Passed)', link: 'step1-1.html' },
         { test: /Item 1|Frequency-Alignment|Frequency- Alignment/, no: 'Item 1 Initiate Oath-Soul Key Frequency-Alignment (Passed / Not Passed)', link: 'step1.html' },
+        // ★ Item 13 must come before "Delegated Oath-Seal" (description contains it)
+        { test: /Item 13|Return-to-Source|No Rebirth|Vow-Asset Record/, no: 'Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth', link: 'step13.html' },
         { test: /Item 2|Delegated Oath-Seal/, no: 'Item 2 Delegated Oath-Seal (Legal Full Name)', link: 'step2.html' },
         { test: /Item 3|Delegating Oath-Seal|Merit Record/, no: 'Item 3 Delegating Oath-Seal (Legal Full Name) × Merit Record', link: 'step3.html' },
         { test: /Item 4|Origin Claim/, no: 'Item 4 Oath-Soul Origin Claim × Heavenly Clan Lineage × Luminous-Lineage Branch × Role Rank', link: 'step4.html' },
         { test: /Item 5|Master Coordinate/, no: 'Item 5 Oath-Soul Cosmic Master Coordinate × Dimensional Rank × Three-Realm Domains × Hierarchic Cognition', link: 'step5.html' },
         { test: /Item 6|Awakening Level/, no: 'Item 6 Awakening Level', link: 'step6.html' },
+        // ★ Priority: overall stage & later items that mention seals
+        { test: /Seven-Seal Vow Network Correspondence Stage|Seven-Seal Vow Network Correspondence/, no: 'Item 7 Seven-Seal Vow Network Correspondence Stage', link: 'step7.html' },
+        { test: /Item 8|Worldly Vow|Vow Sync Progress/, no: 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress', link: 'step8.html' },
+        { test: /Item 9|Circle Seal Archive|Circle Seal/, no: 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive', link: 'step9.html' },
+        // Seals
         { test: /First Seal|Karmic Purification/, no: 'Item 7 First Seal × Karmic Purification Seal', link: 'step7-1.html' },
         { test: /Second Seal|Mind-Refinement/, no: 'Item 7 Second Seal × Mind-Refinement Seal', link: 'step7-2.html' },
         { test: /Third Seal|Guardian Vow/, no: 'Item 7 Third Seal × Guardian Vow Seal', link: 'step7-3.html' },
@@ -2174,9 +2639,6 @@
         { test: /Fifth Seal|Awakening Seal/, no: 'Item 7 Fifth Seal × Awakening Seal', link: 'step7-5.html' },
         { test: /Sixth Seal|Disciple-Oath/, no: 'Item 7 Sixth Seal × Disciple-Oath Seal', link: 'step7-6.html' },
         { test: /Seventh Seal|Phoenix Emblem/, no: 'Item 7 Seventh Seal × Phoenix Emblem Seal', link: 'step7-7.html' },
-        { test: /Item 7|Seven-Seal Vow Network Correspondence/, no: 'Item 7 Seven-Seal Vow Network Correspondence Stage', link: 'step7.html' },
-        { test: /Item 8|Worldly Vow/, no: 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress', link: 'step8.html' },
-        { test: /Item 9|Circle Seal/, no: 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive', link: 'step9.html' },
         { test: /Item 10|Vow Text Seal/, no: 'Item 10 Vow Text Seal Tracking', link: 'step10.html' },
         { test: /Item 11|Vow-Power/, no: 'Item 11 Vow-Power Certification', link: 'step11.html' },
         { test: /Item 12|Mission Practice/, no: 'Item 12 Vow-Resource Mission Practice Record', link: 'step12.html' },
@@ -2202,31 +2664,15 @@
     function apply() {
         var list = isEn() ? FULL_EN : FULL_ZH;
 
-        // 1) 改資料
-        ['level1Data', 'level2Data'].forEach(function (name) {
-            var data = window[name];
-            if (!data) return;
-            ['zh', 'en'].forEach(function (lang) {
-                var pack = data[lang];
-                if (!pack || !pack.items) return;
-                var L = (lang === 'en') ? FULL_EN : FULL_ZH;
-                pack.items.forEach(function (it) {
-                    var blob = [it.no, it.field, it.func, it.segment].join(' ');
-                    var h = hit(L, blob);
-                    if (h) {
-                        it.no = h.no;
-                        it.link = h.link;
-                    }
-                });
-            });
-        });
+        // 1) 改資料（已鎖定源資料，不再改寫 no）
+        // 僅保留下方 DOM 強制連結與樣式
 
-        // 2) 重畫表格
-        if (typeof renderTable === 'function') {
-            var lang = isEn() ? 'en' : 'zh';
-            if (window.level1Data) renderTable('tableBody1', level1Data[lang] || level1Data.zh, lang);
-            if (window.level2Data) renderTable('tableBody2', level2Data[lang] || level2Data.zh, lang);
-        }
+        // 2) 重畫表格（已鎖定源資料，不再重畫覆蓋）
+        // if (typeof renderTable === 'function') {
+        //     var lang = isEn() ? 'en' : 'zh';
+        //     if (window.level1Data) renderTable('tableBody1', level1Data[lang] || level1Data.zh, lang);
+        //     if (window.level2Data) renderTable('tableBody2', level2Data[lang] || level2Data.zh, lang);
+        // }
 
         // 3) DOM 再強制：編號欄 + 連結
         document.querySelectorAll('#tableBody1 tr, #tableBody2 tr').forEach(function (row) {
@@ -2273,7 +2719,95 @@
 </script>
   <!-- ============================================================ -->
 <!-- 公版：七印列 編號完整 + 保留紫金背景                            -->
-<!-- 貼在 </body> 最底部，Ctrl+F5                                  -->
+<!-- 貼在 
+<!-- ============================================================ -->
+<!-- 最終保護：強制第8項、第9項編號與連結正確（防止被印章規則覆蓋） -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__forceStep89) return;
+    window.__forceStep89 = true;
+
+    function force() {
+        // 資料層
+        if (window.level2Data) {
+            ['zh', 'en'].forEach(function (lang) {
+                var items = level2Data[lang] && level2Data[lang].items;
+                if (!items) return;
+                items.forEach(function (it) {
+                    var blob = [it.no, it.field, it.func, it.segment].join(' ');
+                    if (/第8項|入世誓約|Item 8|Worldly Vow|誓約同步/.test(blob)) {
+                        it.no = (lang === 'en')
+                            ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
+                            : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
+                        it.link = 'step8.html';
+                    }
+                    if (/第9項|圓印封冊|Item 9|Circle Seal/.test(blob)) {
+                        it.no = (lang === 'en')
+                            ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
+                            : '第9項 第七印鳳徽印 × 圓印封冊';
+                        it.link = 'step9.html';
+                    }
+                });
+            });
+        }
+
+        // DOM 層
+        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
+            var t = row.textContent || '';
+            var cells = row.querySelectorAll('td');
+            if (cells.length < 2) return;
+
+            if (/第8項|入世誓約|誓約同步|Item 8|Worldly Vow/.test(t)) {
+                var isEn = /Item 8|Worldly Vow/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
+                cells[1].textContent = isEn
+                    ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
+                    : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
+                row.querySelectorAll('a').forEach(function (a) {
+                    a.setAttribute('href', 'step8.html');
+                });
+                // 不要套用七印紫金背景
+                row.classList.remove('seven-seal-row', 'seven-seal-sub');
+            }
+            if (/第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
+                var isEn = /Item 9|Circle Seal/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
+                cells[1].textContent = isEn
+                    ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
+                    : '第9項 第七印鳳徽印 × 圓印封冊';
+                row.querySelectorAll('a').forEach(function (a) {
+                    a.setAttribute('href', 'step9.html');
+                });
+                row.classList.remove('seven-seal-row', 'seven-seal-sub');
+            }
+        });
+    }
+
+    function run() {
+        force();
+        setTimeout(force, 100);
+        setTimeout(force, 400);
+        setTimeout(force, 900);
+        setTimeout(force, 1600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    window.switchLanguage = function (l) {
+        if (typeof orig === 'function') orig(l);
+        setTimeout(force, 50);
+        setTimeout(force, 200);
+        setTimeout(force, 500);
+    };
+
+    console.log('✅ 第8項 / 第9項 最終保護已啟用');
+})();
+</script>
+
 <!-- ============================================================ -->
 <style>
     /* 保留七印列紫金背景 */
@@ -2318,27 +2852,29 @@
     if (window.__sevenSealNoFull) return;
     window.__sevenSealNoFull = true;
 
-    // 順序：先各印，再第7項總項（避免被「第7項」先吃掉）
+    // 順序：先總項（避免描述文字中的「第一印」等被誤判），再各印
     var ZH = [
-        { re: /第一印|消業印/, no: '第7項 第一印 × 消業印', link: 'step7-1.html' },
-        { re: /第二印|修心印/, no: '第7項 第二印 × 修心印', link: 'step7-2.html' },
-        { re: /第三印|守願印/, no: '第7項 第三印 × 守願印', link: 'step7-3.html' },
-        { re: /第四印|誓令印/, no: '第7項 第四印 × 誓令印', link: 'step7-4.html' },
-        { re: /第五印|覺醒印/, no: '第7項 第五印 × 覺醒印', link: 'step7-5.html' },
-        { re: /第六印|誥徒誓印/, no: '第7項 第六印 × 誥徒誓印', link: 'step7-6.html' },
-        { re: /第七印|鳳徽印/, no: '第7項 第七印 × 鳳徽印', link: 'step7-7.html' },
-        { re: /第7項|七印誓網對應/, no: '第7項 七印誓網對應階段', link: 'step7.html' }
+        { re: /七印誓網對應階段|七印誓網對應/, no: '第7項 七印誓網對應階段', link: 'step7.html' },
+        { re: /第7項\s*第一印|第一印\s*×\s*消業印|(?:^|[^第0-9])消業印/, no: '第7項 第一印 × 消業印', link: 'step7-1.html' },
+        { re: /第7項\s*第二印|第二印\s*×\s*修心印|(?:^|[^第0-9])修心印/, no: '第7項 第二印 × 修心印', link: 'step7-2.html' },
+        { re: /第7項\s*第三印|第三印\s*×\s*守願印|(?:^|[^第0-9])守願印/, no: '第7項 第三印 × 守願印', link: 'step7-3.html' },
+        { re: /第7項\s*第四印|第四印\s*×\s*誓令印|(?:^|[^第0-9])誓令印/, no: '第7項 第四印 × 誓令印', link: 'step7-4.html' },
+        // 排除第8項（含「覺醒印完成」「入世誓約」）
+        { re: /第7項\s*第五印|第五印\s*×\s*覺醒印|(?:^|[^第89完入])覺醒印(?!完成)/, no: '第7項 第五印 × 覺醒印', link: 'step7-5.html' },
+        { re: /第7項\s*第六印|第六印\s*×\s*誥徒誓印|(?:^|[^第0-9])誥徒誓印/, no: '第7項 第六印 × 誥徒誓印', link: 'step7-6.html' },
+        // 排除第9項（含「圓印封冊」「鳳徽印 × 圓印」）
+        { re: /第7項\s*第七印|第七印\s*×\s*鳳徽印|(?:^|[^第9圓])鳳徽印(?!.*圓印)/, no: '第7項 第七印 × 鳳徽印', link: 'step7-7.html' }
     ];
 
     var EN = [
+        { re: /Seven-Seal Vow Network Correspondence Stage|Seven-Seal Vow Network Correspondence/, no: 'Item 7 Seven-Seal Vow Network Correspondence Stage', link: 'step7.html' },
         { re: /First Seal|Karmic Purification/, no: 'Item 7 First Seal × Karmic Purification Seal', link: 'step7-1.html' },
         { re: /Second Seal|Mind-Refinement/, no: 'Item 7 Second Seal × Mind-Refinement Seal', link: 'step7-2.html' },
         { re: /Third Seal|Guardian Vow/, no: 'Item 7 Third Seal × Guardian Vow Seal', link: 'step7-3.html' },
         { re: /Fourth Seal|Decree-Oath/, no: 'Item 7 Fourth Seal × Decree-Oath Seal', link: 'step7-4.html' },
-        { re: /Fifth Seal|Awakening Seal/, no: 'Item 7 Fifth Seal × Awakening Seal', link: 'step7-5.html' },
+        { re: /Item 7 Fifth Seal|Fifth Seal × Awakening Seal/, no: 'Item 7 Fifth Seal × Awakening Seal', link: 'step7-5.html' },
         { re: /Sixth Seal|Disciple-Oath/, no: 'Item 7 Sixth Seal × Disciple-Oath Seal', link: 'step7-6.html' },
-        { re: /Seventh Seal|Phoenix Emblem/, no: 'Item 7 Seventh Seal × Phoenix Emblem Seal', link: 'step7-7.html' },
-        { re: /Item 7|Seven-Seal Vow Network Correspondence/, no: 'Item 7 Seven-Seal Vow Network Correspondence Stage', link: 'step7.html' }
+        { re: /Item 7 Seventh Seal|Seventh Seal × Phoenix Emblem/, no: 'Item 7 Seventh Seal × Phoenix Emblem Seal', link: 'step7-7.html' }
     ];
 
     function isEn() {
@@ -2350,34 +2886,20 @@
     function apply() {
         var list = isEn() ? EN : ZH;
 
-        // 資料層
-        if (window.level2Data) {
-            ['zh', 'en'].forEach(function (lang) {
-                var pack = level2Data[lang];
-                if (!pack || !pack.items) return;
-                var L = (lang === 'en') ? EN : ZH;
-                pack.items.forEach(function (it) {
-                    var blob = [it.no, it.field, it.func, it.segment].join(' ');
-                    for (var i = 0; i < L.length; i++) {
-                        if (L[i].re.test(blob)) {
-                            it.no = L[i].no;
-                            it.link = L[i].link;
-                            break;
-                        }
-                    }
-                });
-            });
-        }
+        // 資料層：已鎖定源資料，不再改寫 no / link（避免互相覆蓋）
+        // 僅保留下方 DOM 樣式與 class 處理
 
-        // 重畫
-        if (typeof renderTable === 'function' && window.level2Data) {
-            var lang = isEn() ? 'en' : 'zh';
-            renderTable('tableBody2', level2Data[lang] || level2Data.zh, lang);
-        }
+        // 重畫（僅在必要時，使用原始資料）
+        // if (typeof renderTable === 'function' && window.level2Data) {
+        //     var lang = isEn() ? 'en' : 'zh';
+        //     renderTable('tableBody2', level2Data[lang] || level2Data.zh, lang);
+        // }
 
         // DOM 強制 + 加 class 保留背景
         document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
             var t = row.textContent || '';
+            // 明確排除第8項、第9項，避免被印章規則覆蓋
+            if (/第8項|入世誓約|誓約同步|第9項|圓印封冊/.test(t)) return;
             var hit = null;
             for (var i = 0; i < list.length; i++) {
                 if (list[i].re.test(t)) { hit = list[i]; break; }
@@ -2424,7 +2946,95 @@
 </script>
 <!-- ============================================================ -->
 <!-- 公版：刪除「欄位名稱」欄，功能說明加寬                          -->
-<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- 貼在 
+<!-- ============================================================ -->
+<!-- 最終保護：強制第8項、第9項編號與連結正確（防止被印章規則覆蓋） -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__forceStep89) return;
+    window.__forceStep89 = true;
+
+    function force() {
+        // 資料層
+        if (window.level2Data) {
+            ['zh', 'en'].forEach(function (lang) {
+                var items = level2Data[lang] && level2Data[lang].items;
+                if (!items) return;
+                items.forEach(function (it) {
+                    var blob = [it.no, it.field, it.func, it.segment].join(' ');
+                    if (/第8項|入世誓約|Item 8|Worldly Vow|誓約同步/.test(blob)) {
+                        it.no = (lang === 'en')
+                            ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
+                            : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
+                        it.link = 'step8.html';
+                    }
+                    if (/第9項|圓印封冊|Item 9|Circle Seal/.test(blob)) {
+                        it.no = (lang === 'en')
+                            ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
+                            : '第9項 第七印鳳徽印 × 圓印封冊';
+                        it.link = 'step9.html';
+                    }
+                });
+            });
+        }
+
+        // DOM 層
+        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
+            var t = row.textContent || '';
+            var cells = row.querySelectorAll('td');
+            if (cells.length < 2) return;
+
+            if (/第8項|入世誓約|誓約同步|Item 8|Worldly Vow/.test(t)) {
+                var isEn = /Item 8|Worldly Vow/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
+                cells[1].textContent = isEn
+                    ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
+                    : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
+                row.querySelectorAll('a').forEach(function (a) {
+                    a.setAttribute('href', 'step8.html');
+                });
+                // 不要套用七印紫金背景
+                row.classList.remove('seven-seal-row', 'seven-seal-sub');
+            }
+            if (/第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
+                var isEn = /Item 9|Circle Seal/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
+                cells[1].textContent = isEn
+                    ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
+                    : '第9項 第七印鳳徽印 × 圓印封冊';
+                row.querySelectorAll('a').forEach(function (a) {
+                    a.setAttribute('href', 'step9.html');
+                });
+                row.classList.remove('seven-seal-row', 'seven-seal-sub');
+            }
+        });
+    }
+
+    function run() {
+        force();
+        setTimeout(force, 100);
+        setTimeout(force, 400);
+        setTimeout(force, 900);
+        setTimeout(force, 1600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    window.switchLanguage = function (l) {
+        if (typeof orig === 'function') orig(l);
+        setTimeout(force, 50);
+        setTimeout(force, 200);
+        setTimeout(force, 500);
+    };
+
+    console.log('✅ 第8項 / 第9項 最終保護已啟用');
+})();
+</script>
+
 <!-- ============================================================ -->
 <style>
     /* 隱藏欄位名稱欄（表頭 + 每一列第 4 欄） */
@@ -2446,10 +3056,12 @@
     /* 編號欄可換行、完整顯示 */
     th.col-no,
     td.col-no {
-        width: 22% !important;
+        width: 24% !important;
+        min-width: 140px !important;
         white-space: normal !important;
         line-height: 1.45 !important;
         text-align: left !important;
+        word-break: break-word !important;
     }
 
     th.col-segment,
@@ -2529,100 +3141,49 @@
     console.log('✅ 已刪除欄位名稱欄，功能說明加寬');
 })();
 </script>
+
 <!-- ============================================================ -->
-<!-- 公版：強制修正第13項連結 → step13.html                          -->
-<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- 最終保護：第8項 / 第9項 編號與連結強制正確 + 編號欄完整顯示   -->
 <!-- ============================================================ -->
 <script>
 (function () {
-    if (window.__forceStep13Link) return;
-    window.__forceStep13Link = true;
+    if (window.__forceStep89Final) return;
+    window.__forceStep89Final = true;
 
-    function apply() {
-        // 1. 強制修改 level2Data 中的第13項
-        if (typeof level2Data !== 'undefined') {
-            ['zh', 'en'].forEach(function (lang) {
-                var pack = level2Data[lang];
-                if (!pack || !pack.items) return;
-                pack.items.forEach(function (it) {
-                    // 用編號或欄位名稱判斷是否為第13項
-                    var blob = (it.no || '') + ' ' + (it.field || '');
-                    if (/第13項|Item 13/.test(blob) ||
-                        /誓資紀錄|回源願書|不再入世|不入轉生|Return-to-Source|No Rebirth/.test(blob)) {
-                        it.link = 'step13.html';
-                        // 確保欄位名稱正確
-                        if (lang === 'zh') {
-                            it.field = '誓資紀錄 × 回源願書 × 不再入世 × 不入轉生';
-                            it.func = '紀錄誓資異動、補誓、干擾、被代理誓印與回源願書，供書令主尊監察與天庫、光網、冥界封存備查。';
-                            it.no = '第13項';
-                        } else {
-                            it.field = 'Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth';
-                            it.func = 'Records vow-asset changes, supplementary oaths, interference, delegated oath-seals and return-to-source vow scrolls, for Script Decree Sovereign supervision and Heavenly Treasury, Light Network, and Underworld archival reference.';
-                            it.no = 'Item 13';
-                        }
-                    }
-                });
-            });
-        }
-
-        // 2. 重新渲染表格（若 renderTable 函數存在）
-        if (typeof renderTable === 'function') {
-            var lang = (typeof currentLang !== 'undefined' && currentLang === 'en') ? 'en' : 'zh';
-            if (window.level2Data) {
-                renderTable('tableBody2', level2Data[lang] || level2Data.zh, lang);
-            }
-        }
-
-        // 3. DOM 強制修正：找到第13項的列，改連結與文字
+    function force() {
         document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
-            var rowText = row.textContent || '';
-            var isTarget =
-                /第13項|Item 13/.test(rowText) ||
-                /誓資紀錄|回源願書|不再入世|不入轉生|Return-to-Source|No Rebirth/.test(rowText);
-
-            if (!isTarget) return;
-
-            // 改「進入 →」按鈕連結
-            row.querySelectorAll('a').forEach(function (a) {
-                a.setAttribute('href', 'step13.html');
-                a.style.pointerEvents = 'auto';
-                a.style.cursor = 'pointer';
-            });
-
-            // 改整列點擊
-            row.style.cursor = 'pointer';
-            if (!row.__step13Force) {
-                row.__step13Force = true;
-                row.addEventListener('click', function (e) {
-                    if (e.target && e.target.closest('a')) return;
-                    location.href = 'step13.html';
-                });
-            }
-
-            // 強制修正欄位文字（若被覆蓋）
+            var t = (row.textContent || '').replace(/\s+/g, ' ');
             var cells = row.querySelectorAll('td');
-            if (cells.length >= 4) {
-                var isEn = /Item 13/.test(rowText) || /Return-to-Source/.test(rowText);
-                if (isEn) {
-                    if (cells[1]) cells[1].textContent = 'Item 13';
-                    if (cells[3]) cells[3].textContent = 'Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth';
-                    if (cells[4]) cells[4].textContent = 'Records vow-asset changes, supplementary oaths, interference, delegated oath-seals and return-to-source vow scrolls, for Script Decree Sovereign supervision and Heavenly Treasury, Light Network, and Underworld archival reference.';
-                } else {
-                    if (cells[1]) cells[1].textContent = '第13項';
-                    if (cells[3]) cells[3].textContent = '誓資紀錄 × 回源願書 × 不再入世 × 不入轉生';
-                    if (cells[4]) cells[4].textContent = '紀錄誓資異動、補誓、干擾、被代理誓印與回源願書，供書令主尊監察與天庫、光網、冥界封存備查。';
-                }
+            if (cells.length < 3) return;
+
+            // 第8項
+            if (/第8項|入世誓約|Item 8|Worldly Vow|誓約同步進度/.test(t)) {
+                var isEn = /Item 8|Worldly Vow/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
+                cells[1].textContent = isEn
+                    ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
+                    : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
+                cells[1].style.cssText += ';white-space:normal!important;word-break:break-word!important;line-height:1.45!important;';
+                row.querySelectorAll('a').forEach(function (a) { a.setAttribute('href', 'step8.html'); });
+                row.classList.remove('seven-seal-row', 'seven-seal-sub');
+            }
+            // 第9項
+            if (/第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
+                var isEn = /Item 9|Circle Seal/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
+                cells[1].textContent = isEn
+                    ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
+                    : '第9項 第七印鳳徽印 × 圓印封冊';
+                cells[1].style.cssText += ';white-space:normal!important;word-break:break-word!important;line-height:1.45!important;';
+                row.querySelectorAll('a').forEach(function (a) { a.setAttribute('href', 'step9.html'); });
+                row.classList.remove('seven-seal-row', 'seven-seal-sub');
             }
         });
-
-        console.log('✅ 第13項強制修正 → step13.html');
     }
 
     function run() {
-        apply();
-        setTimeout(apply, 150);
-        setTimeout(apply, 500);
-        setTimeout(apply, 1000);
+        force();
+        setTimeout(force, 150);
+        setTimeout(force, 500);
+        setTimeout(force, 1200);
     }
 
     if (document.readyState === 'loading') {
@@ -2631,153 +3192,15 @@
         run();
     }
 
-    // 語系切換後再跑一次
     var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 80);
-            setTimeout(apply, 300);
-            setTimeout(apply, 600);
-        };
-    }
+    window.switchLanguage = function (l) {
+        if (typeof orig === 'function') orig(l);
+        setTimeout(force, 80);
+        setTimeout(force, 300);
+        setTimeout(force, 700);
+    };
 
-    console.log('✅ 公版：第13項強制修正已載入');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 公版：第13項編號顯示完整對應項目                              -->
-<!-- 貼在 </body> 前，Ctrl+F5                                      -->
-<!-- ============================================================ -->
-<style>
-    /* 確保編號欄可以顯示完整文字 */
-    #tableBody2 td.col-no {
-        white-space: normal !important;
-        word-break: break-word !important;
-        line-height: 1.45 !important;
-        min-width: 120px !important;
-        width: 22% !important;
-    }
-</style>
-
-<script>
-(function () {
-    if (window.__fixStep13FullNo) return;
-    window.__fixStep13FullNo = true;
-
-    var FULL_ZH = '第13項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生';
-    var FULL_EN = 'Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth';
-
-    function isEn() {
-        if (typeof currentLang !== 'undefined') return currentLang === 'en';
-        var a = document.querySelector('.lang-btn.active');
-        return !!(a && /english|en/i.test(a.textContent || ''));
-    }
-
-    function apply() {
-        var fullText = isEn() ? FULL_EN : FULL_ZH;
-
-        // 1. 修正 level2Data 中的第13項
-        if (typeof level2Data !== 'undefined') {
-            ['zh', 'en'].forEach(function (lang) {
-                var pack = level2Data[lang];
-                if (!pack || !pack.items) return;
-                pack.items.forEach(function (it) {
-                    var blob = (it.no || '') + ' ' + (it.field || '');
-                    if (/第13項|Item 13/.test(blob) ||
-                        /誓資紀錄|回源願書|不再入世|不入轉生|Return-to-Source|No Rebirth/.test(blob)) {
-                        // 將完整對應項目寫入 no 欄位
-                        if (lang === 'zh') {
-                            it.no = '第13項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生';
-                            it.field = '誓資紀錄 × 回源願書 × 不再入世 × 不入轉生';
-                            it.func = '紀錄誓資異動、補誓、干擾、被代理誓印與回源願書，供書令主尊監察與天庫、光網、冥界封存備查。';
-                            it.link = 'step13.html';
-                        } else {
-                            it.no = 'Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth';
-                            it.field = 'Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth';
-                            it.func = 'Records vow-asset changes, supplementary oaths, interference, delegated oath-seals and return-to-source vow scrolls, for Script Decree Sovereign supervision and Heavenly Treasury, Light Network, and Underworld archival reference.';
-                            it.link = 'step13.html';
-                        }
-                    }
-                });
-            });
-        }
-
-        // 2. 重新渲染表格（若 renderTable 函數存在）
-        if (typeof renderTable === 'function') {
-            var lang = isEn() ? 'en' : 'zh';
-            if (window.level2Data) {
-                renderTable('tableBody2', level2Data[lang] || level2Data.zh, lang);
-            }
-        }
-
-        // 3. DOM 強制修正：找到第13項的列，將完整文字寫入編號欄
-        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
-            var rowText = row.textContent || '';
-            var isTarget =
-                /第13項|Item 13/.test(rowText) ||
-                /誓資紀錄|回源願書|不再入世|不入轉生|Return-to-Source|No Rebirth/.test(rowText);
-
-            if (!isTarget) return;
-
-            var cells = row.querySelectorAll('td');
-            if (cells.length < 2) return;
-
-            // 編號欄（第2欄 col-no）寫入完整對應項目
-            if (cells[1]) {
-                cells[1].textContent = fullText;
-                cells[1].style.setProperty('white-space', 'normal', 'important');
-                cells[1].style.setProperty('word-break', 'break-word', 'important');
-                cells[1].style.setProperty('line-height', '1.45', 'important');
-                cells[1].style.setProperty('min-width', '120px', 'important');
-            }
-
-            // 修正「進入 →」按鈕連結
-            row.querySelectorAll('a').forEach(function (a) {
-                a.setAttribute('href', 'step13.html');
-                a.style.pointerEvents = 'auto';
-                a.style.cursor = 'pointer';
-            });
-
-            // 整列點擊
-            row.style.cursor = 'pointer';
-            if (!row.__step13FullNo) {
-                row.__step13FullNo = true;
-                row.addEventListener('click', function (e) {
-                    if (e.target && e.target.closest('a')) return;
-                    location.href = 'step13.html';
-                });
-            }
-        });
-
-        console.log('✅ 第13項編號已顯示完整對應項目');
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 150);
-        setTimeout(apply, 500);
-        setTimeout(apply, 1000);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    // 語系切換後再跑一次
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 80);
-            setTimeout(apply, 300);
-            setTimeout(apply, 600);
-        };
-    }
-
-    console.log('✅ 公版：第13項完整對應項目已載入');
+    console.log('✅ 第8項 / 第9項 最終保護已啟用');
 })();
 </script>
 </body>
