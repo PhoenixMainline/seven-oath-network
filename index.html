@@ -3297,5 +3297,75 @@
     console.log('✅ 公版：第8項、第9項移除紫金背景已載入');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 第1項英文 Passed / Not Passed 最終強制（貼在 </body> 前）      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+  function isEn() {
+    if (typeof currentLang !== 'undefined') return currentLang === 'en';
+    var a = document.querySelector('.lang-btn.active');
+    return !!(a && /english|en/i.test(a.textContent || ''));
+  }
+
+  function forceItem1() {
+    var en = isEn();
+    document.querySelectorAll('#tableBody1 tr').forEach(function (row) {
+      var cells = row.querySelectorAll('td');
+      if (cells.length < 3) return;
+
+      // 用「功能說明」判斷（兩列完全不同，最可靠）
+      var funcText = cells[cells.length - 1].textContent || '';
+
+      var isNotPass = /補誓|Supplementary oath|cannot enter the system|must realign|Identification Code cannot/i.test(funcText);
+      var isPass = /合法身份|valid identity|authorization to enter|對應至七印|corresponds to a valid identity/i.test(funcText);
+
+      if (isPass) {
+        cells[1].textContent = en
+          ? 'Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Passed / Oath Seal Not Passed)'
+          : '第1項 開啟誓魂密鑰對頻總判定（誓印通過/誓印未通過）';
+        row.querySelectorAll('a').forEach(function (a) { a.setAttribute('href', 'step1.html'); });
+      } else if (isNotPass) {
+        cells[1].textContent = en
+          ? 'Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed)'
+          : '第1項 開啟誓魂密鑰對頻總判定（誓印未通過）';
+        row.querySelectorAll('a').forEach(function (a) { a.setAttribute('href', 'step1-1.html'); });
+      }
+    });
+  }
+
+  function run() {
+    forceItem1();
+    setTimeout(forceItem1, 100);
+    setTimeout(forceItem1, 400);
+    setTimeout(forceItem1, 1000);
+    setTimeout(forceItem1, 2000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+
+  // 語系切換
+  var orig = window.switchLanguage;
+  window.switchLanguage = function (l) {
+    if (typeof orig === 'function') orig(l);
+    setTimeout(forceItem1, 50);
+    setTimeout(forceItem1, 200);
+    setTimeout(forceItem1, 500);
+  };
+
+  // 持續守護
+  var obs = new MutationObserver(function () {
+    clearTimeout(window.__item1T);
+    window.__item1T = setTimeout(forceItem1, 60);
+  });
+  obs.observe(document.body, { childList: true, subtree: true });
+
+  console.log('%c[七印誓網] 第1項英文強制已啟動', 'color:#22c55e;font-weight:bold;');
+})();
+</script>
 </body>
 </html>
