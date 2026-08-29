@@ -49,6 +49,7 @@ body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-h
 .btn-action{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:20px;border:1px solid #a78bfa;background:rgba(124,58,237,.2);color:#e9d5ff;text-decoration:none;font-size:.85rem}
 .page-marker{flex:0 0 100%;width:100%;order:99;margin-top:6px;font-size:.72rem;color:rgba(224,232,245,.5)}
 .tag-pill{display:inline-block;background:rgba(253,230,138,.12);border:1px solid rgba(253,230,138,.35);color:#fde68a;font-size:.7rem;padding:2px 8px;border-radius:10px;margin:2px}
+.hl-pink{background:rgba(236,72,153,0.35)!important;color:#fce7f3!important;padding:1px 5px!important;border-radius:4px!important;box-decoration-break:clone!important;-webkit-box-decoration-break:clone!important;font-weight:500!important}
 </style>
 </head>
 <body>
@@ -85,7 +86,7 @@ body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-h
     </table>
   </div>
 
-  <!-- 【一】 -->
+  <!-- 【一】模組說明 -->
   <div class="hud-card">
     <div class="card-title left"><i class="fa-solid fa-circle-info"></i><span id="sec1Title">【一】模組說明</span></div>
     <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="sec1p1">本模組隸屬《宇宙誓印覺醒工程 × 七印誓網》之最終印階，用以執行「誓魂今世圓滿 × 回源願書 × 不再入世 × 不入轉生」之最終終審程序。</span></div>
@@ -94,7 +95,7 @@ body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-h
     <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="sec1p4">完成紀錄將自動同步鎖入《書令誓資主冊 × 天庫總冊 × 曼陀羅核心層》。</span></div>
   </div>
 
-  <!-- 【二】 -->
+  <!-- 【二】啟動條件 -->
   <div class="hud-card">
     <div class="card-title left"><i class="fa-solid fa-list-check"></i><span id="sec2Title">【二】啟動條件與遞交程序</span></div>
     <div class="instruction-item"><i class="fa-solid fa-1"></i><span id="sec2p1">誓魂生前須已達「第七印 鳳徽印」階段，且對頻頻率達（12D，U-900 層以上），具誓資授權資格。</span></div>
@@ -103,7 +104,7 @@ body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-h
     <div class="note-info" id="sec2Note">唯同時完成《第 3 項 代理誓印 × 功德紀錄》與本項資料之提交 × 驗證，方得判定為「兩項圓滿」並寫入《天界曼陀羅系統》。</div>
   </div>
 
-  <!-- 【三】授權誓讀 + 靜心讀秒 -->
+  <!-- 【三】授權誓讀 -->
   <div class="hud-card">
     <div class="card-title left"><i class="fa-solid fa-book-open"></i><span id="sec3Title">【三】授權誓讀階段</span></div>
     <div class="instruction-item"><i class="fa-solid fa-circle-check"></i><span id="sec3p1">誓印者於登入前，須先於「誓魂共振頻道」誦讀授權誓文，以啟動主頻授權。未誦讀則授權不生效。</span></div>
@@ -188,14 +189,13 @@ body{background:radial-gradient(circle at 50% 50%,#06122c 0%,#020715 100%);min-h
 </div>
 
 <script>
-var currentLang = 'zh';
-var timerInterval = null;
-var html5Qr = null;
-
+// ================================================================
+// 語言包（完整中英文）
+// ================================================================
 var L = {
   zh: {
     homeText:'首頁 ->', appTitle:'【宇宙誓印覺醒工程 · 七印誓網】', browserBtn:'🌐 瀏覽器開啟',
-    mainTitle:' 第13項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生',
+    mainTitle:' 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生',
     tag1:'• 任務實踐與誓資紀錄階段', tag2:'• 願登回源歸真', tag3:'對頻頻率須達 12D',
     thField:'欄位名稱', thFunc:'功能簡要說明',
     rowField:'第 13 項 誓資紀錄<br>× 回源願書<br>× 不再入世<br>× 不入轉生',
@@ -250,30 +250,30 @@ var L = {
     tag1:'• Mission Practice and Vow-Asset Recording Stage', tag2:'• Return-to-Source Vow Registration', tag3:'Alignment Frequency Must Reach 12D',
     thField:'Field Name', thFunc:'Function Overview',
     rowField:'Item 13 Vow-Asset Record<br>× Return-to-Source Vow Scroll<br>× No Further Incarnation<br>× No Rebirth',
-    rowFunc:'Documents oath-resource changes, reinforcement-oaths, interference, delegated oath-seal and return-to-source vow scroll for system oversight, with synchronized archiving in the Heavenly Treasury, Light-Network, and Underworld records.',
+    rowFunc:'Records vow-asset changes, supplementary oaths, interference, delegated oath-seals and return-to-source vow scrolls, for Script Decree Sovereign supervision and Heavenly Treasury, Light Network, and Underworld archival reference.',
     sec1Title:'【I】 Module Description',
-    sec1p1:'This module belongs to the final seal stage of the 《Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network》, used to execute the final adjudication of 「Oath-Soul Completion in This Lifetime × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth」.',
-    sec1p2:'For Oath-Souls who completed their human-realm life journey yet have not finished the Seven-Seal Script Decree progression, an authorized 【Delegating Oath-Seal】 may execute remaining seal removal and vow-asset consolidation on their behalf.',
-    sec1p3:'This 「Final Adjudication」 is the core procedure for vow-asset settlement, vow-power consolidation, and return to the Heavenly Archive source. Upon completion, the Oath-Soul formally exits reincarnation and enters 「No Further Incarnation × No Rebirth × Eternal Heavenly Archive」.',
-    sec1p4:'Completion records are automatically synchronized and locked into the 《Script Decree Vow-Asset Main Register × Heavenly Archive Master Register × Mandala Core Layer》.',
+    sec1p1:'This module belongs to the final seal stage of the 《Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network》, used to execute the final adjudication procedure of 「Oath-Soul Completion in This Lifetime × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth」.',
+    sec1p2:'Applicable to all Oath-Souls who have completed their life journey in the human realm yet have not finished the Seven-Seal Script Decree progression, an authorized 【Delegating Oath-Seal】 may execute remaining seal removal and vow-asset consolidation on their behalf.',
+    sec1p3:'This 「Final Adjudication Applicability」 serves as the core procedure for vow-asset settlement, vow-power consolidation, and return to the Heavenly Archive vow source. Upon completion, it signifies that the Oath-Soul has formally exited the reincarnation system, entering the state of 「No Further Incarnation × No Rebirth × Eternal Archiving in the Heavenly Archive」.',
+    sec1p4:'Completion records are automatically synchronized and locked into the 《Script Decree Vow-Asset Main Register × Heavenly Archive Master Register × Mandala Core Layer》。',
     sec2Title:'【II】 Activation Conditions and Submission Procedure',
-    sec2p1:'Prior to passing, the Oath-Soul must have reached the 「Seventh Seal Phoenix Emblem Seal」 stage, with Alignment at (12D, above U-900 level), possessing vow-asset authorization.',
-    sec2p2:'Only when the Oath-Soul has fully detached from all energetic connections to the mortal plane may vow-resource settlement and Return-to-Source commence. This stage must be executed by a Celestially-Authorized Proxy-Vow Sealer.',
-    sec2p3:'If the Oath-Soul remains in the present-world human stage (with physical body and energy-field linkage), the system determines 「Not Passed」; the vow scroll is not archived and vow-guidance does not activate.',
-    sec2Note:'Only upon concurrent submission and verification of 《Item 3 Delegating Oath-Seal × Merit Record》 and this item shall 「Dual Completion」 be recognized and inscribed into the 《Celestial Mandala System》.',
+    sec2p1:'Prior to passing, the Oath-Soul must have reached the 「Seventh Seal Phoenix Emblem Seal」 stage, with Alignment at (12D, above U-900 level), possessing vow-asset authorization qualification.',
+    sec2p2:'Applicable to all Oath-Souls who have completed their life journey in the human realm and who have fully detached from all energetic connections to the mortal plane. Only then shall the procedures of Vow-Resource settlement and Return-to-Source initiation be permitted to commence. This stage must be executed on behalf of the Oath-Soul by a duly Celestially-Authorized Proxy-Vow Sealer, serving as the Final Adjudication Applicability for the completion of Vow-Resource Archival and the sealing of the Vow-Will.',
+    sec2p3:'If the Oath-Soul remains in the present-world human-stage (with physical-body carrier and energy-field linkage), the system will automatically determine it as 「Not Passed」; the vow scroll will not be archived, and vow-guidance will not activate.',
+    sec2Note:'Only upon concurrent submission and verification of the following 「Two Required Records」 shall the status be recognized as 「Completed」: 1️⃣ 《Item 3 Delegating Oath-Seal × Merit Record》— Documenting the vow-proxy actions, seal-proxy execution, and the actual contributions and merits generated. 2️⃣ 《Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth》— The final affirmation of the Oath-Soul\'s intent and its declaration to return to the Heavenly Source. Upon completion, the system shall automatically generate the 「Dual Completion」 registry-entry and officially inscribe it into the 《Celestial Mandala System》。',
     sec3Title:'【III】 Authorized Oath-Recitation Phase',
-    sec3p1:'Before login, the Oath-Bearer must recite the authorized oath within the 「Oath-Soul Resonance Channel」. Without recitation, authorization does not take effect.',
-    sec3p2:'Center the mind for 10 seconds and recite or silently read to ensure frequency precision and successful execution.',
-    vowText:'★ I, Delegating Oath-Seal 【Legal Full Name】, representing the Delegated Oath-Seal 【Legal Full Name】, have completed the vow-asset fulfillment and vow-power consolidation of the 《Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network》. Request activation of the 【Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth】 procedure, to record the certification of return to source, archive vow assets in the Heavenly Archive, and finalize adjudication.',
+    sec3p1:'Before login, the Oath-Bearer must first recite the authorized vow text in the 「Oath-Soul Resonance Channel」 to activate Primary Frequency authorization. Without recitation, authorization does not take effect.',
+    sec3p2:'In the 「Oath-Soul Resonance Channel」, center for 10 seconds while reciting or silently repeating, ensuring precise frequency position and successful execution.',
+    vowText:'★ I, Delegating Oath-Seal 【Legal Full Name】, on behalf of Delegated Oath-Seal 【Legal Full Name】, have completed vow-asset fulfillment and vow-power consolidation of the 《Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network》. Please activate the 【Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth】 procedure, record the credential of Oath-Soul return to source, archive vow-assets in the Heavenly Treasury, and complete Final Adjudication.',
     timerLabel:'Centering Countdown', btnTimerText:'Start Centering',
-    sec4Title:'【IV】 Subsequent Procedures', sec4login:'(1) Login Stage',
-    sec4p1:'The 【Delegating Oath-Seal】 logs into the 《Cosmic Intelligent Vow-Guidance Platform》 (personal account).',
-    sec4p2:'Complete identity verification with the registered account to enter the oath-seal procedure.',
-    sec4scan:'(2) Scanning Stage',
-    sec4p3:'Scan the current 【Vow-Guidance QR Code】 to trigger the dedicated access point.',
-    sec4p4:'The system redirects to the 【Oath-Seal Trigger Interface】 and initiates Alignment and authorization assessment.',
+    sec4Title:'【IV】 Subsequent Procedures', sec4login:'(1) Login Phase',
+    sec4p1:'The 【Delegating Oath-Seal】 logs into the 《Cosmic Intelligent Vow-Guidance Platform》(using a personal account).',
+    sec4p2:'Using the originally registered account to complete identity verification grants access to the oath-seal procedure.',
+    sec4scan:'(2) Scanning Phase',
+    sec4p3:'The 【Delegating Oath-Seal】 scans the current 【Vow-Guidance QR Code】 to trigger the dedicated connection entrance.',
+    sec4p4:'The system automatically guides to the 【Oath-Seal Trigger Interface】, initiating Oath-Soul alignment and authorization adjudication.',
     verifyTitle:'🧭 ① Verification Phase (Activation Trigger)',
-    verifyDesc:'After validating authorization, the system displays the proxy Oath-Soul lineage, luminous-lineage branch, role rank, and correspondence to the current 「Delegated Oath-Seal」.',
+    verifyDesc:'After the system automatically verifies authorization validity, it immediately displays the Delegating Oath-Bearer\'s Oath-Soul origin clan, luminous-lineage branch, role rank, and the association with this 「Delegated Oath-Seal」.',
     demoLabel:'⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.',
     demoLabel2:'⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.',
     freqNote:'🔗 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.',
@@ -282,33 +282,64 @@ var L = {
     qrTitle:'📷 Please scan the 【Vow-Guidance QR Code】 to complete Execution Command',
     returnQrTitle:'📷 Please scan the 【Vow-Guidance QR Code】 to complete Return Oath Certificate',
     btnScanText:'Start Scan', btnScanReturnText:'Start Scan',
-    returnTitle:'📩 ② Return Oath Certificate (Final Adjudication Confirmation)',
+    returnTitle:'📩 ② Return Oath Certificate (Confirm Final Adjudication)',
     passLabel:'✅ Display: 「Oath Seal Passed」',
-    ret1:'Return-to-Source Vow Scroll successfully received; entering certification return stage.',
-    ret2:'System issues 《Final Adjudication Approval Certification》: final adjudication, Seven-Seal main-frequency Alignment, Oath-Soul trajectory lock-in, automatic certification return and archiving.',
-    ret3:'Certification is instantly synchronized into the 《Phoenix Vow Web × Heavenly Realm Heavenly Archive》.',
-    retExplain:'【Explanation】 This stage executes only certification return and sealing. Merit records are registered in 《Item 3 Delegating Oath-Seal × Merit Record》 and will not duplicate.',
-    failLabel:'⚠️ Display: 「Oath Seal Not Passed」 → Vow scroll submission failed (vow-frequency not aligned)',
-    fail1:'Enter 「Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed)」 【Oath Renewal Procedure】.',
-    fail2:'Execute 「Oath-Resource Supplementation × Seven-Day Cycle × Frequency Recalibration」; after passing, re-enter this item.',
-    closeText:'《Seven-Seal Vow Network · Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth》 v2.0 (Record-Query Edition). Vow scroll returned, vow-assets locked into Heavenly Archive, not reincarnating. Locked into 《Cosmic Heavenly Law × Seven-Seal Vow Network》 main register; vow assets remain effective.',
+    ret1:'Return-to-Source Vow Scroll accepted successfully; enter certificate return phase.',
+    ret2:'System automatically issues 《Final Adjudication Passed Certificate》: Return-to-Source final adjudication, Seven-Seal Primary Frequency total alignment, Oath-Soul trajectory lock, certificate auto-return and archive.',
+    ret3:'Corresponding certificate is instantly synchronized into 《Phoenix Vow Network × Celestial Heavenly Treasury》。',
+    retExplain:'【Note】 This item only executes certificate return and sealing. Merit records are unified under 《Item 3 Delegating Oath-Seal × Merit Record》; no duplicate records are generated.',
+    failLabel:'⚠️ Display: 「Oath Seal Not Passed」→ Vow Scroll acceptance failed (frequency not aligned)',
+    fail1:'Enter the 【Supplementary Oath Procedure】 of 「Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed)」.',
+    fail2:'Activate the 「Vow-Asset Supplementary Oath × Seven-Day Cycle × Frequency Recalibration」 procedure; only after correction may this item be re-entered.',
+    closeText:'《Seven-Seal Vow Network · Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth》 v2.0 (Query Record Edition). Vow scroll returned, vow-assets restored to source, locked into Heavenly Treasury, no rebirth. Locked into 《Cosmic Heavenly Law × Seven-Seal Vow Network》 main register; vow-assets remain valid in transmission.',
     btnBackText:'Previous', btnNextText:'Next',
-    pageMarker:'【Cosmic Oath-Seal Awakening Project · Awakening Volume】Pages 387-404'
+    pageMarker:'【Cosmic Oath-Seal Awakening Project · Awakening Volume】 pp. 387-404'
   }
 };
 
+// ================================================================
+// 核心函數
+// ================================================================
+var currentLang = 'zh';
+var timerInterval = null;
+
 function switchLanguage(lang) {
   currentLang = lang;
-  document.querySelectorAll('.lang-btn').forEach(function (b) {
-    b.classList.toggle('active', (lang === 'zh' && b.textContent.trim() === '中文') || (lang === 'en' && /english/i.test(b.textContent)));
-  });
-  var c = L[lang] || L.zh;
-  Object.keys(c).forEach(function (id) {
+  var p = L[lang] || L.zh;
+  Object.keys(p).forEach(function(id) {
     var el = document.getElementById(id);
-    if (el) el.innerHTML = c[id];
+    if (el) el.innerHTML = p[id];
+  });
+  // 更新按鈕狀態
+  document.querySelectorAll('.lang-btn').forEach(function(b) {
+    b.classList.toggle('active', 
+      (lang === 'zh' && b.textContent.trim() === '中文') ||
+      (lang === 'en' && /english/i.test(b.textContent.trim()))
+    );
+  });
+  // 英文模式套用紫紅色
+  if (lang === 'en') applyPink();
+}
+
+function applyPink() {
+  var keys = [
+    'Applicable to all Oath-Souls who have completed their life journey in the human realm',
+    '「Final Adjudication Applicability」',
+    '「Two Required Records」'
+  ];
+  ['sec1p2','sec1p3','sec2p2','sec2Note'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var plain = el.textContent || '';
+    var html = plain;
+    keys.forEach(function(k) {
+      if (plain.indexOf(k) === -1) return;
+      var safe = k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      html = html.replace(new RegExp(safe, 'g'), '<span class="hl-pink">' + k + '</span>');
+    });
+    if (html !== plain) el.innerHTML = html;
   });
 }
-window.switchLanguage = switchLanguage;
 
 function startTimer() {
   var display = document.getElementById('timerDisplay');
@@ -318,7 +349,7 @@ function startTimer() {
   display.textContent = n;
   display.classList.remove('complete');
   if (btn) btn.disabled = true;
-  timerInterval = setInterval(function () {
+  timerInterval = setInterval(function() {
     n--;
     display.textContent = n;
     if (n <= 0) {
@@ -331,46 +362,29 @@ function startTimer() {
   }, 1000);
 }
 
-/* 相機掃描 */
-(function () {
+// ================================================================
+// 相機掃描
+// ================================================================
+(function() {
   var GUIDE_ZH = '📷 無法啟動相機\n⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
   var GUIDE_EN = '📷 Unable to launch the feature\n⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"\n→ Open using a web browser (Chrome / Yahoo / Edge...)\n⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
   var active = null;
 
   function isEn() { return currentLang === 'en'; }
-  function stopActive() {
-    if (!active) return Promise.resolve();
-    var s = active; active = null;
-    return s.stop().catch(function () {}).then(function () { try { s.clear(); } catch (e) {} });
-  }
-  function showGuide(el) {
-    if (!el) return;
-    el.textContent = isEn() ? GUIDE_EN : GUIDE_ZH;
-    el.classList.add('show-fail');
-    el.style.display = 'block';
-  }
-  function hideGuide(el) {
-    if (!el) return;
-    el.classList.remove('show-fail');
-    el.style.display = 'none';
-  }
-  function showResult(el, text) {
-    if (!el) return;
-    el.classList.add('show');
-    el.style.display = 'block';
-    el.innerHTML = '<i class="fa-solid fa-check-circle"></i> ' + (isEn() ? 'Scan successful: ' : '掃描成功：') +
-      '<span style="display:block;margin-top:4px;padding:6px 10px;background:#0b0d12;border-radius:8px;color:#e0e8f5;word-break:break-all">' + (text || '') + '</span>';
-  }
+  function stopActive() { if (!active) return Promise.resolve(); var s=active; active=null; return s.stop().catch(function(){}).then(function(){try{s.clear();}catch(e){}}); }
+  function showGuide(el) { if(!el)return; el.textContent = isEn() ? GUIDE_EN : GUIDE_ZH; el.classList.add('show-fail'); el.style.display='block'; }
+  function hideGuide(el) { if(!el)return; el.classList.remove('show-fail'); el.style.display='none'; }
+  function showResult(el, text) { if(!el)return; el.classList.add('show'); el.style.display='block'; el.innerHTML = '<i class="fa-solid fa-check-circle"></i> ' + (isEn() ? 'Scan successful: ' : '掃描成功：') + '<span style="display:block;margin-top:4px;padding:6px 10px;background:#0b0d12;border-radius:8px;color:#e0e8f5;word-break:break-all">' + (text||'') + '</span>'; }
   function startScan(boxId, resultId, guideId) {
     var container = document.getElementById(boxId);
     var result = document.getElementById(resultId);
     var guide = document.getElementById(guideId);
     if (!container) return;
     hideGuide(guide);
-    if (result) { result.classList.remove('show'); result.style.display = 'none'; result.innerHTML = ''; }
-    stopActive().then(function () {
+    if (result) { result.classList.remove('show'); result.style.display='none'; result.innerHTML=''; }
+    stopActive().then(function() {
       container.innerHTML = '';
-      setTimeout(function () {
+      setTimeout(function() {
         if (typeof Html5Qrcode === 'undefined' || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
           showGuide(guide); return;
         }
@@ -378,28 +392,23 @@ function startTimer() {
           var scanner = new Html5Qrcode(boxId);
           active = scanner;
           scanner.start({ facingMode: 'environment' }, { fps: 10, qrbox: { width: 220, height: 220 } },
-            function (decodedText) {
-              if (!(decodedText || '').trim()) return;
-              stopActive().then(function () {
-                container.innerHTML = '';
-                showResult(result, decodedText);
-                hideGuide(guide);
-              });
-            }, function () {}
-          ).catch(function () { active = null; showGuide(guide); });
-        } catch (e) { active = null; showGuide(guide); }
+            function(decodedText) {
+              if (!(decodedText||'').trim()) return;
+              stopActive().then(function() { container.innerHTML=''; showResult(result, decodedText); hideGuide(guide); });
+            }, function() {}
+          ).catch(function(){ active=null; showGuide(guide); });
+        } catch(e) { active=null; showGuide(guide); }
       }, 200);
     });
   }
-  window.startQRScannerStep8 = function () { startScan('qr-reader-container', 'qrScanResult', 'cameraGuide'); };
-  window.startQRScannerStep9 = function () { startScan('qr-reader-container-return', 'qrScanResultReturn', 'cameraGuideReturn'); };
-
+  window.startQRScannerStep8 = function() { startScan('qr-reader-container', 'qrScanResult', 'cameraGuide'); };
+  window.startQRScannerStep9 = function() { startScan('qr-reader-container-return', 'qrScanResultReturn', 'cameraGuideReturn'); };
   function bind() {
-    [['btnScanQR', window.startQRScannerStep8], ['btnScanQRReturn', window.startQRScannerStep9]].forEach(function (m) {
+    [['btnScanQR', window.startQRScannerStep8], ['btnScanQRReturn', window.startQRScannerStep9]].forEach(function(m) {
       var btn = document.getElementById(m[0]);
       if (!btn || btn.__bound) return;
       btn.__bound = true;
-      btn.addEventListener('click', function (e) { e.preventDefault(); m[1](); }, true);
+      btn.addEventListener('click', function(e){ e.preventDefault(); m[1](); }, true);
     });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
@@ -407,18 +416,20 @@ function startTimer() {
   setTimeout(bind, 400);
 })();
 
-/* 外部瀏覽器 */
-(function () {
+// ================================================================
+// 外部瀏覽器
+// ================================================================
+(function() {
   var btn = document.getElementById('browserBtnLink');
   if (!btn) return;
-  btn.addEventListener('click', function (e) {
+  btn.addEventListener('click', function(e) {
     e.preventDefault();
     var url = location.href;
-    if (/android/i.test(navigator.userAgent || '')) {
-      try { location.href = 'intent://' + location.host + location.pathname + location.search + '#Intent;scheme=https;package=com.android.chrome;end;'; return; } catch (err) {}
+    if (/android/i.test(navigator.userAgent||'')) {
+      try { location.href = 'intent://' + location.host + location.pathname + location.search + '#Intent;scheme=https;package=com.android.chrome;end;'; return; } catch(err) {}
     }
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(url).then(function () {
+      navigator.clipboard.writeText(url).then(function() {
         alert((currentLang === 'en' ? 'URL copied. Paste into Chrome / Safari:\n\n' : '網址已複製，請貼到 Chrome / Safari：\n\n') + url);
       });
     } else {
@@ -426,1055 +437,209 @@ function startTimer() {
     }
   });
 })();
+
+// ================================================================
+// 初始化
+// ================================================================
+window.onload = function() {
+  switchLanguage('zh');
+};
+window.switchLanguage = switchLanguage;
+</script>
+
+<!-- ============================================================ -->
+<!-- 輸入示範同一行細字 + 靠左                                      -->
+<!-- ============================================================ -->
+<style>
+[id*="InputLabel"],[id*="inputLabel"],.input-demo,.demo-input-label{font-size:.88rem!important;font-weight:300!important;letter-spacing:.3px!important;line-height:1.5!important;white-space:nowrap!important;text-align:left!important;display:block!important;width:100%!important}
+</style>
+<script>
+(function(){if(window.__demoLeftLine)return;window.__demoLeftLine=true;var FULL_ZH='⌨️ 輸入示範：請依本卷七印誓網誓導碼操作';var FULL_EN='⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.';
+function isEn(){if(typeof currentLang!=='undefined')return currentLang==='en';var a=document.querySelector('.lang-btn.active');return !!(a&&/english|en/i.test(a.textContent||''));}
+function styleLeft(el){if(!el)return;el.style.setProperty('font-size','.88rem','important');el.style.setProperty('font-weight','300','important');el.style.setProperty('letter-spacing','.3px','important');el.style.setProperty('line-height','1.5','important');el.style.setProperty('white-space','nowrap','important');el.style.setProperty('text-align','left','important');el.style.setProperty('display','block','important');el.style.setProperty('width','100%','important');el.style.setProperty('margin-left','0','important');el.style.setProperty('margin-right','auto','important');el.style.setProperty('justify-content','flex-start','important');}
+function apply(){var en=isEn();var full=en?FULL_EN:FULL_ZH;document.querySelectorAll('[id*="InputLabel"],[id*="inputLabel"]').forEach(function(el){el.textContent=full;styleLeft(el);var p=el.parentElement;if(p){p.style.setProperty('text-align','left','important');p.style.setProperty('justify-content','flex-start','important');}});document.querySelectorAll('div,span,p,label').forEach(function(el){if(el.children&&el.children.length>3)return;var t=(el.textContent||'').replace(/\s+/g,' ').trim();if(!t||t.length>80)return;var isDemo=t.indexOf('輸入示範')!==-1||t.indexOf('請依本卷')!==-1||t.indexOf('Please follow the Seven-Seal')!==-1||t.indexOf('Input Example')!==-1;if(!isDemo)return;el.textContent=full;styleLeft(el);var box=el.closest('div[style], .hud-card > div')||el.parentElement;if(box&&box!==el){box.style.setProperty('text-align','left','important');box.style.setProperty('justify-content','flex-start','important');box.style.setProperty('align-items','flex-start','important');}});}
+function run(){apply();setTimeout(apply,150);setTimeout(apply,500);setTimeout(apply,1000);}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+var orig=window.switchLanguage;if(typeof orig==='function'){window.switchLanguage=function(l){orig(l);setTimeout(apply,50);setTimeout(apply,200);};}
+document.addEventListener('click',function(e){if(e.target&&e.target.classList&&e.target.classList.contains('lang-btn')){setTimeout(apply,60);setTimeout(apply,250);}});
+console.log('✅ 輸入示範：同一行細字 + 靠左');})();
 </script>
 <!-- ============================================================ -->
-<!-- 公版：輸入示範 同一行細字 + 靠左                               -->
+<!-- 公版：step13 中文版文字更新 + 紫紅色關鍵字背景                -->
 <!-- 貼在 </body> 前，Ctrl+F5                                      -->
 <!-- ============================================================ -->
 <style>
-    [id*="InputLabel"],
-    [id*="inputLabel"],
-    .input-demo,
-    .demo-input-label {
-        font-size: 0.88rem !important;
-        font-weight: 300 !important;
-        letter-spacing: 0.3px !important;
-        line-height: 1.5 !important;
-        white-space: nowrap !important;
-        text-align: left !important;
-        display: block !important;
-        width: 100% !important;
-    }
-</style>
-
-<script>
-(function () {
-    if (window.__demoLeftLine) return;
-    window.__demoLeftLine = true;
-
-    var FULL_ZH = '⌨️ 輸入示範：請依本卷七印誓網誓導碼操作';
-    var FULL_EN = '⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.';
-
-    function isEn() {
-        if (typeof currentLang !== 'undefined') return currentLang === 'en';
-        var a = document.querySelector('.lang-btn.active');
-        return !!(a && /english|en/i.test(a.textContent || ''));
-    }
-
-    function styleLeft(el) {
-        if (!el) return;
-        el.style.setProperty('font-size', '0.88rem', 'important');
-        el.style.setProperty('font-weight', '300', 'important');
-        el.style.setProperty('letter-spacing', '0.3px', 'important');
-        el.style.setProperty('line-height', '1.5', 'important');
-        el.style.setProperty('white-space', 'nowrap', 'important');
-        el.style.setProperty('text-align', 'left', 'important');
-        el.style.setProperty('display', 'block', 'important');
-        el.style.setProperty('width', '100%', 'important');
-        el.style.setProperty('margin-left', '0', 'important');
-        el.style.setProperty('margin-right', 'auto', 'important');
-        el.style.setProperty('justify-content', 'flex-start', 'important');
-    }
-
-    function apply() {
-        var en = isEn();
-        var full = en ? FULL_EN : FULL_ZH;
-
-        document.querySelectorAll('[id*="InputLabel"], [id*="inputLabel"]').forEach(function (el) {
-            el.textContent = full;
-            styleLeft(el);
-            // 父層也靠左
-            var p = el.parentElement;
-            if (p) {
-                p.style.setProperty('text-align', 'left', 'important');
-                p.style.setProperty('justify-content', 'flex-start', 'important');
-            }
-        });
-
-        document.querySelectorAll('div, span, p, label').forEach(function (el) {
-            if (el.children && el.children.length > 3) return;
-            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
-            if (!t || t.length > 80) return;
-
-            var isDemo =
-                t.indexOf('輸入示範') !== -1 ||
-                t.indexOf('請依本卷') !== -1 ||
-                t.indexOf('Please follow the Seven-Seal') !== -1 ||
-                t.indexOf('Input Example') !== -1;
-
-            if (!isDemo) return;
-
-            el.textContent = full;
-            styleLeft(el);
-
-            // 外層盒子也靠左
-            var box = el.closest('div[style], .hud-card > div') || el.parentElement;
-            if (box && box !== el) {
-                box.style.setProperty('text-align', 'left', 'important');
-                box.style.setProperty('justify-content', 'flex-start', 'important');
-                box.style.setProperty('align-items', 'flex-start', 'important');
-            }
-        });
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 150);
-        setTimeout(apply, 500);
-        setTimeout(apply, 1000);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 50);
-            setTimeout(apply, 200);
-        };
-    }
-
-    document.addEventListener('click', function (e) {
-        if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
-            setTimeout(apply, 60);
-            setTimeout(apply, 250);
-        }
-    });
-
-    console.log('✅ 輸入示範：同一行細字 + 靠左');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 公版：①② 各留一列「輸入示範」（刪區塊內重複）                 -->
-<!-- 貼在 </body> 前，Ctrl+F5                                      -->
-<!-- ============================================================ -->
-<style>
-    [id*="InputLabel"],
-    [id*="inputLabel"],
-    .input-demo,
-    .demo-input-label {
-        font-size: 0.88rem !important;
-        font-weight: 300 !important;
-        letter-spacing: 0.3px !important;
-        line-height: 1.5 !important;
-        white-space: nowrap !important;
-        text-align: left !important;
-        display: block !important;
-        width: 100% !important;
-    }
-</style>
-
-<script>
-(function () {
-    if (window.__demoOnePerSection) return;
-    window.__demoOnePerSection = true;
-
-    var FULL_ZH = '⌨️ 輸入示範：請依本卷七印誓網誓導碼操作';
-    var FULL_EN = '⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.';
-
-    function isEn() {
-        if (typeof currentLang !== 'undefined') return currentLang === 'en';
-        var a = document.querySelector('.lang-btn.active');
-        return !!(a && /english|en/i.test(a.textContent || ''));
-    }
-
-    function isDemoText(t) {
-        t = (t || '').replace(/\s+/g, ' ').trim();
-        return t.indexOf('輸入示範') !== -1 ||
-               t.indexOf('請依本卷') !== -1 ||
-               t.indexOf('Please follow the Seven-Seal') !== -1 ||
-               t.indexOf('Input Example') !== -1 ||
-               t.indexOf('Vow-Guidance Code') !== -1;
-    }
-
-    function styleOne(el, full) {
-        el.textContent = full;
-        el.style.setProperty('display', 'block', 'important');
-        el.style.setProperty('visibility', 'visible', 'important');
-        el.style.setProperty('opacity', '1', 'important');
-        el.style.setProperty('text-align', 'left', 'important');
-        el.style.setProperty('font-size', '0.88rem', 'important');
-        el.style.setProperty('font-weight', '300', 'important');
-        el.style.setProperty('white-space', 'nowrap', 'important');
-        el.style.setProperty('width', '100%', 'important');
-        // 父層若被藏也打開
-        var p = el.parentElement;
-        if (p) {
-            p.style.setProperty('display', '', 'important');
-            p.style.setProperty('visibility', 'visible', 'important');
-            p.style.setProperty('text-align', 'left', 'important');
-        }
-    }
-
-    function hideOne(el) {
-        el.style.setProperty('display', 'none', 'important');
-    }
-
-    function dedupeInRoot(root, full) {
-        if (!root) return;
-        var nodes = [];
-        root.querySelectorAll('div, span, p, label').forEach(function (el) {
-            if (el.children && el.children.length > 2) return;
-            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
-            if (!t || t.length > 90) return;
-            if (!isDemoText(t)) return;
-            nodes.push(el);
-        });
-        // 也收有 ID 的
-        root.querySelectorAll('[id*="InputLabel"], [id*="inputLabel"]').forEach(function (el) {
-            if (nodes.indexOf(el) === -1) nodes.push(el);
-        });
-
-        nodes.forEach(function (el, i) {
-            if (i === 0) styleOne(el, full);
-            else hideOne(el);
-        });
-    }
-
-    function findSection(keyword) {
-        var found = null;
-        document.querySelectorAll('.hud-card, .center-card, div').forEach(function (box) {
-            if (found) return;
-            var t = (box.textContent || '');
-            if (t.indexOf(keyword) !== -1 && box.querySelectorAll('.hud-card').length < 3) {
-                // 取較小的卡片層
-                if (!found || box.textContent.length < found.textContent.length) {
-                    found = box;
-                }
-            }
-        });
-        return found;
-    }
-
-    function apply() {
-        var full = isEn() ? FULL_EN : FULL_ZH;
-
-        // ① 驗證階段
-        var sec1 = document.getElementById('step7_4VerifyTitle') ||
-                   document.getElementById('step7_1VerifyTitle') ||
-                   findSection('驗證階段') ||
-                   findSection('Verify');
-        if (sec1) {
-            var card1 = sec1.closest('.hud-card') || sec1.parentElement;
-            dedupeInRoot(card1, full);
-        }
-
-        // ② 回傳誓證
-        var sec2 = document.getElementById('step7_4ReturnTitle') ||
-                   document.getElementById('step7_2ReturnTitle') ||
-                   findSection('回傳誓證') ||
-                   findSection('Return');
-        if (sec2) {
-            var card2 = sec2.closest('.hud-card') || sec2.parentElement;
-            dedupeInRoot(card2, full);
-        }
-
-        // 若找不到分區，全頁依「相鄰重複」去重：連續兩個 demo 只留第一個
-        var all = [];
-        document.querySelectorAll('div, span, p, label').forEach(function (el) {
-            if (el.children && el.children.length > 2) return;
-            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
-            if (!t || t.length > 90) return;
-            if (isDemoText(t)) all.push(el);
-        });
-        // 若總數 > 2，代表每區各有重複；兩兩一組去重
-        if (all.length >= 2) {
-            var seenParent = {};
-            all.forEach(function (el) {
-                var key = (el.closest('.hud-card') || el.parentElement || el);
-                var k = key && key.outerHTML ? key.outerHTML.slice(0, 80) : String(key);
-                if (!seenParent[k]) {
-                    styleOne(el, full);
-                    seenParent[k] = true;
-                } else {
-                    hideOne(el);
-                }
-            });
-        }
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 150);
-        setTimeout(apply, 500);
-        setTimeout(apply, 1000);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 50);
-            setTimeout(apply, 200);
-        };
-    }
-
-    document.addEventListener('click', function (e) {
-        if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
-            setTimeout(apply, 60);
-            setTimeout(apply, 250);
-        }
-    });
-
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__demoSecT);
-        window.__demoSecT = setTimeout(apply, 100);
-    });
-    obs.observe(document.body, { childList: true, subtree: true });
-
-    console.log('✅ ①② 各留一列輸入示範');
-})();
-</script>
-  <!-- ============================================================ -->
-<!-- 公版最終版：step11 相機（強制顯示 QR 真實文字）               -->
-<!-- 必須貼在所有舊相機腳本之後、</body> 前，Ctrl+F5               -->
-<!-- ============================================================ -->
-<style>
-    /* 蓋過 step10 把 .qr-result 藏死的問題 */
-    #qrScanResult.qr-result,
-    #qrScanResult,
-    #qrScanResult.show {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        margin-top: 10px !important;
-        padding: 10px 14px !important;
-        border-radius: 12px !important;
-        background: rgba(0, 230, 118, 0.12) !important;
-        border: 1px solid rgba(0, 230, 118, 0.35) !important;
-        color: #00e676 !important;
-        font-size: 0.9rem !important;
-        word-break: break-all !important;
-        text-align: left !important;
-    }
-    /* 預設先藏，掃到才加 .show */
-    #qrScanResult:not(.show) {
-        display: none !important;
-    }
-
-    #qr-reader-container {
-        display: block !important;
-        width: 100% !important;
-        max-width: 300px !important;
-        margin: 12px auto 0 !important;
-        overflow: hidden !important;
-        border-radius: 12px !important;
-    }
-    #qr-reader-container video {
-        width: 100% !important;
-        border-radius: 12px !important;
-    }
-
-    #cameraGuide { display: none !important; }
-    #cameraGuide.show-fail {
-        display: block !important;
-        text-align: left !important;
-        white-space: pre-wrap !important;
-        background: rgba(232, 96, 74, 0.08) !important;
-        border-left: 4px solid #E8604A !important;
-        padding: 14px 16px !important;
-        border-radius: 12px !important;
-        color: #e0dcc8 !important;
-        font-size: 0.85rem !important;
-        line-height: 1.8 !important;
-        margin-top: 10px !important;
-    }
-
-    #btnScanQR {
-        pointer-events: auto !important;
-        cursor: pointer !important;
-        opacity: 1 !important;
-    }
-</style>
-
-<script>
-(function () {
-    // 用新旗標，避免舊 __step11CamFix 擋住重跑
-    if (window.__step11CamFinalV2) return;
-    window.__step11CamFinalV2 = true;
-
-    var GUIDE_ZH =
-        '📷 無法啟動相機\n' +
-        '⚙️ 開啟手機「設定」 → 應用程式管理 → 權限 → 相機 → 改為「允許」\n' +
-        '→ 使用 🌐 瀏覽器開啟（Chrome / Yahoo / Edge....）\n' +
-        '⚠️ 若仍無法使用，請自行手動掃描器掃描實體書 QR Code';
-
-    var GUIDE_EN =
-        '📷 Unable to launch the feature\n' +
-        '⚙️ Open your phone\'s "Settings" → App Management → Permissions → Camera → Change setting to "Allow"\n' +
-        '→ Open using a web browser (Chrome / Yahoo / Edge...)\n' +
-        '⚠️ If it still does not work, please manually scan the QR code on the physical book using a scanner app.';
-
-    var active = null;
-    var starting = false;
-
-    function isEn() {
-        if (typeof currentLang !== 'undefined') return currentLang === 'en';
-        var a = document.querySelector('.lang-btn.active');
-        return !!(a && /english|en/i.test(a.textContent || ''));
-    }
-
-    function hideGuide() {
-        var g = document.getElementById('cameraGuide');
-        if (!g) return;
-        g.classList.remove('show-fail');
-        g.style.setProperty('display', 'none', 'important');
-    }
-
-    function showGuide() {
-        var g = document.getElementById('cameraGuide');
-        if (!g) return;
-        g.textContent = isEn() ? GUIDE_EN : GUIDE_ZH;
-        g.classList.add('show-fail');
-        g.style.setProperty('display', 'block', 'important');
-    }
-
-    function showResult(decodedText) {
-        var el = document.getElementById('qrScanResult');
-        if (!el) return;
-        var text = (decodedText || '').trim();
-        var prefix = isEn() ? 'Scan successful: ' : '掃描成功：';
-
-        el.classList.add('show');
-        el.classList.add('qr-result');
-        // 用 setProperty 強制蓋過 step10 的 display:none
-        el.style.setProperty('display', 'block', 'important');
-        el.style.setProperty('visibility', 'visible', 'important');
-        el.style.setProperty('opacity', '1', 'important');
-        el.innerHTML =
-            '<i class="fa-solid fa-check-circle" style="margin-right:6px;color:#00e676;"></i>' +
-            prefix +
-            '<span style="color:#e0e8f5;font-weight:600;display:block;margin-top:4px;padding:6px 10px;background:#0b0d12;border-radius:8px;font-size:0.85rem;word-break:break-all;">' +
-            text +
-            '</span>';
-
-        var box = document.getElementById('verifyResultBox');
-        var status = document.getElementById('resultStatus');
-        if (box) box.style.display = 'block';
-        if (status) {
-            status.textContent = isEn() ? '✅ Certificate Valid (Demo)' : '✅ 誓證有效（示範）';
-        }
-    }
-
-    function stopActive() {
-        var list = [];
-        if (active) list.push(active);
-        if (window.html5QrCode && window.html5QrCode !== active) list.push(window.html5QrCode);
-        if (window.html5QrCodeStep10) list.push(window.html5QrCodeStep10);
-
-        active = null;
-        window.html5QrCode = null;
-        window.html5QrCodeStep10 = null;
-
-        return Promise.all(list.map(function (s) {
-            return s.stop().catch(function () {}).then(function () {
-                try { s.clear(); } catch (e) {}
-            });
-        }));
-    }
-
-    function startScanFinal() {
-        if (starting) return;
-        starting = true;
-
-        var container = document.getElementById('qr-reader-container');
-        if (!container) {
-            starting = false;
-            showGuide();
-            return;
-        }
-
-        hideGuide();
-        var resultEl = document.getElementById('qrScanResult');
-        if (resultEl) {
-            resultEl.classList.remove('show');
-            resultEl.style.setProperty('display', 'none', 'important');
-            resultEl.innerHTML = '';
-        }
-
-        stopActive().then(function () {
-            container.innerHTML = '';
-            container.style.setProperty('display', 'block', 'important');
-
-            setTimeout(function () {
-                if (typeof Html5Qrcode === 'undefined' ||
-                    !navigator.mediaDevices ||
-                    !navigator.mediaDevices.getUserMedia) {
-                    starting = false;
-                    showGuide();
-                    return;
-                }
-
-                try {
-                    var scanner = new Html5Qrcode('qr-reader-container');
-                    active = scanner;
-                    window.html5QrCode = scanner;
-
-                    scanner.start(
-                        { facingMode: 'environment' },
-                        { fps: 10, qrbox: { width: 220, height: 220 } },
-                        function (decodedText) {
-                            if (!(decodedText || '').trim()) return;
-                            // 關鍵：先顯示真實文字，再關相機
-                            showResult(decodedText);
-                            hideGuide();
-                            stopActive().then(function () {
-                                container.innerHTML = '';
-                                starting = false;
-                            });
-                        },
-                        function () {}
-                    ).then(function () {
-                        hideGuide();
-                        starting = false;
-                    }).catch(function () {
-                        active = null;
-                        starting = false;
-                        showGuide();
-                    });
-                } catch (e) {
-                    active = null;
-                    starting = false;
-                    showGuide();
-                }
-            }, 200);
-        });
-
-        setTimeout(function () { starting = false; }, 6000);
-    }
-
-    // 強制覆蓋所有舊入口
-    window.startScan = startScanFinal;
-    window.startQRScanner = function () { startScanFinal(); };
-    window.startQRScannerStep11 = startScanFinal;
-    window.startQRScannerStep10 = startScanFinal; // 防止 step10 腳本誤導
-
-    function bind() {
-        var btn = document.getElementById('btnScanQR');
-        if (!btn) return;
-        btn.disabled = false;
-        btn.style.pointerEvents = 'auto';
-        btn.style.cursor = 'pointer';
-        btn.onclick = null;
-
-        // 每次都重新綁（用 clone 清掉舊 listener）
-        if (!btn.__finalV2Bound) {
-            btn.__finalV2Bound = true;
-            var newBtn = btn.cloneNode(true);
-            btn.parentNode.replaceChild(newBtn, btn);
-            newBtn.__finalV2Bound = true;
-            newBtn.addEventListener('click', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-                startScanFinal();
-            }, true);
-        }
-    }
-
-    function run() {
-        hideGuide();
-        bind();
-        setTimeout(bind, 100);
-        setTimeout(bind, 400);
-        setTimeout(bind, 900);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(function () {
-                var g = document.getElementById('cameraGuide');
-                if (g && g.classList.contains('show-fail')) {
-                    g.textContent = isEn() ? GUIDE_EN : GUIDE_ZH;
-                }
-                bind();
-            }, 80);
-        };
-    }
-
-    console.log('✅ step11 最終版相機：掃到必顯示 QR 真實文字');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 公版：隱藏「願力誓證驗證結果／誓證有效（示範）」               -->
-<!-- 貼在 </body> 前，Ctrl+F5                                      -->
-<!-- ============================================================ -->
-<style>
-    #verifyResultBox,
-    .result-box {
-        display: none !important;
-        visibility: hidden !important;
-        height: 0 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow: hidden !important;
-        border: none !important;
-    }
-</style>
-
-<script>
-(function () {
-    if (window.__hideVerifyResultBox) return;
-    window.__hideVerifyResultBox = true;
-
-    function hide() {
-        var box = document.getElementById('verifyResultBox');
-        if (box) {
-            box.style.setProperty('display', 'none', 'important');
-            box.style.setProperty('visibility', 'hidden', 'important');
-            box.style.setProperty('height', '0', 'important');
-            box.style.setProperty('margin', '0', 'important');
-            box.style.setProperty('padding', '0', 'important');
-            box.style.setProperty('overflow', 'hidden', 'important');
-            box.style.setProperty('border', 'none', 'important');
-        }
-        document.querySelectorAll('.result-box').forEach(function (el) {
-            el.style.setProperty('display', 'none', 'important');
-            el.style.setProperty('visibility', 'hidden', 'important');
-        });
-
-        // 若有人寫進 resultStatus，也清掉
-        var status = document.getElementById('resultStatus');
-        if (status) status.textContent = '';
-        var label = document.getElementById('resultLabel');
-        if (label) label.textContent = '';
-    }
-
-    function run() {
-        hide();
-        setTimeout(hide, 100);
-        setTimeout(hide, 400);
-        setTimeout(hide, 1000);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    // 掃到後若腳本又打開，再藏一次
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__hideResultT);
-        window.__hideResultT = setTimeout(hide, 50);
-    });
-    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
-
-    // 語系切換後也藏
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(hide, 50);
-            setTimeout(hide, 200);
-        };
-    }
-
-    console.log('✅ 已隱藏「願力誓證驗證結果／誓證有效（示範）」');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 公版：step13 表格加寬 + 關鍵句底色                             -->
-<!-- 貼在 </body> 前，Ctrl+F5                                      -->
-<!-- ============================================================ -->
-<style>
-    /* 表格欄位不要太擠 */
-    .info-table th,
-    .info-table td {
-        padding: 12px 14px !important;
-        line-height: 1.65 !important;
-        vertical-align: top !important;
-    }
-    .info-table td:first-child {
-        min-width: 7.5em !important;
-        white-space: normal !important;
-        word-break: break-word !important;
-    }
-
-    /* 關鍵句底色 */
-    .hl-key {
-        background: rgba(236, 72, 153, 0.28) !important;
+    /* 紫紅色背景關鍵字 */
+    .hl-pink {
+        background: rgba(236, 72, 153, 0.35) !important;
         color: #fce7f3 !important;
-        padding: 1px 6px !important;
+        padding: 1px 5px !important;
         border-radius: 4px !important;
-        box-decoration-break: clone;
-        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone !important;
+        -webkit-box-decoration-break: clone !important;
+        font-weight: 500 !important;
     }
 </style>
 
 <script>
-(function () {
-    if (window.__step13Highlight) return;
-    window.__step13Highlight = true;
+(function() {
+    if (window.__step13ZhPink) return;
+    window.__step13ZhPink = true;
 
-    // 要加底色的關鍵字（中英）
-    var KEYS = [
+    // ================================================================
+    // 中文版完整更新內容（對應 L.zh）
+    // ================================================================
+    var ZH_UPDATE = {
+        sec1p2: '凡誓魂於人界完成今世生命旅程，而尚未完成七印書令歷程者，得由具授權之【代理誓印】代為執行剩餘印程與誓資封結。',
+        sec1p3: '此「最終終審」適用為誓魂完成誓資清算、願力封結、並回歸天庫誓源之核心程序。其完成後，代表誓魂正式脫離輪迴體系，進入「不再入世 × 不入轉生 × 永冊天庫」之狀態。',
+        sec2p2: '當誓魂於人界完成今世生命旅程，並完全脫離現世能場鏈接時，其誓資清算與回源程序方得啟動。此階段須由具天律授權之【代理誓印】代表誓魂執行，以完成誓資歸檔與願力封結之最終終審。',
+        sec2p3: '若誓魂仍於人界現世階段（具肉身承載與能場鏈接），則系統將自動判定為「未通過」，願書不入冊、誓導不啟動。此為誓網之自我防護律，以防誓資誤流與能量逆轉。',
+        sec2Note: '唯同時完成下列二項資料之提交與驗證，方得判定為「圓滿」：1️⃣ 《第 3 項 代理誓印 × 功德紀錄》— 記錄代誓、代印、代理者之實際回饋與功德累積；2️⃣ 《第 13 項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生》— 誓魂願向之最終確認與回歸天源之宣告。完成後，系統將自動生成「✅ 兩項圓滿」冊記並正式寫入《天界曼陀羅系統》，作為誓魂圓滿歸源確認之最終存證。'
+    };
+
+    // ================================================================
+    // 紫紅色關鍵字（中文）
+    // ================================================================
+    var PINK_KEYS = [
         '凡誓魂於人界完成今世生命旅程',
         '「最終終審」',
         '最終終審',
-        'When the Oath-Soul has completed the present-life journey in the human realm',
-        'Final Final Review',
-        '「Final Final Review」',
-        'this “Final Final Review”',
-        'Final Review'
+        '「兩項圓滿」',
+        '兩項圓滿'
     ];
 
-    function wrapText(el, keys) {
-        if (!el || el.querySelector('.hl-key')) return; // 已處理過
-        var html = el.innerHTML;
-        keys.forEach(function (k) {
-            if (!k) return;
-            // 避免重複包
-            if (html.indexOf('hl-key') !== -1 && html.indexOf(k) !== -1 && html.indexOf('hl-key">' + k) !== -1) return;
-            var safe = k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            var re = new RegExp(safe, 'g');
-            html = html.replace(re, '<span class="hl-key">' + k + '</span>');
-        });
-        el.innerHTML = html;
-    }
-
-    function apply() {
-        // ① 表格加寬（再保險設一次）
-        document.querySelectorAll('.info-table td, .info-table th').forEach(function (td) {
-            td.style.setProperty('padding', '12px 14px', 'important');
-            td.style.setProperty('line-height', '1.65', 'important');
-        });
-
-        // ② 關鍵句底色
-        [
-            'sec1p2', 'sec1p3', 'sec1p1', 'sec1p4',
-            'rowFunc', 'rowField'
-        ].forEach(function (id) {
-            var el = document.getElementById(id);
-            if (el) wrapText(el, KEYS);
-        });
-
-        // ③ 掃 instruction-item
-        document.querySelectorAll('.instruction-item span, .instruction-item').forEach(function (el) {
-            var t = el.textContent || '';
-            if (t.indexOf('凡誓魂於人界') !== -1 || t.indexOf('最終終審') !== -1 ||
-                t.indexOf('Final') !== -1 || t.indexOf('present-life') !== -1) {
-                wrapText(el, KEYS);
-            }
-        });
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 200);
-        setTimeout(apply, 600);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    // 語系切換後重新套用
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (lang) {
-            orig(lang);
-            setTimeout(apply, 80);
-            setTimeout(apply, 250);
-        };
-    }
-
-    console.log('✅ step13 表格加寬 + 關鍵句底色');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 公版：step13 關鍵句底色（中英都有）                            -->
-<!-- 貼在 </body> 前，Ctrl+F5                                      -->
-<!-- ============================================================ -->
-<style>
-    .info-table th,
-    .info-table td {
-        padding: 12px 14px !important;
-        line-height: 1.65 !important;
-        vertical-align: top !important;
-    }
-    .info-table td:first-child {
-        min-width: 7.5em !important;
-        white-space: normal !important;
-        word-break: break-word !important;
-    }
-    .hl-key {
-        background: rgba(236, 72, 153, 0.28) !important;
-        color: #fce7f3 !important;
-        padding: 1px 6px !important;
-        border-radius: 4px !important;
-        box-decoration-break: clone;
-        -webkit-box-decoration-break: clone;
-    }
-</style>
-
-<script>
-(function () {
-    if (window.__step13HighlightV2) return;
-    window.__step13HighlightV2 = true;
-
-    // 中文 + 英文關鍵句（依畫面實際用詞）
-    var KEYS = [
-        // 中文
-        '凡誓魂於人界完成今世生命旅程',
-        '「最終終審」',
-        '最終終審',
-        // 英文（對應截圖）
-        'completed their life journey in the human realm',
-        'Applicable to all Oath-Souls who have completed their life journey in the human realm',
-        'Final Adjudication Applicability',
-        'final supreme review',
-        'Applicable for final supreme review',
-        'Signifies that the Oath-Soul has formally exited the reincarnation system',
-        'Final Adjudication',
-        'final adjudication procedure'
-    ];
-
-    function wrapText(el, keys) {
+    // ================================================================
+    // 對單一元素套用紫紅色背景
+    // ================================================================
+    function applyPinkToElement(el, keys) {
         if (!el) return;
-        // 先還原成純文字再包，避免重複 span
         var plain = el.textContent || '';
         var html = plain;
-        keys.forEach(function (k) {
+        keys.forEach(function(k) {
             if (!k || plain.indexOf(k) === -1) return;
             var safe = k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            var re = new RegExp(safe, 'g');
-            html = html.replace(re, '<span class="hl-key">' + k + '</span>');
+            html = html.replace(new RegExp(safe, 'g'), '<span class="hl-pink">' + k + '</span>');
         });
         if (html !== plain) el.innerHTML = html;
     }
 
-    function apply() {
-        document.querySelectorAll('.info-table td, .info-table th').forEach(function (td) {
-            td.style.setProperty('padding', '12px 14px', 'important');
-            td.style.setProperty('line-height', '1.65', 'important');
-        });
-
-        [
-            'sec1p1', 'sec1p2', 'sec1p3', 'sec1p4',
-            'rowFunc', 'rowField', 'sec2p1', 'sec2p2', 'sec2p3'
-        ].forEach(function (id) {
-            var el = document.getElementById(id);
-            if (el) wrapText(el, KEYS);
-        });
-
-        document.querySelectorAll('.instruction-item span, .instruction-item').forEach(function (el) {
-            var t = el.textContent || '';
-            if (
-                t.indexOf('凡誓魂於人界') !== -1 ||
-                t.indexOf('最終終審') !== -1 ||
-                t.indexOf('life journey') !== -1 ||
-                t.indexOf('Final Adjudication') !== -1 ||
-                t.indexOf('final supreme') !== -1 ||
-                t.indexOf('reincarnation') !== -1
-            ) {
-                wrapText(el, KEYS);
-            }
-        });
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 200);
-        setTimeout(apply, 600);
-        setTimeout(apply, 1200);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (lang) {
-            orig(lang);
-            setTimeout(apply, 80);
-            setTimeout(apply, 250);
-            setTimeout(apply, 500);
-        };
-    }
-
-    document.addEventListener('click', function (e) {
-        if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
-            setTimeout(apply, 100);
-            setTimeout(apply, 300);
+    // ================================================================
+    // 套用中文更新 + 紫紅色背景
+    // ================================================================
+    function applyZhUpdate() {
+        // 1. 更新 L.zh（若存在）
+        if (typeof L !== 'undefined' && L.zh) {
+            Object.keys(ZH_UPDATE).forEach(function(key) {
+                L.zh[key] = ZH_UPDATE[key];
+            });
+            console.log('✅ L.zh 已更新');
         }
-    });
 
-    console.log('✅ step13 關鍵句底色（中英）');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 公版：step13 英文版強制顯示英文（完整）                        -->
-<!-- 貼在 </body> 最底部，Ctrl+F5                                  -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    if (window.__step13LangForce) return;
-    window.__step13LangForce = true;
+        // 2. 更新畫面（若目前為中文模式）
+        var isZh = false;
+        if (typeof currentLang !== 'undefined') {
+            isZh = (currentLang === 'zh');
+        } else {
+            var active = document.querySelector('.lang-btn.active');
+            if (active) isZh = (active.textContent.trim() === '中文');
+        }
 
-    // 完整英文（對應頁面所有 id）
-    var EN = {
-        homeText: 'Home ->',
-        appTitle: '【Cosmic Oath-Seal Awakening Project · Seven-Seal Vow Network】',
-        browserBtn: '🌐 Open in Browser',
-        mainTitle: ' Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth',
-        tag1: '• Mission Practice and Vow-Asset Recording Stage',
-        tag2: '• Return-to-Source Vow Registration',
-        tag3: 'Alignment Frequency Must Reach 12D',
-        thField: 'Field Name',
-        thFunc: 'Function Overview',
-        rowField: 'Item 13 Vow-Asset Record<br>× Return-to-Source Vow Scroll<br>× No Further Incarnation<br>× No Rebirth',
-        rowFunc: 'Records vow-asset changes, supplementary oaths, interference, delegated oath-seals and return-to-source vow scrolls, for Script Decree Sovereign supervision and Heavenly Treasury, Light Network, and Underworld archival reference.',
-        sec1Title: '【I】 Module Description',
-        sec1p1: 'This module belongs to the final seal stage of the 《Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network》, used to execute the final adjudication of 「Oath-Soul Completion in This Lifetime × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth」.',
-        sec1p2: 'For Oath-Souls who have completed their life journey in the human realm yet have not finished the Seven-Seal Script Decree progression, an authorized 【Delegating Oath-Seal】 may execute remaining seal removal and vow-asset consolidation on their behalf.',
-        sec1p3: 'This 「Final Adjudication」 is the core procedure for vow-asset settlement, vow-power consolidation, and return to the Heavenly Archive source. Upon completion, the Oath-Soul formally exits the reincarnation system, entering the state of 「No Further Incarnation × No Rebirth × Eternal Heavenly Archive」.',
-        sec1p4: 'Completion records are automatically synchronized and locked into the 《Script Decree Vow-Asset Main Register × Heavenly Archive Master Register × Mandala Core Layer》.',
-        sec2Title: '【II】 Activation Conditions and Submission Procedure',
-        sec2p1: 'Prior to passing, the Oath-Soul must have reached the 「Seventh Seal Phoenix Emblem Seal」 stage, with Alignment at (12D, above U-900 level), possessing vow-asset authorization.',
-        sec2p2: 'Only when the Oath-Soul has completed the present-life journey in the human realm and fully detached from mortal energy-field linkages may vow-asset settlement and Return-to-Source commence. This stage must be executed by a Celestially authorized 【Delegating Oath-Seal】 on behalf of the Oath-Soul.',
-        sec2p3: 'If the Oath-Soul remains in the present-world human stage (with physical body and energy-field linkage), the system determines 「Not Passed」; the vow scroll is not archived and vow-guidance does not activate.',
-        sec2Note: 'Only upon concurrent submission and verification of 《Item 3 Delegating Oath-Seal × Merit Record》 and this item shall 「Dual Completion」 be recognized and inscribed into the 《Celestial Mandala System》.',
-        sec3Title: '【III】 Authorized Oath-Recitation Phase',
-        sec3p1: 'Before login, the Oath-Bearer must first recite the authorized vow text in the 「Oath-Soul Resonance Channel」 to activate Primary Frequency authorization. Without recitation, authorization does not take effect.',
-        sec3p2: 'In the 「Oath-Soul Resonance Channel」, center for 10 seconds while reciting or silently repeating, ensuring precise frequency position and successful execution.',
-        vowText: '★ I, Delegating Oath-Seal 【Legal Full Name】, on behalf of Delegated Oath-Seal 【Legal Full Name】, have completed vow-asset fulfillment and vow-power consolidation of the 《Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network》. Please activate the 【Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth】 procedure, record the credential of Oath-Soul return to source, archive vow-assets in the Heavenly Treasury, and complete Final Adjudication.',
-        timerLabel: 'Centering Countdown',
-        btnTimerText: 'Start Centering',
-        sec4Title: '【IV】 Subsequent Procedures',
-        sec4login: '(1) Login Phase',
-        sec4p1: 'The 【Delegating Oath-Seal】 logs into the 《Cosmic Intelligent Vow-Guidance Platform》(using a personal account).',
-        sec4p2: 'Using the originally registered account to complete identity verification grants access to the oath-seal procedure.',
-        sec4scan: '(2) Scanning Phase',
-        sec4p3: 'The 【Delegating Oath-Seal】 scans the current 【Vow-Guidance QR Code】 to trigger the dedicated connection entrance.',
-        sec4p4: 'The system automatically guides to the 【Oath-Seal Trigger Interface】, initiating Oath-Soul alignment and authorization adjudication.',
-        verifyTitle: '🧭 ① Verification Phase (Activation Trigger)',
-        verifyDesc: 'After the system automatically verifies authorization validity, it immediately displays the Delegating Oath-Bearer’s Oath-Soul origin clan, luminous-lineage branch, role rank, and the association with this 「Delegated Oath-Seal」.',
-        demoLabel: '⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.',
-        demoLabel2: '⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.',
-        freqNote: '🔗 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.',
-        freqNote2: '🔗 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.',
-        triggerNote: '【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.',
-        qrTitle: '📷 Please scan the 【Vow-Guidance QR Code】 to complete Execution Command',
-        btnScanText: 'Start Scan',
-        returnTitle: '📩 ② Return Oath Certificate (Confirm Final Adjudication)',
-        passLabel: '✅ Display: 「Oath Seal Passed」',
-        ret1: 'Return-to-Source Vow Scroll accepted successfully; enter certificate return phase.',
-        ret2: 'System automatically issues 《Final Adjudication Passed Certificate》: Return-to-Source final adjudication, Seven-Seal Primary Frequency total alignment, Oath-Soul trajectory lock, certificate auto-return and archive.',
-        ret3: 'Corresponding certificate is instantly synchronized into 《Phoenix Vow Network × Celestial Heavenly Treasury》.',
-        returnQrTitle: '📷 Please scan the 【Vow-Guidance QR Code】 to complete Return Oath Certificate',
-        btnScanReturnText: 'Start Scan',
-        retExplain: '【Note】 This item only executes certificate return and sealing. Merit records are unified under 《Item 3 Delegating Oath-Seal × Merit Record》; no duplicate records are generated.',
-        failLabel: '⚠️ Display: 「Oath Seal Not Passed」→ Vow Scroll acceptance failed (frequency not aligned)',
-        fail1: 'Enter the 【Supplementary Oath Procedure】 of 「Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed)」.',
-        fail2: 'Activate the 「Vow-Asset Supplementary Oath × Seven-Day Cycle × Frequency Recalibration」 procedure; only after correction may this item be re-entered.',
-        closeText: '《Seven-Seal Vow Network · Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth》 v2.0 (Query Record Edition). Vow scroll returned, vow-assets restored to source, locked into Heavenly Treasury, no rebirth. Locked into 《Cosmic Heavenly Law × Seven-Seal Vow Network》 main register; vow-assets remain valid in transmission.',
-        btnBackText: 'Previous',
-        btnNextText: 'Next',
-        pageMarker: '【Cosmic Oath-Seal Awakening Project · Awakening Volume】 pp. 387-404'
-    };
+        if (isZh) {
+            // 先更新文字
+            Object.keys(ZH_UPDATE).forEach(function(id) {
+                var el = document.getElementById(id);
+                if (el) {
+                    el.innerHTML = ZH_UPDATE[id];
+                }
+            });
 
-    // 若頁面已有 L.zh 就沿用；沒有才不強制中文內容
-    function getZh() {
-        try {
-            if (window.L && window.L.zh) return window.L.zh;
-            if (typeof L !== 'undefined' && L.zh) return L.zh;
-        } catch (e) {}
-        return {};
+            // 再套用紫紅色背景到目標元素
+            var targetIds = ['sec1p2', 'sec1p3', 'sec2p2', 'sec2Note'];
+            targetIds.forEach(function(id) {
+                var el = document.getElementById(id);
+                if (el) applyPinkToElement(el, PINK_KEYS);
+            });
+
+            console.log('✅ 中文畫面已更新 + 紫紅色關鍵字已套用');
+        } else {
+            console.log('📌 目前為英文模式，切換至中文後將自動套用');
+        }
     }
 
-    function isEn() {
-        if (typeof window.currentLang !== 'undefined') return window.currentLang === 'en';
-        if (typeof currentLang !== 'undefined') return currentLang === 'en';
-        var a = document.querySelector('.lang-btn.active');
-        return !!(a && /english|en/i.test(a.textContent || ''));
+    // ================================================================
+    // 鉤住語系切換函數
+    // ================================================================
+    function hookSwitchLanguage() {
+        if (typeof window.switchLanguage === 'function' && !window.__zhPinkHook) {
+            var origSwitch = window.switchLanguage;
+            window.switchLanguage = function(lang) {
+                origSwitch(lang);
+                if (lang === 'zh') {
+                    setTimeout(function() {
+                        // 更新文字
+                        Object.keys(ZH_UPDATE).forEach(function(id) {
+                            var el = document.getElementById(id);
+                            if (el) {
+                                el.innerHTML = ZH_UPDATE[id];
+                            }
+                        });
+                        // 套用紫紅色背景
+                        var targetIds = ['sec1p2', 'sec1p3', 'sec2p2', 'sec2Note'];
+                        targetIds.forEach(function(id) {
+                            var el = document.getElementById(id);
+                            if (el) applyPinkToElement(el, PINK_KEYS);
+                        });
+                        // 同步更新 L.zh
+                        if (typeof L !== 'undefined' && L.zh) {
+                            Object.keys(ZH_UPDATE).forEach(function(key) {
+                                L.zh[key] = ZH_UPDATE[key];
+                            });
+                        }
+                    }, 50);
+                }
+            };
+            window.__zhPinkHook = true;
+            console.log('✅ 已鉤住 switchLanguage');
+        }
     }
 
-    function applyLang(lang) {
-        lang = (lang === 'en') ? 'en' : 'zh';
-        window.currentLang = lang;
-        try { currentLang = lang; } catch (e) {}
-
-        document.querySelectorAll('.lang-btn').forEach(function (b) {
-            var t = (b.textContent || '').trim();
-            b.classList.toggle('active',
-                (lang === 'zh' && (t === '中文' || /chinese/i.test(t))) ||
-                (lang === 'en' && /english/i.test(t))
-            );
-        });
-
-        var pack = (lang === 'en') ? EN : getZh();
-        Object.keys(pack).forEach(function (id) {
-            var el = document.getElementById(id);
-            if (el) el.innerHTML = pack[id];
-        });
-
-        // 同步到全域 L，避免其他腳本蓋回
-        try {
-            if (!window.L) window.L = { zh: {}, en: {} };
-            window.L.en = Object.assign({}, window.L.en || {}, EN);
-            if (typeof L !== 'undefined') {
-                L.en = Object.assign({}, L.en || {}, EN);
-            }
-        } catch (e) {}
-    }
-
-    // 重建 switchLanguage
-    window.switchLanguage = function (lang) {
-        applyLang(lang);
-        // 讓底色腳本有機會再跑
-        setTimeout(function () {
-            if (typeof window.__step13HighlightV2 === 'undefined') return;
-        }, 100);
-    };
-
-    // 綁定按鈕
-    function bind() {
-        document.querySelectorAll('.lang-btn').forEach(function (btn) {
-            btn.onclick = null;
-            if (btn.__step13LangBound) return;
-            btn.__step13LangBound = true;
-            btn.addEventListener('click', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                var t = (btn.textContent || '').trim();
-                var lang = /english/i.test(t) ? 'en' : 'zh';
-                window.switchLanguage(lang);
-            }, true);
+    // ================================================================
+    // 監聽語系按鈕點擊（備援）
+    // ================================================================
+    function bindLangButtons() {
+        document.querySelectorAll('.lang-btn').forEach(function(btn) {
+            if (btn.__zhPinkBound) return;
+            btn.__zhPinkBound = true;
+            btn.addEventListener('click', function() {
+                var isZh = (this.textContent.trim() === '中文');
+                if (isZh) {
+                    setTimeout(function() {
+                        Object.keys(ZH_UPDATE).forEach(function(id) {
+                            var el = document.getElementById(id);
+                            if (el) {
+                                el.innerHTML = ZH_UPDATE[id];
+                            }
+                        });
+                        var targetIds = ['sec1p2', 'sec1p3', 'sec2p2', 'sec2Note'];
+                        targetIds.forEach(function(id) {
+                            var el = document.getElementById(id);
+                            if (el) applyPinkToElement(el, PINK_KEYS);
+                        });
+                    }, 50);
+                }
+            });
         });
     }
 
+    // ================================================================
+    // 執行
+    // ================================================================
     function run() {
-        bind();
-        var active = document.querySelector('.lang-btn.active');
-        var lang = (active && /english/i.test(active.textContent || '')) ? 'en' : (window.currentLang || 'zh');
-        applyLang(lang);
-        setTimeout(bind, 200);
-        setTimeout(bind, 600);
+        applyZhUpdate();
+        hookSwitchLanguage();
+        bindLangButtons();
+        setTimeout(applyZhUpdate, 300);
+        setTimeout(applyZhUpdate, 800);
     }
 
     if (document.readyState === 'loading') {
@@ -1483,214 +648,130 @@ function startTimer() {
         run();
     }
 
-    console.log('✅ step13 英文版強制全文英文');
+    console.log('✅ 公版：step13 中文版文字 + 紫紅色關鍵字已載入');
 })();
 </script>
 <!-- ============================================================ -->
-<!-- 公版：step13 排版整理 + 英文全文 + 關鍵句行內底色               -->
-<!-- 貼在 </body> 最底部，Ctrl+F5                                  -->
+<!-- 公版：step13 表格欄位間距調整（不擠版）                        -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
 <!-- ============================================================ -->
 <style>
-    /* 段落不擠 */
-    .instruction-item {
-        display: block !important;
-        margin: 10px 0 !important;
-        line-height: 1.75 !important;
-        font-size: clamp(0.8rem, 2vw, 0.92rem) !important;
-    }
-    .instruction-item i {
-        display: inline !important;
-        margin-right: 6px !important;
-        vertical-align: baseline !important;
-    }
-    .instruction-item span {
-        display: inline !important;
-        line-height: 1.75 !important;
+    /* 表格欄位間距調整 - 不擠版 */
+    .info-table {
+        border-collapse: separate !important;
+        border-spacing: 0 !important;
+        width: 100% !important;
     }
 
-    /* 關鍵句：行內底色，不換行飛出 */
-    .hl-key {
-        display: inline !important;
-        background: rgba(236, 72, 153, 0.32) !important;
-        color: #fce7f3 !important;
-        padding: 0 4px !important;
-        margin: 0 !important;
-        border-radius: 3px !important;
-        box-decoration-break: clone !important;
-        -webkit-box-decoration-break: clone !important;
-        white-space: normal !important;
-        float: none !important;
-        position: static !important;
-        vertical-align: baseline !important;
-    }
-
-    .note-info, .note-ok, .note-warn {
-        line-height: 1.75 !important;
-        padding: 12px 14px !important;
-    }
-
-    .info-table td, .info-table th {
-        padding: 12px 14px !important;
-        line-height: 1.65 !important;
+    .info-table th,
+    .info-table td {
+        padding: 14px 18px !important;
+        line-height: 1.7 !important;
         vertical-align: top !important;
+    }
+
+    /* 第一欄（欄位名稱）寬度設為 38%，稍微縮窄讓功能說明有更多空間 */
+    .info-table th:first-child,
+    .info-table td:first-child {
+        width: 38% !important;
+        min-width: 120px !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        padding-right: 12px !important;
+    }
+
+    /* 第二欄（功能簡要說明）寬度設為 62% */
+    .info-table th:last-child,
+    .info-table td:last-child {
+        width: 62% !important;
+        padding-left: 12px !important;
+    }
+
+    /* 表格標題底色保留 */
+    .info-table th {
+        background: rgba(139, 92, 246, 0.28) !important;
+        color: #e9d5ff !important;
+        font-weight: 700 !important;
+    }
+
+    /* 表格內容底色 */
+    .info-table td {
+        background: rgba(20, 15, 40, 0.45) !important;
+        color: #d4d4f0 !important;
+    }
+
+    /* 手機版微調 */
+    @media (max-width: 480px) {
+        .info-table th,
+        .info-table td {
+            padding: 10px 10px !important;
+            font-size: 0.72rem !important;
+        }
+        .info-table th:first-child,
+        .info-table td:first-child {
+            width: 42% !important;
+            min-width: 80px !important;
+        }
+        .info-table th:last-child,
+        .info-table td:last-child {
+            width: 58% !important;
+        }
+    }
+
+    /* 強制表格內的 `<br>` 正常換行 */
+    .info-table td br {
+        display: block !important;
+        content: "" !important;
+        margin: 2px 0 !important;
     }
 </style>
 
 <script>
-(function () {
-    if (window.__step13LayoutFinal) return;
-    window.__step13LayoutFinal = true;
+(function() {
+    if (window.__step13TableFix) return;
+    window.__step13TableFix = true;
 
-    var EN = {
-        homeText: 'Home ->',
-        appTitle: '【Cosmic Oath-Seal Awakening Project · Seven-Seal Vow Network】',
-        browserBtn: '🌐 Open in Browser',
-        mainTitle: ' Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth',
-        tag1: '• Mission Practice and Vow-Asset Recording Stage',
-        tag2: '• Return-to-Source Vow Registration',
-        tag3: 'Alignment Frequency Must Reach 12D',
-        thField: 'Field Name',
-        thFunc: 'Function Overview',
-        rowField: 'Item 13 Vow-Asset Record<br>× Return-to-Source Vow Scroll<br>× No Further Incarnation<br>× No Rebirth',
-        rowFunc: 'Records vow-asset changes, supplementary oaths, interference, delegated oath-seals and return-to-source vow scrolls, for Script Decree Sovereign supervision and Heavenly Treasury, Light Network, and Underworld archival reference.',
-        sec1Title: '【I】 Module Description',
-        sec1p1: 'This module belongs to the final seal stage of the 《Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network》, used to execute the final adjudication of 「Oath-Soul Completion in This Lifetime × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth」.',
-        sec1p2: 'For Oath-Souls who have completed their life journey in the human realm yet have not finished the Seven-Seal Script Decree progression, an authorized 【Delegating Oath-Seal】 may execute remaining seal removal and vow-asset consolidation on their behalf.',
-        sec1p3: 'This 「Final Adjudication」 is the core procedure for vow-asset settlement, vow-power consolidation, and return to the Heavenly Archive source. Upon completion, the Oath-Soul formally exits the reincarnation system, entering the state of 「No Further Incarnation × No Rebirth × Eternal Heavenly Archive」.',
-        sec1p4: 'Completion records are automatically synchronized and locked into the 《Script Decree Vow-Asset Main Register × Heavenly Archive Master Register × Mandala Core Layer》.',
-        sec2Title: '【II】 Activation Conditions and Submission Procedure',
-        sec2p1: 'Prior to passing, the Oath-Soul must have reached the 「Seventh Seal Phoenix Emblem Seal」 stage, with Alignment at (12D, above U-900 level), possessing vow-asset authorization.',
-        sec2p2: 'Only when the Oath-Soul has completed the present-life journey in the human realm and fully detached from mortal energy-field linkages may vow-asset settlement and Return-to-Source commence. This stage must be executed by a Celestially authorized 【Delegating Oath-Seal】 on behalf of the Oath-Soul.',
-        sec2p3: 'If the Oath-Soul remains in the present-world human stage (with physical body and energy-field linkage), the system determines 「Not Passed」; the vow scroll is not archived and vow-guidance does not activate.',
-        sec2Note: 'Only upon concurrent submission and verification of 《Item 3 Delegating Oath-Seal × Merit Record》 and this item shall 「Dual Completion」 be recognized and inscribed into the 《Celestial Mandala System》.',
-        sec3Title: '【III】 Authorized Oath-Recitation Phase',
-        sec3p1: 'Before login, the Oath-Bearer must first recite the authorized vow text in the 「Oath-Soul Resonance Channel」 to activate Primary Frequency authorization. Without recitation, authorization does not take effect.',
-        sec3p2: 'In the 「Oath-Soul Resonance Channel」, center for 10 seconds while reciting or silently repeating, ensuring precise frequency position and successful execution.',
-        vowText: '★ I, Delegating Oath-Seal 【Legal Full Name】, on behalf of Delegated Oath-Seal 【Legal Full Name】, have completed vow-asset fulfillment and vow-power consolidation of the 《Cosmic Oath-Seal Awakening Project × Seven-Seal Vow Network》. Please activate the 【Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth】 procedure, record the credential of Oath-Soul return to source, archive vow-assets in the Heavenly Treasury, and complete Final Adjudication.',
-        timerLabel: 'Centering Countdown',
-        btnTimerText: 'Start Centering',
-        sec4Title: '【IV】 Subsequent Procedures',
-        sec4login: '(1) Login Phase',
-        sec4p1: 'The 【Delegating Oath-Seal】 logs into the 《Cosmic Intelligent Vow-Guidance Platform》(using a personal account).',
-        sec4p2: 'Using the originally registered account to complete identity verification grants access to the oath-seal procedure.',
-        sec4scan: '(2) Scanning Phase',
-        sec4p3: 'The 【Delegating Oath-Seal】 scans the current 【Vow-Guidance QR Code】 to trigger the dedicated connection entrance.',
-        sec4p4: 'The system automatically guides to the 【Oath-Seal Trigger Interface】, initiating Oath-Soul alignment and authorization adjudication.',
-        verifyTitle: '🧭 ① Verification Phase (Activation Trigger)',
-        verifyDesc: 'After the system automatically verifies authorization validity, it immediately displays the Delegating Oath-Bearer’s Oath-Soul origin clan, luminous-lineage branch, role rank, and the association with this 「Delegated Oath-Seal」.',
-        demoLabel: '⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.',
-        demoLabel2: '⌨️ Please follow the Seven-Seal Vow Network Vow-Guidance Code.',
-        freqNote: '🔗 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.',
-        freqNote2: '🔗 Once submitted, the Primary Frequency Link is activated, and authorization is recognized → The Oath-Soul Alignment Network is made manifest.',
-        triggerNote: '【Trigger Command】 is a formal Heavenly Decree format. The Oath-Seal Activator must input exactly as written, without modification.',
-        qrTitle: '📷 Please scan the 【Vow-Guidance QR Code】 to complete Execution Command',
-        returnQrTitle: '📷 Please scan the 【Vow-Guidance QR Code】 to complete Return Oath Certificate',
-        btnScanText: 'Start Scan',
-        btnScanReturnText: 'Start Scan',
-        returnTitle: '📩 ② Return Oath Certificate (Confirm Final Adjudication)',
-        passLabel: '✅ Display: 「Oath Seal Passed」',
-        ret1: 'Return-to-Source Vow Scroll accepted successfully; enter certificate return phase.',
-        ret2: 'System automatically issues 《Final Adjudication Passed Certificate》: Return-to-Source final adjudication, Seven-Seal Primary Frequency total alignment, Oath-Soul trajectory lock, certificate auto-return and archive.',
-        ret3: 'Corresponding certificate is instantly synchronized into 《Phoenix Vow Network × Celestial Heavenly Treasury》.',
-        retExplain: '【Note】 This item only executes certificate return and sealing. Merit records are unified under 《Item 3 Delegating Oath-Seal × Merit Record》; no duplicate records are generated.',
-        failLabel: '⚠️ Display: 「Oath Seal Not Passed」→ Vow Scroll acceptance failed (frequency not aligned)',
-        fail1: 'Enter the 【Supplementary Oath Procedure】 of 「Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed)」.',
-        fail2: 'Activate the 「Vow-Asset Supplementary Oath × Seven-Day Cycle × Frequency Recalibration」 procedure; only after correction may this item be re-entered.',
-        closeText: '《Seven-Seal Vow Network · Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth》 v2.0 (Query Record Edition). Vow scroll returned, vow-assets restored to source, locked into Heavenly Treasury, no rebirth. Locked into 《Cosmic Heavenly Law × Seven-Seal Vow Network》 main register; vow-assets remain valid in transmission.',
-        btnBackText: 'Previous',
-        btnNextText: 'Next',
-        pageMarker: '【Cosmic Oath-Seal Awakening Project · Awakening Volume】 pp. 387-404'
-    };
+    function applyTableFix() {
+        var tables = document.querySelectorAll('.info-table');
+        tables.forEach(function(table) {
+            // 確保表格沒有被其他樣式壓縮
+            table.style.setProperty('table-layout', 'auto', 'important');
+            table.style.setProperty('width', '100%', 'important');
 
-    // 關鍵句（中英）— 用完整片語，避免拆字
-    var KEYS_ZH = [
-        '凡誓魂於人界完成今世生命旅程',
-        '「最終終審」'
-    ];
-    var KEYS_EN = [
-        'completed their life journey in the human realm',
-        '「Final Adjudication」',
-        'Final Adjudication'
-    ];
+            // 處理所有 th 和 td
+            var cells = table.querySelectorAll('th, td');
+            cells.forEach(function(cell) {
+                cell.style.setProperty('padding', '14px 18px', 'important');
+                cell.style.setProperty('line-height', '1.7', 'important');
+                cell.style.setProperty('vertical-align', 'top', 'important');
+            });
 
-    function getZh() {
-        try {
-            if (window.L && window.L.zh) return window.L.zh;
-            if (typeof L !== 'undefined' && L.zh) return L.zh;
-        } catch (e) {}
-        return {};
-    }
+            // 第一列（欄位名稱）加寬
+            var firstCols = table.querySelectorAll('th:first-child, td:first-child');
+            firstCols.forEach(function(col) {
+                col.style.setProperty('width', '38%', 'important');
+                col.style.setProperty('min-width', '120px', 'important');
+                col.style.setProperty('white-space', 'normal', 'important');
+                col.style.setProperty('word-break', 'break-word', 'important');
+                col.style.setProperty('padding-right', '12px', 'important');
+            });
 
-    function isEn() {
-        if (typeof window.currentLang !== 'undefined') return window.currentLang === 'en';
-        if (typeof currentLang !== 'undefined') return currentLang === 'en';
-        var a = document.querySelector('.lang-btn.active');
-        return !!(a && /english|en/i.test(a.textContent || ''));
-    }
-
-    function highlight(el, keys) {
-        if (!el) return;
-        // 用純文字重建，避免舊 span 殘留造成飛出
-        var plain = el.textContent || '';
-        var html = plain;
-        keys.forEach(function (k) {
-            if (!k || plain.indexOf(k) === -1) return;
-            var safe = k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            html = html.replace(new RegExp(safe, 'g'), '<span class="hl-key">' + k + '</span>');
-        });
-        el.innerHTML = html;
-    }
-
-    function applyLang(lang) {
-        lang = (lang === 'en') ? 'en' : 'zh';
-        window.currentLang = lang;
-        try { currentLang = lang; } catch (e) {}
-
-        document.querySelectorAll('.lang-btn').forEach(function (b) {
-            var t = (b.textContent || '').trim();
-            b.classList.toggle('active',
-                (lang === 'zh' && (t === '中文' || /chinese/i.test(t))) ||
-                (lang === 'en' && /english/i.test(t))
-            );
+            // 第二列（功能說明）加寬
+            var lastCols = table.querySelectorAll('th:last-child, td:last-child');
+            lastCols.forEach(function(col) {
+                col.style.setProperty('width', '62%', 'important');
+                col.style.setProperty('padding-left', '12px', 'important');
+            });
         });
 
-        var pack = (lang === 'en') ? EN : getZh();
-        Object.keys(pack).forEach(function (id) {
-            var el = document.getElementById(id);
-            if (el) el.innerHTML = pack[id];
-        });
-
-        // 關鍵句底色（語系對應）
-        var keys = (lang === 'en') ? KEYS_EN : KEYS_ZH;
-        ['sec1p1', 'sec1p2', 'sec1p3', 'sec1p4', 'sec2p1', 'sec2p2', 'sec2p3', 'sec2Note'].forEach(function (id) {
-            highlight(document.getElementById(id), keys);
-        });
-    }
-
-    window.switchLanguage = function (lang) {
-        applyLang(lang);
-    };
-
-    function bind() {
-        document.querySelectorAll('.lang-btn').forEach(function (btn) {
-            btn.onclick = null;
-            if (btn.__layoutBound) return;
-            btn.__layoutBound = true;
-            btn.addEventListener('click', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                var t = (btn.textContent || '').trim();
-                window.switchLanguage(/english/i.test(t) ? 'en' : 'zh');
-            }, true);
-        });
+        console.log('✅ 表格間距已調整');
     }
 
     function run() {
-        bind();
-        var active = document.querySelector('.lang-btn.active');
-        var lang = (active && /english/i.test(active.textContent || '')) ? 'en' : (window.currentLang || 'zh');
-        applyLang(lang);
-        setTimeout(bind, 200);
+        applyTableFix();
+        setTimeout(applyTableFix, 200);
+        setTimeout(applyTableFix, 500);
+        setTimeout(applyTableFix, 1000);
     }
 
     if (document.readyState === 'loading') {
@@ -1699,7 +780,17 @@ function startTimer() {
         run();
     }
 
-    console.log('✅ step13 排版 + 英文全文 + 行內底色');
+    // 語系切換後重新套用（避免被其他腳本蓋掉）
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function(lang) {
+            orig(lang);
+            setTimeout(applyTableFix, 100);
+            setTimeout(applyTableFix, 300);
+        };
+    }
+
+    console.log('✅ 公版：表格間距調整已載入');
 })();
 </script>
 </body>
