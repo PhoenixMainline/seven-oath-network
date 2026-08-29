@@ -2120,5 +2120,414 @@
     console.log('✅ index 全項連結已依官方清單對齊');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：編號／對應項目 完整列出（依你提供的清單）                  -->
+<!-- 貼在 </body> 最底部，Ctrl+F5                                  -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__indexNoFullList) return;
+    window.__indexNoFullList = true;
+
+    // 你指定的完整「編號／對應項目」（順序固定）
+    var FULL_ZH = [
+        { test: /第0項|購書序號/, no: '第0項 宇宙智能誓導平台 × 【購書序號】誓導碼登入與啟動守則', link: 'step0.html' },
+        { test: /第1項.*誓印未通過|誓印未通過/, no: '第1項 開啟誓魂密鑰對頻總判定（誓印未通過）', link: 'step1-1.html' },
+        { test: /第1項|對頻總判定/, no: '第1項 開啟誓魂密鑰對頻總判定（誓印通過/誓印未通過）', link: 'step1.html' },
+        { test: /第2項|被代理誓印/, no: '第2項 被代理誓印（法定全名）', link: 'step2.html' },
+        { test: /第3項|代理誓印|功德紀錄/, no: '第3項 代理誓印（法定全名）× 功德紀錄', link: 'step3.html' },
+        { test: /第4項|誓魂本族|天族姓脈/, no: '第4項 誓魂本族 × 天族姓脈 × 所屬靈系支系 × 角色階級', link: 'step4.html' },
+        { test: /第5項|宇宙總位標|維度階級/, no: '第5項 誓魂宇宙總位標 × 維度階級 × 三界層域 × 階識', link: 'step5.html' },
+        { test: /第6項|覺醒程度/, no: '第6項 覺醒程度', link: 'step6.html' },
+        { test: /第一印|消業印/, no: '第7項 第一印 × 消業印', link: 'step7-1.html' },
+        { test: /第二印|修心印/, no: '第7項 第二印 × 修心印', link: 'step7-2.html' },
+        { test: /第三印|守願印/, no: '第7項 第三印 × 守願印', link: 'step7-3.html' },
+        { test: /第四印|誓令印/, no: '第7項 第四印 × 誓令印', link: 'step7-4.html' },
+        { test: /第五印|覺醒印/, no: '第7項 第五印 × 覺醒印', link: 'step7-5.html' },
+        { test: /第六印|誥徒誓印/, no: '第7項 第六印 × 誥徒誓印', link: 'step7-6.html' },
+        { test: /第七印|鳳徽印/, no: '第7項 第七印 × 鳳徽印', link: 'step7-7.html' },
+        { test: /第7項|七印誓網對應/, no: '第7項 七印誓網對應階段', link: 'step7.html' },
+        { test: /第8項|入世誓約/, no: '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄', link: 'step8.html' },
+        { test: /第9項|圓印封冊/, no: '第9項 第七印鳳徽印 × 圓印封冊', link: 'step9.html' },
+        { test: /第10項|誓文印記/, no: '第10項 誓文印記追蹤', link: 'step10.html' },
+        { test: /第11項|願力誓證/, no: '第11項 願力誓證', link: 'step11.html' },
+        { test: /第12項|誓資任務實踐/, no: '第12項 誓資任務實踐紀錄', link: 'step12.html' },
+        { test: /第13項|回源願書|不再入世|不入轉生/, no: '第13項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生', link: 'step13.html' },
+        { test: /第14項|天庫金脈/, no: '第14項 天庫金脈 × 支脈顯化狀態', link: 'step14.html' },
+        { test: /第15項|狀態更新時間/, no: '第15項 狀態更新時間戳', link: 'step15.html' },
+        { test: /第16項|對頻歷程摘要/, no: '第16項 開啟誓魂密鑰對頻歷程摘要', link: 'step16.html' }
+    ];
+
+    var FULL_EN = [
+        { test: /Item 0|Purchase Serial/, no: 'Item 0 Cosmic Intelligent Vow-Guidance Platform × [Purchase Serial Number] Login & Activation Protocol', link: 'step0.html' },
+        { test: /Item 1 Oath Seal Not Passed|Oath Seal Not Passed/, no: 'Item 1 Initiate Oath-Soul Key Frequency-Alignment (Oath Seal Not Passed)', link: 'step1-1.html' },
+        { test: /Item 1|Frequency-Alignment|Frequency- Alignment/, no: 'Item 1 Initiate Oath-Soul Key Frequency-Alignment (Passed / Not Passed)', link: 'step1.html' },
+        { test: /Item 2|Delegated Oath-Seal/, no: 'Item 2 Delegated Oath-Seal (Legal Full Name)', link: 'step2.html' },
+        { test: /Item 3|Delegating Oath-Seal|Merit Record/, no: 'Item 3 Delegating Oath-Seal (Legal Full Name) × Merit Record', link: 'step3.html' },
+        { test: /Item 4|Origin Claim/, no: 'Item 4 Oath-Soul Origin Claim × Heavenly Clan Lineage × Luminous-Lineage Branch × Role Rank', link: 'step4.html' },
+        { test: /Item 5|Master Coordinate/, no: 'Item 5 Oath-Soul Cosmic Master Coordinate × Dimensional Rank × Three-Realm Domains × Hierarchic Cognition', link: 'step5.html' },
+        { test: /Item 6|Awakening Level/, no: 'Item 6 Awakening Level', link: 'step6.html' },
+        { test: /First Seal|Karmic Purification/, no: 'Item 7 First Seal × Karmic Purification Seal', link: 'step7-1.html' },
+        { test: /Second Seal|Mind-Refinement/, no: 'Item 7 Second Seal × Mind-Refinement Seal', link: 'step7-2.html' },
+        { test: /Third Seal|Guardian Vow/, no: 'Item 7 Third Seal × Guardian Vow Seal', link: 'step7-3.html' },
+        { test: /Fourth Seal|Decree-Oath/, no: 'Item 7 Fourth Seal × Decree-Oath Seal', link: 'step7-4.html' },
+        { test: /Fifth Seal|Awakening Seal/, no: 'Item 7 Fifth Seal × Awakening Seal', link: 'step7-5.html' },
+        { test: /Sixth Seal|Disciple-Oath/, no: 'Item 7 Sixth Seal × Disciple-Oath Seal', link: 'step7-6.html' },
+        { test: /Seventh Seal|Phoenix Emblem/, no: 'Item 7 Seventh Seal × Phoenix Emblem Seal', link: 'step7-7.html' },
+        { test: /Item 7|Seven-Seal Vow Network Correspondence/, no: 'Item 7 Seven-Seal Vow Network Correspondence Stage', link: 'step7.html' },
+        { test: /Item 8|Worldly Vow/, no: 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress', link: 'step8.html' },
+        { test: /Item 9|Circle Seal/, no: 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive', link: 'step9.html' },
+        { test: /Item 10|Vow Text Seal/, no: 'Item 10 Vow Text Seal Tracking', link: 'step10.html' },
+        { test: /Item 11|Vow-Power/, no: 'Item 11 Vow-Power Certification', link: 'step11.html' },
+        { test: /Item 12|Mission Practice/, no: 'Item 12 Vow-Resource Mission Practice Record', link: 'step12.html' },
+        { test: /Item 13|Return-to-Source|No Rebirth/, no: 'Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth', link: 'step13.html' },
+        { test: /Item 14|Heavenly Treasury Gold/, no: 'Item 14 Heavenly Treasury Gold Vein × Branch Manifestation Status', link: 'step14.html' },
+        { test: /Item 15|Status Update/, no: 'Item 15 Status Update Timestamp', link: 'step15.html' },
+        { test: /Item 16|Process Summary/, no: 'Item 16 Oath-Soul Key Frequency-Alignment Process Summary', link: 'step16.html' }
+    ];
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function hit(list, text) {
+        for (var i = 0; i < list.length; i++) {
+            if (list[i].test.test(text)) return list[i];
+        }
+        return null;
+    }
+
+    function apply() {
+        var list = isEn() ? FULL_EN : FULL_ZH;
+
+        // 1) 改資料
+        ['level1Data', 'level2Data'].forEach(function (name) {
+            var data = window[name];
+            if (!data) return;
+            ['zh', 'en'].forEach(function (lang) {
+                var pack = data[lang];
+                if (!pack || !pack.items) return;
+                var L = (lang === 'en') ? FULL_EN : FULL_ZH;
+                pack.items.forEach(function (it) {
+                    var blob = [it.no, it.field, it.func, it.segment].join(' ');
+                    var h = hit(L, blob);
+                    if (h) {
+                        it.no = h.no;
+                        it.link = h.link;
+                    }
+                });
+            });
+        });
+
+        // 2) 重畫表格
+        if (typeof renderTable === 'function') {
+            var lang = isEn() ? 'en' : 'zh';
+            if (window.level1Data) renderTable('tableBody1', level1Data[lang] || level1Data.zh, lang);
+            if (window.level2Data) renderTable('tableBody2', level2Data[lang] || level2Data.zh, lang);
+        }
+
+        // 3) DOM 再強制：編號欄 + 連結
+        document.querySelectorAll('#tableBody1 tr, #tableBody2 tr').forEach(function (row) {
+            var cells = row.querySelectorAll('td');
+            if (cells.length < 3) return;
+            var rowText = row.textContent || '';
+            var h = hit(list, rowText);
+            if (!h) return;
+
+            // 編號欄（第 2 欄 col-no）
+            var noCell = cells[1];
+            if (noCell) noCell.textContent = h.no;
+
+            // 連結
+            row.querySelectorAll('a').forEach(function (a) {
+                a.setAttribute('href', h.link);
+            });
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    window.switchLanguage = function (l) {
+        if (typeof orig === 'function') orig(l);
+        setTimeout(apply, 60);
+        setTimeout(apply, 250);
+        setTimeout(apply, 600);
+    };
+
+    console.log('✅ 編號／對應項目已完整列出');
+})();
+</script>
+  <!-- ============================================================ -->
+<!-- 公版：七印列 編號完整 + 保留紫金背景                            -->
+<!-- 貼在 </body> 最底部，Ctrl+F5                                  -->
+<!-- ============================================================ -->
+<style>
+    /* 保留七印列紫金背景 */
+    #tableBody2 tr.seven-seal-row td,
+    #tableBody2 tr.seven-seal-sub td {
+        background: rgba(88, 28, 135, 0.35) !important;
+        color: #ffd700 !important;
+    }
+    #tableBody2 tr.seven-seal-row td.col-segment,
+    #tableBody2 tr.seven-seal-sub td.col-segment {
+        background: linear-gradient(135deg, rgba(109, 40, 217, 0.75), rgba(88, 28, 135, 0.55)) !important;
+        color: #ffd700 !important;
+        font-weight: 700 !important;
+        border-left: 4px solid #ffd700 !important;
+    }
+    #tableBody2 tr.seven-seal-row td.col-no,
+    #tableBody2 tr.seven-seal-sub td.col-no {
+        color: #ffd700 !important;
+        font-weight: 700 !important;
+        white-space: normal !important;
+        line-height: 1.45 !important;
+        text-align: left !important;
+    }
+    #tableBody2 tr.seven-seal-row td.col-field,
+    #tableBody2 tr.seven-seal-sub td.col-field {
+        color: #ffed4a !important;
+    }
+    #tableBody2 tr.seven-seal-row td.col-func,
+    #tableBody2 tr.seven-seal-sub td.col-func {
+        color: #f0d890 !important;
+    }
+    #tableBody2 tr.seven-seal-row .unit-link,
+    #tableBody2 tr.seven-seal-sub .unit-link {
+        background: rgba(88, 28, 135, 0.45) !important;
+        border-color: rgba(255, 215, 0, 0.45) !important;
+        color: #ffd700 !important;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__sevenSealNoFull) return;
+    window.__sevenSealNoFull = true;
+
+    // 順序：先各印，再第7項總項（避免被「第7項」先吃掉）
+    var ZH = [
+        { re: /第一印|消業印/, no: '第7項 第一印 × 消業印', link: 'step7-1.html' },
+        { re: /第二印|修心印/, no: '第7項 第二印 × 修心印', link: 'step7-2.html' },
+        { re: /第三印|守願印/, no: '第7項 第三印 × 守願印', link: 'step7-3.html' },
+        { re: /第四印|誓令印/, no: '第7項 第四印 × 誓令印', link: 'step7-4.html' },
+        { re: /第五印|覺醒印/, no: '第7項 第五印 × 覺醒印', link: 'step7-5.html' },
+        { re: /第六印|誥徒誓印/, no: '第7項 第六印 × 誥徒誓印', link: 'step7-6.html' },
+        { re: /第七印|鳳徽印/, no: '第7項 第七印 × 鳳徽印', link: 'step7-7.html' },
+        { re: /第7項|七印誓網對應/, no: '第7項 七印誓網對應階段', link: 'step7.html' }
+    ];
+
+    var EN = [
+        { re: /First Seal|Karmic Purification/, no: 'Item 7 First Seal × Karmic Purification Seal', link: 'step7-1.html' },
+        { re: /Second Seal|Mind-Refinement/, no: 'Item 7 Second Seal × Mind-Refinement Seal', link: 'step7-2.html' },
+        { re: /Third Seal|Guardian Vow/, no: 'Item 7 Third Seal × Guardian Vow Seal', link: 'step7-3.html' },
+        { re: /Fourth Seal|Decree-Oath/, no: 'Item 7 Fourth Seal × Decree-Oath Seal', link: 'step7-4.html' },
+        { re: /Fifth Seal|Awakening Seal/, no: 'Item 7 Fifth Seal × Awakening Seal', link: 'step7-5.html' },
+        { re: /Sixth Seal|Disciple-Oath/, no: 'Item 7 Sixth Seal × Disciple-Oath Seal', link: 'step7-6.html' },
+        { re: /Seventh Seal|Phoenix Emblem/, no: 'Item 7 Seventh Seal × Phoenix Emblem Seal', link: 'step7-7.html' },
+        { re: /Item 7|Seven-Seal Vow Network Correspondence/, no: 'Item 7 Seven-Seal Vow Network Correspondence Stage', link: 'step7.html' }
+    ];
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var list = isEn() ? EN : ZH;
+
+        // 資料層
+        if (window.level2Data) {
+            ['zh', 'en'].forEach(function (lang) {
+                var pack = level2Data[lang];
+                if (!pack || !pack.items) return;
+                var L = (lang === 'en') ? EN : ZH;
+                pack.items.forEach(function (it) {
+                    var blob = [it.no, it.field, it.func, it.segment].join(' ');
+                    for (var i = 0; i < L.length; i++) {
+                        if (L[i].re.test(blob)) {
+                            it.no = L[i].no;
+                            it.link = L[i].link;
+                            break;
+                        }
+                    }
+                });
+            });
+        }
+
+        // 重畫
+        if (typeof renderTable === 'function' && window.level2Data) {
+            var lang = isEn() ? 'en' : 'zh';
+            renderTable('tableBody2', level2Data[lang] || level2Data.zh, lang);
+        }
+
+        // DOM 強制 + 加 class 保留背景
+        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
+            var t = row.textContent || '';
+            var hit = null;
+            for (var i = 0; i < list.length; i++) {
+                if (list[i].re.test(t)) { hit = list[i]; break; }
+            }
+            if (!hit) return;
+
+            row.classList.add('seven-seal-row');
+            if (/第一印|第二印|第三印|第四印|第五印|第六印|第七印|First Seal|Second Seal|Third Seal|Fourth Seal|Fifth Seal|Sixth Seal|Seventh Seal/.test(t) &&
+                !/七印誓網對應|Correspondence Stage/.test(t)) {
+                row.classList.add('seven-seal-sub');
+            }
+
+            var cells = row.querySelectorAll('td');
+            if (cells[1]) cells[1].textContent = hit.no;
+            row.querySelectorAll('a').forEach(function (a) {
+                a.setAttribute('href', hit.link);
+            });
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    window.switchLanguage = function (l) {
+        if (typeof orig === 'function') orig(l);
+        setTimeout(apply, 60);
+        setTimeout(apply, 250);
+        setTimeout(apply, 600);
+    };
+
+    console.log('✅ 七印編號完整 + 紫金背景保留');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 公版：刪除「欄位名稱」欄，功能說明加寬                          -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<style>
+    /* 隱藏欄位名稱欄（表頭 + 每一列第 4 欄） */
+    th.col-field,
+    td.col-field {
+        display: none !important;
+        width: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+
+    /* 功能簡要說明加寬 */
+    th.col-func,
+    td.col-func {
+        width: 55% !important;
+        min-width: 220px !important;
+    }
+
+    /* 編號欄可換行、完整顯示 */
+    th.col-no,
+    td.col-no {
+        width: 22% !important;
+        white-space: normal !important;
+        line-height: 1.45 !important;
+        text-align: left !important;
+    }
+
+    th.col-segment,
+    td.col-segment {
+        width: 14% !important;
+    }
+
+    th.col-link,
+    td.col-link {
+        width: 9% !important;
+    }
+
+    table {
+        min-width: 640px !important;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__hideFieldCol) return;
+    window.__hideFieldCol = true;
+
+    function apply() {
+        // 表頭
+        ['thField', 'thField2'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.style.setProperty('display', 'none', 'important');
+                el.style.setProperty('width', '0', 'important');
+            }
+        });
+
+        // 每一列第 4 欄（col-field）
+        document.querySelectorAll('td.col-field, th.col-field').forEach(function (el) {
+            el.style.setProperty('display', 'none', 'important');
+            el.style.setProperty('width', '0', 'important');
+            el.style.setProperty('padding', '0', 'important');
+            el.style.setProperty('border', 'none', 'important');
+        });
+
+        // 功能說明加寬
+        document.querySelectorAll('td.col-func, th.col-func').forEach(function (el) {
+            el.style.setProperty('width', '55%', 'important');
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 語系切換重畫表格後再藏一次
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 60);
+            setTimeout(apply, 250);
+            setTimeout(apply, 600);
+        };
+    }
+
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__hideFieldT);
+        window.__hideFieldT = setTimeout(apply, 50);
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    console.log('✅ 已刪除欄位名稱欄，功能說明加寬');
+})();
+</script>
 </body>
 </html>
