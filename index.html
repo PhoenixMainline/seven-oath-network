@@ -2529,5 +2529,256 @@
     console.log('✅ 已刪除欄位名稱欄，功能說明加寬');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：強制修正第13項連結 → step13.html                          -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__forceStep13Link) return;
+    window.__forceStep13Link = true;
+
+    function apply() {
+        // 1. 強制修改 level2Data 中的第13項
+        if (typeof level2Data !== 'undefined') {
+            ['zh', 'en'].forEach(function (lang) {
+                var pack = level2Data[lang];
+                if (!pack || !pack.items) return;
+                pack.items.forEach(function (it) {
+                    // 用編號或欄位名稱判斷是否為第13項
+                    var blob = (it.no || '') + ' ' + (it.field || '');
+                    if (/第13項|Item 13/.test(blob) ||
+                        /誓資紀錄|回源願書|不再入世|不入轉生|Return-to-Source|No Rebirth/.test(blob)) {
+                        it.link = 'step13.html';
+                        // 確保欄位名稱正確
+                        if (lang === 'zh') {
+                            it.field = '誓資紀錄 × 回源願書 × 不再入世 × 不入轉生';
+                            it.func = '紀錄誓資異動、補誓、干擾、被代理誓印與回源願書，供書令主尊監察與天庫、光網、冥界封存備查。';
+                            it.no = '第13項';
+                        } else {
+                            it.field = 'Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth';
+                            it.func = 'Records vow-asset changes, supplementary oaths, interference, delegated oath-seals and return-to-source vow scrolls, for Script Decree Sovereign supervision and Heavenly Treasury, Light Network, and Underworld archival reference.';
+                            it.no = 'Item 13';
+                        }
+                    }
+                });
+            });
+        }
+
+        // 2. 重新渲染表格（若 renderTable 函數存在）
+        if (typeof renderTable === 'function') {
+            var lang = (typeof currentLang !== 'undefined' && currentLang === 'en') ? 'en' : 'zh';
+            if (window.level2Data) {
+                renderTable('tableBody2', level2Data[lang] || level2Data.zh, lang);
+            }
+        }
+
+        // 3. DOM 強制修正：找到第13項的列，改連結與文字
+        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
+            var rowText = row.textContent || '';
+            var isTarget =
+                /第13項|Item 13/.test(rowText) ||
+                /誓資紀錄|回源願書|不再入世|不入轉生|Return-to-Source|No Rebirth/.test(rowText);
+
+            if (!isTarget) return;
+
+            // 改「進入 →」按鈕連結
+            row.querySelectorAll('a').forEach(function (a) {
+                a.setAttribute('href', 'step13.html');
+                a.style.pointerEvents = 'auto';
+                a.style.cursor = 'pointer';
+            });
+
+            // 改整列點擊
+            row.style.cursor = 'pointer';
+            if (!row.__step13Force) {
+                row.__step13Force = true;
+                row.addEventListener('click', function (e) {
+                    if (e.target && e.target.closest('a')) return;
+                    location.href = 'step13.html';
+                });
+            }
+
+            // 強制修正欄位文字（若被覆蓋）
+            var cells = row.querySelectorAll('td');
+            if (cells.length >= 4) {
+                var isEn = /Item 13/.test(rowText) || /Return-to-Source/.test(rowText);
+                if (isEn) {
+                    if (cells[1]) cells[1].textContent = 'Item 13';
+                    if (cells[3]) cells[3].textContent = 'Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth';
+                    if (cells[4]) cells[4].textContent = 'Records vow-asset changes, supplementary oaths, interference, delegated oath-seals and return-to-source vow scrolls, for Script Decree Sovereign supervision and Heavenly Treasury, Light Network, and Underworld archival reference.';
+                } else {
+                    if (cells[1]) cells[1].textContent = '第13項';
+                    if (cells[3]) cells[3].textContent = '誓資紀錄 × 回源願書 × 不再入世 × 不入轉生';
+                    if (cells[4]) cells[4].textContent = '紀錄誓資異動、補誓、干擾、被代理誓印與回源願書，供書令主尊監察與天庫、光網、冥界封存備查。';
+                }
+            }
+        });
+
+        console.log('✅ 第13項強制修正 → step13.html');
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 語系切換後再跑一次
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 80);
+            setTimeout(apply, 300);
+            setTimeout(apply, 600);
+        };
+    }
+
+    console.log('✅ 公版：第13項強制修正已載入');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 公版：第13項編號顯示完整對應項目                              -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<style>
+    /* 確保編號欄可以顯示完整文字 */
+    #tableBody2 td.col-no {
+        white-space: normal !important;
+        word-break: break-word !important;
+        line-height: 1.45 !important;
+        min-width: 120px !important;
+        width: 22% !important;
+    }
+</style>
+
+<script>
+(function () {
+    if (window.__fixStep13FullNo) return;
+    window.__fixStep13FullNo = true;
+
+    var FULL_ZH = '第13項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生';
+    var FULL_EN = 'Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth';
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var fullText = isEn() ? FULL_EN : FULL_ZH;
+
+        // 1. 修正 level2Data 中的第13項
+        if (typeof level2Data !== 'undefined') {
+            ['zh', 'en'].forEach(function (lang) {
+                var pack = level2Data[lang];
+                if (!pack || !pack.items) return;
+                pack.items.forEach(function (it) {
+                    var blob = (it.no || '') + ' ' + (it.field || '');
+                    if (/第13項|Item 13/.test(blob) ||
+                        /誓資紀錄|回源願書|不再入世|不入轉生|Return-to-Source|No Rebirth/.test(blob)) {
+                        // 將完整對應項目寫入 no 欄位
+                        if (lang === 'zh') {
+                            it.no = '第13項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生';
+                            it.field = '誓資紀錄 × 回源願書 × 不再入世 × 不入轉生';
+                            it.func = '紀錄誓資異動、補誓、干擾、被代理誓印與回源願書，供書令主尊監察與天庫、光網、冥界封存備查。';
+                            it.link = 'step13.html';
+                        } else {
+                            it.no = 'Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth';
+                            it.field = 'Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth';
+                            it.func = 'Records vow-asset changes, supplementary oaths, interference, delegated oath-seals and return-to-source vow scrolls, for Script Decree Sovereign supervision and Heavenly Treasury, Light Network, and Underworld archival reference.';
+                            it.link = 'step13.html';
+                        }
+                    }
+                });
+            });
+        }
+
+        // 2. 重新渲染表格（若 renderTable 函數存在）
+        if (typeof renderTable === 'function') {
+            var lang = isEn() ? 'en' : 'zh';
+            if (window.level2Data) {
+                renderTable('tableBody2', level2Data[lang] || level2Data.zh, lang);
+            }
+        }
+
+        // 3. DOM 強制修正：找到第13項的列，將完整文字寫入編號欄
+        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
+            var rowText = row.textContent || '';
+            var isTarget =
+                /第13項|Item 13/.test(rowText) ||
+                /誓資紀錄|回源願書|不再入世|不入轉生|Return-to-Source|No Rebirth/.test(rowText);
+
+            if (!isTarget) return;
+
+            var cells = row.querySelectorAll('td');
+            if (cells.length < 2) return;
+
+            // 編號欄（第2欄 col-no）寫入完整對應項目
+            if (cells[1]) {
+                cells[1].textContent = fullText;
+                cells[1].style.setProperty('white-space', 'normal', 'important');
+                cells[1].style.setProperty('word-break', 'break-word', 'important');
+                cells[1].style.setProperty('line-height', '1.45', 'important');
+                cells[1].style.setProperty('min-width', '120px', 'important');
+            }
+
+            // 修正「進入 →」按鈕連結
+            row.querySelectorAll('a').forEach(function (a) {
+                a.setAttribute('href', 'step13.html');
+                a.style.pointerEvents = 'auto';
+                a.style.cursor = 'pointer';
+            });
+
+            // 整列點擊
+            row.style.cursor = 'pointer';
+            if (!row.__step13FullNo) {
+                row.__step13FullNo = true;
+                row.addEventListener('click', function (e) {
+                    if (e.target && e.target.closest('a')) return;
+                    location.href = 'step13.html';
+                });
+            }
+        });
+
+        console.log('✅ 第13項編號已顯示完整對應項目');
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    // 語系切換後再跑一次
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 80);
+            setTimeout(apply, 300);
+            setTimeout(apply, 600);
+        };
+    }
+
+    console.log('✅ 公版：第13項完整對應項目已載入');
+})();
+</script>
 </body>
 </html>
