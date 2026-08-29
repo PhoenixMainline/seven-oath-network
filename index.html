@@ -3203,5 +3203,99 @@
     console.log('✅ 第8項 / 第9項 最終保護已啟用');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：第8項、第9項移除七印紫金背景（改為一般背景）           -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__removeStep89Bg) return;
+    window.__removeStep89Bg = true;
+
+    function apply() {
+        // 1. 移除所有第8項、第9項列的 seven-seal-row / seven-seal-sub class
+        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
+            var t = (row.textContent || '').replace(/\s+/g, ' ');
+            // 第8項或第9項
+            if (/第8項|入世誓約|誓約同步|Item 8|Worldly Vow|第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
+                row.classList.remove('seven-seal-row', 'seven-seal-sub');
+                // 移除行內樣式中的紫金背景
+                row.style.setProperty('background', '', 'important');
+                row.style.setProperty('border-left', '', 'important');
+                // 移除所有 td 中的紫金背景
+                var tds = row.querySelectorAll('td');
+                tds.forEach(function (td) {
+                    td.style.setProperty('background', '', 'important');
+                    td.style.setProperty('color', '', 'important');
+                });
+            }
+        });
+
+        // 2. 確保第8項、第9項的編號欄完整顯示
+        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
+            var t = (row.textContent || '').replace(/\s+/g, ' ');
+            var cells = row.querySelectorAll('td');
+            if (cells.length < 2) return;
+
+            // 第8項
+            if (/第8項|入世誓約|誓約同步|Item 8|Worldly Vow/.test(t)) {
+                var isEn = /Item 8|Worldly Vow/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
+                cells[1].textContent = isEn
+                    ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
+                    : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
+                cells[1].style.cssText += ';white-space:normal!important;word-break:break-word!important;line-height:1.45!important;';
+                row.querySelectorAll('a').forEach(function (a) { a.setAttribute('href', 'step8.html'); });
+                row.classList.remove('seven-seal-row', 'seven-seal-sub');
+            }
+
+            // 第9項
+            if (/第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
+                var isEn = /Item 9|Circle Seal/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
+                cells[1].textContent = isEn
+                    ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
+                    : '第9項 第七印鳳徽印 × 圓印封冊';
+                cells[1].style.cssText += ';white-space:normal!important;word-break:break-word!important;line-height:1.45!important;';
+                row.querySelectorAll('a').forEach(function (a) { a.setAttribute('href', 'step9.html'); });
+                row.classList.remove('seven-seal-row', 'seven-seal-sub');
+            }
+        });
+
+        console.log('✅ 第8項、第9項已移除紫金背景，改為一般背景');
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1000);
+        setTimeout(apply, 2000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 80);
+            setTimeout(apply, 300);
+            setTimeout(apply, 700);
+        };
+    }
+
+    // 監聽 DOM 變化，防止其他腳本重新套用紫金背景
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__removeBgTimer);
+        window.__removeBgTimer = setTimeout(apply, 100);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+    console.log('✅ 公版：第8項、第9項移除紫金背景已載入');
+})();
+</script>
 </body>
 </html>
