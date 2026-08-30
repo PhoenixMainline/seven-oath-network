@@ -86,15 +86,11 @@
         }
 
         .hud-container::after {
-            content: "";
-            position: absolute;
-            top: 18px;
-            right: 18px;
-            width: 14px;
-            height: 14px;
-            border-top: 3px solid #a78bfa;
-            border-right: 3px solid #a78bfa;
-            pointer-events: none;
+            display: none !important;
+            content: none !important;
+            border: none !important;
+            width: 0 !important;
+            height: 0 !important;
         }
 
         .header {
@@ -291,7 +287,9 @@
         }
 
         .unit-link {
-            display: inline-block;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 4px !important;
             background: transparent;
             border: 1px solid rgba(168, 85, 247, 0.35);
             color: #c4b5fd;
@@ -301,7 +299,7 @@
             text-decoration: none;
             letter-spacing: 1px;
             transition: 0.25s ease;
-            white-space: nowrap;
+            white-space: nowrap !important;
             font-weight: 500;
         }
 
@@ -314,7 +312,7 @@
         }
 
         .unit-link i {
-            margin-left: 4px;
+            margin-left: 2px !important;
         }
 
         .footer-note {
@@ -334,6 +332,77 @@
         .footer-note .page-info i {
             color: #d4af37;
             margin-right: 4px;
+        }
+
+        /* 外部瀏覽器按鈕樣式 */
+        .btn-external-browser {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 14px;
+            background: rgba(0, 230, 118, 0.12);
+            border: 1px solid rgba(0, 230, 118, 0.3);
+            border-radius: 20px;
+            color: #00e676;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif;
+            margin-left: 8px;
+        }
+        .btn-external-browser:hover {
+            background: rgba(0, 230, 118, 0.2);
+            box-shadow: 0 0 20px rgba(0, 230, 118, 0.2);
+            transform: scale(1.02);
+        }
+        .btn-external-browser i {
+            font-size: 0.8rem;
+        }
+
+        /* ===== 七印誓網專屬：深紫底色 + 金色字體 ===== */
+        #tableBody2 tr.seven-seal-row td,
+        #tableBody2 tr.seven-seal-sub td {
+            background: rgba(88, 28, 135, 0.35) !important;
+            color: #ffd700 !important;
+        }
+        #tableBody2 tr.seven-seal-row td.col-segment,
+        #tableBody2 tr.seven-seal-sub td.col-segment {
+            background: linear-gradient(135deg, rgba(109, 40, 217, 0.75), rgba(88, 28, 135, 0.55)) !important;
+            color: #ffd700 !important;
+            font-weight: 700 !important;
+            border-left: 4px solid #ffd700 !important;
+        }
+        #tableBody2 tr.seven-seal-row td.col-no,
+        #tableBody2 tr.seven-seal-sub td.col-no {
+            color: #ffd700 !important;
+            font-weight: 700 !important;
+        }
+        #tableBody2 tr.seven-seal-row td.col-field,
+        #tableBody2 tr.seven-seal-sub td.col-field {
+            color: #ffed4a !important;
+            font-weight: 500 !important;
+        }
+        #tableBody2 tr.seven-seal-row td.col-func,
+        #tableBody2 tr.seven-seal-sub td.col-func {
+            color: #f0d890 !important;
+            font-weight: 400 !important;
+        }
+        #tableBody2 tr.seven-seal-row .unit-link,
+        #tableBody2 tr.seven-seal-sub .unit-link {
+            background: rgba(88, 28, 135, 0.45) !important;
+            border-color: rgba(255, 215, 0, 0.45) !important;
+            color: #ffd700 !important;
+            font-weight: 600 !important;
+        }
+        #tableBody2 tr.seven-seal-row .unit-link i,
+        #tableBody2 tr.seven-seal-sub .unit-link i {
+            color: #ffd700 !important;
+        }
+        #tableBody2 tr.seven-seal-row:hover td,
+        #tableBody2 tr.seven-seal-sub:hover td {
+            background: rgba(88, 28, 135, 0.5) !important;
         }
 
         @media (max-width: 768px) {
@@ -401,6 +470,15 @@
                 font-size: 0.6rem;
                 padding: 0 8px;
             }
+            .btn-external-browser {
+                font-size: 0.6rem;
+                padding: 3px 10px;
+                gap: 4px;
+                margin-left: 4px;
+            }
+            .btn-external-browser i {
+                font-size: 0.6rem;
+            }
         }
     </style>
 </head>
@@ -463,7 +541,7 @@
         </div>
 
         <div class="footer-note">
-            <span class="page-info" id="pageInfo"><i class="fa-regular fa-file-lines"></i> 📄 凡圓滿【宇宙誓印覺醒工程】者，由天庫自動撥補資糧 </span>
+            <span class="page-info" id="pageInfo"><i class="fa-regular fa-file-lines"></i> 📄 凡圓滿【宇宙誓印覺醒工程】者，由天庫自動撥補資糧。 </span>
         </div>
     </div>
 
@@ -903,15 +981,15 @@
             document.getElementById('thFunc2').textContent = d2.thFunc;
             renderTable('tableBody2', d2, lang);
 
-            // 標題
+            // 標題與頁尾文字
             if (lang === 'en') {
-                document.getElementById('mainTitle').textContent = '【Cosmic Vow-Seal Awakening Project · Seven-Seal Vow Network】Launch Entry Point';
-                document.getElementById('subText').textContent = 'Corresponding Tier Items × Oath-Soul Bloodline Identity-Unlocking Record Protocol';
-                document.getElementById('pageInfo').innerHTML = '📄 For those who fulfill the【Cosmic Vow-Seal Awakening Project】';
+                document.getElementById('mainTitle').textContent = '【Cosmic Oath-Seal Awakening Project · Seven-Seal Vow Network】 Activation Entrance';
+                document.getElementById('subText').textContent = 'Corresponding Tier Items × Unlock Oath-Soul Bloodline Identity Record Process';
+                document.getElementById('pageInfo').innerHTML = '<i class="fa-regular fa-file-lines"></i> 📄 For those who fulfill the【Cosmic Vow-Seal Awakening Project】, the Heavenly Treasury shall automatically replenish their provisions. Ordering initiates activation. Validation achieves alignment.';
             } else {
                 document.getElementById('mainTitle').textContent = '【宇宙誓印覺醒工程 · 七印誓網】啟動入口';
                 document.getElementById('subText').textContent = '對應級距項目 × 解鎖誓魂血脈身份記載歷程程序';
-                document.getElementById('pageInfo').innerHTML = '📄 凡圓滿【宇宙誓印覺醒工程】者，由天庫自動撥補資糧 ';
+                document.getElementById('pageInfo').innerHTML = '<i class="fa-regular fa-file-lines"></i> 📄 凡圓滿【宇宙誓印覺醒工程】者，由天庫自動撥補資糧。';
             }
         }
 
@@ -922,2450 +1000,163 @@
         window.switchLanguage = switchLanguage;
     </script>
 
-    <style>
-        .unit-link {
-            white-space: nowrap !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            gap: 4px !important;
-        }
-        .unit-link i {
-            margin-left: 2px !important;
-        }
-    </style>
-<style>
-    /* 外部瀏覽器按鈕樣式 */
-    .btn-external-browser {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 4px 14px;
-        background: rgba(0, 230, 118, 0.12);
-        border: 1px solid rgba(0, 230, 118, 0.3);
-        border-radius: 20px;
-        color: #00e676;
-        font-size: 0.7rem;
-        font-weight: 700;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        font-family: 'Noto Sans TC', 'Share Tech Mono', sans-serif;
-        margin-left: 8px;
-    }
-    .btn-external-browser:hover {
-        background: rgba(0, 230, 118, 0.2);
-        box-shadow: 0 0 20px rgba(0, 230, 118, 0.2);
-        transform: scale(1.02);
-    }
-    .btn-external-browser i {
-        font-size: 0.8rem;
-    }
+    <!-- 外部瀏覽器按鈕腳本 -->
+    <script>
+        (function() {
+            function addExternalBrowserButton() {
+                var langGroup = document.querySelector('.lang-switch-group');
+                if (!langGroup) return;
+                if (document.querySelector('.btn-external-browser')) return;
 
-    /* 手機版調整 */
-    @media (max-width: 480px) {
-        .btn-external-browser {
-            font-size: 0.6rem;
-            padding: 3px 10px;
-            gap: 4px;
-            margin-left: 4px;
-        }
-        .btn-external-browser i {
-            font-size: 0.6rem;
-        }
-    }
-</style>
+                var btn = document.createElement('a');
+                btn.className = 'btn-external-browser';
+                btn.href = '#';
+                btn.setAttribute('role', 'button');
+                btn.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>🌐 瀏覽器開啟</span>';
 
-<script>
-    (function() {
-        // 在標頭區加入外部瀏覽器按鈕
-        function addExternalBrowserButton() {
-            var langGroup = document.querySelector('.lang-switch-group');
-            if (!langGroup) {
-                console.warn('⚠️ 找不到 .lang-switch-group');
-                return;
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openInExternalBrowser();
+                });
+
+                langGroup.parentNode.insertBefore(btn, langGroup.nextSibling);
             }
 
-            if (document.querySelector('.btn-external-browser')) return;
+            function openInExternalBrowser() {
+                var url = window.location.href;
+                var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-            var btn = document.createElement('a');
-            btn.className = 'btn-external-browser';
-            btn.href = '#';
-            btn.setAttribute('role', 'button');
-            btn.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i> <span>🌐 瀏覽器開啟</span>';
-
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                openInExternalBrowser();
-            });
-
-            langGroup.parentNode.insertBefore(btn, langGroup.nextSibling);
-            console.log('✅ 外部瀏覽器按鈕已新增');
-        }
-
-        // 強制開啟外部瀏覽器
-        function openInExternalBrowser() {
-            var url = window.location.href;
-            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-            // Android 使用 intent:// 強制跳轉 Chrome
-            if (/android/i.test(userAgent)) {
-                try {
-                    var intentUrl = 'intent://' + window.location.host + window.location.pathname + window.location.search + '#Intent;scheme=https;package=com.android.chrome;end;';
-                    window.location.href = intentUrl;
-                    console.log('✅ Android: 嘗試強制跳轉 Chrome');
-                    return;
-                } catch (e) {
-                    console.warn('⚠️ intent 跳轉失敗，嘗試備用方法');
+                if (/android/i.test(userAgent)) {
+                    try {
+                        var intentUrl = 'intent://' + window.location.host + window.location.pathname + window.location.search + '#Intent;scheme=https;package=com.android.chrome;end;';
+                        window.location.href = intentUrl;
+                        return;
+                    } catch (e) {}
                 }
-            }
 
-            // iOS 嘗試用 chrome:// 協定
-            if (/iphone|ipad|ipod/i.test(userAgent)) {
-                try {
-                    var chromeUrl = 'chrome://' + window.location.host + window.location.pathname + window.location.search;
-                    window.location.href = chromeUrl;
-                    console.log('✅ iOS: 嘗試強制跳轉 Chrome');
-                    return;
-                } catch (e) {
-                    console.warn('⚠️ chrome:// 跳轉失敗');
+                if (/iphone|ipad|ipod/i.test(userAgent)) {
+                    try {
+                        var chromeUrl = 'chrome://' + window.location.host + window.location.pathname + window.location.search;
+                        window.location.href = chromeUrl;
+                        return;
+                    } catch (e) {}
                 }
-            }
 
-            // 備用方法：複製網址並提示
-            var fallbackUrl = window.location.href;
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(fallbackUrl).then(function() {
-                    alert('⚠️ 無法自動跳轉外部瀏覽器\n\n📋 網址已複製，請手動貼到 Chrome / Safari 開啟：\n\n' + fallbackUrl);
-                }).catch(function() {
+                var fallbackUrl = window.location.href;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(fallbackUrl).then(function() {
+                        alert('⚠️ 無法自動跳轉外部瀏覽器\n\n📋 網址已複製，請手動貼到 Chrome / Safari 開啟：\n\n' + fallbackUrl);
+                    }).catch(function() {
+                        fallbackCopy(fallbackUrl);
+                    });
+                } else {
                     fallbackCopy(fallbackUrl);
+                }
+            }
+
+            function fallbackCopy(text) {
+                var textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                textarea.style.left = '-9999px';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    alert('⚠️ 無法自動跳轉外部瀏覽器\n\n📋 網址已複製，請手動貼到 Chrome / Safari 開啟：\n\n' + text);
+                } catch (e) {
+                    alert('⚠️ 請手動複製以下網址，貼到外部瀏覽器開啟：\n\n📋 ' + text);
+                }
+                document.body.removeChild(textarea);
+            }
+
+            if (document.readyState === 'complete') {
+                setTimeout(addExternalBrowserButton, 100);
+            } else {
+                window.addEventListener('load', function() {
+                    setTimeout(addExternalBrowserButton, 200);
+                });
+            }
+        })();
+    </script>
+
+    <!-- 高亮與樣式調整腳本 -->
+    <script>
+        (function() {
+            function highlightSevenSealRows() {
+                var rows = document.querySelectorAll('#tableBody2 tr');
+                rows.forEach(function(row) {
+                    row.classList.remove('seven-seal-row', 'seven-seal-sub');
+                    var cells = row.querySelectorAll('td');
+                    if (cells.length < 2) return;
+
+                    var segmentText = cells[0] ? cells[0].textContent.trim() : '';
+                    var noText = cells[1] ? cells[1].textContent.trim() : '';
+
+                    var isSevenSeal = /七印啟動階段|Seven-Seal Activation Phase/i.test(segmentText) ||
+                                       /第[一二三四五六七]印|First Seal|Second Seal|Third Seal|Fourth Seal|Fifth Seal|Sixth Seal|Seventh Seal/i.test(noText) ||
+                                       /第7項|Item 7/i.test(noText);
+
+                    if (isSevenSeal) {
+                        row.classList.add('seven-seal-row');
+                        if (/第[一二三四五六七]印|First Seal|Second Seal|Third Seal|Fourth Seal|Fifth Seal|Sixth Seal|Seventh Seal/i.test(noText) && !/第7項|Item 7/i.test(noText)) {
+                            row.classList.add('seven-seal-sub');
+                        }
+                    }
+                });
+            }
+
+            // 強制第8項與第9項資訊正確
+            function forceStep89() {
+                document.querySelectorAll('#tableBody2 tr').forEach(function(row) {
+                    var t = row.textContent || '';
+                    var cells = row.querySelectorAll('td');
+                    if (cells.length < 3) return;
+
+                    if (/第8項|入世誓約|誓約同步|Item 8|Worldly Vow/.test(t)) {
+                        var isEn = /Item 8|Worldly Vow/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
+                        cells[1].textContent = isEn
+                            ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
+                            : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
+                        cells[1].style.whiteSpace = 'normal';
+                        cells[1].style.wordBreak = 'break-word';
+                        row.querySelectorAll('a').forEach(function(a) { a.setAttribute('href', 'step8.html'); });
+                        row.classList.remove('seven-seal-row', 'seven-seal-sub');
+                    }
+
+                    if (/第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
+                        var isEn = /Item 9|Circle Seal/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
+                        cells[1].textContent = isEn
+                            ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
+                            : '第9項 第七印鳳徽印 × 圓印封冊';
+                        cells[1].style.whiteSpace = 'normal';
+                        cells[1].style.wordBreak = 'break-word';
+                        row.querySelectorAll('a').forEach(function(a) { a.setAttribute('href', 'step9.html'); });
+                        row.classList.remove('seven-seal-row', 'seven-seal-sub');
+                    }
+                });
+            }
+
+            function runAllFixes() {
+                highlightSevenSealRows();
+                forceStep89();
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    setTimeout(runAllFixes, 150);
                 });
             } else {
-                fallbackCopy(fallbackUrl);
+                setTimeout(runAllFixes, 150);
             }
-        }
 
-        // 複製網址備用方法
-        function fallbackCopy(text) {
-            var textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            textarea.style.left = '-9999px';
-            document.body.appendChild(textarea);
-            textarea.select();
-            try {
-                document.execCommand('copy');
-                alert('⚠️ 無法自動跳轉外部瀏覽器\n\n📋 網址已複製，請手動貼到 Chrome / Safari 開啟：\n\n' + text);
-            } catch (e) {
-                alert('⚠️ 請手動複製以下網址，貼到外部瀏覽器開啟：\n\n📋 ' + text);
-            }
-            document.body.removeChild(textarea);
-        }
-
-        if (document.readyState === 'complete') {
-            setTimeout(addExternalBrowserButton, 100);
-        } else {
-            window.addEventListener('load', function() {
-                setTimeout(addExternalBrowserButton, 200);
-            });
-        }
-    })();
-</script>
-<style>
-    /* ===== 七印誓網專屬：深紫底色 + 金色字體 ===== */
-
-    /* 主項：七印啟動階段 */
-    .seven-seal-row {
-        background: linear-gradient(135deg, rgba(88, 28, 135, 0.60), rgba(88, 28, 135, 0.25)) !important;
-        border-left: 4px solid #ffd700 !important;
-    }
-    .seven-seal-row td {
-        background: rgba(88, 28, 135, 0.30) !important;
-        color: #ffd700 !important;
-    }
-    .seven-seal-row td .col-segment,
-    .seven-seal-row td .col-no,
-    .seven-seal-row td .col-field,
-    .seven-seal-row td .col-func {
-        color: #ffd700 !important;
-        font-weight: 500 !important;
-        text-shadow: 0 0 20px rgba(255, 215, 0, 0.08) !important;
-    }
-    .seven-seal-row td .col-segment {
-        font-weight: 700 !important;
-    }
-    .seven-seal-row td .col-no {
-        font-weight: 700 !important;
-    }
-    .seven-seal-row td .col-field {
-        font-weight: 500 !important;
-    }
-    .seven-seal-row td .col-func {
-        font-weight: 400 !important;
-        color: #f0d890 !important;
-    }
-    .seven-seal-row:hover td {
-        background: rgba(88, 28, 135, 0.50) !important;
-    }
-
-    /* 子項：第一印～第七印 */
-    .seven-seal-sub {
-        background: rgba(88, 28, 135, 0.25) !important;
-    }
-    .seven-seal-sub td {
-        background: rgba(88, 28, 135, 0.12) !important;
-        color: #ffd700 !important;
-    }
-    .seven-seal-sub td .col-segment,
-    .seven-seal-sub td .col-no,
-    .seven-seal-sub td .col-field,
-    .seven-seal-sub td .col-func {
-        color: #ffd700 !important;
-    }
-    .seven-seal-sub td .col-no {
-        font-weight: 600 !important;
-    }
-    .seven-seal-sub td .col-field {
-        color: #ffed4a !important;
-    }
-    .seven-seal-sub td .col-func {
-        color: #f0d890 !important;
-    }
-    .seven-seal-sub:hover td {
-        background: rgba(88, 28, 135, 0.30) !important;
-    }
-
-    /* 分段標籤 */
-    .segment-seven {
-        color: #ffd700 !important;
-        font-weight: 700 !important;
-        border-left-color: #ffd700 !important;
-    }
-
-    /* 模組標題 */
-    .module-seven-title {
-        color: #ffd700 !important;
-        text-shadow: 0 0 30px rgba(255, 215, 0, 0.2) !important;
-    }
-
-    /* 連結按鈕 */
-    .seven-seal-row .unit-link {
-        background: rgba(88, 28, 135, 0.40) !important;
-        border-color: rgba(255, 215, 0, 0.35) !important;
-        color: #ffd700 !important;
-        font-weight: 600 !important;
-    }
-    .seven-seal-row .unit-link i {
-        color: #ffd700 !important;
-    }
-    .seven-seal-row .unit-link:hover {
-        background: rgba(88, 28, 135, 0.60) !important;
-        border-color: #ffd700 !important;
-        color: #ffffff !important;
-        box-shadow: 0 0 30px rgba(88, 28, 135, 0.30) !important;
-    }
-    .seven-seal-row .unit-link:hover i {
-        color: #ffffff !important;
-    }
-
-    /* 階層圖標 */
-    .seven-seal-row i.fa-seal {
-        color: #ffd700 !important;
-    }
-</style>
-
-<script>
-    (function() {
-        function highlightSevenSealRows() {
-            var rows = document.querySelectorAll('#tableBody2 tr');
-            var sevenSealPhrases = ['七印啟動階段', 'Seven-Seal Activation Phase', '第一印', '第二印', '第三印', '第四印', '第五印', '第六印', '第七印',
-                'First Seal', 'Second Seal', 'Third Seal', 'Fourth Seal', 'Fifth Seal', 'Sixth Seal', 'Seventh Seal'
-            ];
-
-            rows.forEach(function(row) {
-                var cells = row.querySelectorAll('td');
-                if (cells.length < 2) return;
-
-                var segmentText = cells[0] ? cells[0].textContent.trim() : '';
-                var noText = cells[1] ? cells[1].textContent.trim() : '';
-
-                var isSevenSeal = false;
-
-                for (var i = 0; i < sevenSealPhrases.length; i++) {
-                    if (segmentText.indexOf(sevenSealPhrases[i]) !== -1) {
-                        isSevenSeal = true;
-                        break;
-                    }
-                    if (noText.indexOf(sevenSealPhrases[i]) !== -1) {
-                        isSevenSeal = true;
-                        break;
-                    }
-                }
-
-                if (noText.indexOf('第') !== -1 && noText.indexOf('印') !== -1) {
-                    isSevenSeal = true;
-                }
-
-                if (isSevenSeal) {
-                    row.classList.add('seven-seal-row');
-                    if (noText.indexOf('第') !== -1 && noText.indexOf('印') !== -1 && noText.indexOf('項') === -1) {
-                        row.classList.add('seven-seal-sub');
-                    }
-                }
-            });
-
-            console.log('✅ 七印誓網區塊已套用深紫底色 + 金色字體');
-        }
-
-        if (document.readyState === 'complete') {
-            setTimeout(highlightSevenSealRows, 100);
-        } else {
-            window.addEventListener('load', function() {
-                setTimeout(highlightSevenSealRows, 200);
-            });
-        }
-
-        var origSwitch = window.switchLanguage;
-        if (origSwitch) {
+            var origSwitch = window.switchLanguage;
             window.switchLanguage = function(lang) {
-                origSwitch(lang);
-                setTimeout(highlightSevenSealRows, 150);
+                if (typeof origSwitch === 'function') origSwitch(lang);
+                setTimeout(runAllFixes, 100);
             };
-        }
-    })();
-</script>
-<script>
-    (function() {
-        // 刪除標題中的多餘「」或括號符號
-        var titleEl = document.querySelector('.header h1');
-        if (titleEl) {
-            var text = titleEl.textContent;
-            // 刪除多餘的「」或﹁﹂符號
-            text = text.replace(/[「」﹁﹂\{\}\[\]]/g, '');
-            // 確保文字正確
-            titleEl.textContent = text;
-            console.log('✅ 已刪除標題多餘符號');
-        }
-    })();
-</script>
-<!-- ============================================================ -->
-<!-- 移除右上角藍色角標（.hud-container::after）                 -->
-<!-- ============================================================ -->
-<style>
-    .hud-container::after {
-        display: none !important;
-        content: none !important;
-        border: none !important;
-        width: 0 !important;
-        height: 0 !important;
-    }
-</style>
-<!-- ============================================================ -->
-<!-- 第1項連結對應修正：對頻總判定 → step1；誓印未通過 → step1-1   -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    if (window.__fixStep1Links) return;
-    window.__fixStep1Links = true;
-
-    function apply() {
-        document.querySelectorAll('a, button, [onclick], [href]').forEach(function (el) {
-            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
-            var href = el.getAttribute('href') || '';
-            var onclick = el.getAttribute('onclick') || '';
-
-            // 列文字判斷
-            var isPassJudge =
-                (t.indexOf('對頻總判定') !== -1 && t.indexOf('誓印未通過') === -1) ||
-                (t.indexOf('開啟誓魂密鑰對頻總判定') !== -1 && t.indexOf('誓印通過') !== -1 && t.indexOf('誓印未通過') !== -1 && t.indexOf('補誓') === -1);
-
-            var isNotPass =
-                t.indexOf('誓印未通過') !== -1 ||
-                (t.indexOf('開啟誓魂密鑰對頻總判定') !== -1 && t.indexOf('誓印未通過') !== -1);
-
-            var isStep2 =
-                t.indexOf('被代理誓印') !== -1 ||
-                (t.indexOf('第2項') !== -1 && t.indexOf('代理') !== -1);
-
-            // 「進入 →」按鈕：依同一列文字決定目標
-            var row = el.closest('tr, .row, .list-item, .nav-item, div');
-            var rowText = row ? (row.textContent || '').replace(/\s+/g, ' ') : t;
-
-            if (el.tagName === 'A' || href || /進入/.test(t)) {
-                // 第1項 對頻總判定（通過/未通過判定頁）
-                if (
-                    (rowText.indexOf('對頻總判定') !== -1 && rowText.indexOf('誓印未通過') === -1) ||
-                    (rowText.indexOf('開啟誓魂密鑰對頻總判定') !== -1 && rowText.indexOf('誓印通過') !== -1 && rowText.indexOf('補誓') === -1 && rowText.indexOf('第1項 誓印未通過') === -1)
-                ) {
-                    if (el.tagName === 'A') el.setAttribute('href', 'step1.html');
-                    if (onclick) el.setAttribute('onclick', "location.href='step1.html'");
-                }
-
-                // 第1項 誓印未通過（補誓）
-                if (
-                    rowText.indexOf('第1項 誓印未通過') !== -1 ||
-                    (rowText.indexOf('誓印未通過') !== -1 && rowText.indexOf('開啟誓魂密鑰對頻總判定') !== -1) ||
-                    (rowText.indexOf('補誓') !== -1 && rowText.indexOf('第1項') !== -1)
-                ) {
-                    if (el.tagName === 'A') el.setAttribute('href', 'step1-1.html');
-                    if (onclick) el.setAttribute('onclick', "location.href='step1-1.html'");
-                }
-
-                // 第13項 必須優先（說明文字含「被代理誓印」）
-                if (rowText.indexOf('第13項') !== -1 || rowText.indexOf('回源願書') !== -1 || rowText.indexOf('不再入世') !== -1 || rowText.indexOf('不入轉生') !== -1) {
-                    if (el.tagName === 'A') el.setAttribute('href', 'step13.html');
-                    if (onclick) el.setAttribute('onclick', "location.href='step13.html'");
-                }
-                // 第2項
-                else if (rowText.indexOf('被代理誓印') !== -1 || (rowText.indexOf('第2項') !== -1 && rowText.indexOf('代理') !== -1)) {
-                    if (el.tagName === 'A') el.setAttribute('href', 'step2.html');
-                    if (onclick) el.setAttribute('onclick', "location.href='step2.html'");
-                }
-            }
-        });
-
-        // step1.html 的「下一步」→ step1-1.html（誓印未通過補誓）
-        var nextBtn = document.getElementById('btnNext') || document.querySelector('[id*="btnNext"], .btn-next, a.btn-action[href*="step"]');
-        if (nextBtn) {
-            var page = (location.pathname || '').toLowerCase();
-            if (page.indexOf('step1.html') !== -1 && page.indexOf('step1-1') === -1) {
-                if (nextBtn.tagName === 'A') nextBtn.setAttribute('href', 'step1-1.html');
-                nextBtn.onclick = function (e) {
-                    e.preventDefault();
-                    location.href = 'step1-1.html';
-                };
-            }
-            // step1-1 的下一步 → step2
-            if (page.indexOf('step1-1') !== -1) {
-                if (nextBtn.tagName === 'A') nextBtn.setAttribute('href', 'step2.html');
-                nextBtn.onclick = function (e) {
-                    e.preventDefault();
-                    location.href = 'step2.html';
-                };
-            }
-        }
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 200);
-        setTimeout(apply, 600);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 第二層七印列：中英文同款深紫底＋金色字（修正版）              -->
-<!-- ============================================================ -->
-<style>
-    /* 主列 + 子列：深紫底、金字 */
-    #tableBody2 tr.seven-seal-row td,
-    #tableBody2 tr.seven-seal-sub td {
-        background: rgba(88, 28, 135, 0.35) !important;
-        color: #ffd700 !important;
-    }
-    #tableBody2 tr.seven-seal-row td.col-segment,
-    #tableBody2 tr.seven-seal-sub td.col-segment {
-        background: linear-gradient(135deg, rgba(109, 40, 217, 0.75), rgba(88, 28, 135, 0.55)) !important;
-        color: #ffd700 !important;
-        font-weight: 700 !important;
-        border-left: 4px solid #ffd700 !important;
-    }
-    #tableBody2 tr.seven-seal-row td.col-no,
-    #tableBody2 tr.seven-seal-sub td.col-no {
-        color: #ffd700 !important;
-        font-weight: 700 !important;
-    }
-    #tableBody2 tr.seven-seal-row td.col-field,
-    #tableBody2 tr.seven-seal-sub td.col-field {
-        color: #ffed4a !important;
-        font-weight: 500 !important;
-    }
-    #tableBody2 tr.seven-seal-row td.col-func,
-    #tableBody2 tr.seven-seal-sub td.col-func {
-        color: #f0d890 !important;
-        font-weight: 400 !important;
-    }
-    #tableBody2 tr.seven-seal-row .unit-link,
-    #tableBody2 tr.seven-seal-sub .unit-link {
-        background: rgba(88, 28, 135, 0.45) !important;
-        border-color: rgba(255, 215, 0, 0.45) !important;
-        color: #ffd700 !important;
-        font-weight: 600 !important;
-    }
-    #tableBody2 tr.seven-seal-row .unit-link i,
-    #tableBody2 tr.seven-seal-sub .unit-link i {
-        color: #ffd700 !important;
-    }
-    #tableBody2 tr.seven-seal-row:hover td,
-    #tableBody2 tr.seven-seal-sub:hover td {
-        background: rgba(88, 28, 135, 0.5) !important;
-    }
-</style>
-<script>
-(function () {
-    if (window.__sevenSealStyleFix) return;
-    window.__sevenSealStyleFix = true;
-
-    function highlight() {
-        var rows = document.querySelectorAll('#tableBody2 tr');
-        rows.forEach(function (row) {
-            row.classList.remove('seven-seal-row', 'seven-seal-sub');
-            var cells = row.querySelectorAll('td');
-            if (cells.length < 2) return;
-
-            var seg = (cells[0].textContent || '').trim();
-            var no = (cells[1].textContent || '').trim();
-
-            var isSeven =
-                /七印啟動階段|Seven-Seal Activation Phase/i.test(seg) ||
-                /第[一二三四五六七]印|First Seal|Second Seal|Third Seal|Fourth Seal|Fifth Seal|Sixth Seal|Seventh Seal/i.test(no) ||
-                /第7項|Item 7/i.test(no);
-
-            if (!isSeven) return;
-
-            row.classList.add('seven-seal-row');
-            // 子項：第一印～第七印（非第7項）
-            if (/第[一二三四五六七]印|First Seal|Second Seal|Third Seal|Fourth Seal|Fifth Seal|Sixth Seal|Seventh Seal/i.test(no) &&
-                !/第7項|Item 7/i.test(no)) {
-                row.classList.add('seven-seal-sub');
-            }
-        });
-    }
-
-    function run() {
-        highlight();
-        setTimeout(highlight, 150);
-        setTimeout(highlight, 400);
-        setTimeout(highlight, 900);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(highlight, 80);
-            setTimeout(highlight, 250);
-            setTimeout(highlight, 600);
-        };
-    }
-
-    document.addEventListener('click', function (e) {
-        if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
-            setTimeout(highlight, 100);
-            setTimeout(highlight, 400);
-        }
-    });
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 頁尾說明：英文版完整文案                                      -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    if (window.__fixPageInfoEn) return;
-    window.__fixPageInfoEn = true;
-
-    var ZH = '📄 凡圓滿【宇宙誓印覺醒工程】者，由天庫自動撥補資糧。';
-    var EN = '📄 For those who fulfill the【Cosmic Vow-Seal Awakening Project】, the Heavenly Treasury shall automatically replenish their provisions. Ordering initiates activation. Validation achieves alignment.';
-
-    function isEn() {
-        if (typeof currentLang !== 'undefined') return currentLang === 'en';
-        var a = document.querySelector('.lang-btn.active');
-        return !!(a && /english|en/i.test(a.textContent || ''));
-    }
-
-    function apply() {
-        var el = document.getElementById('pageInfo');
-        if (!el) return;
-        el.innerHTML = isEn() ? EN : ZH;
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 200);
-        setTimeout(apply, 600);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 50);
-            setTimeout(apply, 200);
-        };
-    }
-
-    document.addEventListener('click', function (e) {
-        if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
-            setTimeout(apply, 80);
-            setTimeout(apply, 300);
-        }
-    });
-})();
-</script>
-<script>
-(function () {
-  if (window.__fixIndexLangDisplay) return;
-  window.__fixIndexLangDisplay = true;
-
-  var SUB_ZH = '對應級距項目 × 解鎖誓魂血脈身份記載歷程程序';
-  var SUB_EN = 'Corresponding Tier Items × Unlock Oath-Soul Bloodline Identity Record Process';
-
-  var TITLE_ZH = '【宇宙誓印覺醒工程 · 七印誓網】啟動入口';
-  var TITLE_EN = '【Cosmic Oath-Seal Awakening Project · Seven-Seal Vow Network】 Activation Entrance';
-
-  function isEn() {
-    if (typeof currentLang !== 'undefined') return currentLang === 'en';
-    var a = document.querySelector('.lang-btn.active');
-    return !!(a && /english|en/i.test(a.textContent || ''));
-  }
-
-  function apply() {
-    var en = isEn();
-
-    var sub = document.getElementById('subText');
-    if (sub) sub.textContent = en ? SUB_EN : SUB_ZH;
-
-    var title = document.getElementById('mainTitle');
-    if (title) title.textContent = en ? TITLE_EN : TITLE_ZH;
-
-    // 瀏覽器按鈕
-    var browserSpan = document.querySelector('.btn-external-browser span');
-    if (browserSpan) {
-      browserSpan.textContent = en ? '🌐 Open in Browser' : '🌐 瀏覽器開啟';
-    }
-  }
-
-  function run() {
-    apply();
-    setTimeout(apply, 150);
-    setTimeout(apply, 400);
-    setTimeout(apply, 900);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', run);
-  } else {
-    run();
-  }
-
-  var orig = window.switchLanguage;
-  if (typeof orig === 'function') {
-    window.switchLanguage = function (l) {
-      orig(l);
-      setTimeout(apply, 50);
-      setTimeout(apply, 200);
-    };
-  }
-
-  document.addEventListener('click', function (e) {
-    if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
-      setTimeout(apply, 80);
-      setTimeout(apply, 300);
-    }
-  });
-})();
-</script>
-<script>
-(function () {
-  if (window.__fixIndexTitleFull) return;
-  window.__fixIndexTitleFull = true;
-
-  var TITLE_ZH = '【宇宙誓印覺醒工程 · 七印誓網】啟動入口';
-  var TITLE_EN = '【Cosmic Oath-Seal Awakening Project · Seven-Seal Vow Network】 Activation Entrance';
-
-  var SUB_ZH = '對應級距項目 × 解鎖誓魂血脈身份記載歷程程序';
-  var SUB_EN = 'Corresponding Tier Items × Unlock Oath-Soul Bloodline Identity Record Process';
-
-  function isEn() {
-    if (typeof currentLang !== 'undefined') return currentLang === 'en';
-    var a = document.querySelector('.lang-btn.active');
-    return !!(a && /english|en/i.test(a.textContent || ''));
-  }
-
-  function apply() {
-    var en = isEn();
-
-    // 主標題（含 icon 的 h1）
-    var h1 = document.querySelector('.header h1');
-    if (h1) {
-      var icon = h1.querySelector('i');
-      var iconHtml = icon ? icon.outerHTML + ' ' : '';
-      h1.innerHTML = iconHtml + (en ? TITLE_EN : TITLE_ZH);
-    }
-
-    // 備用 id
-    var title = document.getElementById('mainTitle');
-    if (title) title.textContent = en ? TITLE_EN : TITLE_ZH;
-
-    // 副標題
-    var sub = document.getElementById('subText');
-    if (sub) sub.textContent = en ? SUB_EN : SUB_ZH;
-
-    // 瀏覽器按鈕
-    var browserSpan = document.querySelector('.btn-external-browser span');
-    if (browserSpan) {
-      browserSpan.textContent = en ? '🌐 Open in Browser' : '🌐 瀏覽器開啟';
-    }
-  }
-
-  function run() {
-    apply();
-    setTimeout(apply, 100);
-    setTimeout(apply, 300);
-    setTimeout(apply, 700);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', run);
-  } else {
-    run();
-  }
-
-  var orig = window.switchLanguage;
-  if (typeof orig === 'function') {
-    window.switchLanguage = function (l) {
-      orig(l);
-      setTimeout(apply, 50);
-      setTimeout(apply, 200);
-    };
-  }
-
-  document.addEventListener('click', function (e) {
-    if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
-      setTimeout(apply, 60);
-      setTimeout(apply, 250);
-    }
-  });
-})();
-</script>
-<script>
-(function () {
-  if (window.__fixLangBtnLabels) return;
-  window.__fixLangBtnLabels = true;
-
-  function isEn() {
-    if (typeof currentLang !== 'undefined') return currentLang === 'en';
-    var a = document.querySelector('.lang-btn.active');
-    return !!(a && /english|en/i.test(a.textContent || ''));
-  }
-
-  function apply() {
-    var en = isEn();
-    var btns = document.querySelectorAll('.lang-btn');
-    btns.forEach(function (btn) {
-      var t = (btn.textContent || '').trim();
-      // 中文按鈕
-      if (/中文|chinese/i.test(t) || btn.getAttribute('data-lang') === 'zh' || btn.getAttribute('onclick') === "switchLanguage('zh')") {
-        btn.textContent = en ? 'Chinese' : '中文';
-      }
-      // 英文按鈕
-      if (/english|en/i.test(t) || btn.getAttribute('data-lang') === 'en' || btn.getAttribute('onclick') === "switchLanguage('en')") {
-        btn.textContent = 'English';
-      }
-    });
-  }
-
-  function run() {
-    apply();
-    setTimeout(apply, 100);
-    setTimeout(apply, 400);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', run);
-  } else {
-    run();
-  }
-
-  var orig = window.switchLanguage;
-  if (typeof orig === 'function') {
-    window.switchLanguage = function (l) {
-      orig(l);
-      setTimeout(apply, 50);
-      setTimeout(apply, 200);
-    };
-  }
-
-  document.addEventListener('click', function (e) {
-    if (e.target && e.target.classList && e.target.classList.contains('lang-btn')) {
-      setTimeout(apply, 60);
-      setTimeout(apply, 250);
-    }
-  });
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 第1項「進入 →」連結到 step1.html                              -->
-<!-- 貼在 index.html 的 
-<!-- ============================================================ -->
-<!-- ============================================================ -->
-<!-- 最終保護：強制第8項、第9項編號與連結正確 + 編號欄完整顯示 -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    if (window.__forceStep89) return;
-    window.__forceStep89 = true;
-
-    function force() {
-        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
-            var t = (row.textContent || '').replace(/\s+/g, ' ');
-            var cells = row.querySelectorAll('td');
-            if (cells.length < 3) return;
-
-            // 第8項
-            if (/第8項|入世誓約|Item 8|Worldly Vow|誓約同步進度/.test(t)) {
-                var isEn = /Item 8|Worldly Vow/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
-                cells[1].textContent = isEn
-                    ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
-                    : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
-                cells[1].style.whiteSpace = 'normal';
-                cells[1].style.wordBreak = 'break-word';
-                row.querySelectorAll('a').forEach(function (a) { a.setAttribute('href', 'step8.html'); });
-                row.classList.remove('seven-seal-row', 'seven-seal-sub');
-            }
-            // 第9項
-            if (/第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
-                var isEn = /Item 9|Circle Seal/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
-                cells[1].textContent = isEn
-                    ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
-                    : '第9項 第七印鳳徽印 × 圓印封冊';
-                cells[1].style.whiteSpace = 'normal';
-                cells[1].style.wordBreak = 'break-word';
-                row.querySelectorAll('a').forEach(function (a) { a.setAttribute('href', 'step9.html'); });
-                row.classList.remove('seven-seal-row', 'seven-seal-sub');
-            }
-        });
-    }
-
-    function run() {
-        force();
-        setTimeout(force, 120);
-        setTimeout(force, 400);
-        setTimeout(force, 900);
-        setTimeout(force, 1800);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    window.switchLanguage = function (l) {
-        if (typeof orig === 'function') orig(l);
-        setTimeout(force, 60);
-        setTimeout(force, 250);
-        setTimeout(force, 600);
-    };
-
-    console.log('✅ 第8項 / 第9項 最終保護已啟用（編號完整顯示）');
-})();
-</script>
-
-<!-- ============================================================ -->
-<script>
-(function () {
-    if (window.__enterStep1Link) return;
-    window.__enterStep1Link = true;
-
-    function apply() {
-        // 1) 找含「進入」的按鈕／連結
-        document.querySelectorAll('a, button, span, div').forEach(function (el) {
-            var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
-            if (!t) return;
-
-            // 必須是「進入」且附近／本身與第1項對頻有關
-            var isEnter = t === '進入 →' || t === '進入->' || t === '進入' ||
-                          t.indexOf('進入 →') !== -1 || t.indexOf('進入->') !== -1;
-
-            if (!isEnter) return;
-
-            // 向上找同一列／卡片，確認是第1項
-            var row = el.closest('tr') || el.closest('.hud-card') || el.parentElement;
-            var ctx = (row ? row.textContent : '') || '';
-            var isItem1 =
-                ctx.indexOf('第1項') !== -1 ||
-                ctx.indexOf('第 1 項') !== -1 ||
-                ctx.indexOf('對頻總判定') !== -1 ||
-                ctx.indexOf('開啟誓魂密鑰') !== -1;
-
-            if (!isItem1) return;
-
-            // 設成連結
-            if (el.tagName === 'A') {
-                el.setAttribute('href', 'step1.html');
-                el.style.cursor = 'pointer';
-                el.style.pointerEvents = 'auto';
-            } else {
-                // 不是 <a> 就包一層或改成跳轉
-                el.style.cursor = 'pointer';
-                el.style.pointerEvents = 'auto';
-                el.onclick = function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    window.location.href = 'step1.html';
-                };
-                // 若父層是 a，直接改 href
-                var parentA = el.closest('a');
-                if (parentA) {
-                    parentA.setAttribute('href', 'step1.html');
-                    parentA.style.pointerEvents = 'auto';
-                }
-            }
-        });
-
-        // 2) 表格內「進入」欄位備援
-        document.querySelectorAll('td, th').forEach(function (td) {
-            var t = (td.textContent || '').replace(/\s+/g, ' ').trim();
-            if (t.indexOf('進入') === -1) return;
-            var row = td.closest('tr');
-            if (!row) return;
-            var rowText = row.textContent || '';
-            if (rowText.indexOf('第1項') === -1 &&
-                rowText.indexOf('第 1 項') === -1 &&
-                rowText.indexOf('對頻總判定') === -1) return;
-
-            var a = td.querySelector('a');
-            if (a) {
-                a.setAttribute('href', 'step1.html');
-                a.style.pointerEvents = 'auto';
-            } else {
-                td.style.cursor = 'pointer';
-                td.onclick = function () {
-                    window.location.href = 'step1.html';
-                };
-            }
-        });
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 100);
-        setTimeout(apply, 400);
-        setTimeout(apply, 900);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 50);
-            setTimeout(apply, 200);
-        };
-    }
-
-    console.log('✅ 第1項「進入 →」→ step1.html');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 公版：第11項 願力誓證 → step11.html                            -->
-<!-- 貼在 
-<!-- ============================================================ -->
-<!-- 最終保護：強制第8項、第9項編號與連結正確（防止被印章規則覆蓋） -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    if (window.__forceStep89) return;
-    window.__forceStep89 = true;
-
-    function force() {
-        // 資料層
-        if (window.level2Data) {
-            ['zh', 'en'].forEach(function (lang) {
-                var items = level2Data[lang] && level2Data[lang].items;
-                if (!items) return;
-                items.forEach(function (it) {
-                    var blob = [it.no, it.field, it.func, it.segment].join(' ');
-                    if (/第8項|入世誓約|Item 8|Worldly Vow|誓約同步/.test(blob)) {
-                        it.no = (lang === 'en')
-                            ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
-                            : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
-                        it.link = 'step8.html';
-                    }
-                    if (/第9項|圓印封冊|Item 9|Circle Seal/.test(blob)) {
-                        it.no = (lang === 'en')
-                            ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
-                            : '第9項 第七印鳳徽印 × 圓印封冊';
-                        it.link = 'step9.html';
-                    }
-                });
-            });
-        }
-
-        // DOM 層
-        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
-            var t = row.textContent || '';
-            var cells = row.querySelectorAll('td');
-            if (cells.length < 2) return;
-
-            if (/第8項|入世誓約|誓約同步|Item 8|Worldly Vow/.test(t)) {
-                var isEn = /Item 8|Worldly Vow/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
-                cells[1].textContent = isEn
-                    ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
-                    : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
-                row.querySelectorAll('a').forEach(function (a) {
-                    a.setAttribute('href', 'step8.html');
-                });
-                // 不要套用七印紫金背景
-                row.classList.remove('seven-seal-row', 'seven-seal-sub');
-            }
-            if (/第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
-                var isEn = /Item 9|Circle Seal/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
-                cells[1].textContent = isEn
-                    ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
-                    : '第9項 第七印鳳徽印 × 圓印封冊';
-                row.querySelectorAll('a').forEach(function (a) {
-                    a.setAttribute('href', 'step9.html');
-                });
-                row.classList.remove('seven-seal-row', 'seven-seal-sub');
-            }
-        });
-    }
-
-    function run() {
-        force();
-        setTimeout(force, 100);
-        setTimeout(force, 400);
-        setTimeout(force, 900);
-        setTimeout(force, 1600);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    window.switchLanguage = function (l) {
-        if (typeof orig === 'function') orig(l);
-        setTimeout(force, 50);
-        setTimeout(force, 200);
-        setTimeout(force, 500);
-    };
-
-    console.log('✅ 第8項 / 第9項 最終保護已啟用');
-})();
-</script>
-
-<!-- ============================================================ -->
-<script>
-(function () {
-    if (window.__fixStep11Link) return;
-    window.__fixStep11Link = true;
-
-    function isTargetRow(text) {
-        text = (text || '').replace(/\s+/g, ' ');
-        return (
-            (text.indexOf('第11項') !== -1 || text.indexOf('第 11 項') !== -1 || text.indexOf('Item 11') !== -1) &&
-            (text.indexOf('願力誓證') !== -1 || text.indexOf('Vow-Power') !== -1 || text.indexOf('Vow Power') !== -1)
-        ) || (
-            text.indexOf('願力誓證') !== -1 &&
-            (text.indexOf('第11') !== -1 || text.indexOf('Item 11') !== -1)
-        );
-    }
-
-    function apply() {
-        // 1) 表格列
-        document.querySelectorAll('tr').forEach(function (row) {
-            var rowText = row.textContent || '';
-            if (!isTargetRow(rowText)) return;
-
-            row.querySelectorAll('a, button, span, div').forEach(function (el) {
-                var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
-                var isEnter =
-                    t === '進入 →' || t === '進入->' || t === '進入' ||
-                    t.indexOf('進入') !== -1 || t.indexOf('Enter') !== -1 ||
-                    (el.classList && el.classList.contains('unit-link'));
-
-                if (!isEnter && el.tagName !== 'A') return;
-
-                if (el.tagName === 'A') {
-                    el.setAttribute('href', 'step11.html');
-                    el.style.pointerEvents = 'auto';
-                    el.style.cursor = 'pointer';
-                } else {
-                    el.style.cursor = 'pointer';
-                    el.style.pointerEvents = 'auto';
-                    el.onclick = function (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        location.href = 'step11.html';
-                    };
-                    var parentA = el.closest('a');
-                    if (parentA) {
-                        parentA.setAttribute('href', 'step11.html');
-                        parentA.style.pointerEvents = 'auto';
-                    }
-                }
-            });
-
-            // 整列點擊備援
-            row.style.cursor = 'pointer';
-            if (!row.__step11Bound) {
-                row.__step11Bound = true;
-                row.addEventListener('click', function (e) {
-                    if (e.target && e.target.closest('a')) return;
-                    location.href = 'step11.html';
-                });
-            }
-        });
-
-        // 2) 資料陣列裡若有 link 欄位也改
-        if (typeof level2Data !== 'undefined') {
-            ['zh', 'en'].forEach(function (lang) {
-                var items = level2Data[lang] && level2Data[lang].items;
-                if (!items) return;
-                items.forEach(function (it) {
-                    var blob = (it.no || '') + ' ' + (it.field || '') + ' ' + (it.func || '');
-                    if (isTargetRow(blob) || /第11項|Item 11|願力誓證/i.test(blob)) {
-                        it.link = 'step11.html';
-                    }
-                });
-            });
-        }
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 150);
-        setTimeout(apply, 500);
-        setTimeout(apply, 1200);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 80);
-            setTimeout(apply, 300);
-        };
-    }
-
-    console.log('✅ 第11項 願力誓證 → step11.html');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 公版：第13項 → step13.html                                     -->
-<!-- 貼在 index.html 的 
-<!-- ============================================================ -->
-<!-- 最終保護：強制第8項、第9項編號與連結正確（防止被印章規則覆蓋） -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    if (window.__forceStep89) return;
-    window.__forceStep89 = true;
-
-    function force() {
-        // 資料層
-        if (window.level2Data) {
-            ['zh', 'en'].forEach(function (lang) {
-                var items = level2Data[lang] && level2Data[lang].items;
-                if (!items) return;
-                items.forEach(function (it) {
-                    var blob = [it.no, it.field, it.func, it.segment].join(' ');
-                    if (/第8項|入世誓約|Item 8|Worldly Vow|誓約同步/.test(blob)) {
-                        it.no = (lang === 'en')
-                            ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
-                            : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
-                        it.link = 'step8.html';
-                    }
-                    if (/第9項|圓印封冊|Item 9|Circle Seal/.test(blob)) {
-                        it.no = (lang === 'en')
-                            ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
-                            : '第9項 第七印鳳徽印 × 圓印封冊';
-                        it.link = 'step9.html';
-                    }
-                });
-            });
-        }
-
-        // DOM 層
-        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
-            var t = row.textContent || '';
-            var cells = row.querySelectorAll('td');
-            if (cells.length < 2) return;
-
-            if (/第8項|入世誓約|誓約同步|Item 8|Worldly Vow/.test(t)) {
-                var isEn = /Item 8|Worldly Vow/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
-                cells[1].textContent = isEn
-                    ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
-                    : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
-                row.querySelectorAll('a').forEach(function (a) {
-                    a.setAttribute('href', 'step8.html');
-                });
-                // 不要套用七印紫金背景
-                row.classList.remove('seven-seal-row', 'seven-seal-sub');
-            }
-            if (/第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
-                var isEn = /Item 9|Circle Seal/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
-                cells[1].textContent = isEn
-                    ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
-                    : '第9項 第七印鳳徽印 × 圓印封冊';
-                row.querySelectorAll('a').forEach(function (a) {
-                    a.setAttribute('href', 'step9.html');
-                });
-                row.classList.remove('seven-seal-row', 'seven-seal-sub');
-            }
-        });
-    }
-
-    function run() {
-        force();
-        setTimeout(force, 100);
-        setTimeout(force, 400);
-        setTimeout(force, 900);
-        setTimeout(force, 1600);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    window.switchLanguage = function (l) {
-        if (typeof orig === 'function') orig(l);
-        setTimeout(force, 50);
-        setTimeout(force, 200);
-        setTimeout(force, 500);
-    };
-
-    console.log('✅ 第8項 / 第9項 最終保護已啟用');
-})();
-</script>
-
-<!-- ============================================================ -->
-<script>
-(function () {
-    if (window.__fixStep13Link) return;
-    window.__fixStep13Link = true;
-
-    function isTargetRow(text) {
-        text = (text || '').replace(/\s+/g, ' ');
-        return (
-            (text.indexOf('第13項') !== -1 || text.indexOf('第 13 項') !== -1 || text.indexOf('Item 13') !== -1) &&
-            (
-                text.indexOf('誓資紀錄') !== -1 ||
-                text.indexOf('回源願書') !== -1 ||
-                text.indexOf('不再入世') !== -1 ||
-                text.indexOf('不入轉生') !== -1 ||
-                text.indexOf('Return-to-Source') !== -1 ||
-                text.indexOf('No Further Incarnation') !== -1 ||
-                text.indexOf('No Rebirth') !== -1
-            )
-        );
-    }
-
-    function apply() {
-        // 1) 表格列
-        document.querySelectorAll('tr').forEach(function (row) {
-            var rowText = row.textContent || '';
-            if (!isTargetRow(rowText)) return;
-
-            row.querySelectorAll('a, button, span, div').forEach(function (el) {
-                var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
-                var isEnter =
-                    t === '進入 →' || t === '進入->' || t === '進入' ||
-                    t.indexOf('進入') !== -1 || t.indexOf('Enter') !== -1 ||
-                    (el.classList && el.classList.contains('unit-link'));
-
-                if (!isEnter && el.tagName !== 'A') return;
-
-                if (el.tagName === 'A') {
-                    el.setAttribute('href', 'step13.html');
-                    el.style.pointerEvents = 'auto';
-                    el.style.cursor = 'pointer';
-                } else {
-                    el.style.cursor = 'pointer';
-                    el.style.pointerEvents = 'auto';
-                    el.onclick = function (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        location.href = 'step13.html';
-                    };
-                    var parentA = el.closest('a');
-                    if (parentA) {
-                        parentA.setAttribute('href', 'step13.html');
-                        parentA.style.pointerEvents = 'auto';
-                    }
-                }
-            });
-
-            // 整列點擊備援
-            row.style.cursor = 'pointer';
-            if (!row.__step13Bound) {
-                row.__step13Bound = true;
-                row.addEventListener('click', function (e) {
-                    if (e.target && e.target.closest('a')) return;
-                    location.href = 'step13.html';
-                });
-            }
-        });
-
-        // 2) 資料陣列 link 也改
-        if (typeof level2Data !== 'undefined') {
-            ['zh', 'en'].forEach(function (lang) {
-                var items = level2Data[lang] && level2Data[lang].items;
-                if (!items) return;
-                items.forEach(function (it) {
-                    var blob = (it.no || '') + ' ' + (it.field || '') + ' ' + (it.func || '');
-                    if (isTargetRow(blob) || /第13項|Item 13|誓資紀錄|回源願書/i.test(blob)) {
-                        it.link = 'step13.html';
-                    }
-                });
-            });
-        }
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 150);
-        setTimeout(apply, 500);
-        setTimeout(apply, 1200);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 80);
-            setTimeout(apply, 300);
-        };
-    }
-
-    console.log('✅ 第13項 → step13.html');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 公版：index 全項「進入 →」連結強制對齊（依官方清單）            -->
-<!-- 貼在 
-<!-- ============================================================ -->
-<!-- 最終保護：強制第8項、第9項編號與連結正確（防止被印章規則覆蓋） -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    if (window.__forceStep89) return;
-    window.__forceStep89 = true;
-
-    function force() {
-        // 資料層
-        if (window.level2Data) {
-            ['zh', 'en'].forEach(function (lang) {
-                var items = level2Data[lang] && level2Data[lang].items;
-                if (!items) return;
-                items.forEach(function (it) {
-                    var blob = [it.no, it.field, it.func, it.segment].join(' ');
-                    if (/第8項|入世誓約|Item 8|Worldly Vow|誓約同步/.test(blob)) {
-                        it.no = (lang === 'en')
-                            ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
-                            : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
-                        it.link = 'step8.html';
-                    }
-                    if (/第9項|圓印封冊|Item 9|Circle Seal/.test(blob)) {
-                        it.no = (lang === 'en')
-                            ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
-                            : '第9項 第七印鳳徽印 × 圓印封冊';
-                        it.link = 'step9.html';
-                    }
-                });
-            });
-        }
-
-        // DOM 層
-        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
-            var t = row.textContent || '';
-            var cells = row.querySelectorAll('td');
-            if (cells.length < 2) return;
-
-            if (/第8項|入世誓約|誓約同步|Item 8|Worldly Vow/.test(t)) {
-                var isEn = /Item 8|Worldly Vow/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
-                cells[1].textContent = isEn
-                    ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
-                    : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
-                row.querySelectorAll('a').forEach(function (a) {
-                    a.setAttribute('href', 'step8.html');
-                });
-                // 不要套用七印紫金背景
-                row.classList.remove('seven-seal-row', 'seven-seal-sub');
-            }
-            if (/第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
-                var isEn = /Item 9|Circle Seal/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
-                cells[1].textContent = isEn
-                    ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
-                    : '第9項 第七印鳳徽印 × 圓印封冊';
-                row.querySelectorAll('a').forEach(function (a) {
-                    a.setAttribute('href', 'step9.html');
-                });
-                row.classList.remove('seven-seal-row', 'seven-seal-sub');
-            }
-        });
-    }
-
-    function run() {
-        force();
-        setTimeout(force, 100);
-        setTimeout(force, 400);
-        setTimeout(force, 900);
-        setTimeout(force, 1600);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    window.switchLanguage = function (l) {
-        if (typeof orig === 'function') orig(l);
-        setTimeout(force, 50);
-        setTimeout(force, 200);
-        setTimeout(force, 500);
-    };
-
-    console.log('✅ 第8項 / 第9項 最終保護已啟用');
-})();
-</script>
-
-<!-- ============================================================ -->
-<script>
-(function () {
-    if (window.__indexAllLinksFinal) return;
-    window.__indexAllLinksFinal = true;
-
-    // 官方對照表（編號關鍵字 → 檔案）
-    var MAP = [
-        { keys: ['第0項', 'Item 0', '購書序號', 'Purchase Serial'], href: 'step0.html' },
-        { keys: ['第1項 誓印未通過', 'Item 1 Oath Seal Not Passed', 'step1-1'], href: 'step1-1.html' },
-        { keys: ['第1項', 'Item 1', '對頻總判定', 'Frequency-Alignment', 'Frequency- Alignment'], href: 'step1.html' },
-        // ★ 第13項 必須放在「被代理誓印」之前，因為第13項說明文字含有「被代理誓印」
-        { keys: ['第13項', 'Item 13', '回源願書', '不再入世', '不入轉生', 'Return-to-Source', 'No Rebirth', '誓資紀錄 × 回源'], href: 'step13.html' },
-        { keys: ['第2項', 'Item 2', '被代理誓印', 'Delegated Oath-Seal'], href: 'step2.html' },
-        { keys: ['第3項', 'Item 3', '代理誓印', 'Delegating Oath-Seal', '功德紀錄'], href: 'step3.html' },
-        { keys: ['第4項', 'Item 4', '誓魂本族', 'Origin Claim', '天族姓脈'], href: 'step4.html' },
-        { keys: ['第5項', 'Item 5', '宇宙總位標', 'Master Coordinate', '維度階級'], href: 'step5.html' },
-        { keys: ['第6項', 'Item 6', '覺醒程度', 'Awakening Level'], href: 'step6.html' },
-        // ★ 優先匹配總項與後續項
-        { keys: ['七印誓網對應階段', '七印誓網對應', 'Seven-Seal Vow Network Correspondence'], href: 'step7.html' },
-        { keys: ['第8項', 'Item 8', '入世誓約', 'Worldly Vow', '誓約同步'], href: 'step8.html' },
-        { keys: ['第9項', 'Item 9', '圓印封冊', 'Circle Seal'], href: 'step9.html' },
-        // 印章子項
-        { keys: ['第一印', 'First Seal', '消業印', 'Karmic Purification'], href: 'step7-1.html' },
-        { keys: ['第二印', 'Second Seal', '修心印', 'Mind-Refinement'], href: 'step7-2.html' },
-        { keys: ['第三印', 'Third Seal', '守願印', 'Guardian Vow'], href: 'step7-3.html' },
-        { keys: ['第四印', 'Fourth Seal', '誓令印', 'Decree-Oath'], href: 'step7-4.html' },
-        { keys: ['第五印', 'Fifth Seal', '覺醒印', 'Awakening Seal'], href: 'step7-5.html' },
-        { keys: ['第六印', 'Sixth Seal', '誥徒誓印', 'Disciple-Oath'], href: 'step7-6.html' },
-        { keys: ['第七印', 'Seventh Seal', '鳳徽印', 'Phoenix Emblem'], href: 'step7-7.html' },
-        { keys: ['第10項', 'Item 10', '誓文印記', 'Vow Text Seal'], href: 'step10.html' },
-        { keys: ['第11項', 'Item 11', '願力誓證', 'Vow-Power'], href: 'step11.html' },
-        { keys: ['第12項', 'Item 12', '誓資任務實踐', 'Mission Practice'], href: 'step12.html' },
-        { keys: ['第14項', 'Item 14', '天庫金脈', 'Heavenly Treasury Gold'], href: 'step14.html' },
-        { keys: ['第15項', 'Item 15', '狀態更新時間', 'Status Update Timestamp'], href: 'step15.html' },
-        { keys: ['第16項', 'Item 16', '對頻歷程摘要', 'Process Summary', 'Key Frequency-Alignment Proces'], href: 'step16.html' }
-    ];
-
-    function matchHref(text) {
-        text = (text || '').replace(/\s+/g, ' ');
-        // 先比對較長／較特殊的（未通過、各印）再比對一般項
-        for (var i = 0; i < MAP.length; i++) {
-            var m = MAP[i];
-            for (var k = 0; k < m.keys.length; k++) {
-                if (text.indexOf(m.keys[k]) !== -1) return m.href;
-            }
-        }
-        return null;
-    }
-
-    function apply() {
-        // 同步資料陣列
-        ['level1Data', 'level2Data'].forEach(function (name) {
-            var data = window[name];
-            if (!data) return;
-            ['zh', 'en'].forEach(function (lang) {
-                var items = data[lang] && data[lang].items;
-                if (!items) return;
-                items.forEach(function (it) {
-                    var blob = [it.no, it.field, it.func, it.segment].join(' ');
-                    var href = matchHref(blob);
-                    if (href) it.link = href;
-                });
-            });
-        });
-
-        // 表格每一列
-        document.querySelectorAll('tr').forEach(function (row) {
-            var rowText = row.textContent || '';
-            var href = matchHref(rowText);
-            if (!href) return;
-
-            // 所有 a.unit-link / 進入 按鈕
-            row.querySelectorAll('a').forEach(function (a) {
-                a.setAttribute('href', href);
-                a.style.pointerEvents = 'auto';
-                a.style.cursor = 'pointer';
-            });
-
-            // 非 a 的「進入」文字
-            row.querySelectorAll('button, span, div').forEach(function (el) {
-                var t = (el.textContent || '').replace(/\s+/g, ' ').trim();
-                if (t.indexOf('進入') === -1 && t.indexOf('Enter') === -1) return;
-                el.style.cursor = 'pointer';
-                el.style.pointerEvents = 'auto';
-                el.onclick = function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    location.href = href;
-                };
-            });
-        });
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 150);
-        setTimeout(apply, 500);
-        setTimeout(apply, 1200);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 80);
-            setTimeout(apply, 300);
-        };
-    }
-
-    console.log('✅ index 全項連結已依官方清單對齊');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 公版：編號／對應項目 完整列出（依你提供的清單）                  -->
-<!-- 貼在 
-<!-- ============================================================ -->
-<!-- 最終保護：強制第8項、第9項編號與連結正確（防止被印章規則覆蓋） -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    if (window.__forceStep89) return;
-    window.__forceStep89 = true;
-
-    function force() {
-        // 資料層
-        if (window.level2Data) {
-            ['zh', 'en'].forEach(function (lang) {
-                var items = level2Data[lang] && level2Data[lang].items;
-                if (!items) return;
-                items.forEach(function (it) {
-                    var blob = [it.no, it.field, it.func, it.segment].join(' ');
-                    if (/第8項|入世誓約|Item 8|Worldly Vow|誓約同步/.test(blob)) {
-                        it.no = (lang === 'en')
-                            ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
-                            : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
-                        it.link = 'step8.html';
-                    }
-                    if (/第9項|圓印封冊|Item 9|Circle Seal/.test(blob)) {
-                        it.no = (lang === 'en')
-                            ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
-                            : '第9項 第七印鳳徽印 × 圓印封冊';
-                        it.link = 'step9.html';
-                    }
-                });
-            });
-        }
-
-        // DOM 層
-        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
-            var t = row.textContent || '';
-            var cells = row.querySelectorAll('td');
-            if (cells.length < 2) return;
-
-            if (/第8項|入世誓約|誓約同步|Item 8|Worldly Vow/.test(t)) {
-                var isEn = /Item 8|Worldly Vow/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
-                cells[1].textContent = isEn
-                    ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
-                    : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
-                row.querySelectorAll('a').forEach(function (a) {
-                    a.setAttribute('href', 'step8.html');
-                });
-                // 不要套用七印紫金背景
-                row.classList.remove('seven-seal-row', 'seven-seal-sub');
-            }
-            if (/第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
-                var isEn = /Item 9|Circle Seal/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
-                cells[1].textContent = isEn
-                    ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
-                    : '第9項 第七印鳳徽印 × 圓印封冊';
-                row.querySelectorAll('a').forEach(function (a) {
-                    a.setAttribute('href', 'step9.html');
-                });
-                row.classList.remove('seven-seal-row', 'seven-seal-sub');
-            }
-        });
-    }
-
-    function run() {
-        force();
-        setTimeout(force, 100);
-        setTimeout(force, 400);
-        setTimeout(force, 900);
-        setTimeout(force, 1600);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    window.switchLanguage = function (l) {
-        if (typeof orig === 'function') orig(l);
-        setTimeout(force, 50);
-        setTimeout(force, 200);
-        setTimeout(force, 500);
-    };
-
-    console.log('✅ 第8項 / 第9項 最終保護已啟用');
-})();
-</script>
-
-<!-- ============================================================ -->
-<script>
-(function () {
-    if (window.__indexNoFullList) return;
-    window.__indexNoFullList = true;
-
-    // 你指定的完整「編號／對應項目」（順序固定）
-    var FULL_ZH = [
-        { test: /第0項|購書序號/, no: '第0項 宇宙智能誓導平台 × 【購書序號】誓導碼登入與啟動守則', link: 'step0.html' },
-        { test: /第1項.*誓印未通過|誓印未通過/, no: '第1項 開啟誓魂密鑰對頻總判定（誓印未通過）', link: 'step1-1.html' },
-        { test: /第1項|對頻總判定/, no: '第1項 開啟誓魂密鑰對頻總判定（誓印通過/誓印未通過）', link: 'step1.html' },
-        // ★ 第13項必須在「被代理誓印」之前（說明文字含有被代理誓印）
-        { test: /第13項|回源願書|不再入世|不入轉生|誓資紀錄 × 回源/, no: '第13項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生', link: 'step13.html' },
-        { test: /第2項|被代理誓印/, no: '第2項 被代理誓印（法定全名）', link: 'step2.html' },
-        { test: /第3項|代理誓印|功德紀錄/, no: '第3項 代理誓印（法定全名）× 功德紀錄', link: 'step3.html' },
-        { test: /第4項|誓魂本族|天族姓脈/, no: '第4項 誓魂本族 × 天族姓脈 × 所屬靈系支系 × 角色階級', link: 'step4.html' },
-        { test: /第5項|宇宙總位標|維度階級/, no: '第5項 誓魂宇宙總位標 × 維度階級 × 三界層域 × 階識', link: 'step5.html' },
-        { test: /第6項|覺醒程度/, no: '第6項 覺醒程度', link: 'step6.html' },
-        // ★ 先匹配會提到印章名稱的總項／後續項，避免被印章規則搶走
-        { test: /七印誓網對應階段|七印誓網對應/, no: '第7項 七印誓網對應階段', link: 'step7.html' },
-        { test: /第8項|入世誓約揭示|入世誓約/, no: '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄', link: 'step8.html' },
-        { test: /第9項|圓印封冊/, no: '第9項 第七印鳳徽印 × 圓印封冊', link: 'step9.html' },
-        // 印章子項（較嚴格：優先看編號或欄位本身）
-        { test: /第7項\s*第一印|第一印\s*×\s*消業印|^第一印$|消業印(?!.*對應)/, no: '第7項 第一印 × 消業印', link: 'step7-1.html' },
-        { test: /第7項\s*第二印|第二印\s*×\s*修心印|^第二印$|修心印/, no: '第7項 第二印 × 修心印', link: 'step7-2.html' },
-        { test: /第7項\s*第三印|第三印\s*×\s*守願印|^第三印$|守願印/, no: '第7項 第三印 × 守願印', link: 'step7-3.html' },
-        { test: /第7項\s*第四印|第四印\s*×\s*誓令印|^第四印$|誓令印/, no: '第7項 第四印 × 誓令印', link: 'step7-4.html' },
-        { test: /第7項\s*第五印|第五印\s*×\s*覺醒印/, no: '第7項 第五印 × 覺醒印', link: 'step7-5.html' },
-        { test: /第7項\s*第六印|第六印\s*×\s*誥徒誓印|^第六印$|誥徒誓印/, no: '第7項 第六印 × 誥徒誓印', link: 'step7-6.html' },
-        { test: /第7項\s*第七印|第七印\s*×\s*鳳徽印/, no: '第7項 第七印 × 鳳徽印', link: 'step7-7.html' },
-        { test: /第10項|誓文印記/, no: '第10項 誓文印記追蹤', link: 'step10.html' },
-        { test: /第11項|願力誓證/, no: '第11項 願力誓證', link: 'step11.html' },
-        { test: /第12項|誓資任務實踐/, no: '第12項 誓資任務實踐紀錄', link: 'step12.html' },
-        { test: /第13項|回源願書|不再入世|不入轉生/, no: '第13項 誓資紀錄 × 回源願書 × 不再入世 × 不入轉生', link: 'step13.html' },
-        { test: /第14項|天庫金脈/, no: '第14項 天庫金脈 × 支脈顯化狀態', link: 'step14.html' },
-        { test: /第15項|狀態更新時間/, no: '第15項 狀態更新時間戳', link: 'step15.html' },
-        { test: /第16項|對頻歷程摘要/, no: '第16項 開啟誓魂密鑰對頻歷程摘要', link: 'step16.html' }
-    ];
-
-    var FULL_EN = [
-        { test: /Item 0|Purchase Serial/, no: 'Item 0 Cosmic Intelligent Vow-Guidance Platform × [Purchase Serial Number] Login & Activation Protocol', link: 'step0.html' },
-        { test: /Item 1 Oath Seal Not Passed|Oath Seal Not Passed/, no: 'Item 1 Initiate Oath-Soul Key Frequency-Alignment (Oath Seal Not Passed)', link: 'step1-1.html' },
-        { test: /Item 1|Frequency-Alignment|Frequency- Alignment/, no: 'Item 1 Initiate Oath-Soul Key Frequency-Alignment (Passed / Not Passed)', link: 'step1.html' },
-        // ★ Item 13 must come before "Delegated Oath-Seal" (description contains it)
-        { test: /Item 13|Return-to-Source|No Rebirth|Vow-Asset Record/, no: 'Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth', link: 'step13.html' },
-        { test: /Item 2|Delegated Oath-Seal/, no: 'Item 2 Delegated Oath-Seal (Legal Full Name)', link: 'step2.html' },
-        { test: /Item 3|Delegating Oath-Seal|Merit Record/, no: 'Item 3 Delegating Oath-Seal (Legal Full Name) × Merit Record', link: 'step3.html' },
-        { test: /Item 4|Origin Claim/, no: 'Item 4 Oath-Soul Origin Claim × Heavenly Clan Lineage × Luminous-Lineage Branch × Role Rank', link: 'step4.html' },
-        { test: /Item 5|Master Coordinate/, no: 'Item 5 Oath-Soul Cosmic Master Coordinate × Dimensional Rank × Three-Realm Domains × Hierarchic Cognition', link: 'step5.html' },
-        { test: /Item 6|Awakening Level/, no: 'Item 6 Awakening Level', link: 'step6.html' },
-        // ★ Priority: overall stage & later items that mention seals
-        { test: /Seven-Seal Vow Network Correspondence Stage|Seven-Seal Vow Network Correspondence/, no: 'Item 7 Seven-Seal Vow Network Correspondence Stage', link: 'step7.html' },
-        { test: /Item 8|Worldly Vow|Vow Sync Progress/, no: 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress', link: 'step8.html' },
-        { test: /Item 9|Circle Seal Archive|Circle Seal/, no: 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive', link: 'step9.html' },
-        // Seals
-        { test: /First Seal|Karmic Purification/, no: 'Item 7 First Seal × Karmic Purification Seal', link: 'step7-1.html' },
-        { test: /Second Seal|Mind-Refinement/, no: 'Item 7 Second Seal × Mind-Refinement Seal', link: 'step7-2.html' },
-        { test: /Third Seal|Guardian Vow/, no: 'Item 7 Third Seal × Guardian Vow Seal', link: 'step7-3.html' },
-        { test: /Fourth Seal|Decree-Oath/, no: 'Item 7 Fourth Seal × Decree-Oath Seal', link: 'step7-4.html' },
-        { test: /Fifth Seal|Awakening Seal/, no: 'Item 7 Fifth Seal × Awakening Seal', link: 'step7-5.html' },
-        { test: /Sixth Seal|Disciple-Oath/, no: 'Item 7 Sixth Seal × Disciple-Oath Seal', link: 'step7-6.html' },
-        { test: /Seventh Seal|Phoenix Emblem/, no: 'Item 7 Seventh Seal × Phoenix Emblem Seal', link: 'step7-7.html' },
-        { test: /Item 10|Vow Text Seal/, no: 'Item 10 Vow Text Seal Tracking', link: 'step10.html' },
-        { test: /Item 11|Vow-Power/, no: 'Item 11 Vow-Power Certification', link: 'step11.html' },
-        { test: /Item 12|Mission Practice/, no: 'Item 12 Vow-Resource Mission Practice Record', link: 'step12.html' },
-        { test: /Item 13|Return-to-Source|No Rebirth/, no: 'Item 13 Vow-Asset Record × Return-to-Source Vow Scroll × No Further Incarnation × No Rebirth', link: 'step13.html' },
-        { test: /Item 14|Heavenly Treasury Gold/, no: 'Item 14 Heavenly Treasury Gold Vein × Branch Manifestation Status', link: 'step14.html' },
-        { test: /Item 15|Status Update/, no: 'Item 15 Status Update Timestamp', link: 'step15.html' },
-        { test: /Item 16|Process Summary/, no: 'Item 16 Oath-Soul Key Frequency-Alignment Process Summary', link: 'step16.html' }
-    ];
-
-    function isEn() {
-        if (typeof currentLang !== 'undefined') return currentLang === 'en';
-        var a = document.querySelector('.lang-btn.active');
-        return !!(a && /english|en/i.test(a.textContent || ''));
-    }
-
-    function hit(list, text) {
-        for (var i = 0; i < list.length; i++) {
-            if (list[i].test.test(text)) return list[i];
-        }
-        return null;
-    }
-
-    function apply() {
-        var list = isEn() ? FULL_EN : FULL_ZH;
-
-        // 1) 改資料（已鎖定源資料，不再改寫 no）
-        // 僅保留下方 DOM 強制連結與樣式
-
-        // 2) 重畫表格（已鎖定源資料，不再重畫覆蓋）
-        // if (typeof renderTable === 'function') {
-        //     var lang = isEn() ? 'en' : 'zh';
-        //     if (window.level1Data) renderTable('tableBody1', level1Data[lang] || level1Data.zh, lang);
-        //     if (window.level2Data) renderTable('tableBody2', level2Data[lang] || level2Data.zh, lang);
-        // }
-
-        // 3) DOM 再強制：編號欄 + 連結
-        document.querySelectorAll('#tableBody1 tr, #tableBody2 tr').forEach(function (row) {
-            var cells = row.querySelectorAll('td');
-            if (cells.length < 3) return;
-            var rowText = row.textContent || '';
-            var h = hit(list, rowText);
-            if (!h) return;
-
-            // 編號欄（第 2 欄 col-no）
-            var noCell = cells[1];
-            if (noCell) noCell.textContent = h.no;
-
-            // 連結
-            row.querySelectorAll('a').forEach(function (a) {
-                a.setAttribute('href', h.link);
-            });
-        });
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 150);
-        setTimeout(apply, 500);
-        setTimeout(apply, 1000);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    window.switchLanguage = function (l) {
-        if (typeof orig === 'function') orig(l);
-        setTimeout(apply, 60);
-        setTimeout(apply, 250);
-        setTimeout(apply, 600);
-    };
-
-    console.log('✅ 編號／對應項目已完整列出');
-})();
-</script>
-  <!-- ============================================================ -->
-<!-- 公版：七印列 編號完整 + 保留紫金背景                            -->
-<!-- 貼在 
-<!-- ============================================================ -->
-<!-- 最終保護：強制第8項、第9項編號與連結正確（防止被印章規則覆蓋） -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    if (window.__forceStep89) return;
-    window.__forceStep89 = true;
-
-    function force() {
-        // 資料層
-        if (window.level2Data) {
-            ['zh', 'en'].forEach(function (lang) {
-                var items = level2Data[lang] && level2Data[lang].items;
-                if (!items) return;
-                items.forEach(function (it) {
-                    var blob = [it.no, it.field, it.func, it.segment].join(' ');
-                    if (/第8項|入世誓約|Item 8|Worldly Vow|誓約同步/.test(blob)) {
-                        it.no = (lang === 'en')
-                            ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
-                            : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
-                        it.link = 'step8.html';
-                    }
-                    if (/第9項|圓印封冊|Item 9|Circle Seal/.test(blob)) {
-                        it.no = (lang === 'en')
-                            ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
-                            : '第9項 第七印鳳徽印 × 圓印封冊';
-                        it.link = 'step9.html';
-                    }
-                });
-            });
-        }
-
-        // DOM 層
-        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
-            var t = row.textContent || '';
-            var cells = row.querySelectorAll('td');
-            if (cells.length < 2) return;
-
-            if (/第8項|入世誓約|誓約同步|Item 8|Worldly Vow/.test(t)) {
-                var isEn = /Item 8|Worldly Vow/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
-                cells[1].textContent = isEn
-                    ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
-                    : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
-                row.querySelectorAll('a').forEach(function (a) {
-                    a.setAttribute('href', 'step8.html');
-                });
-                // 不要套用七印紫金背景
-                row.classList.remove('seven-seal-row', 'seven-seal-sub');
-            }
-            if (/第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
-                var isEn = /Item 9|Circle Seal/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
-                cells[1].textContent = isEn
-                    ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
-                    : '第9項 第七印鳳徽印 × 圓印封冊';
-                row.querySelectorAll('a').forEach(function (a) {
-                    a.setAttribute('href', 'step9.html');
-                });
-                row.classList.remove('seven-seal-row', 'seven-seal-sub');
-            }
-        });
-    }
-
-    function run() {
-        force();
-        setTimeout(force, 100);
-        setTimeout(force, 400);
-        setTimeout(force, 900);
-        setTimeout(force, 1600);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    window.switchLanguage = function (l) {
-        if (typeof orig === 'function') orig(l);
-        setTimeout(force, 50);
-        setTimeout(force, 200);
-        setTimeout(force, 500);
-    };
-
-    console.log('✅ 第8項 / 第9項 最終保護已啟用');
-})();
-</script>
-
-<!-- ============================================================ -->
-<style>
-    /* 保留七印列紫金背景 */
-    #tableBody2 tr.seven-seal-row td,
-    #tableBody2 tr.seven-seal-sub td {
-        background: rgba(88, 28, 135, 0.35) !important;
-        color: #ffd700 !important;
-    }
-    #tableBody2 tr.seven-seal-row td.col-segment,
-    #tableBody2 tr.seven-seal-sub td.col-segment {
-        background: linear-gradient(135deg, rgba(109, 40, 217, 0.75), rgba(88, 28, 135, 0.55)) !important;
-        color: #ffd700 !important;
-        font-weight: 700 !important;
-        border-left: 4px solid #ffd700 !important;
-    }
-    #tableBody2 tr.seven-seal-row td.col-no,
-    #tableBody2 tr.seven-seal-sub td.col-no {
-        color: #ffd700 !important;
-        font-weight: 700 !important;
-        white-space: normal !important;
-        line-height: 1.45 !important;
-        text-align: left !important;
-    }
-    #tableBody2 tr.seven-seal-row td.col-field,
-    #tableBody2 tr.seven-seal-sub td.col-field {
-        color: #ffed4a !important;
-    }
-    #tableBody2 tr.seven-seal-row td.col-func,
-    #tableBody2 tr.seven-seal-sub td.col-func {
-        color: #f0d890 !important;
-    }
-    #tableBody2 tr.seven-seal-row .unit-link,
-    #tableBody2 tr.seven-seal-sub .unit-link {
-        background: rgba(88, 28, 135, 0.45) !important;
-        border-color: rgba(255, 215, 0, 0.45) !important;
-        color: #ffd700 !important;
-    }
-</style>
-
-<script>
-(function () {
-    if (window.__sevenSealNoFull) return;
-    window.__sevenSealNoFull = true;
-
-    // 順序：先總項（避免描述文字中的「第一印」等被誤判），再各印
-    var ZH = [
-        { re: /七印誓網對應階段|七印誓網對應/, no: '第7項 七印誓網對應階段', link: 'step7.html' },
-        { re: /第7項\s*第一印|第一印\s*×\s*消業印|(?:^|[^第0-9])消業印/, no: '第7項 第一印 × 消業印', link: 'step7-1.html' },
-        { re: /第7項\s*第二印|第二印\s*×\s*修心印|(?:^|[^第0-9])修心印/, no: '第7項 第二印 × 修心印', link: 'step7-2.html' },
-        { re: /第7項\s*第三印|第三印\s*×\s*守願印|(?:^|[^第0-9])守願印/, no: '第7項 第三印 × 守願印', link: 'step7-3.html' },
-        { re: /第7項\s*第四印|第四印\s*×\s*誓令印|(?:^|[^第0-9])誓令印/, no: '第7項 第四印 × 誓令印', link: 'step7-4.html' },
-        // 排除第8項（含「覺醒印完成」「入世誓約」）
-        { re: /第7項\s*第五印|第五印\s*×\s*覺醒印|(?:^|[^第89完入])覺醒印(?!完成)/, no: '第7項 第五印 × 覺醒印', link: 'step7-5.html' },
-        { re: /第7項\s*第六印|第六印\s*×\s*誥徒誓印|(?:^|[^第0-9])誥徒誓印/, no: '第7項 第六印 × 誥徒誓印', link: 'step7-6.html' },
-        // 排除第9項（含「圓印封冊」「鳳徽印 × 圓印」）
-        { re: /第7項\s*第七印|第七印\s*×\s*鳳徽印|(?:^|[^第9圓])鳳徽印(?!.*圓印)/, no: '第7項 第七印 × 鳳徽印', link: 'step7-7.html' }
-    ];
-
-    var EN = [
-        { re: /Seven-Seal Vow Network Correspondence Stage|Seven-Seal Vow Network Correspondence/, no: 'Item 7 Seven-Seal Vow Network Correspondence Stage', link: 'step7.html' },
-        { re: /First Seal|Karmic Purification/, no: 'Item 7 First Seal × Karmic Purification Seal', link: 'step7-1.html' },
-        { re: /Second Seal|Mind-Refinement/, no: 'Item 7 Second Seal × Mind-Refinement Seal', link: 'step7-2.html' },
-        { re: /Third Seal|Guardian Vow/, no: 'Item 7 Third Seal × Guardian Vow Seal', link: 'step7-3.html' },
-        { re: /Fourth Seal|Decree-Oath/, no: 'Item 7 Fourth Seal × Decree-Oath Seal', link: 'step7-4.html' },
-        { re: /Item 7 Fifth Seal|Fifth Seal × Awakening Seal/, no: 'Item 7 Fifth Seal × Awakening Seal', link: 'step7-5.html' },
-        { re: /Sixth Seal|Disciple-Oath/, no: 'Item 7 Sixth Seal × Disciple-Oath Seal', link: 'step7-6.html' },
-        { re: /Item 7 Seventh Seal|Seventh Seal × Phoenix Emblem/, no: 'Item 7 Seventh Seal × Phoenix Emblem Seal', link: 'step7-7.html' }
-    ];
-
-    function isEn() {
-        if (typeof currentLang !== 'undefined') return currentLang === 'en';
-        var a = document.querySelector('.lang-btn.active');
-        return !!(a && /english|en/i.test(a.textContent || ''));
-    }
-
-    function apply() {
-        var list = isEn() ? EN : ZH;
-
-        // 資料層：已鎖定源資料，不再改寫 no / link（避免互相覆蓋）
-        // 僅保留下方 DOM 樣式與 class 處理
-
-        // 重畫（僅在必要時，使用原始資料）
-        // if (typeof renderTable === 'function' && window.level2Data) {
-        //     var lang = isEn() ? 'en' : 'zh';
-        //     renderTable('tableBody2', level2Data[lang] || level2Data.zh, lang);
-        // }
-
-        // DOM 強制 + 加 class 保留背景
-        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
-            var t = row.textContent || '';
-            // 明確排除第8項、第9項，避免被印章規則覆蓋
-            if (/第8項|入世誓約|誓約同步|第9項|圓印封冊/.test(t)) return;
-            var hit = null;
-            for (var i = 0; i < list.length; i++) {
-                if (list[i].re.test(t)) { hit = list[i]; break; }
-            }
-            if (!hit) return;
-
-            row.classList.add('seven-seal-row');
-            if (/第一印|第二印|第三印|第四印|第五印|第六印|第七印|First Seal|Second Seal|Third Seal|Fourth Seal|Fifth Seal|Sixth Seal|Seventh Seal/.test(t) &&
-                !/七印誓網對應|Correspondence Stage/.test(t)) {
-                row.classList.add('seven-seal-sub');
-            }
-
-            var cells = row.querySelectorAll('td');
-            if (cells[1]) cells[1].textContent = hit.no;
-            row.querySelectorAll('a').forEach(function (a) {
-                a.setAttribute('href', hit.link);
-            });
-        });
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 150);
-        setTimeout(apply, 500);
-        setTimeout(apply, 1000);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    window.switchLanguage = function (l) {
-        if (typeof orig === 'function') orig(l);
-        setTimeout(apply, 60);
-        setTimeout(apply, 250);
-        setTimeout(apply, 600);
-    };
-
-    console.log('✅ 七印編號完整 + 紫金背景保留');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 公版：刪除「欄位名稱」欄，功能說明加寬                          -->
-<!-- 貼在 
-<!-- ============================================================ -->
-<!-- 最終保護：強制第8項、第9項編號與連結正確（防止被印章規則覆蓋） -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    if (window.__forceStep89) return;
-    window.__forceStep89 = true;
-
-    function force() {
-        // 資料層
-        if (window.level2Data) {
-            ['zh', 'en'].forEach(function (lang) {
-                var items = level2Data[lang] && level2Data[lang].items;
-                if (!items) return;
-                items.forEach(function (it) {
-                    var blob = [it.no, it.field, it.func, it.segment].join(' ');
-                    if (/第8項|入世誓約|Item 8|Worldly Vow|誓約同步/.test(blob)) {
-                        it.no = (lang === 'en')
-                            ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
-                            : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
-                        it.link = 'step8.html';
-                    }
-                    if (/第9項|圓印封冊|Item 9|Circle Seal/.test(blob)) {
-                        it.no = (lang === 'en')
-                            ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
-                            : '第9項 第七印鳳徽印 × 圓印封冊';
-                        it.link = 'step9.html';
-                    }
-                });
-            });
-        }
-
-        // DOM 層
-        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
-            var t = row.textContent || '';
-            var cells = row.querySelectorAll('td');
-            if (cells.length < 2) return;
-
-            if (/第8項|入世誓約|誓約同步|Item 8|Worldly Vow/.test(t)) {
-                var isEn = /Item 8|Worldly Vow/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
-                cells[1].textContent = isEn
-                    ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
-                    : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
-                row.querySelectorAll('a').forEach(function (a) {
-                    a.setAttribute('href', 'step8.html');
-                });
-                // 不要套用七印紫金背景
-                row.classList.remove('seven-seal-row', 'seven-seal-sub');
-            }
-            if (/第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
-                var isEn = /Item 9|Circle Seal/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
-                cells[1].textContent = isEn
-                    ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
-                    : '第9項 第七印鳳徽印 × 圓印封冊';
-                row.querySelectorAll('a').forEach(function (a) {
-                    a.setAttribute('href', 'step9.html');
-                });
-                row.classList.remove('seven-seal-row', 'seven-seal-sub');
-            }
-        });
-    }
-
-    function run() {
-        force();
-        setTimeout(force, 100);
-        setTimeout(force, 400);
-        setTimeout(force, 900);
-        setTimeout(force, 1600);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    window.switchLanguage = function (l) {
-        if (typeof orig === 'function') orig(l);
-        setTimeout(force, 50);
-        setTimeout(force, 200);
-        setTimeout(force, 500);
-    };
-
-    console.log('✅ 第8項 / 第9項 最終保護已啟用');
-})();
-</script>
-
-<!-- ============================================================ -->
-<style>
-    /* 隱藏欄位名稱欄（表頭 + 每一列第 4 欄） */
-    th.col-field,
-    td.col-field {
-        display: none !important;
-        width: 0 !important;
-        padding: 0 !important;
-        border: none !important;
-    }
-
-    /* 功能簡要說明加寬 */
-    th.col-func,
-    td.col-func {
-        width: 55% !important;
-        min-width: 220px !important;
-    }
-
-    /* 編號欄可換行、完整顯示 */
-    th.col-no,
-    td.col-no {
-        width: 24% !important;
-        min-width: 140px !important;
-        white-space: normal !important;
-        line-height: 1.45 !important;
-        text-align: left !important;
-        word-break: break-word !important;
-    }
-
-    th.col-segment,
-    td.col-segment {
-        width: 14% !important;
-    }
-
-    th.col-link,
-    td.col-link {
-        width: 9% !important;
-    }
-
-    table {
-        min-width: 640px !important;
-    }
-</style>
-
-<script>
-(function () {
-    if (window.__hideFieldCol) return;
-    window.__hideFieldCol = true;
-
-    function apply() {
-        // 表頭
-        ['thField', 'thField2'].forEach(function (id) {
-            var el = document.getElementById(id);
-            if (el) {
-                el.style.setProperty('display', 'none', 'important');
-                el.style.setProperty('width', '0', 'important');
-            }
-        });
-
-        // 每一列第 4 欄（col-field）
-        document.querySelectorAll('td.col-field, th.col-field').forEach(function (el) {
-            el.style.setProperty('display', 'none', 'important');
-            el.style.setProperty('width', '0', 'important');
-            el.style.setProperty('padding', '0', 'important');
-            el.style.setProperty('border', 'none', 'important');
-        });
-
-        // 功能說明加寬
-        document.querySelectorAll('td.col-func, th.col-func').forEach(function (el) {
-            el.style.setProperty('width', '55%', 'important');
-        });
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 150);
-        setTimeout(apply, 500);
-        setTimeout(apply, 1000);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    // 語系切換重畫表格後再藏一次
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 60);
-            setTimeout(apply, 250);
-            setTimeout(apply, 600);
-        };
-    }
-
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__hideFieldT);
-        window.__hideFieldT = setTimeout(apply, 50);
-    });
-    obs.observe(document.body, { childList: true, subtree: true });
-
-    console.log('✅ 已刪除欄位名稱欄，功能說明加寬');
-})();
-</script>
-
-<!-- ============================================================ -->
-<!-- 最終保護：第8項 / 第9項 編號與連結強制正確 + 編號欄完整顯示   -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    if (window.__forceStep89Final) return;
-    window.__forceStep89Final = true;
-
-    function force() {
-        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
-            var t = (row.textContent || '').replace(/\s+/g, ' ');
-            var cells = row.querySelectorAll('td');
-            if (cells.length < 3) return;
-
-            // 第8項
-            if (/第8項|入世誓約|Item 8|Worldly Vow|誓約同步進度/.test(t)) {
-                var isEn = /Item 8|Worldly Vow/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
-                cells[1].textContent = isEn
-                    ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
-                    : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
-                cells[1].style.cssText += ';white-space:normal!important;word-break:break-word!important;line-height:1.45!important;';
-                row.querySelectorAll('a').forEach(function (a) { a.setAttribute('href', 'step8.html'); });
-                row.classList.remove('seven-seal-row', 'seven-seal-sub');
-            }
-            // 第9項
-            if (/第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
-                var isEn = /Item 9|Circle Seal/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
-                cells[1].textContent = isEn
-                    ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
-                    : '第9項 第七印鳳徽印 × 圓印封冊';
-                cells[1].style.cssText += ';white-space:normal!important;word-break:break-word!important;line-height:1.45!important;';
-                row.querySelectorAll('a').forEach(function (a) { a.setAttribute('href', 'step9.html'); });
-                row.classList.remove('seven-seal-row', 'seven-seal-sub');
-            }
-        });
-    }
-
-    function run() {
-        force();
-        setTimeout(force, 150);
-        setTimeout(force, 500);
-        setTimeout(force, 1200);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    window.switchLanguage = function (l) {
-        if (typeof orig === 'function') orig(l);
-        setTimeout(force, 80);
-        setTimeout(force, 300);
-        setTimeout(force, 700);
-    };
-
-    console.log('✅ 第8項 / 第9項 最終保護已啟用');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 公版：第8項、第9項移除七印紫金背景（改為一般背景）           -->
-<!-- 貼在 </body> 前，Ctrl+F5                                      -->
-<!-- ============================================================ -->
-<script>
-(function () {
-    if (window.__removeStep89Bg) return;
-    window.__removeStep89Bg = true;
-
-    function apply() {
-        // 1. 移除所有第8項、第9項列的 seven-seal-row / seven-seal-sub class
-        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
-            var t = (row.textContent || '').replace(/\s+/g, ' ');
-            // 第8項或第9項
-            if (/第8項|入世誓約|誓約同步|Item 8|Worldly Vow|第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
-                row.classList.remove('seven-seal-row', 'seven-seal-sub');
-                // 移除行內樣式中的紫金背景
-                row.style.setProperty('background', '', 'important');
-                row.style.setProperty('border-left', '', 'important');
-                // 移除所有 td 中的紫金背景
-                var tds = row.querySelectorAll('td');
-                tds.forEach(function (td) {
-                    td.style.setProperty('background', '', 'important');
-                    td.style.setProperty('color', '', 'important');
-                });
-            }
-        });
-
-        // 2. 確保第8項、第9項的編號欄完整顯示
-        document.querySelectorAll('#tableBody2 tr').forEach(function (row) {
-            var t = (row.textContent || '').replace(/\s+/g, ' ');
-            var cells = row.querySelectorAll('td');
-            if (cells.length < 2) return;
-
-            // 第8項
-            if (/第8項|入世誓約|誓約同步|Item 8|Worldly Vow/.test(t)) {
-                var isEn = /Item 8|Worldly Vow/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
-                cells[1].textContent = isEn
-                    ? 'Item 8 Fifth Seal Awakening Completion × Worldly Vow Revelation × Vow Sync Progress'
-                    : '第8項 第五印覺醒印完成 × 入世誓約揭示 × 誓約同步進度紀錄';
-                cells[1].style.cssText += ';white-space:normal!important;word-break:break-word!important;line-height:1.45!important;';
-                row.querySelectorAll('a').forEach(function (a) { a.setAttribute('href', 'step8.html'); });
-                row.classList.remove('seven-seal-row', 'seven-seal-sub');
-            }
-
-            // 第9項
-            if (/第9項|圓印封冊|Item 9|Circle Seal/.test(t)) {
-                var isEn = /Item 9|Circle Seal/.test(t) || (typeof currentLang !== 'undefined' && currentLang === 'en');
-                cells[1].textContent = isEn
-                    ? 'Item 9 Seventh Seal Phoenix Emblem × Circle Seal Archive'
-                    : '第9項 第七印鳳徽印 × 圓印封冊';
-                cells[1].style.cssText += ';white-space:normal!important;word-break:break-word!important;line-height:1.45!important;';
-                row.querySelectorAll('a').forEach(function (a) { a.setAttribute('href', 'step9.html'); });
-                row.classList.remove('seven-seal-row', 'seven-seal-sub');
-            }
-        });
-
-        console.log('✅ 第8項、第9項已移除紫金背景，改為一般背景');
-    }
-
-    function run() {
-        apply();
-        setTimeout(apply, 150);
-        setTimeout(apply, 500);
-        setTimeout(apply, 1000);
-        setTimeout(apply, 2000);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', run);
-    } else {
-        run();
-    }
-
-    var orig = window.switchLanguage;
-    if (typeof orig === 'function') {
-        window.switchLanguage = function (l) {
-            orig(l);
-            setTimeout(apply, 80);
-            setTimeout(apply, 300);
-            setTimeout(apply, 700);
-        };
-    }
-
-    // 監聽 DOM 變化，防止其他腳本重新套用紫金背景
-    var obs = new MutationObserver(function () {
-        clearTimeout(window.__removeBgTimer);
-        window.__removeBgTimer = setTimeout(apply, 100);
-    });
-    obs.observe(document.body, { childList: true, subtree: true, attributes: true });
-
-    console.log('✅ 公版：第8項、第9項移除紫金背景已載入');
-})();
-</script>
-<!-- ============================================================ -->
-<!-- 第1項英文 Passed / Not Passed 最終強制（貼在 </body> 前）      -->
-<!-- ============================================================ -->
-<script>
-(function () {
-  function isEn() {
-    if (typeof currentLang !== 'undefined') return currentLang === 'en';
-    var a = document.querySelector('.lang-btn.active');
-    return !!(a && /english|en/i.test(a.textContent || ''));
-  }
-
-  function forceItem1() {
-    var en = isEn();
-    document.querySelectorAll('#tableBody1 tr').forEach(function (row) {
-      var cells = row.querySelectorAll('td');
-      if (cells.length < 3) return;
-
-      // 用「功能說明」判斷（兩列完全不同，最可靠）
-      var funcText = cells[cells.length - 1].textContent || '';
-
-      var isNotPass = /補誓|Supplementary oath|cannot enter the system|must realign|Identification Code cannot/i.test(funcText);
-      var isPass = /合法身份|valid identity|authorization to enter|對應至七印|corresponds to a valid identity/i.test(funcText);
-
-      if (isPass) {
-        cells[1].textContent = en
-          ? 'Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Passed / Oath Seal Not Passed)'
-          : '第1項 開啟誓魂密鑰對頻總判定（誓印通過/誓印未通過）';
-        row.querySelectorAll('a').forEach(function (a) { a.setAttribute('href', 'step1.html'); });
-      } else if (isNotPass) {
-        cells[1].textContent = en
-          ? 'Item 1 Initiate Oath-Soul Key Frequency-Alignment Overall Assessment (Oath Seal Not Passed)'
-          : '第1項 開啟誓魂密鑰對頻總判定（誓印未通過）';
-        row.querySelectorAll('a').forEach(function (a) { a.setAttribute('href', 'step1-1.html'); });
-      }
-    });
-  }
-
-  function run() {
-    forceItem1();
-    setTimeout(forceItem1, 100);
-    setTimeout(forceItem1, 400);
-    setTimeout(forceItem1, 1000);
-    setTimeout(forceItem1, 2000);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', run);
-  } else {
-    run();
-  }
-
-  // 語系切換
-  var orig = window.switchLanguage;
-  window.switchLanguage = function (l) {
-    if (typeof orig === 'function') orig(l);
-    setTimeout(forceItem1, 50);
-    setTimeout(forceItem1, 200);
-    setTimeout(forceItem1, 500);
-  };
-
-  // 持續守護
-  var obs = new MutationObserver(function () {
-    clearTimeout(window.__item1T);
-    window.__item1T = setTimeout(forceItem1, 60);
-  });
-  obs.observe(document.body, { childList: true, subtree: true });
-
-  console.log('%c[七印誓網] 第1項英文強制已啟動', 'color:#22c55e;font-weight:bold;');
-})();
-</script>
+        })();
+    </script>
 </body>
 </html>
