@@ -2557,5 +2557,231 @@ window.onload=function(){switchLanguage('zh');};
     console.log('✅ 完成七印誓網：純文字、無勾勾');
 })();
 </script> 
+<!-- ============================================================ -->
+<!-- 公版：step16 英文模式強制英文（上一步＋頁碼＋完成按鈕）         -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__step16ForceEn) return;
+    window.__step16ForceEn = true;
+
+    function isEn() {
+        if (typeof window.currentLang !== 'undefined') return window.currentLang === 'en';
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var en = isEn();
+
+        // 1. 上一步 / Previous
+        var backSpan = document.getElementById('btnBackText');
+        if (backSpan) backSpan.textContent = en ? 'Previous' : '上一步';
+
+        document.querySelectorAll('.hud-footer a, footer a, a.btn-action').forEach(function (a) {
+            var t = (a.textContent || '').replace(/\s+/g, ' ').trim();
+            // 上一步
+            if (/上一步|Previous|Back/i.test(t) && !/完成|Complete|Next|下一步|首頁|Home/i.test(t)) {
+                var span = a.querySelector('span');
+                if (span) span.textContent = en ? 'Previous' : '上一步';
+                else {
+                    var icon = a.querySelector('i.fa-arrow-left, i.fa-chevron-left');
+                    a.innerHTML = '';
+                    if (icon) a.appendChild(icon);
+                    else {
+                        var i = document.createElement('i');
+                        i.className = 'fa-solid fa-arrow-left';
+                        a.appendChild(i);
+                    }
+                    a.appendChild(document.createTextNode(' ' + (en ? 'Previous' : '上一步')));
+                }
+            }
+        });
+
+        // 2. 完成七印誓網 / Complete Seven-Seal Network
+        var nextSpan = document.getElementById('btnNextText');
+        if (nextSpan) nextSpan.textContent = en ? 'Complete Seven-Seal Network' : '完成七印誓網';
+
+        document.querySelectorAll('.hud-footer a, footer a, a.btn-action').forEach(function (a) {
+            var t = (a.textContent || '').replace(/\s+/g, ' ').trim();
+            if (/完成七印|Complete Seven-Seal|下一步|Next|回首頁|Home/i.test(t) &&
+                !/上一步|Previous|Back/i.test(t)) {
+                a.innerHTML = en ? 'Complete Seven-Seal Network' : '完成七印誓網';
+                a.setAttribute('href', 'index.html');
+            }
+        });
+
+        // 3. 頁碼
+        var PAGE_ZH = '【宇宙誓印覺醒工程 · 覺醒卷】第 423-432 頁';
+        var PAGE_EN = '【Cosmic Oath-Seal Awakening Project · Awakening Volume】Pages 423-432';
+        var pageEl = document.getElementById('pageMarker');
+        if (pageEl) pageEl.textContent = en ? PAGE_EN : PAGE_ZH;
+
+        document.querySelectorAll('.page-marker, .page-marker span').forEach(function (el) {
+            var t = (el.textContent || '');
+            if (/第\s*423|Pages?\s*423|覺醒卷|Awakening Volume/i.test(t)) {
+                el.textContent = en ? PAGE_EN : PAGE_ZH;
+            }
+        });
+
+        // 4. 同步語言包
+        try {
+            if (window.L) {
+                if (window.L.zh) {
+                    window.L.zh.btnBackText = '上一步';
+                    window.L.zh.btnNextText = '完成七印誓網';
+                    window.L.zh.pageMarker = PAGE_ZH;
+                }
+                if (window.L.en) {
+                    window.L.en.btnBackText = 'Previous';
+                    window.L.en.btnNextText = 'Complete Seven-Seal Network';
+                    window.L.en.pageMarker = PAGE_EN;
+                }
+            }
+        } catch (e) {}
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 400);
+        setTimeout(apply, 900);
+        setTimeout(apply, 1800);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 40);
+            setTimeout(apply, 200);
+            setTimeout(apply, 500);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.closest && e.target.closest('.lang-btn')) {
+            setTimeout(apply, 50);
+            setTimeout(apply, 250);
+        }
+    }, true);
+
+    console.log('✅ step16 英文模式：上一步／頁碼／完成按鈕已強制英文');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 公版：上一步 → Previous（英文模式）                           -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__forcePrevEn) return;
+    window.__forcePrevEn = true;
+
+    function isEn() {
+        if (typeof window.currentLang !== 'undefined') return window.currentLang === 'en';
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var en = isEn();
+        var label = en ? 'Previous' : '上一步';
+
+        // 1. id
+        var span = document.getElementById('btnBackText');
+        if (span) span.textContent = label;
+
+        // 2. 所有可能的上一步按鈕
+        document.querySelectorAll(
+            '.hud-footer a, footer a, a.btn-action, #forceNavFooter a'
+        ).forEach(function (a) {
+            var t = (a.textContent || '').replace(/\s+/g, ' ').trim();
+            // 只動「上一步 / Previous / Back」，不要動完成、下一步
+            if (!/上一步|Previous|Back/i.test(t)) return;
+            if (/完成|Complete|下一步|Next|首頁|Home/i.test(t)) return;
+
+            // 保留左箭頭圖示
+            var icon = a.querySelector('i.fa-arrow-left, i.fa-chevron-left, i');
+            var s = a.querySelector('span');
+
+            if (s) {
+                s.textContent = label;
+            } else {
+                a.innerHTML = '';
+                if (icon) {
+                    a.appendChild(icon);
+                } else {
+                    var i = document.createElement('i');
+                    i.className = 'fa-solid fa-arrow-left';
+                    a.appendChild(i);
+                }
+                a.appendChild(document.createTextNode(' ' + label));
+            }
+        });
+
+        // 3. 同步語言包
+        try {
+            if (window.L) {
+                if (window.L.zh) window.L.zh.btnBackText = '上一步';
+                if (window.L.en) window.L.en.btnBackText = 'Previous';
+            }
+            if (typeof langPack !== 'undefined') {
+                if (langPack.zh) langPack.zh.btnBackText = '上一步';
+                if (langPack.en) langPack.en.btnBackText = 'Previous';
+            }
+        } catch (e) {}
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 400);
+        setTimeout(apply, 900);
+        setTimeout(apply, 1600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 40);
+            setTimeout(apply, 200);
+            setTimeout(apply, 500);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.closest && e.target.closest('.lang-btn')) {
+            setTimeout(apply, 50);
+            setTimeout(apply, 250);
+        }
+    }, true);
+
+    // 防止被蓋掉
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__prevEnT);
+        window.__prevEnT = setTimeout(apply, 60);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 上一步／Previous 已強制中英切換');
+})();
+</script>
 </body>
 </html>
