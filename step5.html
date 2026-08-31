@@ -2978,6 +2978,112 @@
     console.log('✅ 下一步／Next 已強制補上 →');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：step5 階級表 英文模式強制顯示英文                       -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__forceRankTableEn) return;
+    window.__forceRankTableEn = true;
 
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var en = isEn();
+
+        // 1. 有現成的 renderRankTable 就直接呼叫
+        if (typeof renderRankTable === 'function') {
+            try {
+                renderRankTable(en ? 'en' : 'zh');
+            } catch (e) {
+                console.warn('renderRankTable 失敗', e);
+            }
+        }
+
+        // 2. 強制用 rankData 重畫 tbody（更保險）
+        if (typeof rankData === 'undefined') return;
+        var data = rankData[en ? 'en' : 'zh'] || rankData.zh;
+        var tbody = document.getElementById('rankTableBody');
+        if (!tbody || !data || !data.length) return;
+
+        var html = '';
+        data.forEach(function (row) {
+            html += '<tr>' +
+                '<td>' + (row.tier || '') + '</td>' +
+                '<td>' + (row.level || '') + '</td>' +
+                '<td>' + (row.network || '') + '</td>' +
+                '<td>' + (row.dimension || '') + '</td>' +
+                '<td>' + (row.spiritual || '') + '</td>' +
+                '<td>' + (row.realm || '') + '</td>' +
+                '<td>' + (row.position || '') + '</td>' +
+                '<td>' + (row.manifest || '') + '</td>' +
+                '<td>' + (row.offering || '') + '</td>' +
+                '</tr>';
+        });
+        tbody.innerHTML = html;
+
+        // 3. 表頭也強制對應語系（若 id 存在）
+        var cols = {
+            step5RankCol1: en ? 'System Recognition Tier' : '系統識別層',
+            step5RankCol2: en ? 'Level' : '等級',
+            step5RankCol3: en ? 'Correspondence Seven Network' : '對應七印誓網',
+            step5RankCol4: en ? 'Dimension' : '維度',
+            step5RankCol5: en ? 'Spiritual Dimension' : '靈性維度',
+            step5RankCol6: en ? 'Nine Realms Domain' : '九界層域',
+            step5RankCol7: en ? 'Oath-Soul Rank Position' : '書令誓魂層級定位',
+            step5RankCol8: en ? 'Manifestation Standard' : '顯化標準',
+            step5RankCol9: en ? 'Offering Standard' : '供養標準'
+        };
+        Object.keys(cols).forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = cols[id];
+        });
+
+        var title = document.getElementById('step5RankTitle');
+        if (title) {
+            title.textContent = en
+                ? '[Oath-Soul Dimensional Rank × Manifestation × Offering Standard Master Reference Table]'
+                : '【誓魂維度階識 × 顯化 × 供養標準總對照表】';
+        }
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+            setTimeout(apply, 600);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.closest && e.target.closest('.lang-btn')) {
+            setTimeout(apply, 60);
+            setTimeout(apply, 300);
+        }
+    }, true);
+
+    console.log('✅ step5 階級表已強制中英切換');
+})();
+</script>
 </body>
 </html>
