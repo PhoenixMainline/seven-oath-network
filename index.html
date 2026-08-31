@@ -1158,5 +1158,148 @@
             };
         })();
     </script>
+<!-- ============================================================ -->
+<!-- 公版：外部瀏覽器按鈕 中英切換                                 -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__extBrowserLang) return;
+    window.__extBrowserLang = true;
+
+    var ZH = '🌐 瀏覽器開啟';
+    var EN = '🌐 Open in Browser';
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var btn = document.querySelector('.btn-external-browser');
+        if (!btn) return;
+
+        var text = isEn() ? EN : ZH;
+        var span = btn.querySelector('span');
+        if (span) {
+            span.textContent = text.replace(/^🌐\s*/, '');
+        } else {
+            // 沒有 span 就整段換
+            var icon = btn.querySelector('i');
+            btn.innerHTML = '';
+            if (icon) btn.appendChild(icon);
+            else {
+                var i = document.createElement('i');
+                i.className = 'fa-solid fa-arrow-up-right-from-square';
+                btn.appendChild(i);
+            }
+            var s = document.createElement('span');
+            s.textContent = text.replace(/^🌐\s*/, '');
+            btn.appendChild(document.createTextNode(' '));
+            btn.appendChild(s);
+        }
+        // 若原本就有 🌐 emoji，維持一致
+        if (!btn.textContent.trim().startsWith('🌐') && !btn.querySelector('i')) {
+            btn.insertAdjacentText('afterbegin', '🌐 ');
+        }
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 200);
+        setTimeout(apply, 600);
+        setTimeout(apply, 1200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 50);
+            setTimeout(apply, 200);
+            setTimeout(apply, 500);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.closest && e.target.closest('.lang-btn')) {
+            setTimeout(apply, 60);
+            setTimeout(apply, 250);
+        }
+    }, true);
+
+    console.log('✅ 瀏覽器開啟按鈕已支援中英切換');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 公版：語系按鈕 中英顯示切換                                   -->
+<!-- 中文模式：中文 | English                                      -->
+<!-- 英文模式：Chinese | English                                   -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__langBtnLabels) return;
+    window.__langBtnLabels = true;
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var en = isEn();
+        document.querySelectorAll('.lang-btn').forEach(function (btn) {
+            var lang = (btn.getAttribute('data-lang') || '').toLowerCase();
+            var t = (btn.textContent || '').trim();
+
+            if (lang === 'zh' || /中文|Chinese/i.test(t)) {
+                btn.textContent = en ? 'Chinese' : '中文';
+            } else if (lang === 'en' || /english|英文/i.test(t)) {
+                btn.textContent = 'English';
+            }
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 40);
+            setTimeout(apply, 200);
+            setTimeout(apply, 500);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.closest && e.target.closest('.lang-btn')) {
+            setTimeout(apply, 50);
+            setTimeout(apply, 250);
+        }
+    }, true);
+
+    console.log('✅ 語系按鈕已支援中英顯示');
+})();
+</script>
 </body>
 </html>
