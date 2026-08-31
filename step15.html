@@ -1844,5 +1844,232 @@ window.onload=function(){switchLanguage('zh');};
     console.log('✅ 已隱藏「願力誓證驗證結果／誓證有效（示範）」');
 })();
 </script>
+<!-- ============================================================ -->
+<!-- 公版：上一步／下一步 中英切換                                 -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__navBtnLang) return;
+    window.__navBtnLang = true;
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function apply() {
+        var en = isEn();
+
+        // 常見 id
+        var back = document.getElementById('btnBackText');
+        var next = document.getElementById('btnNextText');
+        if (back) back.textContent = en ? 'Previous' : '上一步';
+        if (next) next.textContent = en ? 'Next' : '下一步';
+
+        // 掃所有 footer 按鈕（備援）
+        document.querySelectorAll('.hud-footer a.btn-action, .footer-btn-group a, #forceNavFooter a').forEach(function (a) {
+            var t = (a.textContent || '').replace(/\s+/g, ' ').trim();
+            var iconLeft = a.querySelector('.fa-arrow-left, .fa-chevron-left');
+            var iconRight = a.querySelector('.fa-arrow-right, .fa-chevron-right');
+
+            // 上一步 / Previous / Back
+            if (/上一步|Previous|Back/i.test(t) || iconLeft) {
+                // 保留圖示，只改文字
+                var span = a.querySelector('span');
+                if (span) {
+                    span.textContent = en ? 'Previous' : '上一步';
+                } else {
+                    // 重建：圖示 + 文字
+                    var leftIcon = a.querySelector('i');
+                    a.innerHTML = '';
+                    if (leftIcon) a.appendChild(leftIcon);
+                    else {
+                        var i = document.createElement('i');
+                        i.className = 'fa-solid fa-arrow-left';
+                        a.appendChild(i);
+                    }
+                    a.appendChild(document.createTextNode(' ' + (en ? 'Previous' : '上一步')));
+                }
+            }
+
+            // 下一步 / Next
+            if (/下一步|Next/i.test(t) || iconRight) {
+                var span2 = a.querySelector('span');
+                if (span2) {
+                    span2.textContent = en ? 'Next' : '下一步';
+                } else {
+                    var rightIcon = a.querySelector('i.fa-arrow-right, i.fa-chevron-right');
+                    // 清掉舊文字，保留結構
+                    a.childNodes.forEach(function (n) {
+                        if (n.nodeType === 3) n.textContent = '';
+                    });
+                    // 若沒有 span，補上
+                    if (!a.querySelector('span')) {
+                        var s = document.createElement('span');
+                        s.textContent = en ? 'Next' : '下一步';
+                        if (rightIcon) a.insertBefore(s, rightIcon);
+                        else a.appendChild(s);
+                    } else {
+                        a.querySelector('span').textContent = en ? 'Next' : '下一步';
+                    }
+                }
+            }
+        });
+
+        // langPack 一併更新（若有）
+        try {
+            if (typeof langPack !== 'undefined') {
+                if (langPack.zh) {
+                    langPack.zh.btnBackText = '上一步';
+                    langPack.zh.btnNextText = '下一步';
+                }
+                if (langPack.en) {
+                    langPack.en.btnBackText = 'Previous';
+                    langPack.en.btnNextText = 'Next';
+                }
+            }
+        } catch (e) {}
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 150);
+        setTimeout(apply, 500);
+        setTimeout(apply, 1000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 40);
+            setTimeout(apply, 200);
+            setTimeout(apply, 500);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.closest && e.target.closest('.lang-btn')) {
+            setTimeout(apply, 50);
+            setTimeout(apply, 250);
+        }
+    }, true);
+
+    console.log('✅ 上一步／下一步 已支援中英切換');
+})();
+</script>
+<!-- ============================================================ -->
+<!-- 公版：下一步／Next 強制補上 → 箭頭（中英都有）                 -->
+<!-- 貼在 </body> 前，Ctrl+F5                                      -->
+<!-- ============================================================ -->
+<script>
+(function () {
+    if (window.__forceNextArrowBoth) return;
+    window.__forceNextArrowBoth = true;
+
+    function isEn() {
+        if (typeof currentLang !== 'undefined') return currentLang === 'en';
+        var a = document.querySelector('.lang-btn.active');
+        return !!(a && /english|en/i.test(a.textContent || ''));
+    }
+
+    function ensureArrow(btn) {
+        if (!btn) return;
+        // 已有右箭頭就不用加
+        if (btn.querySelector('.fa-arrow-right, .fa-chevron-right')) return;
+
+        var icon = document.createElement('i');
+        icon.className = 'fa-solid fa-arrow-right';
+        icon.style.marginLeft = '4px';
+        btn.appendChild(icon);
+    }
+
+    function apply() {
+        var en = isEn();
+        var label = en ? 'Next' : '下一步';
+
+        // 1. 用 id
+        var nextSpan = document.getElementById('btnNextText');
+        if (nextSpan) {
+            nextSpan.textContent = label;
+            ensureArrow(nextSpan.parentElement || nextSpan.closest('a'));
+        }
+
+        // 2. 掃 footer 所有按鈕
+        document.querySelectorAll(
+            '.hud-footer a.btn-action, .footer-btn-group a, #forceNavFooter a, a.btn-action'
+        ).forEach(function (a) {
+            var t = (a.textContent || '').replace(/\s+/g, ' ').trim();
+            // 是下一步／Next（不是上一步）
+            if (!/下一步|Next/i.test(t)) return;
+            if (/上一步|Previous|Back/i.test(t)) return;
+
+            // 改文字
+            var span = a.querySelector('span');
+            if (span) {
+                span.textContent = label;
+            } else {
+                // 只改文字節點，保留圖示
+                a.childNodes.forEach(function (n) {
+                    if (n.nodeType === 3 && n.textContent.trim()) {
+                        n.textContent = ' ' + label + ' ';
+                    }
+                });
+            }
+
+            // 強制有右箭頭
+            ensureArrow(a);
+        });
+    }
+
+    function run() {
+        apply();
+        setTimeout(apply, 100);
+        setTimeout(apply, 400);
+        setTimeout(apply, 900);
+        setTimeout(apply, 1600);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+
+    var orig = window.switchLanguage;
+    if (typeof orig === 'function') {
+        window.switchLanguage = function (l) {
+            orig(l);
+            setTimeout(apply, 40);
+            setTimeout(apply, 200);
+            setTimeout(apply, 500);
+        };
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.closest && e.target.closest('.lang-btn')) {
+            setTimeout(apply, 50);
+            setTimeout(apply, 250);
+        }
+    }, true);
+
+    // 防止被其他腳本清掉
+    var obs = new MutationObserver(function () {
+        clearTimeout(window.__nextArrowT);
+        window.__nextArrowT = setTimeout(apply, 80);
+    });
+    obs.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    console.log('✅ 下一步／Next 已強制補上 →');
+})();
+</script>
 </body>
 </html>
